@@ -19,8 +19,7 @@ ICON = 'icon-default.png'
 
 #********** Imports needed *********
 import os
-import urllib2
-import webbrowser
+from subprocess import call
 
 #********** Initialize *********
 def Start():
@@ -41,10 +40,16 @@ def setupSymbLink():
 	src = Core.storage.join_path(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http')
 	dst = Core.storage.join_path(Core.app_support_path, 'Plug-ins', 'WebClient.bundle', 'Contents', 'Resources', NAME)
 	if not os.path.lexists(dst):
+		if Platform.OS=='Windows':
+			Log.Debug('Darn ' + Platform.OS)
+			# Cant create a symb link on Windows, until Plex moves to Python 3.3
+			#call(["C:\Users\TM\AppData\Local\Plex Media Server\Plug-ins\WebTools.bundle\RightClick_Me_And_Select_Run_As_Administrator.cmd"])
+		else:
+
 		# This creates a symbolic link for the bundle in the WebClient.
 		# URL is http://<IP of PMS>:32400/web/WebTools/index.html
-		os.symlink(src, dst)
-		Log.Debug("SymbLink not there, so creating %s pointing towards %s" %(dst, src))
+			os.symlink(src, dst)
+			Log.Debug("SymbLink not there, so creating %s pointing towards %s" %(dst, src))
 	else:
 		Log.Debug("SymbLink already present")
 
