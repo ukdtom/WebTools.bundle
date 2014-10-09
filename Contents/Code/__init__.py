@@ -11,14 +11,15 @@
 ######################################################################################################################
 
 #********* Constants used **********
-PLUGIN_VERSION = '0.0.0.1'
+PLUGIN_VERSION = '0.0.0.2'
 PREFIX = '/utils/webtools'
 NAME = 'WebTools'
 ART  = 'art-default.jpg'
 ICON = 'icon-default.png'
+MYSECRET = 'BarkleyIsAFineDog'
 
 #********** Imports needed *********
-import os
+import os, io
 from subprocess import call
 
 #********** Initialize *********
@@ -28,7 +29,7 @@ def Start():
 	HTTP.CacheTime = 0
 	ObjectContainer.art = R(ART)
 	DirectoryObject.thumb = R(ICON)
-	ObjectContainer.title1 = NAME + '...(If running on Web Client, go to http://<PMS>:32400/web/' + NAME + '/index.html instead)' 
+	ObjectContainer.title1 = NAME + ' V' + PLUGIN_VERSION 
 	Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
 	ObjectContainer.view_group = 'List'
 	setupSymbLink()
@@ -56,9 +57,58 @@ def setupSymbLink():
 #********** Main function *********
 ''' Main menu '''
 @handler(PREFIX, NAME, ICON, ART)
-def MainMenu(Func='', **kwargs):
+@route(PREFIX + '/MainMenu')
+def MainMenu(Func='', **kwargs):	
 	if Func=='':
-		Log.Debug("***** Called from Channel view, so do std. channel stuff here ******")
+		Log.Debug("**********  Starting MainMenu  **********")	
+		oc = ObjectContainer()
+		if setPMSPath():
+			oc.add(DirectoryObject(key=Callback(MainMenu), title="To access this channel, go to"))
+			oc.add(DirectoryObject(key=Callback(MainMenu), title='http://<PMS>:32400/web/' + NAME + '/index.html'))
+		else:
+			oc.add(DirectoryObject(key=Callback(MainMenu), title="Bad or missing settings"))	
+			oc.add(DirectoryObject(key=Callback(MainMenu), title="Select Preferences to set ip address of the PMS"))
+			oc.add(DirectoryObject(key=Callback(MainMenu), title="Afterwards, refresh this page"))
+		oc.add(PrefsObject(title='Preferences', thumb=R('icon-prefs.png')))
+		Log.Debug("**********  Ending MainMenu  **********")
+		return oc
 
+####################################################################################################
+# Set PMS Path
+####################################################################################################
+@route(PREFIX + '/setPMSPath')
+def setPMSPath():
+	Log.Debug('Entering setPMSPath')
+	# Let's check if the PMS path is valid
+	myPath = Prefs['PMS_Path']
+	Log.Debug('My master set the Export path to: %s' %(myPath))
+	try:
+		#Let's see if we can add out subdirectory below this
+		tmpTest = XML.ElementFromURL('http://' + myPath + ':32400')
+		return True		
+	except:
+		Log.Critical('Bad pmsPath')
+		return False
 
+####################################################################################################
+# ValidatePrefs
+####################################################################################################
+@route(PREFIX + '/ValidatePrefs')
+def ValidatePrefs():
+	if setPMSPath():
+		Log.Debug('Prefs are valid, so lets update the js file')
+		myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'javascript', 'functions.js')
+		global MYSECRET 
+		MYSECRET = Hash.MD5(Prefs['PMS_Path'])
+		print MYSECRET
+		with io.open(myFile) as fin, io.open(myFile + '.tmp', 'w') as fout:
+			for line in fin:
+				if 'var Secret =' in line:
+					line = 'var Secret = ' + MYSECRET + ';\n'
+				elif 'var PMSUrl =' in line:
+					line = 'var PMSUrl = ' + Prefs['PMS_Path'] + ';\n'					
+				fout.write(unicode(line))
+		os.rename(myFile, myFile + '.org')
+		os.rename(myFile + '.tmp', myFile)
+	return
 

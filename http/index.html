@@ -1,20 +1,142 @@
 <!DOCTYPE html "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
-<head profile="http://www.w3.org/2005/10/profile">
-	<meta charset=utf-8 />
-	<title>Plex WebSite</title>
-	<link rel="icon" type="image/x-icon" href="images/favicon.ico">
-	<link rel="stylesheet" href="css/style.css" type="text/css" />
-</head>
+	<head profile="http://www.w3.org/2005/10/profile">
+		<meta charset=utf-8 />
+		<title>Plex Unofficial Subtitle Manager</title>
+		<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+		<link rel="stylesheet" href="css/style.css" type="text/css" />
+		<script type="text/javascript" src="jscript/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="jscript/functions.js"></script>
+	</head>
+	<script type="text/javascript">
+		var loadingScreen = "<div class='mainText'>Loading...</div>"
+		var selected_section = 0;	
+		var timerstart = 0;
+		
+		
+		// Populate the libraries menu.
+		$(document).ready(function() {
+			list_sections();
+		});
+						 
 
-<body>
-<div id="container">
-
-	<div id="header">
-		<h1><span>Plex WebSite</span></h1>
-		<p><span>Library Items</span> <strong id="total_items"></strong></p>
-	</div>
-
-
-</body>
+		
+		// Function borrowed from Stackoverflow
+		function getDateTime() {
+			var now     = new Date(); 
+			var year    = now.getFullYear();
+			var month   = now.getMonth()+1; 
+			var day     = now.getDate();
+			var hour    = now.getHours();
+			var minute  = now.getMinutes();
+			var second  = now.getSeconds(); 
+			if(month.toString().length == 1) {
+				var month = '0'+month;
+			}
+			if(day.toString().length == 1) {
+				var day = '0'+day;
+			}   
+			if(hour.toString().length == 1) {
+				var hour = '0'+hour;
+			}
+			if(minute.toString().length == 1) {
+				var minute = '0'+minute;
+			}
+			if(second.toString().length == 1) {
+				var second = '0'+second;
+			}   
+			var dateTime = year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;   
+			return dateTime;
+		}
+		
+		function start_timer() {
+			$("#PageLoadingTime").html("<div class='VideoSubtitle'>Calculating page loading time... <div>");
+			timerstart = Date.now();
+			
+		}
+		
+		function end_timer() {
+			$("#PageLoadingTime").html("<div class='VideoSubtitle'>Page loading time: "+Math.floor((Date.now()-timerstart))/1000+"s</div>");
+		}
+	</script>
+	<body>
+		<table cellpadding="0" cellspacing="0" class="BoxTable">
+			<tr>
+				<td class="BoxTable_td mediumlong">
+					<div id="MenuBar" class="headline"><a href='index.html'>Home</a></div>
+					<div id="MenuBox">
+						<div id="LibraryBox" class='VideoBox'>
+							<div class='VideoHeadline'>Libraries</div>	
+							<div class='VideoSubtitle'>	
+								<table cellpadding=0 cellspacing=0 style='width: 100%'>
+								</table>
+							</div>
+						</div>
+						<form name='SearchBox' onSubmit="Search();return false;">
+							<div id="SearchBox">
+							</div>
+						</form>
+						<form name='OptionsBox' onSubmit="Options();return false;">
+							<div id="OptionsBox" class='VideoBox'>
+								<div class='VideoHeadline'>Options</div>	
+								<div class='VideoSubtitle'>	
+									<table cellpadding=0 cellspacing=0 style='width: 100%'>
+										<tr><td class="mainText"><input type="checkbox" name="Option_HideLocal">Hide local subtitles</td></tr>
+										<tr><td class="mainText"><input type="checkbox" name="Option_HideEmptySubtitles">Hide videos without subtitles</td></tr>
+										<tr><td class="mainText"><input type="checkbox" name="Option_HideIntegrated">Hide integrated subtitles</td></tr>
+										<tr><td class="mainText"><input type="checkbox" name="Option_ShowOnlyMultiple">Show only multiple subtitles/language</td></tr>
+										<tr><td class="mainText"><input type="checkbox" name="Option_Autoselect">Autoselect duplicates based on XML</td></tr>
+										<tr><td class="mainText"><input type="text" name="items_per_page" size="2">Items per page</td></tr>
+										<tr><td class="mainText"><input type="submit" value="Save Options"></td></tr>
+									</table>
+								</div>
+							</div>
+						</form>
+					</div>
+				</td><td class="BoxTable_td">
+				<div id="PageBar" class="headline"></div>
+				<div id="MainBox">
+					<div class='VideoBox'>
+						<div class='VideoHeadline'>Welcome</div>
+						<div class='VideoSubtitle'>
+							<table cellspacing=0 cellpadding=0 style='width: 100%'>
+								<tr><td class='mainText'>
+									This is an unofficial manager for subtitles.<br>
+									<b>Usage is on your own risk!</b><br><br>
+									Current features:<br>
+									<ul>
+										<li>List all subtitles for a movie/tv show in your library. Both local (next to the movie in it's folder or one subfolder) and in the c:\users appdata folder.</li>
+										<li>View the subtitle and see it's contents to determine what to delete.</li>
+										<li>Delete selected subtitle from the harddrive.</li>
+										<li>Search for videos.</li>
+										<li>Options for output.</li>
+									</ul>
+									</td></tr>
+							</table>
+						</div>
+					</div>
+					<div class='VideoBox'>
+						<div class='VideoHeadline'>Recommended usage</div>
+						<div class='VideoSubtitle'>
+							<table cellspacing=0 cellpadding=0 style='width: 100%'>
+								<tr><td class='mainText'>
+									1. Remove the subtitles you want via this script.<br>
+									2. Do a forced refresh on Section level. Do not do this on video level. It will take a while for it to rescan everything if you have a large section. But the subtitle will be removed.
+									</td></tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div id='Log' class='VideoBox'>
+					<div class='VideoHeadline'>Log</div>
+					<div class='VideoSubtitle'>Nothing to tell..</div>
+				</div>
+				<div id='PageLoadingTime' class='VideoBox center'>
+					<div class='VideoSubtitle'>Page loading time: calculating...</div>
+				</div>				
+				</td>
+			</tr>
+		</table>
+		<iframe id="WorkFrame" class="hiddenframe"></iframe>
+	</body>
 </html>

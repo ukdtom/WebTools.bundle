@@ -1,0 +1,7 @@
+V0.0.0.2
+	- Added channel menu
+	- Added prefs
+	- Will now update functions.js based on prefs
+
+V 0.0.0.1
+	- Initial release

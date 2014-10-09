@@ -1,0 +1,57 @@
+@charset "utf-8";
+
+/* CSS Document */
+
+/* Old view: body {background-color: #336699; color: #FFFFFF; font-family: verdana;} */	
+/* changed from #333333 background */
+body {background-color: #242424; color: #FFFFFF; font-family: verdana;}
+A:Link {color: #FFFFFF; text-decoration: underline;}
+A:Visited {color: #FFFFFF; text-decoration: underline;}
+A:Hover {color: #000000; text-decoration: underline;}
+A:Active {color: #FFFFFF; text-decoration: underline;}
+
+/*.headline {background-color: #517da8; border-bottom: 1px solid #FFFFFF; font-weight: bold; font-size: 14px; padding: 2px;} */
+.headline {background-color: #555555; border-bottom: 1px solid #FFFFFF; font-weight: bold; font-size: 14px; padding: 2px;}
+
+.small {width: 50px;}
+.long {width: 100px;}
+.mediumlong {width: 200px;}
+.extralong {min-width: 500px;}
+.hidden {border: 0;}
+.mainText {font-size: 12px; padding: 2px;}
+.entryheadline {background-color: #f0f0f0; color: #000000;}
+.hovering:hover{background-color: #f0f0f0; color: #000000;}
+.hovering:hover a{background-color: #f0f0f0; color: #000000;}
+
+.hiddenframe {display: none;}
+.EditText {width: 100%; height: 700px; overflow: scroll; box-sizing: border-box;}
+#Box {height: 500px;  min-width: 1200px;}
+#MainBox {min-width: 850px; width: 100%; padding-top: 5px;padding-left: 2px;}
+#MenuBox {width: 200px; padding-top: 5px;}
+#Log {margin-left: 2px;}
+#PageLoadingTime {margin-left: 2px;}
+
+#MenuBar {width: 200px; height: 20px;}
+#PageBar { min-width: 100%; height: 20px;}
+
+
+.VideoBox {width:100%; border: 1px solid #FFFFFF; margin-bottom: 10px; background-color: #333333;}
+.VideoHeadline {background-color: #555555; border-bottom: 1px solid #FFFFFF; font-weight: bold; font-size: 14px; padding: 2px;}
+.VideoPath {background-color: #555555; border-bottom: 1px solid #FFFFFF; font-weight: normal; font-size: 12px; padding: 2px;}
+.VideoSubtitle {font-size: 12px; padding: 2px;}
+.VideoBottom {border-top: 1px solid #FFFFFF; font-size: 12px; text-align: right; padding: 2px;}
+.BoxTable {width: 100%}
+.BoxTable_td {vertical-align: top;}
+.Max {width: 100%;}
+
+.Active {background-color: #003300;}
+.Removed {background-color: #5A0000;}
+
+.link {cursor:pointer;text-decoration: underline;}
+
+.Center {text-align: center;}
+
+.Shadow {color: #B8B8B8;}
+.Error {color: #FF0000;}
+
+.Bold {font-weight: bold;}
