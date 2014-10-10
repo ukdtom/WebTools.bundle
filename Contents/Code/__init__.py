@@ -107,7 +107,7 @@ def setPMSPath():
 def ValidatePrefs():
 	if setPMSPath():
 		Log.Debug('Prefs are valid, so lets update the js file')
-		myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'javascript', 'functions.js')
+		myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'jscript', 'functions.js')
 		global MYSECRET 
 		MYSECRET = Hash.MD5(Prefs['PMS_Path'])
 		print MYSECRET
