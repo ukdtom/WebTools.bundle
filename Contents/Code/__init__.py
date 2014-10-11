@@ -83,8 +83,6 @@ def MainMenu(Func='', Secret='', **kwargs):
 		return DelSub(Secret, kwargs.get("MediaID"), kwargs.get("SubFileID"))
 	elif Func=='GetXMLFile':
 		return GetXMLFile(Secret, kwargs.get("Path"))
-	elif Func=='GetLibPath':
-		return GetLibPath(Secret)
 	elif Func=='SetPref':
 		return SetPref(Secret, kwargs.get("Pref"), kwargs.get("Value"))
 
