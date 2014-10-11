@@ -43,11 +43,12 @@ var options_hide_local = false;
 var options_hide_empty_subtitles = false;
 var options_only_multiple = false;
 
+/*
 var Secret = 'DevToolsSecret';
 var PMSUrl = 'The URL to PMS';
 var baseurl = "http://"+PMSUrl+":32400";
 var utility = "/utils/webtools";
-
+*/
 // This is the inital function. This is called upon page loading to populate the sections table with the available sections.
 function list_sections() {
 	start_timer();
@@ -258,11 +259,33 @@ function Options() {
  * This will be used for viewing the subtitle
  */
 function read_subtitle(path) {
-	
-	var temporaryWindow = window.open();
-	var content = "testar";
 
-	$(temporaryWindow.document.body).html(content);
+	var temporaryWindow = window.open('view_sub.html');
+	$.ajax({
+		type: "GET",
+		url: baseurl + utility + "?Func=ShowSRT&Secret="+Secret+"&FileName="+path,
+		dataType: "text",
+		success: function(data) {
+			// For the current item
+			//xmlString = (new XMLSerializer()).serializeToString(data);
+			//console.log(xmlString);
+			
+			var content = "<div id='Log' class='VideoBox'><div class='VideoHeadline'>Viewing: \""+path+"\"</div>";
+
+			content += "<div class='VideoSubtitle'>"+data+"</div>";
+			
+			content += "</div>";
+			setTimeout(function() {$(temporaryWindow.document.body).html(content);},1000);
+		},
+		error: function(data, status, statusText, responsText) {
+			alert(data + statusText);
+		},
+		complete: function() {
+			console.log("second ajax complete");
+			return true;
+		}
+	});
+	
 }
 /**
  * Refreshes result with the search.
@@ -311,7 +334,7 @@ function list_section_contents(show_page) {
 						language = subtitle.language;
 					}
 					if (subtitle.integrated === false) {
-						view = "View";
+						view = "<span onclick='read_subtitle(\""+subtitle.url.substr(8)+"\")'>View</span>";
 						checkbox = "x";
 					}
 
