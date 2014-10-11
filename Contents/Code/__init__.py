@@ -11,7 +11,7 @@
 ######################################################################################################################
 
 #********* Constants used **********
-PLUGIN_VERSION = '0.0.0.4'
+PLUGIN_VERSION = '0.0.0.5'
 PREFIX = '/utils/webtools'
 NAME = 'WebTools'
 ART  = 'art-default.jpg'
@@ -84,6 +84,8 @@ def MainMenu(Func='', Secret='', **kwargs):
 		return GetXMLFile(Secret, kwargs.get("Path"))
 	elif Func=='GetLibPath':
 		return GetLibPath(Secret)
+	elif Func=='SetPref':
+		return SetPref(Secret, kwargs.get("Pref"), kwargs.get("Value"))
 
 ####################################################################################################
 # Set PMS Path
@@ -112,7 +114,6 @@ def ValidatePrefs():
 		myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'jscript', 'settings.js')
 		global MYSECRET 
 		MYSECRET = Hash.MD5(Prefs['PMS_Path'])
-		print MYSECRET
 		with io.open(myFile) as fin, io.open(myFile + '.tmp', 'w') as fout:
 			for line in fin:
 				if 'var Secret =' in line:
@@ -148,6 +149,35 @@ def PathExists(Secret, Path):
 			return 'true'
 		else:
 			return 'false'				
+	else:
+		return ERRORAUTH
+
+####################################################################################################
+# Store a pref setting
+####################################################################################################
+''' Allows webpart to store a setting in settings.js '''
+@route(PREFIX + '/SetPref')
+def SetPref(Secret, Pref, Value):
+	if PwdOK(Secret):		
+		Log.Debug('Got a call to set %s to %s in settings.js' %(Pref, Value))
+		try:
+			bDone = False
+			myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'jscript', 'settings.js')
+			with io.open(myFile) as fin, io.open(myFile + '.tmp', 'w') as fout:
+				for line in fin:
+					if 'var ' + Pref + ' = ' in line:
+						line = 'var ' + Pref + ' = "' + Value + '";\n'
+						bDone = True
+					fout.write(unicode(line))
+			if bDone == False:
+				with io.open(myFile + '.tmp', 'a') as fout:
+					line = 'var ' + Pref + ' = "' + Value + '";\n'
+					fout.write(unicode(line))
+			os.rename(myFile, myFile + '.org')
+			os.rename(myFile + '.tmp', myFile)
+			return 'ok'
+		except:
+			return 'error'
 	else:
 		return ERRORAUTH
 
