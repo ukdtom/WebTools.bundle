@@ -11,7 +11,7 @@
 ######################################################################################################################
 
 #********* Constants used **********
-PLUGIN_VERSION = '0.0.0.3'
+PLUGIN_VERSION = '0.0.0.4'
 PREFIX = '/utils/webtools'
 NAME = 'WebTools'
 ART  = 'art-default.jpg'
@@ -82,6 +82,8 @@ def MainMenu(Func='', Secret='', **kwargs):
 		return DelSub(Secret, kwargs.get("MediaID"), kwargs.get("SubFileID"))
 	elif Func=='GetXMLFile':
 		return GetXMLFile(Secret, kwargs.get("Path"))
+	elif Func=='GetLibPath':
+		return GetLibPath(Secret)
 
 ####################################################################################################
 # Set PMS Path
@@ -107,7 +109,7 @@ def setPMSPath():
 def ValidatePrefs():
 	if setPMSPath():
 		Log.Debug('Prefs are valid, so lets update the js file')
-		myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'jscript', 'functions.js')
+		myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'jscript', 'settings.js')
 		global MYSECRET 
 		MYSECRET = Hash.MD5(Prefs['PMS_Path'])
 		print MYSECRET
@@ -262,6 +264,18 @@ def GetXMLFile(Secret, Path):
 		document = et.parse( Path )
 		root = document.getroot()
 		return et.tostring(root, encoding='utf8', method='xml')
+	else:
+		return ERRORAUTH
+
+####################################################################################################
+# Return path to PMS/Library
+####################################################################################################
+''' Return path to PMS/Library '''
+@route(PREFIX + '/GetLibPath')
+def GetLibPath(Secret):
+	if PwdOK(Secret):
+		Log.Debug('Returning Library path as %s' %(Core.app_support_path))
+		return Core.app_support_path
 	else:
 		return ERRORAUTH
 

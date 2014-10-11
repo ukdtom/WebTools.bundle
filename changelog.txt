@@ -1,3 +1,8 @@
+V0.0.0.4
+	- Added the following:
+		- Switched from putting the prefs in functions.js to settings.js
+		- Added GetLibPath
+
 V0.0.0.3
 	- Added the following:
 		- PathExists
