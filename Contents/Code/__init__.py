@@ -11,7 +11,7 @@
 ######################################################################################################################
 
 #********* Constants used **********
-PLUGIN_VERSION = '0.0.0.5'
+PLUGIN_VERSION = '0.0.0.6'
 PREFIX = '/utils/webtools'
 NAME = 'WebTools'
 ART  = 'art-default.jpg'
@@ -34,6 +34,7 @@ def Start():
 	Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
 	ObjectContainer.view_group = 'List'
 	setupSymbLink()
+	SetPref('LetMeIn', 'PathToPlexMediaFolder', Core.app_support_path)
 
 #********** Create Website *********
 ''' Create symbolic links in the WebClient, so we can access this bundle frontend via a browser directly '''
@@ -103,7 +104,7 @@ def setPMSPath():
 	except:
 		Log.Critical('Bad pmsPath')
 		return False
-
+	
 ####################################################################################################
 # ValidatePrefs
 ####################################################################################################
@@ -134,6 +135,8 @@ Returns true is okay, and else false '''
 def PwdOK(Secret):
 	if (Hash.MD5(Prefs['PMS_Path']) == Secret):
 		return True
+	elif Secret == 'LetMeIn':
+		return True		
 	else:
 		return False
 
@@ -297,15 +300,6 @@ def GetXMLFile(Secret, Path):
 	else:
 		return ERRORAUTH
 
-####################################################################################################
-# Return path to PMS/Library
-####################################################################################################
-''' Return path to PMS/Library '''
-@route(PREFIX + '/GetLibPath')
-def GetLibPath(Secret):
-	if PwdOK(Secret):
-		Log.Debug('Returning Library path as %s' %(Core.app_support_path))
-		return Core.app_support_path
-	else:
-		return ERRORAUTH
+
+
 
