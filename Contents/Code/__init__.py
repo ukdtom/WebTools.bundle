@@ -114,9 +114,9 @@ def ValidatePrefs():
 		with io.open(myFile) as fin, io.open(myFile + '.tmp', 'w') as fout:
 			for line in fin:
 				if 'var Secret =' in line:
-					line = 'var Secret = ' + MYSECRET + ';\n'
+					line = 'var Secret = "' + MYSECRET + '";\n'
 				elif 'var PMSUrl =' in line:
-					line = 'var PMSUrl = ' + Prefs['PMS_Path'] + ';\n'					
+					line = 'var PMSUrl = "' + Prefs['PMS_Path'] + '";\n'					
 				fout.write(unicode(line))
 		os.rename(myFile, myFile + '.org')
 		os.rename(myFile + '.tmp', myFile)

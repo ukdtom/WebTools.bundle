@@ -31,7 +31,6 @@
 
 //Define some variables
 var sections = []; // Holds all the available sections
-var baseurl = "../..";
 var section_contents = []; // Holds the contents of the currently selected section.
 var show_page = 0; // Always default to 0
 var items_per_page = 15;
@@ -46,6 +45,8 @@ var options_only_multiple = false;
 
 var Secret = 'DevToolsSecret';
 var PMSUrl = 'The URL to PMS';
+var baseurl = "http://"+PMSUrl+":32400";
+var utility = "/utils/webtools";
 
 // This is the inital function. This is called upon page loading to populate the sections table with the available sections.
 function list_sections() {
