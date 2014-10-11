@@ -1,3 +1,6 @@
+V0.0.0.5:
+	- Added SetPref
+		- Call like http://<PMS>:32400/utils/webtools?Func=SetPref&Secret=<MySecret>&Pref=<myVar>&Value=<Value1>
 V0.0.0.4
 	- Added the following:
 		- Switched from putting the prefs in functions.js to settings.js
