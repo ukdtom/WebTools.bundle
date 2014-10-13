@@ -11,7 +11,7 @@
 ######################################################################################################################
 
 #********* Constants used **********
-PLUGIN_VERSION = '0.0.0.6'
+PLUGIN_VERSION = '0.0.0.7'
 PREFIX = '/utils/webtools'
 NAME = 'WebTools'
 ART  = 'art-default.jpg'
@@ -112,7 +112,7 @@ def ValidatePrefs():
 		Log.Debug('Prefs are valid, so lets update the js file')
 		myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'jscript', 'settings.js')
 		global MYSECRET 
-		MYSECRET = Hash.MD5(Prefs['PMS_Path'])
+		MYSECRET = Hash.MD5(String.UUID() + Prefs['PMS_Path'])
 		with io.open(myFile) as fin, io.open(myFile + '.tmp', 'w') as fout:
 			for line in fin:
 				if 'var Secret =' in line:
