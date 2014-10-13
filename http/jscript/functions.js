@@ -26,6 +26,15 @@
  * Add SeasonKey (Entire Key)
  * Store requested page and use that for "go back" feature?.. But how.... Multiple steps etc.
  * Add special search for shows. Search in title of show and episode.
+ *
+ * Only works in Chrome!
+ * IE fails.
+ *
+ *
+ *                      Add function to check that log_to_console is available. Move these things to a combined function.
+ *                      Clean up log_to_console calls.
+ *
+ * 
  */
 
 
@@ -33,22 +42,12 @@
 var sections = []; // Holds all the available sections
 var section_contents = []; // Holds the contents of the currently selected section.
 var show_page = 0; // Always default to 0
-var items_per_page = 15;
+
 var presentable_contents = []; // Holds the contents after they have gone through the options-machine.
 var searchstring = "";
 var log = [];
 var log_show_amount = 5;
-var options_hide_integrated = false;
-var options_hide_local = false;
-var options_hide_empty_subtitles = false;
-var options_only_multiple = false;
 
-/*
-var Secret = 'DevToolsSecret';
-var PMSUrl = 'The URL to PMS';
-var baseurl = "http://"+PMSUrl+":32400";
-var utility = "/utils/webtools";
-*/
 // This is the inital function. This is called upon page loading to populate the sections table with the available sections.
 function list_sections() {
 	start_timer();
@@ -61,7 +60,7 @@ function list_sections() {
 		global: false,
 		success: function(data) {
 			xmlString = (new XMLSerializer()).serializeToString(data);
-			//console.log(xmlString);
+			//log_to_console(xmlString);
 			$("#LibraryBox table").html("");
 			$(data).find("Directory").each(function() {
 				targetFunction = false;
@@ -97,10 +96,10 @@ function list_movies(LibraryKey, TriggeringElement) {
 		current_section = get_section_info(LibraryKey);
 		update_section_box(current_section.key, TriggeringElement);
 		targetURL = "/library/sections/" + current_section.key + "/all";
-		console.log("Loading section: " + current_section.title);
+		log_to_console("Loading section: " + current_section.title);
 	} else {
 		targetURL = LibraryKey + "/all";
-		console.log("Loading section key: " + targetURL);		
+		log_to_console("Loading section key: " + targetURL);		
 	}
 
 	subtitles = [];
@@ -112,10 +111,10 @@ function list_movies(LibraryKey, TriggeringElement) {
 		dataType: "xml",
 		success: function(data) {
 			xmlString = (new XMLSerializer()).serializeToString(data);
-			//console.log(xmlString);
+			//log_to_console(xmlString);
 
 			$(data).find("Video").each(function() {
-				//console.log("For each Video: " + $(this).attr("title"));
+				//log_to_console("For each Video: " + $(this).attr("title"));
 				// For each item in the section, call the key+"/tree"
 				item = new Video();
 				item.title = $(this).attr("title");
@@ -123,8 +122,9 @@ function list_movies(LibraryKey, TriggeringElement) {
 				item.type = $(this).attr("type");
 
 				section_contents.push(item);
-				//console.log(section_contents[section_contents.length - 1].title);
+				//log_to_console(section_contents[section_contents.length - 1].title);
 				ajax_get_item_tree(section_contents.length - 1);
+				ajax_get_active_subtitle(section_contents.length - 1);
 			});
 		},
 		error: function(data, status, statusText, responsText) {
@@ -141,10 +141,10 @@ function list_shows_and_seasons(LibraryKey, TriggeringElement) {
 		current_section = get_section_info(LibraryKey);
 		update_section_box(current_section.key, TriggeringElement);
 		targetURL = "/library/sections/" + current_section.key + "/all";
-		console.log("Loading section: " + current_section.title);
+		log_to_console("Loading section: " + current_section.title);
 	} else {
 		targetURL = LibraryKey + "/all";
-		console.log("Loading section key: " + targetURL);		
+		log_to_console("Loading section key: " + targetURL);		
 	}
 
 	$.ajax({
@@ -154,10 +154,10 @@ function list_shows_and_seasons(LibraryKey, TriggeringElement) {
 		dataType: "xml",
 		success: function(data) {
 			xmlString = (new XMLSerializer()).serializeToString(data);
-			console.log(xmlString);
+			log_to_console(xmlString);
 
 			$(data).find("Directory").each(function() {
-				//console.log("For each Video: " + $(this).attr("title"));
+				//log_to_console("For each Video: " + $(this).attr("title"));
 				// For each item in the section, call the key+"/tree"
 				item = new Video();
 				item.title = $(this).attr("title");
@@ -170,7 +170,7 @@ function list_shows_and_seasons(LibraryKey, TriggeringElement) {
 				}
 
 				section_contents.push(item);
-				//console.log(section_contents[section_contents.length - 1].title);
+				//log_to_console(section_contents[section_contents.length - 1].title);
 				//ajax_get_item_tree(section_contents.length - 1);
 			});
 		},
@@ -181,7 +181,7 @@ function list_shows_and_seasons(LibraryKey, TriggeringElement) {
 }
 
 function ajax_get_item_tree(item_number) {
-	//console.log(section_contents[item_number].key);
+	//log_to_console(section_contents[item_number].key);
 	$.ajax({
 		type: "GET",
 		url: baseurl + section_contents[item_number].key + "/tree",
@@ -189,7 +189,7 @@ function ajax_get_item_tree(item_number) {
 		success: function(data) {
 			// For the current item
 			//xmlString = (new XMLSerializer()).serializeToString(data);
-			//console.log(xmlString);
+			//log_to_console(xmlString);
 			$(data).find("MediaPart").each(function() {
 				section_contents[item_number].id = $(this).attr("id");
 				section_contents[item_number].hash = $(this).attr("hash");
@@ -228,8 +228,31 @@ function ajax_get_item_tree(item_number) {
 			alert(statusText);
 		},
 		complete: function() {
-			console.log("second ajax complete");
+			log_to_console("second ajax complete");
 			return true;
+		}
+	});
+}
+
+function ajax_get_active_subtitle(item_number) {
+log_to_console("Searching for active subtitle for : " + section_contents[item_number].title);
+$.ajax({
+		type: "GET",
+		url: baseurl + section_contents[item_number].key,
+		dataType: "xml",
+		success: function(data) {
+			// For the current item
+			xmlString = (new XMLSerializer()).serializeToString(data);
+			log_to_console(xmlString);
+			$(data).find("Stream").each(function() {
+				if ( ($(this).attr("streamType") == "3") && ($(this).attr("selected") == "1") )  {	
+					log_to_console("Found a active subtitle for : " + section_contents[item_number].title + " with ID: " + $(this).attr("id"));
+					section_contents[item_number].active_subtitle_id = $(this).attr("id");
+				}
+			});
+		},
+		error: function(data, status, statusText, responsText) {
+			alert(statusText);
 		}
 	});
 }
@@ -239,26 +262,99 @@ function ajax_get_item_tree(item_number) {
 //////////////////////////////////////
 
 /**
+ * This function takes the name of the option and it's value and sends it to the bundlepart. Saving it in settings.js for later.
+ */
+function save_option(option_name,option_value,number) {
+	
+	console.log("Saving Options for number: " + number);
+	$.ajax({
+		type: "GET",
+		url: baseurl + utility + "?Func=SetPref&Secret="+Secret+"&Pref="+option_name[number]+"&Value="+option_value[number],
+		dataType: "text",
+		global: false,
+		success: function(data) {
+			console.log(data);
+			if(data == "ok") {
+				log_add("Successfully saved setting: ("+ number +")" + option_name[number] + " as: " + option_value[number]);
+			} else {
+				log_add("Failed saving setting: ("+ number +")" + option_name[number] + " as: " + option_value[number]);
+			}
+			var new_number = number + 1;
+			if(new_number < option_name.length) {	
+				save_option(option_name,option_value,new_number);
+			}
+		},
+		error: function(data, status, statusText, responsText) {
+			alert(statusText);
+		}
+	});
+}
+
+/**
  * This function is used to fetch the options and triggering a refresh of the display.
  */
 function Options() {
-	items_per_page = $("input[name=items_per_page]").val();
-	options_hide_integrated = Boolean($("input[name=Option_HideIntegrated]").prop("checked"));
-	options_hide_local = Boolean($("input[name=Option_HideLocal]").prop("checked"));
-	options_hide_empty_subtitles = Boolean($("input[name=Option_HideEmptySubtitles]").prop("checked"));
-	options_only_multiple = Boolean($("input[name=Option_ShowOnlyMultiple]").prop("checked"));
+
+	var option_name_array = [];
+	var option_value_array = [];
 	
+	items_per_page = $("input[name=items_per_page]").val();
+	option_name_array.push("items_per_page");
+	option_value_array.push($("input[name=items_per_page]").val());
+	//save_option("items_per_page",$("input[name=items_per_page]").val());
+	
+	
+	options_hide_integrated = Boolean($("input[name=Option_HideIntegrated]").prop("checked"));
+	//save_option("options_hide_integrated",$("input[name=Option_HideIntegrated]").prop("checked"));
+	option_name_array.push("options_hide_integrated");
+	option_value_array.push($("input[name=Option_HideIntegrated]").prop("checked"));
+	
+	
+	options_hide_local = Boolean($("input[name=Option_HideLocal]").prop("checked"));
+	//save_option("options_hide_local",$("input[name=Option_HideLocal]").prop("checked"));
+	option_name_array.push("options_hide_local");
+	option_value_array.push($("input[name=Option_HideLocal]").prop("checked"));
+	
+	
+	options_hide_empty_subtitles = Boolean($("input[name=Option_HideEmptySubtitles]").prop("checked"));
+	//save_option("options_hide_empty_subtitles",$("input[name=Option_HideEmptySubtitles]").prop("checked"));
+	option_name_array.push("options_hide_empty_subtitles");
+	option_value_array.push($("input[name=Option_HideEmptySubtitles]").prop("checked"));
+	
+	
+	options_only_multiple = Boolean($("input[name=Option_ShowOnlyMultiple]").prop("checked"));
+	//save_option("options_only_multiple",$("input[name=Option_ShowOnlyMultiple]").prop("checked"));
+	option_name_array.push("options_only_multiple");
+	option_value_array.push($("input[name=Option_ShowOnlyMultiple]").prop("checked"));
+		
+	save_option(option_name_array,option_value_array,0);
 
 	if(section_contents.length>0) {
 		list_section_contents(0);
 	}
-	log_add("Options Saved!");
+	log_add("Options Saved!");	
+	
+	return false;
 }
 
 /**
  * This will be used for viewing the subtitle
  */
 function read_subtitle(path) {
+ // Add correction for local subtitles.
+ 
+ // Handle differently depending on if it's a agent or local.
+ // check if it begins with media:// or file://
+ 
+
+ if (path.indexOf("media:") == -1) {
+	// it's a local file
+	path = path.substr(7);
+	
+ } else if (path.indexOf("file:") == -1) {
+	// it's a agent file
+	path = PathToPlexMediaFolder+append+path.substr(8);
+ }
 
 	var temporaryWindow = window.open('view_sub.html');
 	$.ajax({
@@ -268,11 +364,11 @@ function read_subtitle(path) {
 		success: function(data) {
 			// For the current item
 			//xmlString = (new XMLSerializer()).serializeToString(data);
-			//console.log(xmlString);
+			//log_to_console(xmlString);
 			
 			var content = "<div id='Log' class='VideoBox'><div class='VideoHeadline'>Viewing: \""+path+"\"</div>";
 
-			content += "<div class='VideoSubtitle'>"+data+"</div>";
+			content += "<div class='VideoSubtitle'><textarea class='EditText' wrap='off' readonly>"+data+"</textarea></div>";
 			
 			content += "</div>";
 			setTimeout(function() {$(temporaryWindow.document.body).html(content);},1000);
@@ -281,7 +377,7 @@ function read_subtitle(path) {
 			alert(data + statusText);
 		},
 		complete: function() {
-			console.log("second ajax complete");
+			log_to_console("second ajax complete");
 			return true;
 		}
 	});
@@ -313,20 +409,24 @@ function list_section_contents(show_page) {
 	if (end_value > presentable_contents.length) {
 		end_value = presentable_contents.length;
 	}
-	console.log("Start Value: " + start_value);
-	console.log("End Value: " + end_value);
+	log_to_console("Start Value: " + start_value);
+	log_to_console("End Value: " + end_value);
 	for (i = start_value; i < end_value; i++) {
 		item = presentable_contents[i];
 		if(item.hide === false) {
 			newEntry = "";
 			if ( (item.type == "movie") || (item.type == "episode") ) {
-				newEntry = "<div class='VideoBox'><div class='VideoHeadline'>" + item.title + "(" + item.type + ")</div>";
+				newEntry = "<div class='VideoBox'><div class='VideoHeadline'>" + item.title + "</div>";
 
 				for (x = 0; x < item.subtitles.length; x++) {
 					subtitle = item.subtitles[x];
-					view = "";
+					active = "";
+					addClass = false;
 					checkbox = "";
+					exists = "";
+					view = "";
 					show_subtitle = true; // Asume everything can be shown
+					
 					//Check if the current subtitle has a language defined.	
 					if (subtitle.language === undefined) {
 						language = "-";
@@ -334,27 +434,24 @@ function list_section_contents(show_page) {
 						language = subtitle.language;
 					}
 					if (subtitle.integrated === false) {
-						view = "<span onclick='read_subtitle(\""+subtitle.url.substr(8)+"\")'>View</span>";
+						subtitle.url = subtitle.url.replace(/\\/g,"/");
+						view = "<span class='link' onclick='read_subtitle(\""+subtitle.url+"\")'>View</span>";
 						checkbox = "x";
 					}
-
-					// Verify against options_hide_integrated
-					//if(options_hide_integrated === true) {
-					//	if(subtitle.integrated === true) {
-					//		show_subtitle = false;
-					//	}
-					//}		
-
-					//if(options_hide_local === true) {
-					//	if(subtitle.local === true) {
-					//			show_subtitle = false;
-					//		}				
-					//	}
+					
+					if (subtitle.id == item.active_subtitle_id) {
+						active = "Selected subtitle in Plex";
+						addClass = "Active";
+					}
 
 					if (subtitle.hide === false) {
 						//newEntry += "<div class='VideoSubtitle'><table cellpadding=0 cellspacing=0 style='width: 100%'><tr class='hovering'><td class='mainText'><span class='link' onclick='getXML(\""+item.key+"\",\"#MainBox\",0);'>"+item.key+"</span> | "+item.id+item.title+"</td></tr></table></div></div>";
-						newEntry += "<div class='VideoSubtitle'>";
+						newEntry += "<div class='VideoSubtitle "+addClass+"'>";
 						newEntry += "<table class='Max' cellspacing=0 cellpadding=0><tr><td class='small mainText'>" + checkbox + "</td><td class='small mainText'>" + subtitle.codec + "</td><td class='small mainText'>" + language + "</td><td class='mainText'>" + subtitle.title + "</td><td class='small mainText'>" + view + "</td></tr>";
+						if (addClass !== false) {
+							newEntry +=  "<tr><td></td><td></td><td></td><td class='mainText'>Message: " + active + exists + "</td></tr>";
+						}
+						
 						newEntry += "</table></div>";
 					}
 				}
@@ -443,7 +540,7 @@ function prepare_output() {
 		
 		// If there is no searchstring, continue
 		if(searchstring.length > 2) {
-			console.log(item.title.toLowerCase().indexOf(searchstring.toLowerCase()));
+			log_to_console(item.title.toLowerCase().indexOf(searchstring.toLowerCase()));
 			// If the searchstring is not found, then do not add it.
 			if(item.title.toLowerCase().indexOf(searchstring.toLowerCase()) == -1) {
 				item.hide = true;
@@ -456,6 +553,7 @@ function prepare_output() {
 			for each
 
 		*/
+		if(item.subtitles  !== undefined) {
 			for (x=0;x<item.subtitles.length;x++) {
 				// Reset hide status to false for current subtitle.
 				
@@ -463,85 +561,86 @@ function prepare_output() {
 				
 				item.subtitles[x].hide = false;
 				if( (options_hide_local === true) && (item.subtitles[x].local === true) ) {
-					console.log("Subtitle that matched: " + item.subtitles[x].title);
+					log_to_console("Subtitle that matched: " + item.subtitles[x].title);
 					item.subtitles[x].hide = true;
 				}
 
 				if( (options_hide_integrated === true) && (item.subtitles[x].integrated === true) ) {
-					console.log("Subtitle that matched: " + item.subtitles[x].title);
+					log_to_console("Subtitle that matched: " + item.subtitles[x].title);
 					item.subtitles[x].hide = true;
 				}
 				
 				if(item.subtitles[x].hide === false) {
 					if(discovered_languages.length === 0) {
-						console.log("discovered_languages was empty. Will add the current language");
+						log_to_console("discovered_languages was empty. Will add the current language");
 						discovered_languages[0] = [item.subtitles[x].language,1];
 					} else {
 						added = false;
 						for (y=0;y<discovered_languages.length;y++) {
-							console.log("There is something in the discovered_languages array...");
+							log_to_console("There is something in the discovered_languages array...");
 							if(discovered_languages[y][0] == item.subtitles[x].language) {
-								console.log("Found a match for an already existing language! " + discovered_languages[y][0] + " matched " + item.subtitles[x].language);
+								log_to_console("Found a match for an already existing language! " + discovered_languages[y][0] + " matched " + item.subtitles[x].language);
 								discovered_languages[y][1]++;
 								added = true;
 							}
 						}
 
 						if(added === false) {
-							console.log("We didn't find a match afterall, we have to add to position: " + discovered_languages.length);
+							log_to_console("We didn't find a match afterall, we have to add to position: " + discovered_languages.length);
 							discovered_languages[discovered_languages.length] = [item.subtitles[x].language,1];	
 						}
 					}
 				}
 			}
 		
-		/*
-		 Count items in array with specific value.. 
-		 for each item in array
-			store value in new array
-	
-		*/
+			/*
+			 Count items in array with specific value.. 
+			 for each item in array
+				store value in new array
 		
-		for (y=0;y<discovered_languages.length;y++) {
-			console.log(item.title + "Language: " + discovered_languages[y][0]);
-			console.log(item.title + "Number of occurences: " + discovered_languages[y][1]);	
-		}
-		
-		// Lets check if we should show it or not if we have multiple subtitles
-		if(options_only_multiple === true) {
-			for (x=0;x<item.subtitles.length;x++) {
-				for (y=0;y<discovered_languages.length;y++) {
-					if(discovered_languages[y][0] == item.subtitles[x].language) {
-						if(discovered_languages[y][1] < 2) {
-							item.subtitles[x].hide = true;
+			*/
+			
+			for (y=0;y<discovered_languages.length;y++) {
+				log_to_console(item.title + "Language: " + discovered_languages[y][0]);
+				log_to_console(item.title + "Number of occurences: " + discovered_languages[y][1]);	
+			}
+			
+			// Lets check if we should show it or not if we have multiple subtitles
+			if(options_only_multiple === true) {
+				for (x=0;x<item.subtitles.length;x++) {
+					for (y=0;y<discovered_languages.length;y++) {
+						if(discovered_languages[y][0] == item.subtitles[x].language) {
+							if(discovered_languages[y][1] < 2) {
+								item.subtitles[x].hide = true;
+							}
 						}
 					}
 				}
 			}
-		}
-		
-		
-		if (options_hide_empty_subtitles === true) {
 			
-			// Now, we asume everything will be hidden.
-			item.hide = true;
 			
-				for (x=0;x<item.subtitles.length;x++) {
+			if (options_hide_empty_subtitles === true) {
+				
+				// Now, we asume everything will be hidden.
+				item.hide = true;
+				
+					for (x=0;x<item.subtitles.length;x++) {
 
-					// If there is a subtitle that is set to show, we have to show this video
-					if(item.subtitles[x].hide === false) {
-						item.hide = false;
+						// If there is a subtitle that is set to show, we have to show this video
+						if(item.subtitles[x].hide === false) {
+							item.hide = false;
+						}
 					}
-				}
-			
+				
+			}	
 		}		
 		// If we are alowed to add it, do so.
 		if(item.hide === false) {
-			console.log("Adding item in presentable_contents: " + item.title);
+			log_to_console("Adding item in presentable_contents: " + item.title);
 				presentable_contents.push(item);
 		}
 	}
-	console.log("length of presentable_contents: " + presentable_contents.length);
+	log_to_console("length of presentable_contents: " + presentable_contents.length);
  }
 
 /**
@@ -565,6 +664,19 @@ function log_add(LogMessage) {
 	$("#Log").append("<div class='VideoBottom'><span class='link' onclick='log_view()'>View complete log</span></div>");
 }
 
+function log_to_console(Message) {
+	if ( (typeof(console) == "object") && ("console" in window) ) {
+	
+			try {
+				   console.log(Message);
+		   }
+		   catch (e) {}
+		   finally {
+				   return;
+		   }
+	}
+}
+
 /**
  * This function displays the entire log generated through the current visit in a new window.
  */
@@ -582,15 +694,19 @@ function log_view() {
  * Do a refresh of displayed content after all ajaxes have done their thing.
  */
 $(document).ajaxStop(function() {
-	console.log("All ajax request completed.");
+	log_to_console("All ajax request completed.");
 	list_section_contents(0);
 	end_timer();
 	log_add("Finished loading the section.");
 });
+
+// Force all ajax-calls to be non-cached.
+//$.ajaxSetup({ cache: false });
 //////////////////////////////////////
 // "Classes"
 //////////////////////////////////////
 function Video() {
+	this.active_subtitle_id = false;
 	this.filename = "";
 	this.hash = "";
 	this.hide = false;
@@ -600,7 +716,7 @@ function Video() {
 	this.showRatingKey = false;
 	this.seasonKey = false;
 	this.seasonRatingKey = false;
-	this.subtitles = [];
+	this.subtitles = []
 	this.title = "";
 	this.type = "";
 }
