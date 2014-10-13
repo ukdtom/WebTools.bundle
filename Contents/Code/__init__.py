@@ -11,7 +11,7 @@
 ######################################################################################################################
 
 #********* Constants used **********
-PLUGIN_VERSION = '0.0.0.7'
+PLUGIN_VERSION = '0.0.0.8'
 PREFIX = '/utils/webtools'
 NAME = 'WebTools'
 ART  = 'art-default.jpg'
@@ -34,7 +34,17 @@ def Start():
 	Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
 	ObjectContainer.view_group = 'List'
 	setupSymbLink()
-	SetPref('LetMeIn', 'PathToPlexMediaFolder', Core.app_support_path)
+	setSecretGUID()
+	SetPref(Dict['secret'], 'PathToPlexMediaFolder', Core.app_support_path)
+	ValidatePrefs()
+
+#********** Set Secret *********
+''' This will save a unique GUID in the dict, that is used as a seed for the secret '''
+@route(PREFIX + '/setSecretGUID')
+def setSecretGUID():
+	Dict['secret'] = String.UUID()
+	Dict.Save()
+	return
 
 #********** Create Website *********
 ''' Create symbolic links in the WebClient, so we can access this bundle frontend via a browser directly '''
@@ -112,7 +122,7 @@ def ValidatePrefs():
 		Log.Debug('Prefs are valid, so lets update the js file')
 		myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'jscript', 'settings.js')
 		global MYSECRET 
-		MYSECRET = Hash.MD5(String.UUID() + Prefs['PMS_Path'])
+		MYSECRET = Hash.MD5(Dict['secret'] + Prefs['PMS_Path'])
 		with io.open(myFile) as fin, io.open(myFile + '.tmp', 'w') as fout:
 			for line in fin:
 				if 'var Secret =' in line:
@@ -133,7 +143,7 @@ Returns true is okay, and else false '''
 def PwdOK(Secret):
 	if (Hash.MD5(Prefs['PMS_Path']) == Secret):
 		return True
-	elif Secret == 'LetMeIn':
+	elif Secret == Dict['secret']:
 		return True		
 	else:
 		return False
@@ -297,7 +307,4 @@ def GetXMLFile(Secret, Path):
 		return et.tostring(root, encoding='utf8', method='xml')
 	else:
 		return ERRORAUTH
-
-
-
 

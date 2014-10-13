@@ -1,3 +1,6 @@
+V0.0.0.8:
+	- Hopefully fixed auth error
+
 V0.0.0.7:
 	- Added randomizer to the secret
 
