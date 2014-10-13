@@ -1,3 +1,6 @@
+V0.0.0.7:
+	- Added randomizer to the secret
+
 V0.0.0.6:
 	- Removed PathToLib function
 	- PathToLib variable will now be stamped during startup to settings.js
