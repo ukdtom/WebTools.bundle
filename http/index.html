@@ -7,7 +7,7 @@
 		<link rel="stylesheet" href="css/style.css" type="text/css" />
 		<script type="text/javascript" src="jscript/jquery-1.11.1.min.js"></script>
 		<script type="text/javascript" src="jscript/settings.js"></script>
-		<script type="text/javascript" src="jscript/functions.js"></script>
+		<script type="text/javascript" src="jscript/functions.js?version=0.0.0.0.4"></script>
 	</head>
 	<script type="text/javascript">
 		var loadingScreen = "<div class='mainText'>Loading...</div>"
@@ -16,8 +16,35 @@
 		
 		
 		// Populate the libraries menu.
+		// Populate the libraries menu.
 		$(document).ready(function() {
-			list_sections();
+			/**
+			 * Check that the settings have been set.
+			 */
+			 if(PathToPlexMediaFolder === false) {
+				log_add("Error: Go through plugin preferences in Plex first.");
+				fatal_error = true;
+			 } else {
+				// Fetch the current settings and set the checkboxes accordingly.
+				if(options_hide_integrated == "true") {
+					$("input[name=Option_HideIntegrated]").prop("checked", true);
+				}
+				if(options_hide_local == "true") {
+					$("input[name=Option_HideLocal]").prop("checked",true);
+				}
+				
+				if(options_hide_empty_subtitles == "true") {
+					$("input[name=Option_HideEmptySubtitles]").prop("checked",true);
+				}
+				
+				if(options_only_multiple == "true") {	
+					$("input[name=Option_ShowOnlyMultiple]").prop("checked",true);
+				}
+				$("input[name=items_per_page]").val(items_per_page);
+				
+				
+				list_sections();
+			}
 		});
 						 
 
