@@ -11,7 +11,7 @@
 ######################################################################################################################
 
 #********* Constants used **********
-PLUGIN_VERSION = '0.0.0.8'
+PLUGIN_VERSION = '0.0.0.9'
 PREFIX = '/utils/webtools'
 NAME = 'WebTools'
 ART  = 'art-default.jpg'
@@ -22,6 +22,7 @@ ERRORAUTH = 'Error authenticating'
 #********** Imports needed *********
 import os, io
 from subprocess import call
+import xml.etree.ElementTree as et
 
 #********** Initialize *********
 def Start():
@@ -141,7 +142,7 @@ def ValidatePrefs():
 Returns true is okay, and else false '''
 @route(PREFIX + '/PwdOK')
 def PwdOK(Secret):
-	if (Hash.MD5(Prefs['PMS_Path']) == Secret):
+	if (Hash.MD5(Dict['secret'] + Prefs['PMS_Path']) == Secret):
 		return True
 	elif Secret == Dict['secret']:
 		return True		
@@ -171,6 +172,8 @@ def PathExists(Secret, Path):
 def SetPref(Secret, Pref, Value):
 	if PwdOK(Secret):		
 		Log.Debug('Got a call to set %s to %s in settings.js' %(Pref, Value))
+		Value = Value.replace("\\", "/")
+		Log.Debug('Value is now %s' %(Value))
 		try:
 			bDone = False
 			myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'jscript', 'settings.js')
@@ -278,7 +281,7 @@ def DelSub(Secret, MediaID, SubFileID):
 @route(PREFIX + '/DelFromXML')
 def DelFromXML(fileName, attribute, value):
 	Log.Debug('Need to delete element with an attribute named "%s" with a value of "%s" from file named "%s"' %(attribute, value, fileName))
-	from xml.etree import ElementTree
+
 	with io.open(fileName, 'r') as f:
 		tree = ElementTree.parse(f)
 		root = tree.getroot()
@@ -301,7 +304,7 @@ def DelFromXML(fileName, attribute, value):
 @route(PREFIX + '/GetXMLFile')
 def GetXMLFile(Secret, Path):
 	if PwdOK(Secret):
-		Log.Debug('Getting contents of an XML file named %s' %(Path))
+		Log.Debug('Getting contents of an XML file named %s' %(Path))		
 		document = et.parse( Path )
 		root = document.getroot()
 		return et.tostring(root, encoding='utf8', method='xml')
