@@ -11,7 +11,6 @@
 ######################################################################################################################
 
 #********* Constants used **********
-PLUGIN_VERSION = '0.0.0.9'
 PREFIX = '/utils/webtools'
 NAME = 'WebTools'
 ART  = 'art-default.jpg'
@@ -26,6 +25,7 @@ import xml.etree.ElementTree as et
 
 #********** Initialize *********
 def Start():
+	PLUGIN_VERSION = getPref('Version')	
 	print("********  Started %s on %s  **********" %(NAME  + ' V' + PLUGIN_VERSION, Platform.OS))
 	Log.Debug("*******  Started %s on %s  ***********" %(NAME + ' V' + PLUGIN_VERSION, Platform.OS))
 	HTTP.CacheTime = 0
@@ -36,8 +36,21 @@ def Start():
 	ObjectContainer.view_group = 'List'
 	setupSymbLink()
 	setSecretGUID()
-	SetPref(Dict['secret'], 'PathToPlexMediaFolder', Core.app_support_path)
+	SetPref(Dict['secret'], 'PathToPlexMediaFolder', Core.app_support_path.replace("\\", "/"))
 	ValidatePrefs()
+
+#********** Get Pref *********
+''' This will get a value from a Pref setting in the settings file '''
+@route(PREFIX + '/getPref')
+def getPref(key):
+	Log.Debug('getPref called for key: %s' %(key))
+	myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'jscript', 'settings.js')
+	with io.open(myFile) as fin:
+		for line in fin:
+			if 'var ' + key + ' =' in line:
+				drop, value = line.split('= "')
+				value = value[:-3]
+	return value
 
 #********** Set Secret *********
 ''' This will save a unique GUID in the dict, that is used as a seed for the secret '''
