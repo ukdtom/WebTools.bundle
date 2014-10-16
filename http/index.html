@@ -40,9 +40,12 @@
 				if(options_only_multiple == "true") {	
 					$("input[name=Option_ShowOnlyMultiple]").prop("checked",true);
 				}
+				
+				if(options_auto_select_duplicate == "true") {	
+					$("input[name=Option_Autoselect]").prop("checked",true);
+				}
 				$("input[name=items_per_page]").val(items_per_page);
-				
-				
+							
 				list_sections();
 			}
 		});

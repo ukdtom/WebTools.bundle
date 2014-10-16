@@ -48,6 +48,67 @@ var searchstring = "";
 var log = [];
 var log_show_amount = 5;
 
+var providerarray = [];
+providerarray[0] = "com.plexapp.agents.opensubtitles.xml";
+providerarray[1] = "com.plexapp.agents.podnapisi.xml";
+
+
+// Called to check for duplicates in providers xml files.
+function check_duplicates(item_number) {
+	for(i=0;i<providerarray.length;i++) {
+		plexpath = PathToPlexMediaFolder.replace(/\\/g,"/");
+		var pathToProviderXML = plexpath + "/Media/localhost/" + section_contents[item_number].hash.substr(0,1) + "/" + section_contents[item_number].hash.substr(1) + ".bundle/Contents/Subtitle Contributions/"+providerarray[i];
+		console.log("Fetching XML from: " + pathToProviderXML);
+		$.ajax({
+			type: "GET",
+			url: baseurl + utility + "?Func=GetXMLFile&Secret="+Secret+"&Path="+pathToProviderXML,
+			dataType: "xml",
+			success: function(data) {
+				xmlString = (new XMLSerializer()).serializeToString(data);
+				console.log(xmlString);
+
+				var found = [];
+				$(data).find("Subtitle").each(function() {
+					console.log("Checking : " + $(this).attr("name"));
+					var Subtitle_one_name = $(this).attr("name");
+					var Subtitle_one_media = $(this).attr("media");
+
+					$(data).find("Subtitle").each(function() {
+						var locationOfsid_two = $(this).attr("name").indexOf("/sid");
+						var locationOfsid_one = $(this).attr("name").indexOf("/sid");
+						if($(this).attr("name") != Subtitle_one_name) {
+
+							if($(this).attr("name").substring(0,locationOfsid_two) == Subtitle_one_name.substring(0,locationOfsid_one)) {
+								if(found.indexOf($(this).attr("media")) == -1) {
+									found.push($(this).attr("media"));
+									console.log("Double!!!! " + $(this).attr("name")  + " ::: " + Subtitle_one_name);
+								}
+
+							}
+
+						}
+					});
+					for (x=0;x<section_contents[item_number].subtitles.length;x++) {
+						for (y=0;y<found.length;y++) {
+							console.log("Comparing: " + section_contents[item_number].subtitles[x].title + " [AND] " + found[y]);
+							if(section_contents[item_number].subtitles[x].title.indexOf("_"+found[y]) != -1) {
+								console.log("Highlighted " + section_contents[item_number].subtitles[x].title + " as duplicate");
+								section_contents[item_number].subtitles[x].isDuplicate = true;
+							}
+						}
+					}
+					// Go through the subtitles for supplied video, search for a filename that is the same as the media stored in found array.
+				});
+
+			},
+			error: function(data, status, statusText, responsText) {
+				console.log("Error in check_duplicates: " + statusText);
+			},
+		});
+	}
+}
+
+
 // This is the inital function. This is called upon page loading to populate the sections table with the available sections.
 function list_sections() {
 	start_timer();
@@ -222,6 +283,7 @@ function ajax_get_item_tree(item_number) {
 					section_contents[item_number].subtitles.push(subtitle);
 				}
 			});
+			check_duplicates(item_number);
 
 		},
 		error: function(data, status, statusText, responsText) {
@@ -326,6 +388,10 @@ function Options() {
 	//save_option("options_only_multiple",$("input[name=Option_ShowOnlyMultiple]").prop("checked"));
 	option_name_array.push("options_only_multiple");
 	option_value_array.push($("input[name=Option_ShowOnlyMultiple]").prop("checked"));
+	
+	options_auto_select_duplicate = Boolean($("input[name=Option_Autoselect]").prop("checked"));
+	option_name_array.push("options_auto_select_duplicate");
+	option_value_array.push($("input[name=Option_Autoselect]").prop("checked"));
 		
 	save_option(option_name_array,option_value_array,0);
 
@@ -434,9 +500,15 @@ function list_section_contents(show_page) {
 						language = subtitle.language;
 					}
 					if (subtitle.integrated === false) {
+						selected = "";
 						subtitle.url = subtitle.url.replace(/\\/g,"/");
+						
 						view = "<span class='link' onclick='read_subtitle(\""+subtitle.url+"\")'>View</span>";
-						checkbox = "x";
+						
+						if( (subtitle.isDuplicate === true) && (options_auto_select_duplicate === true) ) {
+							selected = "checked=checked";
+						}
+						checkbox = "<input type='checkbox' name='subtitle-"+item.id+"' value='"+item.id+":"+subtitle.id+"' "+selected+">";
 					}
 					
 					if (subtitle.id == item.active_subtitle_id) {
@@ -453,9 +525,10 @@ function list_section_contents(show_page) {
 						}
 						
 						newEntry += "</table></div>";
+		
 					}
 				}
-
+				newEntry += "<div class='VideoBottom'><span class='link' onclick=\"subtitle_select_all('subtitle-"+item.id+"', true)\">Select All</span> - <span class='link' onclick=\"subtitle_select_all('subtitle-"+item.id+"', false)\">Clear Selection</span> - <span class='link' onclick=\"subtitle_delete('subtitle-"+item.id+"');\">Delete Selected</span></div></div>";
 			} else if (item.type == "show") {
 				newEntry = "<div class='VideoBox'><div class='VideoHeadline'><span class='link' onclick='list_shows_and_seasons(\""+item.key+"\",false);'>" + item.title + "(" + item.type + ")</span></div></div>";
 			} else if (item.type == "season") {
@@ -465,6 +538,21 @@ function list_section_contents(show_page) {
 		}
 	}
 	$("input[name=searchbutton]").removeAttr("disabled");
+}
+
+function subtitle_select_all(checkboxname, toggle) {
+	$.each($("input[name="+checkboxname+"]"), function() {
+		$(this).prop("checked",toggle);
+	});
+}
+
+function subtitle_delete(checkboxname) {
+	$.each($("input[name="+checkboxname+"]:checked"), function() {
+		
+		media_id = $(this).val().substring(0,$(this).val().indexOf(":"));
+		subtitle_id = $(this).val().substring($(this).val().indexOf(":")+1);
+		console.log("SubtitleID: " + subtitle_id + " media_id: " + media_id);
+	});	
 }
 
 /**
@@ -728,6 +816,7 @@ function Subtitle() {
 	this.integrated = false;
 	this.language = "";
 	this.local = false;
+	this.isDuplicate = false;
 	this.title = ""; // Is this needed?
 	this.url = "";
 	
