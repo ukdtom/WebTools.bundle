@@ -28,21 +28,26 @@
 				// Fetch the current settings and set the checkboxes accordingly.
 				if(options_hide_integrated == "true") {
 					$("input[name=Option_HideIntegrated]").prop("checked", true);
+					options_hide_integrated = true;
 				}
 				if(options_hide_local == "true") {
 					$("input[name=Option_HideLocal]").prop("checked",true);
+					options_hide_local = true;
 				}
 				
 				if(options_hide_empty_subtitles == "true") {
 					$("input[name=Option_HideEmptySubtitles]").prop("checked",true);
+					options_hide_empty_subtitles = true;
 				}
 				
 				if(options_only_multiple == "true") {	
 					$("input[name=Option_ShowOnlyMultiple]").prop("checked",true);
+					options_only_multiple = true;
 				}
 				
 				if(options_auto_select_duplicate == "true") {	
 					$("input[name=Option_Autoselect]").prop("checked",true);
+					options_auto_select_duplicate = true;
 				}
 				$("input[name=items_per_page]").val(items_per_page);
 							
