@@ -1,37 +1,76 @@
+V0.0.0.10:
+	Bundle Part:
+	- Moved version number to settings.py
+			- Version number is now a shared number between the webpart and the bundle part
+	- Consolidated the changelog, merging the http part of it into this file
+			- There's now only one changelog file
+
 V0.0.0.9:
+	Bundle Part:
 	- Fixed GetXML function
 	- Made sure that settings set are with forward slash when entered with back-slash
 	- Fixed auth error.....Again.....SIGH.....
 
 V0.0.0.8:
+	Bundle Part:
 	- Hopefully fixed auth error
 
 V0.0.0.7:
+	Bundle Part:
 	- Added randomizer to the secret
 
 V0.0.0.6:
+	Bundle Part:
 	- Removed PathToLib function
 	- PathToLib variable will now be stamped during startup to settings.js
 
 V0.0.0.5:
+	Bundle Part:
 	- Added SetPref
 		- Call like http://<PMS>:32400/utils/webtools?Func=SetPref&Secret=<MySecret>&Pref=<myVar>&Value=<Value1>
 
-V0.0.0.4
+V0.0.0.4:
+	Bundle Part:
 	- Added the following:
 		- Switched from putting the prefs in functions.js to settings.js
 		- Added GetLibPath
 
-V0.0.0.3
+V0.0.0.3:
+	Bundle Part:
 	- Added the following:
 		- PathExists
 		- ShowSRT
 		- DelSub
 	
-V0.0.0.2
+V0.0.0.2:
+	Bundle Part:
 	- Added channel menu
 	- Added prefs
 	- Will now update functions.js based on prefs
 
-V 0.0.0.1
-	- Initial release
+V0.0.0.1:
+	HTTP Part:
+	- both
+		- Can now view subtitles via the view link
+	- movies
+		- Can list them
+		- Can list subtitles
+		- Shows if it's a integrated subtitle or not.
+			- Hides checkbox and view accordingly.
+	- show
+		- Can list them
+		- Can list seasons
+		- Uses above "movies" for episodelists
+	- Options:
+		- Can change items-per-page
+		- Only refreshes display if sections_contents is not empty.
+		- Hide local subtitles is now working correctly
+		- Hide integrated subtitles is now working correctly
+		- Hide videos without subtitles is now working correctly
+		- Show only multiple/language works
+	- Logs:
+		- Limited display on page to 5 log entries.
+		- Enabled a "View Logs" function that opens a new window, displaying all logs.
+
+
+
