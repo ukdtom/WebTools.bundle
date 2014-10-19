@@ -1,10 +1,10 @@
-var Secret = "d6718f26e12535bf3308b6a5a1c64395";
+var Secret = "bb217d183ae6f9be28984680095c3569";
 var PMSUrl = "192.168.1.12";
 var baseurl = "http://"+PMSUrl+":32400";
 var utility = "/utils/webtools";
 var PathToPlexMediaFolder = "/root/Library/Plex Media Server";
 var append = "/Media/localhost/";
-var Version = "0.0.0.10";
+var Version = "0.0.0.11";
 
 var options_hide_integrated = "true";
 var options_hide_local = "true";
