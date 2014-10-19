@@ -13,8 +13,7 @@
 #********* Constants used **********
 PREFIX = '/utils/webtools'
 NAME = 'WebTools'
-ART  = 'art-default.jpg'
-ICON = 'icon-default.png'
+ICON = 'WebTools.png'
 MYSECRET = 'BarkleyIsAFineDog'
 ERRORAUTH = 'Error authenticating'
 
@@ -29,7 +28,6 @@ def Start():
 	print("********  Started %s on %s  **********" %(NAME  + ' V' + PLUGIN_VERSION, Platform.OS))
 	Log.Debug("*******  Started %s on %s  ***********" %(NAME + ' V' + PLUGIN_VERSION, Platform.OS))
 	HTTP.CacheTime = 0
-	ObjectContainer.art = R(ART)
 	DirectoryObject.thumb = R(ICON)
 	ObjectContainer.title1 = NAME + ' V' + PLUGIN_VERSION 
 	Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
@@ -84,7 +82,7 @@ def setupSymbLink():
 
 #********** Main function *********
 ''' Main menu '''
-@handler(PREFIX, NAME, ICON, ART)
+@handler(PREFIX, NAME, ICON)
 @route(PREFIX + '/MainMenu')
 def MainMenu(Func='', Secret='', **kwargs):
 	if Func=='':
