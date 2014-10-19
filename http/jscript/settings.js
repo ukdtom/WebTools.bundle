@@ -1,5 +1,5 @@
-var Secret = "bb217d183ae6f9be28984680095c3569";
-var PMSUrl = "192.168.1.12";
+var Secret = "0";
+var PMSUrl = "0";
 var baseurl = "http://"+PMSUrl+":32400";
 var utility = "/utils/webtools";
 var PathToPlexMediaFolder = "/root/Library/Plex Media Server";
