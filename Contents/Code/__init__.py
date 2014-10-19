@@ -71,14 +71,16 @@ def setupSymbLink():
 			Log.Debug('Darn ' + Platform.OS)
 			# Cant create a symb link on Windows, until Plex moves to Python 3.3
 			#call(["C:\Users\TM\AppData\Local\Plex Media Server\Plug-ins\WebTools.bundle\RightClick_Me_And_Select_Run_As_Administrator.cmd"])
+			return False
 		else:
-
 		# This creates a symbolic link for the bundle in the WebClient.
 		# URL is http://<IP of PMS>:32400/web/WebTools/index.html
 			os.symlink(src, dst)
 			Log.Debug("SymbLink not there, so creating %s pointing towards %s" %(dst, src))
+			return True
 	else:
 		Log.Debug("SymbLink already present")
+		return True
 
 #********** Main function *********
 ''' Main menu '''
@@ -88,13 +90,20 @@ def MainMenu(Func='', Secret='', **kwargs):
 	if Func=='':
 		Log.Debug("**********  Starting MainMenu  **********")	
 		oc = ObjectContainer()
-		if setPMSPath():
-			oc.add(DirectoryObject(key=Callback(MainMenu), title="To access this channel, go to"))
-			oc.add(DirectoryObject(key=Callback(MainMenu), title='http://' + Prefs['PMS_Path'] + ':32400/web/' + NAME + '/index.html'))
+		if not setupSymbLink():
+			cmdFileName = Core.storage.join_path(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'RightClick_Me_And_Select_Run_As_Administrator.cmd')
+			oc.add(DirectoryObject(key=Callback(MainMenu), title="You are running Plex on a Windows OS, but"))
+			oc.add(DirectoryObject(key=Callback(MainMenu), title='have not yet been running the file named:'))
+			oc.add(DirectoryObject(key=Callback(MainMenu), title=cmdFileName))
+			oc.add(DirectoryObject(key=Callback(MainMenu), title='Do so, and then reload this page'))
 		else:
-			oc.add(DirectoryObject(key=Callback(MainMenu), title="Bad or missing settings"))	
-			oc.add(DirectoryObject(key=Callback(MainMenu), title="Select Preferences to set ip address of the PMS"))
-			oc.add(DirectoryObject(key=Callback(MainMenu), title="Afterwards, refresh this page"))
+			if setPMSPath():
+				oc.add(DirectoryObject(key=Callback(MainMenu), title="To access this channel, go to"))
+				oc.add(DirectoryObject(key=Callback(MainMenu), title='http://' + Prefs['PMS_Path'] + ':32400/web/' + NAME + '/index.html'))
+			else:
+				oc.add(DirectoryObject(key=Callback(MainMenu), title="Bad or missing settings"))	
+				oc.add(DirectoryObject(key=Callback(MainMenu), title="Select Preferences to set ip address of the PMS"))
+				oc.add(DirectoryObject(key=Callback(MainMenu), title="Afterwards, refresh this page"))
 		oc.add(PrefsObject(title='Preferences', thumb=R('icon-prefs.png')))
 		Log.Debug("**********  Ending MainMenu  **********")
 		return oc
