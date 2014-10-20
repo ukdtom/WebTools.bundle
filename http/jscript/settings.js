@@ -4,7 +4,7 @@ var baseurl = "http://"+PMSUrl+":32400";
 var utility = "/utils/webtools";
 var PathToPlexMediaFolder = "/root/Library/Plex Media Server";
 var append = "/Media/localhost/";
-var Version = "0.0.0.11";
+var Version = "0.0.0.12";
 
 var options_hide_integrated = "true";
 var options_hide_local = "true";

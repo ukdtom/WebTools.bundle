@@ -178,8 +178,10 @@ def PathExists(Secret, Path):
 	if PwdOK(Secret):		
 		# Now we got the filename and dir name, so let's nuke the file
 		if os.path.exists(Path):
+			Log.Debug('Got a call for PathExists with the secret of %s and the path as %s and returned true' %(Secret, Path))
 			return 'true'
 		else:
+			Log.Debug('Got a call for PathExists with the secret of %s and the path as %s and returned false' %(Secret, Path))
 			return 'false'				
 	else:
 		return ERRORAUTH
@@ -300,6 +302,7 @@ def DelSub(Secret, MediaID, SubFileID):
 ''' Delete from an XML file '''
 @route(PREFIX + '/DelFromXML')
 def DelFromXML(fileName, attribute, value):
+	from xml.etree import ElementTree
 	Log.Debug('Need to delete element with an attribute named "%s" with a value of "%s" from file named "%s"' %(attribute, value, fileName))
 
 	with io.open(fileName, 'r') as f:
