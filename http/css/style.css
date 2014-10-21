@@ -4,7 +4,7 @@
 
 /* Old view: body {background-color: #336699; color: #FFFFFF; font-family: verdana;} */	
 /* changed from #333333 background */
-body {background-color: #242424; color: #FFFFFF; font-family: verdana;}
+body {margin: 5px; background-color: #242424; color: #FFFFFF; font-family: verdana;}
 A:Link {color: #FFFFFF; text-decoration: underline;}
 A:Visited {color: #FFFFFF; text-decoration: underline;}
 A:Hover {color: #000000; text-decoration: underline;}
@@ -32,7 +32,7 @@ A:Active {color: #FFFFFF; text-decoration: underline;}
 #PageLoadingTime {margin-left: 2px;}
 
 #MenuBar {width: 200px; height: 20px;}
-#PageBar { min-width: 100%; height: 20px;}
+#PageBar { min-width: 100%; height: 20px; vertical-align: top;}
 
 
 .VideoBox {width:100%; border: 1px solid #FFFFFF; margin-bottom: 10px; background-color: #333333;}
@@ -55,3 +55,29 @@ A:Active {color: #FFFFFF; text-decoration: underline;}
 .Error {color: #FF0000;}
 
 .Bold {font-weight: bold;}
+
+ /* Bootstrap custom css */
+.modal-content {border: 1px solid #FFFFFF; background-color: #333333; color: #FFFFFF;}
+.progress-bar {background-color: #555555;}
+.btn-default {background-color: #555555; color: #FFFFFF;}
+.btn-default:hover {background-color: #f0f0f0; color: #000000;}
+
+.modal-dialog {
+  width: 800px;
+}
+
+.pagination {
+margin: 0px !important;
+font-size: small !important;
+
+}
+
+.pagination>.active>span {background-color: #333333; color: #FFFFFF; border: 1px solid #FFFFFF;}
+.pagination>.active>span:hover {background-color: #FFFFFF; color: #000000; border: 1px solid #FFFFFF;}
+
+.pagination>li>span {
+	padding: 1px 5px !important;
+	background-color: #555555; color: #FFFFFF;
+}
+
+input {color: #000000;}

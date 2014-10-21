@@ -41,16 +41,21 @@
 //Define some variables
 var sections = []; // Holds all the available sections
 var section_contents = []; // Holds the contents of the currently selected section.
-var show_page = 0; // Always default to 0
+var current_page = 0; // Always default to 0
 
 var presentable_contents = []; // Holds the contents after they have gone through the options-machine.
 var searchstring = "";
 var log = [];
 var log_show_amount = 5;
 
+var selected_section = 0;
+
 var providerarray = [];
 providerarray[0] = "com.plexapp.agents.opensubtitles.xml";
 providerarray[1] = "com.plexapp.agents.podnapisi.xml";
+
+var delete_subtitle_array_queue = [];
+var delete_subtitle_array_completed = [];
 
 
 // Called to check for duplicates in providers xml files.
@@ -59,52 +64,100 @@ function check_duplicates(item_number) {
 		plexpath = PathToPlexMediaFolder.replace(/\\/g,"/");
 		var pathToProviderXML = plexpath + "/Media/localhost/" + section_contents[item_number].hash.substr(0,1) + "/" + section_contents[item_number].hash.substr(1) + ".bundle/Contents/Subtitle Contributions/"+providerarray[i];
 		console.log("Fetching XML from: " + pathToProviderXML);
+		
 		$.ajax({
-			type: "GET",
-			url: baseurl + utility + "?Func=GetXMLFile&Secret="+Secret+"&Path="+pathToProviderXML,
-			dataType: "xml",
-			success: function(data) {
-				xmlString = (new XMLSerializer()).serializeToString(data);
-				console.log(xmlString);
+				type: "GET",
+				url: baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+pathToProviderXML,
+				dataType: "text",
+				success: function(data) {
+					if(data == "true") {
+						$.ajax({
+							type: "GET",
+							url: baseurl + utility + "?Func=GetXMLFile&Secret="+Secret+"&Path="+pathToProviderXML,
+							dataType: "xml",
+							success: function(data) {
+								//xmlString = (new XMLSerializer()).serializeToString(data);
+								//console.log(xmlString);
 
-				var found = [];
-				$(data).find("Subtitle").each(function() {
-					console.log("Checking : " + $(this).attr("name"));
-					var Subtitle_one_name = $(this).attr("name");
-					var Subtitle_one_media = $(this).attr("media");
+								var found = [];
+								$(data).find("Subtitle").each(function() {
+									//console.log("Checking : " + $(this).attr("name"));
+									var Subtitle_one_name = $(this).attr("name");
+									var Subtitle_one_media = $(this).attr("media");
 
-					$(data).find("Subtitle").each(function() {
-						var locationOfsid_two = $(this).attr("name").indexOf("/sid");
-						var locationOfsid_one = $(this).attr("name").indexOf("/sid");
-						if($(this).attr("name") != Subtitle_one_name) {
+									$(data).find("Subtitle").each(function() {
+										var locationOfsid_two = $(this).attr("name").indexOf("/sid");
+										var locationOfsid_one = $(this).attr("name").indexOf("/sid");
+										if($(this).attr("name") != Subtitle_one_name) {
 
-							if($(this).attr("name").substring(0,locationOfsid_two) == Subtitle_one_name.substring(0,locationOfsid_one)) {
-								if(found.indexOf($(this).attr("media")) == -1) {
-									found.push($(this).attr("media"));
-									console.log("Double!!!! " + $(this).attr("name")  + " ::: " + Subtitle_one_name);
-								}
+											if($(this).attr("name").substring(0,locationOfsid_two) == Subtitle_one_name.substring(0,locationOfsid_one)) {
+												if(found.indexOf($(this).attr("media")) == -1) {
+													found.push($(this).attr("media"));
+													//console.log("Double!!!! " + $(this).attr("name")  + " ::: " + Subtitle_one_name);
+												}
 
-							}
+											}
 
-						}
-					});
-					for (x=0;x<section_contents[item_number].subtitles.length;x++) {
-						for (y=0;y<found.length;y++) {
-							console.log("Comparing: " + section_contents[item_number].subtitles[x].title + " [AND] " + found[y]);
-							if(section_contents[item_number].subtitles[x].title.indexOf("_"+found[y]) != -1) {
-								console.log("Highlighted " + section_contents[item_number].subtitles[x].title + " as duplicate");
-								section_contents[item_number].subtitles[x].isDuplicate = true;
-							}
-						}
+										}
+									});
+									for (x=0;x<section_contents[item_number].subtitles.length;x++) {
+										for (y=0;y<found.length;y++) {
+											//console.log("Comparing: " + section_contents[item_number].subtitles[x].title + " [AND] " + found[y]);
+											if(section_contents[item_number].subtitles[x].title.indexOf("_"+found[y]) != -1) {
+												//console.log("Highlighted " + section_contents[item_number].subtitles[x].title + " as duplicate");
+												section_contents[item_number].subtitles[x].isDuplicate = true;
+											}
+										}
+									}
+									// Go through the subtitles for supplied video, search for a filename that is the same as the media stored in found array.
+								});
+
+							},
+							error: function(data, status, statusText, responsText) {
+								console.log("Error in check_duplicates: " + statusText);
+							},
+						});
 					}
-					// Go through the subtitles for supplied video, search for a filename that is the same as the media stored in found array.
-				});
+				},
+			});
+	}
+}
 
-			},
-			error: function(data, status, statusText, responsText) {
-				console.log("Error in check_duplicates: " + statusText);
-			},
-		});
+function check_exists(item_number) {
+ /* For each subtitle for the item_number (movie that is)
+  * check if that subtitles file exists
+  */
+	console.log(" Am i even here???? With item_number: " + item_number + " number of subtitles: " + section_contents[item_number].subtitles.length);
+	for (i=0;i<section_contents[item_number].subtitles.length;i++) {
+		subtitle = section_contents[item_number].subtitles[i];
+		path = subtitle.url.replace(/\\/g,"/");
+		console.log("checking to see if: " + path);
+		if (path.indexOf("media:") == -1) {
+			// it's a local file
+			path = path.substr(7);
+			
+		 } else if (path.indexOf("file:") == -1) {
+			// it's a agent file
+			path = PathToPlexMediaFolder+append+path.substr(8);
+		 }
+		 
+		if(path.length>0) { 
+			$.ajax({
+				type: "GET",
+				url: baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+path,
+				dataType: "text",
+				subtitleIndex: i,
+				success: function(data) {
+					console.log("Subtitle: " + section_contents[item_number].subtitles[this.subtitleIndex].title + " exists: " + data);
+					if(data == "false") {
+						section_contents[item_number].subtitles[this.subtitleIndex].exists = false;
+					}
+				},
+				error: function(data, status, statusText, responsText) {
+					console.log("Error in check_exists: " + statusText);
+				},
+			});
+		}
 	}
 }
 
@@ -120,7 +173,7 @@ function list_sections() {
 		dataType: "xml",
 		global: false,
 		success: function(data) {
-			xmlString = (new XMLSerializer()).serializeToString(data);
+			//xmlString = (new XMLSerializer()).serializeToString(data);
 			//log_to_console(xmlString);
 			$("#LibraryBox table").html("");
 			$(data).find("Directory").each(function() {
@@ -136,7 +189,8 @@ function list_sections() {
 					section = {
 						key: $(this).attr("key"),
 						title: $(this).attr("title"),
-						type: $(this).attr("type")
+						type: $(this).attr("type"),
+						refreshing: false
 					};
 					sections.push(section);
 				}
@@ -152,6 +206,7 @@ function list_sections() {
 
 function list_movies(LibraryKey, TriggeringElement) {
 	start_timer();
+	fetchSettings();
 	reset_variables();
 	if(TriggeringElement !== false) {
 		current_section = get_section_info(LibraryKey);
@@ -172,7 +227,7 @@ function list_movies(LibraryKey, TriggeringElement) {
 		dataType: "xml",
 		success: function(data) {
 			xmlString = (new XMLSerializer()).serializeToString(data);
-			//log_to_console(xmlString);
+			log_to_console(xmlString);
 
 			$(data).find("Video").each(function() {
 				//log_to_console("For each Video: " + $(this).attr("title"));
@@ -181,6 +236,7 @@ function list_movies(LibraryKey, TriggeringElement) {
 				item.title = $(this).attr("title");
 				item.key = $(this).attr("key");
 				item.type = $(this).attr("type");
+				item.id = $(this).attr("ratingKey");
 
 				section_contents.push(item);
 				//log_to_console(section_contents[section_contents.length - 1].title);
@@ -196,6 +252,7 @@ function list_movies(LibraryKey, TriggeringElement) {
 
 function list_shows_and_seasons(LibraryKey, TriggeringElement) {
 	start_timer();
+	fetchSettings();
 	reset_variables();
 	
 	if(TriggeringElement !== false) {
@@ -216,8 +273,10 @@ function list_shows_and_seasons(LibraryKey, TriggeringElement) {
 		success: function(data) {
 			xmlString = (new XMLSerializer()).serializeToString(data);
 			log_to_console(xmlString);
-
+	
+			console.log("Outside of find!");
 			$(data).find("Directory").each(function() {
+				console.log("Inside of Find!");
 				//log_to_console("For each Video: " + $(this).attr("title"));
 				// For each item in the section, call the key+"/tree"
 				item = new Video();
@@ -229,7 +288,7 @@ function list_shows_and_seasons(LibraryKey, TriggeringElement) {
 				} else {
 					item.type = "season";
 				}
-
+				console.log(item);
 				section_contents.push(item);
 				//log_to_console(section_contents[section_contents.length - 1].title);
 				//ajax_get_item_tree(section_contents.length - 1);
@@ -252,7 +311,7 @@ function ajax_get_item_tree(item_number) {
 			//xmlString = (new XMLSerializer()).serializeToString(data);
 			//log_to_console(xmlString);
 			$(data).find("MediaPart").each(function() {
-				section_contents[item_number].id = $(this).attr("id");
+				//section_contents[item_number].id = $(this).attr("id");
 				section_contents[item_number].hash = $(this).attr("hash");
 			});
 
@@ -284,7 +343,7 @@ function ajax_get_item_tree(item_number) {
 				}
 			});
 			check_duplicates(item_number);
-
+			check_exists(item_number);
 		},
 		error: function(data, status, statusText, responsText) {
 			alert(statusText);
@@ -304,8 +363,8 @@ $.ajax({
 		dataType: "xml",
 		success: function(data) {
 			// For the current item
-			xmlString = (new XMLSerializer()).serializeToString(data);
-			log_to_console(xmlString);
+			//xmlString = (new XMLSerializer()).serializeToString(data);
+			//log_to_console(xmlString);
 			$(data).find("Stream").each(function() {
 				if ( ($(this).attr("streamType") == "3") && ($(this).attr("selected") == "1") )  {	
 					log_to_console("Found a active subtitle for : " + section_contents[item_number].title + " with ID: " + $(this).attr("id"));
@@ -468,7 +527,7 @@ function Search() {
 function list_section_contents(show_page) {
 	$("#MainBox").html("");
 	prepare_output();
-
+	current_page = show_page;
 	pages_output(show_page);
 	start_value = show_page * items_per_page;
 	end_value = (parseInt(start_value) + parseInt(items_per_page));
@@ -508,12 +567,17 @@ function list_section_contents(show_page) {
 						if( (subtitle.isDuplicate === true) && (options_auto_select_duplicate === true) ) {
 							selected = "checked=checked";
 						}
-						checkbox = "<input type='checkbox' name='subtitle-"+item.id+"' value='"+item.id+":"+subtitle.id+"' "+selected+">";
+						checkbox = "<input type='checkbox' name='subtitle-"+item.id+"' value='"+item.id+":"+subtitle.id+":"+subtitle.title+"' "+selected+">";
 					}
 					
 					if (subtitle.id == item.active_subtitle_id) {
 						active = "Selected subtitle in Plex";
 						addClass = "Active";
+					}
+					console.log(" Subtitle exists: " + subtitle.exists);
+					if (subtitle.exists === false) {
+						exists = "This has been removed from Plex. Please refresh library";
+						addClass = "Removed";
 					}
 
 					if (subtitle.hide === false) {
@@ -528,7 +592,7 @@ function list_section_contents(show_page) {
 		
 					}
 				}
-				newEntry += "<div class='VideoBottom'><span class='link' onclick=\"subtitle_select_all('subtitle-"+item.id+"', true)\">Select All</span> - <span class='link' onclick=\"subtitle_select_all('subtitle-"+item.id+"', false)\">Clear Selection</span> - <span class='link' onclick=\"subtitle_delete('subtitle-"+item.id+"');\">Delete Selected</span></div></div>";
+				newEntry += "<div class='VideoBottom'><button class='btn btn-default btn-xs' onclick=\"subtitle_select_all('subtitle-"+item.id+"', true)\">Select All</button> <button class='btn btn-default btn-xs' onclick=\"subtitle_select_all('subtitle-"+item.id+"', false)\">Clear Selection</button> <button class='btn btn-default btn-xs' onclick=\"delete_subtitle_confirm('subtitle-"+item.id+"');\">Delete Selected</button></div></div>";
 			} else if (item.type == "show") {
 				newEntry = "<div class='VideoBox'><div class='VideoHeadline'><span class='link' onclick='list_shows_and_seasons(\""+item.key+"\",false);'>" + item.title + "(" + item.type + ")</span></div></div>";
 			} else if (item.type == "season") {
@@ -555,6 +619,253 @@ function subtitle_delete(checkboxname) {
 	});	
 }
 
+/********************************************************************************************************************
+ * This section handles deletion of subtitles
+ ********************************************************************************************************************/
+ function delete_subtitle_confirm(checkboxname) {
+	if($("input[name="+checkboxname+"]:checked").length>0) {
+		$("#myModal .modal-title").html("Delete Subtitles?"); // Set custom content to body of Modal
+		var ModalBody = "Are you sure you want to delete the selected subtitles: <br>";
+			
+			$.each($("input[name="+checkboxname+"]:checked"), function() {	
+			subtitle_info = $(this).val().split(":");	
+				ModalBody+= subtitle_info[2] + "<br>";
+			});	
+		
+		$("#myModal .modal-body").html(ModalBody); // Set custom content to body of Modal
+		$("#myModal .modal-footer").html('<button type="button" class="btn btn-default" onclick="delete_subtitle(\''+checkboxname+'\')">Yes, delete them</button> <button type="button" class="btn btn-default" data-dismiss="modal">No</button>'); // Set custom content to body of Modal
+
+		$("#myModal").modal({keyboard: false, backdrop:false, show: true});
+	}
+  }
+  
+  function delete_subtitle_ajax(item_number) {
+	complete = ((delete_subtitle_array_completed.length / delete_subtitle_array_queue.length)*100);
+	$("#progress td ").html("<div class='progress'><div class='progress-bar' role='progressbar' aria-valuenow='"+complete+"' aria-valuemin='0' aria-valuemax='100' style='width: "+complete+"%;'>"+Math.round(complete)+"%</div></div>");
+	
+	
+	if(delete_subtitle_array_queue.length>item_number) {
+		current_sub = delete_subtitle_array_queue[item_number];
+		subtitle_info = current_sub.split(":");		
+		$("#myModal #"+subtitle_info[1]+" td:last-child").html('Deleting...');
+		
+		$.ajax({
+			type: "GET",
+			url: baseurl + utility + "?Func=DelSub&Secret="+Secret+"&MediaID="+subtitle_info[0]+"&SubFileID="+subtitle_info[1],
+			dataType: "text",
+			success: function(data) {		
+				if(data == "ok") {
+					if(delete_subtitle_array_queue.length>item_number) {
+						item_number = item_number + 1;
+						delete_subtitle_array_completed.push(delete_subtitle_array_queue[item_number]);	
+						
+						// Go through all items in section_contents searching for the current "movie"
+						for (si=0; si<section_contents.length;si++) {
+							video = section_contents[si];
+							console.log("video.id: " + video.id + " searching for: " + subtitle_info[0]);
+							if (video.id == subtitle_info[0]) {
+								for (sx=0; sx<video.subtitles.length;sx++) {
+									subtitle = video.subtitles[sx];
+									console.log("subtitle.id: " + subtitle.id + " searching for: " + subtitle_info[1]);
+									if (subtitle.id == subtitle_info[1]) {
+										log_to_console("Found subtitle that has been deleted."+subtitle_info[2]);
+										subtitle.exists = false;
+									}
+								}
+							}
+						}
+						$("#myModal #"+subtitle_info[1]+" td:last-child").html('Success');
+						delete_subtitle_ajax(item_number);
+					} else {
+						list_section_contents(current_page);
+						delete_subtitle_array_queue = [];
+						delete_subtitle_array_completed = [];
+					  
+						$("#myModal .modal-footer").html('Refresh section in Plex? <button type="button" class="btn btn-default" onclick="force_refresh();">Yes</button> <button type="button" class="btn btn-default" data-dismiss="modal">No</button>'); // Set custom content to body of Modal
+					}	
+				} else {
+					$("#myModal #"+subtitle_info[1]+" td:last-child").html('Failed');
+					if(delete_subtitle_array_queue.length>item_number) {
+						item_number = item_number + 1;
+						delete_subtitle_array_completed.push(delete_subtitle_array_queue[item_number]);	
+						delete_subtitle_ajax(item_number);
+					} else {
+						list_section_contents(current_page);
+						delete_subtitle_array_queue = [];
+						delete_subtitle_array_completed = [];
+					  
+						$("#myModal .modal-footer").html('Refresh section in Plex? <button type="button" class="btn btn-default" onclick="force_refresh();">Yes</button> <button type="button" class="btn btn-default" data-dismiss="modal">No</button>'); // Set custom content to body of Modal
+					}
+				}
+			},
+			error: function(data, status, statusText, responsText) {
+				console.log("Error in deleting subtitle: " + statusText);
+			},
+		});
+	} else {
+		list_section_contents(current_page);
+		delete_subtitle_array_queue = [];
+		delete_subtitle_array_completed = [];
+		$("#myModal .modal-footer").html('Refresh section in Plex? <button type="button" class="btn btn-default" onclick="force_refresh();">Yes</button> <button type="button" class="btn btn-default" data-dismiss="modal">No</button>'); // Set custom content to body of Modal
+	}
+	
+	
+	
+	// Replace setTimeout with an AJAX call
+	/*
+	setTimeout(function() {
+		//alert("here also.");
+		// This section is the complete: part of the ajax call.
+		if(delete_subtitle_array_queue.length>item_number) {
+			item_number = item_number + 1;
+			delete_subtitle_array_completed.push(delete_subtitle_array_queue[item_number]);	
+			
+			// Go through all items in section_contents searching for the current "movie"
+			for (si=0; si<section_contents.length;si++) {
+				video = section_contents[si];
+				console.log("video.id: " + video.id + " searching for: " + subtitle_info[0]);
+				if (video.id == subtitle_info[0]) {
+					for (sx=0; sx<video.subtitles.length;sx++) {
+						subtitle = video.subtitles[sx];
+						console.log("subtitle.id: " + subtitle.id + " searching for: " + subtitle_info[1]);
+						if (subtitle.id == subtitle_info[1]) {
+							log_to_console("Found subtitle that has been deleted."+subtitle_info[2]);
+							subtitle.exists = false;
+						}
+					}
+				}
+			}
+			$("#myModal #"+subtitle_info[1]+" td:last-child").html('Success');
+			delete_subtitle_ajax(item_number);
+		} else {
+		list_section_contents(current_page);
+		  delete_subtitle_array_queue = [];
+		  delete_subtitle_array_completed = [];
+		  
+		  $("#myModal .modal-footer").html('Refresh section in Plex? <button type="button" class="btn btn-default" onclick="force_refresh();">Yes</button> <button type="button" class="btn btn-default" data-dismiss="modal">No</button>'); // Set custom content to body of Modal
+		}
+	}, 1000);
+	*/
+  }
+  
+  
+  
+  function delete_subtitle(checkboxname) {
+	$("#myModal .modal-title").html("Deleting Subtitles"); // Set custom content to body of Modal
+	var ModalBody = "<table class='table Max'><tr><td>Subtitle</td><td class='long'>Status</td></tr>";
+		
+	$.each($("input[name="+checkboxname+"]:checked"), function() {	
+		delete_subtitle_array_queue.push($(this).val());
+		subtitle_info = $(this).val().split(":");
+		ModalBody += "<tr id='"+subtitle_info[1]+"'><td class='mainText'>"+subtitle_info[2]+"</td><td class='mainText'>Waiting</td></tr>";
+	});	
+	
+	complete = ((delete_subtitle_array_completed.length / delete_subtitle_array_queue.length)*100);
+	ModalBody += "<tr id='progress'><td class='mainText' colspan='2'><div class='progress'><div class='progress-bar' role='progressbar' aria-valuenow='"+complete+"' aria-valuemin='0' aria-valuemax='100' style='width: "+complete+"%;'>"+Math.round(complete)+"%</div></div></td></tr>";
+	ModalBody += "</table>";
+	$("#myModal .modal-body").html(ModalBody); // Set custom content to body of Modal
+	$("#myModal .modal-footer").html('<button type="button" class="btn btn-default">Waiting...</button>'); // Set custom content to body of Modal
+	
+	delete_subtitle_ajax(0);
+  }
+  
+  /********************************************************************************************************************
+   * END OF SUBTITLE DELETE
+   ********************************************************************************************************************/
+/**
+ * force_refresh()
+ * Ajax-call to start the forced refresh of the current section.
+ * Ajax-call to fetch data from /library/sections
+ * Find Key="section_key", check refreshing, store in variable, output to log
+ * set timer to check for variable change
+ */
+ 
+ function force_refresh() {
+	$("#myModal").modal('hide');
+	$.ajax({
+			type: "GET",
+			url: baseurl + "/library/sections/"+ selected_section +"/refresh?force=1",
+			dataType: "text",
+			global: false,
+			success: function(data) {
+				
+				setTimeout(function() {
+					section = get_section_info(selected_section);
+					log_add("Started forced refresh in Plex on section: " + section.title);
+					section.refreshing = true;
+					force_refresh_verify()},3000);						
+			},
+			error: function(data, status, statusText, responsText) {
+				log_to_console(data + statusText);
+			},
+			complete: function() {
+				log_to_console("Initiated forced-refresh on section with key: " + selected_section);
+				return true;
+			}
+		});	
+ }
+ 
+ function force_refresh_verify() {
+ //section = get_section_info(section_key);
+ 	$.ajax({
+			type: "GET",
+			url: baseurl + "/library/sections/",
+			dataType: "xml",
+			global: false,
+			success: function(data) {
+				
+				$(data).find("Directory ").each(function() {
+					/*
+					if(first_run === true) {
+						if ($(this).attr("key") == section.key){
+							
+							if($(this).attr("refreshing") == "1") {
+								log_add("Started forced refresh in Plex on section: " + section.title);
+								console.log("[true]Calling force_refresh after 2 seconds, with false");
+								setTimeout(function() {force_refresh_verify(false, section_key)},2000);
+							} else {
+								console.log("[true]Calling force_refresh after 2 seconds, with true. We did not yet see that we started it.");
+								setTimeout(function() {force_refresh_verify(true, section_key)},2000);
+							}
+						}
+					} else {
+						if ($(this).attr("key") == section.key) {
+							if($(this).attr("refreshing") == "0") {
+								log_add("Section refresh in Plex completed on: " + section.title);
+								log_to_console("Section refresh in Plex completed on: " + section.title);
+							} else {
+								console.log("[false]Calling force_refresh after 2 seconds, with false");
+								setTimeout(function() {force_refresh_verify(false, section_key)},2000);
+							}
+						}
+					}
+					*/
+					section = get_section_info($(this).attr("key"));
+					if(section.refreshing === true) {
+						if($(this).attr("refreshing") == "0") {
+								log_add("Section refresh in Plex completed on: " + section.title + ". Extra information may still be downloading from the Internet");
+								log_to_console("Section refresh in Plex completed on: " + section.title);
+								section.refreshing = false;
+						}	
+					}			
+				});
+				
+				for (i = 0; i < sections.length; i++) {
+					if (sections[i].refreshing === true) {
+						setTimeout(function() {force_refresh_verify()},2000);
+						break;
+					}
+				}
+			},
+			error: function(data, status, statusText, responsText) {
+				log_to_console(data + statusText);
+			},
+			complete: function() {
+				log_to_console("Verified forced-refresh on key: " + selected_section + " and title: " + section.title);
+				return true;
+			}
+		});	
+}
 /**
  * This function counts the items to be displayed and shows any pagin if needed.
  */
@@ -563,17 +874,17 @@ function pages_output(show_page) {
 	var numberOfPages = presentable_contents.length / items_per_page;
 	var pages = "";
 	if (numberOfPages > 1) {
-		pages = "Pages:";
+		pages = "WebTools V." + Version + "\t<ul class='pagination pagination-sm'>";
 
 		for (i = 0; i < numberOfPages; i++) {
 			if (i == show_page) {
-				pages = pages + " <span class='link' onclick='list_section_contents(" + i + ");'>[" + (i + 1) + "]</span>";
+				pages = pages + "<li class='active'> <span onclick='list_section_contents(" + i + ");'>" + (i + 1) + "</span></li>";
 			} else {
-				pages = pages + " <span class='link' onclick='list_section_contents(" + i + ");'>" + (i + 1) + "</span>";
+				pages = pages + "<li> <span onclick='list_section_contents(" + i + ");'>" + (i + 1) + "</span></li>";
 			}
 
 		}
-		$("#PageBar").html(pages);
+		$("#PageBar").html(pages + "</ul>");
 	}
 }
 
@@ -602,7 +913,7 @@ function update_section_box(LibraryKey, TriggeringElement) {
 
 	SearchBox = "<div class='VideoHeadline'>Search " + $(TriggeringElement).html() + "</div>";
 	SearchBox += "<div class='VideoSubtitle'><input type='text' value='"+searchstring+"' name='searchstring'></div>";
-	SearchBox += "<div class='VideoSubtitle'><input type='submit' name='searchbutton' value='Search'></div>";
+	SearchBox += "<div class='VideoSubtitle'><input type='submit' name='searchbutton' class='btn btn-default btn-xs' value='Search'></div>";
 
 	$("#SearchBox").html(SearchBox);
 	$("#SearchBox").addClass("VideoBox");
@@ -618,7 +929,7 @@ function update_section_box(LibraryKey, TriggeringElement) {
 function prepare_output() {	
 	presentable_contents = [];
 	
-		
+	console.log("Length of section_contents: " + section_contents.length);	
 	for (i=0; i<section_contents.length;i++) {
 		item = section_contents[i];
 		discovered_languages = [];
@@ -635,17 +946,10 @@ function prepare_output() {
 			}
 		}
 
-		// Check if we should show this video at all.
-		/*
-		if hide without subtitles
-			for each
 
-		*/
 		if(item.subtitles  !== undefined) {
 			for (x=0;x<item.subtitles.length;x++) {
 				// Reset hide status to false for current subtitle.
-				
-				
 				
 				item.subtitles[x].hide = false;
 				if( (options_hide_local === true) && (item.subtitles[x].local === true) ) {
@@ -708,17 +1012,22 @@ function prepare_output() {
 			
 			
 			if (options_hide_empty_subtitles === true) {
-				
-				// Now, we asume everything will be hidden.
-				item.hide = true;
+				console.log("Hide everything that hasn't got a subtitle");
+				if( (item.type == "show") || (item.type == "season") ) {
+					console.log("Found item of type: " + item.type + ". not hiding it.");
+				} else {
+					console.log("Found item of type: " + item.type + ". Hiding it.");
+					// Now, we asume everything will be hidden.
+					item.hide = true;
 				
 					for (x=0;x<item.subtitles.length;x++) {
 
 						// If there is a subtitle that is set to show, we have to show this video
-						if(item.subtitles[x].hide === false) {
+						if (item.subtitles[x].hide === false){
 							item.hide = false;
 						}
 					}
+				}
 				
 			}	
 		}		
@@ -749,7 +1058,7 @@ function log_add(LogMessage) {
 	for (i=start;i<log.length;i++) {
 		$("#Log").append("<div class='VideoSubtitle'>"+log[i]+"</div>");
 	}
-	$("#Log").append("<div class='VideoBottom'><span class='link' onclick='log_view()'>View complete log</span></div>");
+	$("#Log").append("<div class='VideoBottom'><button class='btn btn-default btn-xs' onclick='log_view()'>View complete log</button></div>");
 }
 
 function log_to_console(Message) {
@@ -788,6 +1097,40 @@ $(document).ajaxStop(function() {
 	log_add("Finished loading the section.");
 });
 
+/**
+ * This function fetches the settings. This is to counter the caching of browser.
+ */
+function fetchSettings() {
+  $.get('jscript/settings.js',function(data){
+	  var perLine=data.split('\n');
+	  var myVars=[];
+	  for(i=0;i<perLine.length;i++)
+	  {
+		  var line=perLine[i].split(' ');
+		  myVars[i]={
+			  'variablename':line[1],
+			  'variablevalue':line[3]
+		  }
+	  }
+  
+	  for(i=0;i<myVars.length;i++) {
+		  if(myVars[i].variablename !== undefined) {
+				if( (myVars[i].variablename == "Secret") || (myVars[i].variablename == "PMSUrl") || (myVars[i].variablename == "options_hide_integrated") || (myVars[i].variablename == "options_hide_local") || (myVars[i].variablename == "options_hide_empty_subtitles") || (myVars[i].variablename == "options_only_multiple") || (myVars[i].variablename == "options_auto_select_duplicate") || (myVars[i].variablename == "items_per_page") ) {
+					console.log(myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')));
+					if(myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')) == "true") {
+						window[myVars[i].variablename] = true;						  
+					} else if(myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')) == "false") {
+						window[myVars[i].variablename] = false;
+					} else {
+						window[myVars[i].variablename] = myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";'));		
+					}
+				}
+		  }
+	  }
+  });
+}
+		  
+
 // Force all ajax-calls to be non-cached.
 //$.ajaxSetup({ cache: false });
 //////////////////////////////////////
@@ -804,7 +1147,7 @@ function Video() {
 	this.showRatingKey = false;
 	this.seasonKey = false;
 	this.seasonRatingKey = false;
-	this.subtitles = []
+	this.subtitles = [];
 	this.title = "";
 	this.type = "";
 }
@@ -819,5 +1162,6 @@ function Subtitle() {
 	this.isDuplicate = false;
 	this.title = ""; // Is this needed?
 	this.url = "";
+	this.exists = true;
 	
 }

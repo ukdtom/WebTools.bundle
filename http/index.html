@@ -4,55 +4,75 @@
 		<meta charset=utf-8 />
 		<title>Plex Unofficial Subtitle Manager</title>
 		<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+		 <!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		 <!-- Custom CSS -->
 		<link rel="stylesheet" href="css/style.css" type="text/css" />
+		
 		<script type="text/javascript" src="jscript/jquery-1.11.1.min.js"></script>
-		<script type="text/javascript" src="jscript/settings.js"></script>
-		<script type="text/javascript" src="jscript/functions.js?version=0.0.0.0.4"></script>
+		<script type="text/javascript" src="jscript/settings.js?version=0.0.0.0.5"></script>
+		<script src="jscript/bootstrap.min.js"></script>
 	</head>
 	<script type="text/javascript">
 		var loadingScreen = "<div class='mainText'>Loading...</div>"
-		var selected_section = 0;	
+			
 		var timerstart = 0;
 		
 		
 		// Populate the libraries menu.
-		// Populate the libraries menu.
 		$(document).ready(function() {
-			/**
-			 * Check that the settings have been set.
-			 */
-			 if(PathToPlexMediaFolder === false) {
-				log_add("Error: Go through plugin preferences in Plex first.");
-				fatal_error = true;
-			 } else {
-				// Fetch the current settings and set the checkboxes accordingly.
-				if(options_hide_integrated == "true") {
-					$("input[name=Option_HideIntegrated]").prop("checked", true);
-					options_hide_integrated = true;
-				}
-				if(options_hide_local == "true") {
-					$("input[name=Option_HideLocal]").prop("checked",true);
-					options_hide_local = true;
-				}
-				
-				if(options_hide_empty_subtitles == "true") {
-					$("input[name=Option_HideEmptySubtitles]").prop("checked",true);
-					options_hide_empty_subtitles = true;
-				}
-				
-				if(options_only_multiple == "true") {	
-					$("input[name=Option_ShowOnlyMultiple]").prop("checked",true);
-					options_only_multiple = true;
-				}
-				
-				if(options_auto_select_duplicate == "true") {	
-					$("input[name=Option_Autoselect]").prop("checked",true);
-					options_auto_select_duplicate = true;
-				}
-				$("input[name=items_per_page]").val(items_per_page);
-							
-				list_sections();
-			}
+			$("#PageBar").html("WebTools V." + Version);
+			$.ajax({
+				url: "jscript/settings.js",
+				cache: false,
+				dataType: "script",
+				global: false,
+				success: function() {
+					$.ajax({
+						  url: "jscript/functions.js",
+						  cache: false,
+						  dataType: "script",
+						  global: false,
+						  success: function() {
+							/**
+							 * Check that the settings have been set.
+							 */
+							 if(PathToPlexMediaFolder === false) {
+								log_add("Error: Go through plugin preferences in Plex first.");
+								fatal_error = true;
+							 } else {
+								// Fetch the current settings and set the checkboxes accordingly.
+								if(options_hide_integrated == "true") {
+									$("input[name=Option_HideIntegrated]").prop("checked", true);
+									options_hide_integrated = true;
+								}
+								if(options_hide_local == "true") {
+									$("input[name=Option_HideLocal]").prop("checked",true);
+									options_hide_local = true;
+								}
+								
+								if(options_hide_empty_subtitles == "true") {
+									$("input[name=Option_HideEmptySubtitles]").prop("checked",true);
+									options_hide_empty_subtitles = true;
+								}
+								
+								if(options_only_multiple == "true") {	
+									$("input[name=Option_ShowOnlyMultiple]").prop("checked",true);
+									options_only_multiple = true;
+								}
+								
+								if(options_auto_select_duplicate == "true") {	
+									$("input[name=Option_Autoselect]").prop("checked",true);
+									options_auto_select_duplicate = true;
+								}
+								$("input[name=items_per_page]").val(items_per_page);
+											
+								list_sections();
+							}
+						},
+					});
+				},
+			});
 		});
 						 
 
@@ -99,7 +119,7 @@
 		<table cellpadding="0" cellspacing="0" class="BoxTable">
 			<tr>
 				<td class="BoxTable_td mediumlong">
-					<div id="MenuBar" class="headline"><a href='index.html'>Home</a></div>
+					<div id="MenuBar" class="headline_"><button onclick='window.location.href="index.html";' class="btn btn-default btn-xs">Home</button></div>
 					<div id="MenuBox">
 						<div id="LibraryBox" class='VideoBox'>
 							<div class='VideoHeadline'>Libraries</div>	
@@ -123,14 +143,14 @@
 										<tr><td class="mainText"><input type="checkbox" name="Option_ShowOnlyMultiple">Show only multiple subtitles/language</td></tr>
 										<tr><td class="mainText"><input type="checkbox" name="Option_Autoselect">Autoselect duplicates based on XML</td></tr>
 										<tr><td class="mainText"><input type="text" name="items_per_page" size="2">Items per page</td></tr>
-										<tr><td class="mainText"><input type="submit" value="Save Options"></td></tr>
+										<tr><td class="mainText"><input type="submit" value="Save Options" class="btn btn-default btn-xs"></td></tr>
 									</table>
 								</div>
 							</div>
 						</form>
 					</div>
 				</td><td class="BoxTable_td">
-				<div id="PageBar" class="headline"></div>
+				<div><div id="PageBar"></div>
 				<div id="MainBox">
 					<div class='VideoBox'>
 						<div class='VideoHeadline'>Welcome</div>
@@ -174,5 +194,21 @@
 			</tr>
 		</table>
 		<iframe id="WorkFrame" class="hiddenframe"></iframe>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+		  </div>
+		  <div class="modal-body">
+		  Placeholder
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Save changes</button>
+		  </div>
+		</div>
+	  </div>
+	</div>		
 	</body>
 </html>
