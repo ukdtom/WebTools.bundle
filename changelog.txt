@@ -1,3 +1,6 @@
+V0.0.0.13:
+	HTTP Part:
+	- Attempted to fix caching issues.
 V0.0.0.12:
 	Bundle Part:
 	- Added icon

@@ -2,7 +2,10 @@
 <html lang="en">
 	<head profile="http://www.w3.org/2005/10/profile">
 		<meta charset=utf-8 />
-		<title>Plex Unofficial Subtitle Manager</title>
+		<meta http-equiv='cache-control' content='no-cache'>
+		<meta http-equiv='expires' content='0'>
+		<meta http-equiv='pragma' content='no-cache'>		
+		<title>WebTools</title>
 		<link rel="icon" type="image/x-icon" href="images/favicon.ico">
 		 <!-- Bootstrap -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
@@ -10,7 +13,6 @@
 		<link rel="stylesheet" href="css/style.css" type="text/css" />
 		
 		<script type="text/javascript" src="jscript/jquery-1.11.1.min.js"></script>
-		<script type="text/javascript" src="jscript/settings.js?version=0.0.0.0.5"></script>
 		<script src="jscript/bootstrap.min.js"></script>
 	</head>
 	<script type="text/javascript">
@@ -20,14 +22,14 @@
 		
 		
 		// Populate the libraries menu.
-		$(document).ready(function() {
-			$("#PageBar").html("WebTools V." + Version);
+		$(document).ready(function() {		
 			$.ajax({
 				url: "jscript/settings.js",
 				cache: false,
 				dataType: "script",
 				global: false,
 				success: function() {
+					$("#PageBar").html("WebTools V." + Version);
 					$.ajax({
 						  url: "jscript/functions.js",
 						  cache: false,

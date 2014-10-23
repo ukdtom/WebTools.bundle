@@ -64,13 +64,14 @@ function check_duplicates(item_number) {
 		plexpath = PathToPlexMediaFolder.replace(/\\/g,"/");
 		var pathToProviderXML = plexpath + "/Media/localhost/" + section_contents[item_number].hash.substr(0,1) + "/" + section_contents[item_number].hash.substr(1) + ".bundle/Contents/Subtitle Contributions/"+providerarray[i];
 		console.log("Fetching XML from: " + pathToProviderXML);
-		
+		console.log("RequestedURL: " + baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+pathToProviderXML);
 		$.ajax({
 				type: "GET",
 				url: baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+pathToProviderXML,
 				dataType: "text",
 				success: function(data) {
 					if(data == "true") {
+						console.log("RequestedURL: " + baseurl + utility + "?Func=GetXMLFile&Secret="+Secret+"&Path="+pathToProviderXML);
 						$.ajax({
 							type: "GET",
 							url: baseurl + utility + "?Func=GetXMLFile&Secret="+Secret+"&Path="+pathToProviderXML,
@@ -128,6 +129,7 @@ function check_exists(item_number) {
   * check if that subtitles file exists
   */
 	console.log(" Am i even here???? With item_number: " + item_number + " number of subtitles: " + section_contents[item_number].subtitles.length);
+	
 	for (i=0;i<section_contents[item_number].subtitles.length;i++) {
 		subtitle = section_contents[item_number].subtitles[i];
 		path = subtitle.url.replace(/\\/g,"/");
@@ -142,6 +144,7 @@ function check_exists(item_number) {
 		 }
 		 
 		if(path.length>0) { 
+		console.log("RequestedURL: " + baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+path);
 			$.ajax({
 				type: "GET",
 				url: baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+path,
@@ -271,12 +274,12 @@ function list_shows_and_seasons(LibraryKey, TriggeringElement) {
 		url: baseurl + targetURL,
 		dataType: "xml",
 		success: function(data) {
-			xmlString = (new XMLSerializer()).serializeToString(data);
-			log_to_console(xmlString);
+			//xmlString = (new XMLSerializer()).serializeToString(data);
+			//log_to_console(xmlString);
 	
-			console.log("Outside of find!");
+			//console.log("Outside of find!");
 			$(data).find("Directory").each(function() {
-				console.log("Inside of Find!");
+				//console.log("Inside of Find!");
 				//log_to_console("For each Video: " + $(this).attr("title"));
 				// For each item in the section, call the key+"/tree"
 				item = new Video();
@@ -288,7 +291,7 @@ function list_shows_and_seasons(LibraryKey, TriggeringElement) {
 				} else {
 					item.type = "season";
 				}
-				console.log(item);
+				//console.log(item);
 				section_contents.push(item);
 				//log_to_console(section_contents[section_contents.length - 1].title);
 				//ajax_get_item_tree(section_contents.length - 1);
@@ -388,10 +391,12 @@ $.ajax({
 function save_option(option_name,option_value,number) {
 	
 	console.log("Saving Options for number: " + number);
+	console.log("RequestedURL: " + baseurl + utility + "?Func=SetPref&Secret="+Secret+"&Pref="+option_name[number]+"&Value="+option_value[number]);
 	$.ajax({
 		type: "GET",
 		url: baseurl + utility + "?Func=SetPref&Secret="+Secret+"&Pref="+option_name[number]+"&Value="+option_value[number],
 		dataType: "text",
+		cache: false,
 		global: false,
 		success: function(data) {
 			console.log(data);
@@ -534,8 +539,8 @@ function list_section_contents(show_page) {
 	if (end_value > presentable_contents.length) {
 		end_value = presentable_contents.length;
 	}
-	log_to_console("Start Value: " + start_value);
-	log_to_console("End Value: " + end_value);
+	//log_to_console("Start Value: " + start_value);
+	//log_to_console("End Value: " + end_value);
 	for (i = start_value; i < end_value; i++) {
 		item = presentable_contents[i];
 		if(item.hide === false) {
@@ -574,7 +579,7 @@ function list_section_contents(show_page) {
 						active = "Selected subtitle in Plex";
 						addClass = "Active";
 					}
-					console.log(" Subtitle exists: " + subtitle.exists);
+					//console.log(" Subtitle exists: " + subtitle.exists);
 					if (subtitle.exists === false) {
 						exists = "This has been removed from Plex. Please refresh library";
 						addClass = "Removed";
@@ -594,9 +599,9 @@ function list_section_contents(show_page) {
 				}
 				newEntry += "<div class='VideoBottom'><button class='btn btn-default btn-xs' onclick=\"subtitle_select_all('subtitle-"+item.id+"', true)\">Select All</button> <button class='btn btn-default btn-xs' onclick=\"subtitle_select_all('subtitle-"+item.id+"', false)\">Clear Selection</button> <button class='btn btn-default btn-xs' onclick=\"delete_subtitle_confirm('subtitle-"+item.id+"');\">Delete Selected</button></div></div>";
 			} else if (item.type == "show") {
-				newEntry = "<div class='VideoBox'><div class='VideoHeadline'><span class='link' onclick='list_shows_and_seasons(\""+item.key+"\",false);'>" + item.title + "(" + item.type + ")</span></div></div>";
+				newEntry = "<div class='VideoBox'><div class='VideoHeadline'><span class='link' onclick='list_shows_and_seasons(\""+item.key+"\",false);'>" + item.title + "</span></div></div>";
 			} else if (item.type == "season") {
-				newEntry = "<div class='VideoBox'><div class='VideoHeadline'><span class='link' onclick='list_movies(\""+item.key+"\",false);'>" + item.title + "(" + item.type + ")</span></div></div>";
+				newEntry = "<div class='VideoBox'><div class='VideoHeadline'><span class='link' onclick='list_movies(\""+item.key+"\",false);'>" + item.title + "</span></div></div>";
 			}
 			$("#MainBox").append(newEntry);
 		}
@@ -870,11 +875,11 @@ function subtitle_delete(checkboxname) {
  * This function counts the items to be displayed and shows any pagin if needed.
  */
 function pages_output(show_page) {
-	$("#PageBar").html("");
+	$("#PageBar").html("WebTools V." + Version);
 	var numberOfPages = presentable_contents.length / items_per_page;
-	var pages = "";
+	var pages = "WebTools V." + Version;
 	if (numberOfPages > 1) {
-		pages = "WebTools V." + Version + "\t<ul class='pagination pagination-sm'>";
+		pages = pages + "\t<ul class='pagination pagination-sm'>";
 
 		for (i = 0; i < numberOfPages; i++) {
 			if (i == show_page) {
@@ -884,8 +889,9 @@ function pages_output(show_page) {
 			}
 
 		}
-		$("#PageBar").html(pages + "</ul>");
+		pages = pages + "</ul>";
 	}
+	$("#PageBar").html(pages);
 }
 
 // Returns the sectionobject for the requested one.
@@ -938,6 +944,7 @@ function prepare_output() {
 		item.hide = false;
 		
 		// If there is no searchstring, continue
+		log_to_console("Searchstring value: " + searchstring.toLowerCase());
 		if(searchstring.length > 2) {
 			log_to_console(item.title.toLowerCase().indexOf(searchstring.toLowerCase()));
 			// If the searchstring is not found, then do not add it.
@@ -1101,33 +1108,39 @@ $(document).ajaxStop(function() {
  * This function fetches the settings. This is to counter the caching of browser.
  */
 function fetchSettings() {
-  $.get('jscript/settings.js',function(data){
-	  var perLine=data.split('\n');
-	  var myVars=[];
-	  for(i=0;i<perLine.length;i++)
-	  {
-		  var line=perLine[i].split(' ');
-		  myVars[i]={
-			  'variablename':line[1],
-			  'variablevalue':line[3]
-		  }
-	  }
-  
-	  for(i=0;i<myVars.length;i++) {
-		  if(myVars[i].variablename !== undefined) {
-				if( (myVars[i].variablename == "Secret") || (myVars[i].variablename == "PMSUrl") || (myVars[i].variablename == "options_hide_integrated") || (myVars[i].variablename == "options_hide_local") || (myVars[i].variablename == "options_hide_empty_subtitles") || (myVars[i].variablename == "options_only_multiple") || (myVars[i].variablename == "options_auto_select_duplicate") || (myVars[i].variablename == "items_per_page") ) {
-					console.log(myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')));
-					if(myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')) == "true") {
-						window[myVars[i].variablename] = true;						  
-					} else if(myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')) == "false") {
-						window[myVars[i].variablename] = false;
-					} else {
-						window[myVars[i].variablename] = myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";'));		
-					}
-				}
-		  }
-	  }
-  });
+	$.ajax({
+		url: "jscript/settings.js",
+		cache: false,
+		dataType: "script",
+		global: false,
+		success: function(data) {
+			  var perLine=data.split('\n');
+			  var myVars=[];
+			  for(i=0;i<perLine.length;i++)
+			  {
+				  var line=perLine[i].split(' ');
+				  myVars[i]={
+					  'variablename':line[1],
+					  'variablevalue':line[3]
+				  }
+			  }
+		  
+			  for(i=0;i<myVars.length;i++) {
+				  if(myVars[i].variablename !== undefined) {
+						if( (myVars[i].variablename == "Secret") || (myVars[i].variablename == "PMSUrl") || (myVars[i].variablename == "options_hide_integrated") || (myVars[i].variablename == "options_hide_local") || (myVars[i].variablename == "options_hide_empty_subtitles") || (myVars[i].variablename == "options_only_multiple") || (myVars[i].variablename == "options_auto_select_duplicate") || (myVars[i].variablename == "items_per_page") ) {
+							console.log("Updated settings with: " + myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')));
+							if(myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')) == "true") {
+								window[myVars[i].variablename] = true;						  
+							} else if(myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')) == "false") {
+								window[myVars[i].variablename] = false;
+							} else {
+								window[myVars[i].variablename] = myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";'));		
+							}
+						}
+				  }
+			  }
+		},
+	});
 }
 		  
 
