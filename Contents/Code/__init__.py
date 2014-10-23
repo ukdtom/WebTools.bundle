@@ -116,6 +116,8 @@ def MainMenu(Func='', Secret='', **kwargs):
 		return GetXMLFile(Secret, kwargs.get("Path"))
 	elif Func=='SetPref':
 		return SetPref(Secret, kwargs.get("Pref"), kwargs.get("Value"))
+	elif Func=='GetXMLFileFromUrl':
+		return GetXMLFileFromUrl(Secret, kwargs.get("Url"))
 
 ####################################################################################################
 # Set PMS Path
@@ -333,4 +335,20 @@ def GetXMLFile(Secret, Path):
 		return et.tostring(root, encoding='utf8', method='xml')
 	else:
 		return ERRORAUTH
+
+####################################################################################################
+# Returns the contents of an XML file from an url
+####################################################################################################
+''' Returns the contents of an XML file '''
+@route(PREFIX + '/GetXMLFileFromUrl')
+def GetXMLFileFromUrl(Secret, Url):
+	if PwdOK(Secret):
+		import urllib2
+		Log.Debug('Getting contents of an XML file from Url: %s' %(Url))
+		document = et.parse(urllib2.urlopen(Url))		
+		root = document.getroot()
+		return et.tostring(root, encoding='utf8', method='xml')
+	else:
+		return ERRORAUTH
+
 
