@@ -1,10 +1,10 @@
-var Secret = "0";
-var PMSUrl = "0";
+var Secret = "BarkleyIsaFineDog";
+var PMSUrl = "1.2.3.4";
 var baseurl = "http://"+PMSUrl+":32400";
 var utility = "/utils/webtools";
 var PathToPlexMediaFolder = "/root/Library/Plex Media Server";
 var append = "/Media/localhost/";
-var Version = "0.0.0.12";
+var Version = "0.0.0.13";
 
 var options_hide_integrated = "true";
 var options_hide_local = "true";
