@@ -23,6 +23,7 @@
 		
 		// Populate the libraries menu.
 		$(document).ready(function() {		
+		$("#LibraryBox table").html(loadingScreen);
 			$.ajax({
 				url: "jscript/settings.js",
 				cache: false,
@@ -69,7 +70,9 @@
 								}
 								$("input[name=items_per_page]").val(items_per_page);
 											
-								list_sections();
+								// Changed list_sections(); to go via function_loader
+								
+								function_loader("fetch_sections");
 							}
 						},
 					});
@@ -130,11 +133,11 @@
 								</table>
 							</div>
 						</div>
-						<form name='SearchBox' onSubmit="Search();return false;">
+						<form name='SearchBox' onSubmit="search_set();return false;">
 							<div id="SearchBox">
 							</div>
 						</form>
-						<form name='OptionsBox' onSubmit="Options();return false;">
+						<form name='OptionsBox' onSubmit="options_set();return false;">
 							<div id="OptionsBox" class='VideoBox'>
 								<div class='VideoHeadline'>Options</div>	
 								<div class='VideoSubtitle'>	
