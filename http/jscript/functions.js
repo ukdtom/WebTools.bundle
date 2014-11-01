@@ -561,7 +561,7 @@ function output_content(show_page) {
 						selected = "";
 						subtitle.url = subtitle.url.replace(/\\/g,"/");
 						
-						view = "<span class='link' onclick='function_loader(subtitle_view,[\""+subtitle.url+"\"])'>View</span>";
+						view = "<span class='link' onclick='function_loader(\"subtitle_view\",[\""+subtitle.url+"\"])'>View</span>";
 						
 						if( (subtitle.isDuplicate === true) && (options_auto_select_duplicate === true) ) {
 							selected = "checked=checked";
@@ -1133,9 +1133,6 @@ function subtitle_select_all(checkboxname, toggle) {
 	});
 }
 
-/**
-	* This will be used for viewing the subtitle
-*/
 function subtitle_view(path) {
 	// Add correction for local subtitles.
 	
