@@ -1,3 +1,7 @@
+V0.0.0.14:
+	HTTP Part:
+	- Corrected viewing of Subtitles. Functioncall was wrong.
+
 V0.0.0.13:
 	HTTP Part:
 	- Attempted to fix caching issues.
