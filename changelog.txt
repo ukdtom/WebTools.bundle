@@ -1,3 +1,18 @@
+V0.0.0.15:
+	Bundle Part:
+	- Added Token authentication, if needed
+	- Added new setting to the settings file, to be used by the http part
+	- Removed old changelog file from the http part
+	- Changed the Windows Symblink file into creating a hardlink instead of a junction
+	- Added a restart function to the bundle part, to be used by the devs only
+
+V0.0.0.14:
+	HTTP Part:
+	- Corrected viewing of Subtitles. Functioncall was wrong.
+
+V0.0.0.13:
+	HTTP Part:
+	- Attempted to fix caching issues.
 V0.0.0.12:
 	Bundle Part:
 	- Added icon

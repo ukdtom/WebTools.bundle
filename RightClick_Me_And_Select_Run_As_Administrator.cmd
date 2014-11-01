@@ -1,3 +1,3 @@
 cd %~dp0
-mklink /j ..\WebClient.bundle\Contents\Resources\webtools "%~dp0http"
+mklink /D ..\WebClient.bundle\Contents\Resources\webtools "%~dp0http"
 
