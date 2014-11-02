@@ -5,6 +5,7 @@ V0.0.0.15:
 	- Removed old changelog file from the http part
 	- Changed the Windows Symblink file into creating a hardlink instead of a junction
 	- Added a restart function to the bundle part, to be used by the devs only
+	- moved creation of symblink, tokens and secret to the validateprefs function from the start function
 
 V0.0.0.14:
 	HTTP Part:

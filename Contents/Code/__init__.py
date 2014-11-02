@@ -33,11 +33,6 @@ def Start():
 	ObjectContainer.title1 = NAME + ' V' + PLUGIN_VERSION 
 	Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
 	ObjectContainer.view_group = 'List'
-	global MYTOKEN
-	MYTOKEN = getToken()
-	setupSymbLink()
-	setSecretGUID()
-	SetPref(Dict['secret'], 'PathToPlexMediaFolder', Core.app_support_path.replace("\\", "/"))
 	ValidatePrefs()
 
 #********** Get token *********
@@ -170,6 +165,11 @@ def setPMSPath():
 ####################################################################################################
 @route(PREFIX + '/ValidatePrefs')
 def ValidatePrefs():
+	global MYTOKEN
+	MYTOKEN = getToken()
+	setupSymbLink()
+	setSecretGUID()
+	SetPref(Dict['secret'], 'PathToPlexMediaFolder', Core.app_support_path.replace("\\", "/"))
 	if setPMSPath():
 		Log.Debug('Prefs are valid, so lets update the js file')
 		myFile = os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http', 'jscript', 'settings.js')
@@ -375,17 +375,12 @@ def GetXMLFile(Secret, Path):
 def GetXMLFileFromUrl(Secret, Url):
 	if PwdOK(Secret):
 		import urllib2
-		print Url
-		sStart, sEnd = Url.split(':32400')
-		print sStart
-		print sEnd
 		Log.Debug('Getting contents of an XML file from Url: %s' %(Url))
 		document = et.parse(urllib2.urlopen(Url))		
 		root = document.getroot()
 		return et.tostring(root, encoding='utf8', method='xml')
 	else:
 		return ERRORAUTH
-
 
 ####################################################################################################
 # Force a restart run
