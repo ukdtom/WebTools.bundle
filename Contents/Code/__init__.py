@@ -16,6 +16,7 @@ NAME = 'WebTools'
 ICON = 'WebTools.png'
 MYSECRET = 'BarkleyIsAFineDog'
 ERRORAUTH = 'Error authenticating'
+MYTOKEN = ''
 
 #********** Imports needed *********
 import os, io
@@ -32,10 +33,32 @@ def Start():
 	ObjectContainer.title1 = NAME + ' V' + PLUGIN_VERSION 
 	Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
 	ObjectContainer.view_group = 'List'
+	global MYTOKEN
+	MYTOKEN = getToken()
 	setupSymbLink()
 	setSecretGUID()
 	SetPref(Dict['secret'], 'PathToPlexMediaFolder', Core.app_support_path.replace("\\", "/"))
 	ValidatePrefs()
+
+#********** Get token *********
+''' This will get a valid token, that can be added to the url, if authenticating is needed '''
+@route(PREFIX + '/getToken')
+def getToken():
+	Log.Debug('getToken started')
+	# Grap the token from Plex
+	myURL = 'http://127.0.0.1:32400/myplex/account'
+	try:		
+		myXML = XML.ElementFromURL(myURL).xpath('//MyPlex')
+	except:
+		return 'NoAccess'
+	try:
+		returnValue = ''
+		myToken = myXML[0].get('authToken')
+		returnValue = 'X-Plex-Token=' + myToken
+	except:
+		Log.Debug('No token avail')
+	return returnValue
+
 
 #********** Get Pref *********
 ''' This will get a value from a Pref setting in the settings file '''
@@ -118,6 +141,9 @@ def MainMenu(Func='', Secret='', **kwargs):
 		return SetPref(Secret, kwargs.get("Pref"), kwargs.get("Value"))
 	elif Func=='GetXMLFileFromUrl':
 		return GetXMLFileFromUrl(Secret, kwargs.get("Url"))
+	elif Func=='restart':
+		return Restart()
+
 
 ####################################################################################################
 # Set PMS Path
@@ -130,7 +156,10 @@ def setPMSPath():
 	Log.Debug('My master set the Export path to: %s' %(myPath))
 	try:
 		#Let's see if we can add out subdirectory below this
-		tmpTest = XML.ElementFromURL('http://' + myPath + ':32400')
+		if MYTOKEN != None:
+			tmpTest = XML.ElementFromURL('http://' + myPath + ':32400/?' + MYTOKEN)
+		else:
+			tmpTest = XML.ElementFromURL('http://' + myPath + ':32400')
 		return True		
 	except:
 		Log.Critical('Bad pmsPath')
@@ -151,7 +180,9 @@ def ValidatePrefs():
 				if 'var Secret =' in line:
 					line = 'var Secret = "' + MYSECRET + '";\n'
 				elif 'var PMSUrl =' in line:
-					line = 'var PMSUrl = "' + Prefs['PMS_Path'] + '";\n'					
+					line = 'var PMSUrl = "' + Prefs['PMS_Path'] + '";\n'
+				elif 'var Token =' in line:
+					line = 'var Token = "' + MYTOKEN + '";\n' 					
 				fout.write(unicode(line))
 		os.rename(myFile, myFile + '.org')
 		os.rename(myFile + '.tmp', myFile)
@@ -344,11 +375,25 @@ def GetXMLFile(Secret, Path):
 def GetXMLFileFromUrl(Secret, Url):
 	if PwdOK(Secret):
 		import urllib2
+		print Url
+		sStart, sEnd = Url.split(':32400')
+		print sStart
+		print sEnd
 		Log.Debug('Getting contents of an XML file from Url: %s' %(Url))
 		document = et.parse(urllib2.urlopen(Url))		
 		root = document.getroot()
 		return et.tostring(root, encoding='utf8', method='xml')
 	else:
 		return ERRORAUTH
+
+
+####################################################################################################
+# Force a restart run
+####################################################################################################
+''' When called, this channel is restarted '''
+@route(PREFIX + '/Restart')
+def Restart():
+	Log.Debug('Restarting')
+	Start()
 
 
