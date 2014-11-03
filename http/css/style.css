@@ -66,6 +66,7 @@ A:Active {color: #FFFFFF; text-decoration: underline;}
   width: 800px;
 }
 
+.pre-scrollable {max-height: 500px; overflow-y: auto; border: 1px solid #FFFFFF;}
 .pagination {
 margin: 0px !important;
 font-size: small !important;

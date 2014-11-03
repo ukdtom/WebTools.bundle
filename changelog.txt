@@ -1,3 +1,8 @@
+V0.0.0.16:
+	HTTP Part:
+	- Added Token handling.
+	- Changed viewing of subtitles and logs to be handled by Modal instead.
+	- Corrected text on welcome page.
 V0.0.0.15:
 	Bundle Part:
 	- Added Token authentication, if needed

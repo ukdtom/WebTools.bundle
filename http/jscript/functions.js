@@ -129,7 +129,7 @@ function fetch_movie_or_episode(LibraryKey, TriggeringElement) {
 	$.ajax({
 		type: "GET",
 		async: true,
-		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ targetURL,
+		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ targetURL + "&" + Token,
 		dataType: "xml",
 		cache: false,
 		success: function(data) {
@@ -167,7 +167,7 @@ function fetch_sections() {
 	$("input[name=items_per_page]").val(items_per_page);
 	$.ajax({
 		type: "GET",
-		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+"/library/sections",
+		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+"/library/sections" + "&" + Token,
 		dataType: "xml",
 		global: false,
 		cache: false,
@@ -179,7 +179,7 @@ function fetch_sections() {
 				if ($(this).attr("type") == "movie") {
 					targetFunction = "fetch_movie_or_episode";
 					} else if ($(this).attr("type") == "show") {
-				targetFunction = "fetch_show_or_season";
+					targetFunction = "fetch_show_or_season";
 				}
 				
 				if (targetFunction !== false) {
@@ -221,7 +221,7 @@ function fetch_show_or_season(LibraryKey, TriggeringElement) {
 	$.ajax({
 		type: "GET",
 		async: true,
-		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ targetURL,
+		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ targetURL + "&" + Token,
 		dataType: "xml",
 		success: function(data) {
 			$(data).find("Directory").each(function() {
@@ -256,7 +256,7 @@ function fetch_tree(item_number) {
 	//log_to_console(section_contents[item_number].key);
 	$.ajax({
 		type: "GET",
-		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ section_contents[item_number].key + "/tree",
+		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ section_contents[item_number].key + "/tree" + "&" + Token,
 		dataType: "xml",
 		success: function(data) {
 			// For the current item
@@ -313,7 +313,7 @@ function fetch_tree(item_number) {
 function function_loader(function_name,function_args) {
 	// First of all, update the settings.
 	$.ajax({
-		url: baseurl + utility,
+		url: baseurl + utility + "?" + Token,
 		cache: false,
 		dataType: "xml",
 		global: false,
@@ -424,13 +424,21 @@ function log_to_console(Message) {
 	* This function displays the entire log generated through the current visit in a new window.
 */
 function log_view() {
-	var temporaryWindow = window.open('view_log.html');
-	var content = "<div id='Log' class='VideoBox'><div class='VideoHeadline'>Log</div>";
+	//var temporaryWindow = window.open('view_log.html');
+	//var content = "<div id='Log' class='VideoBox'><div class='VideoHeadline'>Log</div>";
+	
+	//content += "</div>";
+	//setTimeout(function() {$(temporaryWindow.document.body).html(content);},1000);
+	
+	$("#myModal .modal-title").html("Log"); // Set custom content to body of Modal
+	var ModalBody = "<pre class='pre-scrollable'>";
 	for (i=0;i<log.length;i++) {
-		content += "<div class='VideoSubtitle'>"+log[i]+"</div>";
+		ModalBody += log[i] + "<br>";
 	}
-	content += "</div>";
-	setTimeout(function() {$(temporaryWindow.document.body).html(content);},1000);
+	ModalBody += "</pre>";
+	$("#myModal .modal-body").html(ModalBody); // Set custom content to body of Modal
+	$("#myModal .modal-footer").html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'); // Set custom content to body of Modal
+	$("#myModal").modal({keyboard: false, backdrop:false, show: true});	
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -445,7 +453,7 @@ function options_save(option_name,option_value,number) {
 	console.log("RequestedURL: " + baseurl + utility + "?Func=SetPref&Secret="+Secret+"&Pref="+option_name[number]+"&Value="+option_value[number]);
 	$.ajax({
 		type: "GET",
-		url: baseurl + utility + "?Func=SetPref&Secret="+Secret+"&Pref="+option_name[number]+"&Value="+option_value[number],
+		url: baseurl + utility + "?Func=SetPref&Secret="+Secret+"&Pref="+option_name[number]+"&Value="+option_value[number] + "&" + Token,
 		dataType: "text",
 		cache: false,
 		global: false,
@@ -744,39 +752,39 @@ function output_pages(show_page) {
 /*
 	Not yet implemented.
 	Need to sort out how to monitor when it's done..
-function refresh_movie_in_plex(mediakey) {
+	function refresh_movie_in_plex(mediakey) {
 	
 	
 	$("#myModal").modal('hide');
 	$.ajax({
-		type: "PUT",
-		url: baseurl + "/library/metadata/"+ mediakey +"/refresh",
-		dataType: "text",
-		global: false,
-		success: function(data) {
-			
-			setTimeout(function() {
-				section = get_section_info(selected_section);
-				log_add("Started forced refresh in Plex on movie/episode: " + mediakey);
-				section.refreshing = true;
-			refresh_section_in_plex_verify()},3000);						
-		},
-		error: function(data, status, statusText, responsText) {
-			log_to_console(data + statusText);
-		},
-		complete: function() {
-			log_to_console("Initiated forced-refresh on movie/episode with key: " + mediakey);
-			return true;
-		}
+	type: "PUT",
+	url: baseurl + "/library/metadata/"+ mediakey +"/refresh",
+	dataType: "text",
+	global: false,
+	success: function(data) {
+	
+	setTimeout(function() {
+	section = get_section_info(selected_section);
+	log_add("Started forced refresh in Plex on movie/episode: " + mediakey);
+	section.refreshing = true;
+	refresh_section_in_plex_verify()},3000);						
+	},
+	error: function(data, status, statusText, responsText) {
+	log_to_console(data + statusText);
+	},
+	complete: function() {
+	log_to_console("Initiated forced-refresh on movie/episode with key: " + mediakey);
+	return true;
+	}
 	});	
-}
+	}
 */
 
 function refresh_section_in_plex() {
 	$("#myModal").modal('hide');
 	$.ajax({
 		type: "GET",
-		url: baseurl + "/library/sections/"+ selected_section +"/refresh?force=1",
+		url: baseurl + "/library/sections/"+ selected_section +"/refresh?force=1" + "&" + Token,
 		dataType: "text",
 		global: false,
 		success: function(data) {
@@ -800,7 +808,7 @@ function refresh_section_in_plex() {
 function refresh_section_in_plex_verify() {
  	$.ajax({
 		type: "GET",
-		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+"/library/sections/",
+		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+"/library/sections/" + "&" + Token,
 		dataType: "xml",
 		cache: false,
 		global: false,
@@ -890,7 +898,7 @@ function subtitle_check_duplicate(item_number) {
 		
 		$.ajax({
 			type: "GET",
-			url: baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+pathToProviderXML,
+			url: baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+pathToProviderXML + "&" + Token,
 			dataType: "text",
 			urltouse: pathToProviderXML,
 			cache: false,
@@ -899,7 +907,7 @@ function subtitle_check_duplicate(item_number) {
 					urlforpath = this.urltouse;
 					$.ajax({
 						type: "GET",
-						url: baseurl + utility + "?Func=GetXMLFile&Secret="+Secret+"&Path="+urlforpath,
+						url: baseurl + utility + "?Func=GetXMLFile&Secret="+Secret+"&Path="+urlforpath + "&" + Token,
 						dataType: "xml",
 						cache: false,
 						success: function(data) {
@@ -973,7 +981,7 @@ function subtitle_check_exists(item_number) {
 			//console.log("RequestedURL: " + baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+path);
 			$.ajax({
 				type: "GET",
-				url: baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+path,
+				url: baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+path + "&" + Token,
 				dataType: "text",
 				cache: false,
 				subtitleIndex: i,
@@ -1022,7 +1030,7 @@ function subtitle_delete_ajax(item_number) {
 		
 		$.ajax({
 			type: "GET",
-			url: baseurl + utility + "?Func=DelSub&Secret="+Secret+"&MediaID="+subtitle_info[0]+"&SubFileID="+subtitle_info[1],
+			url: baseurl + utility + "?Func=DelSub&Secret="+Secret+"&MediaID="+subtitle_info[0]+"&SubFileID="+subtitle_info[1] + "&" + Token,
 			dataType: "text",
 			cache: false,
 			success: function(data) {		
@@ -1103,7 +1111,7 @@ function subtitle_get_active(item_number) {
 	//log_to_console("Searching for active subtitle for : " + section_contents[item_number].title);
 	$.ajax({
 		type: "GET",
-		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ section_contents[item_number].key,
+		url: baseurl + utility + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ section_contents[item_number].key + "&" + Token,
 		dataType: "xml",
 		cache: false,
 		success: function(data) {
@@ -1112,7 +1120,7 @@ function subtitle_get_active(item_number) {
 			//log_to_console(xmlString); 
 			$(data).find("MediaContainer").each(function() {
 				section_contents[item_number].grandparentKey = $(this).attr("grandparentKey");
-		});
+			});
 			
 			$(data).find("Stream").each(function() {
 				if ( ($(this).attr("streamType") == "3") && ($(this).attr("selected") == "1") )  {	
@@ -1149,31 +1157,49 @@ function subtitle_view(path) {
 		path = PathToPlexMediaFolder+append+path.substr(8);
 	}
 	
-	var temporaryWindow = window.open('view_sub.html');
-	$.ajax({
+	/*
+		var temporaryWindow = window.open('view_sub.html');
+		$.ajax({
 		type: "GET",
 		url: baseurl + utility + "?Func=ShowSRT&Secret="+Secret+"&FileName="+path,
 		dataType: "text",
 		cache: false,
 		success: function(data) {
-			// For the current item
-			//xmlString = (new XMLSerializer()).serializeToString(data);
-			//log_to_console(xmlString);
-			
-			var content = "<div id='Log' class='VideoBox'><div class='VideoHeadline'>Viewing: \""+path+"\"</div>";
-			
-			content += "<div class='VideoSubtitle'><textarea class='EditText' wrap='off' readonly>"+data+"</textarea></div>";
-			
-			content += "</div>";
-			setTimeout(function() {$(temporaryWindow.document.body).html(content);},1000);
+		// For the current item
+		//xmlString = (new XMLSerializer()).serializeToString(data);
+		//log_to_console(xmlString);
+		
+		var content = "<div id='Log' class='VideoBox'><div class='VideoHeadline'>Viewing: \""+path+"\"</div>";
+		
+		content += "<div class='VideoSubtitle'><textarea class='EditText' wrap='off' readonly>"+data+"</textarea></div>";
+		
+		content += "</div>";
+		setTimeout(function() {$(temporaryWindow.document.body).html(content);},1000);
 		},
 		error: function(data, status, statusText, responsText) {
-			log_to_console(data + statusText);
+		log_to_console(data + statusText);
 		},
 		complete: function() {
-			//log_to_console("second ajax complete");
-			return true;
+		//log_to_console("second ajax complete");
+		return true;
 		}
+		});
+	*/
+	$.ajax({
+		type: "GET",
+		url: baseurl + utility + "?Func=ShowSRT&Secret="+Secret+"&FileName="+path + "&" + Token,
+		dataType: "text",
+		cache: false,
+		global: false,
+		success: function(data) {
+			$("#myModal .modal-title").html("Viewing: " + path.substr(path.lastIndexOf("/")+1)); // Set custom content to body of Modal
+			var ModalBody = "<pre class='pre-scrollable'>";
+			ModalBody += data;
+			ModalBody += "</pre>";
+			$("#myModal .modal-body").html(ModalBody); // Set custom content to body of Modal
+			$("#myModal .modal-footer").html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'); // Set custom content to body of Modal
+			$("#myModal").modal({keyboard: false, backdrop:false, show: true});
+		},
 	});
 	
 }
@@ -1200,29 +1226,29 @@ function Video() {
 	this.hide = false;
 	this.id = "";
 	this.key = "";
-	this.showKey = false;
-	this.showRatingKey = false;
-	this.seasonKey = false;
-	this.seasonRatingKey = false;
-	this.subtitles = [];
-	this.parentTitle = "";
-	this.parentKey = "";
-	this.grandparentTitle = "";
-	this.grandparentKey = "";
-	this.title = "";
-	this.type = "";
+this.showKey = false;
+this.showRatingKey = false;
+this.seasonKey = false;
+this.seasonRatingKey = false;
+this.subtitles = [];
+this.parentTitle = "";
+this.parentKey = "";
+this.grandparentTitle = "";
+this.grandparentKey = "";
+this.title = "";
+this.type = "";
 }
 
 function Subtitle() {
-	this.codec = "";
-	this.hide = false;
-	this.id = "";
-	this.integrated = false;
-	this.language = "";
-	this.local = false;
-	this.isDuplicate = false;
-	this.title = ""; // Is this needed?
-	this.url = "";
-	this.exists = true;
-	
-}
+this.codec = "";
+this.hide = false;
+this.id = "";
+this.integrated = false;
+this.language = "";
+this.local = false;
+this.isDuplicate = false;
+this.title = ""; // Is this needed?
+this.url = "";
+this.exists = true;
+
+}	
