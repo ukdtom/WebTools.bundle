@@ -1,3 +1,8 @@
+V0.0.0.17:
+	HTTP Part:
+	- Modified Token handling to make sure it's only appended if it's actually there.
+	- Modified loading screens when loading sections and movies.
+
 V0.0.0.16:
 	HTTP Part:
 	- Added Token handling.
