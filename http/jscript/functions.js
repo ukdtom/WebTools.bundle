@@ -969,22 +969,25 @@ function subtitle_check_duplicate(item_number) {
 								//console.log("Checking : " + $(this).attr("name"));
 								var Subtitle_one_name = $(this).attr("name");
 								var Subtitle_one_media = $(this).attr("media");
-								
-								$(data).find("Subtitle").each(function() {
-									var locationOfsid_two = $(this).attr("name").indexOf("/sid");
-									var locationOfsid_one = $(this).attr("name").indexOf("/sid");
-									if($(this).attr("name") != Subtitle_one_name) {
+								var locationOfsid_one = $(this).attr("name").indexOf("/sid");
+								if (locationOfsid_one != -1) {
+									$(data).find("Subtitle").each(function() {
+										var locationOfsid_two = $(this).attr("name").indexOf("/sid");
 										
-										if($(this).attr("name").substring(0,locationOfsid_two) == Subtitle_one_name.substring(0,locationOfsid_one)) {
-											if(found.indexOf($(this).attr("media")) == -1) {
-												found.push($(this).attr("media"));
-												//console.log("Double!!!! " + $(this).attr("name")  + " ::: " + Subtitle_one_name);
+										if($(this).attr("name") != Subtitle_one_name) {
+											
+											if($(this).attr("name").substring(0,locationOfsid_two) == Subtitle_one_name.substring(0,locationOfsid_one)) {
+												if(found.indexOf($(this).attr("media")) == -1) {
+													found.push($(this).attr("media"));
+													//console.log("Double!!!! " + $(this).attr("name")  + " ::: " + Subtitle_one_name);
+												}
+												
 											}
 											
 										}
-										
-									}
-								});
+									});
+								}
+								
 								for (x=0;x<section_contents[item_number].subtitles.length;x++) {
 									for (y=0;y<found.length;y++) {
 										//console.log("Comparing: " + section_contents[item_number].subtitles[x].title + " [AND] " + found[y]);
