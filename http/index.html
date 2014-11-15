@@ -40,9 +40,9 @@
 							/**
 							 * Check that the settings have been set.
 							 */
-							 if(PathToPlexMediaFolder === false) {
-								log_add("Error: Go through plugin preferences in Plex first.");
-								fatal_error = true;
+							if(PathToPlexMediaFolder.length < 1) {
+									log_add("The path to Plex Media Server has not been set. Please verify Bundle preferences in Plex.");
+									fatal_error = true;
 							 } else {
 								// Fetch the current settings and set the checkboxes accordingly.
 								if(options_hide_integrated == "true") {
@@ -71,8 +71,12 @@
 								$("input[name=items_per_page]").val(items_per_page);
 											
 								// Changed list_sections(); to go via function_loader
-								
-								function_loader("fetch_sections");
+								if(PMSUrl.length < 1) {
+									log_add("The path to Plex Media Server has not been set. Please verify Bundle preferences in Plex.");
+									$("#LibraryBox table").html("<div class='mainText'>Error while fetching sections.</div>");
+								} else {
+									function_loader("fetch_sections");
+								}
 							}
 						},
 					});
