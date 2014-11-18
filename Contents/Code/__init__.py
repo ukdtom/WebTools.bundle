@@ -26,7 +26,7 @@ import xml.etree.ElementTree as et
 #********** Initialize *********
 def Start():
 	PLUGIN_VERSION = getPref('Version')	
-	print("********  Started %s on %s  **********" %(NAME  + ' V' + PLUGIN_VERSION, Platform.OS))
+#	print("********  Started %s on %s  **********" %(NAME  + ' V' + PLUGIN_VERSION, Platform.OS))
 	Log.Debug("*******  Started %s on %s  ***********" %(NAME + ' V' + PLUGIN_VERSION, Platform.OS))
 	HTTP.CacheTime = 0
 	DirectoryObject.thumb = R(ICON)
@@ -102,8 +102,11 @@ def setupSymbLink():
 ''' Main menu '''
 @handler(PREFIX, NAME, ICON)
 @route(PREFIX + '/MainMenu')
-def MainMenu(Func='', Secret='', **kwargs):
-	if Func=='':
+#def MainMenu(args.get("Func"), Secret='', **kwargs):
+def MainMenu(**kwargs):
+	Func = kwargs.get("Func")
+	Secret = kwargs.get("Secret")
+	if not 'Func' in kwargs:
 		Log.Debug("**********  Starting MainMenu  **********")	
 		oc = ObjectContainer()
 		if not setupSymbLink():
@@ -138,7 +141,8 @@ def MainMenu(Func='', Secret='', **kwargs):
 		return GetXMLFileFromUrl(Secret, kwargs.get("Url"))
 	elif Func=='restart':
 		return Restart()
-
+	elif Func=='WakeUp':
+		return 'Alive and kicking....Now go grap a beer'
 
 ####################################################################################################
 # Set PMS Path
@@ -337,7 +341,6 @@ def DelSub(Secret, MediaID, SubFileID):
 def DelFromXML(fileName, attribute, value):
 	from xml.etree import ElementTree
 	Log.Debug('Need to delete element with an attribute named "%s" with a value of "%s" from file named "%s"' %(attribute, value, fileName))
-
 	with io.open(fileName, 'r') as f:
 		tree = ElementTree.parse(f)
 		root = tree.getroot()
@@ -375,6 +378,8 @@ def GetXMLFile(Secret, Path):
 def GetXMLFileFromUrl(Secret, Url):
 	if PwdOK(Secret):
 		import urllib2
+		PMSUrl = getPref('PMSUrl')
+		Url = Url.replace(PMSUrl , '127.0.0.1')
 		Log.Debug('Getting contents of an XML file from Url: %s' %(Url))
 		document = et.parse(urllib2.urlopen(Url))		
 		root = document.getroot()

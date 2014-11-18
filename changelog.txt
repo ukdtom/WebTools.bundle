@@ -1,3 +1,7 @@
+V0.0.0.18:
+	HTTP Part:
+	- Moved Token handling to the end of queries.
+
 V0.0.0.17:
 	HTTP Part:
 	- Modified Token handling to make sure it's only appended if it's actually there.

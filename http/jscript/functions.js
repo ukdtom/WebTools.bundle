@@ -129,13 +129,13 @@ function fetch_movie_or_episode(LibraryKey, TriggeringElement) {
 	
 	var currentToken =  "";
 	if (Token.length>0) {
-		currentToken = Token + "&";
+		currentToken = "&" + Token;
 	}
 	
 	$.ajax({
 		type: "GET",
 		async: true,
-		url: baseurl + utility  + "?" + currentToken + "Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ targetURL,
+		url: baseurl + utility  + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ targetURL + currentToken,
 		dataType: "xml",
 		cache: false,
 		success: function(data) {
@@ -174,11 +174,11 @@ function fetch_sections() {
 	
 	var currentToken =  "";
 	if (Token.length>0) {
-		currentToken = Token + "&";
+		currentToken = "&" + Token;
 	}
 	$.ajax({
 		type: "GET",
-		url: baseurl + utility  + "?" + currentToken + "Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+"/library/sections",
+		url: baseurl + utility  + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+"/library/sections" + currentToken,
 		dataType: "xml",
 		global: false,
 		cache: false,
@@ -232,13 +232,13 @@ function fetch_show_or_season(LibraryKey, TriggeringElement) {
 	
 	var currentToken =  "";
 	if (Token.length>0) {
-		currentToken = Token + "&";
+		currentToken =  "&" + Token;
 	}
 	
 	$.ajax({
 		type: "GET",
 		async: true,
-		url: baseurl + utility  + "?" + currentToken + "Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ targetURL,
+		url: baseurl + utility  + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ targetURL + currentToken,
 		dataType: "xml",
 		success: function(data) {
 			$(data).find("Directory").each(function() {
@@ -274,12 +274,12 @@ function fetch_tree(item_number) {
 	
 	var currentToken =  "";
 	if (Token.length>0) {
-		currentToken = Token + "&";
+		currentToken = "&" + Token;
 	}
 	
 	$.ajax({
 		type: "GET",
-		url: baseurl + utility  + "?" + currentToken + "Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ section_contents[item_number].key + "/tree",
+		url: baseurl + utility  + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ section_contents[item_number].key + "/tree" + currentToken,
 		dataType: "xml",
 		success: function(data) {
 			// For the current item
@@ -337,11 +337,11 @@ function function_loader(function_name,function_args) {
 	// First of all, update the settings.
 	var currentToken =  "";
 	if (Token.length>0) {
-		currentToken = "?" + Token;
+		currentToken = "&" + Token;
 	}
 
 	$.ajax({
-		url: baseurl + utility + currentToken,
+		url: baseurl + utility + "?Func=WakeUp" + currentToken,
 		cache: false,
 		dataType: "xml",
 		global: false,
@@ -482,12 +482,12 @@ function options_save(option_name,option_value,number) {
 	
 	var currentToken =  "";
 	if (Token.length>0) {
-		currentToken = Token + "&";
+		currentToken = "&" + Token;
 	}
 	
 	$.ajax({
 		type: "GET",
-		url: baseurl + utility  + "?" + currentToken + "Func=SetPref&Secret="+Secret+"&Pref="+option_name[number]+"&Value="+option_value[number],
+		url: baseurl + utility  + "?Func=SetPref&Secret="+Secret+"&Pref="+option_name[number]+"&Value="+option_value[number] + currentToken,
 		dataType: "text",
 		cache: false,
 		global: false,
@@ -817,12 +817,12 @@ function refresh_section_in_plex() {
 	
 	var currentToken =  "";
 	if (Token.length>0) {
-		currentToken = Token + "&";
+		currentToken = "&" + Token;
 	}
 	
 	$.ajax({
 		type: "GET",
-		url: baseurl + "/library/sections/"+ selected_section +"/refresh" + "?" + currentToken + "force=1",
+		url: baseurl + "/library/sections/"+ selected_section +"/refresh?force=1" + currentToken,
 		dataType: "text",
 		global: false,
 		success: function(data) {
@@ -847,12 +847,12 @@ function refresh_section_in_plex_verify() {
 	
 	var currentToken =  "";
 	if (Token.length>0) {
-		currentToken = Token + "&";
+		currentToken = "&" + Token;
 	}
 	
  	$.ajax({
 		type: "GET",
-		url: baseurl + utility  + "?" + currentToken + "Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+"/library/sections/",
+		url: baseurl + utility  + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+"/library/sections/" + currentToken,
 		dataType: "xml",
 		cache: false,
 		global: false,
@@ -943,12 +943,12 @@ function subtitle_check_duplicate(item_number) {
 		
 		var currentToken =  "";
 		if (Token.length>0) {
-			currentToken = Token + "&";
+			currentToken = "&" + Token;
 		}
 		
 		$.ajax({
 			type: "GET",
-			url: baseurl + utility + "?" + currentToken + "Func=PathExists&Secret="+Secret+"&Path="+pathToProviderXML,
+			url: baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+pathToProviderXML + currentToken,
 			dataType: "text",
 			urltouse: pathToProviderXML,
 			cache: false,
@@ -957,7 +957,7 @@ function subtitle_check_duplicate(item_number) {
 					urlforpath = this.urltouse;
 					$.ajax({
 						type: "GET",
-						url: baseurl + utility + "?" + currentToken + "Func=GetXMLFile&Secret="+Secret+"&Path="+urlforpath,
+						url: baseurl + utility + "?Func=GetXMLFile&Secret="+Secret+"&Path="+urlforpath + currentToken,
 						dataType: "xml",
 						cache: false,
 						success: function(data) {
@@ -1018,7 +1018,7 @@ function subtitle_check_exists(item_number) {
 	
 	var currentToken =  "";
 	if (Token.length>0) {
-		currentToken = Token + "&";
+		currentToken = "&" + Token;
 	}
 	
 	for (i=0;i<section_contents[item_number].subtitles.length;i++) {
@@ -1038,7 +1038,7 @@ function subtitle_check_exists(item_number) {
 			//console.log("RequestedURL: " + baseurl + utility + "?Func=PathExists&Secret="+Secret+"&Path="+path);
 			$.ajax({
 				type: "GET",
-				url: baseurl + utility  + "?" + currentToken + "Func=PathExists&Secret="+Secret+"&Path="+path,
+				url: baseurl + utility  + "?Func=PathExists&Secret="+Secret+"&Path="+path + currentToken,
 				dataType: "text",
 				cache: false,
 				subtitleIndex: i,
@@ -1087,12 +1087,12 @@ function subtitle_delete_ajax(item_number) {
 		
 		var currentToken =  "";
 		if (Token.length>0) {
-			currentToken = Token + "&";
+			currentToken = "&" + Token;
 		}
 		
 		$.ajax({
 			type: "GET",
-			url: baseurl + utility  + "?" + currentToken + "Func=DelSub&Secret="+Secret+"&MediaID="+subtitle_info[0]+"&SubFileID="+subtitle_info[1],
+			url: baseurl + utility  + "?Func=DelSub&Secret="+Secret+"&MediaID="+subtitle_info[0]+"&SubFileID="+subtitle_info[1] + currentToken,
 			dataType: "text",
 			cache: false,
 			success: function(data) {		
@@ -1173,11 +1173,11 @@ function subtitle_get_active(item_number) {
 	//log_to_console("Searching for active subtitle for : " + section_contents[item_number].title);
 	var currentToken =  "";
 	if (Token.length>0) {
-		currentToken = Token + "&";
+		currentToken = "&" + Token;
 	}
 	$.ajax({
 		type: "GET",
-		url: baseurl + utility  + "?" + currentToken + "Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ section_contents[item_number].key,
+		url: baseurl + utility  + "?Func=GetXMLFileFromUrl&Secret="+Secret+"&Url="+baseurl+ section_contents[item_number].key + currentToken,
 		dataType: "xml",
 		cache: false,
 		success: function(data) {
@@ -1253,12 +1253,12 @@ function subtitle_view(path) {
 	*/
 	var currentToken =  "";
 	if (Token.length>0) {
-		currentToken = Token + "&";
+		currentToken = "&" + Token;
 	}
 	
 	$.ajax({
 		type: "GET",
-		url: baseurl + utility  + "?" + currentToken + "Func=ShowSRT&Secret="+Secret+"&FileName="+path,
+		url: baseurl + utility  + "?Func=ShowSRT&Secret="+Secret+"&FileName="+path + currentToken,
 		dataType: "text",
 		cache: false,
 		global: false,
