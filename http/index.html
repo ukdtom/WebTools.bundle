@@ -16,14 +16,13 @@
 		<script src="jscript/bootstrap.min.js"></script>
 	</head>
 	<script type="text/javascript">
-		var loadingScreen = "<div class='mainText'>Loading...</div>"
-			
+		var loadingScreen = "<div class='mainText'>Loading</div>";	
 		var timerstart = 0;
 		
 		
 		// Populate the libraries menu.
 		$(document).ready(function() {		
-		$("#LibraryBox table").html(loadingScreen);
+			$("#LibraryBox table").html(loadingScreen);
 			$.ajax({
 				url: "jscript/settings.js",
 				cache: false,
@@ -78,9 +77,9 @@
 									function_loader("fetch_sections");
 								}
 							}
-						},
+						}
 					});
-				},
+				}
 			});
 		});
 						 
@@ -96,22 +95,22 @@
 			var minute  = now.getMinutes();
 			var second  = now.getSeconds(); 
 			if(month.toString().length == 1) {
-				var month = '0'+month;
+				month = '0'+month;
 			}
 			if(day.toString().length == 1) {
-				var day = '0'+day;
+				day = '0'+day;
 			}   
 			if(hour.toString().length == 1) {
-				var hour = '0'+hour;
+				hour = '0'+hour;
 			}
 			if(minute.toString().length == 1) {
-				var minute = '0'+minute;
+				minute = '0'+minute;
 			}
 			if(second.toString().length == 1) {
-				var second = '0'+second;
+				second = '0'+second;
 			}   
-			var dateTime = year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;   
-			return dateTime;
+			var date_Time = year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;   
+			return date_Time;
 		}
 		
 		function start_timer() {

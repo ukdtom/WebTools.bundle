@@ -105,11 +105,6 @@ var current_viewing_season = "";
 var loadingScreen_main = "<div class='VideoBox'><div class='VideoHeadline'>Loading...</div><div class='VideoSubtitle'>WebTools is fetching data from Plex and processing it.</div></div>";
 
 
-// Not yet implemented. To be used in error: in ajax calls
-function error_ajax_calls() {
-	
-}
-
 function fetch_movie_or_episode(LibraryKey, TriggeringElement) {
 	start_timer();
 	$("#MainBox").html(loadingScreen_main);
@@ -144,7 +139,7 @@ function fetch_movie_or_episode(LibraryKey, TriggeringElement) {
 			
 			$(data).find("Video").each(function() {
 				// For each item in the section, call the key+"/tree"
-				item = new Video();
+				var item = new Video();
 				item.title = $(this).attr("title");
 				item.key = $(this).attr("key");
 				item.type = $(this).attr("type");
@@ -162,7 +157,7 @@ function fetch_movie_or_episode(LibraryKey, TriggeringElement) {
 		},
 		error: function(data, status, statusText, responsText) {
 			log_to_console(statusText);
-		},
+		}
 	});
 }
 
@@ -210,7 +205,7 @@ function fetch_sections() {
 		},
 		error: function(data, status, statusText, responsText) {
 			log_to_console(statusText);
-		},
+		}
 	});
 }
 
@@ -242,7 +237,7 @@ function fetch_show_or_season(LibraryKey, TriggeringElement) {
 		dataType: "xml",
 		success: function(data) {
 			$(data).find("Directory").each(function() {
-				item = new Video();
+				var item = new Video();
 				item.title = $(this).attr("title");
 				item.key = $(this).attr("key");
 				
@@ -265,7 +260,7 @@ function fetch_show_or_season(LibraryKey, TriggeringElement) {
 		},
 		error: function(data, status, statusText, responsText) {
 			log_to_console(statusText);
-		},
+		}
 	});	
 }
 
@@ -339,6 +334,10 @@ function function_loader(function_name,function_args) {
 	if (Token.length>0) {
 		currentToken = "&" + Token;
 	}
+	
+	if (typeof(function_args) === "undefined") {
+		function_args = [""];
+	}
 
 	$.ajax({
 		url: baseurl + utility + "?Func=WakeUp" + currentToken,
@@ -360,13 +359,13 @@ function function_loader(function_name,function_args) {
 						myVars[i]={
 							'variablename':line[1],
 							'variablevalue':line[3]
-						}
+						};
 					}
 					
 					for(i=0;i<myVars.length;i++) {
 						if(myVars[i].variablename !== undefined) {
 							if( (myVars[i].variablename == "Secret") || (myVars[i].variablename == "PMSUrl") || (myVars[i].variablename == "options_hide_integrated") || (myVars[i].variablename == "options_hide_local") || (myVars[i].variablename == "options_hide_empty_subtitles") || (myVars[i].variablename == "options_only_multiple") || (myVars[i].variablename == "options_auto_select_duplicate") || (myVars[i].variablename == "items_per_page") ) {
-								console.log("Updated setting " + myVars[i].variablename + " to value: " + myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')));
+								log_to_console("Updated setting " + myVars[i].variablename + " to value: " + myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')));
 								if(myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')) == "true") {
 									window[myVars[i].variablename] = true;						  
 									} else if(myVars[i].variablevalue.substring(myVars[i].variablevalue.indexOf('"')+1,myVars[i].variablevalue.indexOf('";')) == "false") {
@@ -388,12 +387,12 @@ function function_loader(function_name,function_args) {
 				},
 				error: function(data) {
 					log_to_console("An error has occurred in function_loader while fetching settings.js.");
-				},
+				}
 			});
 		},
 		error: function(data) {
 			log_to_console("An error has occurred in function_loader while calling " + baseurl + utility + "?Func=WakeUp" + currentToken);
-		},
+		}
 	});			
 }
 
@@ -477,8 +476,8 @@ function log_view() {
 */
 function options_save(option_name,option_value,number) {
 	
-	console.log("Saving Options for number: " + number);
-	console.log("RequestedURL: " + baseurl + utility + "?Func=SetPref&Secret="+Secret+"&Pref="+option_name[number]+"&Value="+option_value[number]);
+	log_to_console("Saving Options for number: " + number);
+	log_to_console("RequestedURL: " + baseurl + utility + "?Func=SetPref&Secret="+Secret+"&Pref="+option_name[number]+"&Value="+option_value[number]);
 	
 	var currentToken =  "";
 	if (Token.length>0) {
@@ -492,7 +491,7 @@ function options_save(option_name,option_value,number) {
 		cache: false,
 		global: false,
 		success: function(data) {
-			console.log(data);
+			log_to_console(data);
 			if(data == "ok") {
 				log_add("Successfully saved setting: ("+ number +")" + option_name[number] + " as: " + option_value[number]);
 				} else {
@@ -574,7 +573,7 @@ function output_content(show_page) {
 	//log_to_console("Start Value: " + start_value);
 	//log_to_console("End Value: " + end_value);
 	for (i = start_value; i < end_value; i++) {
-		item = presentable_contents[i];
+		var item = presentable_contents[i];
 		if(item.hide === false) {
 			newEntry = "";
 			if ( (item.type == "movie") || (item.type == "episode") ) {
@@ -656,8 +655,8 @@ function output_content_prepare() {
 	
 	//console.log("Length of section_contents: " + section_contents.length);	
 	for (i=0; i<section_contents.length;i++) {
-		item = section_contents[i];
-		discovered_languages = [];
+		var item = section_contents[i];
+		var discovered_languages = [];
 		
 		// Asume everything can be added.
 		item.hide = false;
@@ -831,7 +830,7 @@ function refresh_section_in_plex() {
 				section = get_section_info(selected_section);
 				log_add("Started forced refresh in Plex on section: " + section.title);
 				section.refreshing = true;
-			refresh_section_in_plex_verify()},3000);						
+			refresh_section_in_plex_verify();},3000);						
 		},
 		error: function(data, status, statusText, responsText) {
 			log_to_console(data + statusText);
@@ -871,7 +870,7 @@ function refresh_section_in_plex_verify() {
 			
 			for (i = 0; i < sections.length; i++) {
 				if (sections[i].refreshing === true) {
-					setTimeout(function() {refresh_section_in_plex_verify()},2000);
+					setTimeout(function() {refresh_section_in_plex_verify();},2000);
 					break;
 				}
 			}
@@ -894,8 +893,8 @@ function refresh_section_list(LibraryKey, TriggeringElement) {
 	$("#PageBar").html("");
 	$("#LibraryBox span").removeClass("Bold");
 	$(TriggeringElement).addClass("Bold");
-	
-	SearchBox = "<div class='VideoHeadline'>Search " + $(TriggeringElement).html() + "</div>";
+	var contentOfTrigger = $(TriggeringElement).html();
+	var SearchBox = "<div class='VideoHeadline'>Search " + contentOfTrigger + "</div>";
 	SearchBox += "<div class='VideoSubtitle'><input type='text' value='"+searchstring+"' name='searchstring'></div>";
 	SearchBox += "<div class='VideoSubtitle'><input type='submit' name='searchbutton' class='btn btn-default btn-xs' value='Search'></div>";
 	
@@ -938,7 +937,7 @@ function subtitle_check_duplicate(item_number) {
 	for(i=0;i<providerarray.length;i++) {
 		plexpath = PathToPlexMediaFolder.replace(/\\/g,"/");
 		var pathToProviderXML = plexpath + "/Media/localhost/" + section_contents[item_number].hash.substr(0,1) + "/" + section_contents[item_number].hash.substr(1) + ".bundle/Contents/Subtitle Contributions/"+providerarray[i];
-		console.log("Fetching XML from: " + pathToProviderXML);
+		log_to_console("Fetching XML from: " + pathToProviderXML);
 		
 		
 		var currentToken =  "";
@@ -977,7 +976,8 @@ function subtitle_check_duplicate(item_number) {
 										if($(this).attr("name") != Subtitle_one_name) {
 											
 											if($(this).attr("name").substring(0,locationOfsid_two) == Subtitle_one_name.substring(0,locationOfsid_one)) {
-												if(found.indexOf($(this).attr("media")) == -1) {
+											
+												if  ( (found.length > 0) && (found.indexOf($(this).attr("media")) == -1)  ) {
 													found.push($(this).attr("media"));
 													//console.log("Double!!!! " + $(this).attr("name")  + " ::: " + Subtitle_one_name);
 												}
@@ -1002,11 +1002,11 @@ function subtitle_check_duplicate(item_number) {
 							
 						},
 						error: function(data, status, statusText, responsText) {
-							console.log("Error in subtitle_check_duplicate: " + statusText);
-						},
+							log_to_console("Error in subtitle_check_duplicate: " + statusText);
+						}
 					});
 				}
-			},
+			}
 		});
 	}
 }
@@ -1049,8 +1049,8 @@ function subtitle_check_exists(item_number) {
 					}
 				},
 				error: function(data, status, statusText, responsText) {
-					console.log("Error in subtitle_check_exists: " + statusText);
-				},
+					log_to_console("Error in subtitle_check_exists: " + statusText);
+				}
 			});
 		}
 	}
@@ -1141,8 +1141,8 @@ function subtitle_delete_ajax(item_number) {
 				}
 			},
 			error: function(data, status, statusText, responsText) {
-				console.log("Error in deleting subtitle: " + statusText);
-			},
+				log_to_console("Error in deleting subtitle: " + statusText);
+			}
 		});
 		} else {
 		output_content(current_page);
@@ -1270,7 +1270,7 @@ function subtitle_view(path) {
 			$("#myModal .modal-body").html(ModalBody); // Set custom content to body of Modal
 			$("#myModal .modal-footer").html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'); // Set custom content to body of Modal
 			$("#myModal").modal({keyboard: false, backdrop:false, show: true});
-		},
+		}
 	});
 	
 }
