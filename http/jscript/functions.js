@@ -343,7 +343,7 @@ function function_loader(function_name,function_args) {
 	$.ajax({
 		url: baseurl + utility + "?Func=WakeUp" + currentToken,
 		cache: false,
-		dataType: "xml",
+		dataType: "text",
 		global: false,
 		success: function(data) {
 			$.ajax({
@@ -392,7 +392,7 @@ function function_loader(function_name,function_args) {
 			});
 		},
 		error: function(data) {
-			log_to_console("An error has occurred in function_loader while calling " + baseurl + utility);
+			log_to_console("An error has occurred in function_loader while calling " + baseurl + utility + "?Func=WakeUp" + currentToken);
 		},
 	});			
 }
