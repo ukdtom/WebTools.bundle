@@ -1,8 +1,8 @@
 [
 	{
-		"id":"PMS_Path",
-		"label":"Enter external IP address of your PMS, or dns name, without the leading http://",
+		"id":"WEB_Port",
+		"label":"Enter the port that this plugin should use",
 		"type":"text",
-		"default":"None"
+		"default":"33400"
 	}
 ]
