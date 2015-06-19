@@ -19,6 +19,8 @@ import threading
 from datetime import date
 from random import randint
 import json
+from xml.etree import ElementTree
+from itertools import islice
 
 #************** webTools functions ******************************
 ''' Here we have the supported functions '''
@@ -26,9 +28,7 @@ class webTools(object):
 	''' Return version number '''
 	def getVersion(self):
 		Log.Debug('Version requested')
-		return {	'version': Dict['SharedSecret'],									
-									'Secret hash temp here for testing': Hash.MD5(Dict['SharedSecret'])
-								}
+		return {	'version': Dict['SharedSecret']}
 
 	''' Check if mySecret is correct and in the header '''
 	def checkSecret(self, headers):
@@ -56,59 +56,96 @@ class webTools(object):
 					return json.dumps(int(Dict['items_per_page']))
 				else:
 					return json.dumps(Dict[params['param2']] == 'true')
-
-
 		mySetting = {}
 		mySetting['options_hide_integrated'] = (Dict['options_hide_integrated'] == 'true')
 		mySetting['options_hide_local'] = (Dict['options_hide_local'] == 'true')
-		mySetting['options_hide_empty_subtitles'] = (Dict['options_hide_empty_subtitles'] == 'true')
 		mySetting['options_only_multiple'] = (Dict['options_only_multiple'] == 'true')
-		mySetting['options_auto_select_duplicate'] = (Dict['options_auto_select_duplicate'] == 'true')
 		mySetting['items_per_page'] = int(Dict['items_per_page'])
 		mySetting['fatal_error'] = (Dict['fatal_error'] == 'true')
 		return json.dumps(mySetting)
 
 	''' get Show info '''
 	def getShow(self, params):
+		Log.Debug('getShow called with parameters: %s' %(params))
 		if params['param2'] != None:
-			if params['param3'] == 'size':
-				Log.Debug('Size requested for section %s' %(params['param2']))
-				myURL = 'http://127.0.0.1:32400/library/metadata/' + params['param2'] + '/allLeaves?X-Plex-Container-Start=0&X-Plex-Container-Size=1'
-				try:
-					size = XML.ElementFromURL(myURL).get('totalSize')		
-					Log.Debug('Returning size as %s' %(size))				
-					return size
-				except:					
-					return 404
-			else:
-				if params['param4'] != None:
-					myURL = 'http://127.0.0.1:32400/library/metadata/' + params['param2'] + '/allLeaves?X-Plex-Container-Start=' + params['param3'] + '&X-Plex-Container-Size=' + params['param4']
-					rawEpisodes = XML.ElementFromURL(myURL).xpath('//Video')
-					episodes=[]
-					for media in rawEpisodes:
-						episode = {}
-						episode['ratingKey'] = media.get('ratingKey')
-						episode['title'] = media.get('title')
-						episode['season'] = media.get('parentIndex')
-						episode['episode'] = media.get('index')
+			if params['param2'] == 'season':
+				Log.Debug('Got a season request')
+				myURL = 'http://127.0.0.1:32400/library/metadata/' + params['param3'] + '/tree'
+				episodes = XML.ElementFromURL(myURL).xpath('//MetadataItem/MetadataItem')
+				mySeason = []
+				for episode in episodes:
+					myEpisode = {}
+					myEpisode['key'] = episode.get('id')					
+					myEpisode['title'] = episode.get('title')					
+					myEpisode['episode'] = episode.get('index')
+					if params['param4'] == 'getsubs':
+						# We need to get subtitle info as well here
 						if params['param5'] == None:
-							episodes.append(episode)
-						elif params['param5'] == 'getsubs':
-							# We need to get subtitle info as well here
-							if params['param6'] == None:
-								subParams = {'param4': None, 'param3': None, 'param2': media.get('ratingKey'), 'param1': 'subtitles'}
-							if params['param6'] == 'all':
-								subParams = {'param4': None, 'param3': 'all', 'param2': media.get('ratingKey'), 'param1': 'subtitles'}
-							subs = self.getSubTitles(subParams)
-							if len(subs) > 0:
-								episode['subs'] = subs
-							else:
-								episode['subs'] = 'None'
-							episodes.append(episode)
-					Log.Debug('Returning %s' %(episodes))
-					return episodes
+							subParams = {'param3': None, 'param2': episode.get('id'), 'param1': 'subtitles'}
+						if params['param5'] == 'all':
+							subParams = {'param3': 'all', 'param2': episode.get('id'), 'param1': 'subtitles'}
+						subs = self.getSubTitles(subParams)
+						myEpisode['subtitles'] = subs
+					mySeason.append(myEpisode)
+				return mySeason					
+			else:
+				if params['param3'] == 'size':
+					Log.Debug('Size requested for section %s' %(params['param2']))
+					myURL = 'http://127.0.0.1:32400/library/metadata/' + params['param2'] + '/allLeaves?X-Plex-Container-Start=0&X-Plex-Container-Size=1'
+					try:
+						size = XML.ElementFromURL(myURL).get('totalSize')		
+						Log.Debug('Returning size as %s' %(size))				
+						return size
+					except:					
+						return 404
+				elif params['param3'] == 'seasons':
+					myURL = 'http://127.0.0.1:32400/library/metadata/' + params['param2'] + '/children'				
+					mySeasons = []
+					seasons = XML.ElementFromURL(myURL).xpath('//Directory')
+					if len(seasons) == 1:
+						for season in seasons:
+							mySeason = {}
+							mySeason['key'] = season.get('ratingKey')
+							mySeason['season'] = season.get('index')
+							mySeason['size'] = season.get('leafCount')					
+							mySeasons.append(mySeason)
+					else:
+						for season in islice(seasons, 1, None):
+							mySeason = {}
+							mySeason['key'] = season.get('ratingKey')
+							mySeason['season'] = season.get('index')
+							mySeason['size'] = season.get('leafCount')					
+							mySeasons.append(mySeason)
+					return mySeasons
 				else:
-					return 412	
+					if params['param4'] != None:
+						myURL = 'http://127.0.0.1:32400/library/metadata/' + params['param2'] + '/allLeaves?X-Plex-Container-Start=' + params['param3'] + '&X-Plex-Container-Size=' + params['param4']
+						rawEpisodes = XML.ElementFromURL(myURL).xpath('//Video')
+						episodes=[]
+						for media in rawEpisodes:
+							episode = {}
+							episode['key'] = media.get('ratingKey')
+							episode['title'] = media.get('title')
+							episode['season'] = media.get('parentIndex')
+							episode['episode'] = media.get('index')
+							if params['param5'] == None:
+								episodes.append(episode)
+							elif params['param5'] == 'getsubs':
+								# We need to get subtitle info as well here
+								if params['param6'] == None:
+									subParams = {'param4': None, 'param3': None, 'param2': media.get('ratingKey'), 'param1': 'subtitles'}
+								if params['param6'] == 'all':
+									subParams = {'param4': None, 'param3': 'all', 'param2': media.get('ratingKey'), 'param1': 'subtitles'}
+								subs = self.getSubTitles(subParams)
+								if len(subs) > 0:
+									episode['subtitles'] = subs
+								else:
+									episode['subtitles'] = 'None'
+								episodes.append(episode)
+						Log.Debug('Returning %s' %(episodes))
+						return episodes
+					else:
+						return 412	
 		else:
 			return 412
 
@@ -162,7 +199,7 @@ class webTools(object):
 					Section=[]
 					for media in rawSection:
 						if params['param5'] == None:
-							media = {'ratingKey':media.get('ratingKey'), 'title':media.get('title')}
+							media = {'key':media.get('ratingKey'), 'title':media.get('title')}
 							Section.append(media)
 						elif params['param5'] == 'getsubs':
 							# We need to get subtitle info as well here
@@ -171,7 +208,7 @@ class webTools(object):
 							if params['param6'] == 'all':
 								subParams = {'param4': None, 'param3': 'all', 'param2': media.get('ratingKey'), 'param1': 'subtitles'}
 							subs = self.getSubTitles(subParams)
-							media = {'ratingKey':media.get('ratingKey'), 'title':media.get('title'), 'subtitles':subs}
+							media = {'key':media.get('ratingKey'), 'title':media.get('title'), 'subtitles':subs}
 							Section.append(media)
 					Log.Debug('Returning %s' %(Section))
 					return Section
@@ -198,7 +235,7 @@ class webTools(object):
 					else:
 						location = 'Sidecar'
 					if params['param3'] in {None, 'all'}:
-						subInfo['id'] = stream.get('id')
+						subInfo['key'] = stream.get('id')
 						subInfo['codec'] = stream.get('codec')
 						subInfo['selected'] = stream.get('selected')
 						subInfo['languageCode'] = stream.get('languageCode')
@@ -218,7 +255,7 @@ class webTools(object):
 						if params['param3'] == 'all':
 							try:								
 								for mediaStream in MediaStreams:				
-									if mediaStream.get('id') == subInfo['id']:									
+									if mediaStream.get('id') == subInfo['key']:									
 										subInfo['url'] = mediaStream.get('url')
 							except:
 								return 500
@@ -241,7 +278,7 @@ class webTools(object):
 						mediaPath = os.path.join(Core.app_support_path, 'Media', 'localhost', mediaPath.replace('media://', ''))
 					if 'file://' in mediaPath:
 						mediaPath = mediaPath.replace('file://', '')						
-					with io.open(meediaPath, 'rb') as content_file:
+					with io.open(mediaPath, 'rb') as content_file:
 						content = content_file.readlines()
 					showSRT = []
 					for line in content:
@@ -314,11 +351,18 @@ class webTools(object):
 							print 'GED: ', filePath2[:-1]
 
 
-							agentXMLPath = os.path.join(filePath2[:-1], 'Contents', agent + '.xml')
+#							agentXMLPath = os.path.join(filePath2[:-1], 'Contents', agent + '.xml')
+							subtitlesXMLPath, tmp = filePath.split('Contents')
+
+
+							agentXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitle Contributions', agent + '.xml')							
+
 							print '******************************'
 							print 'agentXMLPath: ', agentXMLPath
 							print '******************************'
-							subtitlesXMLPath, tmp = filePath.split('Contents')
+
+
+
 							subtitlesXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitles.xml')
 
 							print '******************************'
@@ -327,23 +371,46 @@ class webTools(object):
 
 
 
+							print 'file: ', sub
 
-							agentsXML = XML.ElementFromURL(agentXMLPath)
+							self.DelFromXML(agentXMLPath, 'media', sub)
+							self.DelFromXML(subtitlesXMLPath, 'media', sub)
+				
 
+#							agentXML = XML.ElementFromURL('"' + agentXMLPath + '"')
+
+
+							# Let's refresh the media
+							url = 'http://127.0.0.1:32400/library/metadata/' + params['param2'] + '/refresh&force=1'
+
+							refresh = HTTP.Request(url, immediate=False)
+
+
+
+
+# https://192-168-1-12.ebd575c9a7474c6d86b91956719f369b.plex.direct:32400/library/metadata/20/refresh&force=1
 
 							print 'ged'
 
+							# Nuke the actual file
+							try:
+								# Delete the actual file
+								os.remove(filePath)
+								print 'Removing: ' + filePath
+
+								os.remove(filePath3)
+								print 'Removing: ' + filePath3
+
+#TODO: ALSO REMOVE THE SYMBLINK HERE
+
+								# Refresh the subtitles in Plex
+								self.getSubTitles(params)
+							except:
+								return 500
 
 
 						elif filePath.startswith('file://'):
 							filePath = filePath.replace('file://', '')
-
-
-							Log.Debug('About to delete sub: %s' %(filePath))
-
-
-							print 'TOMMY WORK TODO....DELETE: ', filePath						
-
 							try:
 								# Delete the actual file
 								os.remove(filePath)
@@ -351,13 +418,7 @@ class webTools(object):
 								self.getSubTitles(params)
 							except:
 								return 500
-
-
 						return  filePath
-
-
-
-
 					else:
 						# Not external sub
 						return 406
@@ -371,12 +432,32 @@ class webTools(object):
 			return 400
 
 
+	####################################################################################################
+	# Delete from an XML file
+	####################################################################################################
+	''' Delete from an XML file '''
+	def DelFromXML(self, fileName, attribute, value):
+		Log.Debug('Need to delete element with an attribute named "%s" with a value of "%s" from file named "%s"' %(attribute, value, fileName))
+		with io.open(fileName, 'r') as f:
+			tree = ElementTree.parse(f)
+			root = tree.getroot()
+			mySubtitles = root.findall('.//Subtitle')
+			for Subtitles in root.findall("Language[Subtitle]"):
+				for node in Subtitles.findall("Subtitle"):
+					myValue = node.attrib.get(attribute)
+					if myValue:
+						if '_' in myValue:
+							drop, myValue = myValue.split("_")
+						if myValue == value:
+							Subtitles.remove(node)
+		tree.write(fileName, encoding='utf-8', xml_declaration=True)
+		return
+
 #**************** Handler Classes for Rest **********************
 
 ''' url /test helps devs to check that we are running '''
 class testHandler(RequestHandler):
 	def get(self):
-		print 'ged'
 		Log.Debug('Tornado recieved a test call')
 		self.write("Hello, world, I'm alive")
 
@@ -385,8 +466,7 @@ class webToolsHandler(RequestHandler):
 	#******* GET REQUEST *********
 	def get(self, **params):
 
-#		print 'DETTE ER PARAMS: ', params
-
+#		print 'THIS IS THE PARAMS: ', params
 		for param in params:
 			if param.startswith('_'):				
 				param = None
@@ -453,6 +533,7 @@ class webToolsHandler(RequestHandler):
 				else:
 					self.write(json_encode(response))
 			elif params['param1'] == 'subtitle':
+				print 'Hello World'
 				response = webTools().getSubTitle(params)
 				if response == 412:
 					self.clear()
@@ -520,23 +601,16 @@ class webToolsHandler(RequestHandler):
 				self.clear()
 				self.set_status(406)
 				self.finish("<html><body>Hmmm....This is invalid, and most likely due to trying to delete an embedded sub :-)</body></html>")
-
-
-
-
-
 			else:
 				self.write(json_encode(response))
 		else:
 			self.clear()
 			self.set_status(404)
 			self.finish("<html><body>Unknown call</body></html>")
-				
-
 		
 # The default handler is the test handler
 handlers = [(r'/test', testHandler),
-						(r"/webtools/(?P<param1>[^\/]+)/?(?P<param2>[^\/]+)?/?(?P<param3>[^\/]+)?/?(?P<param4>[^\/]+)?/?(?P<param5>[^\/]+)?/?(?P<param6>[^\/]+)?", webToolsHandler)
+						(r"/webtools/(?P<param1>[^\/]+)/?(?P<param2>[^\/]+)?/?(?P<param3>[^\/]+)?/?(?P<param4>[^\/]+)?/?(?P<param5>[^\/]+)?/?(?P<param6>[^\/]+)?/?(?P<param7>[^\/]+)?/?(?P<param8>[^\/]+)?", webToolsHandler)
 ]
 
 #********* Tornado itself *******************

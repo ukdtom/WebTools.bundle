@@ -2,6 +2,7 @@
 	<head>
 		<title>WebTools</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
 		<!-- Bootstrap -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/custom.css" rel="stylesheet">
@@ -17,47 +18,22 @@
 	</head>
     <script>
     $(document).ready(function() {
+        webtools_log(1,'Application started');
         get_section_list.start();
-        
-        // Refresh the optionsmodal everytime we want to show it.
-        /*
-        
-        fatal_error: "false"
-        items_per_page: "15"
-        options_auto_select_duplicate: "false"
-        options_hide_empty_subtitles: "false"
-        options_hide_integrated: "false"
-        options_hide_local: "false"
-        options_only_multiple: "false"
-        
-        */
-        $('#OptionsModal').on('show.bs.modal', function (e) { 
+
+            // Fetch the options when showing the modal.
+        $('#OptionsModal').on('show.bs.modal', function (e) {
             console.log(globalvariables.options);
             $('#OptionsModalAlert').hide();
-            //if(globalvariables.options.options_hide_integrated == "true") {
-                $("input[name=options_hide_integrated]").prop("checked", globalvariables.options.options_hide_integrated);
-            //}
-            //if(globalvariables.options.options_hide_local == "true") {
-                $("input[name=options_hide_local]").prop("checked",globalvariables.options.options_hide_local);
-            //}
-            
-            //if(globalvariables.options.options_hide_empty_subtitles == "true") {
-                $("input[name=options_hide_empty_subtitles]").prop("checked",globalvariables.options.options_hide_empty_subtitles);
-            //}
-
-            //if(globalvariables.options.options_only_multiple == "true") {	
-                $("input[name=options_only_multiple]").prop("checked",globalvariables.options.options_only_multiple);       
-            //}
-
-            //if(globalvariables.options.options_auto_select_duplicate == "true") {	
-                $("input[name=options_auto_select_duplicate]").prop("checked",globalvariables.options.options_auto_select_duplicate);
-            //}
+            $("input[name=options_hide_integrated]").prop("checked", globalvariables.options.options_hide_integrated);
+            $("input[name=options_hide_local]").prop("checked",globalvariables.options.options_hide_local);
+            $("input[name=options_hide_empty_subtitles]").prop("checked",globalvariables.options.options_hide_empty_subtitles);
+            $("input[name=options_only_multiple]").prop("checked",globalvariables.options.options_only_multiple);       
+            $("input[name=options_auto_select_duplicate]").prop("checked",globalvariables.options.options_auto_select_duplicate);
             $("input[name=items_per_page]").val(globalvariables.options.items_per_page);
             $("#items_per_page_max_min").html('(Max: ' + globalvariables.items_per_page_max + '. Min: ' + globalvariables.items_per_page_min + ')');
         });
-    });
-        
-           
+    });  
     </script>
 	<body>
         <nav class="navbar navbar-default navbar-fixed-top">
@@ -83,6 +59,7 @@
                   </ul>
                 </li>
                 <li><a onclick="show_options();" class="customlink">Options</a></li>
+                <li><a onclick="show_log();" class="customlink">Logfile</a></li>
               </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->

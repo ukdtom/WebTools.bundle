@@ -31,16 +31,20 @@ function fetch_section_type_movies(section_key, pageToShow) {
                     callback('Success');
                 },
                 error: function(data) {
-                    display_error('Failed fetching the size of the section from the server. Please restart the server.');
+                    display_error('Failed fetching the size of the section from the server. Please restart the server.<br>'
+                                  +'<br>Errorinfo:'
+                                  +'<br>Requested URL: ' + this.url
+                                  +'<br>Error Code/Message: ' + data.status + '/'  + data.statusText);
                     $('#LoadingModal').modal('hide');
                     get_section_video.abort('Error: ' + data.statusText);
                 }            
             });
         },
         function(callback) {
-
+            
             var start = (Number(selected_section.currentpage) * Number(globalvariables.options.items_per_page));
             $('#LoadingBody').html('Library Size: ' + selected_section.totalsize + '<br>Currently fetching: ' + start + '->' + (start+globalvariables.options.items_per_page));
+            console.log('Fetching..');
             $.ajax({
                 url: '/webtools/section/' + selected_section.key + '/' + start + '/' + globalvariables.options.items_per_page + '/getsubs',
                 cache: false,
@@ -49,13 +53,19 @@ function fetch_section_type_movies(section_key, pageToShow) {
                 success: function(data) {
                     //console.log('Data:' + (fetchinfo.currentfetch-1) + ' :: ' + JSON.stringify(data));
                     data.forEach(function(video){
+                        console.log('Video' + JSON.stringify(video));
                         video.subtitles.showsubs = true;
-                        selected_section.contents.push(video);                                    
+                        selected_section.contents.push(video);
+                        selected_section.contentstype = 'video';
                     });
+                    
                     callback('Batchfetch complete.');
                 },
                 error: function(data) {
-                    display_error('Failed fetching the section contents from the server. Please restart the server.');
+                    display_error('Failed fetching the section contents from the server. Please restart the server.<br>'
+                                  +'<br>Errorinfo:'
+                                  +'<br>Requested URL: ' + this.url
+                                  +'<br>Error Code/Message: ' + data.status + '/'  + data.statusText);
                     $('#LoadingModal').modal('hide');
                     get_section_video.abort('Error: ' + data.statusText);
                 }
@@ -63,7 +73,7 @@ function fetch_section_type_movies(section_key, pageToShow) {
         }
     ],function() {
         //console.log('Size of added videos:' + selected_section.contents.length);
-        display_media(0);
+        display_episodes();
     });
     get_section_video.start(section_key);
 }
