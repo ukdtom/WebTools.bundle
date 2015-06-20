@@ -13,6 +13,8 @@ function fetch_section_type_movies(section_key, pageToShow) {
                     selected_section.key = section.key;
                     selected_section.title = section.title;
                     selected_section.contents = [];
+                    selected_section.parents_key = [];
+                    selected_section.parents_title = [];
                 }
             });
 

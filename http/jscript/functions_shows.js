@@ -43,7 +43,7 @@ function fetch_section_type_show(section_key, pageToShow) {
                                   +'<br>Requested URL: ' + this.url
                                   +'<br>Error Code/Message: ' + data.status + '/'  + data.statusText);
                     $('#LoadingModal').modal('hide');
-                    get_section_video.abort('Error: ' + data.statusText);
+                    get_show.abort('Error: ' + data.statusText);
                 }            
             });
         },
@@ -70,7 +70,7 @@ function fetch_section_type_show(section_key, pageToShow) {
                                   +'<br>Requested URL: ' + this.url
                                   +'<br>Error Code/Message: ' + data.status + '/'  + data.statusText);
                     $('#LoadingModal').modal('hide');
-                    get_section_video.abort('Error: ' + data.statusText);
+                    get_show.abort('Error: ' + data.statusText);
                 }
             });   
         }
@@ -84,20 +84,22 @@ function fetch_section_type_show(section_key, pageToShow) {
 }
 
 function fetch_show_seasons(show_key, pageToShow) {
+    
     selected_section.currentpage = pageToShow;
     var get_season = new asynchelper(false,false);
     get_season.inline([
         function(callback,show_key) {
             $('#LoadingModal').modal({keyboard: false, backdrop:'static', show:true});  
             if (Number(show_key) == 'NaN') {
-                get_show.abort('Incorrect section key provided. Needs to be number.');
+                get_season.abort('Incorrect section key provided. Needs to be number.');
             }
             
             //console.log(selected_section);
-            
+            showfound = false;
             selected_section.contents.forEach(function(content) {
                 if (content.key == show_key) {
-                    
+                    console.log('Found it..');
+                    showfound = true;
                     selected_section.parents_key.push(selected_section.key);
                     selected_section.parents_title.push(selected_section.title);
 
@@ -107,6 +109,25 @@ function fetch_show_seasons(show_key, pageToShow) {
                     
                 }
             });
+            
+            if (showfound == false) {
+                console.log('Didn\'t find it..');
+                for (var pk = 0; pk < selected_section.parents_key.length; pk++) {
+                
+                    if (selected_section.parents_key[pk] == show_key) {
+                       
+                        
+
+
+                        selected_section.key = show_key;
+                        selected_section.title = selected_section.parents_title[pk];
+                        
+                        selected_section.parents_key.pop();
+                        selected_section.parents_title.pop();
+                        break;
+                    }    
+                }
+            }
             
             selected_section.contents = [];
             //console.log(selected_section);
@@ -164,7 +185,7 @@ function fetch_season_episodes(season_key, pageToShow) {
             console.log(selected_section);
             
             selected_section.contents.forEach(function(content) {
-                if (content.ratingKey == season_key) {
+                if (content.key == season_key) {
                     
                     selected_section.parents_key.push(selected_section.key);
                     selected_section.parents_title.push(selected_section.title);
@@ -174,7 +195,8 @@ function fetch_season_episodes(season_key, pageToShow) {
                     
                 }
             });
-            
+            console.log(JSON.stringify(selected_section.parents_title));
+            console.log(JSON.stringify(selected_section.parents_key));
             selected_section.contents = [];
             //console.log(selected_section);
             webtools_log(1,'Success: Set a new Current Section. Current section is now: ' + selected_section.title)

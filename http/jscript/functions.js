@@ -112,6 +112,7 @@ get_section_list.inline([
 });
 
 function display_show() {
+    window.scrollTo(0,0);
     calculate_pages();
     $('#LoadingBody').html('Applying filters and preparing output.');   
     $('#ContentHeader').html(selected_section.title);
@@ -127,6 +128,7 @@ function display_show() {
 }
 
 function display_season() {
+    window.scrollTo(0,0);
     calculate_pages();
     $('#LoadingBody').html('Applying filters and preparing output.');
     
@@ -147,6 +149,7 @@ function display_season() {
 }
 
 function display_episodes() {
+    window.scrollTo(0,0);
     /*
         Go through all the options and modify the output accordingly.
     */
@@ -165,13 +168,19 @@ function display_episodes() {
     calculate_pages();
     
     $('#LoadingBody').html('Applying filters and preparing output.');
-    $('#ContentHeader').html(selected_section.title);
+    if (selected_section.parents_key.length > 0) {
+        $('#ContentHeader').html('<a class="customlink" onclick="javascript:fetch_section_type_show(' + selected_section.parents_key[0] + ',0)">' + selected_section.parents_title[0] + '</a> /' + 
+                             '<a class="customlink" onclick="javascript:fetch_show_seasons(' + selected_section.parents_key[1] + ',0)">' + selected_section.parents_title[1] + '</a> /' + 
+                             selected_section.title);
+    } else {
+        $('#ContentHeader').html(selected_section.title); 
+    }
     $('#ContentBody').html('');
     //console.log('Start from item: ' + (globalvariables.options.items_per_page*selected_section.currentpage));
     //console.log('Show number of items from that point: ' + ((Number(globalvariables.options.items_per_page*selected_section.currentpage))+Number(globalvariables.options.items_per_page)));  
     
     for (var i=start; i<end; i++) {    
-        
+        console.log(i + JSON.stringify(selected_section.contents[i]));
         // Options Time!
         var discoveredlanguages = [];
         selected_section.contents[i].subtitles.forEach(function(subtitle) {
@@ -192,9 +201,12 @@ function display_episodes() {
             }
         });
         // End of Options Time!
-
+        var AppendToTitle = '';
+        if (selected_section.contentstype == 'episodes') {
+            AppendToTitle = '#'+selected_section.contents[i].episode + ". ";
+        }
         var newEntry = ['<div class="panel panel-default">'];
-        newEntry.push('<div class="panel-heading"><h4 class="panel-title">' + selected_section.contents[i].title + '</h4></div>');
+        newEntry.push('<div class="panel-heading"><h4 class="panel-title">' + AppendToTitle + selected_section.contents[i].title + '</h4></div>');
         newEntry.push('<div class="panel-body subtitle"><table class="table table-condensed">');
 
 
@@ -202,12 +214,14 @@ function display_episodes() {
         var anysubtitleadded = false;
         selected_section.contents[i].subtitles.forEach(function(subtitle) {
             var display_subtitle = true;
-            var language = '';
+            var language = 'None';
             var selectedsubtitle = '';
 
             if (subtitle.languageCode != null) {
                 if (typeof(languagecodes[subtitle.languageCode.toUpperCase()]) != 'undefined') {
-                    language = '<img src="flags/blank.png" class="flag flag-'+languagecodes[subtitle.languageCode.toUpperCase()].toLowerCase()+'"/>';   
+                    language = '<img src="flags/blank.png" class="flag flag-'+languagecodes[subtitle.languageCode.toUpperCase()].toLowerCase()+'" alt="'+subtitle.languageCode.toUpperCase()+'"/>';   
+                } else {
+                    language = subtitle.languageCode.toUpperCase();
                 }
             }
 
@@ -403,7 +417,7 @@ function webtools_log(Loglevel, LogEntry) {
     if ( (typeof(sessionStorage['WebToolsLog']) != 'undefined') && (sessionStorage['WebToolsLog'].length > 0) ) {
         var CurrentLog = JSON.parse(sessionStorage['WebToolsLog']);
     }
-    if (Loglevel > 0) {
+    if (Loglevel > -1) {
         var currentdate = new Date();
         var hour = '0' + currentdate.getHours();
         var minutes = '0' + currentdate.getMinutes();
@@ -433,12 +447,14 @@ function show_log() {
     $('#ContentFoot').html('<button class="btn btn-default btn-xs" onclick="clear_log();">Clear Log</button>');
 }
 
-function clear_log() {
+function clear_log(showmodal) {
     sessionStorage['WebToolsLog'] = [];
-    $('#myModalLabel').html('Logfile');
-    $('#myModalBody').html('Logfile has been cleared.');
-    $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
-    $('#myModal').modal('show');
+    if ( (typeof(showmodal) == 'undefined') || (showmodal != false) ) {
+        $('#myModalLabel').html('Logfile');
+        $('#myModalBody').html('Logfile has been cleared.');
+        $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+        $('#myModal').modal('show');
+    }
 }
 
 
@@ -457,7 +473,7 @@ function view_subtitle(mediaKey, subtitleKey) {
             }
             subtitle += '</table>';
             
-            $('#myModalLabel').html('Viewing Subtitle');
+            $('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Viewing Subtitle');
             $('#myModalBody').html(subtitle);
             $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
             $('#myModal').modal('show');
@@ -470,3 +486,8 @@ function view_subtitle(mediaKey, subtitleKey) {
         }
     });        
 }
+
+// Debug every AJAX calls hit.
+$( document ).ajaxComplete(function(event,request, settings) {
+    webtools_log(0,"Completed AJAX Call for URL: " + settings.url);
+});
