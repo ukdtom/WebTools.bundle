@@ -13,27 +13,13 @@
         <script type="text/javascript" src="jscript/languagecodes.js"></script>
         <script type="text/javascript" src="jscript/asynchelper.js"></script>
         <script type="text/javascript" src="jscript/functions.js"></script>
-        <script type="text/javascript" src="jscript/functions_shows.js"></script>
-        <script type="text/javascript" src="jscript/functions_video.js"></script>
+        
 	</head>
     <script>
     $(document).ready(function() {
-        clear_log(false);
-        webtools_log(1,'Application started');
-        get_section_list.start();
-
-            // Fetch the options when showing the modal.
-        $('#OptionsModal').on('show.bs.modal', function (e) {
-            console.log(globalvariables.options);
-            $('#OptionsModalAlert').hide();
-            $("input[name=options_hide_integrated]").prop("checked", globalvariables.options.options_hide_integrated);
-            $("input[name=options_hide_local]").prop("checked",globalvariables.options.options_hide_local);
-            $("input[name=options_hide_empty_subtitles]").prop("checked",globalvariables.options.options_hide_empty_subtitles);
-            $("input[name=options_only_multiple]").prop("checked",globalvariables.options.options_only_multiple);       
-            $("input[name=options_auto_select_duplicate]").prop("checked",globalvariables.options.options_auto_select_duplicate);
-            $("input[name=items_per_page]").val(globalvariables.options.items_per_page);
-            $("#items_per_page_max_min").html('(Max: ' + globalvariables.items_per_page_max + '. Min: ' + globalvariables.items_per_page_min + ')');
-        });
+        // Initial bootup
+        webtools.log('Application started');
+        webtools.list_modules.start();        
     });  
     </script>
 	<body>
@@ -47,40 +33,34 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="/index.html">Webtools</a>
+              <a class="navbar-brand" href="/index.html" id="MainLink">Webtools</a>
+              <a class="navbar-brand" id="SubLink" onclick=""></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Libraries <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu" id="SectionMenu">
-                      <li><a class="customlink" onclick="javascript:get_section_list.start();">Refresh Sections</a></li>
+                <li class="dropdown" id="ModuleMenu">
+                </li>
+                <li class="dropdown" id="OptionsMainLi">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Options<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu" id="OptionsMenu">
                   </ul>
                 </li>
-                <li><a onclick="show_options();" class="customlink">Options</a></li>
-                <li><a onclick="show_log();" class="customlink">Logfile</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Logfiles<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu" id="LogfilesMenu">
+                  </ul>
+                </li>
               </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
         </nav>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title" id="ContentHeader">Welcome</h3>
+            <h3 class="panel-title" id="ContentHeader">Welcome to the module selector</h3>
           </div>
-          <div class="panel-body" id="ContentBody">
-            This is an unofficial manager for subtitles.<br>
-            <b>Usage is on your own risk!</b><br><br>
-            Current features:<br>
-            <ul>
-                <li>List all subtitles for a movie/tv show in your library. Both local (next to the movie in it's folder or one subfolder) and in the agents folder.</li>
-                <li>View the subtitle and see it's contents to determine what to delete.</li>
-                <li>Delete selected subtitle from the harddrive.</li>
-                <li>Search for videos.</li>
-                <li>Options for output.</li>
-            </ul>
-          </div>
+          <div class="panel-body" id="ContentBody"></div>
         <div class="panel-footer" id="ContentFoot"></div>
         </div>
         
@@ -118,26 +98,22 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title" id="OptionsLabel">Options</h4>
+                <h4 class="modal-title" id="OptionsLabel">Preferences</h4>
               </div>
               <div class="modal-body" id="OptionsBody">
                 <div class="alert alert-danger" role="alert" id="OptionsModalAlert"></div>
                   <p>You will have to refetch library contents manually to update your results.</p>
-                <table class="table table-bordered">
-                    <tr><td><input type="checkbox" name="options_hide_local"></td><td>Hide local subtitles</td></tr>
-                    <!-- <tr><td><input type="checkbox" name="options_hide_empty_subtitles"></td><td>Hide videos without subtitles</td></tr> -->
-                    <tr><td><input type="checkbox" name="options_hide_integrated"></td><td>Hide integrated subtitles</td></tr>
-                    <tr><td><input type="checkbox" name="options_only_multiple"></td><td>Show only multiple subtitles/language</td></tr>
-                    <!-- <tr><td><input type="checkbox" name="options_auto_select_duplicate"></td><td>Autoselect duplicates based on XML</td></tr> -->
-                    <tr><td><input type="text" name="items_per_page" size="2"></td><td>Items per page <span id='items_per_page_max_min'></span></td></tr>
-                  </table>
+                <table class="table table-bordered" id="OptionsTable"></table>
               </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-default" onclick="save_options();">Save Options</button>
+                <button type="button" class="btn btn-default" onclick="webtools.save_options();">Save Options</button>
               </div>
             </div>
           </div>
         </div>
+        <nav class="navbar navbar-default navbar-fixed-bottom navbar-thin">
+          <div class="container-fluid" id="navfoot"></div>
+        </nav>
 	</body>
 </html>

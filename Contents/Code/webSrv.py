@@ -10,11 +10,15 @@
 #
 ######################################################################################################################
 
-from tornado.web import RequestHandler, StaticFileHandler, Application, HTTPError
+#from tornado.web import RequestHandler, StaticFileHandler, Application, HTTPError
+from tornado.web import *
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
-from tornado.escape import json_encode
+from tornado.escape import json_encode, xhtml_escape
+from plextvhelper import plexTV
+from logs import logs
 
+import io
 import threading
 from datetime import date
 from random import randint
@@ -22,27 +26,19 @@ import json
 from xml.etree import ElementTree
 from itertools import islice
 
+# Path to http folder within the bundle
+ACTUALPATH =  os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http')
+
 #************** webTools functions ******************************
 ''' Here we have the supported functions '''
 class webTools(object):
-	''' Return version number '''
+	''' Return version number, and other info '''
 	def getVersion(self):
-		Log.Debug('Version requested')
-		return {	'version': Dict['SharedSecret']}
-
-	''' Check if mySecret is correct and in the header '''
-	def checkSecret(self, headers):
-
-		#TODO Rem out next line when not coding to disable auth
-		return True
-
-		if 'Mysecret' in headers:
-			if Hash.MD5(Dict['SharedSecret']) == headers['Mysecret']:
-				Log.Debug('mySecret is okay')
-				return True
-			else:
-				Log.Debug('mySecret missing or wrong')
-				return False
+		retVal = {'version': VERSION, 
+						'PasswordSet': Dict['pwdset'],
+						'PlexTVOnline': plexTV().auth2myPlex()}
+		Log.Debug('Version requested, returning ' + str(retVal))
+		return retVal
 
 	''' Return webpart settings '''
 	def getSettings(self, params):
@@ -61,7 +57,7 @@ class webTools(object):
 		mySetting['options_hide_local'] = (Dict['options_hide_local'] == 'true')
 		mySetting['options_only_multiple'] = (Dict['options_only_multiple'] == 'true')
 		mySetting['items_per_page'] = int(Dict['items_per_page'])
-		mySetting['fatal_error'] = (Dict['fatal_error'] == 'true')
+		mySetting['debug'] = (Dict['debug'] == 'true')
 		return json.dumps(mySetting)
 
 	''' get Show info '''
@@ -305,92 +301,32 @@ class webTools(object):
 					filePath = sub[0].get('url')			
 					if filePath != None:
 						if filePath.startswith('media://'):
+							'''
+Here we look at an agent provided subtitle, so this part of the function 
+has been crippled on purpose
+							'''
 							filePath = filePath.replace('media:/', os.path.join(Core.app_support_path, 'Media', 'localhost'))
-							#TODO - Agent provided sub
-
-#							print 'filePath: ', filePath
-							
 							# Subtitle name
 							agent, sub = filePath.split('_')
-
 							tmp, agent = agent.split('com.')
 							# Agent used
 							agent = 'com.' + agent				
-#							print '**** sub: ', sub, ' --- ', agent
-
 							filePath2 = filePath.replace('Contents', 'Subtitle Contributions')
-#							filePath2 = filePath2.replace('Subtitles', agent)
-
 							filePath2, language = filePath2.split('Subtitles')
-							language = language[1:3]
-
-
-
-							print '******************************'
-							print 'filePath: ', filePath
-							print '******************************'
-
-
-
-#							print 'filePath2: ', filePath2
-							
-#							print 'agent: ', agent
-
-#							print 'language: ', language
-
-#							print 'file: ', sub
-	
+							language = language[1:3]	
 							filePath3 = os.path.join(filePath2[:-1], agent, language, sub)
 
-							print '******************************'
-							print 'filePath3: ', filePath3
-							print '******************************'
+							''' This is removed from the code, due to the fact, that Plex will re-download right after the deletion
 
-
-
-							print 'GED: ', filePath2[:-1]
-
-
-#							agentXMLPath = os.path.join(filePath2[:-1], 'Contents', agent + '.xml')
 							subtitlesXMLPath, tmp = filePath.split('Contents')
-
-
 							agentXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitle Contributions', agent + '.xml')							
-
-							print '******************************'
-							print 'agentXMLPath: ', agentXMLPath
-							print '******************************'
-
-
-
 							subtitlesXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitles.xml')
-
-							print '******************************'
-							print 'subtitlesXMLPath: ', subtitlesXMLPath
-							print '******************************'
-
-
-
-							print 'file: ', sub
-
 							self.DelFromXML(agentXMLPath, 'media', sub)
 							self.DelFromXML(subtitlesXMLPath, 'media', sub)
-				
-
-#							agentXML = XML.ElementFromURL('"' + agentXMLPath + '"')
-
-
-							# Let's refresh the media
+							agentXML = XML.ElementFromURL('"' + agentXMLPath + '"')
+							#Let's refresh the media
 							url = 'http://127.0.0.1:32400/library/metadata/' + params['param2'] + '/refresh&force=1'
-
 							refresh = HTTP.Request(url, immediate=False)
-
-
-
-
-# https://192-168-1-12.ebd575c9a7474c6d86b91956719f369b.plex.direct:32400/library/metadata/20/refresh&force=1
-
-							print 'ged'
 
 							# Nuke the actual file
 							try:
@@ -400,22 +336,24 @@ class webTools(object):
 
 								os.remove(filePath3)
 								print 'Removing: ' + filePath3
-
-#TODO: ALSO REMOVE THE SYMBLINK HERE
-
 								# Refresh the subtitles in Plex
 								self.getSubTitles(params)
 							except:
 								return 500
+							'''
 
-
+							retValues = {}
+							retValues['FilePath']=filePath3
+							retValues['SymbLink']=filePath
+							return retValues
 						elif filePath.startswith('file://'):
 							filePath = filePath.replace('file://', '')
 							try:
 								# Delete the actual file
 								os.remove(filePath)
-								# Refresh the subtitles in Plex
+								# Refresh the subtitles in Plex....Takes some time, but better now, than when user wanna watch a movie
 								self.getSubTitles(params)
+								return 'Deleted file : ' + filePath
 							except:
 								return 500
 						return  filePath
@@ -455,137 +393,256 @@ class webTools(object):
 
 #**************** Handler Classes for Rest **********************
 
+class BaseHandler(RequestHandler):
+	def get_current_user(self):
+		return self.get_secure_cookie(NAME)
+
+''' handler to force TLS '''
+class ForceTSLHandler(RequestHandler):
+	def get(self):
+		''' This is sadly up hill, due to the old version of Tornado used :-( '''
+		# Grap the host requested
+		host, port = self.request.headers['Host'].split(':')
+		newUrl = 'https://' + host + ':' + Prefs['WEB_Port_https'] + '/login'
+		self.redirect(newUrl, permanent=True)
+
 ''' url /test helps devs to check that we are running '''
 class testHandler(RequestHandler):
 	def get(self):
 		Log.Debug('Tornado recieved a test call')
-		self.write("Hello, world, I'm alive")
+		self.write("Hello, I'm alive")
 
-''' Here we return the version of the plugin '''
-class webToolsHandler(RequestHandler):
-	#******* GET REQUEST *********
+''' If user didn't enter the full path '''
+class idxHandler(BaseHandler):
+	@authenticated
+	def get(self):
+		self.render(ACTUALPATH + "/index.html")
+
+''' If user didn't enter the full path '''
+class LogoutHandler(BaseHandler):
+#	@authenticated
+	def get(self):
+		self.clear_cookie(NAME)
+		self.redirect('/')
+
+class LoginHandler(BaseHandler):
+	def get(self):
+		self.render(ACTUALPATH + "/login.html", next=self.get_argument("next","/"))
+
+	def post(self):
+		# Let's start by checking if the server is online
+		if plexTV().auth2myPlex():
+			token = plexTV().login(self.get_argument("user"), self.get_argument("pwd"))
+			if token == 'Auth error in plex.tv':
+				self.clear()
+				self.set_status(401)
+			else:
+				# We got a token, so is the user the owner?
+				if plexTV().isServerOwner(plexTV().get_thisPMSIdentity(), token):
+					self.allow()
+					self.redirect('/')
+				else:
+					self.clear()
+					self.set_status(403)
+		else:
+			# Server is offline
+			if Dict['password'] == '':
+				Dict['password'] = self.get_argument("pwd")
+				Dict['pwdset'] = True
+				Dict.Save
+				self.allow()
+				self.redirect('/')
+			elif Dict['password'] == self.get_argument("pwd"):
+				self.allow()
+				self.redirect('/')
+			elif Dict['password'] != self.get_argument("pwd"):
+					self.clear()
+					self.set_status(401)
+
+	def allow(self):
+		self.set_secure_cookie(NAME, Hash.MD5(Dict['SharedSecret']+Dict['password']), expires_days = None)
+
+class versionHandler(RequestHandler):
 	def get(self, **params):
-
+		self.set_header('Content-Type', 'application/json; charset=utf-8')
+		self.write(webTools().getVersion())
+		
+class webToolsHandler(BaseHandler):
+	#******* GET REQUEST *********
+	@authenticated
+	def get(self, **params):
 #		print 'THIS IS THE PARAMS: ', params
 		for param in params:
 			if param.startswith('_'):				
 				param = None
 				break
-		if params['param1'] == 'version':
-			self.write(webTools().getVersion())
-		elif webTools().checkSecret(self.request.headers):
-			if params['param1'] == 'test':
-				self.write('test')
-			elif params['param1'] == 'settings':
-				response = webTools().getSettings(params)
-				if response == 406:
-					self.clear()
-					self.set_status(406)
-					self.finish("<html><body>Unknown setting</body></html>")
-				else:
-					self.write(webTools().getSettings(params))
-			elif params['param1'] == 'sections':
-				response = webTools().getSections()
-				if response == 406:
-					self.clear()
-					self.set_status(406)
-					self.finish("<html><body>Unknown setting</body></html>")
-				else:
-					self.write(json_encode(response))
-			elif params['param1'] == 'section':
-				response = webTools().getSection(params)			
-				if response == 412:
-					self.clear()
-					self.set_status(412)
-					self.finish("<html><body>Missing section key</body></html>")
-				elif response == 404:
-					self.clear()
-					self.set_status(404)
-					self.finish("<html><body>section not found</body></html>")
-				else:
-					self.write(json_encode(response))
-			elif params['param1'] == 'show':
-				response = webTools().getShow(params)			
-				if response == 412:
-					self.clear()
-					self.set_status(412)
-					self.finish("<html><body>Missing parameters</body></html>")
-				elif response == 404:
-					self.clear()
-					self.set_status(404)
-					self.finish("<html><body>show not found</body></html>")
-				else:
-					self.write(json_encode(response))
-			elif params['param1'] == 'subtitles':
-				response = webTools().getSubTitles(params)
-				if response == 412:
-					self.clear()
-					self.set_status(412)
-					self.finish("<html><body>Missing media key</body></html>")
-				elif response == 404:
-					self.clear()
-					self.set_status(404)
-					self.finish("<html><body>Media not found</body></html>")
-				elif response == 400:
-					self.clear()
-					self.set_status(400)
-					self.finish("<html><body>Unknown 3 parameter</body></html>")
-				else:
-					self.write(json_encode(response))
-			elif params['param1'] == 'subtitle':
-				print 'Hello World'
-				response = webTools().getSubTitle(params)
-				if response == 412:
-					self.clear()
-					self.set_status(412)
-					self.finish("<html><body>Missing media key or subtitle Id</body></html>")
-				elif response == 404:
-					self.clear()
-					self.set_status(404)
-					self.finish("<html><body>Subtitle not found</body></html>")
-				elif response == 500:
-					self.clear()
-					self.set_status(500)
-					self.finish("<html><body>We failed</body></html>")
-				else:
-					self.write(json_encode(response))
+		if params['param1'] == 'test':
+			self.write('test')
+		elif params['param1'] == 'settings':
+			response = webTools().getSettings(params)
+			if response == 406:
+				self.clear()
+				self.set_status(406)
+				self.finish("<html><body>Unknown setting</body></html>")
 			else:
-				# Return a not found error
+				self.write(webTools().getSettings(params))
+		elif params['param1'] == 'sections':
+			response = webTools().getSections()
+			if response == 406:
+				self.clear()
+				self.set_status(406)
+				self.finish("<html><body>Unknown setting</body></html>")
+			else:
+				self.set_header('Content-Type', 'application/json; charset=utf-8')
+				self.write(json_encode(response))
+		elif params['param1'] == 'section':
+			response = webTools().getSection(params)			
+			if response == 412:
+				self.clear()
+				self.set_status(412)
+				self.finish("<html><body>Missing section key</body></html>")
+			elif response == 404:
+				self.clear()
+				self.set_status(404)
+				self.finish("<html><body>section not found</body></html>")
+			else:
+				self.write(json_encode(response))
+		elif params['param1'] == 'show':
+			response = webTools().getShow(params)			
+			if response == 412:
+				self.clear()
+				self.set_status(412)
+				self.finish("<html><body>Missing parameters</body></html>")
+			elif response == 404:
+				self.clear()
+				self.set_status(404)
+				self.finish("<html><body>show not found</body></html>")
+			else:
+				self.set_header('Content-Type', 'application/json; charset=utf-8')
+				self.write(json_encode(response))
+		elif params['param1'] == 'subtitles':
+			response = webTools().getSubTitles(params)
+			if response == 412:
+				self.clear()
+				self.set_status(412)
+				self.finish("<html><body>Missing media key</body></html>")
+			elif response == 404:
+				self.clear()
+				self.set_status(404)
+				self.finish("<html><body>Media not found</body></html>")
+			elif response == 400:
+				self.clear()
+				self.set_status(400)
+				self.finish("<html><body>Unknown 3 parameter</body></html>")
+			else:
+				self.set_header('Content-Type', 'application/json; charset=utf-8')
+				self.write(json_encode(response))
+		elif params['param1'] == 'subtitle':
+			response = webTools().getSubTitle(params)
+			if response == 412:
+				self.clear()
+				self.set_status(412)
+				self.finish("<html><body>Missing media key or subtitle Id</body></html>")
+			elif response == 404:
+				self.clear()
+				self.set_status(404)
+				self.finish("<html><body>Subtitle not found</body></html>")
+			elif response == 500:
+				self.clear()
+				self.set_status(500)
+				self.finish("<html><body>We failed</body></html>")
+			else:
+				self.set_header('Content-Type', 'application/json; charset=utf-8')
+				self.write(json_encode(response))
+		# Call for logs?
+		elif params['param1'] == 'logs':
+			if params['param2'] == None:
+				self.set_header('Content-Type', 'application/json; charset=utf-8')
+				self.write(json_encode(logs().list()))
+			elif params['param2'] == 'show':
+				self.set_header('Content-Type', 'application/json; charset=utf-8')
+				self.write(json_encode(logs().show(params['param3'])))
+			elif params['param2'] == 'download':			
+				self.set_header('Content-Type', 'application/force-download')
+				self.set_header ('Content-Disposition', 'attachment; filename='+params['param3']+'')
+				myFile = logs().show(params['param3'])
+				for line in myFile:
+					self.write(line + '\n')
+				self.finish()
+			elif params['param2'] == 'filter':
+				print 'Filtered Log list'
+				self.set_header('Content-Type', 'application/json; charset=utf-8')
+				self.write(json_encode(logs().list(params['param3'])))				
+			elif params['param2'] == 'zip':			
+				self.set_header('Content-Type', 'application/force-download')
+				self.set_header ('Content-Disposition', 'attachment; filename=PMSLogs.zip')
+				myZip = logs().getAllAsZip()
+				with io.open(myZip, 'rb') as f:
+					try:
+						while True:
+							fbuffer = f.read(4096)
+							if fbuffer:
+								self.write(fbuffer)
+							else:
+								f.close()
+								self.finish()
+								# remove temp zip file again
+								os.remove(myZip)
+								return
+					except:
+						raise HTTPError(500)
+			else:
 				raise HTTPError(404)
 		else:
 			# Return a not found error
-			raise HTTPError(401)
+			raise HTTPError(404)
 
 	#******* PUT REQUEST *********
+	@authenticated
 	def put(self, **params):
-		if webTools().checkSecret(self.request.headers):
-			if params['param1'] == 'test':
-				self.write('test')
-			elif params['param1'] == 'settings':
-				response = webTools().setSettings(params)
-				if response == 200:
-					self.clear()
-					self.set_status(200)
-				elif response == 412:
-					self.clear()
-					self.set_status(412)
-					self.finish("<html><body>Missing settings to update</body></html>")
-				elif response == 406:
-					self.clear()
-					self.set_status(406)
-					self.finish("<html><body>Tried to update unknown setting</body></html>")					
-			else:
-				# Return a not found error
-				raise HTTPError(404)
+		if params['param1'] == 'test':
+			self.write('test')
+		elif params['param1'] == 'settings':
+			response = webTools().setSettings(params)
+			if response == 200:
+				self.clear()
+				self.set_status(200)
+			elif response == 412:
+				self.clear()
+				self.set_status(412)
+				self.finish("<html><body>Missing settings to update</body></html>")
+			elif response == 406:
+				self.clear()
+				self.set_status(406)
+				self.finish("<html><body>Tried to update unknown setting</body></html>")					
 		else:
 			# Return a not found error
-			raise HTTPError(401)
+			raise HTTPError(404)
 
 	#******* POST REQUEST *********
+	@authenticated
 	def post(self, **params):
-		raise HTTPError(404)
+#		print 'THIS IS THE PARAMS: ', params
+		if params['param1'] == 'password':
+			if params['param2'] == Dict['password']:
+				if params['param3'] != None:
+					Dict['password'] = params['param3']
+					Dict.Save
+				else:
+					self.clear()
+					self.set_status(400)
+					self.finish("<html><body>Bad New password</body></html>")
+			else:
+				self.clear()
+				self.set_status(401)
+				self.finish("<html><body>Bad password</body></html>")
+		elif params['param1'] == 'logs':
+			Log.Debug('FrontEnd: ' + params['param2'])
+		else:
+			raise HTTPError(404)
 
 	#******* DELETE REQUEST *********
+	@authenticated
 	def delete(self, **params):
 		if params['param1'] == 'subtitle':
 			response = webTools().delSubTitle(params)
@@ -610,18 +667,53 @@ class webToolsHandler(RequestHandler):
 		
 # The default handler is the test handler
 handlers = [(r'/test', testHandler),
-						(r"/webtools/(?P<param1>[^\/]+)/?(?P<param2>[^\/]+)?/?(?P<param3>[^\/]+)?/?(?P<param4>[^\/]+)?/?(?P<param5>[^\/]+)?/?(?P<param6>[^\/]+)?/?(?P<param7>[^\/]+)?/?(?P<param8>[^\/]+)?", webToolsHandler)
+						(r"/login", LoginHandler),
+						(r"/logout", LogoutHandler),
+						(r"/webtools/version", versionHandler),
+						(r'/', idxHandler),
+						(r'/index.html', idxHandler),
+						(r"/webtools/(?P<param1>[^\/]+)/?(?P<param2>[^\/]+)?/?(?P<param3>[^\/]+)?/?(?P<param4>[^\/]+)?/?(?P<param5>[^\/]+)?/?(?P<param6>[^\/]+)?/?(?P<param7>[^\/]+)?/?(?P<param8>[^\/]+)?", webToolsHandler),
+						(r'/(.*)', StaticFileHandler, {'path': ACTUALPATH})
 ]
+
+if Prefs['Force_SSL']:
+	httpHandlers = [(r"/login", ForceTSLHandler),
+									(r"/logout", LogoutHandler),
+									(r"/webtools/version", ForceTSLHandler),
+									(r'/', ForceTSLHandler),
+									(r'/index.html', ForceTSLHandler),
+									(r"/webtools/(?P<param1>[^\/]+)/?(?P<param2>[^\/]+)?/?(?P<param3>[^\/]+)?/?(?P<param4>[^\/]+)?/?(?P<param5>[^\/]+)?/?(?P<param6>[^\/]+)?/?(?P<param7>[^\/]+)?/?(?P<param8>[^\/]+)?", ForceTSLHandler)]
+
+else:
+	httpHandlers = handlers
+
+httpsHandlers = handlers
 
 #********* Tornado itself *******************
 ''' Start the actual instance of tornado '''
 def start_tornado():
-	application = Application(handlers)
+	myCookie = Hash.MD5(Dict['SharedSecret'] + NAME)
+
+	settings = {"cookie_secret": "__" + myCookie + "__",
+							"login_url": "/login"}
+
+	application = Application(httpHandlers, **settings)
+	applicationTLS = Application(httpsHandlers, **settings)
 	http_server = HTTPServer(application)
+	# Use our own certificate for TLS
+	http_serverTLS = HTTPServer(applicationTLS, 
+													ssl_options={
+																			"certfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', 'WebTools.crt'),
+																			"keyfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', 'WebTools.key')})
+
+
 	# Set web server port to the setting in the channel prefs
-	port = int(Prefs['WEB_Port'])	
+	port = int(Prefs['WEB_Port_http'])
+	ports = int(Prefs['WEB_Port_https'])	
 	http_server.listen(port)
-	Log.Debug('Starting tornado on port %s' %(port))
+	http_serverTLS.listen(ports)
+
+	Log.Debug('Starting tornado on ports %s and %s' %(port, ports))
 	IOLoop.instance().start()
 	Log.Debug('Shutting down tornado')
 
@@ -632,14 +724,7 @@ def stopWeb():
 
 ''' Main call '''
 def startWeb():
-
 	stopWeb()
-
-	# Path to http directory in the bundle, that we need to serve
-	actualPath =  {'path': os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http')}
-	rootpath = (r'/(.*)', StaticFileHandler, actualPath)
-	global handlers
-	handlers.append(rootpath)
 	Log.Debug('tornado is handling the following URI: %s' %(handlers))
 	t = threading.Thread(target=start_tornado)
 	t.start()

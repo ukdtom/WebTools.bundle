@@ -1,9 +1,3 @@
-languagecode : 
-- Make it as a JSON object. - Done (2015-06-07)
-
-functions.js - shared gunctions
-- Fix output of flags. - Probably fixed (2015-06-07)
-
 functions_video - video-type libraries
 - Fix presentation of subtitles
 - Add deletion subs
@@ -22,15 +16,6 @@ log :
 - - Persistent on a per-domain level
 - Add viewing of logs
 
-Auth against plex.tv
-
-settings : 
-- Save settings - Working as of 2015-06-07
-
 pages : 
 - fully implement them.. Not yet done.
-
-
-Options : 
-- Remove hide those with no subtitles. Not hiding anything so what is the point?
-- Autoselect based on XML. Needed anymore?
+ - When viewing logs, empty Page-span.

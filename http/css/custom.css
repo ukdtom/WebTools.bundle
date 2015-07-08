@@ -32,7 +32,7 @@ th {background-color: #FE9B00; color: #242424;}
 .btn-default:hover {background-color: #FE9B00; color: #242424;}
 
 .modal-header {background-color: #FE9B00; color: #242424;}
-body {background-color: #242424; padding-top:70px;}
+body {background-color: #242424; padding-top:70px;  padding-bottom:70px;}
 
 
 .customlink {cursor: pointer;}
@@ -49,3 +49,7 @@ body {background-color: #242424; padding-top:70px;}
 .flags { position:relative;display:inline-block;width:1.33333333em;line-height:1em } 
 
 .td-small {width: 60px; }
+
+#navfoot {text-align: center;}
+
+.navbar-thin {min-height: 40px; padding-top: 5px; border-top: 1px solid #242424;}
