@@ -1,0 +1,41 @@
+<html lang="en">
+	<head>
+		<title>WebTools</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/custom.css" rel="stylesheet">
+        <link href="flags/flags.css" rel="stylesheet">
+		<script type="text/javascript" src="jscript/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="jscript/bootstrap.min.js"></script>
+	</head>
+	<body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/index.html">Webtools</a>
+            </div>
+          </div><!-- /.container-fluid -->
+        </nav>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title" id="ContentHeader">Welcome</h3>
+          </div>
+          <div class="panel-body" id="ContentBody">
+            <form action="/login" method="post">
+            Password: <input type="password" name="pwd">
+            <input class="btn btn-default"  type="submit" value="Sign in">
+            </form>
+          </div>
+        <div class="panel-footer" id="ContentFoot"></div>
+        </div>
+	</body>
+</html>

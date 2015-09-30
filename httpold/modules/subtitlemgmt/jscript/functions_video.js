@@ -1,6 +1,5 @@
 subtitlemgmt.fetch_section_type_movies = function(section_key, pageToShow) {
     $('#navfoot').html('');
-    $('#ContentFoot').html('');
     subtitlemgmt.selected_section.currentpage = pageToShow;
     var get_section_video = new asynchelper(false, false);
     get_section_video.inline([
@@ -285,12 +284,12 @@ subtitlemgmt.subtitle_delete = function(videoKey) {
                 url: '/webtools/subtitle/'+splitstring[0]+'/'+splitstring[1],
                 type: 'DELETE',
                 cache: false,
-                success: function(response, status, xhr) {
+                success: function(response) {
+                    
                     $('input[value="'+splitstring[0]+','+splitstring[1]+'"]').prop('disabled',true);
                     $('input[value="'+splitstring[0]+','+splitstring[1]+'"]').prop('checked',false);
                     $('input[value="'+splitstring[0]+','+splitstring[1]+'"]').parent().parent().addClass('bg-danger');
-					$('input[value="'+splitstring[0]+','+splitstring[1]+'"]').parent().parent().fadeOut(2000);
-                    webtools.log(response.toString());	
+                    webtools.log(response.toString());
                     callback(response.toString(),subtitlearray);
                 },
                 error: function(response) {
@@ -304,4 +303,4 @@ subtitlemgmt.subtitle_delete = function(videoKey) {
     });
     delete_query.start(subtitlearray);
     
-};
+}

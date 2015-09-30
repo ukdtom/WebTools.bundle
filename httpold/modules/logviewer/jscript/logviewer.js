@@ -10,7 +10,7 @@ var logviewer = webtools.functions.logviewer;
 
 logviewer.start = function () {
     $('#LoadingModal').modal({keyboard: false, backdrop:'static', show:true});  
-    $('#ContentHeader').html('Viewing Logfile: <select id="LogfileList"></select> <a class="customlink" onClick="logviewer.download($(\'#LogfileList\').val());">Download selected logfile</a> / <a class="customlink" onClick="logviewer.download();">Download all as zip</a>');
+    $('#ContentHeader').html('Viewing Logfile: <select id="LogfileList"></select>');
     $('#ContentBody').html('');
     $('#ContentFoot').html('');
     logviewer.fetchlogfiles();
@@ -53,7 +53,6 @@ logviewer.viewlogfile = function (filename) {
         type: 'GET',
         dataType: 'JSON',
         success: function(data) {
-            webtools.log('Fetched ' + filename);
             var subtitle = '<table class="table table-bordered">';
             subtitle += '<tr><th class="td-small">Row#</th><th>Logentry</th></tr>';
             if (data.length > 0) {
@@ -72,7 +71,6 @@ logviewer.viewlogfile = function (filename) {
             
         },
         error: function(data) {
-            webtools.log('Failed fetching ' + filename);
             webtools.display_error('Failed fetching the settings from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>'
                           +'<br>Errorinfo:'
                           +'<br>Requested URL: ' + this.url
@@ -80,12 +78,4 @@ logviewer.viewlogfile = function (filename) {
             $('#LoadingModal').modal('hide');
         }
     }); 
-}
-
-logviewer.download = function(filename) {
-    if (typeof(filename) != 'undefined') {
-        window.location.href = '/webtools/logs/download/' + filename;
-    } else {
-        window.location.href = '/webtools/logs/zip';
-    }
 }

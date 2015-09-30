@@ -7,7 +7,6 @@ subtitlemgmt.fetch_section_type_show = function(section_key, pageToShow) {
     get_show.inline([
         function(callback,section_key) {
             $('#navfoot').html('');
-            $('#ContentFoot').html('');
             $('#LoadingModal').modal({keyboard: false, backdrop:'static', show:true});  
             if (Number(section_key) == 'NaN') {
                 get_show.abort('Incorrect section key provided. Needs to be number.');
@@ -85,7 +84,6 @@ subtitlemgmt.fetch_section_type_show = function(section_key, pageToShow) {
 
 subtitlemgmt.fetch_show_seasons = function(show_key, pageToShow) {
     $('#navfoot').html('');
-    $('#ContentFoot').html('');
     subtitlemgmt.selected_section.currentpage = pageToShow;
     var get_season = new asynchelper(false,false);
     get_season.inline([
@@ -168,7 +166,6 @@ subtitlemgmt.fetch_show_seasons = function(show_key, pageToShow) {
 
 subtitlemgmt.fetch_season_episodes = function(season_key, pageToShow) {
     $('#navfoot').html('');
-    $('#ContentFoot').html('');
     subtitlemgmt.selected_section.currentpage = pageToShow;
     var get_episodes = new asynchelper(false,false);
     get_episodes.inline([

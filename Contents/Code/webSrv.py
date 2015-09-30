@@ -17,6 +17,7 @@ from tornado.ioloop import IOLoop
 from tornado.escape import json_encode, xhtml_escape
 from plextvhelper import plexTV
 from logs import logs
+from updater import updater
 
 import io
 import threading
@@ -469,7 +470,7 @@ class versionHandler(RequestHandler):
 		
 class webToolsHandler(BaseHandler):
 	#******* GET REQUEST *********
-	@authenticated
+#	@authenticated
 	def get(self, **params):
 #		print 'THIS IS THE PARAMS: ', params
 		for param in params:
@@ -593,9 +594,29 @@ class webToolsHandler(BaseHandler):
 						raise HTTPError(500)
 			else:
 				raise HTTPError(404)
+		# Call for updates
+		elif params['param1'] == 'update':
+			if params['param2'] == 'all':
+				if params['param3'] == None:
+					Log.Debug('Missing Param3 for update (Owner)')
+					raise HTTPError(510)
+				if params['param4'] == None:
+					Log.Debug('Missing Param4 for update (Git Repo)')
+					raise HTTPError(510)
+				self.set_header('Content-Type', 'application/json; charset=utf-8')
+				self.write(json_encode(updater().getlatestinfo(params['param3'], params['param4'], True, True)))
+			elif params['param2'] != None:
+				if params['param3'] == None:
+					Log.Debug('Missing Param3 for update (Git Repo)')
+					raise HTTPError(510)
+				self.set_header('Content-Type', 'application/json; charset=utf-8')
+				self.write(json_encode(updater().getlatestinfo(params['param2'], params['param3'], True)))
+			else:
+				raise HTTPError(510)
 		else:
 			# Return a not found error
 			raise HTTPError(404)
+
 
 	#******* PUT REQUEST *********
 	@authenticated

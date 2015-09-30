@@ -6,7 +6,7 @@
 #					Author:			dagaluf, a Plex Community member
 #					Author:			dane22, a Plex Community member
 #
-#					Support thread:	https://forums.plex.tv/index.php/topic/119940-webtool-subtitle-manager-development/
+#					Support thread:	https://forums.plex.tv/discussion/126254
 #
 ######################################################################################################################
 
@@ -14,7 +14,7 @@
 PREFIX = '/utils/webtools'
 NAME = 'WebTools'
 ICON = 'WebTools.png'
-VERSION = '0.0.1.0'
+VERSION = '1.0'
 
 #********** Imports needed *********
 import os, io, time
@@ -87,7 +87,11 @@ def MainMenu():
 	Log.Debug("**********  Starting MainMenu  **********")	
 	oc = ObjectContainer()
 	oc.add(DirectoryObject(key=Callback(MainMenu), title="To access this channel, go to"))
-	oc.add(DirectoryObject(key=Callback(MainMenu), title='http://' + Network.Address + ':' + Prefs['WEB_Port'] + '/index.html'))
+	if Prefs['Force_SSL']:
+		oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' + Network.Address + ':' + Prefs['WEB_Port_https'] + '/index.html'))
+	else:
+		oc.add(DirectoryObject(key=Callback(MainMenu), title='http://' + Network.Address + ':' + Prefs['WEB_Port_http'] + '/index.html'))
+		oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' + Network.Address + ':' + Prefs['WEB_Port_https'] + '/index.html'))
 	oc.add(PrefsObject(title='Preferences', thumb=R('icon-prefs.png')))
 	Log.Debug("**********  Ending MainMenu  **********")
 	return oc

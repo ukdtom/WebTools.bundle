@@ -3,7 +3,6 @@ var webtools = {
     modules: [],
     active_module: '',
     functions: {},
-	version: 0,
     list_modules: new asynchelper(true,false),
     activate_module: function() {},
     display_error: function() {},
@@ -12,10 +11,8 @@ var webtools = {
     log: function() {},
     show_log: function() {},
     changepassword_display: function() {},
-    changepassword_work: function() {},
-	updates_check: function () {},
-	updates_check_display: function () {}
-};
+    changepassword_work: function() {}
+}
 
 // Webtools function
 
@@ -29,12 +26,10 @@ webtools.list_modules.inline([
                 cache: false,
                 dataType: 'JSON',
                 success: function(data) {
-					webtools.version = data.version;
                     $('#MainLink').html('Webtools - v' + data.version);
-                    if (data.PlexTVOnline === false) {
+                    if (data.PlexTVOnline == false) {
                         $('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.changepassword_display();" >Change Password</a></li>');
                     }
-					$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.updates_check_display();" >Check for Updates</a></li>');
                     callback('VersionFetch:Success',activatemodulename);
                 },
                 error: function(data) {
@@ -56,13 +51,13 @@ webtools.list_modules.inline([
             success: function(data) {
                 //webtools.modules = data;
                 // For testing purposes only:
-                webtools.modules = [['subtitlemgmt', 'Subtitle Management'],['logviewer','LogViewer Tool']];
+                webtools.modules = ['subtitlemgmt','logviewer'];
                 callback(false,activatemodulename);
             },
             error: function(data) {
                 //webtools.modules = data;
                 // For testing purposes only:
-                webtools.modules = [['subtitlemgmt', 'Subtitle Management'],['logviewer','LogViewer Tool']];
+                webtools.modules = ['subtitlemgmt','logviewer'];
                 callback(false,activatemodulename);
             }
         });
@@ -72,14 +67,12 @@ webtools.list_modules.inline([
     }
 ],
 function(result,activatemodulename) {
-    //console.log(typeof(activatemodulename));
+    console.log(typeof(activatemodulename));
     if (typeof(activatemodulename) == 'undefined') {
     
-        var contents = [
-            'Webtools is a tool that enables the use of modules to help you with your Plex Server management.<br>',
-            '<b>Available Modules</b>'];
+        var contents = ['Available Modules:'];
         webtools.modules.forEach( function(modulename) {
-            contents.push('<a class="customlink" onclick="webtools.activate_module(\''+modulename[0]+'\')">'+modulename[1]+'</a>');
+            contents.push('<a class="customlink" onclick="webtools.activate_module(\''+modulename+'\')">'+modulename+'</a>');
         });
         $('#ContentBody').html(contents.join('<br>'));   
         $('#LoadingModal').modal('hide');
@@ -91,7 +84,6 @@ function(result,activatemodulename) {
 // This module sets the active module and launches it's start function.
 webtools.activate_module = function(modulename) {
     $('#navfoot').html(''); 
-    $('#ContentFoot').html('');
     $('#LoadingModal').modal({keyboard: false, backdrop:'static', show:true}); 
     $.ajax({
         url: 'modules/'+modulename+'/jscript/'+modulename+'.js',
@@ -101,27 +93,15 @@ webtools.activate_module = function(modulename) {
         success: function() {
             webtools.active_module = modulename;
             webtools.functions[modulename].start();
-            if (webtools.functions[modulename].hasoptions === true) {    
+            if (webtools.functions[modulename].hasoptions == true) {    
                 $("#OptionsMenu").append('<li><a class="customlink" onclick="javascript:webtools.functions[\''+modulename+'\'].show_options();" >Preferences</a></li>');
             }   
             
-            if ($('#OptionsMenu li').length === 0) {
+            if ($('#OptionsMenu li').length == 0) {
                 $('#OptionsMainLi').html('');
             }
-            
-            var moduledisplayname = '';
-            webtools.modules.forEach( function(modulename_find) {
-                if (modulename_find[0] == modulename) {
-                    moduledisplayname = modulename_find[1];
-                }
-            });
-            
-            
-            $("#SubLink").attr('onclick','javascript:webtools.list_modules.start(\'' + modulename + '\')');
-            $("#SubLink").html('/'+moduledisplayname);
-            
-            $('#ModuleCSS').attr('href','modules/'+modulename+'/css/'+modulename+'.css');
-            
+            $("#SubLink").attr('onclick','javascript:webtools.list_modules.start(\''+modulename+'\')');
+            $("#SubLink").html('/'+modulename);
             $('#LoadingModal').modal('hide');
         },
         error: function(data) {
@@ -132,7 +112,7 @@ webtools.activate_module = function(modulename) {
             $('#LoadingModal').modal('hide');
         }
     });
-};
+}
 
 // The only purpose of this is to display a modal with an error message.
 webtools.display_error = function(message) {
@@ -140,11 +120,11 @@ webtools.display_error = function(message) {
     $('#myModalBody').html(message);
     $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
     $('#myModal').modal('show');
-};
+}
 
 webtools.save_options = function() {
    webtools.functions[webtools.active_module].save_options(); 
-};
+}
 
 webtools.listlogfiles = function(callback,activatemodulename) {
     
@@ -167,6 +147,7 @@ webtools.listlogfiles = function(callback,activatemodulename) {
             $('#LogfilesMenu').append('<li><a class="customlink" href="/webtools/logs/zip">Download all logfiles as Zip</a></li>');
             $('#LogfilesMenu').append('<li><a class="customlink" onclick="javascript:webtools.listlogfiles();">Refresh Logfilelist</a></li>');
             if (typeof(callback) != 'undefined') {
+                console.log(activatemodulename);
                 callback('LogfileNamesFetch:Success',activatemodulename);
             } else {
                 $('#LoadingModal').modal('hide');
@@ -184,27 +165,23 @@ webtools.listlogfiles = function(callback,activatemodulename) {
         },
 
     });     
-};
+}
 
-webtools.log = function (LogEntry, Source) {
-    if (typeof(Source) == 'undefined') {       
-        Source = webtools.active_module;      
-    }
-    
+webtools.log = function(LogEntry) {
     $.ajax({
-        url: '/webtools/logs/[' + Source + '] ' + encodeURIComponent(LogEntry),
+        url: '/webtools/logs/'+LogEntry,
         type: 'POST',
         global: false,
         cache: false,
         dataType: 'text',
         success: function(data) {
-            //console.log(data);
+            console.log(data);
         },
         error: function(data) {
-            //console.log(data);
+            console.log(data);
         }
     });
-};
+}
 
 webtools.show_log = function(filename) {
     $('#ContentHeader').html('Logfile: ' + filename);  
@@ -226,11 +203,11 @@ webtools.show_log = function(filename) {
     
     
     $('#ContentFoot').html('<a href="/webtools/logs/download/'+filename+'">Download Logfile</a>');
-};
+}
 
 // Debug every AJAX calls hit.
 $( document ).ajaxComplete(function(event,request, settings) {
-    webtools.log("Completed AJAX Call for URL: " + settings.url, 'Core');
+    webtools.log("Completed AJAX Call for URL: " + encodeURIComponent(settings.url));
 });
 
 
@@ -245,12 +222,12 @@ webtools.changepassword_display = function() {
                            '<tr><td>Repeat Password:</td><td><input type="password" name="repeatpassword"></td></tr>'+
                            '</table>'+
                            '<p id="newpassword_error"></p>');
-    $('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.changepassword_work();">Save</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+    $('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="changepassword_work();">Save</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
     $('#myModal').modal('show');    
-};
+}
 
 webtools.changepassword_work = function() {
-    if ($("input[name=newpassword]").val().length === 0) {
+    if ($("input[name=newpassword]").val().length == 0) {
         $('#newpassword_error').html('Password can\'t be empty.');
         $("input[name=newpassword]").addClass('bg-danger');
     } else if ($("input[name=newpassword]").val() != $("input[name=repeatpassword]").val()) {
@@ -263,6 +240,7 @@ webtools.changepassword_work = function() {
             url: '/webtools/settings/password/'+$("input[name=newpassword]").val(),
             type: 'PUT',
             cache: false,
+            headers: {'Mysecret':globalvariables.secret},
             success: function(data) {
                 $('#myModalBody').html('Password has been changed.');
                 $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
@@ -273,82 +251,5 @@ webtools.changepassword_work = function() {
             }
         });
     }
-};
-
-webtools.updates_check_display = function () {
-    $('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Check For Updates');
-    $('#myModalBody').html('<p id="updateinfo">No update information fetched yet.</p>');
-    $('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.updates_check();">Check</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
-    $('#myModal').modal('show'); 
-};
-
-webtools.updates_check = function () {
-	$.ajax({
-		url: '/webtools/update/dagalufh/WebTools.bundle',
-		type: 'GET',
-		cache: false,
-		success: function (data) {
-			infoarray = [];
-			//for (var key in data) {
-            //  infoarray.push(key + ': ' + data[key]);  
-            //}
-			
-			infoarray.push('Latest Update: ' + data.published_at);
-			infoarray.push('Version Name: ' + data.name);
-			infoarray.push('Author: <a target="_NEW" href="' + data.author.html_url + '">' + data.author.login + '</a>');
-			infoarray.push('Release Notes: ' + data.body);
-			infoarray.push('Download url: <a target="_NEW" href="' + data.zipball_url + '">' + data.zipball_url + '</a>');
-			console.log('version compare: ' + compare(webtools.version,data.name.substring(1)) + ' A: ' + webtools.version + '> B: ' + data.name.substring(1));
-			switch (compare(webtools.version,data.name.substring(1))) {
-					case 0:
-						infoarray.push('You are on the latest and greatest!');
-						break;
-					case -1:
-						infoarray.push('You\'ve fallen behind. Time to update to the greatest!');
-						break;
-					case 1:
-						infoarray.push('You are ahead of time. Your version is newer than the one on Github.');
-						break;
-				}
-			$('#updateinfo').html(infoarray.join('<br>'));
-		}
-	});
-};
-
-
-// This function is created by http://stackoverflow.com/users/148423/joe
-function compare(a, b) {
-    if (a === b) {
-       return 0;
-    }
-
-    var a_components = a.split(".");
-    var b_components = b.split(".");
-
-    var len = Math.min(a_components.length, b_components.length);
-
-    // loop while the components are equal
-    for (var i = 0; i < len; i++) {
-        // A bigger than B
-        if (parseInt(a_components[i]) > parseInt(b_components[i])) {
-            return 1;
-        }
-
-        // B bigger than A
-        if (parseInt(a_components[i]) < parseInt(b_components[i])) {
-            return -1;
-        }
-    }
-
-    // If one's a prefix of the other, the longer one is greater.
-    if (a_components.length > b_components.length) {
-        return 1;
-    }
-
-    if (a_components.length < b_components.length) {
-        return -1;
-    }
-
-    // Otherwise they are the same.
-    return 0;
 }
+
