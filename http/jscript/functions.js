@@ -283,6 +283,7 @@ webtools.updates_check_display = function () {
 };
 
 webtools.updates_check = function () {
+    $('#updateinfo').html('Please wait while fetching information from Github.');
 	$.ajax({
 		url: '/webtools/update/dagalufh/WebTools.bundle',
 		type: 'GET',
@@ -311,7 +312,10 @@ webtools.updates_check = function () {
 						break;
 				}
 			$('#updateinfo').html(infoarray.join('<br>'));
-		}
+		},
+        error: function () {
+            $('#updateinfo').html('An error occured while trying to fetch information from Github. Try again in a little while.');
+        }
 	});
 };
 
