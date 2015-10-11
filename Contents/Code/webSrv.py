@@ -470,7 +470,7 @@ class versionHandler(RequestHandler):
 		
 class webToolsHandler(BaseHandler):
 	#******* GET REQUEST *********
-#	@authenticated
+	@authenticated
 	def get(self, **params):
 #		print 'THIS IS THE PARAMS: ', params
 		for param in params:

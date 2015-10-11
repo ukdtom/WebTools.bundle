@@ -293,24 +293,28 @@ webtools.updates_check = function () {
 			//for (var key in data) {
             //  infoarray.push(key + ': ' + data[key]);  
             //}
-			
-			infoarray.push('Latest Update: ' + data.published_at);
-			infoarray.push('Version Name: ' + data.name);
-			infoarray.push('Author: <a target="_NEW" href="' + data.author.html_url + '">' + data.author.login + '</a>');
-			infoarray.push('Release Notes: ' + data.body);
-			infoarray.push('Download url: <a target="_NEW" href="' + data.zipball_url + '">' + data.zipball_url + '</a>');
-			console.log('version compare: ' + compare(webtools.version,data.name.substring(1)) + ' A: ' + webtools.version + '> B: ' + data.name.substring(1));
-			switch (compare(webtools.version,data.name.substring(1))) {
-					case 0:
-						infoarray.push('You are on the latest and greatest!');
-						break;
-					case -1:
-						infoarray.push('You\'ve fallen behind. Time to update to the greatest!');
-						break;
-					case 1:
-						infoarray.push('You are ahead of time. Your version is newer than the one on Github.');
-						break;
-				}
+			if (typeof(data.published_at) == 'undefined') {
+                infoarray.push('No releases available.');
+            } else {
+                infoarray.push('Latest Update: ' + data.published_at);
+                infoarray.push('Version Name: ' + data.name);
+                infoarray.push('Author: <a target="_NEW" href="' + data.author.html_url + '">' + data.author.login + '</a>');
+                infoarray.push('Release Notes: ' + data.body);
+                infoarray.push('Download url: <a target="_NEW" href="' + data.zipball_url + '">' + data.zipball_url + '</a>');
+                console.log('version compare: ' + compare(webtools.version,data.name.substring(1)) + ' A: ' + webtools.version + '> B: ' + data.name.substring(1));
+
+                switch (compare(webtools.version,data.name.substring(1))) {
+                        case 0:
+                            infoarray.push('You are on the latest and greatest!');
+                            break;
+                        case -1:
+                            infoarray.push('You\'ve fallen behind. Time to update to the greatest!');
+                            break;
+                        case 1:
+                            infoarray.push('You are ahead of time. Your version is newer than the one on Github.');
+                            break;
+                }
+            }
 			$('#updateinfo').html(infoarray.join('<br>'));
 		},
         error: function () {
