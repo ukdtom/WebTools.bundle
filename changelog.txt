@@ -1,3 +1,22 @@
+V1.0:
+Release of the brand new interface!
+It holds a ton of new and refined looks and some under the hood improvements. Completly rewritten.
+
+V0.0.0.18:
+	HTTP Part:
+	- Moved Token handling to the end of queries.
+
+V0.0.0.17:
+	HTTP Part:
+	- Modified Token handling to make sure it's only appended if it's actually there.
+	- Modified loading screens when loading sections and movies.
+	- Corrected an issue with autoselecting duplicates that caused all subtitles to be selected.
+
+V0.0.0.16:
+	HTTP Part:
+	- Added Token handling.
+	- Changed viewing of subtitles and logs to be handled by Modal instead.
+	- Corrected text on welcome page.
 V0.0.0.15:
 	Bundle Part:
 	- Added Token authentication, if needed

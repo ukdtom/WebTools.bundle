@@ -1,8 +1,20 @@
 [
 	{
-		"id":"PMS_Path",
-		"label":"Enter external IP address of your PMS, or dns name, without the leading http://",
+		"id":"WEB_Port_http",
+		"label":"Enter the port that this plugin should use for http",
 		"type":"text",
-		"default":"None"
-	}
+		"default":"33400"
+	},
+	{
+		"id":"WEB_Port_https",
+		"label":"Enter the port that this plugin should use for https",
+		"type":"text",
+		"default":"33443"
+	},
+	{
+		"id":"Force_SSL",
+		"label":"Select to force https",
+		"type":"bool",
+		"default":"true"
+	}	
 ]

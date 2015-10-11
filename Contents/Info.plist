@@ -10,5 +10,7 @@
 	<string>2</string>
 	<key>PlexPluginCodePolicy</key>
 	<string>Elevated</string>
+	<key>PlexPluginMode</key>
+	<string>Daemon</string>
 </dict>
 </plist>

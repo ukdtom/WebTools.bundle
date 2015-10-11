@@ -1,219 +1,121 @@
-<!DOCTYPE html "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
-	<head profile="http://www.w3.org/2005/10/profile">
-		<meta charset=utf-8 />
-		<meta http-equiv='cache-control' content='no-cache'>
-		<meta http-equiv='expires' content='0'>
-		<meta http-equiv='pragma' content='no-cache'>		
+	<head>
 		<title>WebTools</title>
-		<link rel="icon" type="image/x-icon" href="images/favicon.ico">
-		 <!-- Bootstrap -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+		<!-- Bootstrap -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
-		 <!-- Custom CSS -->
-		<link rel="stylesheet" href="css/style.css" type="text/css" />
-		
-		<script type="text/javascript" src="jscript/jquery-1.11.1.min.js"></script>
-		<script src="jscript/bootstrap.min.js"></script>
+        <link href="css/custom.css" rel="stylesheet">
+        <link href="flags/flags.css" rel="stylesheet">
+        <link id="ModuleCSS" href="" rel="stylesheet">
+		<script type="text/javascript" src="jscript/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="jscript/bootstrap.min.js"></script>
+        <script type="text/javascript" src="jscript/jquery.md5.js"></script>
+        <script type="text/javascript" src="jscript/languagecodes.js"></script>
+        <script type="text/javascript" src="jscript/asynchelper.js"></script>
+        <script type="text/javascript" src="jscript/functions.js"></script>
+        
 	</head>
-	<script type="text/javascript">
-		var loadingScreen = "<div class='mainText'>Loading...</div>"
-			
-		var timerstart = 0;
-		
-		
-		// Populate the libraries menu.
-		$(document).ready(function() {		
-		$("#LibraryBox table").html(loadingScreen);
-			$.ajax({
-				url: "jscript/settings.js",
-				cache: false,
-				dataType: "script",
-				global: false,
-				success: function() {
-					$("#PageBar").html("WebTools V." + Version);
-					$.ajax({
-						  url: "jscript/functions.js",
-						  cache: false,
-						  dataType: "script",
-						  global: false,
-						  success: function() {
-							/**
-							 * Check that the settings have been set.
-							 */
-							 if(PathToPlexMediaFolder === false) {
-								log_add("Error: Go through plugin preferences in Plex first.");
-								fatal_error = true;
-							 } else {
-								// Fetch the current settings and set the checkboxes accordingly.
-								if(options_hide_integrated == "true") {
-									$("input[name=Option_HideIntegrated]").prop("checked", true);
-									options_hide_integrated = true;
-								}
-								if(options_hide_local == "true") {
-									$("input[name=Option_HideLocal]").prop("checked",true);
-									options_hide_local = true;
-								}
-								
-								if(options_hide_empty_subtitles == "true") {
-									$("input[name=Option_HideEmptySubtitles]").prop("checked",true);
-									options_hide_empty_subtitles = true;
-								}
-								
-								if(options_only_multiple == "true") {	
-									$("input[name=Option_ShowOnlyMultiple]").prop("checked",true);
-									options_only_multiple = true;
-								}
-								
-								if(options_auto_select_duplicate == "true") {	
-									$("input[name=Option_Autoselect]").prop("checked",true);
-									options_auto_select_duplicate = true;
-								}
-								$("input[name=items_per_page]").val(items_per_page);
-											
-								// Changed list_sections(); to go via function_loader
-								
-								function_loader("fetch_sections");
-							}
-						},
-					});
-				},
-			});
-		});
-						 
-
-		
-		// Function borrowed from Stackoverflow
-		function getDateTime() {
-			var now     = new Date(); 
-			var year    = now.getFullYear();
-			var month   = now.getMonth()+1; 
-			var day     = now.getDate();
-			var hour    = now.getHours();
-			var minute  = now.getMinutes();
-			var second  = now.getSeconds(); 
-			if(month.toString().length == 1) {
-				var month = '0'+month;
-			}
-			if(day.toString().length == 1) {
-				var day = '0'+day;
-			}   
-			if(hour.toString().length == 1) {
-				var hour = '0'+hour;
-			}
-			if(minute.toString().length == 1) {
-				var minute = '0'+minute;
-			}
-			if(second.toString().length == 1) {
-				var second = '0'+second;
-			}   
-			var dateTime = year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;   
-			return dateTime;
-		}
-		
-		function start_timer() {
-			$("#PageLoadingTime").html("<div class='VideoSubtitle'>Calculating page loading time... <div>");
-			timerstart = Date.now();
-			
-		}
-		
-		function end_timer() {
-			$("#PageLoadingTime").html("<div class='VideoSubtitle'>Page loading time: "+Math.floor((Date.now()-timerstart))/1000+"s</div>");
-		}
-	</script>
+    <script>
+    $(document).ready(function() {
+        // Initial bootup
+        webtools.log('Application started', 'Core');
+        webtools.list_modules.start();        
+    });  
+    </script>
 	<body>
-		<table cellpadding="0" cellspacing="0" class="BoxTable">
-			<tr>
-				<td class="BoxTable_td mediumlong">
-					<div id="MenuBar" class="headline_"><button onclick='window.location.href="index.html";' class="btn btn-default btn-xs">Home</button></div>
-					<div id="MenuBox">
-						<div id="LibraryBox" class='VideoBox'>
-							<div class='VideoHeadline'>Libraries</div>	
-							<div class='VideoSubtitle'>	
-								<table cellpadding=0 cellspacing=0 style='width: 100%'>
-								</table>
-							</div>
-						</div>
-						<form name='SearchBox' onSubmit="search_set();return false;">
-							<div id="SearchBox">
-							</div>
-						</form>
-						<form name='OptionsBox' onSubmit="options_set();return false;">
-							<div id="OptionsBox" class='VideoBox'>
-								<div class='VideoHeadline'>Options</div>	
-								<div class='VideoSubtitle'>	
-									<table cellpadding=0 cellspacing=0 style='width: 100%'>
-										<tr><td class="mainText"><input type="checkbox" name="Option_HideLocal">Hide local subtitles</td></tr>
-										<tr><td class="mainText"><input type="checkbox" name="Option_HideEmptySubtitles">Hide videos without subtitles</td></tr>
-										<tr><td class="mainText"><input type="checkbox" name="Option_HideIntegrated">Hide integrated subtitles</td></tr>
-										<tr><td class="mainText"><input type="checkbox" name="Option_ShowOnlyMultiple">Show only multiple subtitles/language</td></tr>
-										<tr><td class="mainText"><input type="checkbox" name="Option_Autoselect">Autoselect duplicates based on XML</td></tr>
-										<tr><td class="mainText"><input type="text" name="items_per_page" size="2">Items per page</td></tr>
-										<tr><td class="mainText"><input type="submit" value="Save Options" class="btn btn-default btn-xs"></td></tr>
-									</table>
-								</div>
-							</div>
-						</form>
-					</div>
-				</td><td class="BoxTable_td">
-				<div><div id="PageBar"></div>
-				<div id="MainBox">
-					<div class='VideoBox'>
-						<div class='VideoHeadline'>Welcome</div>
-						<div class='VideoSubtitle'>
-							<table cellspacing=0 cellpadding=0 style='width: 100%'>
-								<tr><td class='mainText'>
-									This is an unofficial manager for subtitles.<br>
-									<b>Usage is on your own risk!</b><br><br>
-									Current features:<br>
-									<ul>
-										<li>List all subtitles for a movie/tv show in your library. Both local (next to the movie in it's folder or one subfolder) and in the c:\users appdata folder.</li>
-										<li>View the subtitle and see it's contents to determine what to delete.</li>
-										<li>Delete selected subtitle from the harddrive.</li>
-										<li>Search for videos.</li>
-										<li>Options for output.</li>
-									</ul>
-									</td></tr>
-							</table>
-						</div>
-					</div>
-					<div class='VideoBox'>
-						<div class='VideoHeadline'>Recommended usage</div>
-						<div class='VideoSubtitle'>
-							<table cellspacing=0 cellpadding=0 style='width: 100%'>
-								<tr><td class='mainText'>
-									1. Remove the subtitles you want via this script.<br>
-									2. Do a forced refresh on Section level. Do not do this on video level. It will take a while for it to rescan everything if you have a large section. But the subtitle will be removed.
-									</td></tr>
-							</table>
-						</div>
-					</div>
-				</div>
-				<div id='Log' class='VideoBox'>
-					<div class='VideoHeadline'>Log</div>
-					<div class='VideoSubtitle'>Nothing to tell..</div>
-				</div>
-				<div id='PageLoadingTime' class='VideoBox center'>
-					<div class='VideoSubtitle'>Page loading time: calculating...</div>
-				</div>				
-				</td>
-			</tr>
-		</table>
-		<iframe id="WorkFrame" class="hiddenframe"></iframe>
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h4 class="modal-title" id="myModalLabel">Modal title</h4>
-		  </div>
-		  <div class="modal-body">
-		  Placeholder
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary">Save changes</button>
-		  </div>
-		</div>
-	  </div>
-	</div>		
+        <nav class="navbar navbar-default navbar-fixed-top">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/" id="MainLink">Webtools</a>
+              <a class="navbar-brand" id="SubLink" onclick=""></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li class="dropdown" id="ModuleMenu">
+                </li>
+                <li class="dropdown" id="OptionsMainLi">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Options<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu" id="OptionsMenu">
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Logfiles<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu" id="LogfilesMenu">
+                  </ul>
+                </li>
+                  <li><a href="/logout">Logout</a></li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title" id="ContentHeader">Welcome to Webtools!</h3>
+          </div>
+          <div class="panel-body" id="ContentBody"></div>
+        <div class="panel-footer" id="ContentFoot"></div>
+        </div>
+        
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+              </div>
+              <div class="modal-body" id="myModalBody">
+              Placeholder
+              </div>
+              <div class="modal-footer" id="myModalFoot">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>	
+        
+        <div class="modal fade" id="LoadingModal" tabindex="-1" role="dialog" aria-labelledby="LoadingLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="LoadingLabel">Loading</h4>
+              </div>
+              <div class="modal-body" id="LoadingBody">
+              Loading...
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal fade" id="OptionsModal" tabindex="-1" role="dialog" aria-labelledby="OptionsLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="OptionsLabel">Preferences</h4>
+              </div>
+              <div class="modal-body" id="OptionsBody">
+                <div class="alert alert-danger" role="alert" id="OptionsModalAlert"></div>
+                  <p>You will have to refetch library contents manually to update your results.</p>
+                <table class="table table-bordered" id="OptionsTable"></table>
+              </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" onclick="webtools.save_options();">Save Options</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <nav class="navbar navbar-default navbar-fixed-bottom navbar-thin">
+          <div class="container-fluid" id="navfoot"></div>
+        </nav>
 	</body>
 </html>
