@@ -1,3 +1,6 @@
+V1.1:
+Fix for languagecodes. Not using flags anymore.
+
 V1.0:
 Release of the brand new interface!
 It holds a ton of new and refined looks and some under the hood improvements. Completly rewritten.

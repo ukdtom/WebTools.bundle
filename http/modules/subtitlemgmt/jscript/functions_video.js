@@ -154,10 +154,15 @@ subtitlemgmt.display_episodes = function() {
             var selectedsubtitle = '';
 
             if (subtitle.languageCode != null) {
-                if (typeof(languagecodes[subtitle.languageCode.toUpperCase()]) != 'undefined') {
-                    language = '<img src="flags/blank.png" class="flag flag-'+languagecodes[subtitle.languageCode.toUpperCase()].toLowerCase()+'" alt="'+subtitle.languageCode.toUpperCase()+'"/>';   
+                if (typeof(languagecodes[subtitle.languageCode.toLowerCase()]) != 'undefined') {
+                    //language = '<img src="flags/blank.png" class="flag flag-'+languagecodes[subtitle.languageCode.toUpperCase()].toLowerCase()+'" alt="'+subtitle.languageCode.toUpperCase()+'"/>';
+                    var languagetext = languagecodes[subtitle.languageCode.toLowerCase()];
+                    if (languagecodes[subtitle.languageCode.toLowerCase()].length > 8) {
+                        languagetext = languagecodes[subtitle.languageCode.toLowerCase()].substr(0,6) + '...';
+                    }
+                    language = '<span data-toggle="tooltip" title="' + languagecodes[subtitle.languageCode.toLowerCase()] + '">' + languagetext + '</span>';
                 } else {
-                    language = subtitle.languageCode.toUpperCase();
+                    language = subtitle.languageCode.toLowerCase();
                 }
             }
 

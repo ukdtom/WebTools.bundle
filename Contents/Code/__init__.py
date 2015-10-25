@@ -14,7 +14,7 @@
 PREFIX = '/utils/webtools'
 NAME = 'WebTools'
 ICON = 'WebTools.png'
-VERSION = '1.0'
+VERSION = '1.1'
 
 #********** Imports needed *********
 import os, io, time
