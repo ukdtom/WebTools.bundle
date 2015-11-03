@@ -1,6 +1,6 @@
 // Stores values generic to Webtools. Function declerations are done further down in the script.
 var webtools = {
-    modules: [],
+    modules: [['subtitlemgmt', 'Subtitle Management'],['logviewer','LogViewer Tool'], ['install','Install/Update Plugins']],
     active_module: '',
     functions: {},
 	version: 0,
@@ -46,26 +46,6 @@ webtools.list_modules.inline([
                     webtools.list_modules.abort('Error: ' + data.statusText);
                 }
             });
-    },
-    function(callback,activatemodulename) {
-        $.ajax({
-            url: '/webtools/listmodules',
-            type: 'GET',
-            cache: false,
-            dataType: 'JSON',
-            success: function(data) {
-                //webtools.modules = data;
-                // For testing purposes only:
-                webtools.modules = [['subtitlemgmt', 'Subtitle Management'],['logviewer','LogViewer Tool']];
-                callback(false,activatemodulename);
-            },
-            error: function(data) {
-                //webtools.modules = data;
-                // For testing purposes only:
-                webtools.modules = [['subtitlemgmt', 'Subtitle Management'],['logviewer','LogViewer Tool']];
-                callback(false,activatemodulename);
-            }
-        });
     },
     function(callback,activatemodulename) {
         webtools.listlogfiles(callback, activatemodulename);

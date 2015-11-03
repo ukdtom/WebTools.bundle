@@ -17,6 +17,7 @@ from tornado.ioloop import IOLoop
 from tornado.escape import json_encode, xhtml_escape
 from plextvhelper import plexTV
 from logs import logs
+from install import install
 from updater import updater
 
 import io
@@ -472,7 +473,7 @@ class webToolsHandler(BaseHandler):
 	#******* GET REQUEST *********
 	@authenticated
 	def get(self, **params):
-#		print 'THIS IS THE PARAMS: ', params
+		print 'THIS IS THE PARAMS: ', params
 		for param in params:
 			if param.startswith('_'):				
 				param = None
@@ -555,6 +556,17 @@ class webToolsHandler(BaseHandler):
 			else:
 				self.set_header('Content-Type', 'application/json; charset=utf-8')
 				self.write(json_encode(response))
+		# Call for install
+		elif params['param1'] == 'install':
+			if params['param2'] == None:
+				self.clear()
+				self.set_status(412)
+				self.finish("<html><body>Missing url of git</body></html>")
+			else:
+				install().install(params['param2'])				
+				self.clear()
+				self.set_status(200)
+				self.finish("<html><bodyAll is cool</body></html>")
 		# Call for logs?
 		elif params['param1'] == 'logs':
 			if params['param2'] == None:
@@ -616,7 +628,6 @@ class webToolsHandler(BaseHandler):
 		else:
 			# Return a not found error
 			raise HTTPError(404)
-
 
 	#******* PUT REQUEST *********
 	@authenticated
