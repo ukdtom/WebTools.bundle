@@ -1,1 +1,13 @@
 #gitlink {width: 400px;}
+.channeltable {width: 100%;}
+.channelmenu {text-align: center; height: 30px;}
+
+.icon {max-width: 32px; max-height: 32px;}
+.icontd {width: 35px; text-align: center;}
+#categoryDiv {width: 400px;}
+#NOTUSEDrepoDiv{float: left;}
+
+@media screen and (max-width:678px) {
+
+#repoDiv{display: none;}
+}

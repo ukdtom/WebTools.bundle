@@ -29,7 +29,7 @@ th {background-color: #FE9B00; color: #242424;}
 .subtitle {padding: 0px;}
 
 .btn-default:hover {background-color: #FE9B00; color: #242424;}
-
+.btn-active {background-color: #FE9B00; color: #242424;}
 .modal-header {background-color: #FE9B00; color: #242424;}
 body {background-color: #242424; padding-top:70px;  padding-bottom:70px;}
 

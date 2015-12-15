@@ -1,6 +1,11 @@
+/*
+ Created by Mikael Aspehed (Dagalufh)
+ Not yet migrated to APIv2
+*/
+
 // Stores values generic to Webtools. Function declerations are done further down in the script.
 var webtools = {
-    modules: [['subtitlemgmt', 'Subtitle Management'],['logviewer','LogViewer Tool'], ['install','Install/Update Plugins']],
+    modules: [['subtitlemgmt', 'Subtitle Management'],['logviewer','LogViewer Tool[APIv2]'], ['install','Install/Update Plugins']],
     active_module: '',
     functions: {},
 	version: 0,
@@ -13,8 +18,9 @@ var webtools = {
     show_log: function() {},
     changepassword_display: function() {},
     changepassword_work: function() {},
-	updates_check: function () {},
-	updates_check_display: function () {}
+		updates_check: function () {},
+		updates_check_display: function () {},
+		longermodulestart: false
 };
 
 // Webtools function
@@ -29,12 +35,12 @@ webtools.list_modules.inline([
                 cache: false,
                 dataType: 'JSON',
                 success: function(data) {
-					webtools.version = data.version;
+										webtools.version = data.version;
                     $('#MainLink').html('Webtools - v' + data.version);
                     if (data.PlexTVOnline === false) {
                         $('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.changepassword_display();" >Change Password</a></li>');
                     }
-					$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.updates_check_display();" >Check for Updates</a></li>');
+										$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.updates_check_display();" >Check for Updates</a></li>');
                     callback('VersionFetch:Success',activatemodulename);
                 },
                 error: function(data) {
@@ -70,6 +76,7 @@ function(result,activatemodulename) {
 
 // This module sets the active module and launches it's start function.
 webtools.activate_module = function(modulename) {
+		webtools.longermodulestart = false;
     $('#navfoot').html(''); 
     $('#ContentFoot').html('');
     $('#LoadingModal').modal({keyboard: false, backdrop:'static', show:true}); 
@@ -101,8 +108,9 @@ webtools.activate_module = function(modulename) {
             $("#SubLink").html('/'+moduledisplayname);
             
             $('#ModuleCSS').attr('href','modules/'+modulename+'/css/'+modulename+'.css');
-            
-            $('#LoadingModal').modal('hide');
+            if (webtools.longermodulestart === false) {
+            	$('#LoadingModal').modal('hide');
+						}
         },
         error: function(data) {
             webtools.display_error('Failed activating the module. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>'
@@ -132,19 +140,16 @@ webtools.listlogfiles = function(callback,activatemodulename) {
     //Name:LogfileNamesFetch
     $("#LogfilesMenu").html('');
     $.ajax({
-        url: '/webtools/logs/',
+        url: '/webtools2',
+				data: {'module':'logs','function':'list','filter':'WebTools'},
         cache: false,
         dataType: 'JSON',
         success: function(data) {
-
-            //console.log(data);
             data.forEach(function (logfilename) {
-                if (logfilename.toLowerCase().indexOf('webtools') > -1) {
-                    $('#LogfilesMenu').append('<li><a class="customlink" onclick="javascript:webtools.show_log(\''+logfilename+'\')">' + logfilename + '</a></li>');
-                }
+            	$('#LogfilesMenu').append('<li><a class="customlink" onclick="javascript:webtools.show_log(\''+logfilename+'\')">' + logfilename + '</a></li>');  
             });
 
-            $('#LogfilesMenu').append('<li><a class="customlink" href="/webtools/logs/zip">Download all logfiles as Zip</a></li>');
+            $('#LogfilesMenu').append('<li><a class="customlink" href="/webtools2?module=logs&function=download">Download all logfiles as Zip</a></li>');
             $('#LogfilesMenu').append('<li><a class="customlink" onclick="javascript:webtools.listlogfiles();">Refresh Logfilelist</a></li>');
             if (typeof(callback) != 'undefined') {
                 callback('LogfileNamesFetch:Success',activatemodulename);
@@ -191,12 +196,12 @@ webtools.show_log = function(filename) {
     $('#navfoot').html('');  
 
     $.ajax({
-        url: '/webtools/logs/show/'+filename,
+        url: '/webtools2',
+				data: {'module':'logs','function':'show','fileName':filename},
         type: 'GET',
         cache: false,
         dataType: 'JSON',
         success: function(logs) {
-            
             $('#ContentBody').html(logs.join('<br>'));  
         },
         error: function(logs) {
@@ -205,7 +210,7 @@ webtools.show_log = function(filename) {
     });
     
     
-    $('#ContentFoot').html('<a href="/webtools/logs/download/'+filename+'">Download Logfile</a>');
+    $('#ContentFoot').html('<a href="/webtools2?module=logs&function=download&fileName='+filename+'">Download Logfile</a>');
 };
 
 // Debug every AJAX calls hit.
@@ -265,14 +270,15 @@ webtools.updates_check_display = function () {
 webtools.updates_check = function () {
     $('#updateinfo').html('Please wait while fetching information from Github.');
 	$.ajax({
-		url: '/webtools/update/dagalufh/WebTools.bundle',
+		url: '/webtools2',
+		data: {'module':'git','function':'getReleaseInfo','url':'https://github.com/dagalufh/WebTools.bundle','version':'latest'},
 		type: 'GET',
+		datatype: 'JSON',
 		cache: false,
 		success: function (data) {
+			data = JSON.parse(data);
 			infoarray = [];
-			//for (var key in data) {
-            //  infoarray.push(key + ': ' + data[key]);  
-            //}
+
 			if (typeof(data.published_at) == 'undefined') {
                 infoarray.push('No releases available.');
             } else {

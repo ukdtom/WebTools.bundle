@@ -11,22 +11,27 @@
 ######################################################################################################################
 
 #********* Constants used **********
-PREFIX = '/utils/webtools'
+PREFIX = '/applications/webtools'
+
 NAME = 'WebTools'
 ICON = 'WebTools.png'
-VERSION = '1.1'
+VERSION = '1.2'
+AUTHTOKEN = ''
+SECRETKEY = ''
 
 #********** Imports needed *********
 import os, io, time
 from subprocess import call
-#import xml.etree.ElementTree as et
-#from webSrv import startWeb, stopWeb, webServer
 from webSrv import startWeb, stopWeb
 from random import randint
+import uuid			#Used for secrectKey
 
+
+import datetime
 
 #********** Initialize *********
 def Start():
+	global SECRETKEY
 	PLUGIN_VERSION = VERSION	
 	print("********  Started %s on %s  **********" %(NAME  + ' V' + PLUGIN_VERSION, Platform.OS))
 	Log.Debug("*******  Started %s on %s  ***********" %(NAME + ' V' + PLUGIN_VERSION, Platform.OS))
@@ -37,9 +42,17 @@ def Start():
 	ObjectContainer.view_group = 'List'
 	makeSettings()
 
-#	tornado = webServer()
-#	tornado.startWeb()
-	startWeb()
+	# Get the secret key used to access the PMS framework ********** FUTURE USE ***************
+	SECRETKEY = genSecretKeyAsStr()
+	startWeb(SECRETKEY)
+
+####################################################################################################
+# Generate secret key
+####################################################################################################
+''' This will generate the secret key, used to access the framework '''
+@route(PREFIX + '/genSecretKeyAsStr')
+def genSecretKeyAsStr():
+	return str(uuid.uuid4())
 
 ####################################################################################################
 # Make Settings file
@@ -101,22 +114,11 @@ def MainMenu():
 ####################################################################################################
 @route(PREFIX + '/ValidatePrefs')
 def ValidatePrefs():
-	
-
-
-#	r = threading.Thread(target=Restart)
-#	r.start()
 	Restart()
 
 @route(PREFIX + '/Restart')
 def Restart():
-#	HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.' + NAME + '/restart', immediate=True)
-#	stopWeb()
 	time.sleep(3)
-	startWeb()
-
+	startWeb(SECRETKEY)
 	return
-
-
-
 

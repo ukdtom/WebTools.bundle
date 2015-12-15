@@ -15,6 +15,6 @@
 		"id":"Force_SSL",
 		"label":"Select to force https",
 		"type":"bool",
-		"default":"true"
+		"default":"false"
 	}	
 ]

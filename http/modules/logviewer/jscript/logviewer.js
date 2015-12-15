@@ -1,3 +1,7 @@
+/*
+ Created by Mikael Aspehed (Dagalufh)
+ Modified to fit APIv2 of WebTools
+*/
 webtools.functions.logviewer = {
     start: function () {},
     hasoptions: false,
@@ -14,28 +18,31 @@ logviewer.start = function () {
     $('#ContentBody').html('');
     $('#ContentFoot').html('');
     logviewer.fetchlogfiles();
-    
-    $('#LogfileList').change(function() {        
-        console.log('change');
+     
+    $('#LogfileList').change(function() {       
+        // Display loading screen when fetching.
+        if ($('#LoadingModal').is(':visible') === false) {
+          $('#LoadingModal').modal({keyboard: true, backdrop:'static', show:true});    
+        }
         logviewer.viewlogfile($(this).val());
     });
 };
 
 logviewer.fetchlogfiles = function () {
     $.ajax({
-        url: '/webtools/logs',
-        datatype: 'JSON',
+        url: '/webtools2',
+        datatype: 'json',
+        data: {"module":"logs","function":"list"},
         type: 'GET',
         cache: false,
-        success: function (data) {
+        success: function (data) { 
             data.forEach(function (logname) {
                 $('#LogfileList').append('<option value="' + logname + '">' + logname);
             });
-            
+           
             logviewer.viewlogfile($('#LogfileList').val());
-            
         },
-        error: function(data) {
+        error: function(data,statustext,errorthrown) {
             webtools.display_error('Failed fetching the settings from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>'
                           +'<br>Errorinfo:'
                           +'<br>Requested URL: ' + this.url
@@ -46,9 +53,9 @@ logviewer.fetchlogfiles = function () {
 };
 
 logviewer.viewlogfile = function (filename) {
-    //$('#LoadingModal').modal({keyboard: false, backdrop:'static', show:true});  
     $.ajax({
-        url: '/webtools/logs/show/'+filename,
+        url: '/webtools2',
+        data: {'module':'logs','function':'show','fileName':filename},
         cache: false,
         type: 'GET',
         dataType: 'JSON',
@@ -66,26 +73,27 @@ logviewer.viewlogfile = function (filename) {
             subtitle += '</table>';
             
             $('#ContentBody').html(subtitle);
-            $('#ContentFoot').html('<a href="/webtools/logs/download/'+filename+'">Download Logfile</a>');
+            $('#ContentFoot').html('<a href="/webtools2?module=logs&function=download&fileName='+filename+'">Download Logfile</a>');
             
             $('#LoadingModal').modal('hide');
             
         },
         error: function(data) {
-            webtools.log('Failed fetching ' + filename);
-            webtools.display_error('Failed fetching the settings from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>'
-                          +'<br>Errorinfo:'
-                          +'<br>Requested URL: ' + this.url
-                          +'<br>Error Code/Message: ' + data.status + '/'  + data.statusText);
-            $('#LoadingModal').modal('hide');
+          console.log(data);
+          webtools.log('Failed fetching ' + filename);
+          webtools.display_error('Failed fetching the settings from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>'
+                        +'<br>Errorinfo:'
+                        +'<br>Requested URL: ' + this.url
+                        +'<br>Error Code/Message: ' + data.status + '/'  + data.statusText);
+          $('#LoadingModal').modal('hide');
         }
     }); 
 }
 
 logviewer.download = function(filename) {
     if (typeof(filename) != 'undefined') {
-        window.location.href = '/webtools/logs/download/' + filename;
+        window.location.href = '/webtools2?module=logs&function=download&fileName=' + filename;
     } else {
-        window.location.href = '/webtools/logs/zip';
+        window.location.href = '/webtools2?module=logs&function=download';
     }
 }

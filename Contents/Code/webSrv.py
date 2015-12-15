@@ -16,9 +16,14 @@ from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.escape import json_encode, xhtml_escape
 from plextvhelper import plexTV
+
+
+# Migrated to new way
+from git import git
 from logs import logs
-from install import install
-from updater import updater
+from pms import pms
+from settings import settings
+
 
 import io
 import threading
@@ -27,6 +32,19 @@ from random import randint
 import json
 from xml.etree import ElementTree
 from itertools import islice
+
+
+
+#Legacy
+from OLDinstall import install
+from OLDupdater import updater
+
+
+
+
+# TODO from importlib import import_module
+
+
 
 # Path to http folder within the bundle
 ACTUALPATH =  os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http')
@@ -408,12 +426,6 @@ class ForceTSLHandler(RequestHandler):
 		newUrl = 'https://' + host + ':' + Prefs['WEB_Port_https'] + '/login'
 		self.redirect(newUrl, permanent=True)
 
-''' url /test helps devs to check that we are running '''
-class testHandler(RequestHandler):
-	def get(self):
-		Log.Debug('Tornado recieved a test call')
-		self.write("Hello, I'm alive")
-
 ''' If user didn't enter the full path '''
 class idxHandler(BaseHandler):
 	@authenticated
@@ -422,7 +434,7 @@ class idxHandler(BaseHandler):
 
 ''' If user didn't enter the full path '''
 class LogoutHandler(BaseHandler):
-#	@authenticated
+	@authenticated
 	def get(self):
 		self.clear_cookie(NAME)
 		self.redirect('/')
@@ -432,20 +444,32 @@ class LoginHandler(BaseHandler):
 		self.render(ACTUALPATH + "/login.html", next=self.get_argument("next","/"))
 
 	def post(self):
+		global AUTHTOKEN
 		# Let's start by checking if the server is online
 		if plexTV().auth2myPlex():
-			token = plexTV().login(self.get_argument("user"), self.get_argument("pwd"))
-			if token == 'Auth error in plex.tv':
+			token = ''
+			try:
+				# Authenticate
+				retVal = plexTV().isServerOwner(plexTV().login(self))
 				self.clear()
-				self.set_status(401)
-			else:
-				# We got a token, so is the user the owner?
-				if plexTV().isServerOwner(plexTV().get_thisPMSIdentity(), token):
+				if retVal == 0:
+					# All is good
 					self.allow()
 					self.redirect('/')
-				else:
-					self.clear()
+				elif retVal == 1:
+					# Server not found				
+					self.set_status(404)
+				elif retVal == 2:
+					# Not the owner
 					self.set_status(403)
+				else:
+					# Unknown error
+					self.set_status(403)
+			except Ex.HTTPError, e:
+				self.clear()
+				self.set_status(e.code)
+				self.finish(e)
+				return self
 		else:
 			# Server is offline
 			if Dict['password'] == '':
@@ -468,12 +492,118 @@ class versionHandler(RequestHandler):
 	def get(self, **params):
 		self.set_header('Content-Type', 'application/json; charset=utf-8')
 		self.write(webTools().getVersion())
+
+
+class webTools2Handler(BaseHandler):
+	#******* GET REQUEST *********
+	@authenticated
+#	print '********** AUTH DISABLED WebSRV WebTools2 GET'
+
+	# Get Request
+	def get(self, **params):
+		module = self.get_argument('module', 'missing')
+		if module == 'missing':
+			self.clear()
+			self.set_status(404)
+			self.finish("<html><body>Missing function call</body></html>")
+			return
+		else:
+			Log.Debug('Recieved a get call for module: ' + module)
+	
+#TODO
+
+#			import sys
+#			sys.path.append('/share/CACHEDEV1_DATA/.qpkg/PlexMediaServer/Library/Plex Media Server/Plug-ins/WebTools.bundle/Contents/Code')
+#			mod = import_module(module)
+#			modClass = getattr(mod, module)
+#			reqprocess = getattr(modClass, 'reqprocess')
+
+			if module == 'git':			
+				self = git().reqprocess(self)
+			elif module == 'logs':
+				self = logs().reqprocess(self)
+			elif module == 'pms':
+				self = pms().reqprocess(self)
+			elif module == 'settings':
+				self = settings().reqprocess(self)
+			else:
+				self.clear()
+				self.set_status(412)
+				self.finish("<html><body>Unknown module call</body></html>")
+				return
+
+	#******* POST REQUEST *********
+	@authenticated
+#	print '********** AUTH DISABLED WebSRV WebTools2 POST'
+
+	def post(self, **params):
+		module = self.get_argument('module', 'missing')
+		if module == 'missing':
+			self.clear()
+			self.set_status(404)
+			self.finish("<html><body>Missing function call</body></html>")
+			return
+		else:
+			Log.Debug('Recieved a post call for module: ' + module)
+			if module == 'logs':			
+				self = logs().reqprocessPost(self)
+			else:
+				self.clear()
+				self.set_status(412)
+				self.finish("<html><body>Unknown module call</body></html>")
+				return
+
+	#******* DELETE REQUEST *********
+	@authenticated
+#	print '********** AUTH DISABLED WebSRV WebTools2 DELETE'
+
+	def delete(self, **params):
+		module = self.get_argument('module', 'missing')
+		if module == 'missing':
+			self.clear()
+			self.set_status(404)
+			self.finish("<html><body>Missing function call</body></html>")
+			return
+		else:
+			Log.Debug('Recieved a delete call for module: ' + module)
+			if module == 'pms':			
+				self = pms().reqprocessDelete(self)
+			else:
+				self.clear()
+				self.set_status(412)
+				self.finish("<html><body>Unknown module call</body></html>")
+				return
+
+	#******* PUT REQUEST *********
+	@authenticated
+#	print '********** AUTH DISABLED WebSRV WebTools2 PUT'
+
+	def put(self, **params):
+		module = self.get_argument('module', 'missing')
+		if module == 'missing':
+			self.clear()
+			self.set_status(404)
+			self.finish("<html><body>Missing function call</body></html>")
+			return
+		else:
+			Log.Debug('Recieved a delete call for module: ' + module)
+			if module == 'settings':			
+				self = settings().reqprocessPUT(self)
+			else:
+				self.clear()
+				self.set_status(412)
+				self.finish("<html><body>Unknown module call</body></html>")
+				return
+
+
+
 		
 class webToolsHandler(BaseHandler):
 	#******* GET REQUEST *********
 	@authenticated
+#	print 'AUTH DISABLED for WebTools GET'
 	def get(self, **params):
-		print 'THIS IS THE PARAMS: ', params
+#		print 'THIS IS THE PARAMS: ', params
 		for param in params:
 			if param.startswith('_'):				
 				param = None
@@ -556,56 +686,7 @@ class webToolsHandler(BaseHandler):
 			else:
 				self.set_header('Content-Type', 'application/json; charset=utf-8')
 				self.write(json_encode(response))
-		# Call for install
-		elif params['param1'] == 'install':
-			if params['param2'] == None:
-				self.clear()
-				self.set_status(412)
-				self.finish("<html><body>Missing url of git</body></html>")
-			else:
-				install().install(params['param2'])				
-				self.clear()
-				self.set_status(200)
-				self.finish("<html><bodyAll is cool</body></html>")
-		# Call for logs?
-		elif params['param1'] == 'logs':
-			if params['param2'] == None:
-				self.set_header('Content-Type', 'application/json; charset=utf-8')
-				self.write(json_encode(logs().list()))
-			elif params['param2'] == 'show':
-				self.set_header('Content-Type', 'application/json; charset=utf-8')
-				self.write(json_encode(logs().show(params['param3'])))
-			elif params['param2'] == 'download':			
-				self.set_header('Content-Type', 'application/force-download')
-				self.set_header ('Content-Disposition', 'attachment; filename='+params['param3']+'')
-				myFile = logs().show(params['param3'])
-				for line in myFile:
-					self.write(line + '\n')
-				self.finish()
-			elif params['param2'] == 'filter':
-				print 'Filtered Log list'
-				self.set_header('Content-Type', 'application/json; charset=utf-8')
-				self.write(json_encode(logs().list(params['param3'])))				
-			elif params['param2'] == 'zip':			
-				self.set_header('Content-Type', 'application/force-download')
-				self.set_header ('Content-Disposition', 'attachment; filename=PMSLogs.zip')
-				myZip = logs().getAllAsZip()
-				with io.open(myZip, 'rb') as f:
-					try:
-						while True:
-							fbuffer = f.read(4096)
-							if fbuffer:
-								self.write(fbuffer)
-							else:
-								f.close()
-								self.finish()
-								# remove temp zip file again
-								os.remove(myZip)
-								return
-					except:
-						raise HTTPError(500)
-			else:
-				raise HTTPError(404)
+
 		# Call for updates
 		elif params['param1'] == 'update':
 			if params['param2'] == 'all':
@@ -696,14 +777,16 @@ class webToolsHandler(BaseHandler):
 			self.clear()
 			self.set_status(404)
 			self.finish("<html><body>Unknown call</body></html>")
-		
-# The default handler is the test handler
-handlers = [(r'/test', testHandler),
-						(r"/login", LoginHandler),
+
+handlers = [(r"/login", LoginHandler),
 						(r"/logout", LogoutHandler),
 						(r"/webtools/version", versionHandler),
 						(r'/', idxHandler),
 						(r'/index.html', idxHandler),
+						(r"/webtools2*$", webTools2Handler),
+
+
+
 						(r"/webtools/(?P<param1>[^\/]+)/?(?P<param2>[^\/]+)?/?(?P<param3>[^\/]+)?/?(?P<param4>[^\/]+)?/?(?P<param5>[^\/]+)?/?(?P<param6>[^\/]+)?/?(?P<param7>[^\/]+)?/?(?P<param8>[^\/]+)?", webToolsHandler),
 						(r'/(.*)', StaticFileHandler, {'path': ACTUALPATH})
 ]
@@ -714,6 +797,7 @@ if Prefs['Force_SSL']:
 									(r"/webtools/version", ForceTSLHandler),
 									(r'/', ForceTSLHandler),
 									(r'/index.html', ForceTSLHandler),
+									(r"/webtools2*$", webTools2Handler),
 									(r"/webtools/(?P<param1>[^\/]+)/?(?P<param2>[^\/]+)?/?(?P<param3>[^\/]+)?/?(?P<param4>[^\/]+)?/?(?P<param5>[^\/]+)?/?(?P<param6>[^\/]+)?/?(?P<param7>[^\/]+)?/?(?P<param8>[^\/]+)?", ForceTSLHandler)]
 
 else:
@@ -755,7 +839,10 @@ def stopWeb():
 	Log.Debug('Asked Tornado to exit')
 
 ''' Main call '''
-def startWeb():
+def startWeb(secretKey):
+	global SECRETKEY
+	# Set the secret key for use by other calls in the future maybe?
+	SECRETKEY = secretKey
 	stopWeb()
 	Log.Debug('tornado is handling the following URI: %s' %(handlers))
 	t = threading.Thread(target=start_tornado)

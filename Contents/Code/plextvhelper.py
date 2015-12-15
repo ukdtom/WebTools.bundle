@@ -14,6 +14,7 @@ class plexTV(object):
 		self.mainUrl = 'https://plex.tv'
 		self.loginUrl = self.mainUrl + '/users/sign_in'
 		self.serverUrl = self.mainUrl + '/pms/servers'
+		self.resourceURL = self.mainUrl + '/pms/resources.xml'
 		# Mandentory headers
 		self.myHeader = {}
 		self.myHeader['X-Plex-Client-Identifier'] = NAME + '-' + self.get_thisPMSIdentity()
@@ -21,40 +22,65 @@ class plexTV(object):
 		self.myHeader['X-Plex-Product'] = NAME
 		self.myHeader['X-Plex-Device-Name'] = NAME + '-' + self.get_thisPMSIdentity()
 		self.myHeader['X-Plex-Version'] = VERSION
-		self.myHeader['X-Plex-Platform'] = Platform.OS	
+		self.myHeader['X-Plex-Platform'] = Platform.OS
 
-	''' Do a login against plex.tv, and return the token as a string. '''
-	def login(self, user, pwd):
+	# Login to Plex.tv
+	def login(self, req):
+		Log.Debug('Start to auth towards plex.tv')
+		user = req.get_argument('user', '')
+		if user == '':
+			req.clear()
+			req.set_status(412)
+			req.finish("<html><body>Missing username</body></html>")
+			return req
+		pwd = req.get_argument('pwd', '')
+		if pwd == '':
+			req.clear()
+			req.set_status(412)
+			req.finish("<html><body>Missing password</body></html>")
+			return req
+		# Got what we needed, so let's logon
 		authString = String.Base64Encode('%s:%s' % (user, pwd))
 		self.myHeader['Authorization'] = 'Basic ' + authString
 		try:
-			response = HTTP.Request(self.loginUrl, headers=self.myHeader, method='POST')
-			Token = XML.ObjectFromString(response.content).xpath('//user')[0].get('authenticationToken')		
-			Log.Debug('Authenticated towards plex.tv with success')		
-			return Token
-		except:
-			Log.Debug('Auth error in plex.tv')
-			return 'Auth error in plex.tv'
-
-	''' Will return a list of devices user has access to. '''
-	def get_ServerList(self, token):
-		self.myHeader['X-Plex-Token'] = token
+			token = XML.ElementFromURL(self.loginUrl, headers=self.myHeader, method='POST').xpath('//user')[0].get('authenticationToken')
+			Log.Debug('Authenticated towards plex.tv with success')				
+			return token
+		except Ex.HTTPError, e:
+			req.clear()
+			req.set_status(e.code)
+			req.finish(e)
+			return (req, '')
+		
+	''' Is user the owner of the server?
+			user identified by token
+			server identified by clientIdentifier
+			if server found, and user is the owner, return 0
+			if server is not found, return 1
+			if user is not the owner, return 2
+			if unknow error, return -1
+	'''
+	def isServerOwner(self, token):
+		Log.Debug('Checking server for ownership')
 		try:
-			response = HTTP.Request(self.serverUrl, headers=self.myHeader)
-			devices = XML.ObjectFromString(response.content).xpath('//Server')		
-			Log.Debug('ServerList retrieved with success')
-			return devices
-		except:
-			Log.Debug('Unknown error in plex.tv')
-			return 'Unknown error in plex.tv'
-
-	''' if user identified by token is the owner of the server, then returns true, else false '''
-	def isServerOwner(self, machineIdentifier, token):
-		Log.Debug('Checking server %s for ownership' %(machineIdentifier))
-		servers =	self.get_ServerList(token)
-		for server in servers:
-			if server.get('machineIdentifier') == machineIdentifier:
-				return server.get('owned')=='1'
+			# Ident of this server
+			PMSId = XML.ElementFromURL('http://127.0.0.1:32400/identity').get('machineIdentifier')
+			# Grap Resource list from plex.tv
+			self.myHeader['X-Plex-Token'] = token
+			elements = XML.ElementFromURL(self.resourceURL, headers=self.myHeader).xpath('//Device[@clientIdentifier="' + PMSId + '"]/@owned')
+			if len(elements) < 1:
+				Log.Debug('Server %s was not found @ plex.tv' %(PMSId))
+				return 1
+			else:
+				if elements[0] == '1':
+					Log.Debug('Authenticated ok towards %s' %(PMSId))
+					return 0
+				else:
+					Log.Debug('Server %s was found @ plex.tv, but user is not the owner' %(PMSId))
+					return 2
+		except Ex.HTTPError, e:
+			Log.Debug('Unknown exception was: %s' %(e))
+			return -1
 
 	''' will return the machineIdentity of this server '''
 	def get_thisPMSIdentity(self):
