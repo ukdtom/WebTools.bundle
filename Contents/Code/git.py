@@ -211,6 +211,7 @@ class git(object):
 					print git['repo']
 					title = git['repo']
 					del git['repo']
+					git['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 					Dict['installed'][title] = git
 					bNotInUAS = False
 					Log.Debug('Dict stamped with the following install entry: ' + title + ' - '  + str(git))
@@ -226,6 +227,7 @@ class git(object):
 				git['identifier'] = pl['CFBundleIdentifier']
 				git['type'] = []
 				git['icon'] = ''
+				git['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 				Dict['installed'][url] = git
 				Log.Debug('Dict stamped with the following install entry: ' + url + ' - '  + str(git))
 			Dict.Save()

@@ -220,7 +220,7 @@ install.showChannels = function(button, type) {
       var installDate = '';
       var rowspan = 2;
       for(var installed_key in install.installedarray) {
-        if (install.installedarray[installed_key].url == key) {
+        if (installed_key == key) {
             isInstalled = true;
             installDate = install.installedarray[installed_key].date;
             rowspan = 3;
