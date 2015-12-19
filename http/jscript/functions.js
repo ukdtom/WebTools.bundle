@@ -5,10 +5,10 @@
 
 // Stores values generic to Webtools. Function declerations are done further down in the script.
 var webtools = {
-    modules: [['subtitlemgmt', 'Subtitle Management'],['logviewer','LogViewer Tool[APIv2]'], ['install','Install/Update Plugins']],
+    modules: [['subtitlemgmt', 'Subtitle Management[APIv1]'],['logviewer','LogViewer Tool'], ['install','UnsupportedAppStore']],
     active_module: '',
     functions: {},
-	version: 0,
+		version: 0,
     list_modules: new asynchelper(true,false),
     activate_module: function() {},
     display_error: function() {},

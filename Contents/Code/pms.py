@@ -6,7 +6,7 @@
 #
 #
 ######################################################################################################################
-import shutil
+import shutil, os
 import time, json
 
 class pms(object):
@@ -47,14 +47,103 @@ class pms(object):
 			req.finish("<html><body>Missing function parameter</body></html>")
 		elif function == 'delSub':
 			return self.delSub(req)
+		elif function == 'delBundle':
+			return self.delBundle(req)
 		else:
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
 
+# Delete Bundle
+	def delBundle(self, req):
+		Log.Debug('Delete bundle requested')
+		def removeBundle(bundleName, bundleIdentifier, url):
+			try:
+				bundleInstallDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, bundleName)
+				bundleDataDir = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', bundleIdentifier)
+				bundleCacheDir = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', bundleIdentifier)
+				bundlePrefsFile = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Preferences', bundleIdentifier + '.xml')
+				Log.Debug('Bundle directory name digested as: %s' %(bundleInstallDir))
+				try:
+					shutil.rmtree(bundleInstallDir)
+				except:
+					Log.Debug("Unable to remove the bundle directory.")
+					req.clear()
+					req.set_status(500)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish('Fatal error happened when trying to remove the bundle directory.')
+				try:
+					shutil.rmtree(bundleDataDir)
+				except:
+					Log.Debug("Unable to remove the bundle data directory.")
+					Log.Debug("This can be caused by bundle data directory was never generated")
+					Log.Debug("Ignoring this")
+				try:
+					shutil.rmtree(bundleCacheDir)
+				except:
+					Log.Debug("Unable to remove the bundle cache directory.")
+					Log.Debug("This can be caused by bundle data directory was never generated")
+					Log.Debug("Ignoring this")
+				try:
+					os.remove(bundlePrefsFile)
+				except:
+					Log.Debug("Unable to remove the bundle preferences file.")
+					Log.Debug("This can be caused by bundle prefs was never generated")
+					Log.Debug("Ignoring this")
+				# Remove entry from dict
+				Dict['installed'].pop(url, None)
+# TODO
+				try:
+					Log.Debug('Remider to self...TODO....Restart of System Bundle hangs :-(')
+#					HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart', immediate=True)
+				except:
+					Log.Debug("Unable to restart System.bundle. Channel may not vanish without PMS restart.")
+					req.clear()
+					req.set_status(500)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish('Fatal error happened when trying to restart the system.bundle')
+			except:
+				Log.Debug('Fatal error happened in removeBundle')
+				req.clear()
+				req.set_status(500)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish('Fatal error happened in removeBundle')
+		# Main function
+		try:
+			# Start by checking if we got what it takes ;-)
+			bundleName = req.get_argument('bundleName', 'missing')
+			if bundleName == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish("<html><body>Missing bundleName</body></html>")
+				return req
+			installedBundles = Dict['installed']
+			bFoundBundle = False
+			for installedBundle in installedBundles:
+				if installedBundles[installedBundle]['bundle'].upper() == bundleName.upper():
+					removeBundle(bundleName, installedBundles[installedBundle]['identifier'], installedBundle)
+					bFoundBundle = True
+					break
+			if not bFoundBundle:
+				Log.Debug('Bundle %s was not found' %(bundleName))
+				req.clear()
+				req.set_status(404)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish('Bundle %s was not found' %(bundleName))
+			Log.Debug('Bundle %s was removed' %(bundleName))
+			req.clear()
+			req.set_status(404)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Bundle %s was removed' %(bundleName))
+		except:
+			Log.Debug('Fatal error happened in delBundle')
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in delBundle')
+
 	# Delete subtitle
 	def delSub(self, req):
-		print 'GED Del Sub'
 		Log.Debug('Delete subtitle requested')
 		try:
 			# Start by checking if we got what it takes ;-)

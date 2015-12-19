@@ -42,7 +42,8 @@ from OLDupdater import updater
 
 
 
-# TODO from importlib import import_module
+# TODO 
+from importlib import import_module
 
 
 
@@ -511,13 +512,27 @@ class webTools2Handler(BaseHandler):
 			Log.Debug('Recieved a get call for module: ' + module)
 	
 #TODO
+			'''
+			import sys
+			sys.path.append(os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'Contents', 'Code'))
+			mod = import_module(module)
+			modClass = getattr(mod, module)()
+			print 'GED1', dir(modClass)
+			callFunction = getattr(modClass, 'reqprocess')
+			print 'GED2'
 
-#			import sys
-#			sys.path.append('/share/CACHEDEV1_DATA/.qpkg/PlexMediaServer/Library/Plex Media Server/Plug-ins/WebTools.bundle/Contents/Code')
-#			mod = import_module(module)
-#			modClass = getattr(mod, module)
-#			reqprocess = getattr(modClass, 'reqprocess')
 
+			self = modClass().reqprocess(self)
+
+			
+			
+
+
+
+			print 'GED3'
+
+
+			'''
 			if module == 'git':			
 				self = git().reqprocess(self)
 			elif module == 'logs':
@@ -531,11 +546,12 @@ class webTools2Handler(BaseHandler):
 				self.set_status(412)
 				self.finish("<html><body>Unknown module call</body></html>")
 				return
+			
+
 
 	#******* POST REQUEST *********
 	@authenticated
 #	print '********** AUTH DISABLED WebSRV WebTools2 POST'
-
 	def post(self, **params):
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
@@ -547,6 +563,8 @@ class webTools2Handler(BaseHandler):
 			Log.Debug('Recieved a post call for module: ' + module)
 			if module == 'logs':			
 				self = logs().reqprocessPost(self)
+			if module == 'settings':			
+				self = settings().reqprocessPost(self)
 			else:
 				self.clear()
 				self.set_status(412)
@@ -781,6 +799,7 @@ class webToolsHandler(BaseHandler):
 handlers = [(r"/login", LoginHandler),
 						(r"/logout", LogoutHandler),
 						(r"/webtools/version", versionHandler),
+						(r"/version", versionHandler),
 						(r'/', idxHandler),
 						(r'/index.html', idxHandler),
 						(r"/webtools2*$", webTools2Handler),
@@ -794,6 +813,7 @@ handlers = [(r"/login", LoginHandler),
 if Prefs['Force_SSL']:
 	httpHandlers = [(r"/login", ForceTSLHandler),
 									(r"/logout", LogoutHandler),
+									(r"/version", ForceTSLHandler),
 									(r"/webtools/version", ForceTSLHandler),
 									(r'/', ForceTSLHandler),
 									(r'/index.html', ForceTSLHandler),

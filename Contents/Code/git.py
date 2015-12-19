@@ -10,6 +10,7 @@
 import datetime			# Used for a timestamp in the dict
 import json
 import io
+import plistlib
 
 class git(object):
 	# Defaults used by the rest of the class
@@ -21,7 +22,7 @@ class git(object):
 		Log.Debug("Plugin directory is: %s" %(self.PLUGIN_DIR))
 
 	''' Grap the tornado req, and process it '''
-	def reqprocess(self, req):		
+	def reqprocess(self, req):	
 		function = req.get_argument('function', 'missing')
 		if function == 'missing':
 			req.clear()
@@ -69,7 +70,6 @@ class git(object):
 		def updateUASTypes(req):
 			Log.Debug('Starting to update the UAS Bundle types')
 			try:
-				print 'Ged start updateUASTypes'
 				# Grap contents of json file
 				jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
 				json_file = io.open(jsonFileName, "rb")
@@ -83,23 +83,16 @@ class git(object):
 						if bundleType not in uasTypes:
 							uasTypes.append(bundleType)					
 				Dict['uasTypes'] = uasTypes
-				return req
+				Dict.Save()
+				return
 			except:
-				req.clear()
-				req.set_status(500)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Fatal error happened in updateUASTypes')
-				return req
+				Log.Debug('Exception in UASType update')
+				print 'Ged Except i UASType'
 
 		# Start by getting the time stamp for the last update
 		try:
 			lastUpdateUAS = Dict['UAS']
-
-
-			print 'GED Forced typelist'
 			updateUASTypes(req)
-
-
 			Log.Debug('Last update time for UAS Cache is: %s' %(lastUpdateUAS))
 			if lastUpdateUAS == None:
 				# Not set yet, so default to Linux start date
@@ -139,20 +132,19 @@ class git(object):
 							except Exception, e:
 								bError = True
 								Log.Debug("Unexpected Error")
+				# UAS Cache has been updated, so time to update the UAS bundle types
+				try:
+					updateUASTypes(req)
+				except:
+					req.clear()
+					req.set_status(500)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish('Fatal error happened in updateUASTypes')
+					return req
 			else:
 				Log.Debug('UAS Cache already up to date')
 			# Set timestamp in the Dict
 			Dict['UAS'] = datetime.datetime.now()
-
-			# UAS Cache has been updated, so time to update the UAS bundle types
-			try:
-				updateUASTypes(req)
-			except:
-				req.clear()
-				req.set_status(500)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Fatal error happened in updateUASTypes')
-				return req
 			req.clear()
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -171,12 +163,11 @@ class git(object):
 			req.clear()
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(Dict['installed'])
+			req.finish(json.dumps(Dict['installed']))
 		else:
 			Log.Debug('installed dict not found')
 			req.clear()
-			req.set_status(404)			
-			req.finish("<html><body>Could not find any installed bundles from WebTools</body></html>")
+			req.set_status(204)
 
 	def getSavePath(self, plugin, path):
 		fragments = path.split('/')[1:]
@@ -200,18 +191,43 @@ class git(object):
 
 		''' Save Install info to the dict '''
 		def saveInstallInfo(url, bundleName):
-			installedBundle = bundleName[bundleName.rfind("/"):][1:][:-7]
-			# Get the dict with the installed bundles
+
+			# Get the dict with the installed bundles, and init it if it doesn't exists
 			if not 'installed' in Dict:
 				Dict['installed'] = {}
-			# Does it already contains the bundle just installed?
-			if not installedBundle in Dict['installed']:
-				# Add initial key
-				Dict['installed'][installedBundle] = {}
-			Dict['installed'][installedBundle]['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-			Dict['installed'][installedBundle]['url'] = url
-			Dict['installed'][installedBundle]['version'] = 'future'
-			Log.Debug('Dict stamped with the following install entry: ' + installedBundle + ' - '  + str(Dict['installed'][installedBundle]))
+
+			# Start by loading the UAS Cache file list
+			jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
+			json_file = io.open(jsonFileName, "rb")
+			response = json_file.read()
+			json_file.close()
+			# Convert to a JSON Object
+			gits = JSON.ObjectFromString(str(response))
+			bNotInUAS = True
+			# Walk the one by one, so we can handle upper/lower case
+			for git in gits:
+				if url.upper() == git['repo'].upper():
+					print '***** FOUND *****'
+					print git['repo']
+					title = git['repo']
+					del git['repo']
+					Dict['installed'][title] = git
+					bNotInUAS = False
+					Log.Debug('Dict stamped with the following install entry: ' + title + ' - '  + str(git))
+					break
+			if bNotInUAS:
+				pFile = Core.storage.join_path(self.PLUGIN_DIR, bundleName, 'Contents', 'Info.plist')
+				pl = plistlib.readPlist(pFile)
+				git = {}
+				git['title'] = bundleName[bundleName.rfind("/"):][1:][:-7]
+				git['description'] = ''
+				git['branch'] = ''
+				git['bundle'] = bundleName[bundleName.rfind("/"):][1:]
+				git['identifier'] = pl['CFBundleIdentifier']
+				git['type'] = []
+				git['icon'] = ''
+				Dict['installed'][url] = git
+				Log.Debug('Dict stamped with the following install entry: ' + url + ' - '  + str(git))
 			Dict.Save()
 			return
 
@@ -328,12 +344,20 @@ class git(object):
 			jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
 			json_file = io.open(jsonFileName, "rb")
 			response = json_file.read()
-			json_file.close()
-			Log.Debug('getListofBundles returned: ' + str(response))
+			json_file.close()	
+			gits = JSON.ObjectFromString(str(response))
+			# Walk it, and reformat to desired output
+			results = {}
+			for git in gits:
+				result = {}
+				title = git['repo']
+				del git['repo']
+				results[title] = git	
+			Log.Debug('getListofBundles returned: ' + str(results))
 			req.clear()
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(str(response))
+			req.finish(json.dumps(results))
 		except:
 			Log.Debug('Fatal error happened in getListofBundles')
 			req.clear()

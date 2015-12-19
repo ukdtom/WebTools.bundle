@@ -19,25 +19,25 @@
                 global: false,
                 success: function(data) {    
                     $('#MainLink').html('Webtools - v' + data.version);
-                    var LoginFormContent = ['<table class="table table-bordered" style="width: 600px;">'];
+                    var LoginFormContent = ['<table class="table table-bordered" style="max-width: 500px;">'];
                     
                     if (data.PlexTVOnline == false) {
                         if (data.PasswordSet == false) {
-                            LoginFormContent.push('<tr><td colspan="2">Local login. No password previously set. Please set a new one below.</td></tr>');
-                            LoginFormContent.push('<tr><td>Password:</td><td><input type="password" name="pwd"></td></tr>');  
-                            LoginFormContent.push('<tr><td>Repeat Password:</td><td><input type="password" name="repeatpwd"></td></tr>');
+                            LoginFormContent.push('<tr><td>Local login. No password previously set. Please set a new one below.</td></tr>');
+                            LoginFormContent.push('<tr><td><div class="changeDisplay div-medium">Password:</div><div class="changeDisplay"><input type="password" name="pwd"></div></td></tr>');  
+                            LoginFormContent.push('<tr><td><div class="changeDisplay div-medium">Repeat Password:</div><div class="changeDisplay"><input type="password" name="repeatpwd"></div></td></tr>');
                         } else {
-                            LoginFormContent.push('<tr><td colspan="2">Local login, please provide the password set previously.</td></tr>');
-                            LoginFormContent.push('<tr><td>Password:</td><td><input type="password" name="pwd"></td></tr>');  
+                            LoginFormContent.push('<tr><td>Local login, please provide the password set previously.</td></tr>');
+                            LoginFormContent.push('<tr><td><div class="changeDisplay div-medium">Password:</div><div class="changeDisplay"><input type="password" name="pwd"></div></td></tr>');  
                         }
                     } else {
-                        LoginFormContent.push('<tr><td colspan="2">Signing in towards Plex.tv. Use your regular Plex credentials.</td></tr>');
-                        LoginFormContent.push('<tr><td>Username:</td><td><input type="text" name="user"></td></tr>');  
-                        LoginFormContent.push('<tr><td>Password:</td><td><input type="password" name="pwd"></td></tr>');  
+                        LoginFormContent.push('<tr><td>Signing in towards Plex.tv. Use your regular Plex credentials.</td></tr>');
+                        LoginFormContent.push('<tr><td><div class="changeDisplay div-medium">Username:</div><div class="changeDisplay"><input type="text" name="user"></div></td></tr>');  
+                        LoginFormContent.push('<tr><td><div class="changeDisplay div-medium">Password:</div><div class="changeDisplay"><input type="password" name="pwd"></div></td></tr>');  
                     }
                     
-                    LoginFormContent.push('<tr><td></td><td><input class="btn btn-default" type="submit" value="Sign in"></td></tr>');
-                    LoginFormContent.push('<tr><td colspan="2" id="LoginMessage"></td></tr>');
+                    LoginFormContent.push('<tr><td><input class="btn btn-default" type="submit" value="Sign in"></td></tr>');
+                    LoginFormContent.push('<tr><td id="LoginMessage"></td></tr>');
                     $('#LoginForm').html(LoginFormContent.join(''));
                     $('#LoginMessage').hide();
                     

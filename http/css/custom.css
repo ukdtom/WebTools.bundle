@@ -48,7 +48,13 @@ body {background-color: #242424; padding-top:70px;  padding-bottom:70px;}
 .flags { position:relative;display:inline-block;width:1.33333333em;line-height:1em } 
 
 .td-small {width: 60px; }
-
+.div-medium {width: 200px;}
 #navfoot {text-align: center;}
 
 .navbar-thin {min-height: 40px; padding-top: 5px; border-top: 1px solid #242424;}
+.changeDisplay {display: table-cell;}
+
+@media screen and (max-width:678px) {
+  .changeDisplay {display: block;}
+  .div-medium {width: auto;}
+}

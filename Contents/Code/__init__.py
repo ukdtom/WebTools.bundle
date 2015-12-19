@@ -15,7 +15,7 @@ PREFIX = '/applications/webtools'
 
 NAME = 'WebTools'
 ICON = 'WebTools.png'
-VERSION = '1.2'
+VERSION = '1.3'
 AUTHTOKEN = ''
 SECRETKEY = ''
 
@@ -114,6 +114,7 @@ def MainMenu():
 ####################################################################################################
 @route(PREFIX + '/ValidatePrefs')
 def ValidatePrefs():
+#	HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.WebTool/restart', immediate=True)
 	Restart()
 
 @route(PREFIX + '/Restart')

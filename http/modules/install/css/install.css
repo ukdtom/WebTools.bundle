@@ -5,9 +5,13 @@
 .icon {max-width: 32px; max-height: 32px;}
 .icontd {width: 35px; text-align: center;}
 #categoryDiv {width: 400px;}
-#NOTUSEDrepoDiv{float: left;}
+.changeDisplay {display: table-cell; font-size: 10pt;}
 
+.subheadline {font-weight: bold; margin-right: 5px;}
 @media screen and (max-width:678px) {
-
-#repoDiv{display: none;}
+  .changeDisplay{display: block; font-size: 10pt; word-break: break-word}
+  .marginRight {margin-right:0px;}
+  #categoryDiv {width: auto;}
+  #gitlink {width: 250px;}
+  
 }

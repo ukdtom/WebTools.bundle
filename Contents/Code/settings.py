@@ -39,6 +39,52 @@ class settings(object):
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
 
+	''' Grap the tornado req, and process it for a PUT request'''
+	def reqprocessPost(self, req):		
+		function = req.get_argument('function', 'missing')
+		if function == 'missing':
+			req.clear()
+			req.set_status(412)
+			req.finish("Missing function parameter")
+		elif function == 'setPwd':
+			return self.setPwd(req)
+		else:
+			req.clear()
+			req.set_status(412)
+			req.finish("<html><body>Unknown function call</body></html>")
+
+	# Change the local auth password
+	def setPwd(self, req):
+		Log.Debug('Recieved a call for setPwd')
+		try:
+			req.clear()
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			oldPwd = req.get_argument('oldPwd', 'missing')
+			if oldPwd == 'missing':
+				req.set_status(412)
+				req.finish("Missing oldPwd parameter")
+			newPwd = req.get_argument('newPwd', 'missing')
+			if newPwd == 'missing':
+				req.set_status(400)
+				req.finish("Missing newPwd parameter")
+			else:
+				# Does old pwd match?
+				if oldPwd == Dict['password']:
+					# Save new Pwd
+					Dict['password'] = newPwd
+					Dict.Save
+					req.set_status(200)
+					req.finish("Password saved")			
+				else:
+					req.set_status(401)
+					req.finish("Old Password did not match")			
+				return req
+		except Ex.HTTPError, e:
+			req.clear()
+			req.set_status(e.code)
+			req.finish(e)
+			return req
+
 	# Return the value of a specific setting
 	def putSetting(self, req):
 		Log.Debug('Recieved a call for putSetting')
