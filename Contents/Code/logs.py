@@ -141,7 +141,6 @@ class logs(object):
 				req.set_header('Content-Type', 'application/force-download')
 				req.set_header ('Content-Disposition', 'attachment; filename=' + downFile)
 				with io.open(myZip, 'rb') as f:
-					print 'Ged1'
 					try:
 						while True:
 							fbuffer = f.read(4096)
@@ -149,7 +148,6 @@ class logs(object):
 								req.write(fbuffer)
 							else:
 								f.close()
-								print 'Ged slut'
 								req.finish()
 								# remove temp zip file again
 								os.remove(myZip)

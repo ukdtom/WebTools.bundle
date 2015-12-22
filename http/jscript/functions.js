@@ -5,7 +5,7 @@
 
 // Stores values generic to Webtools. Function declerations are done further down in the script.
 var webtools = {
-    modules: [['subtitlemgmt', 'Subtitle Management[APIv1]'],['logviewer','LogViewer Tool'], ['install','UnsupportedAppStore']],
+    modules: [['subtitlemgmt', 'Subtitle Management'],['logviewer','LogViewer Tool'], ['install','UnsupportedAppStore']],
     active_module: '',
     functions: {},
 		version: 0,
@@ -31,7 +31,7 @@ webtools.list_modules.inline([
         $('#LoadingModal').modal({keyboard: false, backdrop:'static', show:true});  
         $('#OptionsMenu').html('');
         $.ajax({
-                url: '/webtools/version',
+                url: '/version',
                 cache: false,
                 dataType: 'JSON',
                 success: function(data) {
@@ -177,7 +177,7 @@ webtools.log = function (LogEntry, Source) {
     }
     
     $.ajax({
-        url: '/webtools/logs/[' + Source + '] ' + encodeURIComponent(LogEntry),
+        url: '/webtools2?module=logs&function=entry&text=[' + Source + '] ' + encodeURIComponent(LogEntry),
         type: 'POST',
         global: false,
         cache: false,
@@ -241,20 +241,30 @@ webtools.changepassword_work = function() {
     } else if ($("input[name=newpassword]").val() != $("input[name=repeatpassword]").val()) {
         $('#newpassword_error').html('The new passwords didn\'t match.');
         $("input[name=newpassword]").addClass('bg-danger');
+				$("input[name=repeatpassword]").addClass('bg-danger');
     } else {
         $("input[name=newpassword]").removeClass('bg-danger');
+			 	$("input[name=oldpassword]").removeClass('bg-danger');
+				$("input[name=repeatpassword]").removeClass('bg-danger');
         $('#newpassword_error').html('');
         $.ajax({
-            url: '/webtools/settings/password/'+$("input[name=newpassword]").val(),
-            type: 'PUT',
+            url: '/webtools2',
+						data: {'module':'settings','function':'setPwd','oldPwd':$("input[name=oldpassword]").val(),'newPwd':$("input[name=newpassword]").val()},
+            type: 'POST',
+						dataType: 'text',
             cache: false,
             success: function(data) {
                 $('#myModalBody').html('Password has been changed.');
                 $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
             },
             error: function(data) {
-                $('#myModalBody').html('An error occured and the password has not been changed.');
-                $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+								if (data.statusCode().status == 401) {
+									$('#newpassword_error').html('Old password incorrect.');
+        					$("input[name=oldpassword]").addClass('bg-danger');
+								} else {
+                	$('#myModalBody').html('An error occured and the password has not been changed.');
+                	$('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+								}
             }
         });
     }

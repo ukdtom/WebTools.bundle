@@ -13,7 +13,7 @@
     $(document).ready(function() {
         
         $.ajax({
-                url: '/webtools/version',
+                url: '/version',
                 cache: false,
                 dataType: 'JSON',
                 global: false,
@@ -34,13 +34,15 @@
                         LoginFormContent.push('<tr><td>Signing in towards Plex.tv. Use your regular Plex credentials.</td></tr>');
                         LoginFormContent.push('<tr><td><div class="changeDisplay div-medium">Username:</div><div class="changeDisplay"><input type="text" name="user"></div></td></tr>');  
                         LoginFormContent.push('<tr><td><div class="changeDisplay div-medium">Password:</div><div class="changeDisplay"><input type="password" name="pwd"></div></td></tr>');  
+												
                     }
                     
                     LoginFormContent.push('<tr><td><input class="btn btn-default" type="submit" value="Sign in"></td></tr>');
                     LoginFormContent.push('<tr><td id="LoginMessage"></td></tr>');
                     $('#LoginForm').html(LoginFormContent.join(''));
-                    $('#LoginMessage').hide();
-                    
+										$('input[name="pwd"]').focus();
+										$('input[name="user"]').focus();
+                    $('#LoginMessage').hide(); 
                 }
             });
     });

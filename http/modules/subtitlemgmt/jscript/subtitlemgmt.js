@@ -140,12 +140,13 @@ subtitlemgmt.get_section_list.inline([
     function(callback) {
         //Name:SettingsFetch
         $.ajax({
-            url: '/webtools/settings',
+					///webtools2?module=settings&function=getSettings
+            url: '/webtools2',
+						data: {'module':'settings','function':'getSettings'},
             cache: false,
             dataType: 'JSON',
             success: function(data) {
                 subtitlemgmt.options = data;
-                
                 callback('SettingsFetch:Success');
             },
             error: function(data) {
@@ -162,7 +163,8 @@ subtitlemgmt.get_section_list.inline([
         //Name:SectionFetch
         // Fetch sections and list them.
         $.ajax({
-            url: '/webtools/sections',
+            url: '/webtools2',
+						data: {'module':'pms','function':'getSectionsList'},
             cache: false,
             dataType: 'JSON',
             success: function(data) {
@@ -183,9 +185,9 @@ subtitlemgmt.get_section_list.inline([
                     }    
                 });
                 $('#SectionMenu').append('<li><a class="customlink" onclick="javascript:subtitlemgmt.get_section_list.start();">Refresh Sections</a></li>');
-			    $('#LoadingModal').modal('hide');
-                callback('SectionFetch:Success');
-            },
+								$('#LoadingModal').modal('hide');
+											callback('SectionFetch:Success');
+						},
             error: function(data) {
                 webtools.display_error('Failed fetching the sections from the server. Please restart the server.<br>'
                                 +'<br>Errorinfo:'
@@ -199,7 +201,6 @@ subtitlemgmt.get_section_list.inline([
     }
 ], function(result) {
     webtools.log(result);
-    //console.log(result);
 });
 
 subtitlemgmt.save_options = function() {
@@ -240,17 +241,15 @@ subtitlemgmt.save_options = function() {
                 save_options_to_server.functionsarray.push(function (callback, optionkeys) {
                     var currentkey = optionkeys.shift();
                     $.ajax({
-                        url: '/webtools/settings/'+ currentkey + '/' + subtitlemgmt.options[currentkey],
+                        url: '/webtools2?module=settings&function=putSetting&name=' + currentkey + '&value=' + subtitlemgmt.options[currentkey],
                         cache: false,
                         type: 'PUT',
                         dataType: 'text',
                         success: function(data) {
-                            //console.log(data);
                             webtools.log('Options saved successfully.');
                             callback('Successfully saved ' + currentkey, optionkeys);
                         },
-                        error: function(data) {
-                            //console.log(data);
+                        error: function(data) {   
                             webtools.log('Options has not been saved due to an error.');
                             callback('Failed saving ' + currentkey, optionkeys);
                         }

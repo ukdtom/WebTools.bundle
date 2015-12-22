@@ -1,6 +1,6 @@
 /* ##########################################
 ################## TV SHOWS #################
-#############################################*/
+############################################# */
 subtitlemgmt.fetch_section_type_show = function(section_key, pageToShow) {
     subtitlemgmt.selected_section.currentpage = pageToShow;
     var get_show = new asynchelper(false,false);
@@ -28,7 +28,8 @@ subtitlemgmt.fetch_section_type_show = function(section_key, pageToShow) {
         function(callback) {
             // First, lets check how big the section is that the user requested to see.
             $.ajax({
-                url: '/webtools/section/'+subtitlemgmt.selected_section.key+'/size',
+              
+                url: 'webtools2?module=pms&function=getSectionSize&key='+subtitlemgmt.selected_section.key,
                 cache: false,
                 dataType: 'text',
                 success: function(data) {
@@ -53,7 +54,10 @@ subtitlemgmt.fetch_section_type_show = function(section_key, pageToShow) {
             var start = (Number(subtitlemgmt.selected_section.currentpage) * Number(subtitlemgmt.options.items_per_page));
             $('#LoadingBody').html('Library Size: ' + subtitlemgmt.selected_section.totalsize + '<br>Currently fetching: ' + start + '->' + (start+subtitlemgmt.options.items_per_page));
             $.ajax({
-                url: '/webtools/section/' + subtitlemgmt.selected_section.key + '/' + start + '/' + subtitlemgmt.options.items_per_page,
+              // /webtools2?module=pms&function=getSection&key=<Key of section>&start=<Item to start with>&size=<Amount of items to return>[&getSubs=true]
+
+                //url: '/webtools/section/' + subtitlemgmt.selected_section.key + '/' + start + '/' + subtitlemgmt.options.items_per_page,
+                url: '/webtools2?module=pms&function=getSection&key=' + subtitlemgmt.selected_section.key + '&start=' + start + '&size=' + subtitlemgmt.options.items_per_page,
                 cache: false,
                 dataType: 'JSON',
                 success: function(data) {
@@ -135,7 +139,7 @@ subtitlemgmt.fetch_show_seasons = function(show_key, pageToShow) {
 
             $('#LoadingBody').html('Fetching seasons.');
             $.ajax({
-                url: '/webtools/show/' + subtitlemgmt.selected_section.key + '/seasons',
+                url: '/webtools2?module=pms&function=tvShow&action=getSeasons&key=' + subtitlemgmt.selected_section.key,
                 cache: false,
                 dataType: 'JSON',
                 success: function(data) {
@@ -198,7 +202,7 @@ subtitlemgmt.fetch_season_episodes = function(season_key, pageToShow) {
         function(callback) {
             $('#LoadingBody').html('Fetching episodes.');
             $.ajax({
-                url: '/webtools/show/season/' + subtitlemgmt.selected_section.key + '/getsubs',
+                url: '/webtools2?module=pms&function=tvShow&action=getSeason&key=' + subtitlemgmt.selected_section.key + '&getSubs=True',
                 cache: false,
                 dataType: 'JSON',
                 success: function(data) {

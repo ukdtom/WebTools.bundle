@@ -21,7 +21,9 @@ webtools.functions.install = {
     installedarray: [],
     showOnlyInstalled: false,
     switchShowInstalled: function () {},
-    checkForUpdates: function() {}
+    checkForUpdates: function() {},
+    removebundleconfirm: function () {},
+    removebundlework: function() {}
 };
 
 // Alias:
@@ -151,9 +153,7 @@ install.loadChannels = function() {
       
     },
     function (callback) {
-      //console.log(install.channelarray);
-      
-      
+    
       for(var key in install.channelarray) {
         install.channelarray[key].type.forEach(function (type) {
           if (install.categories.indexOf(type) == -1) {
@@ -164,18 +164,6 @@ install.loadChannels = function() {
       }
       
       install.categories.sort();
-      
-      /*
-      install.channelarray.forEach(function (channel) {
-      
-        channel.type.forEach(function (type) {
-          if (install.categories.indexOf(type) == -1) {
-            install.categories.push(type);
-          }
-        })
-        install.categories.sort();
-      })
-      */
       callback();
     }
     
@@ -224,18 +212,11 @@ install.showChannels = function(button, type) {
             isInstalled = true;
             installDate = install.installedarray[installed_key].date;
             rowspan = 3;
-            installlink = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Re-Install with latest available</button> <button class="btn btn-default btn-xs" onclick="install.checkForUpdates(\'' + key + '\')">Check for Updates</button></div>';
+            installlink = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Re-Install with latest available</button> <button class="btn btn-default btn-xs" onclick="install.checkForUpdates(\'' + install.channelarray[key].bundle + '\',\'' + key + '\')">Check for Updates</button> <button class="btn btn-default btn-xs" onclick="install.removebundleconfirm(\'' + key + '\')">Uninstall Bundle</button></div>';
           break;
         }
       }
-      /*
-        install.installedarray.forEach(function (installed) {
-          console.log(installed);
-          if (installed.title == channel.title) {
-            installlink = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="">Re-Install</button></div>'
-          }
-        })
-      */
+
         if( ( (install.showOnlyInstalled === true) && (isInstalled === true) ) || (install.showOnlyInstalled === false) ) {
           var newEntry = ['<div class="panel panel-default">'];
           newEntry.push('<div class="panel-heading"><h4 class="panel-title">' + install.channelarray[key].title + '</h4></div>');
@@ -244,7 +225,7 @@ install.showChannels = function(button, type) {
           newEntry.push('<tr><td colspan="2"><div id="categoryDiv" class="changeDisplay marginRight"><span class="changeDisplay subheadline">Categories:&nbsp;</span> <span class="changeDisplay">' + install.channelarray[key].type + '</span></div><div class="changeDisplay"><span class="changeDisplay subheadline">Repo:&nbsp;</span> <span class="changeDisplay"><a href="' + key + '" target="_NEW">' + key + '</a></span></div></td></tr>')
           
           if (isInstalled === true) {
-            newEntry.push('<tr><td colspan="2"><div id="categoryDiv" class="changeDisplay marginRight"><span class="changeDisplay subheadline">Installed:&nbsp;</span> <span class="changeDisplay"> ' + installDate + '</span></div><div class="changeDisplay"><span class="changeDisplay subheadline">Latest Update on Github:&nbsp;</span> <span class="changeDisplay"><span id="updateTime">-</span></span></div></td></tr>')
+            newEntry.push('<tr><td colspan="2"><div id="categoryDiv" class="changeDisplay marginRight"><span class="changeDisplay subheadline">Installed:&nbsp;</span> <span class="changeDisplay"> ' + installDate + '</span></div><div class="changeDisplay"><span class="changeDisplay subheadline">Latest Update on Github:&nbsp;</span> <span class="changeDisplay"><span id="updateTime_' + install.channelarray[key].bundle.replace('.','') + '">-</span></span></div></td></tr>')
             //newEntry.push('<tr><td id="categoryDiv">Installed: ' + installDate + '</td><td>Latest Update on Github: <span id="updateTime">-</span></td></tr>')
           }
           newEntry.push('</table></div>');
@@ -266,7 +247,7 @@ install.switchShowInstalled = function() {
   }
 }
 
-install.checkForUpdates = function(github) {
+install.checkForUpdates = function(spanname, github) {
 
   $.ajax({
         url: '/webtools2',
@@ -276,7 +257,7 @@ install.checkForUpdates = function(github) {
         type: 'GET',
         success: function(data) {
          
-          $('#updateTime').html(data);
+          $('#updateTime_'+spanname.replace('.','')).html(data);
         },
         error: function(data) {
           webtools.display_error('Failed checking for updates for the plugin. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>'
@@ -287,4 +268,46 @@ install.checkForUpdates = function(github) {
         }
       })
   
+}
+install.removebundleconfirm = function (key) {
+        $('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Uninstall bundle from Plex');
+        $('#myModalBody').html('Are you sure you want to uninstall "' + install.channelarray[key].title + '"?');
+        $('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="install.removebundlework(\'' + key + '\');">Yes</button> <button type="button" class="btn btn-default" data-dismiss="modal">No</button>');
+        $('#myModal').modal('show');    
+}
+
+install.removebundlework = function (key) {
+  
+  ///webtools2?module=pms&function=delBundle&bundleName=plex2csv.bundle
+   $.ajax({
+        url: '/webtools2?module=pms&function=delBundle&bundleName=' + install.channelarray[key].bundle,
+        cache: false,
+        dataType: 'text',
+        type: 'DELETE',
+        success: function(data) {
+         
+          $('#myModalBody').html('Bundle ' + install.channelarray[key].title + ' has been successfully uninstalled.<br>Will now reload information.');
+          $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+        },
+        error: function(data) {
+          if (data.statusCode().status == 404) {
+              $('#myModalBody').html('Bundle ' + install.channelarray[key].title + ' was not found on the server.');
+              $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+          } else if (data.statusCode().status == 500) {
+              $('#myModalBody').html('Bundle ' + install.channelarray[key].title + ' could not be removed completly.');
+              $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+          } else {
+          webtools.display_error('Failed uninstalling the bundle. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>'
+              +'<br>Errorinfo:'
+              +'<br>Requested URL: ' + this.url
+              +'<br>Error Code/Message: ' + data.status + '/'  + data.statusText);
+          }
+        }
+      })
+    $('#myModal').on('hidden.bs.modal', function (e) {
+      if ($('#LoadingModal').is(':visible') === false) {
+            $('#LoadingModal').modal({keyboard: true, backdrop:'static', show:true});    
+        }
+        install.loadChannels();
+    })
 }

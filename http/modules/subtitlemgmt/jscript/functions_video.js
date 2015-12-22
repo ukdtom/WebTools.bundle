@@ -26,7 +26,7 @@ subtitlemgmt.fetch_section_type_movies = function(section_key, pageToShow) {
         function(callback) {
             // First, lets check how big the section is that the user requested to see.
             $.ajax({
-                url: '/webtools/section/'+subtitlemgmt.selected_section.key+'/size',
+                url: '/webtools2?module=pms&function=getSectionSize&key='+subtitlemgmt.selected_section.key,
                 cache: false,
                 dataType: 'text',
                 success: function(data) {
@@ -50,18 +50,17 @@ subtitlemgmt.fetch_section_type_movies = function(section_key, pageToShow) {
             $('#LoadingBody').html('Library Size: ' + subtitlemgmt.selected_section.totalsize + '<br>Currently fetching: ' + start + '->' + (start+subtitlemgmt.options.items_per_page));
             
             $.ajax({
-                url: '/webtools/section/' + subtitlemgmt.selected_section.key + '/' + start + '/' + subtitlemgmt.options.items_per_page + '/getsubs',
+                url: '/webtools2?module=pms&function=getSection&key=' + subtitlemgmt.selected_section.key + '&start=' + start + '&size=' + subtitlemgmt.options.items_per_page + '&getSubs=true',
                 cache: false,
                 dataType: 'JSON',
                 success: function(data) {
                     //console.log('Data:' + (fetchinfo.currentfetch-1) + ' :: ' + JSON.stringify(data));
                     data.forEach(function(video){
-                        //console.log('Video' + JSON.stringify(video));
                         video.subtitles.showsubs = true;
                         subtitlemgmt.selected_section.contents.push(video);
                         subtitlemgmt.selected_section.contentstype = 'video';
                     });
-                    
+                   
                     callback('Batchfetch complete.');
                 },
                 error: function(data) {
@@ -218,10 +217,11 @@ subtitlemgmt.display_episodes = function() {
     $('#LoadingModal').modal('hide');    
 }
 
-
+// AWAITING FIX FROM MR.T
 subtitlemgmt.view_subtitle = function(mediaKey, subtitleKey) {
     $.ajax({
-        url: '/webtools/subtitle/'+ mediaKey + '/' + subtitleKey,
+        //url: '/webtools/subtitle/'+ mediaKey + '/' + subtitleKey,
+				url: '/webtools2?module=pms&function=showSubtitle&key=' + subtitleKey,
         cache: false,
         type: 'GET',
         dataType: 'JSON',
@@ -239,6 +239,7 @@ subtitlemgmt.view_subtitle = function(mediaKey, subtitleKey) {
             $('#myModal').modal('show');
         },
         error: function(data) {
+						console.log(data);
             $('#myModalLabel').html('An error occured.');
             $('#myModalBody').html(data);
             $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
@@ -271,10 +272,7 @@ subtitlemgmt.subtitle_delete = function(videoKey) {
     var subtitlearray = [];
     delete_query.inline([],function(result) {
         result.shift();
-        for(var i = 0; i<result.length;i++) {
-            result[i] = result[i].substr(1,result[i].length-2);
-        }
-        
+
         $('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Deleted Subtitles');
         $('#myModalBody').html(result.join('<br>'));
         $('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
@@ -287,20 +285,20 @@ subtitlemgmt.subtitle_delete = function(videoKey) {
             var splitstring = subtitlearray.shift();
             splitstring = splitstring.split(',');
             $.ajax({
-                url: '/webtools/subtitle/'+splitstring[0]+'/'+splitstring[1],
+                url: '/webtools2?module=pms&function=delSub&key='+splitstring[0]+'&subKey='+splitstring[1],
                 type: 'DELETE',
                 cache: false,
                 success: function(response, status, xhr) {
                     $('input[value="'+splitstring[0]+','+splitstring[1]+'"]').prop('disabled',true);
                     $('input[value="'+splitstring[0]+','+splitstring[1]+'"]').prop('checked',false);
                     $('input[value="'+splitstring[0]+','+splitstring[1]+'"]').parent().parent().addClass('bg-danger');
-					$('input[value="'+splitstring[0]+','+splitstring[1]+'"]').parent().parent().fadeOut(2000);
-                    webtools.log(response.toString());	
-                    callback(response.toString(),subtitlearray);
+										$('input[value="'+splitstring[0]+','+splitstring[1]+'"]').parent().parent().fadeOut(2000);
+                    webtools.log("Deleted File: " + response['Deleted file']);	
+                    callback("Deleted File: " + response['Deleted file'],subtitlearray);
                 },
                 error: function(response) {
-                    webtools.log(response.toString());
-                    callback(response.toString(), subtitlearray);
+                    webtools.log(JSON.stringify(response));
+                    callback(JSON.stringify(response), subtitlearray);
                 }
             });
 

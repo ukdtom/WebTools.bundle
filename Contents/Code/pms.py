@@ -438,10 +438,11 @@ class pms(object):
 				response = response.replace('<p>', '',1)
 				response = response.replace('</p>', '',1)
 				response = response.replace('&gt;', '>')
+				response = response.split('\n')
 				req.clear()
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(response)
+				req.finish(json.dumps(response))
 			except:
 				Log.Debug('Fatal error happened in showSubtitle')
 				req.clear()
@@ -516,7 +517,7 @@ class pms(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Fatal error happened in getSubtitles')
 			if mediaKey != '':
-				return str(mediaInfo)
+				return mediaInfo
 			else:
 				req.clear()
 				req.set_status(200)

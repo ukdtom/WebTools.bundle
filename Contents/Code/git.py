@@ -9,7 +9,7 @@
 
 import datetime			# Used for a timestamp in the dict
 import json
-import io
+import io, os
 import plistlib
 
 class git(object):
@@ -19,6 +19,7 @@ class git(object):
 		self.url = ''
 		self.PLUGIN_DIR = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name)
 		self.UAS_URL = 'https://github.com/ukdtom/UAS2Res'
+		self.IGNORE_BUNDLE = ['WebTools.bundle', 'SiteConfigurations.bundle']
 		Log.Debug("Plugin directory is: %s" %(self.PLUGIN_DIR))
 
 	''' Grap the tornado req, and process it '''
@@ -47,6 +48,113 @@ class git(object):
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
+
+
+	''' Grap the tornado req, and process it for a PUT request'''
+	def reqprocessPUT(self, req):		
+		function = req.get_argument('function', 'missing')
+		if function == 'missing':
+			req.clear()
+			req.set_status(412)
+			req.finish("<html><body>Missing function parameter</body></html>")
+		elif function == 'migrate':
+			return self.migrate(req)
+		else:
+			req.clear()
+			req.set_status(412)
+			req.finish("<html><body>Unknown function call</body></html>")
+
+	''' This function will migrate bundles that has been installed without using our UAS into our UAS '''
+	def migrate(self, reg):
+		# get list from uas cache
+		def getUASCacheList():
+			try:
+				jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
+				json_file = io.open(jsonFileName, "rb")
+				response = json_file.read()
+				json_file.close()	
+				gits = JSON.ObjectFromString(str(response))
+				# Walk it, and reformat to desired output
+				results = {}
+				for git in gits:
+					result = {}
+					title = git['repo']
+					del git['repo']
+					results[title] = git
+				return results	
+			except:
+				return ''
+
+		# Grap indentifier from plist file
+		def getIdentifier(pluginDir):
+			try:
+				pFile = Core.storage.join_path(self.PLUGIN_DIR, pluginDir, 'Contents', 'Info.plist')
+				pl = plistlib.readPlist(pFile)
+				createStamp = datetime.datetime.fromtimestamp(os.path.getmtime(pFile)).strftime('%Y-%m-%d %H:%M:%S')
+				return (pl['CFBundleIdentifier'], createStamp)
+			except:
+				return ''
+		Log.Debug('Migrate function called')
+		try:
+			# Init dict, if not already so
+			if Dict['installed'] == None:
+				Dict['installed'] = {}
+			# Let's start by getting a list of known installed bundles
+			knownBundles = []
+			for installedBundles in Dict['installed']:
+				knownBundles.append(Dict['installed'][installedBundles]['bundle'])
+			# Grap a list of directories in the plugin dir
+			dirs = os.listdir(self.PLUGIN_DIR)
+			for pluginDir in dirs:
+				if pluginDir.endswith('.bundle'):
+					# It's a bundle
+					if pluginDir not in knownBundles:
+						# It's unknown
+						if pluginDir not in self.IGNORE_BUNDLE:
+							Log.Debug('About to migrate %s' %(pluginDir))
+							# This we need to migrate
+							(target, dtStamp) = getIdentifier(pluginDir)
+							# try and see if part of uas Cache
+							uasListjson = getUASCacheList()
+							bFound = False
+							for git in uasListjson:
+								if target == uasListjson[git]['identifier']:
+									Log.Debug('Found %s is part of uas' %(target))
+									targetGit = {}
+									targetGit['description'] = uasListjson[git]['description']
+									targetGit['title'] = uasListjson[git]['title']
+									targetGit['bundle'] = uasListjson[git]['bundle']
+									targetGit['branch'] = uasListjson[git]['branch']
+									targetGit['identifier'] = uasListjson[git]['identifier']
+									targetGit['type'] = uasListjson[git]['type']
+									targetGit['icon'] = uasListjson[git]['icon']
+									targetGit['date'] = dtStamp
+									Dict['installed'][git] = targetGit
+									Log.Debug('Dict stamped with the following install entry: ' + git + ' - '  + str(targetGit))
+									Dict.Save()
+									bFound = True
+									break
+							if not bFound:
+								Log.Debug('Found %s is sadly not part of uas' %(pluginDir))
+								git = {}
+								git['title'] = pluginDir[:-7]
+								git['description'] = ''
+								git['branch'] = ''
+								git['bundle'] = pluginDir
+								git['identifier'] = target
+								git['type'] = []
+								git['icon'] = ''
+								git['date'] = dtStamp
+								Dict['installed'][target] = git
+								Log.Debug('Dict stamped with the following install entry: ' + pluginDir + ' - '  + str(git))
+								Dict.Save()
+		except:
+			Log.Debug('Fatal error happened in migrate')
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in migrate')
+			return req
 
 	''' This will return a list of UAS bundle types from the UAS Cache '''
 	def uasTypes(self, req):
@@ -86,8 +194,7 @@ class git(object):
 				Dict.Save()
 				return
 			except:
-				Log.Debug('Exception in UASType update')
-				print 'Ged Except i UASType'
+				Log.Debug('Exception in UASType update...Ignorring')
 
 		# Start by getting the time stamp for the last update
 		try:
@@ -207,8 +314,6 @@ class git(object):
 			# Walk the one by one, so we can handle upper/lower case
 			for git in gits:
 				if url.upper() == git['repo'].upper():
-					print '***** FOUND *****'
-					print git['repo']
 					title = git['repo']
 					del git['repo']
 					git['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -247,7 +352,6 @@ class git(object):
 					if '/Contents/Code/__init__.py' in filename:
 						bError = False
 				if bError:
-					print 'NOT A CHANNEL'
 					Core.storage.remove_tree(Core.storage.join_path(self.PLUGIN_DIR, bundleName))
 					Log.Debug('The bundle downloaded is not a Plex Channel bundle!')
 					raise ValueError('The bundle downloaded is not a Plex Channel bundle!')
