@@ -195,7 +195,6 @@ class webTools2Handler(BaseHandler):
 	#******* DELETE REQUEST *********
 	@authenticated
 #	print '********** AUTH DISABLED WebSRV WebTools2 DELETE'
-
 	def delete(self, **params):
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':

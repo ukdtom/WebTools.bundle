@@ -11,6 +11,7 @@ import datetime			# Used for a timestamp in the dict
 import json
 import io, os
 import plistlib
+import pms
 
 class git(object):
 	# Defaults used by the rest of the class
@@ -44,6 +45,8 @@ class git(object):
 			return self.updateUASCache(req)
 		elif function == 'uasTypes':
 			return self.uasTypes(req)
+		elif function == 'getUpdateList':
+			return self.getUpdateList(req)
 		else:
 			req.clear()
 			req.set_status(412)
@@ -64,6 +67,42 @@ class git(object):
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
 
+	''' This function will return a list of bundles, where there is an update avail '''
+	def getUpdateList(self, req):
+		Log.Debug('Got a call for getUpdateList')
+		try:
+			# Are there any bundles installed?
+			if 'installed' in Dict:
+				bundles = Dict['installed']
+				Log.Debug('Installed channes are: ' + str(bundles))
+				result = {}
+				# Now walk them one by one
+				for bundle in bundles:
+					if bundle.startswith('https://github'):
+						gitTime = self.getLastUpdateTime(req, UAS=True, url=bundle)
+						sBundleTime = Dict['installed'][bundle]['date']
+						bundleTime = datetime.datetime.strptime(sBundleTime, '%Y-%m-%d %H:%M:%S')
+						if bundleTime < gitTime:
+							gitInfo = Dict['installed'][bundle]
+							gitInfo['gitHubTime'] = str(gitTime)
+							result[bundle] = gitInfo
+				Log.Debug('Updates avail: ' + str(result))
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(result)
+			else:
+				Log.Debug('No bundles are installed')
+				req.clear()
+				req.set_status(204)
+		except Exception, e:
+			Log.Debug('Fatal error happened in getUpdateList: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in getUpdateList' + str(e))
+	
+
 	''' This function will migrate bundles that has been installed without using our UAS into our UAS '''
 	def migrate(self, reg):
 		# get list from uas cache
@@ -82,7 +121,8 @@ class git(object):
 					del git['repo']
 					results[title] = git
 				return results	
-			except:
+			except Exception, e:
+				Log.Debug('Exception in Migrate/getUASCacheList : ' + str(e))				
 				return ''
 
 		# Grap indentifier from plist file
@@ -90,10 +130,13 @@ class git(object):
 			try:
 				pFile = Core.storage.join_path(self.PLUGIN_DIR, pluginDir, 'Contents', 'Info.plist')
 				pl = plistlib.readPlist(pFile)
-				createStamp = datetime.datetime.fromtimestamp(os.path.getmtime(pFile)).strftime('%Y-%m-%d %H:%M:%S')
+				createStamp = datetime.datetime.fromtimestamp(os.path.getmtime(pFile)).strftime('%Y-%m-%d %H:%M:%S')			
 				return (pl['CFBundleIdentifier'], createStamp)
-			except:
+			except Exception, e:
+				Log.Debug('Exception in Migrate/getIdentifier : ' + str(e))				
 				return ''
+
+		# Main call
 		Log.Debug('Migrate function called')
 		try:
 			# Init dict, if not already so
@@ -131,6 +174,8 @@ class git(object):
 									targetGit['date'] = dtStamp
 									Dict['installed'][git] = targetGit
 									Log.Debug('Dict stamped with the following install entry: ' + git + ' - '  + str(targetGit))
+									# Now update the PMS-AllBundleInfo Dict as well
+									Dict['PMS-AllBundleInfo'][git] = targetGit
 									Dict.Save()
 									bFound = True
 									break
@@ -142,18 +187,21 @@ class git(object):
 								git['branch'] = ''
 								git['bundle'] = pluginDir
 								git['identifier'] = target
-								git['type'] = []
+								git['type'] = ['Unknown']
 								git['icon'] = ''
 								git['date'] = dtStamp
 								Dict['installed'][target] = git
+								# Now update the PMS-AllBundleInfo Dict as well
+								Dict['PMS-AllBundleInfo'][target] = git
+
 								Log.Debug('Dict stamped with the following install entry: ' + pluginDir + ' - '  + str(git))
 								Dict.Save()
-		except:
-			Log.Debug('Fatal error happened in migrate')
+		except Exception, e:
+			Log.Debug('Fatal error happened in migrate: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in migrate')
+			req.finish('Fatal error happened in migrate: ' + str(e))
 			return req
 
 	''' This will return a list of UAS bundle types from the UAS Cache '''
@@ -164,11 +212,12 @@ class git(object):
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(Dict['uasTypes']))
-		except:
+		except Exception, e:
+			Log.Debug('Exception in uasTypes: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in uasTypes')
+			req.finish('Fatal error happened in uasTypes: ' + str(e))
 			return req
 
 	''' This will update the UAS Cache directory from GitHub '''
@@ -189,7 +238,8 @@ class git(object):
 					typeList = entry['type']
 					for bundleType in typeList:
 						if bundleType not in uasTypes:
-							uasTypes.append(bundleType)					
+							uasTypes.append(bundleType)	
+				uasTypes.append('Unknown')				
 				Dict['uasTypes'] = uasTypes
 				Dict.Save()
 				return
@@ -205,7 +255,7 @@ class git(object):
 				# Not set yet, so default to Linux start date
 				lastUpdateUAS = datetime.datetime.strptime('01-01-1970 00:00:00', '%m-%d-%Y %H:%M:%S')
 			# Now get the last update time from the UAS repository on GitHub
-			masterUpdate = self.getLastUpdateTime(req, True)
+			masterUpdate = self.getLastUpdateTime(req, True, self.UAS_URL)
 			# Do we need to update the cache, and add 2 min. tolerance here?
 			if (masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120):
 				# We need to update UAS Cache
@@ -247,7 +297,9 @@ class git(object):
 					req.set_status(500)
 					req.set_header('Content-Type', 'application/json; charset=utf-8')
 					req.finish('Fatal error happened in updateUASTypes')
-					return req
+					return req				
+				# Update the AllBundleInfo as well
+				pms.updateAllBundleInfoFromUAS()
 			else:
 				Log.Debug('UAS Cache already up to date')
 			# Set timestamp in the Dict
@@ -256,11 +308,12 @@ class git(object):
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('UASCache is up to date')	
-		except:
+		except Exception, e:
+			Log.Debug('Exception in updateUASCache ' + str(e)) 
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in updateUASCache')
+			req.finish('Exception in updateUASCache ' + str(e))
 			return req
 
 	''' list will return a list of all installed gits from GitHub'''
@@ -298,7 +351,6 @@ class git(object):
 
 		''' Save Install info to the dict '''
 		def saveInstallInfo(url, bundleName):
-
 			# Get the dict with the installed bundles, and init it if it doesn't exists
 			if not 'installed' in Dict:
 				Dict['installed'] = {}
@@ -314,14 +366,17 @@ class git(object):
 			# Walk the one by one, so we can handle upper/lower case
 			for git in gits:
 				if url.upper() == git['repo'].upper():
-					title = git['repo']
+					key = git['repo']
 					del git['repo']
 					git['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-					Dict['installed'][title] = git
+					Dict['installed'][key] = git
 					bNotInUAS = False
-					Log.Debug('Dict stamped with the following install entry: ' + title + ' - '  + str(git))
+					Log.Debug('Dict stamped with the following install entry: ' + key + ' - '  + str(git))
+					# Now update the PMS-AllBundleInfo Dict as well
+					Dict['PMS-AllBundleInfo'][key] = git
 					break
 			if bNotInUAS:
+				key = url
 				pFile = Core.storage.join_path(self.PLUGIN_DIR, bundleName, 'Contents', 'Info.plist')
 				pl = plistlib.readPlist(pFile)
 				git = {}
@@ -330,11 +385,13 @@ class git(object):
 				git['branch'] = ''
 				git['bundle'] = bundleName[bundleName.rfind("/"):][1:]
 				git['identifier'] = pl['CFBundleIdentifier']
-				git['type'] = []
+				git['type'] = ['Unknown']
 				git['icon'] = ''
 				git['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-				Dict['installed'][url] = git
-				Log.Debug('Dict stamped with the following install entry: ' + url + ' - '  + str(git))
+				Dict['installed'][key] = git
+				# Now update the PMS-AllBundleInfo Dict as well
+				Dict['PMS-AllBundleInfo'][key] = git
+				Log.Debug('Dict stamped with the following install entry: ' + key + ' - '  + str(git))
 			Dict.Save()
 			return
 
@@ -349,8 +406,16 @@ class git(object):
 				# Make sure it's actually a bundle channel
 				bError = True
 				for filename in zipfile:
-					if '/Contents/Code/__init__.py' in filename:
-						bError = False
+					if '/Contents/Info.plist' in filename:
+						# We found the info.plist file here, but is the dir level okay?
+						if Platform.OS == 'Windows':
+							count = filename.count('\\')
+						else:
+							count = filename.count('/')		
+						if count == 2:
+							bError = False
+						else:
+							Log.Critical('Tried to install ' + bundleName + ' but dir levels did not match')				
 				if bError:
 					Core.storage.remove_tree(Core.storage.join_path(self.PLUGIN_DIR, bundleName))
 					Log.Debug('The bundle downloaded is not a Plex Channel bundle!')
@@ -389,9 +454,9 @@ class git(object):
 
 		# Starting install main
 		Log.Debug('Starting install')
+		req.clear()
 		url = req.get_argument('url', 'missing')
 		if url == 'missing':
-			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Missing url of git</body></html>")
 			return req
@@ -406,26 +471,26 @@ class git(object):
 			req.finish('All is cool')
 			return req
 		else:
-			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in install for :' + url)
 			return req
 
 	''' Get the last update time for a master branch. if UAS is set to True, then this is an internal req. for UAS '''
-	def getLastUpdateTime(self, req, UAS=False):
+	def getLastUpdateTime(self, req, UAS=False, url=''):
 		Log.Debug('Starting getLastUpdateTime')
+		Log.Debug('URL is: ' + url)
 		# Wanted to internally check for UAS update?
-		if UAS:
-			url = self.UAS_URL
-		else:
+		if not UAS:			
 			url = req.get_argument('url', 'missing')
+			Log.Debug('URL2 is: ' + url)
 		if url == 'missing':
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Missing url of git</body></html>")
 			return req
 		try:
+			Log.Debug('URL3 is: ' + url)
 			url += '/commits/master.atom'
 			response = Datetime.ParseDate(HTML.ElementFromURL(url).xpath('//entry')[0].xpath('./updated')[0].text[:-6])
 			Log.Debug('Last update for: ' + url + ' is: ' + str(response))

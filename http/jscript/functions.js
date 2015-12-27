@@ -103,7 +103,6 @@ webtools.activate_module = function(modulename) {
                 }
             });
             
-            
             $("#SubLink").attr('onclick','javascript:webtools.list_modules.start(\'' + modulename + '\')');
             $("#SubLink").html('/'+moduledisplayname);
             
@@ -156,6 +155,7 @@ webtools.listlogfiles = function(callback,activatemodulename) {
             } else {
                 $('#LoadingModal').modal('hide');
             }
+						
         },
         error: function(data) {
             webtools.display_error('Failed fetching the logfilenames from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>'
@@ -193,6 +193,8 @@ webtools.log = function (LogEntry, Source) {
 
 webtools.show_log = function(filename) {
     $('#ContentHeader').html('Logfile: ' + filename);  
+	 	$('#ContentBody').html('Fetching Logfile..');  
+		$('#ContentFoot').html('');
     $('#navfoot').html('');  
 
     $.ajax({
@@ -203,6 +205,7 @@ webtools.show_log = function(filename) {
         dataType: 'JSON',
         success: function(logs) {
             $('#ContentBody').html(logs.join('<br>'));  
+						$('#ContentFoot').html('<a href="/webtools2?module=logs&function=download&fileName='+filename+'">Download Logfile</a>');
         },
         error: function(logs) {
            $('#ContentBody').html(logs);   
@@ -210,7 +213,7 @@ webtools.show_log = function(filename) {
     });
     
     
-    $('#ContentFoot').html('<a href="/webtools2?module=logs&function=download&fileName='+filename+'">Download Logfile</a>');
+    
 };
 
 // Debug every AJAX calls hit.
@@ -297,9 +300,9 @@ webtools.updates_check = function () {
                 infoarray.push('Author: <a target="_NEW" href="' + data.author.html_url + '">' + data.author.login + '</a>');
                 infoarray.push('Release Notes: ' + data.body);
                 infoarray.push('Download url: <a target="_NEW" href="' + data.zipball_url + '">' + data.zipball_url + '</a>');
-                console.log('version compare: ' + compare(webtools.version,data.name.substring(1)) + ' A: ' + webtools.version + '> B: ' + data.name.substring(1));
+                console.log('version compare: ' + compare(webtools.version,data.name.substring(1)) + ' A: ' + webtools.version + '> B: ' + data.tag_name);
 
-                switch (compare(webtools.version,data.name.substring(1))) {
+                switch (compare(webtools.version,data.tag_name)) {
                         case 0:
                             infoarray.push('You are on the latest and greatest!');
                             break;
@@ -318,6 +321,17 @@ webtools.updates_check = function () {
         }
 	});
 };
+
+$(function(ready){  
+    $('#OptionsModal').on('show.bs.modal', function (e) {
+			$('#OptionsModalAlert').hide();
+			var foot = '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+			if (typeof(webtools.functions[webtools.active_module].save_options) == 'function') {
+				foot += ' <button type="button" class="btn btn-default" onclick="webtools.save_options();">Save Options</button>'
+			}
+			$('#OptionsFoot').html(foot);
+		});
+})
 
 
 // This function is created by http://stackoverflow.com/users/148423/joe

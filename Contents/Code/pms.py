@@ -9,10 +9,52 @@
 import shutil, os
 import time, json
 
+#TODO fix updateAllBundleInfo
+# updateAllBundleInfo
+def updateAllBundleInfoFromUAS():
+	try:
+		# Init the Dict
+		if Dict['PMS-AllBundleInfo'] == None:
+			Dict['PMS-AllBundleInfo'] = {}
+			Dict.Save()
+		# start by checking if UAS cache has been populated
+		jsonUAS = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
+		if os.path.exists(jsonUAS):
+			Log.Debug('UAS was present')
+			# Let's open it, and walk the gits one by one
+			json_file = io.open(jsonUAS, "rb")
+			response = json_file.read()
+			json_file.close()
+			# Convert to a JSON Object
+			gits = JSON.ObjectFromString(str(response))
+			for git in gits:
+				# Rearrange data
+				key = git['repo']
+				del git['repo']
+				# Check if already present, and if an install date also is there
+				if key in Dict['PMS-AllBundleInfo']:
+					jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
+					if 'date' in jsonPMSAllBundleInfo:
+						print jsonPMSAllBundleInfo['date']
+					else:
+						git['date'] = ""
+				else:
+						git['date'] = ""
+				# Add/Update our Dict
+				Dict['PMS-AllBundleInfo'][key] = git
+			Dict.Save()
+		else:
+			print 'Ged ******* UAS NOT present *******'		
+			Log.Debug('UAS was sadly not present')
+	except Exception, e:
+		Log.Debug('Fatal error happened in getAllBundleInfo: ' + str(e))
+		print 'Fatal error happened in getAllBundleInfo: ' + str(e)
+
 class pms(object):
 	# Defaults used by the rest of the class
 	def __init__(self):
-		self.LOGDIR = os.path.join(Core.app_support_path, 'Logs')
+		self.LOGDIR = Core.storage.join_path(Core.app_support_path, 'Logs')
+		self.PLUGIN_DIR = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name)
 
 	''' Grap the tornado req, and process it for a GET request'''
 	def reqprocess(self, req):		
@@ -33,6 +75,8 @@ class pms(object):
 			return self.showSubtitle(req)
 		elif function == 'tvShow':
 			return self.TVshow(req)
+		elif function == 'getAllBundleInfo':
+			return self.getAllBundleInfo(req)
 		else:
 			req.clear()
 			req.set_status(412)
@@ -54,7 +98,28 @@ class pms(object):
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
 
-# Delete Bundle
+	# getAllBundleInfo
+	def getAllBundleInfo(self, req):
+		Log.Debug('Got a call for getAllBundleInfo')
+		try:
+			req.clear()
+			if Dict['PMS-AllBundleInfo'] == None:
+				Log.Debug('getAllBundleInfo has not been populated yet')
+				req.set_status(204)
+				req.finish('getAllBundleInfo has not been populated yet')
+			else:
+				Log.Debug('Returning: ' + str(Dict['PMS-AllBundleInfo']))
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(Dict['PMS-AllBundleInfo']))
+		except Exception, e:
+			Log.Debug('Fatal error happened in getAllBundleInfo: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in getAllBundleInfo' + str(e))
+
+	# Delete Bundle
 	def delBundle(self, req):
 		Log.Debug('Delete bundle requested')
 		def removeBundle(bundleName, bundleIdentifier, url):
@@ -90,8 +155,19 @@ class pms(object):
 					Log.Debug("Unable to remove the bundle preferences file.")
 					Log.Debug("This can be caused by bundle prefs was never generated")
 					Log.Debug("Ignoring this")
-				# Remove entry from dict
+				# Remove entry from list dict
 				Dict['installed'].pop(url, None)
+				# remove entry from PMS-AllBundleInfo dict
+				if url.startswith('https://'):
+					# UAS bundle, so only nuke date field
+					git = Dict['PMS-AllBundleInfo'][url]
+					git['date'] = ''
+					Dict['PMS-AllBundleInfo'][url] = git
+					Dict.Save()
+				else:
+					# Manual install or migrated, so nuke the entire key
+					Dict['PMS-AllBundleInfo'].pop(url, None)
+
 # TODO
 				try:
 					Log.Debug('Remider to self...TODO....Restart of System Bundle hangs :-(')
@@ -102,12 +178,13 @@ class pms(object):
 					req.set_status(500)
 					req.set_header('Content-Type', 'application/json; charset=utf-8')
 					req.finish('Fatal error happened when trying to restart the system.bundle')
-			except:
-				Log.Debug('Fatal error happened in removeBundle')
+			except Exception, e:
+				Log.Debug('Fatal error happened in removeBundle: ' + str(e))
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Fatal error happened in removeBundle')
+				req.finish('Fatal error happened in removeBundle' + str(e))
+
 		# Main function
 		try:
 			# Start by checking if we got what it takes ;-)
@@ -132,7 +209,7 @@ class pms(object):
 				req.finish('Bundle %s was not found' %(bundleName))
 			Log.Debug('Bundle %s was removed' %(bundleName))
 			req.clear()
-			req.set_status(404)
+			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Bundle %s was removed' %(bundleName))
 		except:
