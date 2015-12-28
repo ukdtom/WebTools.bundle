@@ -104,7 +104,9 @@ install.installfromgit = function (github) {
   Fetch channels and get a list of types (categories)
 */
 install.loadChannels = function(InitalRun) {
-   
+  if( typeof($('#channelmenu>button.btn-active').html()) != 'undefined' ) {
+      var elementToHighlight = $('#channelmenu>button.btn-active');
+  }
     
   var loader = new asynchelper(true,false);
   loader.inline([
@@ -190,7 +192,9 @@ install.loadChannels = function(InitalRun) {
     
     menu += '<label><input ' + checked + ' type="checkbox" id="OnlyShowInstalledCheckbox" onclick="install.switchShowInstalled();"> Only Show Installed</label><br>'
     install.categories.forEach(function(type) {
-      if ( (typeof($('#channelmenu>button.btn-active').html()) == 'undefined') && (type == 'Application') ){
+      
+      if ( (typeof(elementToHighlight) == 'undefined') && (type == 'Application') ){
+        
         menu += '<button type="button" class="btn btn-default btn-active" id="' + type.trim().replace(' ','') + '" onclick="install.showChannels(this,\'' + type.trim() + '\')">' + type + '</button> '
       } else {
         menu += '<button type="button" class="btn btn-default" id="' + type.trim().replace(' ','') + '" onclick="install.showChannels(this,\'' + type.trim() + '\')">' + type + '</button> '
@@ -200,7 +204,7 @@ install.loadChannels = function(InitalRun) {
     $('#channelmenu').html(menu);
     
     if( typeof($('#channelmenu>button.btn-active').html()) != 'undefined' ) {
-      var elementToHighlight = $('#channelmenu>button.btn-active');
+      elementToHighlight = $('#channelmenu>button.btn-active');
     }
     
     if( typeof(elementToHighlight) != 'undefined' ) {
