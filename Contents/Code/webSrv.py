@@ -186,6 +186,8 @@ class webTools2Handler(BaseHandler):
 				self = logs().reqprocessPost(self)
 			if module == 'settings':			
 				self = settings().reqprocessPost(self)
+			if module == 'findUnmatched':		
+				self = findUnmatched().reqprocessPost(self)
 			else:
 				self.clear()
 				self.set_status(412)

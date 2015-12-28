@@ -20,7 +20,7 @@ class git(object):
 		self.url = ''
 		self.PLUGIN_DIR = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name)
 		self.UAS_URL = 'https://github.com/ukdtom/UAS2Res'
-		self.IGNORE_BUNDLE = ['WebTools.bundle', 'SiteConfigurations.bundle']
+		self.IGNORE_BUNDLE = ['WebTools.bundle', 'SiteConfigurations.bundle', 'Services.bundle']
 		Log.Debug("Plugin directory is: %s" %(self.PLUGIN_DIR))
 
 	''' Grap the tornado req, and process it '''
@@ -408,10 +408,7 @@ class git(object):
 				for filename in zipfile:
 					if '/Contents/Info.plist' in filename:
 						# We found the info.plist file here, but is the dir level okay?
-						if Platform.OS == 'Windows':
-							count = filename.count('\\')
-						else:
-							count = filename.count('/')		
+						count = filename.count('/')		
 						if count == 2:
 							bError = False
 						else:
@@ -490,7 +487,6 @@ class git(object):
 			req.finish("<html><body>Missing url of git</body></html>")
 			return req
 		try:
-			Log.Debug('URL3 is: ' + url)
 			url += '/commits/master.atom'
 			response = Datetime.ParseDate(HTML.ElementFromURL(url).xpath('//entry')[0].xpath('./updated')[0].text[:-6])
 			Log.Debug('Last update for: ' + url + ' is: ' + str(response))

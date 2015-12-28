@@ -105,11 +105,7 @@ install.installfromgit = function (github) {
 */
 install.loadChannels = function(InitalRun) {
    
-  if( typeof($('#channelmenu>button.btn-active').html()) != 'undefined' ) {
-    var elementToHighlight = $('#channelmenu>button.btn-active');
-  }
-  
-  
+    
   var loader = new asynchelper(true,false);
   loader.inline([
     function(callback) {
@@ -191,14 +187,24 @@ install.loadChannels = function(InitalRun) {
     if (install.showOnlyInstalled === true) {
       checked = 'checked';
     }
+    
     menu += '<label><input ' + checked + ' type="checkbox" id="OnlyShowInstalledCheckbox" onclick="install.switchShowInstalled();"> Only Show Installed</label><br>'
     install.categories.forEach(function(type) {
-      menu += '<button type="button" class="btn btn-default" id="' + type.trim().replace(' ','') + '" onclick="install.showChannels(this,\'' + type.trim() + '\')">' + type + '</button> '
+      if ( (typeof($('#channelmenu>button.btn-active').html()) == 'undefined') && (type == 'Application') ){
+        menu += '<button type="button" class="btn btn-default btn-active" id="' + type.trim().replace(' ','') + '" onclick="install.showChannels(this,\'' + type.trim() + '\')">' + type + '</button> '
+      } else {
+        menu += '<button type="button" class="btn btn-default" id="' + type.trim().replace(' ','') + '" onclick="install.showChannels(this,\'' + type.trim() + '\')">' + type + '</button> '
+      }
     });
     
     $('#channelmenu').html(menu);
     
+    if( typeof($('#channelmenu>button.btn-active').html()) != 'undefined' ) {
+      var elementToHighlight = $('#channelmenu>button.btn-active');
+    }
+    
     if( typeof(elementToHighlight) != 'undefined' ) {
+        $('#LoadingModal').modal('hide');
         install.showChannels(elementToHighlight,elementToHighlight.html());
     } else {
       $('#LoadingModal').modal('hide');
@@ -214,6 +220,7 @@ install.loadChannels = function(InitalRun) {
 */
 install.showChannels = function(button, type) {
   $('#channelmenu>button').removeClass('btn-active');
+  $('#gitlink').focus();
   $('#'+type.replace(' ','')).addClass('btn-active');
   if ($('#LoadingModal').is(':visible') === false) {
     $('#LoadingModal').modal({keyboard: false, backdrop:'static', show:true}); 
@@ -235,7 +242,7 @@ install.showChannels = function(button, type) {
         installlink = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Re-Install with latest available</button> <button class="btn btn-default btn-xs" onclick="install.checkForUpdates(\'' + install.allBundles[key].bundle + '\',\'' + key + '\')">Check for Updates</button> <button class="btn btn-default btn-xs" onclick="install.removebundleconfirm(\'' + key + '\')">Uninstall Bundle</button></div>';
       }
         if( ( (install.showOnlyInstalled === true) && (isInstalled === true) ) || (install.showOnlyInstalled === false) ) {
-          var iconurl = 'icons/noIcon.png';
+          var iconurl = 'icons/NoIcon.png';
           var supporturl = '-';
           var updateTime = '-';
           if (install.allBundles[key].icon.length > 0) {
@@ -252,10 +259,10 @@ install.showChannels = function(button, type) {
           newEntry.push('<div class="panel-heading"><h4 class="panel-title">' + install.allBundles[key].title + '</h4></div>');
           newEntry.push('<div class="panel-body subtitle"><table class="table table-condensed">');
           newEntry.push('<tr><td rowspan="' + rowspan + '" class="icontd"><img src="' + iconurl + '" class="icon"></td><td>'+install.allBundles[key].description+'</td></tr>')
-          newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Categories:&nbsp;</span> <span class="changeDisplay">' + install.allBundles[key].type + '</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Repo:&nbsp;</span> <span class="changeDisplay"><a href="' + key + '" target="_NEW">' + key + '</a></span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Support:&nbsp;</span> <span class="changeDisplay">'+supporturl+'</span></div></td></tr>')
+          newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Categories:&nbsp;</span> <span class="changeDisplay">' + install.allBundles[key].type + '</span></div>&nbsp;<div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Repo:&nbsp;</span> <span class="changeDisplay"><a href="' + key + '" target="_NEW">' + key + '</a></span></div>&nbsp;<div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Support:&nbsp;</span> <span class="changeDisplay">'+supporturl+'</span></div></td></tr>')
           
           if (isInstalled === true) {
-            newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Installed:&nbsp;</span> <span class="changeDisplay"> ' + install.allBundles[key].date + '</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Latest Update on Github:&nbsp;</span> <span class="changeDisplay"><span id="updateTime_' + install.allBundles[key].bundle.replace('.','') + '">' + updateTime + '</span></span></div></td></tr>')
+            newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Installed:&nbsp;</span> <span class="changeDisplay"> ' + install.allBundles[key].date + '</span></div>&nbsp;<div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Latest Update on Github:&nbsp;</span> <span class="changeDisplay"><span id="updateTime_' + install.allBundles[key].bundle.replace('.','') + '">' + updateTime + '</span></span></div></td></tr>')
             //newEntry.push('<tr><td id="categoryDiv">Installed: ' + installDate + '</td><td>Latest Update on Github: <span id="updateTime">-</span></td></tr>')
           }
           newEntry.push('</table></div>');

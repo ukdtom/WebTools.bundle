@@ -5,7 +5,7 @@
 
 // Stores values generic to Webtools. Function declerations are done further down in the script.
 var webtools = {
-    modules: [['subtitlemgmt', 'Subtitle Management'],['logviewer','LogViewer Tool'], ['install','UnsupportedAppStore']],
+    modules: [['subtitlemgmt', 'Subtitle Management'],['logviewer','LogViewer/Downloader Tool'], ['install','UnsupportedAppStore']],
     active_module: '',
     functions: {},
 		version: 0,
@@ -204,7 +204,19 @@ webtools.show_log = function(filename) {
         cache: false,
         dataType: 'JSON',
         success: function(logs) {
-            $('#ContentBody').html(logs.join('<br>'));  
+            //$('#ContentBody').html(logs.join('<br>'));  
+						var logtable = '<table class="table table-bordered smallfont">';
+            logtable += '<tr><th class="td-small">Row#</th><th>Logentry</th></tr>';
+            if (logs.length > 0) {
+                for (var i=0;i<logs.length;i++) {
+                    logtable += '<tr><td class="bg-warning">#'+(i+1) + '</td><td>' + logs[i] + '</td></tr>';
+                }
+            } else {
+                logtable += '<tr><td class="bg-warning">#-</td><td>Empty file</td></tr>';
+            }
+            logtable += '</table>';
+            
+            $('#ContentBody').html(logtable);
 						$('#ContentFoot').html('<a href="/webtools2?module=logs&function=download&fileName='+filename+'">Download Logfile</a>');
         },
         error: function(logs) {
