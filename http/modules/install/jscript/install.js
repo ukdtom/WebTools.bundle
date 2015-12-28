@@ -279,6 +279,7 @@ install.showChannels = function(button, type) {
   }
  
   $('#LoadingModal').modal('hide');
+  $('.modal').modal('hide');
 }
 
 install.switchShowInstalled = function() {
@@ -350,7 +351,7 @@ install.removebundlework = function (key) {
     $('#myModal').on('hidden.bs.modal', function (e) {
       if ($('#LoadingModal').is(':visible') === false) {
             $('#LoadingModal').modal({keyboard: true, backdrop:'static', show:true});    
-        }
+      }
         install.loadChannels();
     })
 }
