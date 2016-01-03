@@ -128,8 +128,8 @@ class versionHandler(RequestHandler):
 
 class webTools2Handler(BaseHandler):
 	#******* GET REQUEST *********
-	@authenticated
-#	print '********** AUTH DISABLED WebSRV WebTools2 GET'
+#	@authenticated
+	print '********** AUTH DISABLED WebSRV WebTools2 GET'
 
 	# Get Request
 	def get(self, **params):
@@ -171,8 +171,8 @@ class webTools2Handler(BaseHandler):
 				return
 
 	#******* POST REQUEST *********
-	@authenticated
-#	print '********** AUTH DISABLED WebSRV WebTools2 POST'
+#	@authenticated
+	print '********** AUTH DISABLED WebSRV WebTools2 POST'
 	def post(self, **params):
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
@@ -215,8 +215,8 @@ class webTools2Handler(BaseHandler):
 				return
 
 	#******* PUT REQUEST *********
-	@authenticated
-#	print '********** AUTH DISABLED WebSRV WebTools2 PUT'
+#	@authenticated
+	print '********** AUTH DISABLED WebSRV WebTools2 PUT'
 
 	def put(self, **params):
 		module = self.get_argument('module', 'missing')

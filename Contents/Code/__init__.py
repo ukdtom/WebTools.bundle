@@ -99,7 +99,7 @@ def makeSettings():
 def MainMenu():
 	Log.Debug("**********  Starting MainMenu  **********")	
 	oc = ObjectContainer()
-	oc.add(DirectoryObject(key=Callback(MainMenu), title="To access this channel, go to"))
+	oc.add(DirectoryObject(key=Callback(MainMenu), title="To access this channel, copy and past the url's below to a new browser tab"))
 	if Prefs['Force_SSL']:
 		oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' + Network.Address + ':' + Prefs['WEB_Port_https'] + '/index.html'))
 	else:

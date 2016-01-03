@@ -9,6 +9,32 @@
 import shutil, os
 import time, json
 
+# Undate uasTypesCounters
+def updateUASTypesCounters():
+	try:
+		counter = {}
+		# Grap a list of all bundles
+		bundleList = Dict['PMS-AllBundleInfo']
+		for bundle in bundleList:
+			for bundleType in bundleList[bundle]['type']:
+				if bundleType in counter:
+					tCounter = int(counter[bundleType]['total'])
+					tCounter += 1
+					iCounter = int(counter[bundleType]['installed'])
+					if bundleList[bundle]['date'] != '':
+						iCounter += 1
+					counter[bundleType] = {'installed': iCounter, 'total' : tCounter}
+				else:
+					if bundleList[bundle]['date'] == '':
+						counter[bundleType] = {'installed': 0, 'total' : 1}
+					else:
+						counter[bundleType] = {'installed': 1, 'total' : 1}
+		Dict['uasTypes'] = counter
+		Dict.Save()
+	except Exception, e:
+		print 'Fatal error happened in updateUASTypesCounters: ' + str(e)
+		Log.Debug('Fatal error happened in updateUASTypesCounters: ' + str(e))
+
 #TODO fix updateAllBundleInfo
 # updateAllBundleInfo
 def updateAllBundleInfoFromUAS():
@@ -34,21 +60,18 @@ def updateAllBundleInfoFromUAS():
 				# Check if already present, and if an install date also is there
 				if key in Dict['PMS-AllBundleInfo']:
 					jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
-					if 'date' in jsonPMSAllBundleInfo:
-						print jsonPMSAllBundleInfo['date']
-					else:
+					if 'date' not in jsonPMSAllBundleInfo:
 						git['date'] = ""
 				else:
 						git['date'] = ""
 				# Add/Update our Dict
 				Dict['PMS-AllBundleInfo'][key] = git
 			Dict.Save()
+			updateUASTypesCounters()
 		else:
-			print 'Ged ******* UAS NOT present *******'		
 			Log.Debug('UAS was sadly not present')
 	except Exception, e:
-		Log.Debug('Fatal error happened in getAllBundleInfo: ' + str(e))
-		print 'Fatal error happened in getAllBundleInfo: ' + str(e)
+		Log.Debug('Fatal error happened in updateAllBundleInfoFromUAS: ' + str(e))
 
 class pms(object):
 	# Defaults used by the rest of the class
@@ -108,7 +131,7 @@ class pms(object):
 				req.set_status(204)
 				req.finish('getAllBundleInfo has not been populated yet')
 			else:
-				Log.Debug('Returning: ' + str(Dict['PMS-AllBundleInfo']))
+				Log.Debug('Returning: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(json.dumps(Dict['PMS-AllBundleInfo']))
@@ -167,6 +190,7 @@ class pms(object):
 				else:
 					# Manual install or migrated, so nuke the entire key
 					Dict['PMS-AllBundleInfo'].pop(url, None)
+				updateUASTypesCounters()
 
 # TODO
 				try:
