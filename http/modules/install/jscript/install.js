@@ -370,7 +370,7 @@ install.showChannels = function(button, type, page) {
 install.switchShowInstalled = function() {
 	install.showOnlyInstalled = $('#OnlyShowInstalledCheckbox').prop('checked');
 	if (typeof($('#channelmenu>button.btn-active').html()) != 'undefined') {
-		install.showChannels($('#channelmenu>button.btn-active'), $('#channelmenu>button.btn-active').html());
+		install.showChannels($('#channelmenu>button.btn-active'), $('#channelmenu>button.btn-active').attr('id'));
 	}
 }
 
@@ -443,13 +443,11 @@ install.initiatemigrate = function() {
 		dataType: 'JSON',
 		type: 'PUT',
 		success: function(data) {
-			console.log(data);
+			
 			$('#myModalLabel').html('Migration');
 			var migrated = [];
 			migrated.push('<tr><td colspan="2">Below is the migrated bundles. These should be managed via Webtools from now on.<td></tr>');
 			for (var key in data) {
-				console.log(key);
-				console.log(data[key]);
 				var iconurl = 'icons/NoIcon.png';
 				if (data[key].icon.length > 0) {
 					iconurl = 'uas/Resources/' + data[key].icon;

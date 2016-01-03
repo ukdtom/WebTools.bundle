@@ -51,7 +51,6 @@ logviewer.fetchlogfiles = function() {
 };
 
 logviewer.viewlogfile = function(filename) {
-  webtools.loading();
   $.ajax({
     url: '/webtools2',
     data: {
