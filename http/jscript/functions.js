@@ -25,7 +25,8 @@ var webtools = {
 	updates_check: function() {},
 	updates_check_display: function() {},
 	longermodulestart: false,
-	loading: function() {}
+	loading: function() {},
+	changelog: ""
 };
 
 // Webtools function
@@ -57,6 +58,28 @@ webtools.list_modules.inline([
 		},
 		function(callback, activatemodulename) {
 			webtools.listlogfiles(callback, activatemodulename);
+		},
+		function(callback, activatemodulename) {
+			$.ajax({
+				url: '/changelog.txt',
+				cache: false,
+				dataType: 'text',
+				success: function(data) {
+					var changelog = data.split('\n');
+					
+					for (var i=0; i<changelog.length;i++) {
+						if (changelog[i].length > 0) {
+							webtools.changelog += changelog[i] + "<br>";
+						} else {
+							break;
+						}
+					}
+					callback();
+				},
+				error: function(data) {
+					callback();
+				}
+			});
 		}
 	],
 	function(result, activatemodulename) {
@@ -70,6 +93,7 @@ webtools.list_modules.inline([
 			webtools.modules.forEach(function(modulename) {
 				contents.push('<a class="customlink" onclick="webtools.activate_module(\'' + modulename[0] + '\')">' + modulename[1] + '</a>');
 			});
+			contents.push('<br><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">Latest changelog</h4></div><div class="panel-body">'+webtools.changelog+'</div></div>');
 			$('#ContentBody').html(contents.join('<br>'));
 			$('.modal').modal('hide');
 		} else {

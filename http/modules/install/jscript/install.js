@@ -21,7 +21,8 @@ webtools.functions.install = {
 	initiatemigrate: function() {},
 	updatefrompreferences: function() {},
 	massiveupdateongoinginstalls: 0,
-	channelstoshow: []
+	channelstoshow: [],
+	show_quickjump: function() {}
 };
 
 // Alias:
@@ -35,6 +36,7 @@ install.start = function() {
 		function(callback) {
 			// Initiate everything
 			webtools.loading();
+			//$('#ModuleMenu').html('<ul class="nav navbar-nav"><li><a class="customlink" onclick="javascript:install.show_quickjump();">Quick Jump To Bundle</a></li></ul>');
 			$('#ContentHeader').html('UnsupportedAppStore');
 
 			var body = ['Welcome to the UnsupportedAppStore. Here you can either install a channel by it\'s Github repository link or by selecting one of the categories below.',
@@ -42,14 +44,27 @@ install.start = function() {
 				'In Options-><a class="customlink" onclick="javascript:webtools.functions[\'install\'].show_options();">Preferences</a> you can also search for updates for all installed channels managed by WebTools.',
 				'Categorynames contain installed/total available channels.',
 				'',
+				'',
 				'To automatically download and install a channel for Plex, enter it\'s GitHub link below:',
-				'<input type="text" id="gitlink"><button id="gitbutton" onClick="install.installfromgit(document.getElementById(\'gitlink\').value);">Install</button>',
+				'<input type="text" id="gitlink"><button id="gitbutton" class="btn btn-default" onClick="install.installfromgit(document.getElementById(\'gitlink\').value);">Install</button>',
 				'Example: https://github.com/ukdtom/plex2csv.bundle <p class="text-danger">We do not offer any support for these channels. We only provide a installation method.</p>',
 				'<div id="install_availablechannels"></div>'
 			];
-
+			
+			var submenu = ['<table class="table channeltable">',
+										 '<tr>',
+										 '<td id="installmenu" class="channelmenu"><button class="btn btn-default" onclick="javascript:install.show_quickjump();">Quick Jump To Bundle</button> <button type="button" class="btn btn-default" onClick="install.initiatemigrate();">Migrate manually/previously installed channels</button> <button type="button" class="btn btn-default" onClick="install.massiveupdatechecker();">Check for updates for all installed channels</button></td>',
+										 '</tr>',
+										 '<tr>',
+										 '<td id="channelmenu" class="channelmenu"></td>',
+										 '</tr>',
+										 '<tr>',
+										 '<td id="channellist"></td>',
+										 '</tr>']
+			
 			$('#ContentBody').html(body.join('<br>'));
 			$('#ContentFoot').html('');
+			$('#install_availablechannels').html(submenu.join('\n'));
 			callback();
 		},
 
@@ -77,24 +92,21 @@ install.start = function() {
 	launcher.start();
 };
 
+
+
 install.show_options = function() {
+	webtools.loading();
 	$('#myModalLabel').html('Preferences');
 	$('#myModalBody').html('<div class="alert alert-danger" role="alert" id="OptionsModalAlert"></div><table class="table table-bordered" id="OptionsTable"></table>');
 	$('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button> <button type="button" class="btn btn-default" onclick="webtools.save_options();">Save Options</button>');
 
-	var options = ['<tr><td class="aligncenter" colspan="2"><button type="button" class="btn btn-default" onClick="install.initiatemigrate();">Migrate manually/previously installed channels</button></td></tr>',
-		'<tr><td class="aligncenter" colspan="2"><button type="button" class="btn btn-default" onClick="install.massiveupdatechecker();">Check for updates for all installed channels</button></tr>',
-		'<tr><td class="installhidden" colspan="2"></td></tr>',
-		'<tr><td class="aligncenter" colspan="2"><hr><h4>Options</h4></td></tr>',
-		'<tr><td><input type="text" name="items_per_page" size="2"></td><td>Items per page <span id="items_per_page_max_min"></span></td></tr>'
-	]
+	var options = ['<tr><td><input type="text" name="items_per_page" size="2"></td><td>Items per page <span id="items_per_page_max_min"></span></td></tr>'];
 
 	$('#OptionsTable').html(options.join('<br>'));
 	// Populate the dialogbox with correct values.
 	$("input[name=items_per_page]").val(install.options.items_per_page);
 	$("#items_per_page_max_min").html('(Max: ' + install.items_per_page_max + '. Min: ' + install.items_per_page_min + ')');
 	$('#OptionsModalAlert').hide();
-	$('#myModal').modal('show');
 }
 
 install.installfromgit = function(github) {
@@ -209,7 +221,7 @@ install.loadChannels = function(InitalRun) {
 			})
 		}
 	], function() {
-		$('#install_availablechannels').html('<table class="table channeltable"><tr><td id="channelmenu" class="channelmenu"></td></tr><tr><td id="channellist"></td></tr>')
+		
 		var menu = '';
 		var checked = '';
 		if (install.showOnlyInstalled === true) {
@@ -244,16 +256,24 @@ install.loadChannels = function(InitalRun) {
 	loader.start();
 };
 
-
 /*
  Show channels that are of a specific type (category)
 */
-install.showChannels = function(button, type, page) {
+install.showChannels = function(button, type, page, highlight) {
 	webtools.loading();
-
+	
+	if (typeof(highlight) != 'undefined') {
+		$('#OnlyShowInstalledCheckbox').prop('checked', false);
+		install.showOnlyInstalled = $('#OnlyShowInstalledCheckbox').prop('checked');
+	}
+	console.log('page:' + page);
 	if (typeof(page) == 'undefined') {
 		page = 0;
 	}
+
+	//if (typeof(highlight) !== 'undefined') {
+	//	highlight = 'BundleName';
+	//}
 
 	// Reset install.channelstoshow
 	install.channelstoshow = [];
@@ -333,6 +353,10 @@ install.showChannels = function(button, type, page) {
 			rowspan = 3;
 			installlink = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Re-Install with latest available</button> <button class="btn btn-default btn-xs" onclick="install.checkForUpdates(\'' + install.allBundles[key].bundle + '\',\'' + key + '\')">Check for Updates</button> <button class="btn btn-default btn-xs" onclick="install.removebundleconfirm(\'' + key + '\')">Uninstall Bundle</button></div>';
 		}
+		
+		if (type == 'Unknown') {
+			installlink = '<div class="panel-footer"></div>';
+		}
 		if (((install.showOnlyInstalled === true) && (isInstalled === true)) || (install.showOnlyInstalled === false)) {
 			var iconurl = 'icons/NoIcon.png';
 			var supporturl = '-';
@@ -347,7 +371,8 @@ install.showChannels = function(button, type, page) {
 			if (typeof(install.allBundles[key].latestupdateongit) != 'undefined') {
 				updateTime = install.allBundles[key].latestupdateongit;
 			}
-			var newEntry = ['<div class="panel panel-default">'];
+
+			var newEntry = ['<div class="panel panel-default" id="' + install.allBundles[key].bundle.replace('.', '') + '">'];
 			newEntry.push('<div class="panel-heading"><h4 class="panel-title">' + install.allBundles[key].title + '</h4></div>');
 			newEntry.push('<div class="panel-body subtitle"><table class="table table-condensed">');
 			newEntry.push('<tr><td rowspan="' + rowspan + '" class="icontd"><img src="' + iconurl + '" class="icon"></td><td>' + install.allBundles[key].description + '</td></tr>')
@@ -364,6 +389,13 @@ install.showChannels = function(button, type, page) {
 		}
 	}
 
+	if (typeof(highlight) != 'undefined') {
+		window.scrollTo(0, 0);
+		$('html, body').animate({
+			scrollTop: ($('#' + install.allBundles[highlight].bundle.replace('.', '')).offset().top - 60)
+		});
+		$('#' + install.allBundles[highlight].bundle.replace('.', '')).addClass('highlight');
+	}
 	$('.modal').modal('hide');
 }
 
@@ -434,8 +466,11 @@ install.removebundlework = function(key) {
 }
 
 install.initiatemigrate = function() {
-	//webtools.loading();
+	webtools.loading();
 	$('#myModalLabel').html('Migration');
+	$('#myModalBody').html('<div class="alert alert-danger" role="alert" id="OptionsModalAlert"></div><table class="table table-bordered" id="OptionsTable"></table>');
+	$('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal" disabled>Close</button>');
+	$('#OptionsModalAlert').hide();
 	$('#OptionsTable').html('<tr><td>Migration in progress.</td></tr>');
 	$.ajax({
 		url: '/webtools2?module=git&function=migrate',
@@ -443,7 +478,7 @@ install.initiatemigrate = function() {
 		dataType: 'JSON',
 		type: 'PUT',
 		success: function(data) {
-			
+
 			$('#myModalLabel').html('Migration');
 			var migrated = [];
 			migrated.push('<tr><td colspan="2">Below is the migrated bundles. These should be managed via Webtools from now on.<td></tr>');
@@ -466,8 +501,13 @@ install.initiatemigrate = function() {
 }
 
 install.massiveupdatechecker = function() {
-	$('#OptionsTable').html('<tr><td>Searching for updates</td></tr>');
+	webtools.loading();
+	$('#myModalLabel').html('Massive Updater');
+	$('#myModalBody').html('<div class="alert alert-danger" role="alert" id="OptionsModalAlert"></div><table class="table table-bordered" id="OptionsTable"></table>');
 	$('#myModalFoot').html('<button type="button" class="btn btn-default" id="UpdateClose" data-dismiss="modal">Close</button>');
+	
+	$('#OptionsTable').html('<tr><td>Searching for updates</td></tr>');
+	$('#OptionsModalAlert').hide();
 	$('#UpdateClose').prop('disabled', true);
 	$.ajax({
 		url: '/webtools2?module=git&function=getUpdateList',
@@ -646,9 +686,45 @@ install.save_options = function() {
 
 		if (typeof(elementToHighlight) != 'undefined') {
 			$('.modal').modal('hide');
-			install.showChannels(elementToHighlight, elementToHighlight.html());
+			install.showChannels(elementToHighlight, elementToHighlight.attr('id'));
 		} else {
 			$('.modal').modal('hide');
 		}
 	});
+}
+
+install.show_quickjump = function() {
+	webtools.loading();
+	var optionlist = []
+	optionlist.push('<select id="quickjump">');
+	var keys = Object.keys(install.allBundles);
+	keys.forEach(function(key, index) {
+		optionlist.push('<option value="' + key + '">' + install.allBundles[key].title);
+	})
+	optionlist.push('</select>');
+
+	$('#myModalLabel').html('Quick Jump To Bundle');
+	$('#myModalBody').html(optionlist.join('\n'));
+	$('#myModalFoot').html('<button type="button" class="btn btn-default" onClick="install.quickjump($(\'#quickjump\').val())" data-dismiss="modal">Jump To</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+}
+
+install.quickjump = function(key) {
+	webtools.loading();
+	var bundleindex = Object.keys(install.allBundles).indexOf(key);
+
+	var targetPage = 0;
+	var NumberOfPages = Math.ceil(Object.keys(install.allBundles).length / install.options.items_per_page);
+	NumberOfPages++;
+	for (var i = NumberOfPages; i > 0; i--) {
+		if (bundleindex < (install.options.items_per_page * i)) {
+			targetPage = i;
+		} else {
+			break;
+		}
+	}
+
+	targetPage--;
+	var elementToHighlight = $('#All');
+	install.showChannels(elementToHighlight, elementToHighlight.attr('id'), targetPage, key);
+
 }

@@ -41,9 +41,10 @@ body {background-color: #242424; padding-top:70px;  padding-bottom:70px;}
 
 .pagination {margin: 0px; }
 
-.pagination>.active>span {background-color: #FE9B00;color: #242424; }
-.pagination>.active>span:hover {background-color: #242424; color: #FE9B00;}
-.pagination>li>span:hover {background-color: #242424; color: #FE9B00;}
+.pagination>.active>span {background-color: #FE9B00;color: #242424; cursor: pointer;}
+.pagination>.active>span:hover {background-color: #242424; color: #FE9B00;cursor: pointer;}
+.pagination>li>span:hover {background-color: #242424; color: #FE9B00;cursor: pointer;}
+.pagination>li>span>select:hover {background-color: #242424; color: #FE9B00;cursor: pointer;}
 
 
 .flags { position:relative;display:inline-block;width:1.33333333em;line-height:1em } 

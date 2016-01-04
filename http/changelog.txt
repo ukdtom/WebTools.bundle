@@ -1,3 +1,16 @@
+V2.0-BETA-FRONTEND-2016-01-04
+UAS:
+	Added "Jump-To-Bundle" (Issue #69)
+	Moved buttons for migrate, update and jump to bundle to main screen. (Issue #81)
+	Disabled install/re-install and update buttons for Unknown category. (Issue #80/#89/#90)
+ALL:
+	Corrected hover on page selector to be same as other page selectors. (Issue #83)
+	Fixed mouse pointer while hovering page selectors. (Issue #83)
+Logviewer:
+	Changed default/starting to Plex Media Server.log (Issue #87)
+Wrote in this changelog (Issue #85)
+Made the last entry from the changelog visible on the main page of Webtools.
+
 V0.0.0.18:
 	HTTP Part:
 	- Moved Token handling to the end of queries.

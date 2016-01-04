@@ -40,8 +40,8 @@ logviewer.fetchlogfiles = function() {
       data.forEach(function(logname) {
         $('#LogfileList').append('<option value="' + logname + '">' + logname);
       });
-
-      logviewer.viewlogfile($('#LogfileList').val());
+      $('#LogfileList').val("Plex Media Server.log");
+      logviewer.viewlogfile("Plex Media Server.log");
     },
     error: function(data, statustext, errorthrown) {
       data.url = this.url;
