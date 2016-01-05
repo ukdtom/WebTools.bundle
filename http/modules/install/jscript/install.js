@@ -40,9 +40,9 @@ install.start = function() {
 			$('#ContentHeader').html('UnsupportedAppStore');
 
 			var body = ['Welcome to the UnsupportedAppStore. Here you can either install a channel by it\'s Github repository link or by selecting one of the categories below.',
-				'If you have installed channels manually before installing WebTools, you can go into Options-><a class="customlink" onclick="javascript:webtools.functions[\'install\'].show_options();" >Preferences</a> and migrate them to WebTools.',
-				'In Options-><a class="customlink" onclick="javascript:webtools.functions[\'install\'].show_options();">Preferences</a> you can also search for updates for all installed channels managed by WebTools.',
-				'Categorynames contain installed/total available channels.',
+				'If you have installed channels manually before installing WebTools, you can click on the "Migrate manually/previously installed channels" to make WebTools aware of them.',
+				'You can also search for updates for all installed channels managed by WebTools via the "Check for updates for all installed channels" button.',
+				'Category names contain installed/total available channels.',
 				'',
 				'',
 				'To automatically download and install a channel for Plex, enter it\'s GitHub link below:',
@@ -372,14 +372,14 @@ install.showChannels = function(button, type, page, highlight) {
 				updateTime = install.allBundles[key].latestupdateongit;
 			}
 
-			var newEntry = ['<div class="panel panel-default" id="' + install.allBundles[key].bundle.replace('.', '') + '">'];
+			var newEntry = ['<div class="panel panel-default" id="' + install.allBundles[key].bundle.replace('.', '').replace(' ', '') + '">'];
 			newEntry.push('<div class="panel-heading"><h4 class="panel-title">' + install.allBundles[key].title + '</h4></div>');
 			newEntry.push('<div class="panel-body subtitle"><table class="table table-condensed">');
 			newEntry.push('<tr><td rowspan="' + rowspan + '" class="icontd"><img src="' + iconurl + '" class="icon"></td><td>' + install.allBundles[key].description + '</td></tr>')
 			newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Categories:&nbsp;</span> <span class="changeDisplay">' + install.allBundles[key].type + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Repo:&nbsp;</span> <span class="changeDisplay"><a href="' + key + '" target="_NEW">' + key + '</a>&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Support:&nbsp;</span> <span class="changeDisplay">' + supporturl + '&nbsp;</span></div></td></tr>')
 
 			if (isInstalled === true) {
-				newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Installed:&nbsp;</span> <span class="changeDisplay"> ' + install.allBundles[key].date + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Latest Update on Github:&nbsp;</span> <span class="changeDisplay"><span id="updateTime_' + install.allBundles[key].bundle.replace('.', '') + '">' + updateTime + '&nbsp;</span></span></div></td></tr>')
+				newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Installed:&nbsp;</span> <span class="changeDisplay"> ' + install.allBundles[key].date + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Latest Update on Github:&nbsp;</span> <span class="changeDisplay"><span id="updateTime_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '') + '">' + updateTime + '&nbsp;</span></span></div></td></tr>')
 			}
 			newEntry.push('</table></div>');
 			newEntry.push(installlink);
@@ -392,9 +392,9 @@ install.showChannels = function(button, type, page, highlight) {
 	if (typeof(highlight) != 'undefined') {
 		window.scrollTo(0, 0);
 		$('html, body').animate({
-			scrollTop: ($('#' + install.allBundles[highlight].bundle.replace('.', '')).offset().top - 60)
+			scrollTop: ($('#' + install.allBundles[highlight].bundle.replace('.', '').replace(' ', '')).offset().top - 60)
 		});
-		$('#' + install.allBundles[highlight].bundle.replace('.', '')).addClass('highlight');
+		$('#' + install.allBundles[highlight].bundle.replace('.', '').replace(' ', '')).addClass('highlight');
 	}
 	$('.modal').modal('hide');
 }
@@ -421,7 +421,7 @@ install.checkForUpdates = function(spanname, github) {
 		type: 'GET',
 		success: function(data) {
 			install.allBundles[github].latestupdateongit = data;
-			$('#updateTime_' + spanname.replace('.', '')).html(data);
+			$('#updateTime_' + spanname.replace('.', '').replace(' ', '')).html(data);
 			$('.modal').modal('hide');
 		},
 		error: function(data) {
@@ -521,9 +521,9 @@ install.massiveupdatechecker = function() {
 
 				var updates = ['<tr><td>Bundle Title</td><td>Github Time</td><td><button type="button" class="btn btn-default" id="InstallUpdateAll" onclick="install.updateallfrompreferences();">Update All</button></td></tr>'];
 				for (var key in data) {
-					updates.push('<tr id="updateTR' + install.allBundles[key].bundle.replace('.', '') + '"><td>' + data[key].title + '</td><td>' + data[key].gitHubTime + '</td><td><button id="updateButton_' + install.allBundles[key].bundle.replace('.', '') + '" type="button" class="btn btn-default" onClick="install.updatefrompreferences(\'' + key + '\');">Update</button></td></tr>');
+					updates.push('<tr id="updateTR' + install.allBundles[key].bundle.replace('.', '').replace(' ', '') + '"><td>' + data[key].title + '</td><td>' + data[key].gitHubTime + '</td><td><button id="updateButton_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '') + '" type="button" class="btn btn-default" onClick="install.updatefrompreferences(\'' + key + '\');">Update</button></td></tr>');
 					install.allBundles[key].latestupdateongit = data[key].gitHubTime;
-					$('#updateTime_' + install.allBundles[key].bundle.replace('.', '')).html(data[key].gitHubTime);
+					$('#updateTime_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).html(data[key].gitHubTime);
 				}
 				$('#OptionsTable').html(updates.join('\n'));
 			}
@@ -538,9 +538,9 @@ install.massiveupdatechecker = function() {
 
 install.updatefrompreferences = function(key) {
 
-	$('#updateButton_' + install.allBundles[key].bundle.replace('.', '')).prop('disabled', true);
+	$('#updateButton_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).prop('disabled', true);
 	$('#InstallUpdateAll').prop('disabled', true);
-	$('#updateButton_' + install.allBundles[key].bundle.replace('.', '')).html('Updating...');
+	$('#updateButton_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).html('Updating...');
 	$('#myModalFoot').html('<button type="button" class="btn btn-default" id="UpdateClose" data-dismiss="modal">Close</button>');
 	$('#UpdateClose').prop('disabled', true);
 	install.massiveupdateongoinginstalls++;
@@ -554,8 +554,8 @@ install.updatefrompreferences = function(key) {
 		type: 'GET',
 		dataType: 'text',
 		success: function(data) {
-			$('#updateButton_' + install.allBundles[key].bundle.replace('.', '')).html('Updated');
-			$('#updateTR' + install.allBundles[key].bundle.replace('.', '')).addClass('bg-success');
+			$('#updateButton_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).html('Updated');
+			$('#updateTR' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).addClass('bg-success');
 			install.massiveupdateongoinginstalls--;
 
 			if (install.massiveupdateongoinginstalls === 0) {
@@ -564,8 +564,8 @@ install.updatefrompreferences = function(key) {
 			}
 		},
 		error: function(data) {
-			$('#updateButton_' + install.allBundles[key].bundle.replace('.', '')).html('Error');
-			$('#updateTR' + install.allBundles[key].bundle.replace('.', '')).addClass('bg-danger');
+			$('#updateButton_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).html('Error');
+			$('#updateTR' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).addClass('bg-danger');
 			install.massiveupdateongoinginstalls--;
 
 			if (install.massiveupdateongoinginstalls === 0) {
@@ -593,7 +593,7 @@ install.updateallfrompreferences = function() {
 			keystoupdate.push(key);
 			serieupdater.functionsarray.push(function(callback, keystoupdate) {
 				key = keystoupdate.shift();
-				$('#updateButton_' + install.allBundles[key].bundle.replace('.', '')).html('Updating...');
+				$('#updateButton_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).html('Updating...');
 				$.ajax({
 					url: 'webtools2',
 					data: {
@@ -604,13 +604,13 @@ install.updateallfrompreferences = function() {
 					type: 'GET',
 					dataType: 'text',
 					success: function(data) {
-						$('#updateButton_' + install.allBundles[key].bundle.replace('.', '')).html('Updated');
-						$('#updateTR' + install.allBundles[key].bundle.replace('.', '')).addClass('bg-success');
+						$('#updateButton_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).html('Updated');
+						$('#updateTR' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).addClass('bg-success');
 						callback('success', keystoupdate);
 					},
 					error: function(data) {
-						$('#updateButton_' + install.allBundles[key].bundle.replace('.', '')).html('Error');
-						$('#updateTR' + install.allBundles[key].bundle.replace('.', '')).addClass('bg-danger');
+						$('#updateButton_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).html('Error');
+						$('#updateTR' + install.allBundles[key].bundle.replace('.', '').replace(' ', '')).addClass('bg-danger');
 						install.massiveupdateongoinginstalls--;
 
 						if (install.massiveupdateongoinginstalls === 0) {

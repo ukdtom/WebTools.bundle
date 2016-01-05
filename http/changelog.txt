@@ -1,3 +1,9 @@
+V2.0-BETA-FRONTEND-2016-01-05
+UAS:
+	Corrected an issue where bundles had spaces in the name, causing Quick Jump to not work as intended. (Issue #91)
+ALL:
+	Adjusted height of page buttons/selectors to be correct to other buttons.
+
 V2.0-BETA-FRONTEND-2016-01-04
 UAS:
 	Added "Jump-To-Bundle" (Issue #69)
