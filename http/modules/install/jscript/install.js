@@ -187,7 +187,22 @@ install.loadChannels = function(InitalRun) {
 				dataType: 'JSON',
 				type: 'GET',
 				success: function(data) {
-					install.allBundles = data;
+					//install.allBundles = data;
+					var tempArray = [];
+					for (var key in data) {
+						data[key].key = key;
+						tempArray.push(data[key]);
+					}
+					
+					tempArray.sort(webtools.dynamicSort('title'));
+					
+					install.allBundles = {};
+					tempArray.forEach(function (object) {
+						var tempkey = object.key;
+						delete object.key;
+						install.allBundles[tempkey] = object;
+					})
+					
 					callback();
 				},
 				error: function(data) {
@@ -266,14 +281,10 @@ install.showChannels = function(button, type, page, highlight) {
 		$('#OnlyShowInstalledCheckbox').prop('checked', false);
 		install.showOnlyInstalled = $('#OnlyShowInstalledCheckbox').prop('checked');
 	}
-	console.log('page:' + page);
+
 	if (typeof(page) == 'undefined') {
 		page = 0;
 	}
-
-	//if (typeof(highlight) !== 'undefined') {
-	//	highlight = 'BundleName';
-	//}
 
 	// Reset install.channelstoshow
 	install.channelstoshow = [];
@@ -347,6 +358,7 @@ install.showChannels = function(button, type, page, highlight) {
 		var isInstalled = false;
 		var installDate = '';
 		var rowspan = 2;
+		var repolink = '<a href="' + key + '" target="_NEW">' + key + '</a>';
 
 		if ((typeof(install.allBundles[key].date) != 'undefined') && (install.allBundles[key].date.length > 0)) {
 			isInstalled = true;
@@ -356,6 +368,10 @@ install.showChannels = function(button, type, page, highlight) {
 		
 		if (type == 'Unknown') {
 			installlink = '<div class="panel-footer"></div>';
+		}
+		
+		if ( (key.indexOf('http') == -1) && (key.indexOf('https') == -1) ) {
+			repolink = '';
 		}
 		if (((install.showOnlyInstalled === true) && (isInstalled === true)) || (install.showOnlyInstalled === false)) {
 			var iconurl = 'icons/NoIcon.png';
@@ -376,7 +392,7 @@ install.showChannels = function(button, type, page, highlight) {
 			newEntry.push('<div class="panel-heading"><h4 class="panel-title">' + install.allBundles[key].title + '</h4></div>');
 			newEntry.push('<div class="panel-body subtitle"><table class="table table-condensed">');
 			newEntry.push('<tr><td rowspan="' + rowspan + '" class="icontd"><img src="' + iconurl + '" class="icon"></td><td>' + install.allBundles[key].description + '</td></tr>')
-			newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Categories:&nbsp;</span> <span class="changeDisplay">' + install.allBundles[key].type + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Repo:&nbsp;</span> <span class="changeDisplay"><a href="' + key + '" target="_NEW">' + key + '</a>&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Support:&nbsp;</span> <span class="changeDisplay">' + supporturl + '&nbsp;</span></div></td></tr>')
+			newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Categories:&nbsp;</span> <span class="changeDisplay">' + install.allBundles[key].type + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Repo:&nbsp;</span> <span class="changeDisplay">' + repolink + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Support:&nbsp;</span> <span class="changeDisplay">' + supporturl + '&nbsp;</span></div></td></tr>')
 
 			if (isInstalled === true) {
 				newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Installed:&nbsp;</span> <span class="changeDisplay"> ' + install.allBundles[key].date + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Latest Update on Github:&nbsp;</span> <span class="changeDisplay"><span id="updateTime_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '') + '">' + updateTime + '&nbsp;</span></span></div></td></tr>')
@@ -728,3 +744,4 @@ install.quickjump = function(key) {
 	install.showChannels(elementToHighlight, elementToHighlight.attr('id'), targetPage, key);
 
 }
+

@@ -1,3 +1,11 @@
+V2.0-BETA-FRONTEND-2016-01-06
+UAS:
+	Added sorting function to the list of bundles to make them alphabetical. (Issue #95)
+	Corrected display of repo link when not available (Issue #90)
+WebTools:
+	Added credits.txt and displaying the same on Webtools Mainpage. (Issue #94)
+	Fixed an issue with misslinked name of active module in menubar resulted in wrong page being displayed. (Unreported issue)
+
 V2.0-BETA-FRONTEND-2016-01-05
 UAS:
 	Corrected an issue where bundles had spaces in the name, causing Quick Jump to not work as intended. (Issue #91)

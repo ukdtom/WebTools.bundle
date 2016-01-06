@@ -26,7 +26,8 @@ var webtools = {
 	updates_check_display: function() {},
 	longermodulestart: false,
 	loading: function() {},
-	changelog: ""
+	changelog: '',
+	credits: ''
 };
 
 // Webtools function
@@ -80,6 +81,23 @@ webtools.list_modules.inline([
 					callback();
 				}
 			});
+		},
+		function(callback, activatemodulename) {
+			$.ajax({
+				url: '/credits.txt',
+				cache: false,
+				dataType: 'text',
+				success: function(data) {
+					var credits = data.split('\n');	
+					for (var i=0; i<credits.length;i++) {
+							webtools.credits += credits[i] + "<br>";
+					}
+					callback();
+				},
+				error: function(data) {
+					callback();
+				}
+			});
 		}
 	],
 	function(result, activatemodulename) {
@@ -94,6 +112,8 @@ webtools.list_modules.inline([
 				contents.push('<a class="customlink" onclick="webtools.activate_module(\'' + modulename[0] + '\')">' + modulename[1] + '</a>');
 			});
 			contents.push('<br><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">Latest changelog</h4></div><div class="panel-body">'+webtools.changelog+'</div></div>');
+			
+			contents.push('<br><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">Credits</h4></div><div class="panel-body">'+webtools.credits+'</div></div>');
 			$('#ContentBody').html(contents.join('<br>'));
 			$('.modal').modal('hide');
 		} else {
@@ -131,7 +151,7 @@ webtools.activate_module = function(modulename) {
 				}
 			});
 
-			$("#SubLink").attr('onclick', 'javascript:webtools.list_modules.start(\'' + modulename + '\')');
+			$("#SubLink").attr('onclick', 'javascript:webtools.activate_module(\'' + modulename + '\')');
 			$("#SubLink").html('/' + moduledisplayname);
 
 			$('#ModuleCSS').attr('href', 'modules/' + modulename + '/css/' + modulename + '.css');
@@ -444,4 +464,16 @@ function compare(a, b) {
 
 	// Otherwise they are the same.
 	return 0;
+}
+
+webtools.dynamicSort = function (property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
 }
