@@ -63,11 +63,23 @@ logviewer.viewlogfile = function(filename) {
     dataType: 'JSON',
     success: function(data) {
       webtools.log('Fetched ' + filename);
-      var subtitle = '<table class="table table-bordered">';
+      var subtitle = '<table class="table table-bordered smallfont" id="logtable">';
       subtitle += '<tr><th class="td-small">Row#</th><th>Logentry</th></tr>';
       if (data.length > 0) {
         for (var i = 0; i < data.length; i++) {
-          subtitle += '<tr><td class="bg-warning">#' + (i + 1) + '</td><td>' + data[i] + '</td></tr>';
+          var tdnumber = 'bg-warning';
+          var tdtext = '';
+          
+          if (data[i].toLowerCase().indexOf('critical') != -1) {
+            tdnumber = 'bg-danger';
+            tdtext = 'bg-danger';
+          }
+          if (data[i].toLowerCase().indexOf('error') != -1) {
+            tdnumber = 'bg-info';
+            tdtext = 'bg-info';
+          }
+          
+          subtitle += '<tr><td class="' + tdnumber + '">#' + (i + 1) + '</td><td class="' + tdtext + '">' + data[i] + '</td></tr>';
         }
       } else {
         subtitle += '<tr><td class="bg-warning">#-</td><td>Empty file</td></tr>';
@@ -78,7 +90,6 @@ logviewer.viewlogfile = function(filename) {
       $('#ContentFoot').html('<a href="/webtools2?module=logs&function=download&fileName=' + filename + '">Download Logfile</a>');
 
       $('.modal').modal('hide');
-
     },
     error: function(data) {
       data.url = this.url;

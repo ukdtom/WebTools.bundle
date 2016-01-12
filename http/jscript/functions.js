@@ -16,6 +16,7 @@ var webtools = {
 	list_modules: new asynchelper(true, false),
 	activate_module: function() {},
 	display_error: function() {},
+	defaultoptionsmenu: '',
 	save_options: function() {},
 	listlogfiles: function() {},
 	log: function() {},
@@ -48,6 +49,7 @@ webtools.list_modules.inline([
 						$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.changepassword_display();" >Change Password</a></li>');
 					}
 					$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.updates_check_display();" >Check for Webtools Updates</a></li>');
+					webtools.defaultoptionsmenu = $('#OptionsMenu').html();
 					callback('VersionFetch:Success', activatemodulename);
 				},
 				error: function(data) {
@@ -67,13 +69,17 @@ webtools.list_modules.inline([
 				dataType: 'text',
 				success: function(data) {
 					var changelog = data.split('\n');
-					
-					for (var i=0; i<changelog.length;i++) {
-						if (changelog[i].length > 0) {
-							webtools.changelog += changelog[i] + "<br>";
-						} else {
+
+					for (var i = 0; i < changelog.length; i++) {
+						if (changelog[i] == '####') {
 							break;
 						}
+						changelog[i] = changelog[i].replace('\t', '<span style="padding-left:2em"></span>');
+						if (changelog[i][changelog[i].length - 1] == ':') {
+							changelog[i] = '<b>' + changelog[i] + '</b>';
+						}
+
+						webtools.changelog += changelog[i] + "<br>";
 					}
 					callback();
 				},
@@ -88,9 +94,14 @@ webtools.list_modules.inline([
 				cache: false,
 				dataType: 'text',
 				success: function(data) {
-					var credits = data.split('\n');	
-					for (var i=0; i<credits.length;i++) {
-							webtools.credits += credits[i] + "<br>";
+					var credits = data.split('\n');
+					for (var i = 0; i < credits.length; i++) {
+						credits[i] = credits[i].replace('\t', '<span style="padding-left:2em"></span>');
+						if (credits[i][credits[i].length - 1] == ':') {
+							credits[i] = '<b>' + credits[i] + '</b>';
+						}
+
+						webtools.credits += credits[i] + "<br>";
 					}
 					callback();
 				},
@@ -111,9 +122,8 @@ webtools.list_modules.inline([
 			webtools.modules.forEach(function(modulename) {
 				contents.push('<a class="customlink" onclick="webtools.activate_module(\'' + modulename[0] + '\')">' + modulename[1] + '</a>');
 			});
-			contents.push('<br><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">Latest changelog</h4></div><div class="panel-body">'+webtools.changelog+'</div></div>');
-			
-			contents.push('<br><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">Credits</h4></div><div class="panel-body">'+webtools.credits+'</div></div>');
+			contents.push('<br><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">Latest changelog</h4></div><div class="panel-body">' + webtools.changelog + '</div></div>');
+			contents.push('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">Credits</h4></div><div class="panel-body">' + webtools.credits + '</div></div>');
 			$('#ContentBody').html(contents.join('<br>'));
 			$('.modal').modal('hide');
 		} else {
@@ -127,6 +137,7 @@ webtools.activate_module = function(modulename) {
 	webtools.longermodulestart = false;
 	$('#navfoot').html('');
 	$('#ContentFoot').html('');
+	$('#OptionsMenu').html(webtools.defaultoptionsmenu);
 
 	$.ajax({
 		url: 'modules/' + modulename + '/jscript/' + modulename + '.js',
@@ -269,7 +280,20 @@ webtools.show_log = function(filename) {
 			logtable += '<tr><th class="td-small">Row#</th><th>Logentry</th></tr>';
 			if (logs.length > 0) {
 				for (var i = 0; i < logs.length; i++) {
-					logtable += '<tr><td class="bg-warning">#' + (i + 1) + '</td><td>' + logs[i] + '</td></tr>';
+
+					var tdnumber = 'bg-warning';
+					var tdtext = '';
+
+					if (logs[i].toLowerCase().indexOf('critical') != -1) {
+						tdnumber = 'bg-danger';
+						tdtext = 'bg-danger';
+					}
+					if (logs[i].toLowerCase().indexOf('error') != -1) {
+						tdnumber = 'bg-info';
+						tdtext = 'bg-info';
+					}
+
+					logtable += '<tr><td class="' + tdnumber + '">#' + (i + 1) + '</td><td class="' + tdtext + '">' + logs[i] + '</td></tr>';
 				}
 			} else {
 				logtable += '<tr><td class="bg-warning">#-</td><td>Empty file</td></tr>';
@@ -376,12 +400,13 @@ webtools.updates_check = function() {
 			if (typeof(data.published_at) == 'undefined') {
 				infoarray.push('No releases available.');
 			} else {
+				infoarray.push('Currently Installed Version: ' + webtools.version);
 				infoarray.push('Latest Update: ' + data.published_at);
 				infoarray.push('Version Name: ' + data.name);
 				infoarray.push('Author: <a target="_NEW" href="' + data.author.html_url + '">' + data.author.login + '</a>');
 				infoarray.push('Release Notes: ' + data.body);
 				infoarray.push('Download url: <a target="_NEW" href="' + data.zipball_url + '">' + data.zipball_url + '</a>');
-				console.log('version compare: ' + compare(webtools.version, data.name.substring(1)) + ' A: ' + webtools.version + '> B: ' + data.tag_name);
+				//console.log('version compare: ' + compare(webtools.version, data.name.substring(1)) + ' A: ' + webtools.version + '> B: ' + data.tag_name);
 
 				switch (compare(webtools.version, data.tag_name)) {
 					case 0:
@@ -466,14 +491,14 @@ function compare(a, b) {
 	return 0;
 }
 
-webtools.dynamicSort = function (property) {
-    var sortOrder = 1;
-    if(property[0] === "-") {
-        sortOrder = -1;
-        property = property.substr(1);
-    }
-    return function (a,b) {
-        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-        return result * sortOrder;
-    }
+webtools.dynamicSort = function(property) {
+	var sortOrder = 1;
+	if (property[0] === "-") {
+		sortOrder = -1;
+		property = property.substr(1);
+	}
+	return function(a, b) {
+		var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+		return result * sortOrder;
+	}
 }

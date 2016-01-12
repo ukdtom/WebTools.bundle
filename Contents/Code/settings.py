@@ -39,7 +39,7 @@ class settings(object):
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
 
-	''' Grap the tornado req, and process it for a PUT request'''
+	''' Grap the tornado req, and process it for a POST request'''
 	def reqprocessPost(self, req):		
 		function = req.get_argument('function', 'missing')
 		if function == 'missing':

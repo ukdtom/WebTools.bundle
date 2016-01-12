@@ -367,7 +367,7 @@ install.showChannels = function(button, type, page, highlight) {
 		}
 		
 		if (type == 'Unknown') {
-			installlink = '<div class="panel-footer"></div>';
+			installlink = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.removebundleconfirm(\'' + key + '\')">Uninstall Bundle</button></div>';
 		}
 		
 		if ( (key.indexOf('http') == -1) && (key.indexOf('https') == -1) ) {
@@ -497,7 +497,7 @@ install.initiatemigrate = function() {
 
 			$('#myModalLabel').html('Migration');
 			var migrated = [];
-			migrated.push('<tr><td colspan="2">Below is the migrated bundles. These should be managed via Webtools from now on.<td></tr>');
+			migrated.push('<tr><td colspan="2">Below is the list of migrated bundles. These should be managed via Webtools from now on.<td></tr>');
 			for (var key in data) {
 				var iconurl = 'icons/NoIcon.png';
 				if (data[key].icon.length > 0) {

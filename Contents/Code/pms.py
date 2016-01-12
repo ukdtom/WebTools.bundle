@@ -8,6 +8,8 @@
 ######################################################################################################################
 import shutil, os
 import time, json
+import io
+
 
 # Undate uasTypesCounters
 def updateUASTypesCounters():
@@ -21,11 +23,15 @@ def updateUASTypesCounters():
 					tCounter = int(counter[bundleType]['total'])
 					tCounter += 1
 					iCounter = int(counter[bundleType]['installed'])
+					if 'date' not in bundleList[bundle]:
+						bundleList[bundle]['date'] = ''
 					if bundleList[bundle]['date'] != '':
 						iCounter += 1
 					counter[bundleType] = {'installed': iCounter, 'total' : tCounter}
 				else:
-					if bundleList[bundle]['date'] == '':
+					if 'date' not in bundleList[bundle]:
+						counter[bundleType] = {'installed': 0, 'total' : 1}
+					elif bundleList[bundle]['date'] == '':
 						counter[bundleType] = {'installed': 0, 'total' : 1}
 					else:
 						counter[bundleType] = {'installed': 1, 'total' : 1}
@@ -100,12 +106,14 @@ class pms(object):
 			return self.TVshow(req)
 		elif function == 'getAllBundleInfo':
 			return self.getAllBundleInfo(req)
+		elif function == 'getParts':
+			return self.getParts(req)
 		else:
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
 
-	''' Grap the tornado req, and process it for a GET request'''
+	''' Grap the tornado req, and process it for a DELETE request'''
 	def reqprocessDelete(self, req):		
 		function = req.get_argument('function', 'missing')
 		if function == 'missing':
@@ -120,6 +128,93 @@ class pms(object):
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
+
+	''' Grap the tornado req, and process it for a PUT request'''
+	def reqprocessPUT(self, req):		
+		function = req.get_argument('function', 'missing')
+		if function == 'missing':
+			req.clear()
+			req.set_status(412)
+			req.finish("<html><body>Missing function parameter</body></html>")
+		else:
+			req.clear()
+			req.set_status(412)
+			req.finish("<html><body>Unknown function call</body></html>")
+
+	''' Grap the tornado req, and process it for a POST request'''
+	def reqprocessPost(self, req):		
+		function = req.get_argument('function', 'missing')
+		if function == 'missing':
+			req.clear()
+			req.set_status(412)
+			req.finish("<html><body>Missing function parameter</body></html>")
+		elif function == 'uploadFile':
+			return self.uploadFile(req)
+		else:
+			req.clear()
+			req.set_status(412)
+			req.finish("<html><body>Unknown function call</body></html>")
+
+	# getParts
+	def getParts(self, req):
+		Log.Debug('Got a call for getParts')
+		try:
+			key = req.get_argument('key', 'missing')
+			if key == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish("<html><body>Missing key parameter</body></html>")
+			try:
+				partsUrl = 'http://127.0.0.1:32400/library/metadata/' + key
+				partsInfo = {}
+				parts = XML.ElementFromURL(partsUrl).xpath('//Part')
+				for part in parts:
+					partsInfo[part.get('id')] = part.get('file')		
+				Log.Debug('Returning: ' + json.dumps(partsInfo))
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(partsInfo))
+			except Ex.HTTPError, e:
+				self.clear()
+				self.set_status(e.code)
+				self.finish(e)
+		except Exception, e:
+			Log.Debug('Fatal error happened in getParts: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in getParts: ' + str(e))
+
+	# uploadFile
+	def uploadFile(self, req):
+		Log.Debug('Got a call for uploadFile')
+		try:
+			# Target filename present?
+			remoteFile = req.get_argument('remoteFile', 'missing')
+			if remoteFile == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish("<html><body>Missing remoteFile parameter</body></html>")
+			# Upload file present?
+			if not 'localFile' in req.request.files:
+				req.clear()
+				req.set_status(412)
+				req.finish("<html><body>Missing upload file parameter named localFile</body></html>")
+			# Grap the upload file			
+			localFile = req.request.files['localFile'][0]
+			# Save it
+			output_file = io.open(remoteFile, 'wb')
+			output_file.write(localFile['body'])
+			output_file.close
+			req.clear()
+			req.set_status(200)
+			req.finish("<html><body>Upload ok</body></html>")
+		except Exception, e:
+			Log.Debug('Fatal error happened in uploadFile: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in uploadFile: ' + str(e))
 
 	# getAllBundleInfo
 	def getAllBundleInfo(self, req):
@@ -146,13 +241,19 @@ class pms(object):
 	def delBundle(self, req):
 		Log.Debug('Delete bundle requested')
 		def removeBundle(bundleName, bundleIdentifier, url):
-			try:
-				bundleInstallDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, bundleName)
+			try:				
 				bundleDataDir = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', bundleIdentifier)
 				bundleCacheDir = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', bundleIdentifier)
 				bundlePrefsFile = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Preferences', bundleIdentifier + '.xml')
-				Log.Debug('Bundle directory name digested as: %s' %(bundleInstallDir))
 				try:
+					# Find the bundle directory, regarding of the case used
+					dirs = os.listdir(self.PLUGIN_DIR)
+					for pluginDir in dirs:
+						if pluginDir.endswith('.bundle'):
+							# It's a bundle
+							if pluginDir.upper() == bundleName.upper():
+								bundleInstallDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, pluginDir)
+					Log.Debug('Bundle directory name digested as: %s' %(bundleInstallDir))
 					shutil.rmtree(bundleInstallDir)
 				except:
 					Log.Debug("Unable to remove the bundle directory.")

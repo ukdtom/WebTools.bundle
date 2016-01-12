@@ -1,7 +1,7 @@
-<b>Main Developers</b>
+Main Developers:
 Dane22 (Python, Backend)
 Dagalufh (JS/HTML, Frontend)
 
-<b>Beta Testers</b>
-OttoKerner
-trumpy81
+Beta Testers:
+OttoKerner	sa2000
+trumpy81	Xandi92

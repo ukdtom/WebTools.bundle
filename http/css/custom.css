@@ -13,7 +13,7 @@
 .navbar-default .navbar-nav>li>a {color: #242424;}
 .navbar-default .navbar-nav>li>a:hover{background-color: #242424; color: #FE9B00;}
 .navbar-default .navbar-brand {color: #242424;}
-.navbar-default .navbar-brand:hover {color: #242424;}
+.navbar-default .navbar-brand:hover {color: #242424; cursor: pointer;}
 .navbar-default .navbar-nav>.active>a {background-color: #555555; color: #022B53;}
 .navbar-default .navbar-nav>.active>a:hover {background-color: #0A457F; color: #FFFFFF;}
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {background-color: #242424; color: #FE9B00;}

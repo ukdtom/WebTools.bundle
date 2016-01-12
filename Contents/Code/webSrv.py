@@ -10,13 +10,11 @@
 #
 ######################################################################################################################
 
-
-
-#from tornado.web import RequestHandler, StaticFileHandler, Application, HTTPError
 from tornado.web import *
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.escape import json_encode, xhtml_escape
+
 import threading
 
 # Migrated to new way
@@ -65,7 +63,7 @@ class idxHandler(BaseHandler):
 	def get(self):
 		self.render(ACTUALPATH + "/index.html")
 
-''' If user didn't enter the full path '''
+''' Logout handler '''
 class LogoutHandler(BaseHandler):
 	@authenticated
 	def get(self):
@@ -128,8 +126,8 @@ class versionHandler(RequestHandler):
 
 class webTools2Handler(BaseHandler):
 	#******* GET REQUEST *********
-#	@authenticated
-	print '********** AUTH DISABLED WebSRV WebTools2 GET'
+	@authenticated
+#	print '********** AUTH DISABLED WebSRV WebTools2 GET'
 
 	# Get Request
 	def get(self, **params):
@@ -171,8 +169,8 @@ class webTools2Handler(BaseHandler):
 				return
 
 	#******* POST REQUEST *********
-#	@authenticated
-	print '********** AUTH DISABLED WebSRV WebTools2 POST'
+	@authenticated
+#	print '********** AUTH DISABLED WebSRV WebTools2 POST'
 	def post(self, **params):
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
@@ -184,9 +182,11 @@ class webTools2Handler(BaseHandler):
 			Log.Debug('Recieved a post call for module: ' + module)
 			if module == 'logs':			
 				self = logs().reqprocessPost(self)
-			if module == 'settings':			
+			elif module == 'settings':			
 				self = settings().reqprocessPost(self)
-			if module == 'findUnmatched':		
+			elif module == 'pms':			
+				self = pms().reqprocessPost(self)
+			elif module == 'findUnmatched':		
 				self = findUnmatched().reqprocessPost(self)
 			else:
 				self.clear()
@@ -215,8 +215,8 @@ class webTools2Handler(BaseHandler):
 				return
 
 	#******* PUT REQUEST *********
-#	@authenticated
-	print '********** AUTH DISABLED WebSRV WebTools2 PUT'
+	@authenticated
+#	print '********** AUTH DISABLED WebSRV WebTools2 PUT'
 
 	def put(self, **params):
 		module = self.get_argument('module', 'missing')
@@ -231,6 +231,8 @@ class webTools2Handler(BaseHandler):
 				self = settings().reqprocessPUT(self)
 			elif module == 'git':			
 				self = git().reqprocessPUT(self)
+			elif module == 'pms':			
+				self = pms().reqprocessPUT(self)
 			else:
 				self.clear()
 				self.set_status(412)

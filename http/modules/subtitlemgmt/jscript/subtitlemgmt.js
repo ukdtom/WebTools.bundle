@@ -178,7 +178,7 @@ subtitlemgmt.get_section_list.inline([
 						subtitlemgmt.sections.push(currentsection);
 					}
 				});
-				$('#SectionMenu').append('<li><a class="customlink" onclick="javascript:subtitlemgmt.get_section_list.start();">Refresh Sections</a></li>');
+				$('#SectionMenu').append('<li><a class="customlink" onclick="javascript:subtitlemgmt.get_section_list.start();">Refresh List of Libraries</a></li>');
 				$('.modal').modal('hide');
 				callback('SectionFetch:Success');
 			},

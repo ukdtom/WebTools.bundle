@@ -21,6 +21,7 @@ class git(object):
 		self.PLUGIN_DIR = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name)
 		self.UAS_URL = 'https://github.com/ukdtom/UAS2Res'
 		self.IGNORE_BUNDLE = ['WebTools.bundle', 'SiteConfigurations.bundle', 'Services.bundle']
+		self.OFFICIAL_APP_STORE = 'https://nine.plugins.plexapp.com'
 		Log.Debug("Plugin directory is: %s" %(self.PLUGIN_DIR))
 
 	''' Grap the tornado req, and process it '''
@@ -145,14 +146,14 @@ class git(object):
 			# Let's start by getting a list of known installed bundles
 			knownBundles = []
 			for installedBundles in Dict['installed']:
-				knownBundles.append(Dict['installed'][installedBundles]['bundle'])
+				knownBundles.append(Dict['installed'][installedBundles]['bundle'].upper())
 			# Grap a list of directories in the plugin dir
 			dirs = os.listdir(self.PLUGIN_DIR)
 			migratedBundles = {}
 			for pluginDir in dirs:
 				if pluginDir.endswith('.bundle'):
 					# It's a bundle
-					if pluginDir not in knownBundles:
+					if pluginDir.upper() not in knownBundles:
 						# It's unknown
 						if pluginDir not in self.IGNORE_BUNDLE:
 							Log.Debug('About to migrate %s' %(pluginDir))
@@ -173,6 +174,7 @@ class git(object):
 									targetGit['type'] = uasListjson[git]['type']
 									targetGit['icon'] = uasListjson[git]['icon']
 									targetGit['date'] = dtStamp
+									targetGit['supporturl'] = uasListjson[git]['supporturl']
 									Dict['installed'][git] = targetGit
 									Log.Debug('Dict stamped with the following install entry: ' + git + ' - '  + str(targetGit))
 									# Now update the PMS-AllBundleInfo Dict as well
@@ -184,22 +186,26 @@ class git(object):
 									break
 							if not bFound:
 								Log.Debug('Found %s is sadly not part of uas' %(pluginDir))
-								git = {}
-								git['title'] = pluginDir[:-7]
-								git['description'] = ''
-								git['branch'] = ''
-								git['bundle'] = pluginDir
-								git['identifier'] = target
-								git['type'] = ['Unknown']
-								git['icon'] = ''
-								git['date'] = dtStamp
-								Dict['installed'][target] = git
-								# Now update the PMS-AllBundleInfo Dict as well
-								Dict['PMS-AllBundleInfo'][target] = git
-								migratedBundles[target] = git
-								Log.Debug('Dict stamped with the following install entry: ' + pluginDir + ' - '  + str(git))
-								Dict.Save()
-								pms.updateUASTypesCounters()
+								vFile = Core.storage.join_path(self.PLUGIN_DIR, pluginDir, 'Contents', 'VERSION')
+								if os.path.isfile(vFile):
+									Log.Debug(pluginDir + ' is an official bundle, so skipping')
+								else:
+									git = {}
+									git['title'] = pluginDir[:-7]
+									git['description'] = ''
+									git['branch'] = ''
+									git['bundle'] = pluginDir
+									git['identifier'] = target
+									git['type'] = ['Unknown']
+									git['icon'] = ''
+									git['date'] = dtStamp
+									Dict['installed'][target] = git
+									# Now update the PMS-AllBundleInfo Dict as well
+									Dict['PMS-AllBundleInfo'][target] = git
+									migratedBundles[target] = git
+									Log.Debug('Dict stamped with the following install entry: ' + pluginDir + ' - '  + str(git))
+									Dict.Save()
+									pms.updateUASTypesCounters()
 			Log.Debug('Migrated: ' + str(migratedBundles))
 			req.clear()
 			req.set_status(200)
@@ -466,6 +472,11 @@ class git(object):
 			req.set_status(412)
 			req.finish("<html><body>Missing url of git</body></html>")
 			return req
+		if not url.startswith('http'):
+			req.clear()
+			req.set_status(404)
+			req.finish("<html><body>Missing url of git</body></html>")
+			return req		
 		try:
 			url += '/commits/master.atom'
 			Log.Debug('URL is: ' + url)
