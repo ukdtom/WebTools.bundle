@@ -1,3 +1,14 @@
+V2.0-RELEASE-2016-01-14:
+WebTools:
+	New modules, LogViewer and Unsupported Appstore
+	New design on the interface
+	Increased speed
+####
+
+V2.0-BETA-FRONTEND-2016-01-14:
+WebTools:
+	Corrected spelling on Unsupported Appstore (Issue #109)
+
 V2.0-BETA-FRONTEND-2016-01-12:
 WebTools:
 	Added display of currently installed version when checking for updates. (Issue #96)

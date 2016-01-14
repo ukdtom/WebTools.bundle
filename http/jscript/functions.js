@@ -8,7 +8,7 @@ var webtools = {
 	modules: [
 		['subtitlemgmt', 'Subtitle Management'],
 		['logviewer', 'LogViewer/Downloader Tool'],
-		['install', 'UnsupportedAppStore']
+		['install', 'Unsupported AppStore']
 	],
 	active_module: '',
 	functions: {},
