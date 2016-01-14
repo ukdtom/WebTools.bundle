@@ -1,9 +1,77 @@
-V1.1:
-Fix for languagecodes. Not using flags anymore.
+V2.0-RELEASE-2016-01-14:
+WebTools:
+	New modules, LogViewer and Unsupported Appstore
+	New design on the interface
+	Increased speed
+####
 
-V1.0:
-Release of the brand new interface!
-It holds a ton of new and refined looks and some under the hood improvements. Completly rewritten.
+V2.0-BETA-FRONTEND-2016-01-14:
+WebTools:
+	Corrected spelling on Unsupported Appstore (Issue #109)
+
+V2.0-BETA-FRONTEND-2016-01-12:
+WebTools:
+	Added display of currently installed version when checking for updates. (Issue #96)
+	Corrected an issue causing "Prefrences" menu item being readded. (Unreported Issue)
+	Implemented colorfiltering on logdisplay depending on critical and error. (Issue #108)	
+Subtitlemgmt:
+	Corrected labeling on link to libraries instead of sections (Issue #102)
+Logviewer:
+	Implemented colorfiltering on logdisplay depending on critical and error. (Issue #108)
+
+V2.0-BETA-FRONTEND-2016-01-10:
+WebTools:
+	Changed presentation of Changelog and Credits. Now checks for : at the end of a string to make it bold, also counts number of tabs in a string to choose how to indent the row.
+	Changed cursor type to Pointer on module link. (issue #97)
+UAS:
+	Restored the uninstall button for unknown types of bundles. (issue #100)
+	Fixed spelling/syntax on message after migration of bundles. (issue #101)
+
+V2.0-BETA-BACKEND-2016-01-09:
+API:
+	Added getParts and uploadFile for PMS module
+	( See doc)
+
+V2.0-BETA-BACKEND-2016-01-09:
+API:
+	Fixed issue #105
+
+V2.0-BETA-BACKEND-2016-01-09:
+API:
+	Fixed issue #103
+	Fixed issue #104
+
+V2.0-BETA-FRONTEND-2016-01-06:
+UAS:
+	Added sorting function to the list of bundles to make them alphabetical. (Issue #95)
+	Corrected display of repo link when not available (Issue #90)
+WebTools:
+	Added credits.txt and displaying the same on Webtools Mainpage. (Issue #94)
+	Fixed an issue with misslinked name of active module in menubar resulted in wrong page being displayed. (Unreported issue)
+V2.0-BETA-BACKEND-2016-01-07:
+API:
+	Migrated bundles didn't have a support link, if part of UAS (Issue #98)
+	We migrated Official bundles. Now we skip them, and leave handling to PMS (Issue #99)
+
+V2.0-BETA-FRONTEND-2016-01-05:
+UAS:
+	Corrected an issue where bundles had spaces in the name, causing Quick Jump to not work as intended. (Issue #91)
+ALL:
+	Adjusted height of page buttons/selectors to be correct to other buttons.
+
+V2.0-BETA-FRONTEND-2016-01-04:
+UAS:
+	Added "Jump-To-Bundle" (Issue #69)
+	Moved buttons for migrate, update and jump to bundle to main screen. (Issue #81)
+	Disabled install/re-install and update buttons for Unknown category. (Issue #80/#89/#90)
+ALL:
+	Corrected hover on page selector to be same as other page selectors. (Issue #83)
+	Fixed mouse pointer while hovering page selectors. (Issue #83)
+Logviewer:
+	Changed default/starting to Plex Media Server.log (Issue #87)
+Wrote in this changelog (Issue #85)
+Made the last entry from the changelog visible on the main page of Webtools.
+####
 
 V0.0.0.18:
 	HTTP Part:

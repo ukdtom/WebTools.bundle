@@ -1,0 +1,12 @@
+Main Developers:
+Dane22 (Python, Backend)
+Dagalufh (JS/HTML, Frontend)
+
+Beta Testers:
+OttoKerner	sa2000
+trumpy81	Xandi92
+
+<b>And NEVER forget</b>
+The idea to an UAS was made
+by mikedm139, the original 
+author of UAS V1

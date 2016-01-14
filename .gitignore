@@ -8,6 +8,9 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+# Ignore the UAS cache
+http/uas
+
 # Windows Installer files
 *.cab
 *.msi

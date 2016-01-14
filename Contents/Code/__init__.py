@@ -11,22 +11,27 @@
 ######################################################################################################################
 
 #********* Constants used **********
-PREFIX = '/utils/webtools'
+PREFIX = '/applications/webtools'
+
 NAME = 'WebTools'
 ICON = 'WebTools.png'
-VERSION = '1.1'
+VERSION = '2.0'
+AUTHTOKEN = ''
+SECRETKEY = ''
 
 #********** Imports needed *********
 import os, io, time
 from subprocess import call
-#import xml.etree.ElementTree as et
-#from webSrv import startWeb, stopWeb, webServer
 from webSrv import startWeb, stopWeb
 from random import randint
+import uuid			#Used for secrectKey
 
+
+import datetime
 
 #********** Initialize *********
 def Start():
+	global SECRETKEY
 	PLUGIN_VERSION = VERSION	
 	print("********  Started %s on %s  **********" %(NAME  + ' V' + PLUGIN_VERSION, Platform.OS))
 	Log.Debug("*******  Started %s on %s  ***********" %(NAME + ' V' + PLUGIN_VERSION, Platform.OS))
@@ -37,9 +42,17 @@ def Start():
 	ObjectContainer.view_group = 'List'
 	makeSettings()
 
-#	tornado = webServer()
-#	tornado.startWeb()
-	startWeb()
+	# Get the secret key used to access the PMS framework ********** FUTURE USE ***************
+	SECRETKEY = genSecretKeyAsStr()
+	startWeb(SECRETKEY)
+
+####################################################################################################
+# Generate secret key
+####################################################################################################
+''' This will generate the secret key, used to access the framework '''
+@route(PREFIX + '/genSecretKeyAsStr')
+def genSecretKeyAsStr():
+	return str(uuid.uuid4())
 
 ####################################################################################################
 # Make Settings file
@@ -86,12 +99,12 @@ def makeSettings():
 def MainMenu():
 	Log.Debug("**********  Starting MainMenu  **********")	
 	oc = ObjectContainer()
-	oc.add(DirectoryObject(key=Callback(MainMenu), title="To access this channel, go to"))
+	oc.add(DirectoryObject(key=Callback(MainMenu), title="To access this channel, type the url's below to a new browser tab"))
 	if Prefs['Force_SSL']:
-		oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' + Network.Address + ':' + Prefs['WEB_Port_https'] + '/index.html'))
+		oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' + Network.Address + ':' + Prefs['WEB_Port_https']))
 	else:
-		oc.add(DirectoryObject(key=Callback(MainMenu), title='http://' + Network.Address + ':' + Prefs['WEB_Port_http'] + '/index.html'))
-		oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' + Network.Address + ':' + Prefs['WEB_Port_https'] + '/index.html'))
+		oc.add(DirectoryObject(key=Callback(MainMenu), title='http://' + Network.Address + ':' + Prefs['WEB_Port_http']))
+		oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' + Network.Address + ':' + Prefs['WEB_Port_https']))
 	oc.add(PrefsObject(title='Preferences', thumb=R('icon-prefs.png')))
 	Log.Debug("**********  Ending MainMenu  **********")
 	return oc
@@ -101,22 +114,12 @@ def MainMenu():
 ####################################################################################################
 @route(PREFIX + '/ValidatePrefs')
 def ValidatePrefs():
-	
-
-
-#	r = threading.Thread(target=Restart)
-#	r.start()
+#	HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.WebTool/restart', immediate=True)
 	Restart()
 
 @route(PREFIX + '/Restart')
 def Restart():
-#	HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.' + NAME + '/restart', immediate=True)
-#	stopWeb()
 	time.sleep(3)
-	startWeb()
-
+	startWeb(SECRETKEY)
 	return
-
-
-
 

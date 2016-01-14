@@ -1,0 +1,20 @@
+#gitlink {width: 400px;}
+.channeltable {width: 100%;}
+.channelmenu {text-align: center; height: 30px;}
+
+.icon {max-width: 32px; max-height: 32px;}
+.icontd {width: 35px; text-align: center;}
+.categoryDiv {width: 400px;}
+.changeDisplay {display: table-cell; font-size: 10pt;}
+.aligncenter {text-align: center;}
+.subheadline {font-weight: bold; margin-right: 5px;}
+.installhidden {display: none;}
+@media screen and (max-width:678px) {
+  .changeDisplay{display: block; font-size: 10pt; word-break: break-word}
+  .marginRight {margin-right:0px;}
+  .categoryDiv {width: auto;}
+  #gitlink {width: 250px;}
+  
+}
+
+.highlight{border: 3px solid #000000;}
