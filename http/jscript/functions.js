@@ -49,6 +49,7 @@ webtools.list_modules.inline([
 						$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.changepassword_display();" >Change Password</a></li>');
 					}
 					$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.updates_check_display();" >Check for Webtools Updates</a></li>');
+					$('#OptionsMenu').append('<li><a class="customlink" onclick="javascript:webtools.show_log(\'changelog\')">View Changelog</a></li>');
 					webtools.defaultoptionsmenu = $('#OptionsMenu').html();
 					callback('VersionFetch:Success', activatemodulename);
 				},
@@ -222,6 +223,7 @@ webtools.listlogfiles = function(callback, activatemodulename) {
 
 			$('#LogfilesMenu').append('<li><a class="customlink" href="/webtools2?module=logs&function=download">Download all logfiles as Zip</a></li>');
 			$('#LogfilesMenu').append('<li><a class="customlink" onclick="javascript:webtools.listlogfiles();">Refresh Logfilelist</a></li>');
+			
 			if (typeof(callback) != 'undefined') {
 				callback('LogfileNamesFetch:Success', activatemodulename);
 			} else {
@@ -259,57 +261,107 @@ webtools.log = function(LogEntry, Source) {
 
 webtools.show_log = function(filename) {
 	webtools.loading();
-	$('#ContentHeader').html('Logfile: ' + filename);
+
 	$('#ContentBody').html('Fetching Logfile..');
 	$('#ContentFoot').html('');
 	$('#navfoot').html('');
+	if (filename == 'changelog') {
+		$('#ContentHeader').html('Viewing Changelog');
+		$.ajax({
+			url: '/changelog.txt',
+			cache: false,
+			dataType: 'text',
+			success: function(logs) {
+				logs = logs.split('\n');
+				//$('#ContentBody').html(logs.join('<br>'));  
+				var logtable = '<table class="table table-bordered smallfont">';
+				//logtable += '<tr><th>Changelog</th></tr>';
+				if (logs.length > 0) {
+					for (var i = 0; i < logs.length; i++) {
+						if (logs[i].length === 0) {
+							logs[i] = '&nbsp;';
+						}
 
-	$.ajax({
-		url: '/webtools2',
-		data: {
-			'module': 'logs',
-			'function': 'show',
-			'fileName': filename
-		},
-		type: 'GET',
-		cache: false,
-		dataType: 'JSON',
-		success: function(logs) {
-			//$('#ContentBody').html(logs.join('<br>'));  
-			var logtable = '<table class="table table-bordered smallfont">';
-			logtable += '<tr><th class="td-small">Row#</th><th>Logentry</th></tr>';
-			if (logs.length > 0) {
-				for (var i = 0; i < logs.length; i++) {
+						if (logs[i] != '####') {
+							logs[i] = logs[i].replace('\t', '<span style="padding-left:2em"></span>');
+							if (logs[i].search(/\d\d\d\d[-]\d\d[-]\d\d/) !== -1) {
+								//logs[i] = '<b>' + logs[i] + '</b>';
+								logtable += '<tr><th>' + logs[i] + '</th></tr>';
+							} else if (logs[i][logs[i].length - 1] == ':') {
+								logtable += '<tr><td><b>' + logs[i] + '</b></td></tr>';
+							} else {
+								logtable += '<tr><td>' + logs[i] + '</td></tr>';
+							}
 
-					var tdnumber = 'bg-warning';
-					var tdtext = '';
-
-					if (logs[i].toLowerCase().indexOf('critical') != -1) {
-						tdnumber = 'bg-danger';
-						tdtext = 'bg-danger';
+						}
 					}
-					if (logs[i].toLowerCase().indexOf('error') != -1) {
-						tdnumber = 'bg-info';
-						tdtext = 'bg-info';
-					}
-
-					logtable += '<tr><td class="' + tdnumber + '">#' + (i + 1) + '</td><td class="' + tdtext + '">' + logs[i] + '</td></tr>';
+				} else {
+					logtable += '<tr><td class="bg-warning">#-</td><td>Empty file</td></tr>';
 				}
-			} else {
-				logtable += '<tr><td class="bg-warning">#-</td><td>Empty file</td></tr>';
+				logtable += '</table>';
+
+				$('#ContentBody').html(logtable);
+				$('#ContentFoot').html('');
+				$('.modal').modal('hide');
+			},
+			error: function(logs) {
+				$('#ContentBody').html(logs);
+				$('.modal').modal('hide');
 			}
-			logtable += '</table>';
+		});
+	} else {
+		$('#ContentHeader').html('Logfile: ' + filename);
 
-			$('#ContentBody').html(logtable);
-			$('#ContentFoot').html('<a href="/webtools2?module=logs&function=download&fileName=' + filename + '">Download Logfile</a>');
-			$('.modal').modal('hide');
-		},
-		error: function(logs) {
-			$('#ContentBody').html(logs);
-			$('.modal').modal('hide');
-		}
-	});
+		$.ajax({
+			url: '/webtools2',
+			data: {
+				'module': 'logs',
+				'function': 'show',
+				'fileName': filename
+			},
+			type: 'GET',
+			cache: false,
+			dataType: 'JSON',
+			success: function(logs) {
+				//$('#ContentBody').html(logs.join('<br>'));  
+				var logtable = '<table class="table table-bordered smallfont">';
+				logtable += '<tr><th class="td-small">Row#</th><th>Logentry</th></tr>';
+				if (logs.length > 0) {
+					for (var i = 0; i < logs.length; i++) {
 
+						var tdnumber = 'bg-warning';
+						var tdtext = '';
+
+						if (logs[i].toLowerCase().indexOf('critical') != -1) {
+							tdnumber = 'bg-danger';
+							tdtext = 'bg-danger';
+						}
+						if (logs[i].toLowerCase().indexOf('exception') != -1) {
+							tdnumber = 'bg-danger';
+							tdtext = 'bg-danger';
+						}
+						if (logs[i].toLowerCase().indexOf('error') != -1) {
+							tdnumber = 'bg-info';
+							tdtext = 'bg-info';
+						}
+
+						logtable += '<tr><td class="' + tdnumber + '">#' + (i + 1) + '</td><td class="' + tdtext + '">' + logs[i] + '</td></tr>';
+					}
+				} else {
+					logtable += '<tr><td class="bg-warning">#-</td><td>Empty file</td></tr>';
+				}
+				logtable += '</table>';
+
+				$('#ContentBody').html(logtable);
+				$('#ContentFoot').html('<a href="/webtools2?module=logs&function=download&fileName=' + filename + '">Download Logfile</a>');
+				$('.modal').modal('hide');
+			},
+			error: function(logs) {
+				$('#ContentBody').html(logs);
+				$('.modal').modal('hide');
+			}
+		});
+	}
 
 
 };

@@ -1,3 +1,20 @@
+V2.2-DEV-2016-02-02:
+UAS:
+	Reverting Issue #119 because of reported issue with locked interface.
+	Now displays message regarding permissions. (Issue #124)
+	Now showing Check for updates for everything that has a repolink. (Issue #118, Issue #127)
+WebTools:
+	Moved Changelog to Options menu (Issue #128)
+	
+V2.2-DEV-2016-01-26:
+LogViewer:
+	Now highlights exception in the same was as critical. (Issue #108)
+WebTools:
+	Now highlights exception in the same was as critical when viewing logs. (Issue #108)
+	Added "View Changelog" under Logs menu. This allows viewing of entire changelog. (Issue #128)
+UAS:
+	When selecting "ShowOnlyInstalled", only categories with installed plugins are shown. (Issue #119)
+
 V2.0-RELEASE-2016-01-14:
 WebTools:
 	New modules, LogViewer and Unsupported Appstore

@@ -255,12 +255,12 @@ class pms(object):
 								bundleInstallDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, pluginDir)
 					Log.Debug('Bundle directory name digested as: %s' %(bundleInstallDir))
 					shutil.rmtree(bundleInstallDir)
-				except:
-					Log.Debug("Unable to remove the bundle directory.")
+				except Exception, e:
+					Log.Critical("Unable to remove the bundle directory: " + str(e))
 					req.clear()
 					req.set_status(500)
 					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish('Fatal error happened when trying to remove the bundle directory.')
+					req.finish('Fatal error happened when trying to remove the bundle directory: ' + str(e))
 				try:
 					shutil.rmtree(bundleDataDir)
 				except:
@@ -283,14 +283,18 @@ class pms(object):
 				Dict['installed'].pop(url, None)
 				# remove entry from PMS-AllBundleInfo dict
 				if url.startswith('https://'):
-					# UAS bundle, so only nuke date field
-					git = Dict['PMS-AllBundleInfo'][url]
-					git['date'] = ''
-					Dict['PMS-AllBundleInfo'][url] = git
-					Dict.Save()
+					if 'Unknown' in Dict['PMS-AllBundleInfo'][url]['type']:
+						# Manual install or migrated, so nuke the entire key
+						Dict['PMS-AllBundleInfo'].pop(url, None)
+					else:
+						# UAS bundle, so only nuke date field
+						git = Dict['PMS-AllBundleInfo'][url]
+						git['date'] = ''
+						Dict['PMS-AllBundleInfo'][url] = git
 				else:
 					# Manual install or migrated, so nuke the entire key
 					Dict['PMS-AllBundleInfo'].pop(url, None)
+				Dict.Save()
 				updateUASTypesCounters()
 
 # TODO

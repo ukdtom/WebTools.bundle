@@ -27,6 +27,7 @@ from findUnmatched import findUnmatched
 
 # TODO 
 #from importlib import import_module
+# SNIFF....Tornado is V1.0.0, meaning no WebSocket :-(
 
 # Path to http folder within the bundle
 ACTUALPATH =  os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http')
@@ -126,8 +127,8 @@ class versionHandler(RequestHandler):
 
 class webTools2Handler(BaseHandler):
 	#******* GET REQUEST *********
-	@authenticated
-#	print '********** AUTH DISABLED WebSRV WebTools2 GET'
+#	@authenticated
+	print '********** AUTH DISABLED WebSRV WebTools2 GET'
 
 	# Get Request
 	def get(self, **params):		
@@ -199,8 +200,8 @@ class webTools2Handler(BaseHandler):
 				return
 
 	#******* DELETE REQUEST *********
-	@authenticated
-#	print '********** AUTH DISABLED WebSRV WebTools2 DELETE'
+#	@authenticated
+	print '********** AUTH DISABLED WebSRV WebTools2 DELETE'
 	def delete(self, **params):
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
@@ -219,8 +220,8 @@ class webTools2Handler(BaseHandler):
 				return
 
 	#******* PUT REQUEST *********
-	@authenticated
-#	print '********** AUTH DISABLED WebSRV WebTools2 PUT'
+#	@authenticated
+	print '********** AUTH DISABLED WebSRV WebTools2 PUT'
 
 	def put(self, **params):
 		module = self.get_argument('module', 'missing')

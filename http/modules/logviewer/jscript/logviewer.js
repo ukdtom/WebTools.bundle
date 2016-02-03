@@ -74,6 +74,10 @@ logviewer.viewlogfile = function(filename) {
             tdnumber = 'bg-danger';
             tdtext = 'bg-danger';
           }
+          if (data[i].toLowerCase().indexOf('exception') != -1) {
+            tdnumber = 'bg-danger';
+            tdtext = 'bg-danger';
+          }
           if (data[i].toLowerCase().indexOf('error') != -1) {
             tdnumber = 'bg-info';
             tdtext = 'bg-info';
