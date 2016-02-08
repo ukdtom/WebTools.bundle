@@ -25,12 +25,40 @@ from pms import pms
 from settings import settings
 from findUnmatched import findUnmatched
 
+import os
+
+# Below used to find path of this file
+from inspect import getsourcefile
+from os.path import abspath
+
 # TODO 
 #from importlib import import_module
 # SNIFF....Tornado is V1.0.0, meaning no WebSocket :-(
 
 # Path to http folder within the bundle
-ACTUALPATH =  os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'http')
+def getActualHTTPPath():
+	HTTPPath = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http')
+	if not os.path.isdir(HTTPPath):
+		Log.Critical('Could not find my http path in: ' + HTTPPath)
+		return ''
+	else:
+		return HTTPPath
+
+# Path to http folder within the bundle
+def isCorrectPath(req):	
+	installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split('WEBTOOLS.BUNDLE',1)
+	targetPath = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name).upper()
+	if installedPlugInPath[:-1] != targetPath:
+		installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).split('/Contents',1)
+		msg = '<h1>Wrong installation path detected</h1>'
+		msg = msg + '<p>It seems like you installed WebTools into the wrong folder</p>'
+		msg = msg + '<p>You installed WebTools here:<p>'
+		msg = msg + installedPlugInPath
+		msg = msg + '<p>but the correct folder is:<p>'
+		msg = msg + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebTools.bundle')
+		req.clear()
+		req.set_status(404)
+		req.finish(msg)
 
 #************** webTools functions ******************************
 ''' Here we have the supported functions '''
@@ -40,7 +68,7 @@ class webTools(object):
 		retVal = {'version': VERSION, 
 						'PasswordSet': Dict['pwdset'],
 						'PlexTVOnline': plexTV().auth2myPlex()}
-		Log.Debug('Version requested, returning ' + str(retVal))
+		Log.Info('Version requested, returning ' + str(retVal))
 		return retVal
 
 #**************** Handler Classes for Rest **********************
@@ -62,18 +90,22 @@ class ForceTSLHandler(RequestHandler):
 class idxHandler(BaseHandler):
 	@authenticated
 	def get(self):
-		self.render(ACTUALPATH + "/index.html")
+		Log.Info('Returning: ' + Core.storage.join_path(getActualHTTPPath(), 'index.html'))
+		self.render(Core.storage.join_path(getActualHTTPPath(), 'index.html'))
 
 ''' Logout handler '''
 class LogoutHandler(BaseHandler):
 	@authenticated
 	def get(self):
+		Log.Info('Clearing Auth Cookie')
 		self.clear_cookie(NAME)
 		self.redirect('/')
 
 class LoginHandler(BaseHandler):
 	def get(self):
-		self.render(ACTUALPATH + "/login.html", next=self.get_argument("next","/"))
+		isCorrectPath(self)
+		Log.Info('Returning login page: ' + Core.storage.join_path(getActualHTTPPath() , 'login.html'))
+		self.render(Core.storage.join_path(getActualHTTPPath(), 'login.html'), next=self.get_argument("next","/"))
 
 	def post(self):
 		global AUTHTOKEN
@@ -87,15 +119,19 @@ class LoginHandler(BaseHandler):
 				if retVal == 0:
 					# All is good
 					self.allow()
+					Log.Info('All is good, we are authenticated')
 					self.redirect('/')
 				elif retVal == 1:
-					# Server not found				
+					# Server not found
+					Log.Info('Server not found on plex.tv')
 					self.set_status(404)
 				elif retVal == 2:
 					# Not the owner
+					Log.Info('USer is not the server owner')
 					self.set_status(403)
 				else:
 					# Unknown error
+					Log.Critical('Unknown error, when authenticating')
 					self.set_status(403)
 			except Ex.HTTPError, e:
 				self.clear()
@@ -103,8 +139,10 @@ class LoginHandler(BaseHandler):
 				self.finish(e)
 				return self
 		else:
+			Log.Info('Server is not online according to plex.tv')
 			# Server is offline
 			if Dict['password'] == '':
+				Log.Info('First local login, so we need to set the local password')
 				Dict['password'] = self.get_argument("pwd")
 				Dict['pwdset'] = True
 				Dict.Save
@@ -112,10 +150,12 @@ class LoginHandler(BaseHandler):
 				self.redirect('/')
 			elif Dict['password'] == self.get_argument("pwd"):
 				self.allow()
+				Log.Info('Local password accepted')
 				self.redirect('/')
 			elif Dict['password'] != self.get_argument("pwd"):
-					self.clear()
-					self.set_status(401)
+				Log.Critical('Either local login failed, or PMS lost connection to plex.tv')
+				self.clear()
+				self.set_status(401)
 
 	def allow(self):
 		self.set_secure_cookie(NAME, Hash.MD5(Dict['SharedSecret']+Dict['password']), expires_days = None)
@@ -127,8 +167,8 @@ class versionHandler(RequestHandler):
 
 class webTools2Handler(BaseHandler):
 	#******* GET REQUEST *********
-#	@authenticated
-	print '********** AUTH DISABLED WebSRV WebTools2 GET'
+	@authenticated
+#	print '********** AUTH DISABLED WebSRV WebTools2 GET'
 
 	# Get Request
 	def get(self, **params):		
@@ -142,18 +182,15 @@ class webTools2Handler(BaseHandler):
 			Log.Debug('Recieved a get call for module: ' + module)
 	
 #TODO
-			'''
+			''' Attempt to create a dynamic import, but so far, it sadly breaks access to the PMS API :-(
 			import sys
 			sys.path.append(os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'Contents', 'Code'))
 			mod = import_module(module)
 			modClass = getattr(mod, module)()
 			print 'GED1', dir(modClass)
 			callFunction = getattr(modClass, 'reqprocess')
-
 			self = modClass().reqprocess(self)
-
 			'''
-
 
 			if module == 'git':			
 				self = git().reqprocess(self)
@@ -200,8 +237,8 @@ class webTools2Handler(BaseHandler):
 				return
 
 	#******* DELETE REQUEST *********
-#	@authenticated
-	print '********** AUTH DISABLED WebSRV WebTools2 DELETE'
+	@authenticated
+#	print '********** AUTH DISABLED WebSRV WebTools2 DELETE'
 	def delete(self, **params):
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
@@ -220,8 +257,8 @@ class webTools2Handler(BaseHandler):
 				return
 
 	#******* PUT REQUEST *********
-#	@authenticated
-	print '********** AUTH DISABLED WebSRV WebTools2 PUT'
+	@authenticated
+#	print '********** AUTH DISABLED WebSRV WebTools2 PUT'
 
 	def put(self, **params):
 		module = self.get_argument('module', 'missing')
@@ -250,7 +287,7 @@ handlers = [(r"/login", LoginHandler),
 						(r'/', idxHandler),
 						(r'/index.html', idxHandler),
 						(r"/webtools2*$", webTools2Handler),
-						(r'/(.*)', StaticFileHandler, {'path': ACTUALPATH})
+						(r'/(.*)', StaticFileHandler, {'path': getActualHTTPPath()})
 ]
 
 if Prefs['Force_SSL']:

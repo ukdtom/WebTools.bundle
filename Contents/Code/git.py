@@ -463,7 +463,6 @@ class git(object):
 					if url in Dict['installed'].keys():
 						CacheDir = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', bundleId)
 						if 'DeleteCacheDir' in Dict['PMS-AllBundleInfo'][url]:
-							print 'Ged111', Dict['PMS-AllBundleInfo'][url]['DeleteCacheDir']
 							if Dict['PMS-AllBundleInfo'][url]['DeleteCacheDir']:
 								Log.Info('Deleting the Cache directory ' + CacheDir)
 								shutil.rmtree(CacheDir)
