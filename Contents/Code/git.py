@@ -62,10 +62,107 @@ class git(object):
 			req.finish("<html><body>Missing function parameter</body></html>")
 		elif function == 'migrate':
 			return self.migrate(req)
+		elif function == 'upgradeWT':
+			return self.upgradeWT(req)
 		else:
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
+
+	''' Upgrade WebTools itself '''
+	def upgradeWT(self, req):
+		Log.Info('Starting upgradeWT')
+
+		# Helper function
+		def removeEmptyFolders(path, removeRoot=True):
+			'Function to remove empty folders'
+			if not os.path.isdir(path):
+				return
+			# remove empty subfolders
+			files = os.listdir(path)
+			if len(files):
+				for f in files:
+					fullpath = os.path.join(path, f)
+					if os.path.isdir(fullpath):
+						removeEmptyFolders(fullpath)
+			# if folder empty, delete it
+			files = os.listdir(path)
+			if len(files) == 0 and removeRoot:
+				Log.Debug('Removing empty directory: ' + path)
+				os.rmdir(path)
+
+		# URL to Github
+		url = 'https://api.github.com/repos/dagalufh/WebTools.bundle/releases/latest'
+		bundleName = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
+		Log.Info('WT install dir is: ' + bundleName)
+		try:
+			Log.Debug('Getting release info from url: ' + url)
+			jsonReponse = JSON.ObjectFromURL(url)
+			wtURL = jsonReponse['assets'][0]['browser_download_url']
+			Log.Info('WT Download url detected as: ' + wtURL)
+			# Grap file from Github
+			zipfile = Archive.ZipFromURL(wtURL)
+			bError = True
+			bUpgrade = False
+			instFiles = []
+			# We need to cut of the main directory, which name we don't know
+			for filename in zipfile:
+				pos = filename.find('/')
+				cutStr = filename[:pos]
+				break
+			# Now build a list of files in the zip, while extracting them as well
+			for filename in zipfile:
+				myFile = filename.replace(cutStr, '')
+				if myFile != '/':
+					# Make a list of all files and dirs in the zip
+					instFiles.append(myFile)
+				# Grap the file
+				data = zipfile[filename]
+				if not str(filename).endswith('/'):
+					# Pure file, so save it	
+					path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
+					Log.Debug('Extracting file' + path)
+					try:
+						Core.storage.save(path, data)
+					except Exception, e:
+						bError = True
+						Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
+				else:
+					# We got a directory here
+					Log.Debug(filename.split('/')[-2])
+					if not str(filename.split('/')[-2]).startswith('.'):
+						# Not hidden, so let's create it
+						path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
+						Log.Debug('Extracting folder ' + path)
+						try:
+							Core.storage.ensure_dirs(path)
+						except Exception, e:
+							bError = True
+							Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
+			# Now we need to nuke files that should no longer be there!
+			for root, dirs, files in os.walk(bundleName):
+				for fname in files:
+					fileName = Core.storage.join_path(root, fname).replace(bundleName, '')
+					if fileName not in instFiles:
+						if 'uas' not in fileName:
+							Log.Debug('Removing not needed file: ' + fileName)
+							os.remove(Core.storage.join_path(root, fname))
+			# And now time to swipe empty directories
+			removeEmptyFolders(bundleName)
+			req.clear()
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Upgraded ok')
+		except Exception, e:
+			Log.Critical('***************************************************************')
+			Log.Critical('DARN....When we tried to upgrade WT, we had an error :-(')
+			Log.Critical('Only option now might be to do a manual install, like you did the first time')
+			Log.Critical('The error was: ' + str(e))
+			Log.Critical('Do NOT FORGET!!!!')
+			Log.Critical('We NEED this log, so please upload to Plex forums')
+			Log.Critical('***************************************************************')
+		return
+
 
 	''' This function will return a list of bundles, where there is an update avail '''
 	def getUpdateList(self, req):
@@ -635,7 +732,7 @@ class git(object):
 
 	''' Get release info for a bundle '''
 	def getReleaseInfo(self, req):
-		Log.Debug('Starting getReleaseInfo')
+		Log.Info('Starting getReleaseInfo')
 		try:
 			url = req.get_argument('url', 'missing')
 			if url == 'missing':
