@@ -109,6 +109,12 @@ class LoginHandler(BaseHandler):
 
 	def post(self):
 		global AUTHTOKEN
+		# Allow no password when in debug mode
+		if DEBUGMODE:
+			self.allow()
+			Log.Info('All is good, we are authenticated')
+			self.redirect('/')
+
 		# Let's start by checking if the server is online
 		if plexTV().auth2myPlex():
 			token = ''
@@ -166,10 +172,13 @@ class versionHandler(RequestHandler):
 		self.write(webTools().getVersion())
 
 class webTools2Handler(BaseHandler):
+	# Disable auth when debug
+	def prepare(self):
+		if DEBUGMODE:
+			self.set_secure_cookie(NAME, Hash.MD5(Dict['SharedSecret']+Dict['password']), expires_days = None)
+
 	#******* GET REQUEST *********
 	@authenticated
-#	print '********** AUTH DISABLED WebSRV WebTools2 GET'
-
 	# Get Request
 	def get(self, **params):		
 		module = self.get_argument('module', 'missing')
@@ -212,7 +221,6 @@ class webTools2Handler(BaseHandler):
 
 	#******* POST REQUEST *********
 	@authenticated
-#	print '********** AUTH DISABLED WebSRV WebTools2 POST'
 	def post(self, **params):
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
@@ -238,7 +246,6 @@ class webTools2Handler(BaseHandler):
 
 	#******* DELETE REQUEST *********
 	@authenticated
-#	print '********** AUTH DISABLED WebSRV WebTools2 DELETE'
 	def delete(self, **params):
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
@@ -258,8 +265,6 @@ class webTools2Handler(BaseHandler):
 
 	#******* PUT REQUEST *********
 	@authenticated
-#	print '********** AUTH DISABLED WebSRV WebTools2 PUT'
-
 	def put(self, **params):
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
@@ -337,10 +342,14 @@ def stopWeb():
 	Log.Debug('Asked Tornado to exit')
 
 ''' Main call '''
-def startWeb(secretKey):
-	global SECRETKEY
+def startWeb(secretKey, version, debugmode):
+	global SECRETKEY	
 	# Set the secret key for use by other calls in the future maybe?
 	SECRETKEY = secretKey
+	global VERSION
+	VERSION = version
+	global DEBUGMODE
+	DEBUGMODE = debugmode
 	stopWeb()
 	Log.Debug('tornado is handling the following URI: %s' %(handlers))
 	t = threading.Thread(target=start_tornado)
