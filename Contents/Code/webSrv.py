@@ -109,18 +109,41 @@ class LoginHandler(BaseHandler):
 
 	def post(self):
 		global AUTHTOKEN
+
+		# Check for an auth header, in case a frontend wanted to use that
+		# Header has precedence compared to params
+		auth_header = self.request.headers.get('Authorization', None)
+		if auth_header is None or not auth_header.startswith('Basic '):
+			Log.Info('No Basic Auth header, so looking for params')
+			user = self.get_argument('user', '')
+			if user == '':
+				if plexTV().auth2myPlex():
+					Log.Info('Missing username')
+					self.clear()
+					self.set_status(412)
+					self.finish("<html><body>Missing username</body></html>")
+			pwd = self.get_argument('pwd', '')
+			if pwd == '':
+				Log.Info('Missing password')
+				self.clear()
+				self.set_status(412)
+				self.finish("<html><body>Missing password</body></html>")
+		else:
+			Log.Info('Auth header found')
+			auth_decoded = String.Base64Decode(auth_header[6:])
+			user, pwd = auth_decoded.split(':', 2)
+		Log.Info('User is: ' + user)
 		# Allow no password when in debug mode
 		if DEBUGMODE:
 			self.allow()
 			Log.Info('All is good, we are authenticated')
 			self.redirect('/')
-
 		# Let's start by checking if the server is online
 		if plexTV().auth2myPlex():
 			token = ''
 			try:
 				# Authenticate
-				retVal = plexTV().isServerOwner(plexTV().login(self))
+				retVal = plexTV().isServerOwner(plexTV().login(user, pwd))
 				self.clear()
 				if retVal == 0:
 					# All is good
@@ -140,6 +163,7 @@ class LoginHandler(BaseHandler):
 					Log.Critical('Unknown error, when authenticating')
 					self.set_status(403)
 			except Ex.HTTPError, e:
+				Log.Critical('Exception in Login: ' + str(e))
 				self.clear()
 				self.set_status(e.code)
 				self.finish(e)
@@ -149,16 +173,16 @@ class LoginHandler(BaseHandler):
 			# Server is offline
 			if Dict['password'] == '':
 				Log.Info('First local login, so we need to set the local password')
-				Dict['password'] = self.get_argument("pwd")
+				Dict['password'] = pwd
 				Dict['pwdset'] = True
 				Dict.Save
 				self.allow()
 				self.redirect('/')
-			elif Dict['password'] == self.get_argument("pwd"):
+			elif Dict['password'] == pwd:
 				self.allow()
 				Log.Info('Local password accepted')
 				self.redirect('/')
-			elif Dict['password'] != self.get_argument("pwd"):
+			elif Dict['password'] != pwd:
 				Log.Critical('Either local login failed, or PMS lost connection to plex.tv')
 				self.clear()
 				self.set_status(401)

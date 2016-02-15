@@ -25,8 +25,10 @@ class plexTV(object):
 		self.myHeader['X-Plex-Platform'] = Platform.OS
 
 	# Login to Plex.tv
-	def login(self, req):
+	def login(self, user, pwd):
 		Log.Info('Start to auth towards plex.tv')
+
+		'''
 		user = req.get_argument('user', '')
 		if user == '':
 			Log.Error('Missing username')
@@ -41,6 +43,9 @@ class plexTV(object):
 			req.set_status(412)
 			req.finish("<html><body>Missing password</body></html>")
 			return req
+		'''
+
+
 		# Got what we needed, so let's logon
 		authString = String.Base64Encode('%s:%s' % (user, pwd))
 		self.myHeader['Authorization'] = 'Basic ' + authString
