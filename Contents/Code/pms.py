@@ -62,16 +62,29 @@ def updateAllBundleInfoFromUAS():
 			for git in gits:
 				# Rearrange data
 				key = git['repo']
-				del git['repo']
+				if key == 'https://github.com/ukdtom/test':
+					# This is out test bundle.....Only add if this is running in devmode
+					# meaning a file named 'devmode' is present in the root of the bundle dir
+					fname = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebTools.bundle', 'devmode')
+					print 'GED Look here'
+					if os.path.isfile(fname):
+						continue
+			
+#******************* WORK IN PROGRESS HERE ****************
+
+
+				
 				# Check if already present, and if an install date also is there
 				if key in Dict['PMS-AllBundleInfo']:
 					jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
 					if 'date' not in jsonPMSAllBundleInfo:
-						git['date'] = ""
-				else:
-						git['date'] = ""
+						installDate = ""
+					else:
+							installDate = Dict['PMS-AllBundleInfo'][key]['date']
+				del git['repo']
 				# Add/Update our Dict
 				Dict['PMS-AllBundleInfo'][key] = git
+				Dict['PMS-AllBundleInfo'][key]['date'] = installDate
 			Dict.Save()
 			updateUASTypesCounters()
 		else:

@@ -24,7 +24,7 @@ class git(object):
 		self.OFFICIAL_APP_STORE = 'https://nine.plugins.plexapp.com'
 		Log.Debug("Plugin directory is: %s" %(self.PLUGIN_DIR))
 
-	''' Grap the tornado req, and process it '''
+	''' Grap the tornado req, and process it for GET request'''
 	def reqprocess(self, req):	
 		function = req.get_argument('function', 'missing')
 		if function == 'missing':
@@ -73,6 +73,16 @@ class git(object):
 	def upgradeWT(self, req):
 		Log.Info('Starting upgradeWT')
 
+		#Helper function
+		''' This helper function will delete the dict named Installed
+				After doing so, it'll do a forced migrate
+		'''
+		def nukeSpecialDicts():
+			#TODO Make this
+			Dict['installed'] = {}
+			Dict.Save()
+			self.migrate(req, silent=True)
+
 		# Helper function
 		def removeEmptyFolders(path, removeRoot=True):
 			'Function to remove empty folders'
@@ -91,15 +101,24 @@ class git(object):
 				Log.Debug('Removing empty directory: ' + path)
 				os.rmdir(path)
 
-		# URL to Github
-		url = 'https://api.github.com/repos/dagalufh/WebTools.bundle/releases/latest'
+
+
+		# Reset dicts
+		nukeSpecialDicts()
+
+
+		url= req.get_argument('debugURL', 'https://api.github.com/repos/dagalufh/WebTools.bundle/releases/latest')
 		bundleName = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
 		Log.Info('WT install dir is: ' + bundleName)
 		try:
-			Log.Debug('Getting release info from url: ' + url)
-			jsonReponse = JSON.ObjectFromURL(url)
-			wtURL = jsonReponse['assets'][0]['browser_download_url']
+			if url == 'https://api.github.com/repos/dagalufh/WebTools.bundle/releases/latest':
+				Log.Debug('Getting release info from url: ' + url)
+				jsonReponse = JSON.ObjectFromURL(url)
+				wtURL = jsonReponse['assets'][0]['browser_download_url']
+			else:
+				wtURL = url.replace('tree', 'archive') + '.zip'
 			Log.Info('WT Download url detected as: ' + wtURL)
+
 			# Grap file from Github
 			zipfile = Archive.ZipFromURL(wtURL)
 			bError = True
@@ -149,6 +168,7 @@ class git(object):
 							os.remove(Core.storage.join_path(root, fname))
 			# And now time to swipe empty directories
 			removeEmptyFolders(bundleName)
+
 			req.clear()
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -201,10 +221,11 @@ class git(object):
 	
 
 	''' This function will migrate bundles that has been installed without using our UAS into our UAS '''
-	def migrate(self, req):
+	def migrate(self, req, silent=False):
 		# get list from uas cache
 		def getUASCacheList():
 			try:
+				Log.Info('Migrating old bundles into WT')
 				jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
 				json_file = io.open(jsonFileName, "rb")
 				response = json_file.read()
@@ -281,6 +302,9 @@ class git(object):
 										Log.Debug('Dict stamped with the following install entry: ' + git + ' - '  + str(targetGit))
 										# Now update the PMS-AllBundleInfo Dict as well
 										Dict['PMS-AllBundleInfo'][git] = targetGit
+										# If it existed as unknown as well, we need to remove that
+										Dict['PMS-AllBundleInfo'].pop(uasListjson[git]['identifier'], None)
+										Dict['installed'].pop(uasListjson[git]['identifier'], None)										
 										Dict.Save()
 										migratedBundles[git] = targetGit
 										bFound = True
@@ -309,10 +333,13 @@ class git(object):
 										Dict.Save()
 										pms.updateUASTypesCounters()
 			Log.Debug('Migrated: ' + str(migratedBundles))
-			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(migratedBundles))
+			if silent:
+				return
+			else:
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(migratedBundles))
 		except Exception, e:
 			Log.Critical('Fatal error happened in migrate: ' + str(e))
 			req.clear()
@@ -340,6 +367,7 @@ class git(object):
 	''' This will update the UAS Cache directory from GitHub '''
 	def updateUASCache(self, req):
 		Log.Debug('Starting to update the UAS Cache')
+		debugForce = ('false' != req.get_argument('debugForce', 'false'))
 		# Main call
 		try:
 			# Start by getting the time stamp for the last update
@@ -353,7 +381,7 @@ class git(object):
 			# Now get the last update time from the UAS repository on GitHub
 			masterUpdate = datetime.datetime.strptime(self.getLastUpdateTime(req, True, self.UAS_URL), '%Y-%m-%d %H:%M:%S')
 			# Do we need to update the cache, and add 2 min. tolerance here?
-			if (masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120):
+			if ((masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120) or debugForce):
 				# We need to update UAS Cache
 				# Target Directory
 				targetDir = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas')
@@ -503,7 +531,7 @@ class git(object):
 			return
 
 		''' Download the bundle '''
-		def downloadBundle2tmp(url, bundleName):
+		def downloadBundle2tmp(url, bundleName, branch):
 			# Helper function
 			def removeEmptyFolders(path, removeRoot=True):
 				'Function to remove empty folders'
@@ -521,40 +549,46 @@ class git(object):
 				if len(files) == 0 and removeRoot:
 					Log.Debug('Removing empty directory: ' + path)
 					os.rmdir(path)
-
-			# Main 
 			try:
-				zipPath = url + '/archive/master.zip'
-				# Grap file from Github
-				zipfile = Archive.ZipFromURL(zipPath)
+				zipPath = url + '/archive/' + branch + '.zip'
+				try:
+					# Grap file from Github
+					zipfile = Archive.ZipFromURL(zipPath)
+				except Exception, e:
+					Log.Critical('Exception in downloadBundle2tmp while downloading from GitHub: ' + str(e)) 
+					return False
 				# Create base directory
 				Core.storage.ensure_dirs(Core.storage.join_path(self.PLUGIN_DIR, bundleName))
 				# Make sure it's actually a bundle channel
 				bError = True
 				bUpgrade = False
 				instFiles = []
-				for filename in zipfile:
-					# Make a list of all files and dirs in the zip
-					instFiles.append(filename)
-					if '/Contents/Info.plist' in filename:
-						pos = filename.find('/Contents/')
-						cutStr = filename[:pos]
-						bError = False
-						# so we hit the Info.plist file, and now we can make sure, that/if this is an upgrade or not
-						# So let's grap the identifier from the info file	of the bundle to be migrated	
-						# We start by temporary save that as Plug-ins/WT-tmp.plist
-						Core.storage.save(self.PLUGIN_DIR + '/WT-tmp.plist', zipfile[filename])
-						# Now read out the identifier
-						bundleId = plistlib.readPlist(self.PLUGIN_DIR + '/WT-tmp.plist')['CFBundleIdentifier']
-						Log.Debug('Identifier of the bundle to be installed is: ' + bundleId)
-						# Then nuke the file again
-						os.remove(self.PLUGIN_DIR + '/WT-tmp.plist')
-						# And finally check if it's already installed
-						for bundle in Dict['installed']:
-							if Dict['installed'][bundle]['identifier'] == bundleId:
-								bUpgrade = True
-								Log.Debug('Install is an upgrade')
-								break
+				try:
+					for filename in zipfile:
+						# Make a list of all files and dirs in the zip
+						instFiles.append(filename)
+						if '/Contents/Info.plist' in filename:
+							pos = filename.find('/Contents/')
+							cutStr = filename[:pos]
+							bError = False
+							# so we hit the Info.plist file, and now we can make sure, that/if this is an upgrade or not
+							# So let's grap the identifier from the info file	of the bundle to be migrated	
+							# We start by temporary save that as Plug-ins/WT-tmp.plist
+							Core.storage.save(self.PLUGIN_DIR + '/WT-tmp.plist', zipfile[filename])
+							# Now read out the identifier
+							bundleId = plistlib.readPlist(self.PLUGIN_DIR + '/WT-tmp.plist')['CFBundleIdentifier']
+							Log.Debug('Identifier of the bundle to be installed is: ' + bundleId)
+							# Then nuke the file again
+							os.remove(self.PLUGIN_DIR + '/WT-tmp.plist')
+							# And finally check if it's already installed
+							for bundle in Dict['installed']:
+								if Dict['installed'][bundle]['identifier'] == bundleId:
+									bUpgrade = True
+									Log.Debug('Install is an upgrade')
+									break
+				except Exception, e:
+					Log.Critical('Exception in downloadBundle2tmp while walking the downloaded file to find the plist: ' + str(e)) 
+					return False					
 				if bUpgrade:
 					# Since this is an upgrade, we need to check, if the dev wants us to delete the Cache directory
 					if url in Dict['installed'].keys():
@@ -646,14 +680,15 @@ class git(object):
 		Log.Debug('Starting install')
 		req.clear()
 		url = req.get_argument('url', 'missing')
+		branch = req.get_argument('branch', 'master')
 		if url == 'missing':
 			req.set_status(412)
 			req.finish("<html><body>Missing url of git</body></html>")
 			return req
 		# Get bundle name
 		bundleName = grapBundleName(url)
-		if downloadBundle2tmp(url, bundleName):
-			Log.Debug('Finished installing %s' %(bundleName))
+		if downloadBundle2tmp(url, bundleName, branch):
+			Log.Debug('Finished installing %s from branch %s' %(bundleName, branch))
 			Log.Debug('******* Ending install *******')
 			req.clear()
 			req.set_status(200)
@@ -664,7 +699,7 @@ class git(object):
 			Log.Critical('Fatal error happened in install for :' + url)
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in install for :' + url)
+			req.finish('Fatal error happened in install for :' + url + ' with branch ' + branch)
 			return req
 
 	''' Get the last update time for a master branch. if UAS is set to True, then this is an internal req. for UAS '''
