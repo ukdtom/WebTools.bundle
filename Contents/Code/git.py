@@ -101,11 +101,8 @@ class git(object):
 				Log.Debug('Removing empty directory: ' + path)
 				os.rmdir(path)
 
-
-
 		# Reset dicts
 		nukeSpecialDicts()
-
 
 		url= req.get_argument('debugURL', 'https://api.github.com/repos/dagalufh/WebTools.bundle/releases/latest')
 		bundleName = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
@@ -175,14 +172,15 @@ class git(object):
 			req.finish('Upgraded ok')
 		except Exception, e:
 			Log.Critical('***************************************************************')
+			Log.Critical('Error when updating WebTools')
+			Log.Critical('The error was: ' + str(e))
+			Log.Critical('***************************************************************')
 			Log.Critical('DARN....When we tried to upgrade WT, we had an error :-(')
 			Log.Critical('Only option now might be to do a manual install, like you did the first time')
-			Log.Critical('The error was: ' + str(e))
 			Log.Critical('Do NOT FORGET!!!!')
 			Log.Critical('We NEED this log, so please upload to Plex forums')
 			Log.Critical('***************************************************************')
 		return
-
 
 	''' This function will return a list of bundles, where there is an update avail '''
 	def getUpdateList(self, req):
@@ -218,7 +216,6 @@ class git(object):
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in getUpdateList ' + str(e))
-	
 
 	''' This function will migrate bundles that has been installed without using our UAS into our UAS '''
 	def migrate(self, req, silent=False):
@@ -259,9 +256,6 @@ class git(object):
 		# Main call
 		Log.Debug('Migrate function called')
 		try:
-			# Init dict, if not already so
-			if Dict['installed'] == None:
-				Dict['installed'] = {}
 			# Let's start by getting a list of known installed bundles
 			knownBundles = []
 			for installedBundles in Dict['installed']:
@@ -286,6 +280,11 @@ class git(object):
 								uasListjson = getUASCacheList()
 								bFound = False
 								for git in uasListjson:
+									'''
+									if target == 'com.plexapp.plugins.Plex2csv':
+										print 'GED KIG HER'
+										continue
+									'''
 									if target == uasListjson[git]['identifier']:
 										Log.Debug('Found %s is part of uas' %(target))
 										targetGit = {}
@@ -302,6 +301,8 @@ class git(object):
 										Log.Debug('Dict stamped with the following install entry: ' + git + ' - '  + str(targetGit))
 										# Now update the PMS-AllBundleInfo Dict as well
 										Dict['PMS-AllBundleInfo'][git] = targetGit
+										# Update installed dict as well
+										Dict['installed'][git] = targetGit
 										# If it existed as unknown as well, we need to remove that
 										Dict['PMS-AllBundleInfo'].pop(uasListjson[git]['identifier'], None)
 										Dict['installed'].pop(uasListjson[git]['identifier'], None)										
@@ -402,7 +403,15 @@ class git(object):
 					req.finish('Exception in updateUASCache: ' + errMsg)
 					return req
 				# Grap file from Github
-				zipfile = Archive.ZipFromURL(self.UAS_URL+ '/archive/master.zip')
+				try:
+					zipfile = Archive.ZipFromURL(self.UAS_URL+ '/archive/master.zip')
+				except Exception, e:
+					Log.Critical('Could not download UAS Repo from GitHub')
+					req.clear()
+					req.set_status(500)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish('Exception in updateUASCache while downloading UAS repo from Github: ' + str(e))
+					return req
 				for filename in zipfile:
 					# Walk contents of the zip, and extract as needed
 					data = zipfile[filename]
@@ -549,7 +558,11 @@ class git(object):
 				if len(files) == 0 and removeRoot:
 					Log.Debug('Removing empty directory: ' + path)
 					os.rmdir(path)
+
 			try:
+				# Get the dict with the installed bundles, and init it if it doesn't exists
+				if not 'installed' in Dict:
+					Dict['installed'] = {}
 				zipPath = url + '/archive/' + branch + '.zip'
 				try:
 					# Grap file from Github

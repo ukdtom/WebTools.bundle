@@ -1,3 +1,37 @@
+V2.2-DEV:
+Internal Note:
+	Here we collect stuff that needs to go into the real released changelog, aka acumulated, and only since 2.1 changes here ;-)
+BACKEND:
+	Fix:
+		#115 UAS: Migration fails, if plugin directory contains hidden folder
+		#116 UAS: Make UAS work, even if a git is dir levels too low
+		#117 UAS and uninstall unknown bundle
+		#121 UAS: Cleanup old files/folders when updating
+		#122 UAS: bundle migration
+		#138 UAS: getAllBundleInfo is reset when UASRepo is updated
+	New:
+		#129 UAS: Alllow 3.Party devs to clear their stuff
+		#135 WT: Tell users, if wrong install path is used
+		#137 WT: Add new decorator for auth
+		#126 UAS: Allow WebTools to autoupdate
+
+FRONTEND:
+	Fix:
+		TODO
+	New:
+		#126 UAS: Allow WebTools to autoupdate
+####
+
+V2.2-DEV-2016-02-25:
+UAS:
+	The return of the Uninstall-button (Issue #132)
+WebTools:
+	Implemented update of main plugin. This however currently causes an error in the logs.
+	
+V2.2-DEV-2016-02-19:
+UAS:
+	Changed focus after showing channel. This should not bring up the keyboard on mobile devices anymore.
+
 V2.2-DEV-2016-02-02:
 UAS:
 	Reverting Issue #119 because of reported issue with locked interface.

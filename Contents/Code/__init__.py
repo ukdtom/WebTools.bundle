@@ -41,12 +41,11 @@ def Start():
 	DEBUGMODE = os.path.isfile(debugFile)
 	if DEBUGMODE:
 		VERSION = VERSION + ' ****** WARNING Debug mode on *********'
-	PLUGIN_VERSION = VERSION	
-	print("********  Started %s on %s  **********" %(NAME  + ' V' + PLUGIN_VERSION, Platform.OS))
-	Log.Debug("*******  Started %s on %s  ***********" %(NAME + ' V' + PLUGIN_VERSION, Platform.OS))
+		print("********  Started %s on %s  **********" %(NAME  + ' V' + VERSION, Platform.OS))
+	Log.Debug("*******  Started %s on %s  ***********" %(NAME + ' V' + VERSION, Platform.OS))
 	HTTP.CacheTime = 0
 	DirectoryObject.thumb = R(ICON)
-	ObjectContainer.title1 = NAME + ' V' + PLUGIN_VERSION 
+	ObjectContainer.title1 = NAME + ' V' + VERSION 
 	Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
 	ObjectContainer.view_group = 'List'
 	makeSettings()
@@ -97,6 +96,12 @@ def makeSettings():
 	# Create the pwdset entry
 	if Dict['pwdset'] == None:
 		Dict['pwdset'] = False
+	# Init the installed dict
+	if Dict['installed'] == None:
+		Dict['installed'] = {}
+	# Init the allBundle Dict
+	if Dict['PMS-AllBundleInfo'] == None:
+		Dict['PMS-AllBundleInfo'] = {}
 	return
 
 ####################################################################################################
