@@ -296,7 +296,7 @@ install.showChannels = function(button, type, page, highlight) {
 	// Reset install.channelstoshow
 	install.channelstoshow = [];
 	$('#channelmenu>button').removeClass('btn-active');
-	$('#gitlink').focus();
+	$('#install_availablechannels').focus();
 	$('#' + type.replace(' ', '')).addClass('btn-active');
 
 	var channellist = [];
@@ -360,7 +360,9 @@ install.showChannels = function(button, type, page, highlight) {
 
 	for (var i = start; i < end; i++) {
 		var key = install.channelstoshow[i];
-		var installlink = '';
+		var link_install = '';
+		var link_update = '';
+		var link_uninstall = '';
 
 		var isInstalled = false;
 		var installDate = '';
@@ -370,23 +372,24 @@ install.showChannels = function(button, type, page, highlight) {
 		if ((typeof(install.allBundles[key].date) != 'undefined') && (install.allBundles[key].date.length > 0)) {
 			isInstalled = true;
 			rowspan = 3;
-			installlink = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Re-Install with latest available</button>';
+			link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Re-Install with latest available</button>';
 		}
 
 		
 		if ((key.indexOf('http') != -1) && (key.indexOf('https') != -1)) {
 			if (isInstalled === false) {
-				installlink = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Install</button>';
+				link_install = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Install</button>';
 			}
 			repolink = '<a href="' + key + '" target="_NEW">' + key + '</a>';
-			installlink += ' <button class="btn btn-default btn-xs" onclick="install.checkForUpdates(\'' + install.allBundles[key].bundle + '\',\'' + key + '\')">Check for Updates</button>';
+			link_update += ' <button class="btn btn-default btn-xs" onclick="install.checkForUpdates(\'' + install.allBundles[key].bundle + '\',\'' + key + '\')">Check for Updates</button>';
 		}
 		
 		
-		if ((type == 'Unknown') && ((typeof(install.allBundles[key].date) != 'undefined') && (install.allBundles[key].date.length > 0))) {
-			installlink += ' <button class="btn btn-default btn-xs" onclick="install.removebundleconfirm(\'' + key + '\')">Uninstall Bundle</button></div>';
+		//if ((type == 'Unknown') && ((typeof(install.allBundles[key].date) != 'undefined') && (install.allBundles[key].date.length > 0))) {
+		if (isInstalled === true) {
+			link_uninstall = ' <button class="btn btn-default btn-xs" onclick="install.removebundleconfirm(\'' + key + '\')">Uninstall Bundle</button></div>';
 		}
-		installlink += '</div>';
+		//}
 		
 		if (((install.showOnlyInstalled === true) && (isInstalled === true)) || (install.showOnlyInstalled === false)) {
 			var iconurl = 'icons/NoIcon.png';
@@ -413,7 +416,7 @@ install.showChannels = function(button, type, page, highlight) {
 				newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Installed:&nbsp;</span> <span class="changeDisplay"> ' + install.allBundles[key].date + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Latest Update on Github:&nbsp;</span> <span class="changeDisplay"><span id="updateTime_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '') + '">' + updateTime + '&nbsp;</span></span></div></td></tr>')
 			//}
 			newEntry.push('</table></div>');
-			newEntry.push(installlink);
+			newEntry.push('<div class="panel-footer">' + link_install + link_update + link_uninstall + '</div>');
 			newEntry.push('</div>');
 
 			$('#channellist').append(newEntry.join('\n'));

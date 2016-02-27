@@ -28,7 +28,9 @@ var webtools = {
 	longermodulestart: false,
 	loading: function() {},
 	changelog: '',
-	credits: ''
+	credits: '',
+	install_WT: function() {},
+	wait_update: function () {}
 };
 
 // Webtools function
@@ -223,7 +225,7 @@ webtools.listlogfiles = function(callback, activatemodulename) {
 
 			$('#LogfilesMenu').append('<li><a class="customlink" href="/webtools2?module=logs&function=download">Download all logfiles as Zip</a></li>');
 			$('#LogfilesMenu').append('<li><a class="customlink" onclick="javascript:webtools.listlogfiles();">Refresh Logfilelist</a></li>');
-			
+
 			if (typeof(callback) != 'undefined') {
 				callback('LogfileNamesFetch:Success', activatemodulename);
 			} else {
@@ -463,12 +465,15 @@ webtools.updates_check = function() {
 				switch (compare(webtools.version, data.tag_name)) {
 					case 0:
 						infoarray.push('You are on the latest and greatest!');
+						$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.install_WT();">Re-Install WebTools</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
 						break;
 					case -1:
 						infoarray.push('You\'ve fallen behind. Time to update to the greatest!');
+						$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.install_WT();">Update WebTools</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
 						break;
 					case 1:
 						infoarray.push('You are ahead of time. Your version is newer than the one on Github.');
+						$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.install_WT();">Re-Install WebTools</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
 						break;
 				}
 			}
@@ -478,7 +483,44 @@ webtools.updates_check = function() {
 			$('#updateinfo').html('An error occured while trying to fetch information from Github. Try again in a little while.');
 		}
 	});
-};
+}
+
+webtools.install_WT = function () {
+	$.ajax({
+		url: '/webtools2?module=git&function=upgradeWT',
+		type:'PUT',
+		success: function (data) {
+			console.log('success');
+			console.log(data);
+			webtools.wait_update();
+			// Call webtools_wait_for_reload();
+			// That function is an ajax call for /, if 404, wait for a few seconds, then try again. Otherwise, notify user of updated completed.
+		},
+		error: function (data) {
+			console.log('error');
+			console.log(data);
+			webtools.wait_update();
+			// Notify user
+		}
+	})
+}
+
+webtools.wait_update = function () {
+	$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Waiting for WebTools');
+	$('#myModalBody').html('<p id="updateinfo">Waiting for WebTools to come online. Will automatically return you to start when ready.</p>');
+	$('#myModalFoot').html('');
+	$('#myModal').modal('show');
+	$.ajax({
+		url:'/',
+		type: 'GET',
+		success: function () {
+			window.location.href='/';
+		},
+		error: function () {
+			setTimeout(webtools.wait_update,1000);
+		}
+	})
+}
 
 $(function(ready) {
 	$('#myModal').on('hidden.bs.modal', function(e) {
