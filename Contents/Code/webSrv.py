@@ -6,8 +6,6 @@
 #					Author:			dagaluf, a Plex Community member
 #					Author:			dane22, a Plex Community member
 #
-#					Support thread:	https://forums.plex.tv/index.php/topic/119940-webtool-subtitle-manager-development/
-#
 ######################################################################################################################
 
 from tornado.web import *
@@ -24,6 +22,7 @@ from logs import logs
 from pms import pms
 from settings import settings
 from findUnmatched import findUnmatched
+from language import language
 
 import os
 
@@ -63,6 +62,12 @@ def isCorrectPath(req):
 #************** webTools functions ******************************
 ''' Here we have the supported functions '''
 class webTools(object):
+	# Defaults used by the rest of the class
+	def __init__(self):
+		# Find-Unmatched settings stuff
+		findUnmatched().populatePrefs()
+
+
 	''' Return version number, and other info '''
 	def getVersion(self):
 		retVal = {'version': VERSION, 
@@ -235,6 +240,8 @@ class webTools2Handler(BaseHandler):
 				self = settings().reqprocess(self)
 			elif module == 'findUnmatched':
 				self = findUnmatched().reqprocess(self)
+			elif module == 'language':
+				self = language().reqprocess(self)
 			else:
 				self.clear()
 				self.set_status(412)
