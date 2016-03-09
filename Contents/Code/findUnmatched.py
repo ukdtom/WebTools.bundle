@@ -12,6 +12,8 @@ import json
 
 # Consts used here
 AmountOfMediasInDatabase = 0				# Int of amount of medias in a database section
+mediasFromDB = []										# Files from the database
+statusMsg = 'idle'									# Response to getStatus
 
 class findUnmatched(object):	
 	# Defaults used by the rest of the class
@@ -72,19 +74,13 @@ class findUnmatched(object):
 			req.set_status(412)
 			req.finish("Unknown function call")
 
-#	'''
+
 	# Return current status
-	def getStatus1(self, req):
-		result = {}
-
-
-		result['AmountOfMediasInDatabase'] = AmountOfMediasInDatabase
-
-		req.clear()
-		
+	def getStatus(self, req):
+		req.clear()		
 		req.set_status(200)
 		req.set_header('Content-Type', 'application/json; charset=utf-8')
-		req.finish(json.dumps(result))
+		req.finish(statusMsg)
 
 
 	# Main call for function.....
@@ -110,48 +106,43 @@ class findUnmatched(object):
 				print 'GED Exception', str(e)
 
 
-		# Background thread starter
-		def getStatus(self, req, thread='', section=-1):
-
-
-			if thread == 'scanMovieDB':
-				Thread.Create(self.scanMovieDb(section))
-
-
-
-#Thread.Create(backgroundScanThread, globalize=True, title=title, key=key, sectiontype=sectiontype, paths=paths)
-
-
 
 
 		# Get a list of all files in a Movie Library
-		def scanMovieDb(sectionNumber):
+		def scanMovieDb(sectionNumber=0):
 			global AmountOfMediasInDatabase
-			try:
-				mediasFromDB = []
+			global mediasFromDB
+			global statusMsg
+			try:				
 				Log.Debug('Starting scanMovieDb for section %s' %(sectionNumber))
-#				# Start by getting the totals of this section			
+				statusMsg = 'Starting to scan database for section %s' %(sectionNumber)
+				# Start by getting the totals of this section			
 				totalSize = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=1&X-Plex-Container-Size=0').get('totalSize')
 				AmountOfMediasInDatabase = totalSize
-#				Log.Debug('Total size of medias are %s' %(totalSize))
-				# So let's walk the library
+				Log.Debug('Total size of medias are %s' %(totalSize))
 				iStart = 1
+				iCount = 1
+				statusMsg = 'Scanning database item %s of %s : Working' %(iCount, totalSize)
+				# So let's walk the library
+
 				while True:
 					# Grap a chunk from the server
 					medias = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iStart) + '&X-Plex-Container-Size=' + str(self.MovieChuncks)).xpath('//Part')
 					# Walk the chunk
-					for part in medias:						
-#						iCurrent += 1
+					for part in medias:
+						iCount += 1
 						filename = part.get('file')						
 						filename = urllib.quote(unicodedata.normalize('NFKC', urllib.unquote(filename).decode('utf8')).encode('utf8'))
 						# Remove esc backslash if present and on Windows
 						if Platform.OS == "Windows":
 							filename = filename.replace(':%5C%5C', ':%5C')
 						mediasFromDB.append(filename)
+						statusMsg = 'Scanning database: item %s of %s : Working' %(iCount, totalSize)
 					iStart += self.MovieChuncks
 					if len(medias) == 0:
+						statusMsg = 'Scanning database: %s : Done' %(totalSize)
 						break
-				return mediasFromDB
+				return
 			except Exception, e:
 				Log.Debug('Fatal error in scanMovieDb: ' + str(e))
 		# End scanMovieDb
@@ -176,12 +167,17 @@ class findUnmatched(object):
 			Log.Debug('Going to scan section %s with a title of %s and a type of %s and locations as %s' %(sectionNumber, sectionTitle, sectionType, str(sectionLocations)))
 
 			if sectionType == 'movie':
-				filesFromDatabase = scanMovieDb(sectionNumber)
+				print 'Ged22'
+				Thread.Create(scanMovieDb, sectionNumber=sectionNumber)
+
+#				filesFromDatabase = scanMovieDb(sectionNumber)
+				print 'Ged33 kig her'
 
 
-#			print 'GED filesFromDatabase:', filesFromDatabase
-			print 'GED number', len(filesFromDatabase)
-			AmountOfMediasInDatabase = len(filesFromDatabase)
+			'''
+
+			Vi skal have både file og db scan til at starte fra en og samme thread
+
 
 			Log.Debug('************** Files from database *****************')
 			Log.Debug(filesFromDatabase)
@@ -192,6 +188,8 @@ class findUnmatched(object):
 			filesFromFileSystem = []
 			for filePath in sectionLocations:
 				filesFromFileSystem.extend(getFiles(filePath))
+
+			'''
 
 
 
