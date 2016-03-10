@@ -488,7 +488,7 @@ class git(object):
 			return gitName
 
 		''' Save Install info to the dict '''
-		def saveInstallInfo(url, bundleName):
+		def saveInstallInfo(url, bundleName, branch):
 			# If this is WebTools itself, then don't save
 			if 'WebTools.bundle' in bundleName:
 				return
@@ -510,6 +510,7 @@ class git(object):
 				if url.upper() == git['repo'].upper():
 					key = git['repo']
 					del git['repo']
+					git['branch'] = branch
 					git['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 					Dict['installed'][key] = git
 					bNotInUAS = False
@@ -667,7 +668,7 @@ class git(object):
 					removeEmptyFolders(bundleName)
 				if not bError:
 					# Install went okay, so save info
-					saveInstallInfo(url, bundleName)
+					saveInstallInfo(url, bundleName, branch)
 					# Install went okay, so let's make sure it get's registred
 					if bUpgrade:
 						try:
@@ -730,9 +731,22 @@ class git(object):
 			req.clear()
 			req.set_status(404)
 			req.finish("<html><body>Missing url of git</body></html>")
-			return req		
+			return req
+
+		# Retrieve current branch name
+		if Dict['installed'].get(url, {}).get('branch'):
+			# Use installed branch name
+			branch = Dict['installed'][url]['branch']
+		elif Dict['PMS-AllBundleInfo'].get(url, {}).get('branch'):
+			# Use branch name from bundle info
+			branch = Dict['PMS-AllBundleInfo'][url]['branch']
+		else:
+			# Otherwise fallback to the "master" branch
+			branch = 'master'
+
+		# Check for updates
 		try:
-			url += '/commits/master.atom'
+			url += '/commits/%s.atom' % branch
 			Log.Debug('URL is: ' + url)
 			response = Datetime.ParseDate(HTML.ElementFromURL(url).xpath('//entry')[0].xpath('./updated')[0].text).strftime("%Y-%m-%d %H:%M:%S")
 			Log.Debug('Last update for: ' + url + ' is: ' + str(response))
