@@ -19,6 +19,14 @@ mediasFromDB = []										# Files from the database
 mediasFromFileSystem = []						# Files from the file system
 statusMsg = 'idle'									# Response to getStatus
 runningState = 0										# Internal tracker of where we are
+Extras = ['behindthescenes',
+					'deleted',
+					'featurette',
+					'interview',
+					'scene',
+					'short',
+					'trailer'
+				]														# Local extras
 
 class findMedia(object):	
 	init_already = False							# Make sure init only run once
@@ -254,6 +262,10 @@ class findMedia(object):
 								# File has a valid extention
 								if file.startswith('.') and Dict['findMedia']['IGNORE_HIDDEN']:
 									continue
+								# Filter out local extras
+								if '-' in file:
+									if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1] in Extras:
+										continue
 								mediasFromFileSystem.append(Core.storage.join_path(root,file))
 								statusMsg = 'Scanning file: ' + file
 					Log.Debug('***** Finished scanning filesystem *****')
