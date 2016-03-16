@@ -21,7 +21,7 @@ from git import git
 from logs import logs
 from pms import pms
 from settings import settings
-from findUnmatched import findUnmatched
+from findMedia import findMedia
 from language import language
 
 import os
@@ -64,8 +64,8 @@ def isCorrectPath(req):
 class webTools(object):
 	# Defaults used by the rest of the class
 	def __init__(self):
-		# Find-Unmatched settings stuff
-		findUnmatched().populatePrefs()
+		# Not used yet
+		return
 
 
 	''' Return version number, and other info '''
@@ -238,8 +238,8 @@ class webTools2Handler(BaseHandler):
 				self = pms().reqprocess(self)
 			elif module == 'settings':
 				self = settings().reqprocess(self)
-			elif module == 'findUnmatched':
-				self = findUnmatched().reqprocess(self)
+			elif module == 'findMedia':
+				self = findMedia().reqprocess(self)
 			elif module == 'language':
 				self = language().reqprocess(self)
 			else:
@@ -267,8 +267,8 @@ class webTools2Handler(BaseHandler):
 				self = settings().reqprocessPost(self)
 			elif module == 'pms':			
 				self = pms().reqprocessPost(self)
-			elif module == 'findUnmatched':		
-				self = findUnmatched().reqprocessPost(self)
+			elif module == 'findMedia':		
+				self = findMedia().reqprocessPost(self)
 			else:
 				self.clear()
 				self.set_status(412)
