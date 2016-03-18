@@ -102,7 +102,7 @@ class findMedia(object):
 
 	# Set settings
 	def setSetting(self, req):
-		print 'Ged'
+#		print 'Ged'
 		try:
 			key = req.get_argument('key', 'missing')
 			if key == 'missing':
@@ -119,7 +119,7 @@ class findMedia(object):
 				req.set_status(412)
 				req.finish("Missing value parameter")
 
-			print 'Ged2', value
+#			print 'Ged2', value
 
 			Dict['findMedia'][key] = value
 			Dict.Save()
@@ -215,7 +215,7 @@ class findMedia(object):
 			global statusMsg
 			global retMsg
 
-			print 'Ged Type', sectionType
+#			print 'Ged Type', sectionType
 			if sectionType == 'movie':
 				scanMovieDb(sectionNumber=sectionNumber)
 			elif sectionType == 'show':

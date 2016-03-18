@@ -142,6 +142,8 @@ class pms(object):
 			return self.getAllBundleInfo(req)
 		elif function == 'getParts':
 			return self.getParts(req)
+		elif function == 'getSectionLetterList':
+			return self.getSectionLetterList(req)
 		else:
 			req.clear()
 			req.set_status(412)
@@ -776,6 +778,37 @@ class pms(object):
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in getSubtitles')
+
+	''' get section letter-list '''
+	def getSectionLetterList(self, req):
+		Log.Debug('Section requested')
+		try:
+			key = req.get_argument('key', 'missing')
+			Log.Debug('Section key is %s' %(key))
+			if key == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing key of section')
+				return req
+			# Got all the needed params, so lets grap the list
+			myURL = 'http://127.0.0.1:32400/library/sections/' + key + '/firstCharacter'
+			resultJson = { }			
+			sectionLetterList = XML.ElementFromURL(myURL).xpath('//Directory')
+			for sectionLetter in sectionLetterList:
+				resultJson[sectionLetter.get('title')] = {
+													'key' : sectionLetter.get('key'), 'size': sectionLetter.get('size')}					
+			Log.Debug('Returning %s' %(resultJson))
+			req.clear()
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(resultJson, sort_keys=True))
+		except Exception, e:
+			Log.Debug('Fatal error happened in getSectionLetterList ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in getSectionLetterList: ' + str(e))
+
 
 	''' get section '''
 	def getSection(self,req):
