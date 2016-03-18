@@ -480,9 +480,18 @@ class git(object):
 		''' Grap bundle name '''
 		def grapBundleName(url):	
 			gitName = url.rsplit('/', 1)[-1]
+
 			# Forgot to name git to end with .bundle?
 			if not gitName.endswith('.bundle'):
-				gitName = gitName + '.bundle'
+				bundleInfo = Dict['PMS-AllBundleInfo'].get(url, {})
+
+				if bundleInfo.get('bundle'):
+					# Use bundle name from plugin details
+					gitName = bundleInfo['bundle']
+				else:
+					# Fallback to just appending ".bundle" to the repository name
+					gitName = gitName + '.bundle'
+
 			gitName = Core.storage.join_path(self.PLUGIN_DIR, gitName)
 			Log.Debug('Bundle directory name digested as: %s' %(gitName))
 			return gitName
