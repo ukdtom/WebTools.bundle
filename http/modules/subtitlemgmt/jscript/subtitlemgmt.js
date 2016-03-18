@@ -49,7 +49,8 @@ webtools.functions.subtitlemgmt = {
 	view_subtitle: function() {},
 	subtitle_select_all: function() {},
 	subtitle_delete_confirm: function() {},
-	subtitle_delete: function() {}
+	subtitle_delete: function() {},
+	upload_dialog: function() {}
 };
 // Alias:
 var subtitlemgmt = webtools.functions.subtitlemgmt;
@@ -344,4 +345,109 @@ subtitlemgmt.show_options = function() {
 
 subtitlemgmt.set_pageToShow = function(pageToShow) {
 	subtitlemgmt.selected_section.currentpage = Number(pageToShow);
+}
+
+subtitlemgmt.upload_dialog = function(videokey) {
+	webtools.log('Requesting getParts for movie/episode with key: ' + videokey);
+	$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Upload Subtitle');
+	$('#myModalBody').html('Fetching info about video/episode.');
+	$('#myModalFoot').html('<button type="button" disabled class="btn btn-default" onclick="subtitlemgmt.upload();">Upload</button> <button disabled type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+	$('#myModal').modal('show');
+	
+	$.ajax({
+		url: '/webtools2?module=pms&function=getParts&key=' + videokey,
+		type: 'GET',
+		dataType: 'JSON',
+		success: function(data) {
+			webtools.log('Received getParts' + JSON.stringify(data));
+			$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Upload Subtitle');
+		
+	
+			//Example return of above:  /home/cabox/workspace/dummylibraries/movies/10 Things I Hate About You (1999)/10 Things I Hate About You (1999).mp4
+			var subtitleform = [
+				'<form enctype="multipart/form-data" method="post" id="subtitleupload" onSubmit="return false;">',
+				'<table class="table table-bordered" id="subtitleuploadtable">',
+				'<tr><td colspan=2>If a file exists with the selected language and file extension, it will be overwritten.</td></tr>',
+				'<tr><td>Subtitle:</td><td><input id="localFile" name="localFile" type="file"></td></tr>',
+				'<tr><td>Language:</td><td><select id="subtitlelanguage">{list}</select></td></tr>',
+				'<tr><td>Subtitle target file:</td><td><select id="targetfile">{targetfile}</select><br>Note: Hover over files in above selection to see full path.</td></tr>',
+				'</table></form>',
+			];
+			subtitleform = subtitleform.join('\n')
+
+			var languagelist = [];
+			for (var key in webtools.languagecodes) {
+				languagelist.push('<option value="' + key + '">' + webtools.languagecodes[key] + ' (.' + key + ')');
+			}
+			
+			var targetfile = [];
+			for (var tkey in data) {
+				var toshow = '';
+				if (data[tkey].indexOf('\\') != '-1') {
+					toshow = data[tkey].substring(data[tkey].lastIndexOf('\\') +1);
+				} else {
+					toshow = data[tkey].substring(data[tkey].lastIndexOf('/') +1);
+				}
+				targetfile.push('<option value="' + data[tkey] + '" title="' + data[tkey] + '">' + toshow);
+			}
+			
+			subtitleform = subtitleform.replace('{list}', languagelist.join('\n'));
+			subtitleform = subtitleform.replace('{targetfile}', targetfile.join('\n'));
+			
+			$('#myModalBody').html(subtitleform);
+			$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="subtitlemgmt.upload();">Upload</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+			$('#myModal').modal('show');
+		},
+		error: function() {
+			webtools.log('Error occured while requesting getParts for video/episode: ' + videokey);
+		}
+	})
+
+}
+
+subtitlemgmt.upload = function() {
+	webtools.log('Initiating upload procedure of : ' + $('#localFile').val());	
+	var uploadfileextension = $('#localFile').val();
+	var targetfile = $('#targetfile').val();
+	var language = $('#subtitlelanguage').val();
+	
+	uploadfileextension = uploadfileextension.substring(uploadfileextension.lastIndexOf('.'));
+	
+	var newfilename = targetfile.substring(0, targetfile.lastIndexOf('.')) + '.' + language + uploadfileextension;
+	webtools.log('Remote filename will be: ' + newfilename);
+
+	var form = document.forms.namedItem("subtitleupload");
+	var formobject = new FormData(form)
+
+	$('#myModalBody').html('Uploading file...');
+	$('#myModalFoot').html('<button disabled type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+	
+	var functiontocall = '';
+	if (subtitlemgmt.selected_section.contentstype == 'video') {
+		functiontocall = 'subtitlemgmt.fetch_section_type_movies';
+	} else if (subtitlemgmt.selected_section.contentstype == 'episodes') {
+		functiontocall = 'subtitlemgmt.display_episodes';
+	}
+	
+	formobject.append("remoteFile", newfilename);
+	$.ajax({
+		url: '/webtools2?module=pms&function=uploadFile',
+		type: 'POST',
+		data: formobject,
+		processData: false, // tell jQuery not to process the data
+		contentType: false, // tell jQuery not to set contentType
+		success: function(data) {
+			webtools.log('Upload of ' + newfilename + ' was sucessfull.');
+			$('#myModalBody').html('Successfully uploaded the file:<br>' + newfilename);
+			$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="subtitlemgmt.set_pageToShow(' + subtitlemgmt.selected_section.currentpage + ');' + functiontocall + '(' + subtitlemgmt.selected_section.key + ',' + subtitlemgmt.selected_section.currentpage + ');">Refresh Page</button>');
+		},
+		error: function(data) {
+			webtools.log('Error occured while uploading: ' + data.responseText);
+			$('#myModalBody').html('Failed to upload the file: <br>' + data.responseText);
+			$('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+
+		}
+	});
+
+
 }

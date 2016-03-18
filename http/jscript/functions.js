@@ -30,7 +30,15 @@ var webtools = {
 	changelog: '',
 	credits: '',
 	install_WT: function() {},
-	wait_update: function () {}
+	wait_update: function () {},
+	languagecodes: {},
+	// Search a table that has the tr with an id tag unique for each row
+	keywordarray: [],
+	currentkeyword: 0,
+  searchkeyword: function () {},
+	next: function () {},
+	previous: function () {},
+	clearresult: function () {}
 };
 
 // Webtools function
@@ -58,6 +66,25 @@ webtools.list_modules.inline([
 				error: function(data) {
 					data.url = this.url;
 					webtools.display_error('Failed fetching the version from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+					webtools.list_modules.abort('Error: ' + data.statusText);
+				}
+			});
+		},
+		function(callback, activatemodulename) {
+			//Name:VersionFetch
+			webtools.loading();
+			$.ajax({
+				url: '/webtools2?module=language&function=get3CodeLangList',
+				cache: false,
+				dataType: 'JSON',
+				success: function(data) {
+					webtools.languagecodes = data;
+					console.log(webtools.languagecodes);
+					callback('LanguageCodes:Success', activatemodulename);
+				},
+				error: function(data) {
+					data.url = this.url;
+					webtools.display_error('Failed fetching the languagecodes from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
 					webtools.list_modules.abort('Error: ' + data.statusText);
 				}
 			});
@@ -262,8 +289,7 @@ webtools.log = function(LogEntry, Source) {
 };
 
 webtools.show_log = function(filename) {
-	webtools.loading();
-
+	webtools.loading();	
 	$('#ContentBody').html('Fetching Logfile..');
 	$('#ContentFoot').html('');
 	$('#navfoot').html('');
@@ -276,7 +302,7 @@ webtools.show_log = function(filename) {
 			success: function(logs) {
 				logs = logs.split('\n');
 				//$('#ContentBody').html(logs.join('<br>'));  
-				var logtable = '<table class="table table-bordered smallfont">';
+				var logtable = '<table class="table table-bordered smallfont" id="logtable">';
 				//logtable += '<tr><th>Changelog</th></tr>';
 				if (logs.length > 0) {
 					for (var i = 0; i < logs.length; i++) {
@@ -313,7 +339,8 @@ webtools.show_log = function(filename) {
 		});
 	} else {
 		$('#ContentHeader').html('Logfile: ' + filename);
-
+		$('#navfoot').html('<input type="text" id="webtoolssearchKeyword"><button class="btn btn-default btn-xs" onclick="webtools.searchkeyword(\'logtable\')">Search keyword</button> <button class="btn btn-default btn-xs" onclick="webtools.previous()" id="webtoolssearchbuttonprevious">Previous</button><button class="btn btn-default btn-xs" onclick="webtools.next()" id="webtoolssearchbuttonnext">Next</button> <button class="btn btn-default btn-xs" onclick="webtools.jumptotop()">Jump to Top</button> <span id="webtoolssearchkeywordresult"></span>');
+		webtools.clearresult();
 		$.ajax({
 			url: '/webtools2',
 			data: {
@@ -326,7 +353,7 @@ webtools.show_log = function(filename) {
 			dataType: 'JSON',
 			success: function(logs) {
 				//$('#ContentBody').html(logs.join('<br>'));  
-				var logtable = '<table class="table table-bordered smallfont">';
+				var logtable = '<table class="table table-bordered smallfont" id="logtable">';
 				logtable += '<tr><th class="td-small">Row#</th><th>Logentry</th></tr>';
 				if (logs.length > 0) {
 					for (var i = 0; i < logs.length; i++) {
@@ -347,7 +374,7 @@ webtools.show_log = function(filename) {
 							tdtext = 'bg-info';
 						}
 
-						logtable += '<tr><td class="' + tdnumber + '">#' + (i + 1) + '</td><td class="' + tdtext + '">' + logs[i] + '</td></tr>';
+						logtable += '<tr id="'+ (i + 1) +'"><td class="' + tdnumber + '">#' + (i + 1) + '</td><td class="' + tdtext + '">' + logs[i] + '</td></tr>';
 					}
 				} else {
 					logtable += '<tr><td class="bg-warning">#-</td><td>Empty file</td></tr>';
@@ -486,20 +513,29 @@ webtools.updates_check = function() {
 }
 
 webtools.install_WT = function () {
+	
+	$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Installing WebTools');
+	$('#myModalBody').html('<p id="updateinfo">Installation in progress.</p>');
+	$('#myModalFoot').html('');
 	$.ajax({
 		url: '/webtools2?module=git&function=upgradeWT',
 		type:'PUT',
+		dataType:'text',
 		success: function (data) {
+			$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Waiting for WebTools');
+			$('#myModalBody').html('<p id="updateinfo">Waiting for WebTools to come online. Will automatically return you to start when ready.</p>');
+			$('#myModalFoot').html('');
+			
 			console.log('success');
 			console.log(data);
-			webtools.wait_update();
+			setTimeout(webtools.wait_update,5000);
 			// Call webtools_wait_for_reload();
 			// That function is an ajax call for /, if 404, wait for a few seconds, then try again. Otherwise, notify user of updated completed.
 		},
 		error: function (data) {
 			console.log('error');
 			console.log(data);
-			webtools.wait_update();
+			//webtools.wait_update();
 			// Notify user
 		}
 	})
@@ -595,4 +631,98 @@ webtools.dynamicSort = function(property) {
 		var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
 		return result * sortOrder;
 	}
+}
+
+webtools.searchkeyword = function(tablename) {
+	webtools.keywordarray = [];
+	webtools.currentkeyword = 0;
+	$('#webtoolssearchkeywordresult').html('');
+	
+	if ($('#webtoolssearchKeyword').val().length > 0) {
+		$('#'+tablename + ' tr').each(function (index,value) {
+			var children = $(this).children()
+			$(children[1]).removeClass('bg-info');
+			$(children[1]).removeClass('keyword');
+			if (typeof($(this).context) != 'undefined') {
+				if ($(this).context.innerHTML.toLowerCase().indexOf($('#webtoolssearchKeyword').val().toLowerCase()) != -1) {
+					$(children[1]).addClass('bg-info');
+					$(children[1]).addClass('keyword');
+					webtools.keywordarray.push($(this).attr('id'));
+				}
+			}
+		})
+		if (webtools.keywordarray.length > 0) {
+			$('.bg-primary').addClass('bg-info');
+			$('.bg-primary').removeClass('bg-primary');
+			var targetrow = $('#' + webtools.keywordarray[webtools.currentkeyword]).children();
+			$(targetrow[1]).addClass('bg-primary');
+			$(targetrow[1]).removeClass('bg-info');
+			
+			$('html, body').animate({
+				scrollTop: ($('#' + webtools.keywordarray[webtools.currentkeyword]).offset().top - 60)
+			});
+			
+			$('#webtoolssearchbuttonnext').prop('disabled',false);
+			$('#webtoolssearchbuttonprevious').prop('disabled',false);
+			// Enable Next / Previous buttons
+		} else {
+			$('#webtoolssearchbuttonnext').prop('disabled',true);
+			$('#webtoolssearchbuttonprevious').prop('disabled',true);
+		}
+		$('#webtoolssearchkeywordresult').html('Found ' + webtools.keywordarray.length + ' Rows');
+	}
+}
+
+webtools.next = function () {
+	if (webtools.keywordarray.length > 0) {
+		webtools.currentkeyword++;
+		if (webtools.currentkeyword >= webtools.keywordarray.length) {
+			webtools.currentkeyword = 0;
+		}
+		//console.log('Jumping to: ' + logviewer.currentkeyword );
+		$('.bg-primary').addClass('bg-info');
+		$('.bg-primary').removeClass('bg-primary');
+		var targetrow = $('#' + webtools.keywordarray[webtools.currentkeyword]).children();
+		$(targetrow[1]).addClass('bg-primary');
+		$(targetrow[1]).removeClass('bg-info');
+		
+		$('html, body').animate({
+				scrollTop: ($('#' + webtools.keywordarray[webtools.currentkeyword]).offset().top - 60)
+			});
+	}
+}
+
+webtools.previous = function () {
+	if (webtools.keywordarray.length > 0) {
+		webtools.currentkeyword--;
+		if (webtools.currentkeyword < 0) {
+			webtools.currentkeyword = webtools.keywordarray.length-1;
+		}
+
+		//console.log('Jumping to: ' + logviewer.currentkeyword );
+		$('.bg-primary').addClass('bg-info');
+		$('.bg-primary').removeClass('bg-primary');
+		var targetrow = $('#' + webtools.keywordarray[webtools.currentkeyword]).children();
+		$(targetrow[1]).addClass('bg-primary');
+		$(targetrow[1]).removeClass('bg-info');
+		
+		$('html, body').animate({
+				scrollTop: ($('#' + webtools.keywordarray[webtools.currentkeyword]).offset().top - 60)
+			});
+	}
+}
+
+webtools.jumptotop = function() {
+	$('html, body').animate({
+				scrollTop: (0)
+			});
+}
+
+webtools.clearresult = function () {
+	webtools.keywordarray = [];
+	webtools.currentkeyword = 0;
+	$('#webtoolssearchkeywordresult').html('');
+	$('#webtoolssearchKeyword').val('');
+	$('#webtoolssearchbuttonnext').prop('disabled',true);
+	$('#webtoolssearchbuttonprevious').prop('disabled',true);
 }

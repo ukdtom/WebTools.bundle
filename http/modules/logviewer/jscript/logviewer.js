@@ -6,7 +6,7 @@ webtools.functions.logviewer = {
   start: function() {},
   hasoptions: false,
   fetchlogfiles: function() {},
-  viewlogfile: function() {}
+  viewlogfile: function() {}, 
 };
 
 // Alias:
@@ -14,11 +14,12 @@ var logviewer = webtools.functions.logviewer;
 
 logviewer.start = function() {
   webtools.loading();
-  $('#ContentHeader').html('Viewing Logfile: <select id="LogfileList"></select> <a class="customlink" onClick="logviewer.download($(\'#LogfileList\').val());">Download selected logfile</a> / <a class="customlink" onClick="logviewer.download();">Download all as zip</a>');
+  $('#ContentHeader').html('Viewing Logfile: <select id="LogfileList"></select> <a class="customlink" onClick="logviewer.download($(\'#LogfileList\').val());">Download selected logfile</a> / <a class="customlink" onClick="logviewer.download();">Download all as zip</a><br>');
   $('#ContentBody').html('');
   $('#ContentFoot').html('');
   logviewer.fetchlogfiles();
-
+	$('#navfoot').html('<input type="text" id="webtoolssearchKeyword"><button class="btn btn-default btn-xs" onclick="webtools.searchkeyword(\'logtable\')">Search keyword</button> <button class="btn btn-default btn-xs" onclick="webtools.previous()" id="webtoolssearchbuttonprevious">Previous</button><button class="btn btn-default btn-xs" onclick="webtools.next()" id="webtoolssearchbuttonnext">Next</button> <button class="btn btn-default btn-xs" onclick="webtools.jumptotop()">Jump to Top</button> <span id="webtoolssearchkeywordresult"></span>');
+	webtools.clearresult();
   $('#LogfileList').change(function() {
     // Display loading screen when fetching.
     webtools.loading();
@@ -51,6 +52,7 @@ logviewer.fetchlogfiles = function() {
 };
 
 logviewer.viewlogfile = function(filename) {
+	webtools.clearresult();
   $.ajax({
     url: '/webtools2',
     data: {
@@ -83,7 +85,7 @@ logviewer.viewlogfile = function(filename) {
             tdtext = 'bg-info';
           }
           
-          subtitle += '<tr><td class="' + tdnumber + '">#' + (i + 1) + '</td><td class="' + tdtext + '">' + data[i] + '</td></tr>';
+          subtitle += '<tr id="'+ (i + 1) +'"><td class="' + tdnumber + '">#' + (i + 1) + '</td><td class="' + tdtext + '">' + data[i] + '</td></tr>';
         }
       } else {
         subtitle += '<tr><td class="bg-warning">#-</td><td>Empty file</td></tr>';
@@ -110,3 +112,4 @@ logviewer.download = function(filename) {
     window.location.href = '/webtools2?module=logs&function=download';
   }
 }
+

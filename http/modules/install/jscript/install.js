@@ -244,6 +244,7 @@ install.loadChannels = function(InitalRun) {
 
 		var menu = '';
 		var checked = '';
+		install.showOnlyInstalled = false;
 		if (install.showOnlyInstalled === true) {
 			checked = 'checked';
 		}
@@ -372,7 +373,9 @@ install.showChannels = function(button, type, page, highlight) {
 		if ((typeof(install.allBundles[key].date) != 'undefined') && (install.allBundles[key].date.length > 0)) {
 			isInstalled = true;
 			rowspan = 3;
-			link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Re-Install with latest available</button>';
+			if ((key.indexOf('http') != -1) && (key.indexOf('https') != -1)) {
+				link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Re-Install with latest available</button>';
+			}
 		}
 
 		

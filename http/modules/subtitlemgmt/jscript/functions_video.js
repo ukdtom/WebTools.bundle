@@ -141,13 +141,13 @@ subtitlemgmt.display_episodes = function() {
 			var selectedsubtitle = '';
 
 			if (subtitle.languageCode != null) {
-				if (typeof(languagecodes[subtitle.languageCode.toLowerCase()]) != 'undefined') {
-					//language = '<img src="flags/blank.png" class="flag flag-'+languagecodes[subtitle.languageCode.toUpperCase()].toLowerCase()+'" alt="'+subtitle.languageCode.toUpperCase()+'"/>';
-					var languagetext = languagecodes[subtitle.languageCode.toLowerCase()];
-					if (languagecodes[subtitle.languageCode.toLowerCase()].length > 8) {
-						languagetext = languagecodes[subtitle.languageCode.toLowerCase()].substr(0, 6) + '...';
+				if (typeof(webtools.languagecodes[subtitle.languageCode.toLowerCase()]) != 'undefined') {
+					//language = '<img src="flags/blank.png" class="flag flag-'+webtools.languagecodes[subtitle.languageCode.toUpperCase()].toLowerCase()+'" alt="'+subtitle.languageCode.toUpperCase()+'"/>';
+					var languagetext = webtools.languagecodes[subtitle.languageCode.toLowerCase()];
+					if (webtools.languagecodes[subtitle.languageCode.toLowerCase()].length > 8) {
+						languagetext = webtools.languagecodes[subtitle.languageCode.toLowerCase()].substr(0, 6) + '...';
 					}
-					language = '<span data-toggle="tooltip" title="' + languagecodes[subtitle.languageCode.toLowerCase()] + '">' + languagetext + '</span>';
+					language = '<span data-toggle="tooltip" title="' + webtools.languagecodes[subtitle.languageCode.toLowerCase()] + '">' + languagetext + '</span>';
 				} else {
 					language = subtitle.languageCode.toLowerCase();
 				}
@@ -179,7 +179,7 @@ subtitlemgmt.display_episodes = function() {
 				anysubtitleadded = true;
 				var view = '';
 				var checkbox = '';
-				if (subtitle.location == 'Sidecar') {
+				if ( (subtitle.location == 'Sidecar') || (subtitle.location == 'Agent') ) {
 					checkbox = '<input type="checkbox" name="subtitle-' + subtitlemgmt.selected_section.contents[i].key + '" value="' + subtitlemgmt.selected_section.contents[i].key + ',' + subtitle.key + '">';
 					view = '<button class="btn btn-default btn-xs" onclick=\'subtitlemgmt.view_subtitle(' + subtitlemgmt.selected_section.contents[i].key + ',' + subtitle.key + ')\'>View</button>';
 				}
@@ -192,7 +192,7 @@ subtitlemgmt.display_episodes = function() {
 			newEntry.push('<tr><td>No subtitles that matched your filter. Video has a total of ' + subtitlemgmt.selected_section.contents[i].subtitles.length + ' subtitles.</td></tr>');
 		}
 		newEntry.push('</table></div>');
-		newEntry.push('<div class="panel-footer"><button class="btn btn-default btn-xs" onclick=\'subtitlemgmt.subtitle_select_all("subtitle-' + subtitlemgmt.selected_section.contents[i].key + '", true)\'>Select All</button> <button class="btn btn-default btn-xs" onclick=\'subtitlemgmt.subtitle_select_all("subtitle-' + subtitlemgmt.selected_section.contents[i].key + '", false)\'>Clear Selection</button> <button class="btn btn-default btn-xs" onclick=\'subtitlemgmt.subtitle_delete_confirm("subtitle-' + subtitlemgmt.selected_section.contents[i].key + '");\'>Delete Selected</button></div>');
+		newEntry.push('<div class="panel-footer"><button class="btn btn-default btn-xs" onclick=\'subtitlemgmt.subtitle_select_all("subtitle-' + subtitlemgmt.selected_section.contents[i].key + '", true)\'>Select All</button> <button class="btn btn-default btn-xs" onclick=\'subtitlemgmt.subtitle_select_all("subtitle-' + subtitlemgmt.selected_section.contents[i].key + '", false)\'>Clear Selection</button> <button class="btn btn-default btn-xs" onclick=\'subtitlemgmt.subtitle_delete_confirm("subtitle-' + subtitlemgmt.selected_section.contents[i].key + '");\'>Delete Selected</button> <button class="btn btn-default btn-xs" onclick=\'subtitlemgmt.upload_dialog("' + subtitlemgmt.selected_section.contents[i].key + '")\'>Upload Subtitle</button></div>');
 		newEntry.push('</div>');
 		$("#ContentBody").append(newEntry.join('\n'));
 	}
@@ -279,12 +279,13 @@ subtitlemgmt.subtitle_delete = function(videoKey) {
 				type: 'DELETE',
 				cache: false,
 				success: function(response, status, xhr) {
+				
 					$('input[value="' + splitstring[0] + ',' + splitstring[1] + '"]').prop('disabled', true);
 					$('input[value="' + splitstring[0] + ',' + splitstring[1] + '"]').prop('checked', false);
 					$('input[value="' + splitstring[0] + ',' + splitstring[1] + '"]').parent().parent().addClass('bg-danger');
 					$('input[value="' + splitstring[0] + ',' + splitstring[1] + '"]').parent().parent().fadeOut(2000);
-					webtools.log("Deleted File: " + response['Deleted file']);
-					callback("Deleted File: " + response['Deleted file'], subtitlearray);
+					webtools.log("Deleted File: " + response.FilePath);
+					callback("Deleted File: " + response.FilePath, subtitlearray);
 				},
 				error: function(response) {
 					webtools.log(JSON.stringify(response));
