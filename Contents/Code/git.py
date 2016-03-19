@@ -12,6 +12,7 @@ import json
 import io, os, shutil
 import plistlib
 import pms
+import tempfile
 
 class git(object):
 	# Defaults used by the rest of the class
@@ -480,9 +481,18 @@ class git(object):
 		''' Grap bundle name '''
 		def grapBundleName(url):	
 			gitName = url.rsplit('/', 1)[-1]
+
 			# Forgot to name git to end with .bundle?
 			if not gitName.endswith('.bundle'):
-				gitName = gitName + '.bundle'
+				bundleInfo = Dict['PMS-AllBundleInfo'].get(url, {})
+
+				if bundleInfo.get('bundle'):
+					# Use bundle name from plugin details
+					gitName = bundleInfo['bundle']
+				else:
+					# Fallback to just appending ".bundle" to the repository name
+					gitName = gitName + '.bundle'
+
 			gitName = Core.storage.join_path(self.PLUGIN_DIR, gitName)
 			Log.Debug('Bundle directory name digested as: %s' %(gitName))
 			return gitName
@@ -576,11 +586,8 @@ class git(object):
 				# Make sure it's actually a bundle channel
 				bError = True
 				bUpgrade = False
-				instFiles = []
 				try:
 					for filename in zipfile:
-						# Make a list of all files and dirs in the zip
-						instFiles.append(filename)
 						if '/Contents/Info.plist' in filename:
 							pos = filename.find('/Contents/')
 							cutStr = filename[:pos]
@@ -622,50 +629,107 @@ class git(object):
 								shutil.rmtree(DataDir)
 							else:
 								Log.Info('Keeping the Data directory ' + DataDir)
-					# It's an upgrade, so we need to store a list of files that we install here
-					newFiles = []
-					for fileName in instFiles:
-						newFiles.append(fileName.replace(cutStr, ''))
+
 				if bError:
 					Core.storage.remove_tree(Core.storage.join_path(self.PLUGIN_DIR, bundleName))
 					Log.Debug('The bundle downloaded is not a Plex Channel bundle!')
 					raise ValueError('The bundle downloaded is not a Plex Channel bundle!')
 				bError = False
 				if not bUpgrade:
-					presentFiles = []			
+					presentFiles = []
+
+				# Create temporary directory
+				tempDir = tempfile.mkdtemp(prefix='wt-')
+				extractDir = os.path.join(tempDir, os.path.basename(bundleName))
+
+				Log.Info('Extracting plugin to: %r', extractDir)
+
+				# Extract archive into temporary directory
 				for filename in zipfile:
-					# Walk contents of the zip, and extract as needed
 					data = zipfile[filename]
+
 					if not str(filename).endswith('/'):
+						if cutStr not in filename:
+							continue
+
 						# Pure file, so save it	
-						path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
-						Log.Debug('Extracting file' + path)
+						path = extractDir + filename.replace(cutStr, '')
+						Log.Debug('Extracting file: ' + path)
 						try:
 							Core.storage.save(path, data)
 						except Exception, e:
 							bError = True
 							Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
 					else:
+						if cutStr not in filename:
+							continue
+
 						# We got a directory here
 						Log.Debug(filename.split('/')[-2])
 						if not str(filename.split('/')[-2]).startswith('.'):
 							# Not hidden, so let's create it
-							path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
-							Log.Debug('Extracting folder ' + path)
+							path = extractDir + filename.replace(cutStr, '')
+							Log.Debug('Extracting folder: ' + path)
 							try:
 								Core.storage.ensure_dirs(path)
 							except Exception, e:
 								bError = True
 								Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
-				if bUpgrade:
-					# Now we need to nuke files that should no longer be there!
-					for root, dirs, files in os.walk(bundleName):
-						for fname in files:
-							if Core.storage.join_path(root, fname).replace(bundleName, '') not in newFiles:
-								Log.Debug('Removing not needed file: ' + Core.storage.join_path(root, fname))
-								os.remove(Core.storage.join_path(root, fname))
-					# And now time to swipe empty directories
-					removeEmptyFolders(bundleName)
+
+				if not bError and bUpgrade:
+					# Copy files that should be kept between upgrades ("keepFiles")
+					keepFiles = Dict['PMS-AllBundleInfo'].get(url, {}).get('keepFiles', [])
+
+					for filename in keepFiles:
+						sourcePath = bundleName + filename
+
+						if not os.path.exists(sourcePath):
+							Log.Debug('File does not exist: %r', sourcePath)
+							continue
+
+						destPath = extractDir + filename
+
+						Log.Debug('Copying %r to %r', sourcePath, destPath)
+
+						# Ensure directories exist
+						destDir = os.path.dirname(destPath)
+
+						try:
+							Core.storage.ensure_dirs(destDir)
+						except Exception, e:
+							Log.Warn('Unable to create directory: %r - %s', destDir, e)
+							continue
+
+						# Copy file into temporary directory
+						try:
+							shutil.copy2(sourcePath, destPath)
+						except Exception, e:
+							Log.Warn('Unable to copy file to: %r - %s', destPath, e)
+							continue
+
+					# Remove any empty directories in plugin
+					removeEmptyFolders(extractDir)
+
+				if not bError:
+					try:
+						# Delete current plugin
+						if os.path.exists(bundleName):
+							Log.Info('Deleting %r', bundleName)
+							shutil.rmtree(bundleName)
+
+						# Move updated bundle into "Plug-ins" directory
+						Log.Info('Moving %r to %r', extractDir, bundleName)
+						shutil.move(extractDir, bundleName)
+					except Exception, e:
+						bError = True
+						Log.Critical('Unable to update plugin: ' + str(e))
+
+					# Delete temporary directory
+					try:
+						shutil.rmtree(tempDir)
+					except Exception, e:
+						Log.Warn('Unable to delete temporary directory: %r - %s', tempDir, e)
+
 				if not bError:
 					# Install went okay, so save info
 					saveInstallInfo(url, bundleName, branch)
