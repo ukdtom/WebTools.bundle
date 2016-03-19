@@ -633,7 +633,13 @@ class git(object):
 					# It's an upgrade, so we need to store a list of files that we install here
 					newFiles = []
 					for fileName in instFiles:
-						newFiles.append(fileName.replace(cutStr, ''))
+						if cutStr in fileName:
+							fileName = fileName.replace(cutStr, '')
+						else:
+							fileName = fileName[fileName.index('/'):]
+
+						newFiles.append(fileName)
+
 				if bError:
 					Core.storage.remove_tree(Core.storage.join_path(self.PLUGIN_DIR, bundleName))
 					Log.Debug('The bundle downloaded is not a Plex Channel bundle!')
@@ -669,9 +675,17 @@ class git(object):
 					# Now we need to nuke files that should no longer be there!
 					for root, dirs, files in os.walk(bundleName):
 						for fname in files:
-							if Core.storage.join_path(root, fname).replace(bundleName, '') not in newFiles:
-								Log.Debug('Removing not needed file: ' + Core.storage.join_path(root, fname))
-								os.remove(Core.storage.join_path(root, fname))
+							path = Core.storage.join_path(root, fname)
+
+							# Build relative path
+							name = path.lstrip('\\\\?\\')        # Strip UNC prefix (windows)
+							name = name.replace(bundleName, '')  # Convert to relative path
+							name = name.replace('\\', '/')  	 # Convert separators to unix-style
+
+							if name not in newFiles:
+								Log.Debug('Removing not needed file: ' + name)
+								os.remove(path)
+
 					# And now time to swipe empty directories
 					removeEmptyFolders(bundleName)
 				if not bError:
