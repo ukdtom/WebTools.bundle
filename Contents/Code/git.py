@@ -687,26 +687,27 @@ class git(object):
 								bError = True
 								Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
 
-				try:
-					# Delete current plugin
-					if os.path.exists(bundleName):
-						Log.Info('Deleting %r', bundleName)
-						shutil.rmtree(bundleName)
+				if not bError:
+					try:
+						# Delete current plugin
+						if os.path.exists(bundleName):
+							Log.Info('Deleting %r', bundleName)
+							shutil.rmtree(bundleName)
 
-					# Move updated bundle into "Plug-ins" directory
-					Log.Info('Moving %r to %r', extractDir, bundleName)
-					shutil.move(extractDir, bundleName)
-				except Exception, e:
-					bError = True
-					Log.Critical('Unable to update plugin: ' + str(e))
+						# Move updated bundle into "Plug-ins" directory
+						Log.Info('Moving %r to %r', extractDir, bundleName)
+						shutil.move(extractDir, bundleName)
+					except Exception, e:
+						bError = True
+						Log.Critical('Unable to update plugin: ' + str(e))
 
-				# Delete temporary directory
-				try:
-					shutil.rmtree(tempDir)
-				except Exception, e:
-					Log.Warn('Unable to delete temporary directory: %r - %s', tempDir, ex)
+					# Delete temporary directory
+					try:
+						shutil.rmtree(tempDir)
+					except Exception, e:
+						Log.Warn('Unable to delete temporary directory: %r - %s', tempDir, e)
 
-				if bUpgrade:
+				if not bError and bUpgrade:
 					keepFiles = Dict['PMS-AllBundleInfo'].get(url, {}).get('keepFiles', [])
 
 					# Now we need to nuke files that should no longer be there!
@@ -730,6 +731,7 @@ class git(object):
 
 					# And now time to swipe empty directories
 					removeEmptyFolders(bundleName)
+
 				if not bError:
 					# Install went okay, so save info
 					saveInstallInfo(url, bundleName)
