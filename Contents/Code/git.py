@@ -12,6 +12,7 @@ import json
 import io, os, shutil
 import plistlib
 import pms
+import tempfile
 
 class git(object):
 	# Defaults used by the rest of the class
@@ -646,31 +647,65 @@ class git(object):
 					raise ValueError('The bundle downloaded is not a Plex Channel bundle!')
 				bError = False
 				if not bUpgrade:
-					presentFiles = []			
+					presentFiles = []
+
+				# Create temporary directory
+				tempDir = tempfile.mkdtemp(prefix='wt-')
+				extractDir = os.path.join(tempDir, os.path.basename(bundleName))
+
+				Log.Info('Extracting plugin to: %r', extractDir)
+
+				# Extract archive into temporary directory
 				for filename in zipfile:
-					# Walk contents of the zip, and extract as needed
 					data = zipfile[filename]
+
 					if not str(filename).endswith('/'):
+						if cutStr not in filename:
+							continue
+
 						# Pure file, so save it	
-						path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
-						Log.Debug('Extracting file' + path)
+						path = extractDir + filename.replace(cutStr, '')
+						Log.Debug('Extracting file: ' + path)
 						try:
 							Core.storage.save(path, data)
 						except Exception, e:
 							bError = True
 							Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
 					else:
+						if cutStr not in filename:
+							continue
+
 						# We got a directory here
 						Log.Debug(filename.split('/')[-2])
 						if not str(filename.split('/')[-2]).startswith('.'):
 							# Not hidden, so let's create it
-							path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
-							Log.Debug('Extracting folder ' + path)
+							path = extractDir + filename.replace(cutStr, '')
+							Log.Debug('Extracting folder: ' + path)
 							try:
 								Core.storage.ensure_dirs(path)
 							except Exception, e:
 								bError = True
 								Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
+
+				try:
+					# Delete current plugin
+					if os.path.exists(bundleName):
+						Log.Info('Deleting %r', bundleName)
+						shutil.rmtree(bundleName)
+
+					# Move updated bundle into "Plug-ins" directory
+					Log.Info('Moving %r to %r', extractDir, bundleName)
+					shutil.move(extractDir, bundleName)
+				except Exception, e:
+					bError = True
+					Log.Critical('Unable to update plugin: ' + str(e))
+
+				# Delete temporary directory
+				try:
+					shutil.rmtree(tempDir)
+				except Exception, e:
+					Log.Warn('Unable to delete temporary directory: %r - %s', tempDir, ex)
+
 				if bUpgrade:
 					keepFiles = Dict['PMS-AllBundleInfo'].get(url, {}).get('keepFiles', [])
 
