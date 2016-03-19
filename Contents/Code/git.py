@@ -672,6 +672,8 @@ class git(object):
 								bError = True
 								Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
 				if bUpgrade:
+					keepFiles = Dict['PMS-AllBundleInfo'].get(url, {}).get('keepFiles', [])
+
 					# Now we need to nuke files that should no longer be there!
 					for root, dirs, files in os.walk(bundleName):
 						for fname in files:
@@ -686,7 +688,8 @@ class git(object):
 							if name.endswith('.pyc'):
 								name = name[:-1]
 
-							if name not in newFiles:
+							# Remove file if it doesn't exist in the new archive
+							if name not in keepFiles and name not in newFiles:
 								Log.Debug('Removing not needed file: ' + name)
 								os.remove(path)
 
