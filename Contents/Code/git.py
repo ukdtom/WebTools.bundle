@@ -682,6 +682,10 @@ class git(object):
 							name = name.replace(bundleName, '')  # Convert to relative path
 							name = name.replace('\\', '/')  	 # Convert separators to unix-style
 
+							# Only remove ".pyc" files if their ".py" file has been removed
+							if name.endswith('.pyc'):
+								name = name[:-1]
+
 							if name not in newFiles:
 								Log.Debug('Removing not needed file: ' + name)
 								os.remove(path)
