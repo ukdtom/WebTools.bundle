@@ -68,8 +68,10 @@ def updateAllBundleInfoFromUAS():
 				Log.Info('Checking unknown bundle: ' + installedBundle + ' to see if it is part of UAS now')
 				if installedBundle in uasBundles:
 					# Get the installed date of the bundle formerly known as unknown :-)
+					installedBranch = Dict['installed'][installedBundle]['branch']
 					installedDate = Dict['installed'][installedBundle]['date']
 					# Add updated stuff to the dicts
+					Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['branch'] = installedBranch
 					Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['date'] = installedDate
 					Dict['installed'][uasBundles[installedBundle]] = Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]
 					# Remove old stuff from the Ditcs
@@ -97,11 +99,16 @@ def updateAllBundleInfoFromUAS():
 					installDate = ""
 					if key in Dict['PMS-AllBundleInfo']:
 						jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
+
+						if 'branch' in jsonPMSAllBundleInfo:
+							installBranch = Dict['PMS-AllBundleInfo'][key]['branch']
+
 						if 'date' in jsonPMSAllBundleInfo:
 							installDate = Dict['PMS-AllBundleInfo'][key]['date']
 					del git['repo']
 					# Add/Update our Dict
 					Dict['PMS-AllBundleInfo'][key] = git
+					Dict['PMS-AllBundleInfo'][key]['branch'] = installBranch
 					Dict['PMS-AllBundleInfo'][key]['date'] = installDate
 			except Exception, e:
 				Log.Critical('Critical error in updateInstallDict while walking the gits: ' + str(e))
