@@ -585,11 +585,8 @@ class git(object):
 				# Make sure it's actually a bundle channel
 				bError = True
 				bUpgrade = False
-				instFiles = []
 				try:
 					for filename in zipfile:
-						# Make a list of all files and dirs in the zip
-						instFiles.append(filename)
 						if '/Contents/Info.plist' in filename:
 							pos = filename.find('/Contents/')
 							cutStr = filename[:pos]
@@ -631,15 +628,6 @@ class git(object):
 								shutil.rmtree(DataDir)
 							else:
 								Log.Info('Keeping the Data directory ' + DataDir)
-					# It's an upgrade, so we need to store a list of files that we install here
-					newFiles = []
-					for fileName in instFiles:
-						if cutStr in fileName:
-							fileName = fileName.replace(cutStr, '')
-						else:
-							fileName = fileName[fileName.index('/'):]
-
-						newFiles.append(fileName)
 
 				if bError:
 					Core.storage.remove_tree(Core.storage.join_path(self.PLUGIN_DIR, bundleName))
@@ -687,6 +675,40 @@ class git(object):
 								bError = True
 								Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
 
+				if not bError and bUpgrade:
+					# Copy files that should be kept between upgrades ("keepFiles")
+					keepFiles = Dict['PMS-AllBundleInfo'].get(url, {}).get('keepFiles', [])
+
+					for filename in keepFiles:
+						sourcePath = bundleName + filename
+
+						if not os.path.exists(sourcePath):
+							Log.Debug('File does not exist: %r', sourcePath)
+							continue
+
+						destPath = extractDir + filename
+
+						Log.Debug('Copying %r to %r', sourcePath, destPath)
+
+						# Ensure directories exist
+						destDir = os.path.dirname(destPath)
+
+						try:
+							Core.storage.ensure_dirs(destDir)
+						except Exception, e:
+							Log.Warn('Unable to create directory: %r - %s', destDir, e)
+							continue
+
+						# Copy file into temporary directory
+						try:
+							shutil.copy2(sourcePath, destPath)
+						except Exception, e:
+							Log.Warn('Unable to copy file to: %r - %s', destPath, e)
+							continue
+
+					# Remove any empty directories in plugin
+					removeEmptyFolders(extractDir)
+
 				if not bError:
 					try:
 						# Delete current plugin
@@ -707,34 +729,10 @@ class git(object):
 					except Exception, e:
 						Log.Warn('Unable to delete temporary directory: %r - %s', tempDir, e)
 
-				if not bError and bUpgrade:
-					keepFiles = Dict['PMS-AllBundleInfo'].get(url, {}).get('keepFiles', [])
-
-					# Now we need to nuke files that should no longer be there!
-					for root, dirs, files in os.walk(bundleName):
-						for fname in files:
-							path = Core.storage.join_path(root, fname)
-
-							# Build relative path
-							name = path.lstrip('\\\\?\\')        # Strip UNC prefix (windows)
-							name = name.replace(bundleName, '')  # Convert to relative path
-							name = name.replace('\\', '/')  	 # Convert separators to unix-style
-
-							# Only remove ".pyc" files if their ".py" file has been removed
-							if name.endswith('.pyc'):
-								name = name[:-1]
-
-							# Remove file if it doesn't exist in the new archive
-							if name not in keepFiles and name not in newFiles:
-								Log.Debug('Removing not needed file: ' + name)
-								os.remove(path)
-
-					# And now time to swipe empty directories
-					removeEmptyFolders(bundleName)
-
 				if not bError:
 					# Install went okay, so save info
 					saveInstallInfo(url, bundleName)
+
 					# Install went okay, so let's make sure it get's registred
 					if bUpgrade:
 						try:
