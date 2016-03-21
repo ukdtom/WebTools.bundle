@@ -151,6 +151,8 @@ class pms(object):
 			return self.getParts(req)
 		elif function == 'getSectionLetterList':
 			return self.getSectionLetterList(req)
+		elif function == 'getSectionByLetter':
+			return self.getSectionByLetter(req)
 		else:
 			req.clear()
 			req.set_status(412)
@@ -816,6 +818,68 @@ class pms(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in getSectionLetterList: ' + str(e))
 
+	''' get getSectionByLetter '''
+	def getSectionByLetter(self,req):
+		Log.Debug('getSectionByLetter requested')
+		try:
+			key = req.get_argument('key', 'missing')
+			Log.Debug('Section key is %s' %(key))
+			if key == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing key of section')
+				return req
+			start = req.get_argument('start', 'missing')
+			Log.Debug('Section start is %s' %(start))
+			if start == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing start of section')
+				return req
+			size = req.get_argument('size', 'missing')
+			Log.Debug('Section size is %s' %(size))
+			if size == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing size of section')
+				return req
+			letterKey = req.get_argument('letterKey', 'missing')
+			Log.Debug('letterKey is %s' %(letterKey))
+			if letterKey == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing letterKey')
+				return req
+			getSubs = req.get_argument('getSubs', 'missing')
+			# Got all the needed params, so lets grap the contents
+			try:
+				myURL = 'http://127.0.0.1:32400/library/sections/' + key + '/firstCharacter/' + letterKey + '?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
+				rawSection = XML.ElementFromURL(myURL)
+				Section=[]
+				for media in rawSection:
+					if getSubs != 'true':
+						media = {'key':media.get('ratingKey'), 'title':media.get('title')}
+					else:
+						subtitles = self.getSubtitles(req, mediaKey=media.get('ratingKey'))
+						media = {'key':media.get('ratingKey'), 'title':media.get('title'), 'subtitles':subtitles}
+					Section.append(media)					
+				Log.Debug('Returning %s' %(Section))
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(Section))
+			except Exception, e:
+				Log.Debug('Fatal error happened in getSectionByLetter: ' + str(e))
+				req.clear()
+				req.set_status(500)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish('Fatal error happened in getSectionByLetter: ' + str(e))
+		except Exception, e:
+			Log.Debug('Fatal error happened in getSectionByLetter: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in getSectionByLetter: ' + str(e))
 
 	''' get section '''
 	def getSection(self,req):
