@@ -534,10 +534,10 @@ class git(object):
 				pFile = Core.storage.join_path(self.PLUGIN_DIR, bundleName, 'Contents', 'Info.plist')
 				pl = plistlib.readPlist(pFile)
 				git = {}
-				git['title'] = bundleName[bundleName.rfind("/"):][1:][:-7]
+				git['title'] = os.path.basename(bundleName)[:-7]
 				git['description'] = ''
 				git['branch'] = branch
-				git['bundle'] = bundleName[bundleName.rfind("/"):][1:]
+				git['bundle'] = os.path.basename(bundleName)
 				git['identifier'] = pl['CFBundleIdentifier']
 				git['type'] = ['Unknown']
 				git['icon'] = ''
