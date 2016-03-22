@@ -109,20 +109,18 @@ install.show_options = function() {
 }
 
 install.installfromgit = function(github) {
-	// Retrieve channel element
+	var branch = null;
+
+	// Try retrieve channel element
 	var $channel = $('#channellist .panel[data-url="' + github + '"]');
 
-	if($channel.length == 0) {
-		console.warn('Unable to find channel element for channel:', github);
-		return;
-	}
+	if($channel.length != 0) {
+		// Try retrieve selected branch
+		var $branchDropdown = $('.branch-dropdown', $channel);
 
-	// Try retrieve selected branch
-	var $branchDropdown = $('.branch-dropdown', $channel),
-		branch = null;
-
-	if($branchDropdown.length != 0) {
-		branch = $branchDropdown.val();
+		if($branchDropdown.length != 0) {
+			branch = $branchDropdown.val();
+		}
 	}
 
 	if ((typeof(github) != 'undefined') && (github.length > 0)) {
