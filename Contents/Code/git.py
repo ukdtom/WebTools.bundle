@@ -536,7 +536,7 @@ class git(object):
 				git = {}
 				git['title'] = bundleName[bundleName.rfind("/"):][1:][:-7]
 				git['description'] = ''
-				git['branch'] = ''
+				git['branch'] = branch
 				git['bundle'] = bundleName[bundleName.rfind("/"):][1:]
 				git['identifier'] = pl['CFBundleIdentifier']
 				git['type'] = ['Unknown']
