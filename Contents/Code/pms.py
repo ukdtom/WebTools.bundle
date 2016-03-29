@@ -95,13 +95,17 @@ def updateAllBundleInfoFromUAS():
 				for git in gits:
 					# Rearrange data
 					key = git['repo']				
+					installBranch = ''
 					# Check if already present, and if an install date also is there
 					installDate = ""
 					if key in Dict['PMS-AllBundleInfo']:
 						jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
-
 						if 'branch' in jsonPMSAllBundleInfo:
 							installBranch = Dict['PMS-AllBundleInfo'][key]['branch']
+
+
+
+						Log.Debug('Ged1: ' + installBranch)
 
 						if 'date' in jsonPMSAllBundleInfo:
 							installDate = Dict['PMS-AllBundleInfo'][key]['date']
