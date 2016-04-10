@@ -279,13 +279,18 @@ subtitlemgmt.subtitle_delete = function(videoKey) {
 				type: 'DELETE',
 				cache: false,
 				success: function(response, status, xhr) {
-				
+					//console.log(response);
 					$('input[value="' + splitstring[0] + ',' + splitstring[1] + '"]').prop('disabled', true);
 					$('input[value="' + splitstring[0] + ',' + splitstring[1] + '"]').prop('checked', false);
 					$('input[value="' + splitstring[0] + ',' + splitstring[1] + '"]').parent().parent().addClass('bg-danger');
 					$('input[value="' + splitstring[0] + ',' + splitstring[1] + '"]').parent().parent().fadeOut(2000);
-					webtools.log("Deleted File: " + response.FilePath);
-					callback("Deleted File: " + response.FilePath, subtitlearray);
+					if(typeof(response.FilePath) == 'undefined') {
+						webtools.log("Deleted File: " + response['Deleted file']);
+						callback("Deleted File: " + response['Deleted file'], subtitlearray);
+					} else {
+						webtools.log("Deleted File: " + response.FilePath);
+						callback("Deleted File: " + response.FilePath, subtitlearray);
+					}
 				},
 				error: function(response) {
 					webtools.log(JSON.stringify(response));

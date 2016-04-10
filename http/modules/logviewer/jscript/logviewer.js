@@ -18,7 +18,7 @@ logviewer.start = function() {
   $('#ContentBody').html('');
   $('#ContentFoot').html('');
   logviewer.fetchlogfiles();
-	$('#navfoot').html('<input type="text" id="webtoolssearchKeyword"><button class="btn btn-default btn-xs" onclick="webtools.searchkeyword(\'logtable\')">Search keyword</button> <button class="btn btn-default btn-xs" onclick="webtools.previous()" id="webtoolssearchbuttonprevious">Previous</button><button class="btn btn-default btn-xs" onclick="webtools.next()" id="webtoolssearchbuttonnext">Next</button> <button class="btn btn-default btn-xs" onclick="webtools.jumptotop()">Jump to Top</button> <span id="webtoolssearchkeywordresult"></span>');
+	$('#navfoot').html('<input type="text" id="webtoolssearchKeyword" onkeydown="if (event.keyCode == 13) { webtools.searchkeyword(\'logtable\'); }"><button class="btn btn-default btn-xs" onclick="webtools.searchkeyword(\'logtable\')">Search keyword</button> <button class="btn btn-default btn-xs" onclick="webtools.previous()" id="webtoolssearchbuttonprevious">Previous</button><button class="btn btn-default btn-xs" onclick="webtools.next()" id="webtoolssearchbuttonnext">Next</button> <button class="btn btn-default btn-xs" onclick="webtools.jumptotop()">Jump to Top</button> <span id="webtoolssearchkeywordresult"></span>');
 	webtools.clearresult();
   $('#LogfileList').change(function() {
     // Display loading screen when fetching.

@@ -22,6 +22,7 @@ FRONTEND:
 		#139 UAS: Unknown bundles without url won't be able to be uninstalled or re-installed.
 		#140 UAS: Migrate now always goes back to showing ALL available bundles
 		#### Subtitlemgmt: Added more logging for uploads. And fixed error reported by Dane22 about uploads. (2016-03-04)
+		#145 Subtitlemgmt: Fixed display of undefined when deleting sidecars.
 	New:
 		#126 UAS: Allow WebTools to autoupdate
 		#142 LogViewer: Search for keywords, highlighting of the same. Jump to top.

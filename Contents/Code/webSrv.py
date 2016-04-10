@@ -2,11 +2,14 @@
 #					WebTools helper unit
 #
 #					Runs a seperate webserver on a specified port
-#
-#					Author:			dagaluf, a Plex Community member
 #					Author:			dane22, a Plex Community member
 #
 ######################################################################################################################
+
+import sys
+# Add modules dir to search path
+modules = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'Contents', 'Code', 'modules')
+sys.path.append(modules)
 
 from tornado.web import *
 from tornado.httpserver import HTTPServer
@@ -23,12 +26,16 @@ from pms import pms
 from settings import settings
 from findMedia import findMedia
 from language import language
+from plex2csv import plex2csv
+from wol import wol
+
 
 import os
 
 # Below used to find path of this file
 from inspect import getsourcefile
 from os.path import abspath
+
 
 # TODO 
 #from importlib import import_module
@@ -58,6 +65,8 @@ def isCorrectPath(req):
 		req.clear()
 		req.set_status(404)
 		req.finish(msg)
+	else:
+		Log.Info('Verified a correct install path as: ' + targetPath)
 
 #************** webTools functions ******************************
 ''' Here we have the supported functions '''
@@ -214,7 +223,7 @@ class webTools2Handler(BaseHandler):
 		if module == 'missing':
 			self.clear()
 			self.set_status(404)
-			self.finish("<html><body>Missing function call</body></html>")
+			self.finish('Missing function call')
 			return
 		else:
 			Log.Debug('Recieved a get call for module: ' + module)
@@ -242,10 +251,12 @@ class webTools2Handler(BaseHandler):
 				self = findMedia().reqprocess(self)
 			elif module == 'language':
 				self = language().reqprocess(self)
+			elif module == 'plex2csv':
+				self = plex2csv().reqprocess(self)
 			else:
 				self.clear()
 				self.set_status(412)
-				self.finish("<html><body>Unknown module call</body></html>")
+				self.finish('Unknown module call')
 				return
 
 
@@ -269,10 +280,12 @@ class webTools2Handler(BaseHandler):
 				self = pms().reqprocessPost(self)
 			elif module == 'findMedia':		
 				self = findMedia().reqprocessPost(self)
+			elif module == 'wol':		
+				self = wol().reqprocessPost(self)
 			else:
 				self.clear()
 				self.set_status(412)
-				self.finish("<html><body>Unknown module call</body></html>")
+				self.finish('Unknown module call')
 				return
 
 	#******* DELETE REQUEST *********

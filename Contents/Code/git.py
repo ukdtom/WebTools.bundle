@@ -396,7 +396,9 @@ class git(object):
 						errMsg = errMsg + '\n\nLooks like permissions are not correct, cuz we where denied access\n'
 						errMsg = errMsg + 'to create a needed directory.\n\n'
 						errMsg = errMsg + 'If running on Linux, you might have to issue:\n'
-						errMsg = errMsg + 'sudo chown plex:plex ./WebTools.bundle -R'
+						errMsg = errMsg + 'sudo chown plex:plex ./WebTools.bundle -R\n'
+						errMsg = errMsg + 'And if on Synology, the command is:\n'
+						errMsg = errMsg + 'sudo chown plex:users ./WebTools.bundle -R\n'
 					Log.Critical('Exception in updateUASCache ' + str(e)) 
 					req.clear()
 					req.set_status(500)
