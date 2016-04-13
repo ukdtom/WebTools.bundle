@@ -10,6 +10,8 @@ var webtools = {
 		['logviewer', 'LogViewer/Downloader Tool'],
 		['install', 'Unsupported AppStore']
 	],
+	stylesheets: [],
+	active_stylesheet: '',
 	active_module: '',
 	functions: {},
 	version: 0,
@@ -38,7 +40,9 @@ var webtools = {
   searchkeyword: function () {},
 	next: function () {},
 	previous: function () {},
-	clearresult: function () {}
+	clearresult: function () {},
+	change_theme_display: function () {},
+	change_theme_work: function() {}
 };
 
 // Webtools function
@@ -59,6 +63,7 @@ webtools.list_modules.inline([
 						$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.changepassword_display();" >Change Password</a></li>');
 					}
 					$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.updates_check_display();" >Check for Webtools Updates</a></li>');
+					$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.change_theme_display();" >Change Theme</a></li>');
 					$('#OptionsMenu').append('<li><a class="customlink" onclick="javascript:webtools.show_log(\'changelog\')">View Changelog</a></li>');
 					webtools.defaultoptionsmenu = $('#OptionsMenu').html();
 					callback('VersionFetch:Success', activatemodulename);
@@ -70,6 +75,56 @@ webtools.list_modules.inline([
 				}
 			});
 		},
+		function (callback, activatemodulename) {
+			
+			$.ajax({
+			///webtools2?module=settings&function=getSettings
+			url: '/webtools2?module=wt&function=getCSS',
+			cache: false,
+			dataType: 'JSON',
+			success: function(data,textStatus, xhr) {
+				if (xhr.status == 200) {
+					webtools.stylesheets = data;
+				} else {
+					webtools.stylesheets = [];
+				}
+				
+				callback('SettingsFetch:Success');
+			},
+			error: function(data) {
+				webtools.active_stylesheet = 'default.css';
+				webtools.log('No custom CSSTheme setting found.','Core');
+				callback('SettingsFetch:Success');
+			}
+		});
+		
+		//	callback('StylesheetSettings:Success', activatemodulename);
+		},
+		function (callback, activatemodulename) {
+			
+			$.ajax({
+			///webtools2?module=settings&function=getSettings
+			url: '/webtools2?module=settings&function=getSetting&name=wt_csstheme',
+			cache: false,
+			dataType: 'JSON',
+			success: function(data) {
+				webtools.active_stylesheet = data;
+				if (data !== 'default.css') {
+					webtools.log('Found custom CSSTheme file setting (custom_themes/' + data + '). Loading it.','Core');
+					$('head').append('<link id="custom_theme_stylesheet" rel="stylesheet" href="custom_themes/' + data + '" type="text/css" />');
+				}
+				
+				callback('SettingsFetch:Success');
+			},
+			error: function(data) {
+				webtools.active_stylesheet = 'default.css';
+				webtools.log('No custom CSSTheme setting found.','Core');
+				callback('SettingsFetch:Success');
+			}
+		});
+		
+		//	callback('StylesheetSettings:Success', activatemodulename);
+		},
 		function(callback, activatemodulename) {
 			//Name:VersionFetch
 			webtools.loading();
@@ -79,7 +134,7 @@ webtools.list_modules.inline([
 				dataType: 'JSON',
 				success: function(data) {
 					webtools.languagecodes = data;
-					console.log(webtools.languagecodes);
+					//console.log(webtools.languagecodes);
 					callback('LanguageCodes:Success', activatemodulename);
 				},
 				error: function(data) {
@@ -275,6 +330,9 @@ webtools.listlogfiles = function(callback, activatemodulename) {
 webtools.log = function(LogEntry, Source) {
 	if (typeof(Source) == 'undefined') {
 		Source = webtools.active_module;
+	}
+	if (Source.length === 0) {
+		Source = 'Core';
 	}
 
 	$.ajax({
@@ -560,12 +618,21 @@ webtools.wait_update = function () {
 
 $(function(ready) {
 	$('#myModal').on('hidden.bs.modal', function(e) {
-		console.log('myModal Hidden');
+		//console.log('myModal Hidden');
 	})
+	
+	$(document).on('change','#custom_theme_selectbox',function() {
+		
+
+	$('#custom_theme_stylesheet').remove();
+		if ( $('#custom_theme_selectbox').val() !== 'default.css') {
+			$('head').append('<link id="custom_theme_stylesheet" rel="stylesheet" href="custom_themes/' + $('#custom_theme_selectbox').val() + '" type="text/css" />');
+		}
+	});
 })
 
 webtools.loading = function(CustomMessage) {
-	console.log('myModal Requested');
+	//console.log('myModal Requested');
 	$('#myModalLabel').html('Loading');
 	if (typeof(CustomMessage) == 'undefined') {
 		$('#myModalBody').html('Loading, please wait.');
@@ -579,7 +646,7 @@ webtools.loading = function(CustomMessage) {
 			keyboard: false,
 			backdrop: 'static'
 		});
-		console.log('myModal, to be shown NOW');
+		//console.log('myModal, to be shown NOW');
 		$('#myModal').modal('show');
 	}
 }
@@ -712,7 +779,7 @@ webtools.previous = function () {
 	}
 }
 
-webtools.jumptotop = function() {
+webtools.jumptotop = function () {
 	$('html, body').animate({
 				scrollTop: (0)
 			});
@@ -725,4 +792,53 @@ webtools.clearresult = function () {
 	$('#webtoolssearchKeyword').val('');
 	$('#webtoolssearchbuttonnext').prop('disabled',true);
 	$('#webtoolssearchbuttonprevious').prop('disabled',true);
+}
+
+webtools.change_theme_display = function () {
+	
+	var theme_dropdown = ['<select id="custom_theme_selectbox">'];
+	theme_dropdown.push('<option value="default.css">default.css');
+	webtools.stylesheets.forEach(function(theme) {
+		theme_dropdown.push('<option value="' + theme + '">' + theme);
+	})
+	theme_dropdown.push('</select>');
+	$('#myModalLabel').html('<button onclick="webtools.change_theme_reset();" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Change Theme');
+	$('#myModalBody').html('Select one of the available themes to use it:<br>' + theme_dropdown.join('\n') + '<br>Note: Changing theme in the selectbox will automatically enable it as a preview. Upon closing this modal, it will revert back to your settings.');
+	$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.change_theme_work();">Set Theme</button> <button onclick="webtools.change_theme_reset();" type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+	$('#custom_theme_selectbox').val(webtools.active_stylesheet);
+	$('#myModal').modal('show');
+}
+
+webtools.change_theme_work = function() {
+	$.ajax({
+		url: '/webtools2?module=settings&function=putSetting&name=wt_csstheme&value=' + $('#custom_theme_selectbox').val(),
+		type:'PUT',
+		dataType:'text',
+		success: function (data) {
+			webtools.active_stylesheet = $('#custom_theme_selectbox').val();
+			$('#custom_theme_stylesheet').remove();
+			if (webtools.active_stylesheet !== 'default.css') {
+				$('head').append('<link id="custom_theme_stylesheet" rel="stylesheet" href="custom_themes/' + $('#custom_theme_selectbox').val() + '" type="text/css" />');
+			}
+			$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Change Theme');
+			$('#myModalBody').html('Active theme has been changed.');
+			$('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+			// Call webtools_wait_for_reload();
+			// That function is an ajax call for /, if 404, wait for a few seconds, then try again. Otherwise, notify user of updated completed.
+		},
+		error: function (data) {
+			$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Change Theme');
+			$('#myModalBody').html('An error occured, check the logs for more information.');
+			$('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+		}
+	})
+}
+
+webtools.change_theme_reset = function() {
+	$('#custom_theme_stylesheet').remove();
+	
+	if (webtools.active_stylesheet !== 'default.css') {
+		$('head').append('<link id="custom_theme_stylesheet" rel="stylesheet" href="custom_themes/' + webtools.active_stylesheet + '" type="text/css" />');
+	}
+	//$('#custom_theme_stylesheet').prop('href',webtools.active_stylesheet);
 }

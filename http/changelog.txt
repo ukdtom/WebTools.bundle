@@ -29,6 +29,7 @@ FRONTEND:
 		#133 Subtitlemgmt: Added GUI for uploading subtitles
 		#112 Subtitlemgmt: Allow delete/view for agent subtitles aswell.
 		#### Subtitlemgmt: Now uses the new Language Module
+		#93 WT: Now has support for custom themes! First out is a draft of trumpy81 that needs to be finetuned by trumpy81
 		
 ####
 

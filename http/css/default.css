@@ -1,0 +1,62 @@
+/*.panel-default>.panel-heading  {background-color: #fe9b00; color: #242424;}*/
+
+.color-primary-0 { color: #FE9B00 }	/* Main Primary color */
+.color-primary-1 { color: #18150F }
+.color-primary-2 { color: #666563 }
+.color-primary-3 { color: #975C00 }
+.color-primary-4 { color: #3F2700 }
+
+
+.panel-default>.panel-heading {background-color: #FE9B00; color: #242424;}
+.navbar {margin-bottom: 0px;}
+.navbar-default {background-color: #FE9B00; color: #242424; border: 0px solid #7A9CBC;}
+.navbar-default .navbar-nav>li>a {color: #242424;}
+.navbar-default .navbar-nav>li>a:hover{background-color: #242424; color: #FE9B00;}
+.navbar-default .navbar-brand {color: #242424;}
+.navbar-default .navbar-brand:hover {color: #242424; cursor: pointer;}
+.navbar-default .navbar-nav>.active>a {background-color: #555555; color: #022B53;}
+.navbar-default .navbar-nav>.active>a:hover {background-color: #0A457F; color: #FFFFFF;}
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {background-color: #242424; color: #FE9B00;}
+.panel-body {background-color: #FFFFFF; padding: 8px;}
+.dropdown-menu>li>a {background-color: #FE9B00; color: #242424;}
+.dropdown-menu>li>a:hover {background-color: #242424; color: #FE9B00;}
+.navbar-nav>li>.dropdown-menu {background-color: #FE9B00; color: #242424;}
+
+
+.panel-default {background-color: #FE9B00;}
+th {background-color: #FE9B00; color: #242424;}
+
+.subtitle {padding: 0px;}
+
+.btn-default:hover {background-color: #FE9B00; color: #242424;}
+.btn-active {background-color: #FE9B00; color: #242424;}
+.modal-header {background-color: #FE9B00; color: #242424;}
+body {background-color: #242424; padding-top:70px;  padding-bottom:70px;}
+
+
+.customlink {cursor: pointer;}
+
+.table {margin-bottom:0px;}
+.smallfont {font-size: 10pt;}
+
+.pagination {margin: 0px;}
+.pagination>li>span {height: 31px;}
+.pagination>.active>span {background-color: #FE9B00;color: #242424; cursor: pointer;}
+.pagination>.active>span:hover {background-color: #242424; color: #FE9B00;cursor: pointer;}
+.pagination>li>span:hover {background-color: #242424; color: #FE9B00;cursor: pointer;}
+.pagination>li>span>select:hover {background-color: #242424; color: #FE9B00;cursor: pointer;}
+
+
+.flags { position:relative;display:inline-block;width:1.33333333em;line-height:1em } 
+
+.td-small {width: 60px; }
+.div-medium {width: 200px;}
+#navfoot {text-align: center;}
+
+.navbar-thin {min-height: 40px; padding-top: 5px; border-top: 1px solid #242424;}
+.changeDisplay {display: table-cell;}
+
+@media screen and (max-width:678px) {
+  .changeDisplay {display: block;}
+  .div-medium {width: auto;}
+}
