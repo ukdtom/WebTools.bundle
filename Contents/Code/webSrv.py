@@ -27,7 +27,7 @@ from settings import settings
 from findMedia import findMedia
 from language import language
 from plex2csv import plex2csv
-from wol import wol
+from wt import wt
 
 
 import os
@@ -253,6 +253,8 @@ class webTools2Handler(BaseHandler):
 				self = language().reqprocess(self)
 			elif module == 'plex2csv':
 				self = plex2csv().reqprocess(self)
+			elif module == 'wt':
+				self = wt().reqprocess(self)
 			else:
 				self.clear()
 				self.set_status(412)
