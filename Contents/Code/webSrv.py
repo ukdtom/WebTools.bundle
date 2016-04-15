@@ -282,8 +282,8 @@ class webTools2Handler(BaseHandler):
 				self = pms().reqprocessPost(self)
 			elif module == 'findMedia':		
 				self = findMedia().reqprocessPost(self)
-			elif module == 'wol':		
-				self = wol().reqprocessPost(self)
+			elif module == 'wt':		
+				self = wt().reqprocessPost(self)
 			else:
 				self.clear()
 				self.set_status(412)

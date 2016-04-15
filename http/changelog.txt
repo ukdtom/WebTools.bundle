@@ -14,7 +14,8 @@ BACKEND:
 		#135 WT: Tell users, if wrong install path is used
 		#137 WT: Add new decorator for auth
 		#126 UAS: Allow WebTools to autoupdate
-		#### WT: Added a language module for devs
+		### WT: Added a language module for devs
+		### WT: Added a reset function, that will reset to factory settings
 
 FRONTEND:
 	Fix:
