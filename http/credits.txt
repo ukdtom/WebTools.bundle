@@ -2,6 +2,9 @@ Main Developers:
 Dane22 (Python, Backend)
 Dagalufh (JS/HTML, Frontend)
 
+Custom theme's by:
+trumpy81
+
 Beta Testers:
 OttoKerner	sa2000
 trumpy81	Xandi92
