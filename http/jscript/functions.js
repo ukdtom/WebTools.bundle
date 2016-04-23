@@ -9,6 +9,7 @@ var webtools = {
 		['subtitlemgmt', 'Subtitle Management'],
 		['logviewer', 'LogViewer/Downloader Tool'],
 		['install', 'Unsupported AppStore']
+		//['findunmatched','FindUnmatched']
 	],
 	stylesheets: [],
 	active_stylesheet: '',
@@ -42,7 +43,10 @@ var webtools = {
 	previous: function () {},
 	clearresult: function () {},
 	change_theme_display: function () {},
-	change_theme_work: function() {}
+	change_theme_work: function() {},
+	wait_restart: function () {},
+	factory_reset_display: function() {},
+	factory_reset_work: function() {}
 };
 
 // Webtools function
@@ -65,6 +69,8 @@ webtools.list_modules.inline([
 					$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.updates_check_display();" >Check for Webtools Updates</a></li>');
 					$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.change_theme_display();" >Change Theme</a></li>');
 					$('#OptionsMenu').append('<li><a class="customlink" onclick="javascript:webtools.show_log(\'changelog\')">View Changelog</a></li>');
+					$('#OptionsMenu').append('<li><a class="customlink" onclick="javascript:webtools.factory_reset_display()">Factory Reset</a></li>');
+					
 					webtools.defaultoptionsmenu = $('#OptionsMenu').html();
 					callback('VersionFetch:Success', activatemodulename);
 				},
@@ -145,7 +151,8 @@ webtools.list_modules.inline([
 			});
 		},
 		function(callback, activatemodulename) {
-			webtools.listlogfiles(callback, activatemodulename);
+			callback('LogfileNamesFetch:Ignored', activatemodulename);
+			//webtools.listlogfiles(callback, activatemodulename);
 		},
 		function(callback, activatemodulename) {
 			$.ajax({
@@ -287,7 +294,7 @@ webtools.save_options = function() {
 };
 
 webtools.listlogfiles = function(callback, activatemodulename) {
-
+ // Currently unused
 	webtools.loading();
 	//Name:LogfileNamesFetch
 	$("#LogfilesMenu").html('');
@@ -586,7 +593,7 @@ webtools.install_WT = function () {
 			
 			console.log('success');
 			console.log(data);
-			setTimeout(webtools.wait_update,5000);
+			setTimeout(webtools.wait_restart,5000);
 			// Call webtools_wait_for_reload();
 			// That function is an ajax call for /, if 404, wait for a few seconds, then try again. Otherwise, notify user of updated completed.
 		},
@@ -599,7 +606,7 @@ webtools.install_WT = function () {
 	})
 }
 
-webtools.wait_update = function () {
+webtools.wait_restart = function () {
 	$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Waiting for WebTools');
 	$('#myModalBody').html('<p id="updateinfo">Waiting for WebTools to come online. Will automatically return you to start when ready.</p>');
 	$('#myModalFoot').html('');
@@ -611,7 +618,7 @@ webtools.wait_update = function () {
 			window.location.href='/';
 		},
 		error: function () {
-			setTimeout(webtools.wait_update,1000);
+			setTimeout(webtools.wait_restart,1000);
 		}
 	})
 }
@@ -711,7 +718,7 @@ webtools.searchkeyword = function(tablename) {
 			$(children[1]).removeClass('bg-info');
 			$(children[1]).removeClass('keyword');
 			if (typeof($(this).context) != 'undefined') {
-				if ($(this).context.innerHTML.toLowerCase().indexOf($('#webtoolssearchKeyword').val().toLowerCase()) != -1) {
+				if ($(':nth-child(2)', this).html().toLowerCase().indexOf($('#webtoolssearchKeyword').val().toLowerCase()) != -1) {
 					$(children[1]).addClass('bg-info');
 					$(children[1]).addClass('keyword');
 					webtools.keywordarray.push($(this).attr('id'));
@@ -835,10 +842,45 @@ webtools.change_theme_work = function() {
 }
 
 webtools.change_theme_reset = function() {
-	$('#custom_theme_stylesheet').remove();
-	
+	$('#custom_theme_stylesheet').remove();	
 	if (webtools.active_stylesheet !== 'default.css') {
 		$('head').append('<link id="custom_theme_stylesheet" rel="stylesheet" href="custom_themes/' + webtools.active_stylesheet + '" type="text/css" />');
 	}
 	//$('#custom_theme_stylesheet').prop('href',webtools.active_stylesheet);
+}
+
+
+webtools.factory_reset_display = function() {
+	// /webtools2?module=wt&function=reset
+	$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Factory Reset');
+	$('#myModalBody').html('Are you sure you want to do a factory reset of WebTools?<br><br>Note that this will clear any settings and data related to WebTools and that any channels previously managed by UAS needs to be migrated after reset.');
+	$('#myModalFoot').html('<button type="button" onclick="webtools.factory_reset_work()" class="btn btn-default">Yes</button> <button type="button" class="btn btn-default" data-dismiss="modal">No</button>');
+	$('#myModal').modal('show');
+}
+
+webtools.factory_reset_work = function () {
+	
+	$.ajax({
+		url: '/webtools2?module=wt&function=reset',
+		type: 'POST',
+		success: function() {
+			$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Waiting for WebTools');
+			$('#myModalBody').html('<p id="updateinfo">Waiting for WebTools to come online. Will automatically return you to start when ready.</p>');
+			$('#myModalFoot').html('');
+			
+			console.log('success');
+			console.log(data);
+			setTimeout(webtools.wait_restart,2000);
+		},
+		error: function (data) {
+			$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Waiting for WebTools');
+			$('#myModalBody').html('<p id="updateinfo">Waiting for WebTools to come online. Will automatically return you to start when ready.</p>');
+			$('#myModalFoot').html('');
+			
+			console.log('success');
+			console.log(data);
+			setTimeout(webtools.wait_restart,2000);
+		}
+		
+	})
 }

@@ -1,4 +1,28 @@
+
+/*
+
+PAGING:
+LetterNumber
+
+A - Size 4
+B - Size 20 [SPLIT!]
+B1 - Size 5, Start 0
+B2 - Size 5, start B1.size + B1.Start
+B3 - Size 5, start B2.size + B2.Start
+B4 - Size 5. start B3.size + B3.Start
+*/
 subtitlemgmt.fetch_section_type_movies = function(section_key, pageToShow) {
+	
+	subtitlemgmt.subtitle_ajax_calls.forEach(function(ajaxcall) {
+		//console.log(ajaxcall);
+		if(ajaxcall && ajaxcall.readyState != 4){
+					if (typeof ajaxcall.abort === "function") { 
+            ajaxcall.abort();
+					}
+        }
+	})
+	
+	
 	$('#navfoot').html('');
 	$('#ContentFoot').html('');
 	subtitlemgmt.selected_section.currentpage = Number(pageToShow);
@@ -18,20 +42,51 @@ subtitlemgmt.fetch_section_type_movies = function(section_key, pageToShow) {
 					subtitlemgmt.selected_section.contents = [];
 					subtitlemgmt.selected_section.parents_key = [];
 					subtitlemgmt.selected_section.parents_title = [];
+					subtitlemgmt.selected_section.contentstype = 'video';
 				}
 			});
 
 			callback('Success');
 		},
 		function(callback) {
-			// First, lets check how big the section is that the user requested to see.
 			$.ajax({
-				url: '/webtools2?module=pms&function=getSectionSize&key=' + subtitlemgmt.selected_section.key,
+				url: '/webtools2?module=pms&function=getSectionLetterList&key=' + subtitlemgmt.selected_section.key,
+				type: 'get',
 				cache: false,
-				dataType: 'text',
+				dataType: 'JSON',
 				success: function(data) {
-					webtools.loading('Library Size: ' + data.replace(/"/g, ''));
-					subtitlemgmt.selected_section.totalsize = data.replace(/"/g, '');
+					//console.log(data);
+					subtitlemgmt.pagelist = [];
+					for (var key in data) {
+						var start = 0;
+						//console.log(key);
+						//console.log(data[key].size + ' > ' + subtitlemgmt.options.items_per_page)
+						if (data[key].size > subtitlemgmt.options.items_per_page) {
+							var pages = Math.round(data[key].size / subtitlemgmt.options.items_per_page);
+							
+							console.log('Key/Pages: ' + key + '/' + pages)
+							
+							for (var i =0 ; i <= pages; i++) {
+								var size = data[key].size;
+								start = (subtitlemgmt.options.items_per_page * i);
+								
+								console.log('Start: ' + start);
+								console.log('i:' + i);
+								if (data[key].size > subtitlemgmt.options.items_per_page) {
+									size = subtitlemgmt.options.items_per_page
+									data[key].size = data[key].size - subtitlemgmt.options.items_per_page;
+								}
+								
+								subtitlemgmt.pagelist.push({'key':data[key].key,'size': size, 'displaykey':key + (i+1), 'start':start});	
+							}
+						} else {
+							subtitlemgmt.pagelist.push({'key':data[key].key,'size':data[key].size, 'displaykey':key, 'start':start});
+						}
+					}
+					console.log(subtitlemgmt.pagelist);
+					subtitlemgmt.calculate_pages();
+					//webtools.loading('Library Size: ' + data.replace(/"/g, ''));
+					//subtitlemgmt.selected_section.totalsize = data.replace(/"/g, '');
 					callback('Success');
 				},
 				error: function(data) {
@@ -42,15 +97,17 @@ subtitlemgmt.fetch_section_type_movies = function(section_key, pageToShow) {
 			});
 		},
 		function(callback) {
-
-			var start = (Number(subtitlemgmt.selected_section.currentpage) * Number(subtitlemgmt.options.items_per_page));
-			webtools.loading('Library Size: ' + subtitlemgmt.selected_section.totalsize + '<br>Currently fetching: ' + start + '->' + (start + subtitlemgmt.options.items_per_page));
+			//console.log(subtitlemgmt.pagelist[subtitlemgmt.selected_section.currentpage].key);
+			//var start = (Number(subtitlemgmt.selected_section.currentpage) * Number(subtitlemgmt.options.items_per_page));
+			webtools.loading('Currently fetching information and subtitles for letter ' + subtitlemgmt.pagelist[subtitlemgmt.selected_section.currentpage].displaykey + " and items: " + subtitlemgmt.pagelist[subtitlemgmt.selected_section.currentpage].start + '->' + subtitlemgmt.pagelist[subtitlemgmt.selected_section.currentpage].size);
 
 			$.ajax({
-				url: '/webtools2?module=pms&function=getSection&key=' + subtitlemgmt.selected_section.key + '&start=' + start + '&size=' + subtitlemgmt.options.items_per_page + '&getSubs=true',
+				// 
+				url: '/webtools2?module=pms&function=getSectionByLetter&key=' + subtitlemgmt.selected_section.key + '&start=' + subtitlemgmt.pagelist[subtitlemgmt.selected_section.currentpage].start + '&size=' + subtitlemgmt.pagelist[subtitlemgmt.selected_section.currentpage].size + '&letterKey=' + encodeURI(subtitlemgmt.pagelist[subtitlemgmt.selected_section.currentpage].key) + '&getSubs=true',
 				cache: false,
 				dataType: 'JSON',
 				success: function(data) {
+					//console.log(data);
 					//console.log('Data:' + (fetchinfo.currentfetch-1) + ' :: ' + JSON.stringify(data));
 					data.forEach(function(video) {
 						video.subtitles.showsubs = true;
@@ -68,8 +125,9 @@ subtitlemgmt.fetch_section_type_movies = function(section_key, pageToShow) {
 			});
 		}
 	], function() {
-		subtitlemgmt.display_episodes();
+		subtitlemgmt.display_episodes();	
 	});
+	
 	get_section_video.start(section_key);
 }
 
@@ -101,12 +159,14 @@ subtitlemgmt.display_episodes = function() {
 		$('#ContentHeader').html(subtitlemgmt.selected_section.title);
 	}
 
-	subtitlemgmt.calculate_pages();
+	//subtitlemgmt.calculate_pages();
 
 	$('#ContentBody').html('');
 
 	for (var i = start; i < end; i++) {
 		var discoveredlanguages = [];
+		
+		// DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
 		subtitlemgmt.selected_section.contents[i].subtitles.forEach(function(subtitle) {
 			if (discoveredlanguages.length == 0) {
 				discoveredlanguages.push([subtitle.languageCode, 1]);
@@ -124,17 +184,20 @@ subtitlemgmt.display_episodes = function() {
 				}
 			}
 		});
+		// DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
 		// End of Options Time!
 		var AppendToTitle = '';
 		if (subtitlemgmt.selected_section.contentstype == 'episodes') {
 			AppendToTitle = '#' + subtitlemgmt.selected_section.contents[i].episode + ". ";
 		}
-		var newEntry = ['<div class="panel panel-default">'];
+		var newEntry = ['<div class="panel panel-default fetchsubtitles">'];
 		newEntry.push('<div class="panel-heading"><h4 class="panel-title">' + AppendToTitle + subtitlemgmt.selected_section.contents[i].title + '</h4></div>');
-		newEntry.push('<div class="panel-body subtitle"><table class="table table-condensed">');
+		//Add this to below if needed <span id="showsubtitle_' + subtitlemgmt.selected_section.contents[i].key + '" onClick="subtitlemgmt.showsubtitletable(this);">Show Fetched Subtitles</span>
+		newEntry.push('<div class="panel-body subtitle"><input type="hidden" class="mediakey" value="' + subtitlemgmt.selected_section.contents[i].key + '"><table class="table table-condensed subtitletable">');
 		newEntry.push('<tr><th></th><th class="td-small">Lang.</th><th>Location</th><th>Codec</th><th></th></tr>');
 
 		var anysubtitleadded = false;
+		// DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
 		subtitlemgmt.selected_section.contents[i].subtitles.forEach(function(subtitle) {
 			var display_subtitle = true;
 			var language = 'None';
@@ -186,9 +249,12 @@ subtitlemgmt.display_episodes = function() {
 				newEntry.push('<tr' + selectedsubtitle + '><td class="td-small">' + checkbox + '</td><td class="td-small">' + language + '</td><td>' + subtitle.location + '</td><td>' + subtitle.codec + '</td><td>' + view + '</td></tr>');
 			}
 		});
+		
+		// DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
 
-		if (anysubtitleadded == false) {
+		if (anysubtitleadded === false) {
 			newEntry.pop();
+			// DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
 			newEntry.push('<tr><td>No subtitles that matched your filter. Video has a total of ' + subtitlemgmt.selected_section.contents[i].subtitles.length + ' subtitles.</td></tr>');
 		}
 		newEntry.push('</table></div>');
@@ -198,7 +264,135 @@ subtitlemgmt.display_episodes = function() {
 	}
 
 	$('.modal').modal('hide');
+	//subtitlemgmt.check_visibility();
 }
+
+$(window).scroll(function() {
+	
+		//subtitlemgmt.check_visibility();
+		
+});
+
+subtitlemgmt.check_visibility = function () {
+	// Currently unused
+	$('.fetchsubtitles').each(function () {
+			
+		
+    var top_of_element = $(this).offset().top;
+    var bottom_of_element = $(this).offset().top + $(this).outerHeight();
+    var bottom_of_screen = screen.availHeight + $(window).scrollTop();
+		//console.log('top_of_element: ' + top_of_element);
+		//console.log('bottom_of_element: ' + bottom_of_element);
+		//console.log('bottom_of_screen: ' + bottom_of_screen);
+    if((bottom_of_screen > top_of_element) && (bottom_of_screen > bottom_of_element)){
+        // The element is visible, do something
+			//console.log($('.subtitletable',this).html());
+			$('#showsubtitle_' + $('.mediakey',this).val() ).html('Fetching Subtitledata');
+			$('.subtitletable',this).html('<tr><td>Fetching Subtitledata....</td></tr>');
+			// 
+			//$(this).html($(this).html() + "VISIBLE");
+			$(this).removeClass('fetchsubtitles');
+			
+			// Call this here and update accordingly: /webtools2?module=pms&function=getSubtitles&key=<Media Rating Key>
+			// Store active Ajax calls in an array, abort them when reloading page or changing page.
+			subtitlemgmt.subtitle_ajax_calls.push(subtitlemgmt.fetchSubtitle($('.mediakey',this).val()), this);
+			//subtitlemgmt.subtitle_ajax_calls[index];
+    }
+    else {
+			console.log('NotVisble');
+			//$(this).html($(this).html() + "NOTVISIBLE");
+        // The element is not visible, do something else
+    }
+
+			
+			})
+}
+
+
+subtitlemgmt.fetchSubtitle = function (mediakey, context) {
+	// Currently unused
+	return $.ajax({
+				url: '/webtools2?module=pms&function=getSubtitles&key=' + mediakey,
+				type: 'GET',
+				dataType: 'JSON',
+				success: function(data) {
+					var counter = 0;
+					var subtitlecontent = ['<tr><th></th><th class="td-small">Lang.</th><th>Location</th><th>Codec</th><th></th></tr>'];
+					data.forEach(function(subtitle) {
+						
+						var display_subtitle = true;
+						var language = 'None';
+						var selectedsubtitle = '';
+
+						if (subtitle.languageCode != null) {
+							if (typeof(webtools.languagecodes[subtitle.languageCode.toLowerCase()]) != 'undefined') {
+								//language = '<img src="flags/blank.png" class="flag flag-'+webtools.languagecodes[subtitle.languageCode.toUpperCase()].toLowerCase()+'" alt="'+subtitle.languageCode.toUpperCase()+'"/>';
+								var languagetext = webtools.languagecodes[subtitle.languageCode.toLowerCase()];
+								if (webtools.languagecodes[subtitle.languageCode.toLowerCase()].length > 8) {
+									languagetext = webtools.languagecodes[subtitle.languageCode.toLowerCase()].substr(0, 6) + '...';
+								}
+								language = '<span data-toggle="tooltip" title="' + webtools.languagecodes[subtitle.languageCode.toLowerCase()] + '">' + languagetext + '</span>';
+							} else {
+								language = subtitle.languageCode.toLowerCase();
+							}
+						}
+
+						if (subtitle.selected != null) {
+							selectedsubtitle = ' class="bg-success"';
+						}
+
+						// Options filtering
+						//if (subtitlemgmt.options.options_only_multiple) {
+						//	display_subtitle = false;
+						//	discoveredlanguages.forEach(function(language) {
+						//		if ((language[0] == subtitle.languageCode) && (language[1] > 1)) {
+						//			display_subtitle = true;
+						//		}
+						//	});
+						//}
+
+						if ((subtitlemgmt.options.options_hide_integrated) && (subtitle.location == 'Embedded')) {
+							display_subtitle = false;
+						}
+
+						if ((subtitlemgmt.options.options_hide_local) && (subtitle.location == 'Sidecar')) {
+							display_subtitle = false;
+						}
+						// End of options filtering
+						if (display_subtitle) {
+							//anysubtitleadded = true;
+							var view = '';
+							var checkbox = '';
+							if ( (subtitle.location == 'Sidecar') || (subtitle.location == 'Agent') ) {
+								checkbox = '<input type="checkbox" name="subtitle-' + mediakey + '" value="' + mediakey + ',' + subtitle.key + '">';
+								view = '<button class="btn btn-default btn-xs" onclick=\'subtitlemgmt.view_subtitle(' + mediakey + ',' + subtitle.key + ')\'>View</button>';
+							}
+							counter++;
+							subtitlecontent.push('<tr' + selectedsubtitle + '><td class="td-small">' + checkbox + '</td><td class="td-small">' + language + '</td><td>' + subtitle.location + '</td><td>' + subtitle.codec + '</td><td>' + view + '</td></tr>');
+						}
+		
+					});
+					
+					$('.subtitletable',context).html(subtitlecontent.join('\n'));
+					$('#showsubtitle_' + mediakey ).html('Found ' + counter + ' subtitles, click here to view the list.');
+				},
+				error: function(data) {
+					$('.subtitletable',context).html('<tr><td>Unable to fetch subtitledata</td></tr>');
+				}
+			})
+}
+
+subtitlemgmt.showsubtitletable = function (context) {
+	// Currently unused
+	//console.log($(context).parent().html());
+	//console.log($(context).parent().html());
+	if ( $('.subtitletable',$(context).parent()).is( ":hidden" ) ) {
+    $('.subtitletable',$(context).parent()).slideDown(1000);
+  } else {
+    $('.subtitletable',$(context).parent()).hide();
+  }
+}
+
 
 subtitlemgmt.view_subtitle = function(mediaKey, subtitleKey) {
 	webtools.loading();
@@ -208,10 +402,10 @@ subtitlemgmt.view_subtitle = function(mediaKey, subtitleKey) {
 		type: 'GET',
 		dataType: 'JSON',
 		success: function(data) {
-			var subtitle = '<table class="table table-bordered">';
+			var subtitle = '<table class="table table-bordered table-condensed">';
 			subtitle += '<tr><th>Row#</th><th>Line</th></tr>';
 			for (i = 0; i < data.length; i++) {
-				subtitle += '<tr><td class="bg-warning">#' + (i + 1) + '</td><td>' + data[i] + '</td></tr>';
+				subtitle += '<tr><td class="bg-warning smallfont">#' + (i + 1) + '</td><td class="smallfont">' + data[i] + '</td></tr>';
 			}
 			subtitle += '</table>';
 

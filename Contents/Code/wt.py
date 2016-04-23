@@ -74,7 +74,8 @@ class wt(object):
 				req.set_status(204)
 			else:
 				for n,item in enumerate(myList):
-					myList[n] = item.replace(targetDir + '/','')
+					myList[n] = item.replace(targetDir,'')
+					myList[n] = myList[n][1:]
 				Log.Debug('Returning %s' %(myList))
 				req.clear()
 				req.set_status(200)

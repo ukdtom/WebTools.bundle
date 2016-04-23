@@ -48,6 +48,24 @@
 				$('#LoginMessage').hide();
 			}
 		});
+		
+		$.ajax({
+			///webtools2?module=settings&function=getSettings
+			url: '/webtools2?module=settings&function=getSetting&name=wt_csstheme',
+			cache: false,
+			dataType: 'JSON',
+			success: function(data) {
+				webtools.active_stylesheet = data;
+				if (data !== 'default.css') {
+					webtools.log('Found custom CSSTheme file setting (custom_themes/' + data + '). Loading it.','Core');
+					$('head').append('<link id="custom_theme_stylesheet" rel="stylesheet" href="custom_themes/' + data + '" type="text/css" />');
+				}
+			},
+			error: function(data) {
+				webtools.active_stylesheet = 'default.css';
+				webtools.log('No custom CSSTheme setting found.','Core');
+			}
+		});
 	});
 
 	function login() {

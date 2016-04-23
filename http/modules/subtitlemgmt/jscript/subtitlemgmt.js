@@ -38,6 +38,7 @@ webtools.functions.subtitlemgmt = {
 		contentstype: ''
 	},
 	calculate_pages: function() {},
+	pagelist: [],
 	set_pageToShow: function() {},
 	fetch_section_type_show: function() {},
 	fetch_show_seasons: function() {},
@@ -50,7 +51,10 @@ webtools.functions.subtitlemgmt = {
 	subtitle_select_all: function() {},
 	subtitle_delete_confirm: function() {},
 	subtitle_delete: function() {},
-	upload_dialog: function() {}
+	upload_dialog: function() {},
+	check_visibility: function() {},
+	subtitle_ajax_calls: [],
+	fetchSubtitle: function() {}
 };
 // Alias:
 var subtitlemgmt = webtools.functions.subtitlemgmt;
@@ -259,59 +263,60 @@ subtitlemgmt.save_options = function() {
 }
 
 subtitlemgmt.calculate_pages = function() {
-	//$('#ContentFoot').html('');
-	var NumberOfPages = Math.ceil(subtitlemgmt.selected_section.totalsize / subtitlemgmt.options.items_per_page);
-	var pages = '';
-	var functiontocall = '';
-	if (subtitlemgmt.selected_section.contentstype == 'video') {
-		functiontocall = 'subtitlemgmt.fetch_section_type_movies';
-	} else if (subtitlemgmt.selected_section.contentstype == 'shows') {
-		functiontocall = 'subtitlemgmt.fetch_section_type_show';
-	} else if (subtitlemgmt.selected_section.contentstype == 'seasons') {
-		//functiontocall = 'fetch_show_seasons';
-		functiontocall = 'subtitlemgmt.display_season';
-		NumberOfPages = Math.ceil(subtitlemgmt.selected_section.contents.length / subtitlemgmt.options.items_per_page);
-	} else if (subtitlemgmt.selected_section.contentstype == 'episodes') {
-		functiontocall = 'subtitlemgmt.display_episodes';
-		NumberOfPages = Math.ceil(subtitlemgmt.selected_section.contents.length / subtitlemgmt.options.items_per_page);
-	}
+	console.log('PAGE CALL');
+/* CAN BELOW BE MOVED TO SEPERATE FUNCTOIN TO BE REUSED */
+		var functiontocall = '';
+		if (subtitlemgmt.selected_section.contentstype == 'video') {
+			functiontocall = 'subtitlemgmt.fetch_section_type_movies';
+		} else if (subtitlemgmt.selected_section.contentstype == 'shows') {
+			functiontocall = 'subtitlemgmt.fetch_section_type_show';
+		} else if (subtitlemgmt.selected_section.contentstype == 'seasons') {
+			//functiontocall = 'fetch_show_seasons';
+			functiontocall = 'subtitlemgmt.display_season';
+		} else if (subtitlemgmt.selected_section.contentstype == 'episodes') {
+			functiontocall = 'subtitlemgmt.display_episodes';
+		}
 
-	if (NumberOfPages > 10) {
-		pages = pages + "\t<ul class='pagination pagination-sm'>";
+		var pages = '';
+
+		// LIST BEGIN
+		pages = pages + "<span class='page-selector-list'><ul class='pagination pagination-sm'>";
+
+		for (var i=0; i<subtitlemgmt.pagelist.length;i++) {
+			if (i == subtitlemgmt.selected_section.currentpage) {
+				pages = pages + '<li class="active"><span data-toggle="tooltip" title="' + subtitlemgmt.pagelist[i].key + ', Items: ' + subtitlemgmt.pagelist[i].size + '" onclick="subtitlemgmt.set_pageToShow(' + i + ');' + functiontocall + '(' + subtitlemgmt.selected_section.key + ',' + i + ');">' + subtitlemgmt.pagelist[i].displaykey + '</span></li>';
+			} else {
+				pages = pages + '<li><span data-toggle="tooltip" title="' + subtitlemgmt.pagelist[i].key + ', Items: ' + subtitlemgmt.pagelist[i].size + '" onclick="subtitlemgmt.set_pageToShow(' + i + ');' + functiontocall + '(' + subtitlemgmt.selected_section.key + ',' + i + ');">' + subtitlemgmt.pagelist[i].displaykey + '</span></li>';
+			}
+
+		}
+		pages = pages + "</ul></span>";
+		// LIST END
+
+		// DROPDOWN BEGIN
+		pages = pages + "<span class='page-selector-dropdown'><ul class='pagination pagination-sm '>";
 		if ((subtitlemgmt.selected_section.currentpage - 1) >= 0) {
 			pages = pages + '<li><span onclick="subtitlemgmt.set_pageToShow(' + (subtitlemgmt.selected_section.currentpage - 1) + ');' + functiontocall + '(' + subtitlemgmt.selected_section.key + ',' + (subtitlemgmt.selected_section.currentpage - 1) + ');">Previous</span></li>';
 		}
 
 		pages = pages + '<li><span><select id="pagenr" onChange="subtitlemgmt.set_pageToShow($(\'#pagenr\').val());' + functiontocall + '(' + subtitlemgmt.selected_section.key + ',$(\'#pagenr\').val());">';
-		for (var f = 0; f < NumberOfPages; f++) {
-			if (f == subtitlemgmt.selected_section.currentpage) {
-				pages = pages + '<option selected value="' + f + '">' + (f + 1);
-			} else {
-				pages = pages + '<option value="' + f + '">' + (f + 1);
-			}
+		for (var i=0; i<subtitlemgmt.pagelist.length;i++) {
+				if (i == subtitlemgmt.selected_section.currentpage) {
+					pages = pages + '<option selected value="' + i + '">' + subtitlemgmt.pagelist[i].displaykey;
+				} else {
+					pages = pages + '<option value="' + i + '">' + subtitlemgmt.pagelist[i].displaykey;
+				}
 
 		}
 		pages = pages + '</select></span></li>';
-
-		if ((subtitlemgmt.selected_section.currentpage + 1) < NumberOfPages) {
+		if ((subtitlemgmt.selected_section.currentpage + 1) < subtitlemgmt.pagelist.length) {
 			pages = pages + '<li><span onclick="subtitlemgmt.set_pageToShow(' + (subtitlemgmt.selected_section.currentpage + 1) + ');' + functiontocall + '(' + subtitlemgmt.selected_section.key + ',' + (subtitlemgmt.selected_section.currentpage + 1) + ');">Next</span></li>';
 		}
-		pages = pages + "</ul>";
-	} else if (NumberOfPages > 1) {
-		pages = pages + "\t<ul class='pagination pagination-sm'>";
+		pages = pages + "</ul></span>";
+		// DROPDOWN END
 
-		for (i = 0; i < NumberOfPages; i++) {
-			if (i == subtitlemgmt.selected_section.currentpage) {
-				pages = pages + '<li class="active"><span onclick="subtitlemgmt.set_pageToShow(' + i + ');' + functiontocall + '(' + subtitlemgmt.selected_section.key + ',' + i + ');">' + (i + 1) + '</span></li>';
-			} else {
-				pages = pages + '<li><span onclick="subtitlemgmt.set_pageToShow(' + i + ');' + functiontocall + '(' + subtitlemgmt.selected_section.key + ',' + i + ');">' + (i + 1) + '</span></li>';
-			}
-
-		}
-		pages = pages + "</ul>";
-	}
-	$("#navfoot").html(pages);
-
+		$("#navfoot").html(pages);
+		/* END OF PAGING THAT MIGHT BE ABLE TO BE MOVED TO SEPERATE FUNCTION */
 }
 
 subtitlemgmt.show_options = function() {

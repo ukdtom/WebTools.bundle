@@ -27,9 +27,12 @@
 th {background-color: #FE9B00; color: #242424;}
 
 .subtitle {padding: 0px;}
+/*.subtitletable {display: none;}*/
 
 .btn-default:hover {background-color: #FE9B00; color: #242424;}
+.btn-default:focus {background-color: #FE9B00; color: #242424;}
 .btn-active {background-color: #FE9B00; color: #242424;}
+
 .modal-header {background-color: #FE9B00; color: #242424;}
 body {background-color: #242424; padding-top:70px;  padding-bottom:70px;}
 
@@ -56,7 +59,27 @@ body {background-color: #242424; padding-top:70px;  padding-bottom:70px;}
 .navbar-thin {min-height: 40px; padding-top: 5px; border-top: 1px solid #242424;}
 .changeDisplay {display: table-cell;}
 
+
+  .page-selector-dropdown {display: inline;}
+  .page-selector-list {display: none;}
+
 @media screen and (max-width:678px) {
   .changeDisplay {display: block;}
   .div-medium {width: auto;}
+ 
+}
+/*
+@media screen and (max-width:1346px) {
+  .page-selector-dropdown {display: inline;}
+  .page-selector-list {display: none;}
+}
+*/
+select {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+input {
+  background-color: #FFFFFF;
+  color: #000000;
 }

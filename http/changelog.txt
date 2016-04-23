@@ -14,8 +14,8 @@ BACKEND:
 		#135 WT: Tell users, if wrong install path is used
 		#137 WT: Add new decorator for auth
 		#126 UAS: Allow WebTools to autoupdate
-		### WT: Added a language module for devs
-		### WT: Added a reset function, that will reset to factory settings
+		###  WT: Added a language module for devs
+		###  WT: Added a reset function, that will reset to factory settings
 
 FRONTEND:
 	Fix:
@@ -24,13 +24,19 @@ FRONTEND:
 		#140 UAS: Migrate now always goes back to showing ALL available bundles
 		#### Subtitlemgmt: Added more logging for uploads. And fixed error reported by Dane22 about uploads. (2016-03-04)
 		#145 Subtitlemgmt: Fixed display of undefined when deleting sidecars.
+		#159 LogViewer: Fix for incorrect highlights when searching for "Warn"
+		#161 UAS: Partial fix, now retains correct coloring.
+		#161 Themes: Added select and input tag css to default.css.
 	New:
 		#126 UAS: Allow WebTools to autoupdate
 		#142 LogViewer: Search for keywords, highlighting of the same. Jump to top.
 		#133 Subtitlemgmt: Added GUI for uploading subtitles
 		#112 Subtitlemgmt: Allow delete/view for agent subtitles aswell.
 		#### Subtitlemgmt: Now uses the new Language Module
-		#93 WT: Now has support for custom themes! First out is a draft of trumpy81 that needs to be finetuned by trumpy81
+		#93  WT: Now has support for custom themes! First out is a draft of trumpy81 that needs to be finetuned by trumpy81
+		#160 WT: Implemented Factory Reset functionality. Available through the Options menu.
+		#149 Subtitlemgmt: Implemented letters instead of straight up numbers for paging.
+		#### WT: Removed LogFiles from top menu, redirecting users to LogViewer instead.
 		
 ####
 
