@@ -1,10 +1,4 @@
 
-.color-primary-0 { color: #009933 }	/* Main Primary color */
-.color-primary-1 { color: #00FF00 }
-.color-primary-2 { color: #66FF66 }
-.color-primary-3 { color: #006600 }
-.color-primary-4 { color: #009900 }
-
 .panel-default>.panel-heading {background-color: #66FF66; color: #006600;}
 
 .navbar {margin-bottom: 0px;}
@@ -33,6 +27,7 @@ th {background-color: #006600; color: #00FF00;}
 .subtitle {padding: 0px;}
 
 .btn-default:hover {background-color: #006600; color: #00FF00;}
+.btn-default:focus {background-color: #FFFFFF; color: #000000;}
 .btn-active {background-color: #006600; color: #00FF00;}
 .modal-header {background-color: #006600; color: #00FF00;}
 body {background-color: #005500; padding-top:70px;  padding-bottom:70px;}
@@ -40,6 +35,9 @@ body {background-color: #005500; padding-top:70px;  padding-bottom:70px;}
 .customlink {cursor: pointer;}
 .table {margin-bottom:0px;}
 .smallfont {font-size: 10pt;}
+
+select {background-color: #CCFFCC; color: #000000;}
+input {background-color: #CCFFCC; color: #000000;}
 
 .pagination {margin: 0px;}
 .pagination>li>span {height: 31px;}

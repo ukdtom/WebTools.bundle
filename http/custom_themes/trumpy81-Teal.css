@@ -1,11 +1,5 @@
 
-.color-primary-0 { color: #0082e6 }	/* Main Primary color */
-.color-primary-1 { color: #18150F }
-.color-primary-2 { color: #666563 }
-.color-primary-3 { color: #975C00 }
-.color-primary-4 { color: #3F2700 }
-
-.panel-default>.panel-heading {background-color: #0082e6; color: #003a66;}
+.panel-default>.panel-heading {background-color: #0082e6; color: #ffff99;}
 
 .navbar {margin-bottom: 0px;}
 
@@ -19,7 +13,7 @@
 .navbar-default .navbar-brand:hover {color: #ffff99; cursor: pointer;}
 
 .navbar-default .navbar-nav>.active>a {background-color: #0082e6; color: #ffff99;}
-.navbar-default .navbar-nav>.active>a:hover {background-color: #0A457F; color: #FFFFFF;}
+.navbar-default .navbar-nav>.active>a:hover {background-color: #0082e6; color: #FFFFFF;}
 
 .panel-body {background-color: #FFFFFF; padding: 8px;}
 
@@ -33,13 +27,17 @@ th {background-color: #00477e; color: #FFFFFF;}
 .subtitle {padding: 0px;}
 
 .btn-default:hover {background-color: #0082e6; color: #ffff99;}
+.btn-default:focus {background-color: #FFFFFF; color: #000000;}
 .btn-active {background-color: #0082e6; color: #ffff99;}
-.modal-header {background-color: #0082e6; color: #003a66;}
+.modal-header {background-color: #0082e6; color: #ffff99;}
 body {background-color: #0082e6; padding-top:70px;  padding-bottom:70px;}
 
 .customlink {cursor: pointer;}
 .table {margin-bottom:0px;}
 .smallfont {font-size: 10pt;}
+
+select {background-color: #cce9ff; color: #000000;}
+input {background-color: #cce9ff; color: #000000;}
 
 .pagination {margin: 0px;}
 .pagination>li>span {height: 31px;}
