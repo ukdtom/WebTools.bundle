@@ -1,5 +1,5 @@
 ######################################################################################################################
-#	Settings helper unit	for WebTools
+#	Settings helper unit for WebTools
 #
 #	Author: dane22, a Plex Community member
 #

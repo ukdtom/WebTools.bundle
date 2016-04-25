@@ -43,4 +43,8 @@ Icon
 # gedit tmp files
 #*****************
 *~
+ 
+*.pyc
+debug
+
 

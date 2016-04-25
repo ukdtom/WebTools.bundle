@@ -1,3 +1,71 @@
+V2.2 Release:
+
+BACKEND:
+	Fix:
+		#115 UAS: Migration fails, if plugin directory contains hidden folder
+		#116 UAS: Make UAS work, even if a git is dir levels too low
+		#117 UAS and uninstall unknown bundle
+		#121 UAS: Cleanup old files/folders when updating
+		#122 UAS: bundle migration
+		#138 UAS: getAllBundleInfo is reset when UASRepo is updated
+	New:
+		#129 UAS: Alllow 3.Party devs to clear their stuff
+		#135 WT: Tell users, if wrong install path is used
+		#137 WT: Add new decorator for auth
+		#126 UAS: Allow WebTools to autoupdate
+		###  WT: Added a language module for devs
+		###  WT: Added a reset function, that will reset to factory settings
+
+FRONTEND:
+	Fix:
+		#131 UAS: After changin category, focus is no longer set on inputbox
+		#139 UAS: Unknown bundles without url won't be able to be uninstalled or re-installed.
+		#140 UAS: Migrate now always goes back to showing ALL available bundles
+		##   Subtitlemgmt: Added more logging for uploads. And fixed bug reported by Dane22 about uploads.
+		#145 Subtitlemgmt: Fixed display of undefined when deleting sidecars.
+		#159 LogViewer: Fix for incorrect highlights when searching for "Warn"
+		#161 UAS: Partial fix, now retains correct coloring.
+		#161 Themes: Added select and input tag css to default.css.
+	New:
+		#126 UAS: Allow WebTools to autoupdate
+		#142 LogViewer: Search for keywords, highlighting of the same. Jump to top.
+		#133 Subtitlemgmt: Added GUI for uploading subtitles
+		#112 Subtitlemgmt: Allow delete/view for agent subtitles aswell.
+		###  Subtitlemgmt: Now uses the new Language Module
+		#93  WT: Now has support for custom themes! First out is a draft of trumpy81 that needs to be finetuned by trumpy81
+		#160 WT: Implemented Factory Reset functionality. Available through the Options menu.
+		#149 Subtitlemgmt: Implemented letters instead of straight up numbers for paging.
+		###  WT: Removed LogFiles from top menu, redirecting users to LogViewer instead.
+		
+####
+
+V2.2-DEV-2016-02-25:
+UAS:
+	The return of the Uninstall-button (Issue #132)
+WebTools:
+	Implemented update of main plugin. This however currently causes an error in the logs.
+	
+V2.2-DEV-2016-02-19:
+UAS:
+	Changed focus after showing channel. This should not bring up the keyboard on mobile devices anymore.
+
+V2.2-DEV-2016-02-02:
+UAS:
+	Reverting Issue #119 because of reported issue with locked interface.
+	Now displays message regarding permissions. (Issue #124)
+	Now showing Check for updates for everything that has a repolink. (Issue #118, Issue #127)
+WebTools:
+	Moved Changelog to Options menu (Issue #128)
+	
+V2.2-DEV-2016-01-26:
+LogViewer:
+	Now highlights exception in the same was as critical. (Issue #108)
+WebTools:
+	Now highlights exception in the same was as critical when viewing logs. (Issue #108)
+	Added "View Changelog" under Logs menu. This allows viewing of entire changelog. (Issue #128)
+UAS:
+	When selecting "ShowOnlyInstalled", only categories with installed plugins are shown. (Issue #119)
+
 V2.0-RELEASE-2016-01-14:
 WebTools:
 	New modules, LogViewer and Unsupported Appstore

@@ -1,0 +1,61 @@
+
+.panel-default>.panel-heading {background-color: #66FF66; color: #006600;}
+
+.navbar {margin-bottom: 0px;}
+
+.navbar-default {background-color: #006600; color: #004400; border: 0px solid #004d00;}
+
+.navbar-default .navbar-nav>li>a {color: #00FF00;}
+.navbar-default .navbar-nav>li>a:hover{background-color: #00FF00; color: #006600;}
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {background-color: #00FF00; color: #006600;}
+
+.navbar-default .navbar-brand {color: #00FF00;}
+.navbar-default .navbar-brand:hover {color: #00cc00; cursor: pointer;}
+
+.navbar-default .navbar-nav>.active>a {background-color: #33CC33; color: #003300;}
+.navbar-default .navbar-nav>.active>a:hover {background-color: #009933; color: #b5e3b5;}
+
+.panel-body {background-color: #CCFFCC; padding: 8px;}
+
+.dropdown-menu>li>a {background-color: #006600; color: #00FF00;}
+.dropdown-menu>li>a:hover {background-color: #00FF00; color: #006600;}
+.navbar-nav>li>.dropdown-menu {background-color: #006600; color: #00FF00;}
+
+.panel-default {background-color: #006600;}
+th {background-color: #006600; color: #00FF00;}
+
+.subtitle {padding: 0px;}
+
+.btn-default:hover {background-color: #006600; color: #00FF00;}
+.btn-default:focus {background-color: #FFFFFF; color: #000000;}
+.btn-active {background-color: #006600; color: #00FF00;}
+.modal-header {background-color: #006600; color: #00FF00;}
+body {background-color: #005500; padding-top:70px;  padding-bottom:70px;}
+
+.customlink {cursor: pointer;}
+.table {margin-bottom:0px;}
+.smallfont {font-size: 10pt;}
+
+select {background-color: #CCFFCC; color: #000000;}
+input {background-color: #CCFFCC; color: #000000;}
+
+.pagination {margin: 0px;}
+.pagination>li>span {height: 31px;}
+.pagination>.active>span {background-color: #006600;color: #00FF00; cursor: pointer;}
+.pagination>.active>span:hover {background-color: #00FF00; color: #006600;cursor: pointer;}
+.pagination>li>span:hover {background-color: #00FF00; color: #006600;cursor: pointer;}
+.pagination>li>span>select:hover {background-color: #00FF00; color: #006600;cursor: pointer;}
+
+.flags { position:relative;display:inline-block;width:1.33333333em;line-height:1em } 
+
+.td-small {width: 60px; }
+.div-medium {width: 200px;}
+#navfoot {text-align: center;}
+
+.navbar-thin {min-height: 40px; padding-top: 5px; border-top: 1px solid #00FF00;}
+.changeDisplay {display: table-cell;}
+
+@media screen and (max-width:678px) {
+  .changeDisplay {display: block;}
+  .div-medium {width: auto;}
+}

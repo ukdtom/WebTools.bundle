@@ -9,9 +9,10 @@
 
 import datetime			# Used for a timestamp in the dict
 import json
-import io, os
+import io, os, shutil
 import plistlib
 import pms
+import tempfile
 
 class git(object):
 	# Defaults used by the rest of the class
@@ -24,7 +25,7 @@ class git(object):
 		self.OFFICIAL_APP_STORE = 'https://nine.plugins.plexapp.com'
 		Log.Debug("Plugin directory is: %s" %(self.PLUGIN_DIR))
 
-	''' Grap the tornado req, and process it '''
+	''' Grap the tornado req, and process it for GET request'''
 	def reqprocess(self, req):	
 		function = req.get_argument('function', 'missing')
 		if function == 'missing':
@@ -53,7 +54,6 @@ class git(object):
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
 
-
 	''' Grap the tornado req, and process it for a PUT request'''
 	def reqprocessPUT(self, req):		
 		function = req.get_argument('function', 'missing')
@@ -63,10 +63,125 @@ class git(object):
 			req.finish("<html><body>Missing function parameter</body></html>")
 		elif function == 'migrate':
 			return self.migrate(req)
+		elif function == 'upgradeWT':
+			return self.upgradeWT(req)
 		else:
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
+
+	''' Upgrade WebTools itself '''
+	def upgradeWT(self, req):
+		Log.Info('Starting upgradeWT')
+
+		#Helper function
+		''' This helper function will delete the dict named Installed
+				After doing so, it'll do a forced migrate
+		'''
+		def nukeSpecialDicts():
+			#TODO Make this
+			Dict['installed'] = {}
+			Dict.Save()
+			self.migrate(req, silent=True)
+
+		# Helper function
+		def removeEmptyFolders(path, removeRoot=True):
+			'Function to remove empty folders'
+			if not os.path.isdir(path):
+				return
+			# remove empty subfolders
+			files = os.listdir(path)
+			if len(files):
+				for f in files:
+					fullpath = os.path.join(path, f)
+					if os.path.isdir(fullpath):
+						removeEmptyFolders(fullpath)
+			# if folder empty, delete it
+			files = os.listdir(path)
+			if len(files) == 0 and removeRoot:
+				Log.Debug('Removing empty directory: ' + path)
+				os.rmdir(path)
+
+		# Reset dicts
+		nukeSpecialDicts()
+
+		url= req.get_argument('debugURL', 'https://api.github.com/repos/dagalufh/WebTools.bundle/releases/latest')
+		bundleName = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
+		Log.Info('WT install dir is: ' + bundleName)
+		try:
+			if url == 'https://api.github.com/repos/dagalufh/WebTools.bundle/releases/latest':
+				Log.Debug('Getting release info from url: ' + url)
+				jsonReponse = JSON.ObjectFromURL(url)
+				wtURL = jsonReponse['assets'][0]['browser_download_url']
+			else:
+				wtURL = url.replace('tree', 'archive') + '.zip'
+			Log.Info('WT Download url detected as: ' + wtURL)
+
+			# Grap file from Github
+			zipfile = Archive.ZipFromURL(wtURL)
+			bError = True
+			bUpgrade = False
+			instFiles = []
+			# We need to cut of the main directory, which name we don't know
+			for filename in zipfile:
+				pos = filename.find('/')
+				cutStr = filename[:pos]
+				break
+			# Now build a list of files in the zip, while extracting them as well
+			for filename in zipfile:
+				myFile = filename.replace(cutStr, '')
+				if myFile != '/':
+					# Make a list of all files and dirs in the zip
+					instFiles.append(myFile)
+				# Grap the file
+				data = zipfile[filename]
+				if not str(filename).endswith('/'):
+					# Pure file, so save it	
+					path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
+					Log.Debug('Extracting file' + path)
+					try:
+						Core.storage.save(path, data)
+					except Exception, e:
+						bError = True
+						Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
+				else:
+					# We got a directory here
+					Log.Debug(filename.split('/')[-2])
+					if not str(filename.split('/')[-2]).startswith('.'):
+						# Not hidden, so let's create it
+						path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
+						Log.Debug('Extracting folder ' + path)
+						try:
+							Core.storage.ensure_dirs(path)
+						except Exception, e:
+							bError = True
+							Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
+			# Now we need to nuke files that should no longer be there!
+			for root, dirs, files in os.walk(bundleName):
+				for fname in files:
+					fileName = Core.storage.join_path(root, fname).replace(bundleName, '')
+					if fileName not in instFiles:
+						if 'uas' not in fileName:
+							Log.Debug('Removing not needed file: ' + fileName)
+							os.remove(Core.storage.join_path(root, fname))
+			# And now time to swipe empty directories
+			removeEmptyFolders(bundleName)
+
+			req.clear()
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Upgraded ok')
+		except Exception, e:
+			Log.Critical('***************************************************************')
+			Log.Critical('Error when updating WebTools')
+			Log.Critical('The error was: ' + str(e))
+			Log.Critical('***************************************************************')
+			Log.Critical('DARN....When we tried to upgrade WT, we had an error :-(')
+			Log.Critical('Only option now might be to do a manual install, like you did the first time')
+			Log.Critical('Do NOT FORGET!!!!')
+			Log.Critical('We NEED this log, so please upload to Plex forums')
+			Log.Critical('***************************************************************')
+		return
 
 	''' This function will return a list of bundles, where there is an update avail '''
 	def getUpdateList(self, req):
@@ -102,13 +217,13 @@ class git(object):
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in getUpdateList ' + str(e))
-	
 
 	''' This function will migrate bundles that has been installed without using our UAS into our UAS '''
-	def migrate(self, req):
+	def migrate(self, req, silent=False):
 		# get list from uas cache
 		def getUASCacheList():
 			try:
+				Log.Info('Migrating old bundles into WT')
 				jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
 				json_file = io.open(jsonFileName, "rb")
 				response = json_file.read()
@@ -126,7 +241,7 @@ class git(object):
 				Log.Debug('Exception in Migrate/getUASCacheList : ' + str(e))				
 				return ''
 
-		# Grap indentifier from plist file
+		# Grap indentifier from plist file and timestamp
 		def getIdentifier(pluginDir):
 			try:
 				pFile = Core.storage.join_path(self.PLUGIN_DIR, pluginDir, 'Contents', 'Info.plist')
@@ -134,15 +249,14 @@ class git(object):
 				createStamp = datetime.datetime.fromtimestamp(os.path.getmtime(pFile)).strftime('%Y-%m-%d %H:%M:%S')			
 				return (pl['CFBundleIdentifier'], createStamp)
 			except Exception, e:
-				Log.Debug('Exception in Migrate/getIdentifier : ' + str(e))				
-				return ''
+				errMsg = str(e) + '\nfor something in directory: ' + Core.storage.join_path(self.PLUGIN_DIR, pluginDir)
+				errMsg = errMsg + '\nSkipping migration of directory'
+				Log.Error('Exception in Migrate/getIdentifier : ' + errMsg)				
+				pass
 
 		# Main call
 		Log.Debug('Migrate function called')
 		try:
-			# Init dict, if not already so
-			if Dict['installed'] == None:
-				Dict['installed'] = {}
 			# Let's start by getting a list of known installed bundles
 			knownBundles = []
 			for installedBundles in Dict['installed']:
@@ -152,67 +266,84 @@ class git(object):
 			migratedBundles = {}
 			for pluginDir in dirs:
 				if pluginDir.endswith('.bundle'):
-					# It's a bundle
-					if pluginDir.upper() not in knownBundles:
-						# It's unknown
-						if pluginDir not in self.IGNORE_BUNDLE:
-							Log.Debug('About to migrate %s' %(pluginDir))
-							# This we need to migrate
-							(target, dtStamp) = getIdentifier(pluginDir)
-							# try and see if part of uas Cache
-							uasListjson = getUASCacheList()
-							bFound = False
-							for git in uasListjson:
-								if target == uasListjson[git]['identifier']:
-									Log.Debug('Found %s is part of uas' %(target))
-									targetGit = {}
-									targetGit['description'] = uasListjson[git]['description']
-									targetGit['title'] = uasListjson[git]['title']
-									targetGit['bundle'] = uasListjson[git]['bundle']
-									targetGit['branch'] = uasListjson[git]['branch']
-									targetGit['identifier'] = uasListjson[git]['identifier']
-									targetGit['type'] = uasListjson[git]['type']
-									targetGit['icon'] = uasListjson[git]['icon']
-									targetGit['date'] = dtStamp
-									targetGit['supporturl'] = uasListjson[git]['supporturl']
-									Dict['installed'][git] = targetGit
-									Log.Debug('Dict stamped with the following install entry: ' + git + ' - '  + str(targetGit))
-									# Now update the PMS-AllBundleInfo Dict as well
-									Dict['PMS-AllBundleInfo'][git] = targetGit
-									Dict.Save()
-									migratedBundles[git] = targetGit
-									bFound = True
-									pms.updateUASTypesCounters()
-									break
-							if not bFound:
-								Log.Debug('Found %s is sadly not part of uas' %(pluginDir))
-								vFile = Core.storage.join_path(self.PLUGIN_DIR, pluginDir, 'Contents', 'VERSION')
-								if os.path.isfile(vFile):
-									Log.Debug(pluginDir + ' is an official bundle, so skipping')
-								else:
-									git = {}
-									git['title'] = pluginDir[:-7]
-									git['description'] = ''
-									git['branch'] = ''
-									git['bundle'] = pluginDir
-									git['identifier'] = target
-									git['type'] = ['Unknown']
-									git['icon'] = ''
-									git['date'] = dtStamp
-									Dict['installed'][target] = git
-									# Now update the PMS-AllBundleInfo Dict as well
-									Dict['PMS-AllBundleInfo'][target] = git
-									migratedBundles[target] = git
-									Log.Debug('Dict stamped with the following install entry: ' + pluginDir + ' - '  + str(git))
-									Dict.Save()
-									pms.updateUASTypesCounters()
+					if not pluginDir.startswith('.'):
+						# It's a bundle
+						if pluginDir.upper() not in knownBundles:
+							# It's unknown
+							if pluginDir not in self.IGNORE_BUNDLE:
+								Log.Debug('About to migrate %s' %(pluginDir))
+								# This we need to migrate
+								try:
+									(target, dtStamp) = getIdentifier(pluginDir)
+								except Exception, e:
+									continue				
+								# try and see if part of uas Cache
+								uasListjson = getUASCacheList()
+								bFound = False
+								for git in uasListjson:
+									'''
+									if target == 'com.plexapp.plugins.Plex2csv':
+										print 'GED KIG HER'
+										continue
+									'''
+									if target == uasListjson[git]['identifier']:
+										Log.Debug('Found %s is part of uas' %(target))
+										targetGit = {}
+										targetGit['description'] = uasListjson[git]['description']
+										targetGit['title'] = uasListjson[git]['title']
+										targetGit['bundle'] = uasListjson[git]['bundle']
+										targetGit['branch'] = uasListjson[git]['branch']
+										targetGit['identifier'] = uasListjson[git]['identifier']
+										targetGit['type'] = uasListjson[git]['type']
+										targetGit['icon'] = uasListjson[git]['icon']
+										targetGit['date'] = dtStamp
+										targetGit['supporturl'] = uasListjson[git]['supporturl']
+										Dict['installed'][git] = targetGit
+										Log.Debug('Dict stamped with the following install entry: ' + git + ' - '  + str(targetGit))
+										# Now update the PMS-AllBundleInfo Dict as well
+										Dict['PMS-AllBundleInfo'][git] = targetGit
+										# Update installed dict as well
+										Dict['installed'][git] = targetGit
+										# If it existed as unknown as well, we need to remove that
+										Dict['PMS-AllBundleInfo'].pop(uasListjson[git]['identifier'], None)
+										Dict['installed'].pop(uasListjson[git]['identifier'], None)										
+										Dict.Save()
+										migratedBundles[git] = targetGit
+										bFound = True
+										pms.updateUASTypesCounters()
+										break
+								if not bFound:
+									Log.Debug('Found %s is sadly not part of uas' %(pluginDir))
+									vFile = Core.storage.join_path(self.PLUGIN_DIR, pluginDir, 'Contents', 'VERSION')
+									if os.path.isfile(vFile):
+										Log.Debug(pluginDir + ' is an official bundle, so skipping')
+									else:
+										git = {}
+										git['title'] = pluginDir[:-7]
+										git['description'] = ''
+										git['branch'] = ''
+										git['bundle'] = pluginDir
+										git['identifier'] = target
+										git['type'] = ['Unknown']
+										git['icon'] = ''
+										git['date'] = dtStamp
+										Dict['installed'][target] = git
+										# Now update the PMS-AllBundleInfo Dict as well
+										Dict['PMS-AllBundleInfo'][target] = git
+										migratedBundles[target] = git
+										Log.Debug('Dict stamped with the following install entry: ' + pluginDir + ' - '  + str(git))
+										Dict.Save()
+										pms.updateUASTypesCounters()
 			Log.Debug('Migrated: ' + str(migratedBundles))
-			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(migratedBundles))
+			if silent:
+				return
+			else:
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(migratedBundles))
 		except Exception, e:
-			Log.Debug('Fatal error happened in migrate: ' + str(e))
+			Log.Critical('Fatal error happened in migrate: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -228,7 +359,7 @@ class git(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(Dict['uasTypes']))
 		except Exception, e:
-			Log.Debug('Exception in uasTypes: ' + str(e))
+			Log.Critical('Exception in uasTypes: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -238,6 +369,7 @@ class git(object):
 	''' This will update the UAS Cache directory from GitHub '''
 	def updateUASCache(self, req):
 		Log.Debug('Starting to update the UAS Cache')
+		debugForce = ('false' != req.get_argument('debugForce', 'false'))
 		# Main call
 		try:
 			# Start by getting the time stamp for the last update
@@ -251,14 +383,38 @@ class git(object):
 			# Now get the last update time from the UAS repository on GitHub
 			masterUpdate = datetime.datetime.strptime(self.getLastUpdateTime(req, True, self.UAS_URL), '%Y-%m-%d %H:%M:%S')
 			# Do we need to update the cache, and add 2 min. tolerance here?
-			if (masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120):
+			if ((masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120) or debugForce):
 				# We need to update UAS Cache
 				# Target Directory
 				targetDir = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas')
 				# Force creation, if missing
-				Core.storage.ensure_dirs(targetDir)
+				try:
+					Core.storage.ensure_dirs(targetDir)
+				except Exception, e:
+					errMsg = str(e)
+					if 'Errno 13' in errMsg:
+						errMsg = errMsg + '\n\nLooks like permissions are not correct, cuz we where denied access\n'
+						errMsg = errMsg + 'to create a needed directory.\n\n'
+						errMsg = errMsg + 'If running on Linux, you might have to issue:\n'
+						errMsg = errMsg + 'sudo chown plex:plex ./WebTools.bundle -R\n'
+						errMsg = errMsg + 'And if on Synology, the command is:\n'
+						errMsg = errMsg + 'sudo chown plex:users ./WebTools.bundle -R\n'
+					Log.Critical('Exception in updateUASCache ' + str(e)) 
+					req.clear()
+					req.set_status(500)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish('Exception in updateUASCache: ' + errMsg)
+					return req
 				# Grap file from Github
-				zipfile = Archive.ZipFromURL(self.UAS_URL+ '/archive/master.zip')
+				try:
+					zipfile = Archive.ZipFromURL(self.UAS_URL+ '/archive/master.zip')
+				except Exception, e:
+					Log.Critical('Could not download UAS Repo from GitHub')
+					req.clear()
+					req.set_status(500)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish('Exception in updateUASCache while downloading UAS repo from Github: ' + str(e))
+					return req
 				for filename in zipfile:
 					# Walk contents of the zip, and extract as needed
 					data = zipfile[filename]
@@ -270,7 +426,7 @@ class git(object):
 							Core.storage.save(path, data)
 						except Exception, e:
 							bError = True
-							Log.Debug("Unexpected Error")
+							Log.Critical("Unexpected Error " + str(e))
 					else:
 						# We got a directory here
 						Log.Debug(filename.split('/')[-2])
@@ -282,7 +438,7 @@ class git(object):
 								Core.storage.ensure_dirs(path)
 							except Exception, e:
 								bError = True
-								Log.Debug("Unexpected Error")			
+								Log.Critical("Unexpected Error " + str(e))			
 				# Update the AllBundleInfo as well
 				pms.updateAllBundleInfoFromUAS()
 				pms.updateUASTypesCounters()
@@ -295,7 +451,7 @@ class git(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('UASCache is up to date')	
 		except Exception, e:
-			Log.Debug('Exception in updateUASCache ' + str(e)) 
+			Log.Critical('Exception in updateUASCache ' + str(e)) 
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -324,19 +480,31 @@ class git(object):
 
 	''' Download install/update from GitHub '''
 	def install(self, req):
-
 		''' Grap bundle name '''
 		def grapBundleName(url):	
 			gitName = url.rsplit('/', 1)[-1]
+
 			# Forgot to name git to end with .bundle?
 			if not gitName.endswith('.bundle'):
-				gitName = gitName + '.bundle'
+				bundleInfo = Dict['PMS-AllBundleInfo'].get(url, {})
+
+				if bundleInfo.get('bundle'):
+					# Use bundle name from plugin details
+					gitName = bundleInfo['bundle']
+				else:
+					# Fallback to just appending ".bundle" to the repository name
+					gitName = gitName + '.bundle'
+
 			gitName = Core.storage.join_path(self.PLUGIN_DIR, gitName)
 			Log.Debug('Bundle directory name digested as: %s' %(gitName))
 			return gitName
 
 		''' Save Install info to the dict '''
-		def saveInstallInfo(url, bundleName):
+		def saveInstallInfo(url, bundleName, branch):
+			# If this is WebTools itself, then don't save
+			if 'WebTools.bundle' in bundleName:
+				return
+
 			# Get the dict with the installed bundles, and init it if it doesn't exists
 			if not 'installed' in Dict:
 				Dict['installed'] = {}
@@ -354,6 +522,7 @@ class git(object):
 				if url.upper() == git['repo'].upper():
 					key = git['repo']
 					del git['repo']
+					git['branch'] = branch
 					git['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 					Dict['installed'][key] = git
 					bNotInUAS = False
@@ -367,10 +536,10 @@ class git(object):
 				pFile = Core.storage.join_path(self.PLUGIN_DIR, bundleName, 'Contents', 'Info.plist')
 				pl = plistlib.readPlist(pFile)
 				git = {}
-				git['title'] = bundleName[bundleName.rfind("/"):][1:][:-7]
+				git['title'] = os.path.basename(bundleName)[:-7]
 				git['description'] = ''
-				git['branch'] = ''
-				git['bundle'] = bundleName[bundleName.rfind("/"):][1:]
+				git['branch'] = branch
+				git['bundle'] = os.path.basename(bundleName)
 				git['identifier'] = pl['CFBundleIdentifier']
 				git['type'] = ['Unknown']
 				git['icon'] = ''
@@ -384,71 +553,222 @@ class git(object):
 			return
 
 		''' Download the bundle '''
-		def downloadBundle2tmp(url, bundleName):
+		def downloadBundle2tmp(url, bundleName, branch):
+			# Helper function
+			def removeEmptyFolders(path, removeRoot=True):
+				'Function to remove empty folders'
+				if not os.path.isdir(path):
+					return
+				# remove empty subfolders
+				files = os.listdir(path)
+				if len(files):
+					for f in files:
+						fullpath = os.path.join(path, f)
+						if os.path.isdir(fullpath):
+							removeEmptyFolders(fullpath)
+				# if folder empty, delete it
+				files = os.listdir(path)
+				if len(files) == 0 and removeRoot:
+					Log.Debug('Removing empty directory: ' + path)
+					os.rmdir(path)
+
 			try:
-				zipPath = url + '/archive/master.zip'
-				# Grap file from Github
-				zipfile = Archive.ZipFromURL(zipPath)
+				# Get the dict with the installed bundles, and init it if it doesn't exists
+				if not 'installed' in Dict:
+					Dict['installed'] = {}
+				zipPath = url + '/archive/' + branch + '.zip'
+				try:
+					# Grap file from Github
+					zipfile = Archive.ZipFromURL(zipPath)
+				except Exception, e:
+					Log.Critical('Exception in downloadBundle2tmp while downloading from GitHub: ' + str(e)) 
+					return False
 				# Create base directory
 				Core.storage.ensure_dirs(Core.storage.join_path(self.PLUGIN_DIR, bundleName))
 				# Make sure it's actually a bundle channel
 				bError = True
-				for filename in zipfile:
-					if '/Contents/Info.plist' in filename:
-						# We found the info.plist file here, but is the dir level okay?
-						count = filename.count('/')		
-						if count == 2:
+				bUpgrade = False
+				try:
+					for filename in zipfile:
+						if '/Contents/Info.plist' in filename:
+							pos = filename.find('/Contents/')
+							cutStr = filename[:pos]
 							bError = False
-						else:
-							Log.Critical('Tried to install ' + bundleName + ' but dir levels did not match')				
+							# so we hit the Info.plist file, and now we can make sure, that/if this is an upgrade or not
+							# So let's grap the identifier from the info file	of the bundle to be migrated	
+							# We start by temporary save that as Plug-ins/WT-tmp.plist
+							Core.storage.save(self.PLUGIN_DIR + '/WT-tmp.plist', zipfile[filename])
+							# Now read out the identifier
+							bundleId = plistlib.readPlist(self.PLUGIN_DIR + '/WT-tmp.plist')['CFBundleIdentifier']
+							Log.Debug('Identifier of the bundle to be installed is: ' + bundleId)
+							# Then nuke the file again
+							os.remove(self.PLUGIN_DIR + '/WT-tmp.plist')
+							# And finally check if it's already installed
+							for bundle in Dict['installed']:
+								if Dict['installed'][bundle]['identifier'] == bundleId:
+									bUpgrade = True
+									Log.Debug('Install is an upgrade')
+									break
+				except Exception, e:
+					Log.Critical('Exception in downloadBundle2tmp while walking the downloaded file to find the plist: ' + str(e)) 
+					return False					
+				if bUpgrade:
+					# Since this is an upgrade, we need to check, if the dev wants us to delete the Cache directory
+					if url in Dict['installed'].keys():
+						CacheDir = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', bundleId)
+						if 'DeleteCacheDir' in Dict['PMS-AllBundleInfo'][url]:
+							if Dict['PMS-AllBundleInfo'][url]['DeleteCacheDir']:
+								Log.Info('Deleting the Cache directory ' + CacheDir)
+								shutil.rmtree(CacheDir)
+							else:
+								Log.Info('Keeping the Cache directory ' + CacheDir)
+					# Since this is an upgrade, we need to check, if the dev wants us to delete the Data directory
+					if url in Dict['installed'].keys():
+						DataDir = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', bundleId)
+						if 'DeleteDataDir' in Dict['PMS-AllBundleInfo'][url]:
+							if Dict['PMS-AllBundleInfo'][url]['DeleteDataDir']:
+								Log.Info('Deleting the Data directory ' + DataDir)
+								shutil.rmtree(DataDir)
+							else:
+								Log.Info('Keeping the Data directory ' + DataDir)
+
 				if bError:
 					Core.storage.remove_tree(Core.storage.join_path(self.PLUGIN_DIR, bundleName))
 					Log.Debug('The bundle downloaded is not a Plex Channel bundle!')
 					raise ValueError('The bundle downloaded is not a Plex Channel bundle!')
 				bError = False
+				if not bUpgrade:
+					presentFiles = []
+
+				# Create temporary directory
+				tempDir = tempfile.mkdtemp(prefix='wt-')
+				extractDir = os.path.join(tempDir, os.path.basename(bundleName))
+
+				Log.Info('Extracting plugin to: %r', extractDir)
+
+				# Extract archive into temporary directory
 				for filename in zipfile:
-					# Walk contents of the zip, and extract as needed
 					data = zipfile[filename]
+
 					if not str(filename).endswith('/'):
-						# Pure file, so save it				
-						path = self.getSavePath(bundleName, filename)
-						Log.Debug('Extracting file' + path)
+						if cutStr not in filename:
+							continue
+
+						# Pure file, so save it	
+						path = extractDir + filename.replace(cutStr, '')
+						Log.Debug('Extracting file: ' + path)
 						try:
 							Core.storage.save(path, data)
 						except Exception, e:
 							bError = True
-							Log.Debug('Exception happend in downloadBundle2tmp: ' + str(e))
+							Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
 					else:
+						if cutStr not in filename:
+							continue
+
 						# We got a directory here
 						Log.Debug(filename.split('/')[-2])
 						if not str(filename.split('/')[-2]).startswith('.'):
 							# Not hidden, so let's create it
-							path = self.getSavePath(bundleName, filename)
-							Log.Debug('Extracting folder ' + path)
+							path = extractDir + filename.replace(cutStr, '')
+							Log.Debug('Extracting folder: ' + path)
 							try:
 								Core.storage.ensure_dirs(path)
 							except Exception, e:
 								bError = True
-								Log.Debug('Exception happend in downloadBundle2tmp: ' + str(e))
+								Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
+
+				if not bError and bUpgrade:
+					# Copy files that should be kept between upgrades ("keepFiles")
+					keepFiles = Dict['PMS-AllBundleInfo'].get(url, {}).get('keepFiles', [])
+
+					for filename in keepFiles:
+						sourcePath = bundleName + filename
+
+						if not os.path.exists(sourcePath):
+							Log.Debug('File does not exist: %r', sourcePath)
+							continue
+
+						destPath = extractDir + filename
+
+						Log.Debug('Copying %r to %r', sourcePath, destPath)
+
+						# Ensure directories exist
+						destDir = os.path.dirname(destPath)
+
+						try:
+							Core.storage.ensure_dirs(destDir)
+						except Exception, e:
+							Log.Warn('Unable to create directory: %r - %s', destDir, e)
+							continue
+
+						# Copy file into temporary directory
+						try:
+							shutil.copy2(sourcePath, destPath)
+						except Exception, e:
+							Log.Warn('Unable to copy file to: %r - %s', destPath, e)
+							continue
+
+					# Remove any empty directories in plugin
+					removeEmptyFolders(extractDir)
+
+				if not bError:
+					try:
+						# Delete current plugin
+						if os.path.exists(bundleName):
+							Log.Info('Deleting %r', bundleName)
+							shutil.rmtree(bundleName)
+
+						# Move updated bundle into "Plug-ins" directory
+						Log.Info('Moving %r to %r', extractDir, bundleName)
+						shutil.move(extractDir, bundleName)
+					except Exception, e:
+						bError = True
+						Log.Critical('Unable to update plugin: ' + str(e))
+
+					# Delete temporary directory
+					try:
+						shutil.rmtree(tempDir)
+					except Exception, e:
+						Log.Warn('Unable to delete temporary directory: %r - %s', tempDir, e)
+
 				if not bError:
 					# Install went okay, so save info
-					saveInstallInfo(url, bundleName)
+					saveInstallInfo(url, bundleName, branch)
+					# Install went okay, so let's make sure it get's registred
+					if bUpgrade:
+						try:
+							pFile = Core.storage.join_path(self.PLUGIN_DIR, bundleName, 'Contents', 'Info.plist')
+							pl = plistlib.readPlist(pFile)
+							HTTP.Request('http://127.0.0.1:32400/:/plugins/%s/restart' % pl['CFBundleIdentifier'], cacheTime=0, immediate=True)
+						except:
+							try:
+								HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart', immediate=True)
+							except:
+								pass
+					else:
+						try:
+							HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart', immediate=True)
+						except:
+							pass
 					return True
-			except:
+			except Exception, e:
+				Log.Critical('Exception in downloadBundle2tmp: ' + str(e)) 
 				return False
 
 		# Starting install main
 		Log.Debug('Starting install')
 		req.clear()
 		url = req.get_argument('url', 'missing')
+		branch = req.get_argument('branch', 'master')
 		if url == 'missing':
 			req.set_status(412)
 			req.finish("<html><body>Missing url of git</body></html>")
 			return req
 		# Get bundle name
 		bundleName = grapBundleName(url)
-		if downloadBundle2tmp(url, bundleName):
-			Log.Debug('Finished installing %s' %(bundleName))
+		if downloadBundle2tmp(url, bundleName, branch):
+			Log.Debug('Finished installing %s from branch %s' %(bundleName, branch))
 			Log.Debug('******* Ending install *******')
 			req.clear()
 			req.set_status(200)
@@ -456,9 +776,10 @@ class git(object):
 			req.finish('All is cool')
 			return req
 		else:
+			Log.Critical('Fatal error happened in install for :' + url)
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in install for :' + url)
+			req.finish('Fatal error happened in install for :' + url + ' with branch ' + branch)
 			return req
 
 	''' Get the last update time for a master branch. if UAS is set to True, then this is an internal req. for UAS '''
@@ -476,9 +797,22 @@ class git(object):
 			req.clear()
 			req.set_status(404)
 			req.finish("<html><body>Missing url of git</body></html>")
-			return req		
+			return req
+
+		# Retrieve current branch name
+		if Dict['installed'].get(url, {}).get('branch'):
+			# Use installed branch name
+			branch = Dict['installed'][url]['branch']
+		elif Dict['PMS-AllBundleInfo'].get(url, {}).get('branch'):
+			# Use branch name from bundle info
+			branch = Dict['PMS-AllBundleInfo'][url]['branch']
+		else:
+			# Otherwise fallback to the "master" branch
+			branch = 'master'
+
+		# Check for updates
 		try:
-			url += '/commits/master.atom'
+			url += '/commits/%s.atom' % branch
 			Log.Debug('URL is: ' + url)
 			response = Datetime.ParseDate(HTML.ElementFromURL(url).xpath('//entry')[0].xpath('./updated')[0].text).strftime("%Y-%m-%d %H:%M:%S")
 			Log.Debug('Last update for: ' + url + ' is: ' + str(response))
@@ -490,7 +824,7 @@ class git(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(str(response))
 		except Exception, e:
-			Log.Debug('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
+			Log.Critical('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -518,7 +852,7 @@ class git(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(results))
 		except:
-			Log.Debug('Fatal error happened in getListofBundles')
+			Log.Critical('Fatal error happened in getListofBundles')
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -526,7 +860,7 @@ class git(object):
 
 	''' Get release info for a bundle '''
 	def getReleaseInfo(self, req):
-		Log.Debug('Starting getReleaseInfo')
+		Log.Info('Starting getReleaseInfo')
 		try:
 			url = req.get_argument('url', 'missing')
 			if url == 'missing':
@@ -563,7 +897,7 @@ class git(object):
 			req.finish(response)
 			Log.Debug('Ending getReleaseInfo')
 		except:
-			Log.Debug('Fatal error happened in getReleaseInfo')
+			Log.Critical('Fatal error happened in getReleaseInfo')
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')

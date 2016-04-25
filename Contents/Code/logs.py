@@ -9,17 +9,33 @@
 import shutil
 import time
 import json
-import os
+import os, sys
 import zipfile
 
 class logs(object):
 	# Defaults used by the rest of the class
 	def __init__(self):
-		# Check if Log directory has been overwritten
 		try:
-			self.LOGDIR = os.environ['PLEX_MEDIA_SERVER_LOG_DIR']
-		except:
-			self.LOGDIR = os.path.join(Core.app_support_path, 'Logs')
+			if 'PLEX_MEDIA_SERVER_LOG_DIR' in os.environ:
+				self.LOGDIR = os.environ['PLEX_MEDIA_SERVER_LOG_DIR']
+			elif sys.platform.find('linux') == 0 and 'PLEXLOCALAPPDATA' in os.environ:
+				self.LOGDIR = os.path.join(os.environ['PLEXLOCALAPPDATA'], 'Plex Media Server', 'Logs')
+			elif sys.platform == 'win32':
+				if 'PLEXLOCALAPPDATA' in os.environ:
+					key = 'PLEXLOCALAPPDATA'
+				else:
+					key = 'LOCALAPPDATA'
+				self.LOGDIR = os.path.join(os.environ[key], 'Plex Media Server', 'Logs')
+			else:
+				self.LOGDIR = os.path.join(os.environ['HOME'], 'Library', 'Logs', 'Plex Media Server')
+				if not os.direxists(self.LOGDIR):
+					self.LOGDIR = os.path.join(Core.app_support_path, 'Logs')
+		except Exception, e:
+			Log.Debug('Fatal error happened in Logs list: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in Logs list: ' + str(e))
 		Log.Debug('Log Root dir is: ' + self.LOGDIR)
 
 	''' Grap the tornado req for a Get, and process it '''
@@ -67,12 +83,12 @@ class logs(object):
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Entry logged')
-		except:
-			Log.Debug('Fatal error happened in Logs entry')
+		except Exception, e:
+			Log.Debug('Fatal error happened in Logs entry: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in Logs entry')
+			req.finish('Fatal error happened in Logs entry: ' + str(e))
 
 	''' This metode will return a list of logfiles. accepts a filter parameter '''
 	def list(self, req):
@@ -96,12 +112,12 @@ class logs(object):
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(sorted(retFiles)))
-		except:
-			Log.Debug('Fatal error happened in Logs list')
+		except Exception, e:
+			Log.Debug('Fatal error happened in Logs list: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in Logs list')
+			req.finish('Fatal error happened in Logs list: ' + str(e))
 
 	''' This will return contents of the logfile as an array. Req. a parameter named fileName '''
 	def show(self, req):
@@ -129,12 +145,12 @@ class logs(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(retFile))
 			return req
-		except:
-			Log.Debug('Fatal error happened in Logs show')
+		except Exception, e:
+			Log.Debug('Fatal error happened in Logs show: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in Logs show')
+			req.finish('Fatal error happened in Logs show: ' + str(e))
 
 	''' This will download a zipfile with the complete log directory. if parameter fileName is specified, only that file will be downloaded, and not zipped'''
 	def download(self, req):

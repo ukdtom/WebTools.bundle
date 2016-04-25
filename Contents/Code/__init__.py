@@ -15,9 +15,10 @@ PREFIX = '/applications/webtools'
 
 NAME = 'WebTools'
 ICON = 'WebTools.png'
-VERSION = '2.1'
+VERSION = '2.2'
 AUTHTOKEN = ''
 SECRETKEY = ''
+DEBUGMODE = False
 
 
 #********** Imports needed *********
@@ -33,19 +34,25 @@ import datetime
 #********** Initialize *********
 def Start():
 	global SECRETKEY
-	PLUGIN_VERSION = VERSION	
-	print("********  Started %s on %s  **********" %(NAME  + ' V' + PLUGIN_VERSION, Platform.OS))
-	Log.Debug("*******  Started %s on %s  ***********" %(NAME + ' V' + PLUGIN_VERSION, Platform.OS))
+	global VERSION
+	global DEBUGMODE
+	# Switch to debug mode if needed
+	debugFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'debug')
+	DEBUGMODE = os.path.isfile(debugFile)
+	if DEBUGMODE:
+		VERSION = VERSION + ' ****** WARNING Debug mode on *********'
+		print("********  Started %s on %s  **********" %(NAME  + ' V' + VERSION, Platform.OS))
+	Log.Debug("*******  Started %s on %s  ***********" %(NAME + ' V' + VERSION, Platform.OS))
 	HTTP.CacheTime = 0
 	DirectoryObject.thumb = R(ICON)
-	ObjectContainer.title1 = NAME + ' V' + PLUGIN_VERSION 
+	ObjectContainer.title1 = NAME + ' V' + VERSION 
 	Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
 	ObjectContainer.view_group = 'List'
 	makeSettings()
 
 	# Get the secret key used to access the PMS framework ********** FUTURE USE ***************
 	SECRETKEY = genSecretKeyAsStr()
-	startWeb(SECRETKEY)
+	startWeb(SECRETKEY, VERSION, DEBUGMODE)
 
 ####################################################################################################
 # Generate secret key
@@ -89,6 +96,12 @@ def makeSettings():
 	# Create the pwdset entry
 	if Dict['pwdset'] == None:
 		Dict['pwdset'] = False
+	# Init the installed dict
+	if Dict['installed'] == None:
+		Dict['installed'] = {}
+	# Init the allBundle Dict
+	if Dict['PMS-AllBundleInfo'] == None:
+		Dict['PMS-AllBundleInfo'] = {}
 	return
 
 ####################################################################################################

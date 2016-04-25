@@ -25,28 +25,36 @@ class plexTV(object):
 		self.myHeader['X-Plex-Platform'] = Platform.OS
 
 	# Login to Plex.tv
-	def login(self, req):
-		Log.Debug('Start to auth towards plex.tv')
+	def login(self, user, pwd):
+		Log.Info('Start to auth towards plex.tv')
+
+		'''
 		user = req.get_argument('user', '')
 		if user == '':
+			Log.Error('Missing username')
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Missing username</body></html>")
 			return req
 		pwd = req.get_argument('pwd', '')
 		if pwd == '':
+			Log.Error('Missing password')
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Missing password</body></html>")
 			return req
+		'''
+
+
 		# Got what we needed, so let's logon
 		authString = String.Base64Encode('%s:%s' % (user, pwd))
 		self.myHeader['Authorization'] = 'Basic ' + authString
 		try:
 			token = XML.ElementFromURL(self.loginUrl, headers=self.myHeader, method='POST').xpath('//user')[0].get('authenticationToken')
-			Log.Debug('Authenticated towards plex.tv with success')				
+			Log.Info('Authenticated towards plex.tv with success')				
 			return token
 		except Ex.HTTPError, e:
+			Log.Critical('Login error: ' + str(e))
 			req.clear()
 			req.set_status(e.code)
 			req.finish(e)

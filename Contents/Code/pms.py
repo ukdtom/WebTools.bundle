@@ -9,6 +9,7 @@
 import shutil, os
 import time, json
 import io
+from xml.etree import ElementTree
 
 
 # Undate uasTypesCounters
@@ -44,11 +45,42 @@ def updateUASTypesCounters():
 #TODO fix updateAllBundleInfo
 # updateAllBundleInfo
 def updateAllBundleInfoFromUAS():
+	def updateInstallDict():
+		'''
+		# Debugging stuff
+		print 'Ged debugging stuff'
+		Dict['PMS-AllBundleInfo'].pop('https://github.com/ukdtom/plex2csv.bundle', None)
+		Dict['installed'].clear()
+		Dict.Save()
+		#Debug end
+		'''
+
+
+
+		# Start by creating a fast lookup cache for all uas bundles
+		uasBundles = {}
+		bundles = Dict['PMS-AllBundleInfo']
+		for bundle in bundles:
+			uasBundles[bundles[bundle]['identifier']] = bundle
+		# Now walk the installed ones
+		for installedBundle in Dict['installed']:
+			if not installedBundle.startswith('https://'):
+				Log.Info('Checking unknown bundle: ' + installedBundle + ' to see if it is part of UAS now')
+				if installedBundle in uasBundles:
+					# Get the installed date of the bundle formerly known as unknown :-)
+					installedBranch = Dict['installed'][installedBundle]['branch']
+					installedDate = Dict['installed'][installedBundle]['date']
+					# Add updated stuff to the dicts
+					Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['branch'] = installedBranch
+					Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['date'] = installedDate
+					Dict['installed'][uasBundles[installedBundle]] = Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]
+					# Remove old stuff from the Ditcs
+					Dict['PMS-AllBundleInfo'].pop(installedBundle, None)
+					Dict['installed'].pop(installedBundle, None)
+					Dict.Save()
+		return
+
 	try:
-		# Init the Dict
-		if Dict['PMS-AllBundleInfo'] == None:
-			Dict['PMS-AllBundleInfo'] = {}
-			Dict.Save()
 		# start by checking if UAS cache has been populated
 		jsonUAS = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
 		if os.path.exists(jsonUAS):
@@ -59,25 +91,38 @@ def updateAllBundleInfoFromUAS():
 			json_file.close()
 			# Convert to a JSON Object
 			gits = JSON.ObjectFromString(str(response))
-			for git in gits:
-				# Rearrange data
-				key = git['repo']
-				del git['repo']
-				# Check if already present, and if an install date also is there
-				if key in Dict['PMS-AllBundleInfo']:
-					jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
-					if 'date' not in jsonPMSAllBundleInfo:
-						git['date'] = ""
-				else:
-						git['date'] = ""
-				# Add/Update our Dict
-				Dict['PMS-AllBundleInfo'][key] = git
+			try:
+				for git in gits:
+					# Rearrange data
+					key = git['repo']				
+					installBranch = ''
+					# Check if already present, and if an install date also is there
+					installDate = ""
+					if key in Dict['PMS-AllBundleInfo']:
+						jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
+						if 'branch' in jsonPMSAllBundleInfo:
+							installBranch = Dict['PMS-AllBundleInfo'][key]['branch']
+
+
+
+						Log.Debug('Ged1: ' + installBranch)
+
+						if 'date' in jsonPMSAllBundleInfo:
+							installDate = Dict['PMS-AllBundleInfo'][key]['date']
+					del git['repo']
+					# Add/Update our Dict
+					Dict['PMS-AllBundleInfo'][key] = git
+					Dict['PMS-AllBundleInfo'][key]['branch'] = installBranch
+					Dict['PMS-AllBundleInfo'][key]['date'] = installDate
+			except Exception, e:
+				Log.Critical('Critical error in updateInstallDict while walking the gits: ' + str(e))
 			Dict.Save()
 			updateUASTypesCounters()
+			updateInstallDict()
 		else:
 			Log.Debug('UAS was sadly not present')
 	except Exception, e:
-		Log.Debug('Fatal error happened in updateAllBundleInfoFromUAS: ' + str(e))
+		Log.Critical('Fatal error happened in updateAllBundleInfoFromUAS: ' + str(e))
 
 class pms(object):
 	# Defaults used by the rest of the class
@@ -108,6 +153,10 @@ class pms(object):
 			return self.getAllBundleInfo(req)
 		elif function == 'getParts':
 			return self.getParts(req)
+		elif function == 'getSectionLetterList':
+			return self.getSectionLetterList(req)
+		elif function == 'getSectionByLetter':
+			return self.getSectionByLetter(req)
 		else:
 			req.clear()
 			req.set_status(412)
@@ -154,6 +203,30 @@ class pms(object):
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
+
+	''' Delete from an XML file '''
+	def DelFromXML(self, fileName, attribute, value):
+		Log.Debug('Need to delete element with an attribute named "%s" with a value of "%s" from file named "%s"' %(attribute, value, fileName))
+		with io.open(fileName, 'r') as f:
+			tree = ElementTree.parse(f)
+			root = tree.getroot()
+			mySubtitles = root.findall('.//Subtitle')
+			for Subtitles in root.findall("Language[Subtitle]"):
+				for node in Subtitles.findall("Subtitle"):
+					myValue = node.attrib.get(attribute)
+
+					print 'Ged9', myValue
+
+					if myValue:
+						if '_' in myValue:
+							drop, myValue = myValue.split("_")
+						if myValue == value:
+
+							print 'Ged10', value
+
+							Subtitles.remove(node)
+		tree.write(fileName, encoding='utf-8', xml_declaration=True)
+		return
 
 	# getParts
 	def getParts(self, req):
@@ -221,15 +294,10 @@ class pms(object):
 		Log.Debug('Got a call for getAllBundleInfo')
 		try:
 			req.clear()
-			if Dict['PMS-AllBundleInfo'] == None:
-				Log.Debug('getAllBundleInfo has not been populated yet')
-				req.set_status(204)
-				req.finish('getAllBundleInfo has not been populated yet')
-			else:
-				Log.Debug('Returning: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(Dict['PMS-AllBundleInfo']))
+			Log.Debug('Returning: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(Dict['PMS-AllBundleInfo']))
 		except Exception, e:
 			Log.Debug('Fatal error happened in getAllBundleInfo: ' + str(e))
 			req.clear()
@@ -255,12 +323,12 @@ class pms(object):
 								bundleInstallDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, pluginDir)
 					Log.Debug('Bundle directory name digested as: %s' %(bundleInstallDir))
 					shutil.rmtree(bundleInstallDir)
-				except:
-					Log.Debug("Unable to remove the bundle directory.")
+				except Exception, e:
+					Log.Critical("Unable to remove the bundle directory: " + str(e))
 					req.clear()
 					req.set_status(500)
 					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish('Fatal error happened when trying to remove the bundle directory.')
+					req.finish('Fatal error happened when trying to remove the bundle directory: ' + str(e))
 				try:
 					shutil.rmtree(bundleDataDir)
 				except:
@@ -283,14 +351,18 @@ class pms(object):
 				Dict['installed'].pop(url, None)
 				# remove entry from PMS-AllBundleInfo dict
 				if url.startswith('https://'):
-					# UAS bundle, so only nuke date field
-					git = Dict['PMS-AllBundleInfo'][url]
-					git['date'] = ''
-					Dict['PMS-AllBundleInfo'][url] = git
-					Dict.Save()
+					if 'Unknown' in Dict['PMS-AllBundleInfo'][url]['type']:
+						# Manual install or migrated, so nuke the entire key
+						Dict['PMS-AllBundleInfo'].pop(url, None)
+					else:
+						# UAS bundle, so only nuke date field
+						git = Dict['PMS-AllBundleInfo'][url]
+						git['date'] = ''
+						Dict['PMS-AllBundleInfo'][url] = git
 				else:
 					# Manual install or migrated, so nuke the entire key
 					Dict['PMS-AllBundleInfo'].pop(url, None)
+				Dict.Save()
 				updateUASTypesCounters()
 
 # TODO
@@ -376,60 +448,48 @@ class pms(object):
 					req.finish('Hmmm....This is invalid, and most likely due to trying to delete an embedded sub :-)')
 				else:
 					if filePath.startswith('media://'):
-						'''
-	Here we look at an agent provided subtitle, so this part of the function 
-	has been crippled on purpose
-						'''
+						# Path to symblink
 						filePath = filePath.replace('media:/', os.path.join(Core.app_support_path, 'Media', 'localhost'))
 						# Subtitle name
 						agent, sub = filePath.split('_')
 						tmp, agent = agent.split('com.')
 						# Agent used
 						agent = 'com.' + agent				
-						filePath2 = filePath.replace('Contents', 'Subtitle Contributions')
+						filePath2 = filePath.replace('Contents', os.path.join('Contents', 'Subtitle Contributions'))
 						filePath2, language = filePath2.split('Subtitles')
 						language = language[1:3]	
 						filePath3 = os.path.join(filePath2[:-1], agent, language, sub)
-
-						''' This is removed from the code, due to the fact, that Plex will re-download right after the deletion
-
 						subtitlesXMLPath, tmp = filePath.split('Contents')
 						agentXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitle Contributions', agent + '.xml')							
 						subtitlesXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitles.xml')
 						self.DelFromXML(agentXMLPath, 'media', sub)
 						self.DelFromXML(subtitlesXMLPath, 'media', sub)
-						agentXML = XML.ElementFromURL('"' + agentXMLPath + '"')
-						#Let's refresh the media
-						url = 'http://127.0.0.1:32400/library/metadata/' + params['param2'] + '/refresh&force=1'
-						refresh = HTTP.Request(url, immediate=False)
-
 						# Nuke the actual file
 						try:
 							# Delete the actual file
 							os.remove(filePath)
-							print 'Removing: ' + filePath
-
+							# Delete the symb link
 							os.remove(filePath3)
-							print 'Removing: ' + filePath3
-							# Refresh the subtitles in Plex
-							self.getSubTitles(params)
-						except:
-							return 500
-						'''
-
+							#TODO: Refresh is sadly not working for me, so could use some help here :-(
+							#Let's refresh the media
+							url = 'http://127.0.0.1:32400/library/metadata/' + key + '/refresh?force=1'
+							HTTP.Request(url, cacheTime=0, immediate=True, method="PUT")
+						except Exception, e:
+							Log.Critical('Exception while deleting an agent based sub: ' + str(e))
+							req.clear()
+							req.set_status(404)
+							req.set_header('Content-Type', 'application/json; charset=utf-8')
+							req.finish('Exception while deleting an agent based sub: ' + str(e))
 						retValues = {}
 						retValues['FilePath']=filePath3
 						retValues['SymbLink']=filePath
-
 						Log.Debug('Agent subtitle returning %s' %(retValues))
 						req.clear()
 						req.set_status(200)
 						req.set_header('Content-Type', 'application/json; charset=utf-8')
 						req.finish(json.dumps(retValues))
-						return req
 					elif filePath.startswith('file://'):
 						# We got a sidecar here, so killing time.....YES
-
 						filePath = filePath.replace('file://', '')
 						try:
 							# Delete the actual file
@@ -441,13 +501,13 @@ class pms(object):
 							req.set_status(200)
 							req.set_header('Content-Type', 'application/json; charset=utf-8')
 							req.finish(json.dumps(retVal))
-						except:
+						except Exception, e:
 							# Could not find req. subtitle
-							Log.Debug('Fatal error happened in delSub, when deleting %s' %(filePath))
+							Log.Debug('Fatal error happened in delSub, when deleting %s : %s' %(filePath, str(e)))
 							req.clear()
 							req.set_status(404)
 							req.set_header('Content-Type', 'application/json; charset=utf-8')
-							req.finish('Fatal error happened in delSub, when deleting %s' %(filePath))
+							req.finish('Fatal error happened in delSub, when deleting %s : %s' %(filePath, str(e)))
 			else:
 				# Could not find req. subtitle
 				Log.Debug('Fatal error happened in delSub, subtitle not found')
@@ -455,12 +515,12 @@ class pms(object):
 				req.set_status(404)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Could not find req. subtitle')
-		except:
-			Log.Debug('Fatal error happened in delSub')
+		except Exception, e:
+			Log.Debug('Fatal error happened in delSub: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in delSub')
+			req.finish('Fatal error happened in delSub: ' + str(e))
 
 	''' TVShow '''
 	def TVshow(self, req):
@@ -731,6 +791,99 @@ class pms(object):
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in getSubtitles')
+
+	''' get section letter-list '''
+	def getSectionLetterList(self, req):
+		Log.Debug('Section requested')
+		try:
+			key = req.get_argument('key', 'missing')
+			Log.Debug('Section key is %s' %(key))
+			if key == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing key of section')
+				return req
+			# Got all the needed params, so lets grap the list
+			myURL = 'http://127.0.0.1:32400/library/sections/' + key + '/firstCharacter'
+			resultJson = { }			
+			sectionLetterList = XML.ElementFromURL(myURL).xpath('//Directory')
+			for sectionLetter in sectionLetterList:
+				resultJson[sectionLetter.get('title')] = {
+													'key' : sectionLetter.get('key'), 'size': sectionLetter.get('size')}					
+			Log.Debug('Returning %s' %(resultJson))
+			req.clear()
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(resultJson, sort_keys=True))
+		except Exception, e:
+			Log.Debug('Fatal error happened in getSectionLetterList ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in getSectionLetterList: ' + str(e))
+
+	''' get getSectionByLetter '''
+	def getSectionByLetter(self,req):
+		Log.Debug('getSectionByLetter requested')
+		try:
+			key = req.get_argument('key', 'missing')
+			Log.Debug('Section key is %s' %(key))
+			if key == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing key of section')
+				return req
+			start = req.get_argument('start', 'missing')
+			Log.Debug('Section start is %s' %(start))
+			if start == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing start of section')
+				return req
+			size = req.get_argument('size', 'missing')
+			Log.Debug('Section size is %s' %(size))
+			if size == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing size of section')
+				return req
+			letterKey = req.get_argument('letterKey', 'missing')
+			Log.Debug('letterKey is %s' %(letterKey))
+			if letterKey == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing letterKey')
+				return req
+			getSubs = req.get_argument('getSubs', 'missing')
+			# Got all the needed params, so lets grap the contents
+			try:
+				myURL = 'http://127.0.0.1:32400/library/sections/' + key + '/firstCharacter/' + letterKey + '?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
+				rawSection = XML.ElementFromURL(myURL)
+				Section=[]
+				for media in rawSection:
+					if getSubs != 'true':
+						media = {'key':media.get('ratingKey'), 'title':media.get('title')}
+					else:
+						subtitles = self.getSubtitles(req, mediaKey=media.get('ratingKey'))
+						media = {'key':media.get('ratingKey'), 'title':media.get('title'), 'subtitles':subtitles}
+					Section.append(media)					
+				Log.Debug('Returning %s' %(Section))
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(Section))
+			except Exception, e:
+				Log.Debug('Fatal error happened in getSectionByLetter: ' + str(e))
+				req.clear()
+				req.set_status(500)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish('Fatal error happened in getSectionByLetter: ' + str(e))
+		except Exception, e:
+			Log.Debug('Fatal error happened in getSectionByLetter: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in getSectionByLetter: ' + str(e))
 
 	''' get section '''
 	def getSection(self,req):

@@ -9,7 +9,10 @@ var webtools = {
 		['subtitlemgmt', 'Subtitle Management'],
 		['logviewer', 'LogViewer/Downloader Tool'],
 		['install', 'Unsupported AppStore']
+		//['findunmatched','FindUnmatched']
 	],
+	stylesheets: [],
+	active_stylesheet: '',
 	active_module: '',
 	functions: {},
 	version: 0,
@@ -28,7 +31,22 @@ var webtools = {
 	longermodulestart: false,
 	loading: function() {},
 	changelog: '',
-	credits: ''
+	credits: '',
+	install_WT: function() {},
+	wait_update: function () {},
+	languagecodes: {},
+	// Search a table that has the tr with an id tag unique for each row
+	keywordarray: [],
+	currentkeyword: 0,
+  searchkeyword: function () {},
+	next: function () {},
+	previous: function () {},
+	clearresult: function () {},
+	change_theme_display: function () {},
+	change_theme_work: function() {},
+	wait_restart: function () {},
+	factory_reset_display: function() {},
+	factory_reset_work: function() {}
 };
 
 // Webtools function
@@ -49,6 +67,10 @@ webtools.list_modules.inline([
 						$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.changepassword_display();" >Change Password</a></li>');
 					}
 					$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.updates_check_display();" >Check for Webtools Updates</a></li>');
+					$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.change_theme_display();" >Change Theme</a></li>');
+					$('#OptionsMenu').append('<li><a class="customlink" onclick="javascript:webtools.show_log(\'changelog\')">View Changelog</a></li>');
+					$('#OptionsMenu').append('<li><a class="customlink" onclick="javascript:webtools.factory_reset_display()">Factory Reset</a></li>');
+					
 					webtools.defaultoptionsmenu = $('#OptionsMenu').html();
 					callback('VersionFetch:Success', activatemodulename);
 				},
@@ -59,8 +81,78 @@ webtools.list_modules.inline([
 				}
 			});
 		},
+		function (callback, activatemodulename) {
+			
+			$.ajax({
+			///webtools2?module=settings&function=getSettings
+			url: '/webtools2?module=wt&function=getCSS',
+			cache: false,
+			dataType: 'JSON',
+			success: function(data,textStatus, xhr) {
+				if (xhr.status == 200) {
+					webtools.stylesheets = data;
+				} else {
+					webtools.stylesheets = [];
+				}
+				
+				callback('SettingsFetch:Success');
+			},
+			error: function(data) {
+				webtools.active_stylesheet = 'default.css';
+				webtools.log('No custom CSSTheme setting found.','Core');
+				callback('SettingsFetch:Success');
+			}
+		});
+		
+		//	callback('StylesheetSettings:Success', activatemodulename);
+		},
+		function (callback, activatemodulename) {
+			
+			$.ajax({
+			///webtools2?module=settings&function=getSettings
+			url: '/webtools2?module=settings&function=getSetting&name=wt_csstheme',
+			cache: false,
+			dataType: 'JSON',
+			success: function(data) {
+				webtools.active_stylesheet = data;
+				if (data !== 'default.css') {
+					webtools.log('Found custom CSSTheme file setting (custom_themes/' + data + '). Loading it.','Core');
+					$('head').append('<link id="custom_theme_stylesheet" rel="stylesheet" href="custom_themes/' + data + '" type="text/css" />');
+				}
+				
+				callback('SettingsFetch:Success');
+			},
+			error: function(data) {
+				webtools.active_stylesheet = 'default.css';
+				webtools.log('No custom CSSTheme setting found.','Core');
+				callback('SettingsFetch:Success');
+			}
+		});
+		
+		//	callback('StylesheetSettings:Success', activatemodulename);
+		},
 		function(callback, activatemodulename) {
-			webtools.listlogfiles(callback, activatemodulename);
+			//Name:VersionFetch
+			webtools.loading();
+			$.ajax({
+				url: '/webtools2?module=language&function=get3CodeLangList',
+				cache: false,
+				dataType: 'JSON',
+				success: function(data) {
+					webtools.languagecodes = data;
+					//console.log(webtools.languagecodes);
+					callback('LanguageCodes:Success', activatemodulename);
+				},
+				error: function(data) {
+					data.url = this.url;
+					webtools.display_error('Failed fetching the languagecodes from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+					webtools.list_modules.abort('Error: ' + data.statusText);
+				}
+			});
+		},
+		function(callback, activatemodulename) {
+			callback('LogfileNamesFetch:Ignored', activatemodulename);
+			//webtools.listlogfiles(callback, activatemodulename);
 		},
 		function(callback, activatemodulename) {
 			$.ajax({
@@ -202,7 +294,7 @@ webtools.save_options = function() {
 };
 
 webtools.listlogfiles = function(callback, activatemodulename) {
-
+ // Currently unused
 	webtools.loading();
 	//Name:LogfileNamesFetch
 	$("#LogfilesMenu").html('');
@@ -222,6 +314,7 @@ webtools.listlogfiles = function(callback, activatemodulename) {
 
 			$('#LogfilesMenu').append('<li><a class="customlink" href="/webtools2?module=logs&function=download">Download all logfiles as Zip</a></li>');
 			$('#LogfilesMenu').append('<li><a class="customlink" onclick="javascript:webtools.listlogfiles();">Refresh Logfilelist</a></li>');
+
 			if (typeof(callback) != 'undefined') {
 				callback('LogfileNamesFetch:Success', activatemodulename);
 			} else {
@@ -245,6 +338,9 @@ webtools.log = function(LogEntry, Source) {
 	if (typeof(Source) == 'undefined') {
 		Source = webtools.active_module;
 	}
+	if (Source.length === 0) {
+		Source = 'Core';
+	}
 
 	$.ajax({
 		url: '/webtools2?module=logs&function=entry&text=[' + Source + '] ' + encodeURIComponent(LogEntry),
@@ -258,58 +354,108 @@ webtools.log = function(LogEntry, Source) {
 };
 
 webtools.show_log = function(filename) {
-	webtools.loading();
-	$('#ContentHeader').html('Logfile: ' + filename);
+	webtools.loading();	
 	$('#ContentBody').html('Fetching Logfile..');
 	$('#ContentFoot').html('');
 	$('#navfoot').html('');
+	if (filename == 'changelog') {
+		$('#ContentHeader').html('Viewing Changelog');
+		$.ajax({
+			url: '/changelog.txt',
+			cache: false,
+			dataType: 'text',
+			success: function(logs) {
+				logs = logs.split('\n');
+				//$('#ContentBody').html(logs.join('<br>'));  
+				var logtable = '<table class="table table-bordered smallfont" id="logtable">';
+				//logtable += '<tr><th>Changelog</th></tr>';
+				if (logs.length > 0) {
+					for (var i = 0; i < logs.length; i++) {
+						if (logs[i].length === 0) {
+							logs[i] = '&nbsp;';
+						}
 
-	$.ajax({
-		url: '/webtools2',
-		data: {
-			'module': 'logs',
-			'function': 'show',
-			'fileName': filename
-		},
-		type: 'GET',
-		cache: false,
-		dataType: 'JSON',
-		success: function(logs) {
-			//$('#ContentBody').html(logs.join('<br>'));  
-			var logtable = '<table class="table table-bordered smallfont">';
-			logtable += '<tr><th class="td-small">Row#</th><th>Logentry</th></tr>';
-			if (logs.length > 0) {
-				for (var i = 0; i < logs.length; i++) {
+						if (logs[i] != '####') {
+							logs[i] = logs[i].replace('\t', '<span style="padding-left:2em"></span>');
+							if (logs[i].search(/\d\d\d\d[-]\d\d[-]\d\d/) !== -1) {
+								//logs[i] = '<b>' + logs[i] + '</b>';
+								logtable += '<tr><th>' + logs[i] + '</th></tr>';
+							} else if (logs[i][logs[i].length - 1] == ':') {
+								logtable += '<tr><td><b>' + logs[i] + '</b></td></tr>';
+							} else {
+								logtable += '<tr><td>' + logs[i] + '</td></tr>';
+							}
 
-					var tdnumber = 'bg-warning';
-					var tdtext = '';
-
-					if (logs[i].toLowerCase().indexOf('critical') != -1) {
-						tdnumber = 'bg-danger';
-						tdtext = 'bg-danger';
+						}
 					}
-					if (logs[i].toLowerCase().indexOf('error') != -1) {
-						tdnumber = 'bg-info';
-						tdtext = 'bg-info';
-					}
-
-					logtable += '<tr><td class="' + tdnumber + '">#' + (i + 1) + '</td><td class="' + tdtext + '">' + logs[i] + '</td></tr>';
+				} else {
+					logtable += '<tr><td class="bg-warning">#-</td><td>Empty file</td></tr>';
 				}
-			} else {
-				logtable += '<tr><td class="bg-warning">#-</td><td>Empty file</td></tr>';
+				logtable += '</table>';
+
+				$('#ContentBody').html(logtable);
+				$('#ContentFoot').html('');
+				$('.modal').modal('hide');
+			},
+			error: function(logs) {
+				$('#ContentBody').html(logs);
+				$('.modal').modal('hide');
 			}
-			logtable += '</table>';
+		});
+	} else {
+		$('#ContentHeader').html('Logfile: ' + filename);
+		$('#navfoot').html('<input type="text" id="webtoolssearchKeyword" onkeydown="if (event.keyCode == 13) { webtools.searchkeyword(\'logtable\'); }"><button class="btn btn-default btn-xs" onclick="webtools.searchkeyword(\'logtable\')">Search keyword</button> <button class="btn btn-default btn-xs" onclick="webtools.previous()" id="webtoolssearchbuttonprevious">Previous</button><button class="btn btn-default btn-xs" onclick="webtools.next()" id="webtoolssearchbuttonnext">Next</button> <button class="btn btn-default btn-xs" onclick="webtools.jumptotop()">Jump to Top</button> <span id="webtoolssearchkeywordresult"></span>');
+		webtools.clearresult();
+		$.ajax({
+			url: '/webtools2',
+			data: {
+				'module': 'logs',
+				'function': 'show',
+				'fileName': filename
+			},
+			type: 'GET',
+			cache: false,
+			dataType: 'JSON',
+			success: function(logs) {
+				//$('#ContentBody').html(logs.join('<br>'));  
+				var logtable = '<table class="table table-bordered smallfont" id="logtable">';
+				logtable += '<tr><th class="td-small">Row#</th><th>Logentry</th></tr>';
+				if (logs.length > 0) {
+					for (var i = 0; i < logs.length; i++) {
 
-			$('#ContentBody').html(logtable);
-			$('#ContentFoot').html('<a href="/webtools2?module=logs&function=download&fileName=' + filename + '">Download Logfile</a>');
-			$('.modal').modal('hide');
-		},
-		error: function(logs) {
-			$('#ContentBody').html(logs);
-			$('.modal').modal('hide');
-		}
-	});
+						var tdnumber = 'bg-warning';
+						var tdtext = '';
 
+						if (logs[i].toLowerCase().indexOf('critical') != -1) {
+							tdnumber = 'bg-danger';
+							tdtext = 'bg-danger';
+						}
+						if (logs[i].toLowerCase().indexOf('exception') != -1) {
+							tdnumber = 'bg-danger';
+							tdtext = 'bg-danger';
+						}
+						if (logs[i].toLowerCase().indexOf('error') != -1) {
+							tdnumber = 'bg-info';
+							tdtext = 'bg-info';
+						}
+
+						logtable += '<tr id="'+ (i + 1) +'"><td class="' + tdnumber + '">#' + (i + 1) + '</td><td class="' + tdtext + '">' + logs[i] + '</td></tr>';
+					}
+				} else {
+					logtable += '<tr><td class="bg-warning">#-</td><td>Empty file</td></tr>';
+				}
+				logtable += '</table>';
+
+				$('#ContentBody').html(logtable);
+				$('#ContentFoot').html('<a href="/webtools2?module=logs&function=download&fileName=' + filename + '">Download Logfile</a>');
+				$('.modal').modal('hide');
+			},
+			error: function(logs) {
+				$('#ContentBody').html(logs);
+				$('.modal').modal('hide');
+			}
+		});
+	}
 
 
 };
@@ -411,12 +557,15 @@ webtools.updates_check = function() {
 				switch (compare(webtools.version, data.tag_name)) {
 					case 0:
 						infoarray.push('You are on the latest and greatest!');
+						$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.install_WT();">Re-Install WebTools</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
 						break;
 					case -1:
 						infoarray.push('You\'ve fallen behind. Time to update to the greatest!');
+						$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.install_WT();">Update WebTools</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
 						break;
 					case 1:
 						infoarray.push('You are ahead of time. Your version is newer than the one on Github.');
+						$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.install_WT();">Re-Install WebTools</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
 						break;
 				}
 			}
@@ -426,16 +575,71 @@ webtools.updates_check = function() {
 			$('#updateinfo').html('An error occured while trying to fetch information from Github. Try again in a little while.');
 		}
 	});
-};
+}
+
+webtools.install_WT = function () {
+	
+	$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Installing WebTools');
+	$('#myModalBody').html('<p id="updateinfo">Installation in progress.</p>');
+	$('#myModalFoot').html('');
+	$.ajax({
+		url: '/webtools2?module=git&function=upgradeWT',
+		type:'PUT',
+		dataType:'text',
+		success: function (data) {
+			$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Waiting for WebTools');
+			$('#myModalBody').html('<p id="updateinfo">Waiting for WebTools to come online. Will automatically return you to start when ready.</p>');
+			$('#myModalFoot').html('');
+			
+			console.log('success');
+			console.log(data);
+			setTimeout(webtools.wait_restart,5000);
+			// Call webtools_wait_for_reload();
+			// That function is an ajax call for /, if 404, wait for a few seconds, then try again. Otherwise, notify user of updated completed.
+		},
+		error: function (data) {
+			console.log('error');
+			console.log(data);
+			//webtools.wait_update();
+			// Notify user
+		}
+	})
+}
+
+webtools.wait_restart = function () {
+	$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Waiting for WebTools');
+	$('#myModalBody').html('<p id="updateinfo">Waiting for WebTools to come online. Will automatically return you to start when ready.</p>');
+	$('#myModalFoot').html('');
+	$('#myModal').modal('show');
+	$.ajax({
+		url:'/',
+		type: 'GET',
+		success: function () {
+			window.location.href='/';
+		},
+		error: function () {
+			setTimeout(webtools.wait_restart,1000);
+		}
+	})
+}
 
 $(function(ready) {
 	$('#myModal').on('hidden.bs.modal', function(e) {
-		console.log('myModal Hidden');
+		//console.log('myModal Hidden');
 	})
+	
+	$(document).on('change','#custom_theme_selectbox',function() {
+		
+
+	$('#custom_theme_stylesheet').remove();
+		if ( $('#custom_theme_selectbox').val() !== 'default.css') {
+			$('head').append('<link id="custom_theme_stylesheet" rel="stylesheet" href="custom_themes/' + $('#custom_theme_selectbox').val() + '" type="text/css" />');
+		}
+	});
 })
 
 webtools.loading = function(CustomMessage) {
-	console.log('myModal Requested');
+	//console.log('myModal Requested');
 	$('#myModalLabel').html('Loading');
 	if (typeof(CustomMessage) == 'undefined') {
 		$('#myModalBody').html('Loading, please wait.');
@@ -449,7 +653,7 @@ webtools.loading = function(CustomMessage) {
 			keyboard: false,
 			backdrop: 'static'
 		});
-		console.log('myModal, to be shown NOW');
+		//console.log('myModal, to be shown NOW');
 		$('#myModal').modal('show');
 	}
 }
@@ -501,4 +705,182 @@ webtools.dynamicSort = function(property) {
 		var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
 		return result * sortOrder;
 	}
+}
+
+webtools.searchkeyword = function(tablename) {
+	webtools.keywordarray = [];
+	webtools.currentkeyword = 0;
+	$('#webtoolssearchkeywordresult').html('');
+	
+	if ($('#webtoolssearchKeyword').val().length > 0) {
+		$('#'+tablename + ' tr').each(function (index,value) {
+			var children = $(this).children()
+			$(children[1]).removeClass('bg-info');
+			$(children[1]).removeClass('keyword');
+			if (typeof($(this).context) != 'undefined') {
+				if ($(':nth-child(2)', this).html().toLowerCase().indexOf($('#webtoolssearchKeyword').val().toLowerCase()) != -1) {
+					$(children[1]).addClass('bg-info');
+					$(children[1]).addClass('keyword');
+					webtools.keywordarray.push($(this).attr('id'));
+				}
+			}
+		})
+		if (webtools.keywordarray.length > 0) {
+			$('.bg-primary').addClass('bg-info');
+			$('.bg-primary').removeClass('bg-primary');
+			var targetrow = $('#' + webtools.keywordarray[webtools.currentkeyword]).children();
+			$(targetrow[1]).addClass('bg-primary');
+			$(targetrow[1]).removeClass('bg-info');
+			
+			$('html, body').animate({
+				scrollTop: ($('#' + webtools.keywordarray[webtools.currentkeyword]).offset().top - 60)
+			});
+			
+			$('#webtoolssearchbuttonnext').prop('disabled',false);
+			$('#webtoolssearchbuttonprevious').prop('disabled',false);
+			// Enable Next / Previous buttons
+		} else {
+			$('#webtoolssearchbuttonnext').prop('disabled',true);
+			$('#webtoolssearchbuttonprevious').prop('disabled',true);
+		}
+		$('#webtoolssearchkeywordresult').html('Found ' + webtools.keywordarray.length + ' Rows');
+	}
+}
+
+webtools.next = function () {
+	if (webtools.keywordarray.length > 0) {
+		webtools.currentkeyword++;
+		if (webtools.currentkeyword >= webtools.keywordarray.length) {
+			webtools.currentkeyword = 0;
+		}
+		//console.log('Jumping to: ' + logviewer.currentkeyword );
+		$('.bg-primary').addClass('bg-info');
+		$('.bg-primary').removeClass('bg-primary');
+		var targetrow = $('#' + webtools.keywordarray[webtools.currentkeyword]).children();
+		$(targetrow[1]).addClass('bg-primary');
+		$(targetrow[1]).removeClass('bg-info');
+		
+		$('html, body').animate({
+				scrollTop: ($('#' + webtools.keywordarray[webtools.currentkeyword]).offset().top - 60)
+			});
+	}
+}
+
+webtools.previous = function () {
+	if (webtools.keywordarray.length > 0) {
+		webtools.currentkeyword--;
+		if (webtools.currentkeyword < 0) {
+			webtools.currentkeyword = webtools.keywordarray.length-1;
+		}
+
+		//console.log('Jumping to: ' + logviewer.currentkeyword );
+		$('.bg-primary').addClass('bg-info');
+		$('.bg-primary').removeClass('bg-primary');
+		var targetrow = $('#' + webtools.keywordarray[webtools.currentkeyword]).children();
+		$(targetrow[1]).addClass('bg-primary');
+		$(targetrow[1]).removeClass('bg-info');
+		
+		$('html, body').animate({
+				scrollTop: ($('#' + webtools.keywordarray[webtools.currentkeyword]).offset().top - 60)
+			});
+	}
+}
+
+webtools.jumptotop = function () {
+	$('html, body').animate({
+				scrollTop: (0)
+			});
+}
+
+webtools.clearresult = function () {
+	webtools.keywordarray = [];
+	webtools.currentkeyword = 0;
+	$('#webtoolssearchkeywordresult').html('');
+	$('#webtoolssearchKeyword').val('');
+	$('#webtoolssearchbuttonnext').prop('disabled',true);
+	$('#webtoolssearchbuttonprevious').prop('disabled',true);
+}
+
+webtools.change_theme_display = function () {
+	
+	var theme_dropdown = ['<select id="custom_theme_selectbox">'];
+	theme_dropdown.push('<option value="default.css">default.css');
+	webtools.stylesheets.forEach(function(theme) {
+		theme_dropdown.push('<option value="' + theme + '">' + theme);
+	})
+	theme_dropdown.push('</select>');
+	$('#myModalLabel').html('<button onclick="webtools.change_theme_reset();" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Change Theme');
+	$('#myModalBody').html('Select one of the available themes to use it:<br>' + theme_dropdown.join('\n') + '<br>Note: Changing theme in the selectbox will automatically enable it as a preview. Upon closing this modal, it will revert back to your settings.');
+	$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.change_theme_work();">Set Theme</button> <button onclick="webtools.change_theme_reset();" type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+	$('#custom_theme_selectbox').val(webtools.active_stylesheet);
+	$('#myModal').modal('show');
+}
+
+webtools.change_theme_work = function() {
+	$.ajax({
+		url: '/webtools2?module=settings&function=putSetting&name=wt_csstheme&value=' + $('#custom_theme_selectbox').val(),
+		type:'PUT',
+		dataType:'text',
+		success: function (data) {
+			webtools.active_stylesheet = $('#custom_theme_selectbox').val();
+			$('#custom_theme_stylesheet').remove();
+			if (webtools.active_stylesheet !== 'default.css') {
+				$('head').append('<link id="custom_theme_stylesheet" rel="stylesheet" href="custom_themes/' + $('#custom_theme_selectbox').val() + '" type="text/css" />');
+			}
+			$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Change Theme');
+			$('#myModalBody').html('Active theme has been changed.');
+			$('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+			// Call webtools_wait_for_reload();
+			// That function is an ajax call for /, if 404, wait for a few seconds, then try again. Otherwise, notify user of updated completed.
+		},
+		error: function (data) {
+			$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Change Theme');
+			$('#myModalBody').html('An error occured, check the logs for more information.');
+			$('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+		}
+	})
+}
+
+webtools.change_theme_reset = function() {
+	$('#custom_theme_stylesheet').remove();	
+	if (webtools.active_stylesheet !== 'default.css') {
+		$('head').append('<link id="custom_theme_stylesheet" rel="stylesheet" href="custom_themes/' + webtools.active_stylesheet + '" type="text/css" />');
+	}
+	//$('#custom_theme_stylesheet').prop('href',webtools.active_stylesheet);
+}
+
+
+webtools.factory_reset_display = function() {
+	// /webtools2?module=wt&function=reset
+	$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Factory Reset');
+	$('#myModalBody').html('Are you sure you want to do a factory reset of WebTools?<br><br>Note that this will clear any settings and data related to WebTools and that any channels previously managed by UAS needs to be migrated after reset.');
+	$('#myModalFoot').html('<button type="button" onclick="webtools.factory_reset_work()" class="btn btn-default">Yes</button> <button type="button" class="btn btn-default" data-dismiss="modal">No</button>');
+	$('#myModal').modal('show');
+}
+
+webtools.factory_reset_work = function () {
+	
+	$.ajax({
+		url: '/webtools2?module=wt&function=reset',
+		type: 'POST',
+		success: function() {
+			$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Waiting for WebTools');
+			$('#myModalBody').html('<p id="updateinfo">Waiting for WebTools to come online. Will automatically return you to start when ready.</p>');
+			$('#myModalFoot').html('');
+			
+			console.log('success');
+			console.log(data);
+			setTimeout(webtools.wait_restart,2000);
+		},
+		error: function (data) {
+			$('#myModalLabel').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> Waiting for WebTools');
+			$('#myModalBody').html('<p id="updateinfo">Waiting for WebTools to come online. Will automatically return you to start when ready.</p>');
+			$('#myModalFoot').html('');
+			
+			console.log('success');
+			console.log(data);
+			setTimeout(webtools.wait_restart,2000);
+		}
+		
+	})
 }
