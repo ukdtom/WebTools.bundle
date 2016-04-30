@@ -15,7 +15,7 @@ PREFIX = '/applications/webtools'
 
 NAME = 'WebTools'
 ICON = 'WebTools.png'
-VERSION = '2.2'
+VERSION = '2.3 DEV'
 AUTHTOKEN = ''
 SECRETKEY = ''
 DEBUGMODE = False

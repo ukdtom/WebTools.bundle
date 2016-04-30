@@ -1,3 +1,10 @@
+V2.3 DEV:
+	New:
+		#170	WT:	Added a user guide from Trumpy81. URL is /manual/WebTools-User-Manual.pdf
+
+
+FRONTEND:
+
 V2.2 Release:
 
 BACKEND:
