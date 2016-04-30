@@ -1,4 +1,6 @@
 V2.3 DEV:
+	Fix:
+		#172	WT:	Fixed issue with Factory reset
 	New:
 		#170	WT:	Added a user guide from Trumpy81. URL is /manual/WebTools-User-Manual.pdf
 

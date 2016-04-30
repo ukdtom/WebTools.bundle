@@ -46,10 +46,17 @@ class wt(object):
 	# Reset WT to factory settings
 	def reset(self, req):
 		try:
+			Log.Info('Factory Reset called')
 			cachePath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', 'com.plexapp.plugins.WebTools')
 			dataPath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', 'com.plexapp.plugins.WebTools')
 			shutil.rmtree(cachePath)
-			shutil.rmtree(dataPath)
+			try:
+#				shutil.rmtree(dataPath)
+				print 'GED1'
+				Dict.Reset()
+				print 'GED2'
+			except:
+				Log.Critical('Fatal error in clearing dict during reset')
 			# Restart system bundle
 			HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.WebTools/restart', cacheTime=0, immediate=True)
 			req.clear()

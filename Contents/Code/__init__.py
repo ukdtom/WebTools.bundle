@@ -28,8 +28,9 @@ from webSrv import startWeb, stopWeb
 from random import randint
 import uuid			#Used for secrectKey
 
-
 import datetime
+import time
+
 
 #********** Initialize *********
 def Start():
@@ -41,8 +42,8 @@ def Start():
 	DEBUGMODE = os.path.isfile(debugFile)
 	if DEBUGMODE:
 		VERSION = VERSION + ' ****** WARNING Debug mode on *********'
-		print("********  Started %s on %s  **********" %(NAME  + ' V' + VERSION, Platform.OS))
-	Log.Debug("*******  Started %s on %s  ***********" %(NAME + ' V' + VERSION, Platform.OS))
+		print("********  Started %s on %s at %s **********" %(NAME  + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M")))
+	Log.Debug("*******  Started %s on %s at %s ***********" %(NAME + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M")))
 	HTTP.CacheTime = 0
 	DirectoryObject.thumb = R(ICON)
 	ObjectContainer.title1 = NAME + ' V' + VERSION 
