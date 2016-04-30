@@ -157,6 +157,8 @@ class pms(object):
 			return self.getSectionLetterList(req)
 		elif function == 'getSectionByLetter':
 			return self.getSectionByLetter(req)
+		elif function == 'search':
+			return self.search(req)
 		else:
 			req.clear()
 			req.set_status(412)
@@ -203,6 +205,48 @@ class pms(object):
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
+
+	''' Search for a title '''
+	def search(self, req):
+		Log.Info('Search called')
+		try:
+			title = req.get_argument('title', '_WT_missing_')
+			if title == '_WT_missing_':
+				req.clear()
+				req.set_status(412)
+				req.finish("<html><body>Missing title parameter</body></html>")
+			else:
+				url = 'http://127.0.0.1:32400/search?query=' + String.Quote(title)
+				result = {}
+				# Fetch search result from PMS
+				foundMedias = XML.ElementFromURL(url)
+				# Grap all movies from the result
+				for media in foundMedias.xpath('//Video'):
+					value = {}
+					value['title'] = media.get('title')
+					value['type'] = media.get('type')
+					value['section'] = media.get('librarySectionID')			
+					key = media.get('ratingKey')					
+					result[key] = value
+				# Grap results for TV-Shows
+				for media in foundMedias.xpath('//Directory'):
+					value = {}
+					value['title'] = media.get('title')
+					value['type'] = media.get('type')
+					value['section'] = media.get('librarySectionID')			
+					key = media.get('ratingKey')					
+					result[key] = value
+				Log.Info('Search returned: %s' %(result))
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(result))
+		except Exception, e:
+			Log.Debug('Fatal error happened in search: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in search: ' + str(e))
 
 	''' Delete from an XML file '''
 	def DelFromXML(self, fileName, attribute, value):
