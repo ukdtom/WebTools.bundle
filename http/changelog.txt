@@ -3,6 +3,8 @@ V2.3 DEV:
 		#172	WT:	Fixed issue with Factory reset
 	New:
 		#170	WT:	Added a user guide from Trumpy81. URL is /manual/WebTools-User-Manual.pdf
+		#172	PMS:	Added Search to the backend
+		#175	PMS: Autodownload Repo if json is missing
 
 
 FRONTEND:

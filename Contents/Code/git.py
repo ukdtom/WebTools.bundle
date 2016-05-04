@@ -15,16 +15,30 @@ import pms
 import tempfile
 
 class git(object):
-	# Defaults used by the rest of the class
+	init_already = False							# Make sure part of init only run once
+
+	# Init of the class
 	def __init__(self):
-		Log.Debug('******* Starting git *******')
 		self.url = ''
 		self.PLUGIN_DIR = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name)
 		self.UAS_URL = 'https://github.com/ukdtom/UAS2Res'
 		self.IGNORE_BUNDLE = ['WebTools.bundle', 'SiteConfigurations.bundle', 'Services.bundle']
 		self.OFFICIAL_APP_STORE = 'https://nine.plugins.plexapp.com'
-		Log.Debug("Plugin directory is: %s" %(self.PLUGIN_DIR))
 
+		# Only init this part once during the lifetime of this
+		if not git.init_already:
+			git.init_already = True
+			Log.Debug('******* Starting git *******')
+			Log.Debug("Plugin directory is: %s" %(self.PLUGIN_DIR))
+			# See a few times, that the json file was missing, so here we check, and if not then force a download
+			try:
+				jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
+				if not os.path.isfile(jsonFileName):
+					Log.Critical('UAS dir was missing the json, so doing a forced download here')
+					self.updateUASCache(None, cliForce = True)
+			except Exception, e:
+				Log.Critical('Exception happend when trying to force download from UASRes: ' + str(e))
+		
 	''' Grap the tornado req, and process it for GET request'''
 	def reqprocess(self, req):	
 		function = req.get_argument('function', 'missing')
@@ -367,9 +381,12 @@ class git(object):
 			return req
 
 	''' This will update the UAS Cache directory from GitHub '''
-	def updateUASCache(self, req):
+	def updateUASCache(self, req, cliForce= False):
 		Log.Debug('Starting to update the UAS Cache')
-		debugForce = ('false' != req.get_argument('debugForce', 'false'))
+		if not cliForce:
+			Force = ('false' != req.get_argument('Force', 'false'))
+		else:
+			Force = True
 		# Main call
 		try:
 			# Start by getting the time stamp for the last update
@@ -383,7 +400,7 @@ class git(object):
 			# Now get the last update time from the UAS repository on GitHub
 			masterUpdate = datetime.datetime.strptime(self.getLastUpdateTime(req, True, self.UAS_URL), '%Y-%m-%d %H:%M:%S')
 			# Do we need to update the cache, and add 2 min. tolerance here?
-			if ((masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120) or debugForce):
+			if ((masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120) or Force):
 				# We need to update UAS Cache
 				# Target Directory
 				targetDir = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas')
@@ -399,22 +416,26 @@ class git(object):
 						errMsg = errMsg + 'sudo chown plex:plex ./WebTools.bundle -R\n'
 						errMsg = errMsg + 'And if on Synology, the command is:\n'
 						errMsg = errMsg + 'sudo chown plex:users ./WebTools.bundle -R\n'
-					Log.Critical('Exception in updateUASCache ' + str(e)) 
-					req.clear()
-					req.set_status(500)
-					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish('Exception in updateUASCache: ' + errMsg)
-					return req
+					Log.Critical('Exception in updateUASCache ' + str(e))
+					if not cliForce: 
+						req.clear()
+						req.set_status(500)
+						req.set_header('Content-Type', 'application/json; charset=utf-8')
+						req.finish('Exception in updateUASCache: ' + errMsg)
+						return req
+					else:
+						return
 				# Grap file from Github
 				try:
 					zipfile = Archive.ZipFromURL(self.UAS_URL+ '/archive/master.zip')
 				except Exception, e:
 					Log.Critical('Could not download UAS Repo from GitHub')
-					req.clear()
-					req.set_status(500)
-					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish('Exception in updateUASCache while downloading UAS repo from Github: ' + str(e))
-					return req
+					if not cliForce:
+						req.clear()
+						req.set_status(500)
+						req.set_header('Content-Type', 'application/json; charset=utf-8')
+						req.finish('Exception in updateUASCache while downloading UAS repo from Github: ' + str(e))
+						return req					
 				for filename in zipfile:
 					# Walk contents of the zip, and extract as needed
 					data = zipfile[filename]
@@ -446,17 +467,19 @@ class git(object):
 				Log.Debug('UAS Cache already up to date')
 			# Set timestamp in the Dict
 			Dict['UAS'] = datetime.datetime.now()
-			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('UASCache is up to date')	
+			if not cliForce:
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish('UASCache is up to date')	
 		except Exception, e:
 			Log.Critical('Exception in updateUASCache ' + str(e)) 
-			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Exception in updateUASCache ' + str(e))
-			return req
+			if not cliForce:
+				req.clear()
+				req.set_status(500)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish('Exception in updateUASCache ' + str(e))
+				return req
 
 	''' list will return a list of all installed gits from GitHub'''
 	def list(self, req):
