@@ -5,7 +5,7 @@
 #
 ######################################################################################################################
 
-import json
+import json, sys
 
 class settings(object):
 
@@ -80,6 +80,7 @@ class settings(object):
 					req.finish("Old Password did not match")			
 				return req
 		except Ex.HTTPError, e:
+			Log.Critical('Error in setPwd: ' + str(e)  + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 			req.clear()
 			req.set_status(e.code)
 			req.finish(e)
@@ -106,6 +107,7 @@ class settings(object):
 				req.finish("Setting saved")			
 			return req
 		except Ex.HTTPError, e:
+			Log.Critical('Error in putSetting: ' + str(e)  + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 			req.clear()
 			req.set_status(e.code)
 			req.finish(e)
@@ -133,6 +135,7 @@ class settings(object):
 					req.finish(json.dumps('Setting not found'))
 				return req
 		except Ex.HTTPError, e:
+			Log.Critical('Error in getSetting: ' + str(e)  + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 			req.clear()
 			req.set_status(e.code)
 			req.finish(e)
@@ -155,6 +158,7 @@ class settings(object):
 			req.finish(json.dumps(mySetting))
 			return req
 		except Ex.HTTPError, e:
+			Log.Critical('Error in getSettings: ' + str(e)  + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 			req.clear()
 			req.set_status(e.code)
 			req.finish(e)

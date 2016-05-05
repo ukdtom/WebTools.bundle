@@ -51,7 +51,8 @@ def updateAllBundleInfoFromUAS():
 			uasBundles[bundles[bundle]['identifier']] = bundle
 		# Now walk the installed ones
 		try:
-			for installedBundle in Dict['installed']:
+			installed = Dict['installed'].copy()
+			for installedBundle in installed:
 				if not installedBundle.startswith('https://'):
 					Log.Info('Checking unknown bundle: ' + installedBundle + ' to see if it is part of UAS now')
 					if installedBundle in uasBundles:

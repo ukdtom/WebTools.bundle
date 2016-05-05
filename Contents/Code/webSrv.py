@@ -30,7 +30,7 @@ from plex2csv import plex2csv
 from wt import wt
 
 
-import os
+import os, sys
 
 # Below used to find path of this file
 from inspect import getsourcefile
@@ -177,7 +177,7 @@ class LoginHandler(BaseHandler):
 					Log.Critical('Unknown error, when authenticating')
 					self.set_status(403)
 			except Ex.HTTPError, e:
-				Log.Critical('Exception in Login: ' + str(e))
+				Log.Critical('Exception in Login: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 				self.clear()
 				self.set_status(e.code)
 				self.finish(e)

@@ -10,7 +10,7 @@
 
 import glob
 import json
-import shutil
+import shutil, sys
 
 class wt(object):	
 
@@ -52,9 +52,7 @@ class wt(object):
 			shutil.rmtree(cachePath)
 			try:
 #				shutil.rmtree(dataPath)
-				print 'GED1'
 				Dict.Reset()
-				print 'GED2'
 			except:
 				Log.Critical('Fatal error in clearing dict during reset')
 			# Restart system bundle
@@ -64,11 +62,11 @@ class wt(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('WebTools has been reset')
 		except Exception, e:
-			Log.Debug('Fatal error happened in wt.reset: ' + str(e))
+			Log.Debug('Fatal error happened in wt.reset: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in wt.reset: ' + str(e))
+			req.finish('Fatal error happened in wt.reset: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 
 	# Get a list of all css files in http/custom_themes
 	def getCSS(self,req):
@@ -89,11 +87,11 @@ class wt(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(json.dumps(myList))
 		except Exception, e:
-			Log.Debug('Fatal error happened in getCSS: ' + str(e))
+			Log.Debug('Fatal error happened in getCSS: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in getCSS: ' + str(e))
+			req.finish('Fatal error happened in getCSS: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 
 				
 	

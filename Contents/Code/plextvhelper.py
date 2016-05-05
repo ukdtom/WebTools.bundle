@@ -6,6 +6,7 @@
 # NAME variable must be defined in the calling unit, and is the name of the application
 #
 ######################################################################################################################
+import sys
 
 class plexTV(object):
 	# Defaults used by the rest of the class
@@ -54,7 +55,7 @@ class plexTV(object):
 			Log.Info('Authenticated towards plex.tv with success')				
 			return token
 		except Ex.HTTPError, e:
-			Log.Critical('Login error: ' + str(e))
+			Log.Critical('Login error: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 			req.clear()
 			req.set_status(e.code)
 			req.finish(e)
@@ -87,7 +88,7 @@ class plexTV(object):
 					Log.Debug('Server %s was found @ plex.tv, but user is not the owner' %(PMSId))
 					return 2
 		except Ex.HTTPError, e:
-			Log.Debug('Unknown exception was: %s' %(e))
+			Log.Debug('Unknown exception was: %s' %(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 			return -1
 
 	''' will return the machineIdentity of this server '''

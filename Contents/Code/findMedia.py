@@ -11,7 +11,7 @@
 import urllib
 import unicodedata
 import json
-import time
+import time, sys
 
 # Consts used here
 AmountOfMediasInDatabase = 0																																				# Int of amount of medias in a database section
@@ -152,10 +152,10 @@ class findMedia(object):
 			req.clear()		
 			req.set_status(200)
 		except Exception, e:
-			Log.Debug('Fatal error in setSetting: ' + str(e))
+			Log.Debug('Fatal error in setSetting: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 			req.clear()
 			req.set_status(500)
-			req.finish("Unknown error happened in findMedia-setSetting: " + str(e))
+			req.finish("Unknown error happened in findMedia-setSetting: " + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 
 
 	# Reset settings to default
@@ -272,7 +272,7 @@ class findMedia(object):
 			except ValueError:
 				Log.Info('Aborted in ScanMedias')
 			except Exception, e:
-				Log.Critical('Exception happend in scanMedias: ' + str(e))
+				Log.Critical('Exception happend in scanMedias: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 				statusMsg = 'Idle'
 
 		# Scan the file system
@@ -320,7 +320,7 @@ class findMedia(object):
 				runningState = 99
 				Log.Info('Aborted in getFiles')
 			except Exception, e:
-				Log.Critical('Exception happend in getFiles: ' + str(e))
+				Log.Critical('Exception happend in getFiles: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 				runningState = 99
 
 		def scanShowDB(sectionNumber=0):
@@ -397,7 +397,7 @@ class findMedia(object):
 				runningState = 99
 				Log.Info('Aborted in ScanShowDB')
 			except Exception, e:
-				Log.Debug('Fatal error in scanShowDB: ' + str(e))
+				Log.Debug('Fatal error in scanShowDB: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 				runningState = 99
 		# End scanShowDB
 
@@ -440,7 +440,7 @@ class findMedia(object):
 						break
 				return
 			except Exception, e:
-				Log.Debug('Fatal error in scanMovieDb: ' + str(e))
+				Log.Debug('Fatal error in scanMovieDb: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 				runningState = 99
 		# End scanMovieDb
 
@@ -472,7 +472,7 @@ class findMedia(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Scanning already in progress')				
 		except Exception, ex:
-			Log.Debug('Fatal error happened in scanSection: ' + str(ex))
+			Log.Debug('Fatal error happened in scanSection: ' + str(ex) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
