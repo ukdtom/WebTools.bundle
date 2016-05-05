@@ -28,26 +28,6 @@ class plexTV(object):
 	# Login to Plex.tv
 	def login(self, user, pwd):
 		Log.Info('Start to auth towards plex.tv')
-
-		'''
-		user = req.get_argument('user', '')
-		if user == '':
-			Log.Error('Missing username')
-			req.clear()
-			req.set_status(412)
-			req.finish("<html><body>Missing username</body></html>")
-			return req
-		pwd = req.get_argument('pwd', '')
-		if pwd == '':
-			Log.Error('Missing password')
-			req.clear()
-			req.set_status(412)
-			req.finish("<html><body>Missing password</body></html>")
-			return req
-		'''
-
-
-		# Got what we needed, so let's logon
 		authString = String.Base64Encode('%s:%s' % (user, pwd))
 		self.myHeader['Authorization'] = 'Basic ' + authString
 		try:
@@ -56,10 +36,7 @@ class plexTV(object):
 			return token
 		except Ex.HTTPError, e:
 			Log.Critical('Login error: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
-			req.clear()
-			req.set_status(e.code)
-			req.finish(e)
-			return (req, '')
+			return None
 		
 	''' Is user the owner of the server?
 			user identified by token
@@ -88,7 +65,7 @@ class plexTV(object):
 					Log.Debug('Server %s was found @ plex.tv, but user is not the owner' %(PMSId))
 					return 2
 		except Ex.HTTPError, e:
-			Log.Debug('Unknown exception was: %s' %(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			Log.Debug('Unknown exception was: %s' %(e))
 			return -1
 
 	''' will return the machineIdentity of this server '''

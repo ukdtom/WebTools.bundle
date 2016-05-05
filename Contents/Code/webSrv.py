@@ -152,54 +152,62 @@ class LoginHandler(BaseHandler):
 			self.allow()
 			Log.Info('All is good, we are authenticated')
 			self.redirect('/')
-		# Let's start by checking if the server is online
-		if plexTV().auth2myPlex():
-			token = ''
-			try:
-				# Authenticate
-				retVal = plexTV().isServerOwner(plexTV().login(user, pwd))
-				self.clear()
-				if retVal == 0:
-					# All is good
-					self.allow()
-					Log.Info('All is good, we are authenticated')
-					self.redirect('/')
-				elif retVal == 1:
-					# Server not found
-					Log.Info('Server not found on plex.tv')
-					self.set_status(404)
-				elif retVal == 2:
-					# Not the owner
-					Log.Info('USer is not the server owner')
-					self.set_status(403)
-				else:
-					# Unknown error
-					Log.Critical('Unknown error, when authenticating')
-					self.set_status(403)
-			except Ex.HTTPError, e:
-				Log.Critical('Exception in Login: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
-				self.clear()
-				self.set_status(e.code)
-				self.finish(e)
-				return self
 		else:
-			Log.Info('Server is not online according to plex.tv')
-			# Server is offline
-			if Dict['password'] == '':
-				Log.Info('First local login, so we need to set the local password')
-				Dict['password'] = pwd
-				Dict['pwdset'] = True
-				Dict.Save
-				self.allow()
-				self.redirect('/')
-			elif Dict['password'] == pwd:
-				self.allow()
-				Log.Info('Local password accepted')
-				self.redirect('/')
-			elif Dict['password'] != pwd:
-				Log.Critical('Either local login failed, or PMS lost connection to plex.tv')
-				self.clear()
-				self.set_status(401)
+			# Let's start by checking if the server is online
+			if plexTV().auth2myPlex():
+				token = ''
+				try:
+					# Authenticate
+					login_token = plexTV().login(user, pwd)
+					if login_token == None:	
+						Log.ERROR('Bad credentials detected, denying access')
+						self.clear()
+						self.set_status(401)
+						self.finish('Authentication error')
+						return self
+					retVal = plexTV().isServerOwner(login_token)					
+					self.clear()
+					if retVal == 0:
+						# All is good
+						self.allow()
+						Log.Info('All is good, we are authenticated')
+						self.redirect('/')
+					elif retVal == 1:
+						# Server not found
+						Log.Info('Server not found on plex.tv')
+						self.set_status(404)
+					elif retVal == 2:
+						# Not the owner
+						Log.Info('USer is not the server owner')
+						self.set_status(403)
+					else:
+						# Unknown error
+						Log.Critical('Unknown error, when authenticating')
+						self.set_status(403)
+				except Ex.HTTPError, e:
+					Log.Critical('Exception in Login: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+					self.clear()
+					self.set_status(e.code)
+					self.finish(e)
+					return self
+			else:
+				Log.Info('Server is not online according to plex.tv')
+				# Server is offline
+				if Dict['password'] == '':
+					Log.Info('First local login, so we need to set the local password')
+					Dict['password'] = pwd
+					Dict['pwdset'] = True
+					Dict.Save
+					self.allow()
+					self.redirect('/')
+				elif Dict['password'] == pwd:
+					self.allow()
+					Log.Info('Local password accepted')
+					self.redirect('/')
+				elif Dict['password'] != pwd:
+					Log.Critical('Either local login failed, or PMS lost connection to plex.tv')
+					self.clear()
+					self.set_status(401)
 
 	def allow(self):
 		self.set_secure_cookie(NAME, Hash.MD5(Dict['SharedSecret']+Dict['password']), expires_days = None)
