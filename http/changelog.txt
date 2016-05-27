@@ -1,15 +1,17 @@
 V2.3 DEV:
 	Fix:
+		#165  LV:		Fixed issue with spaces in filenames
+		#166	UAS:	Removed highlight of All after selecting category
 		#172	WT:		Fixed issue with Factory reset
 		#176	UAS:	Critical error in updateInstallDict
 		#178	WT: 	Fixed issue with intruder detection
+		
 	New:
 		#170	WT:		Added a user guide from Trumpy81. URL is /manual/WebTools-User-Manual.pdf
 		#171	PMS:	Added Search to the backend
 		#175	PMS: 	Autodownload Repo if json is missing
 
-
-FRONTEND:
+####
 
 V2.2 Release:
 

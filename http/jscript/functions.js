@@ -9,7 +9,7 @@ var webtools = {
 		['subtitlemgmt', 'Subtitle Management'],
 		['logviewer', 'LogViewer/Downloader Tool'],
 		['install', 'Unsupported AppStore']
-		//['findunmatched','FindUnmatched']
+		,['findmedia','FindMedia']
 	],
 	stylesheets: [],
 	active_stylesheet: '',
@@ -62,7 +62,7 @@ webtools.list_modules.inline([
 				dataType: 'JSON',
 				success: function(data) {
 					webtools.version = data.version;
-					$('#MainLink').html('Webtools - v' + data.version);
+					$('#MainLink').html('WebTools - v' + data.version);
 					if (data.PlexTVOnline === false) {
 						$('#OptionsMenu').append('<li><a class="customlink" onclick="webtools.changepassword_display();" >Change Password</a></li>');
 					}
@@ -211,9 +211,12 @@ webtools.list_modules.inline([
 				'Webtools is a tool that enables the use of modules to help you with your Plex Server management.<br>',
 				'<b>Available Modules</b>'
 			];
+			$('#SublinkMainTitle').html('Choose Module');
 			webtools.modules.forEach(function(modulename) {
-				contents.push('<a class="customlink" onclick="webtools.activate_module(\'' + modulename[0] + '\')">' + modulename[1] + '</a>');
+				contents.push('<button class="btn btn-default btn-xs div-medium" class="customlink" onclick="webtools.activate_module(\'' + modulename[0] + '\')">' + modulename[1] + '</button>');
+				$('#SublinkMenu').append('<li><a class="customlink" onclick="javascript:webtools.activate_module(\'' + modulename[0] + '\')">' + modulename[1] + '</a></li>');
 			});
+						
 			contents.push('<br><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">Latest changelog</h4></div><div class="panel-body">' + webtools.changelog + '</div></div>');
 			contents.push('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">Credits</h4></div><div class="panel-body">' + webtools.credits + '</div></div>');
 			$('#ContentBody').html(contents.join('<br>'));
@@ -254,8 +257,16 @@ webtools.activate_module = function(modulename) {
 				}
 			});
 
-			$("#SubLink").attr('onclick', 'javascript:webtools.activate_module(\'' + modulename + '\')');
-			$("#SubLink").html('/' + moduledisplayname);
+			//$("#SubLink").attr('onclick', 'javascript:webtools.activate_module(\'' + modulename + '\')');
+			//$("#SubLink").html('/' + moduledisplayname);
+			
+			$('#SublinkMainTitle').html(moduledisplayname);
+			$('#SublinkMenu').html('<li><a class="customlink" onclick="javascript:webtools.activate_module(\'' + modulename + '\')" >Reload ' + moduledisplayname + '</a></li>');
+			webtools.modules.forEach(function(modulename) {
+				if (modulename[1] != moduledisplayname) {
+					$('#SublinkMenu').append('<li><a class="customlink" onclick="javascript:webtools.activate_module(\'' + modulename[0] + '\')">' + modulename[1] + '</a></li>');
+				}
+			});
 
 			$('#ModuleCSS').attr('href', 'modules/' + modulename + '/css/' + modulename + '.css');
 			if (webtools.longermodulestart === false) {
@@ -407,12 +418,7 @@ webtools.show_log = function(filename) {
 		$('#navfoot').html('<input type="text" id="webtoolssearchKeyword" onkeydown="if (event.keyCode == 13) { webtools.searchkeyword(\'logtable\'); }"><button class="btn btn-default btn-xs" onclick="webtools.searchkeyword(\'logtable\')">Search keyword</button> <button class="btn btn-default btn-xs" onclick="webtools.previous()" id="webtoolssearchbuttonprevious">Previous</button><button class="btn btn-default btn-xs" onclick="webtools.next()" id="webtoolssearchbuttonnext">Next</button> <button class="btn btn-default btn-xs" onclick="webtools.jumptotop()">Jump to Top</button> <span id="webtoolssearchkeywordresult"></span>');
 		webtools.clearresult();
 		$.ajax({
-			url: '/webtools2',
-			data: {
-				'module': 'logs',
-				'function': 'show',
-				'fileName': filename
-			},
+			url: '/webtools2&module=logs&function=show&fileName' + filename.replace(/ /g, "%20"),
 			type: 'GET',
 			cache: false,
 			dataType: 'JSON',

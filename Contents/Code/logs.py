@@ -31,11 +31,11 @@ class logs(object):
 				if not os.direxists(self.LOGDIR):
 					self.LOGDIR = os.path.join(Core.app_support_path, 'Logs')
 		except Exception, e:
-			Log.Debug('Fatal error happened in Logs list: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			Log.Exception('Fatal error happened in Logs list: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in Logs list: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			req.finish('Fatal error happened in Logs list: ' + str(e))
 		Log.Debug('Log Root dir is: ' + self.LOGDIR)
 
 	''' Grap the tornado req for a Get, and process it '''
@@ -84,11 +84,11 @@ class logs(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Entry logged')
 		except Exception, e:
-			Log.Debug('Fatal error happened in Logs entry: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			Log.Exception('Fatal error happened in Logs entry: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in Logs entry: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			req.finish('Fatal error happened in Logs entry: ' + str(e))
 
 	''' This metode will return a list of logfiles. accepts a filter parameter '''
 	def list(self, req):
@@ -113,11 +113,11 @@ class logs(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(sorted(retFiles)))
 		except Exception, e:
-			Log.Debug('Fatal error happened in Logs list: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			Log.Exception('Fatal error happened in Logs list: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in Logs list: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			req.finish('Fatal error happened in Logs list: ' + str(e))
 
 	''' This will return contents of the logfile as an array. Req. a parameter named fileName '''
 	def show(self, req):
@@ -146,11 +146,11 @@ class logs(object):
 			req.finish(json.dumps(retFile))
 			return req
 		except Exception, e:
-			Log.Debug('Fatal error happened in Logs show: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			Log.Exception('Fatal error happened in Logs show: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in Logs show: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			req.finish('Fatal error happened in Logs show: ' + str(e))
 
 	''' This will download a zipfile with the complete log directory. if parameter fileName is specified, only that file will be downloaded, and not zipped'''
 	def download(self, req):
@@ -172,7 +172,7 @@ class logs(object):
 						myZip.write(os.path.join(root, filename), arcname=value)
 				myZip.close()
 				req.set_header('Content-Type', 'application/force-download')
-				req.set_header ('Content-Disposition', 'attachment; filename=' + downFile)
+				req.set_header ('Content-Disposition', 'attachment; filename="' + downFile + '"')
 				with io.open(zipFileName, 'rb') as f:
 					try:
 						while True:
@@ -186,11 +186,11 @@ class logs(object):
 								os.remove(zipFileName)
 								return req
 					except Exception, e:
-						Log.Debug('Fatal error happened in Logs download: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+						Log.Exception('Fatal error happened in Logs download: ' + str(e))
 						req.clear()
 						req.set_status(500)
 						req.set_header('Content-Type', 'application/json; charset=utf-8')
-						req.finish('Fatal error happened in Logs download: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+						req.finish('Fatal error happened in Logs download: ' + str(e))
 			else:
 				try:
 					if 'com.plexapp' in fileName:
@@ -205,21 +205,21 @@ class logs(object):
 							line = line.replace('\r', '')
 							retFile.append(line)
 					req.set_header('Content-Type', 'application/force-download')
-					req.set_header ('Content-Disposition', 'attachment; filename=' + fileName)
+					req.set_header ('Content-Disposition', 'attachment; filename="' + fileName + '"')
 					for line in retFile:
 						req.write(line + '\n')
 					req.finish()
 					return req
 				except Exception, e:
-					Log.Debug('Fatal error happened in Logs download: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+					Log.Exception('Fatal error happened in Logs download: ' + str(e))
 					req.clear()
 					req.set_status(500)
 					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish('Fatal error happened in Logs download: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))		
+					req.finish('Fatal error happened in Logs download: ' + str(e))
 		except Exception, e:
-			Log.Debug('Fatal error happened in Logs download: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			Log.Exception('Fatal error happened in Logs download: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in Logs download: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			req.finish('Fatal error happened in Logs download: ' + str(e))
 

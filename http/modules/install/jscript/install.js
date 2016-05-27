@@ -297,7 +297,7 @@ install.showChannels = function(button, type, page, highlight) {
 	// Reset install.channelstoshow
 	install.channelstoshow = [];
 	$('#channelmenu>button').removeClass('btn-active');
-	$('#All').focus();
+	//$('#All').focus();
 	$('#' + type.replace(' ', '')).addClass('btn-active');
 
 	var channellist = [];
