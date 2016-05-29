@@ -171,8 +171,10 @@ class logs(object):
 						param, value = fullFileName.split(self.LOGDIR,1)
 						myZip.write(os.path.join(root, filename), arcname=value)
 				myZip.close()
-				req.set_header('Content-Type', 'application/force-download')
 				req.set_header ('Content-Disposition', 'attachment; filename="' + downFile + '"')
+				req.set_header('Cache-Control', 'no-cache')
+				req.set_header('Pragma', 'no-cache')
+				req.set_header('Content-Type', 'application/zip')
 				with io.open(zipFileName, 'rb') as f:
 					try:
 						while True:
@@ -204,8 +206,10 @@ class logs(object):
 							line = line.replace('\n', '')
 							line = line.replace('\r', '')
 							retFile.append(line)
-					req.set_header('Content-Type', 'application/force-download')
 					req.set_header ('Content-Disposition', 'attachment; filename="' + fileName + '"')
+					req.set_header('Content-Type', 'application/text/plain')
+					req.set_header('Cache-Control', 'no-cache')
+					req.set_header('Pragma', 'no-cache')
 					for line in retFile:
 						req.write(line + '\n')
 					req.finish()
