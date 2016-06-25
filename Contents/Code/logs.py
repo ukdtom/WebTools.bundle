@@ -28,7 +28,7 @@ class logs(object):
 				self.LOGDIR = os.path.join(os.environ[key], 'Plex Media Server', 'Logs')
 			else:
 				self.LOGDIR = os.path.join(os.environ['HOME'], 'Library', 'Logs', 'Plex Media Server')
-				if not os.direxists(self.LOGDIR):
+				if not os.path.isdir(self.LOGDIR):
 					self.LOGDIR = os.path.join(Core.app_support_path, 'Logs')
 		except Exception, e:
 			Log.Exception('Fatal error happened in Logs list: ' + str(e))

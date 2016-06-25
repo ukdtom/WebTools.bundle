@@ -271,6 +271,7 @@ class findMedia(object):
 				runningState = -1
 				Log.Debug("*********************** FileSystem Paths: *****************************************")
 				bScanStatusCount = 0
+				# Wondering why I do below. Part of find-unmatched, and forgot....SIGH
 				files = str(filePath)[2:-2].replace("'", "").split(', ')
 				Log.Debug(files)
 				for filePath in files:
