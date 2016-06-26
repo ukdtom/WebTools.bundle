@@ -13,6 +13,7 @@ import io, os, shutil, sys
 import plistlib
 import pms
 import tempfile
+from consts import DEBUGMODE, UAS_URL, UAS_BRANCH, NAME
 
 class git(object):
 	init_already = False							# Make sure part of init only run once
@@ -21,9 +22,9 @@ class git(object):
 	def __init__(self):
 		self.url = ''
 		self.PLUGIN_DIR = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name)
-		self.UAS_URL = 'https://github.com/ukdtom/UAS2Res'
 		self.IGNORE_BUNDLE = ['WebTools.bundle', 'SiteConfigurations.bundle', 'Services.bundle']
 		self.OFFICIAL_APP_STORE = 'https://nine.plugins.plexapp.com'
+
 
 		# Only init this part once during the lifetime of this
 		if not git.init_already:
@@ -37,7 +38,7 @@ class git(object):
 					Log.Critical('UAS dir was missing the json, so doing a forced download here')
 					self.updateUASCache(None, cliForce = True)
 			except Exception, e:
-				Log.Critical('Exception happend when trying to force download from UASRes: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+				Log.Exception('Exception happend when trying to force download from UASRes: ' + str(e))
 		
 	''' Grap the tornado req, and process it for GET request'''
 	def reqprocess(self, req):	
@@ -157,7 +158,7 @@ class git(object):
 						Core.storage.save(path, data)
 					except Exception, e:
 						bError = True
-						Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+						Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
 				else:
 					# We got a directory here
 					Log.Debug(filename.split('/')[-2])
@@ -169,7 +170,7 @@ class git(object):
 							Core.storage.ensure_dirs(path)
 						except Exception, e:
 							bError = True
-							Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+							Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
 			# Now we need to nuke files that should no longer be there!
 			for root, dirs, files in os.walk(bundleName):
 				for fname in files:
@@ -188,13 +189,13 @@ class git(object):
 		except Exception, e:
 			Log.Critical('***************************************************************')
 			Log.Critical('Error when updating WebTools')
-			Log.Critical('The error was: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
 			Log.Critical('***************************************************************')
 			Log.Critical('DARN....When we tried to upgrade WT, we had an error :-(')
 			Log.Critical('Only option now might be to do a manual install, like you did the first time')
 			Log.Critical('Do NOT FORGET!!!!')
 			Log.Critical('We NEED this log, so please upload to Plex forums')
 			Log.Critical('***************************************************************')
+			Log.Exception('The error was: ' + str(e))
 		return
 
 	''' This function will return a list of bundles, where there is an update avail '''
@@ -226,7 +227,7 @@ class git(object):
 				req.clear()
 				req.set_status(204)
 		except Exception, e:
-			Log.Critical('Fatal error happened in getUpdateList: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			Log.Exception('Fatal error happened in getUpdateList: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -252,7 +253,7 @@ class git(object):
 					results[title] = git
 				return results	
 			except Exception, e:
-				Log.Critical('Exception in Migrate/getUASCacheList : ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+				Log.Exception('Exception in Migrate/getUASCacheList : ' + str(e))
 				return ''
 
 		# Grap indentifier from plist file and timestamp
@@ -357,11 +358,11 @@ class git(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(json.dumps(migratedBundles))
 		except Exception, e:
-			Log.Critical('Fatal error happened in migrate: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			Log.Exception('Fatal error happened in migrate: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in migrate: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			req.finish('Fatal error happened in migrate: ' + str(e))
 			return req
 
 	''' This will return a list of UAS bundle types from the UAS Cache '''
@@ -373,7 +374,7 @@ class git(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(Dict['uasTypes']))
 		except Exception, e:
-			Log.Critical('Exception in uasTypes: ' + str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			Log.Exception('Exception in uasTypes: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -398,7 +399,7 @@ class git(object):
 			else:
 				lastUpdateUAS = datetime.datetime.strptime(str(lastUpdateUAS), '%Y-%m-%d %H:%M:%S.%f')
 			# Now get the last update time from the UAS repository on GitHub
-			masterUpdate = datetime.datetime.strptime(self.getLastUpdateTime(req, True, self.UAS_URL), '%Y-%m-%d %H:%M:%S')
+			masterUpdate = datetime.datetime.strptime(self.getLastUpdateTime(req, True, UAS_URL), '%Y-%m-%d %H:%M:%S')
 			# Do we need to update the cache, and add 2 min. tolerance here?
 			if ((masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120) or Force):
 				# We need to update UAS Cache
@@ -408,7 +409,7 @@ class git(object):
 				try:
 					Core.storage.ensure_dirs(targetDir)
 				except Exception, e:
-					errMsg = str(e) + 'on line {}'.format(sys.exc_info()[-1].tb_lineno)
+					errMsg = str(e)
 					if 'Errno 13' in errMsg:
 						errMsg = errMsg + '\n\nLooks like permissions are not correct, cuz we where denied access\n'
 						errMsg = errMsg + 'to create a needed directory.\n\n'
@@ -416,7 +417,7 @@ class git(object):
 						errMsg = errMsg + 'sudo chown plex:plex ./WebTools.bundle -R\n'
 						errMsg = errMsg + 'And if on Synology, the command is:\n'
 						errMsg = errMsg + 'sudo chown plex:users ./WebTools.bundle -R\n'
-					Log.Critical('Exception in updateUASCache ' + errMsg)
+					Log.Exception('Exception in updateUASCache ' + errMsg)
 					if not cliForce: 
 						req.clear()
 						req.set_status(500)
@@ -427,14 +428,14 @@ class git(object):
 						return
 				# Grap file from Github
 				try:
-					zipfile = Archive.ZipFromURL(self.UAS_URL+ '/archive/master.zip')
+					zipfile = Archive.ZipFromURL(UAS_URL+ '/archive/' + UAS_BRANCH + '.zip')							
 				except Exception, e:
-					Log.Critical('Could not download UAS Repo from GitHub'  + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno))
+					Log.Exception('Could not download UAS Repo from GitHub'  + str(e))
 					if not cliForce:
 						req.clear()
 						req.set_status(500)
 						req.set_header('Content-Type', 'application/json; charset=utf-8')
-						req.finish('Exception in updateUASCache while downloading UAS repo from Github: ' + str(e)+ ' on line {}'.format(sys.exc_info()[-1].tb_lineno))
+						req.finish('Exception in updateUASCache while downloading UAS repo from Github: ' + str(e))
 						return req					
 				for filename in zipfile:
 					# Walk contents of the zip, and extract as needed
@@ -447,7 +448,7 @@ class git(object):
 							Core.storage.save(path, data)
 						except Exception, e:
 							bError = True
-							Log.Critical("Unexpected Error " + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno))
+							Log.Exception("Unexpected Error " + str(e))
 					else:
 						# We got a directory here
 						Log.Debug(filename.split('/')[-2])
@@ -459,7 +460,7 @@ class git(object):
 								Core.storage.ensure_dirs(path)
 							except Exception, e:
 								bError = True
-								Log.Critical("Unexpected Error " + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno))		
+								Log.Exception("Unexpected Error " + str(e))
 				# Update the AllBundleInfo as well
 				pms.updateAllBundleInfoFromUAS()
 				pms.updateUASTypesCounters()
@@ -473,12 +474,12 @@ class git(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('UASCache is up to date')	
 		except Exception, e:
-			Log.Critical('Exception in updateUASCache ' + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno)) 
+			Log.Exception('Exception in updateUASCache ' + str(e))
 			if not cliForce:
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Exception in updateUASCache ' + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno))
+				req.finish('Exception in updateUASCache ' + str(e))
 				return req
 
 	''' list will return a list of all installed gits from GitHub'''
@@ -604,7 +605,7 @@ class git(object):
 					# Grap file from Github
 					zipfile = Archive.ZipFromURL(zipPath)
 				except Exception, e:
-					Log.Critical('Exception in downloadBundle2tmp while downloading from GitHub: ' + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno)) 
+					Log.Exception('Exception in downloadBundle2tmp while downloading from GitHub: ' + str(e))
 					return False
 				# Create base directory
 				Core.storage.ensure_dirs(Core.storage.join_path(self.PLUGIN_DIR, bundleName))
@@ -633,7 +634,7 @@ class git(object):
 									Log.Debug('Install is an upgrade')
 									break
 				except Exception, e:
-					Log.Critical('Exception in downloadBundle2tmp while walking the downloaded file to find the plist: ' + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno)) 
+					Log.Exception('Exception in downloadBundle2tmp while walking the downloaded file to find the plist: ' + str(e))
 					return False					
 				if bUpgrade:
 					# Since this is an upgrade, we need to check, if the dev wants us to delete the Cache directory
@@ -684,7 +685,7 @@ class git(object):
 							Core.storage.save(path, data)
 						except Exception, e:
 							bError = True
-							Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno))
+							Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
 					else:
 						if cutStr not in filename:
 							continue
@@ -699,7 +700,7 @@ class git(object):
 								Core.storage.ensure_dirs(path)
 							except Exception, e:
 								bError = True
-								Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno))
+								Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
 
 				if not bError and bUpgrade:
 					# Copy files that should be kept between upgrades ("keepFiles")
@@ -747,7 +748,7 @@ class git(object):
 						shutil.move(extractDir, bundleName)
 					except Exception, e:
 						bError = True
-						Log.Critical('Unable to update plugin: ' + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno))
+						Log.Exception('Unable to update plugin: ' + str(e))
 
 					# Delete temporary directory
 					try:
@@ -776,7 +777,7 @@ class git(object):
 							pass
 					return True
 			except Exception, e:
-				Log.Critical('Exception in downloadBundle2tmp: ' + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno))
+				Log.Exception('Exception in downloadBundle2tmp: ' + str(e))
 				return False
 
 		# Starting install main
@@ -821,7 +822,6 @@ class git(object):
 			req.set_status(404)
 			req.finish("<html><body>Missing url of git</body></html>")
 			return req
-
 		# Retrieve current branch name
 		if Dict['installed'].get(url, {}).get('branch'):
 			# Use installed branch name
@@ -829,10 +829,12 @@ class git(object):
 		elif Dict['PMS-AllBundleInfo'].get(url, {}).get('branch'):
 			# Use branch name from bundle info
 			branch = Dict['PMS-AllBundleInfo'][url]['branch']
+		# UAS branch override ?
+		elif url == UAS_URL :
+			branch = UAS_BRANCH
 		else:
 			# Otherwise fallback to the "master" branch
 			branch = 'master'
-
 		# Check for updates
 		try:
 			url += '/commits/%s.atom' % branch
@@ -847,11 +849,11 @@ class git(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(str(response))
 		except Exception, e:
-			Log.Critical('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			Log.Exception('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e) + ' on line {}'.format(sys.exc_info()[-1].tb_lineno))
+			req.finish('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
 
 	''' Get list of avail bundles in the UAS '''
 	def getListofBundles(self, req):

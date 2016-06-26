@@ -11,37 +11,20 @@
 ######################################################################################################################
 
 #********* Constants used **********
-PREFIX = '/applications/webtools'
-
-NAME = 'WebTools'
-ICON = 'WebTools.png'
-VERSION = '2.3 DEV'
-AUTHTOKEN = ''
 SECRETKEY = ''
-DEBUGMODE = False
-
 
 #********** Imports needed *********
-import os, io, time
-from subprocess import call
 from webSrv import startWeb, stopWeb
-from random import randint
+from random import randint   #Used for Cookie generation
 import uuid			#Used for secrectKey
-
-import datetime
 import time
-
+from consts import DEBUGMODE, VERSION, PREFIX, NAME, ICON
 
 #********** Initialize *********
 def Start():
 	global SECRETKEY
-	global VERSION
-	global DEBUGMODE
-	# Switch to debug mode if needed
-	debugFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'debug')
-	DEBUGMODE = os.path.isfile(debugFile)
-	if DEBUGMODE:
-		VERSION = VERSION + ' ****** WARNING Debug mode on *********'
+
+	if DEBUGMODE:		
 		print("********  Started %s on %s at %s **********" %(NAME  + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M")))
 	Log.Debug("*******  Started %s on %s at %s ***********" %(NAME + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M")))
 	HTTP.CacheTime = 0
@@ -53,7 +36,7 @@ def Start():
 
 	# Get the secret key used to access the PMS framework ********** FUTURE USE ***************
 	SECRETKEY = genSecretKeyAsStr()
-	startWeb(SECRETKEY, VERSION, DEBUGMODE)
+	startWeb(SECRETKEY)
 
 ####################################################################################################
 # Generate secret key
@@ -69,7 +52,8 @@ def genSecretKeyAsStr():
 ''' This will generate the default settings in the Dict if missing '''
 @route(PREFIX + '/makeSettings')
 def makeSettings():
-	Dict['SharedSecret'] = VERSION + '.' + str(randint(0,9999))
+	# Used for Cookie generation
+	Dict['SharedSecret'] = VERSION + '.' + str(randint(0,9999))		
 	# Set default value for http part, if run for the first time
 	if Dict['options_hide_integrated'] == None:
 		Dict['options_hide_integrated'] = 'false'

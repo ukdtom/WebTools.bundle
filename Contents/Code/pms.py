@@ -4,8 +4,8 @@
 #
 #	Author: dane22, a Plex Community member
 #
-#
 ######################################################################################################################
+from consts import NAME
 import shutil, os
 import time, json
 import io, sys
