@@ -9,7 +9,7 @@
 import shutil
 import time
 import json
-import os, sys
+import os, sys, io
 import zipfile
 
 class logs(object):

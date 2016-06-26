@@ -755,31 +755,51 @@ class pms(object):
 				req.set_status(412)
 				req.finish('Missing key of subtitle')
 				return req
-
-
 			myURL='http://127.0.0.1:32400/library/streams/' + key
 			try:
-				response = HTML.StringFromElement(HTML.ElementFromURL(myURL))
+				# Grab the subtitle
+				try:
+					response = HTML.StringFromElement(HTML.ElementFromURL(myURL))
+				except Exception, e:
+					Log.Exception('Fatal error happened in downloadSubtitle: ' + str(e))
+					req.clear()
+					req.set_status(401)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish('Fatal error happened in downloadSubtitle: ' + str(e))			
+				# Make it nicer
 				response = response.replace('<p>', '',1)
 				response = response.replace('</p>', '',1)
 				response = response.replace('&gt;', '>')
 				response = response.split('\n')
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(response))
+				# Prep the download http headers
+				req.set_header ('Content-Disposition', 'attachment; filename="subtitle.srt"')
+				req.set_header('Cache-Control', 'no-cache')
+				req.set_header('Pragma', 'no-cache')
+				req.set_header('Content-Type', 'application/text/plain')				
+				# Download the sub
+				try:
+					for line in response:
+						req.write(line + '\n')
+					req.finish()
+					return req
+				except Exception, e:
+					Log.Exception('Fatal error happened in downloadSubtitle: ' + str(e))
+					req.clear()
+					req.set_status(500)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish('Fatal error happened in downloadSubtitle: ' + str(e))
 			except Exception, e:
-				Log.Exception('Fatal error happened in showSubtitle: %s' %(e))
+				Log.Exception('Fatal error happened in downloadSubtitle: %s' %(e))
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Fatal error happened in showSubtitle')
 		except Exception, e:
-			Log.Exception('Fatal error happened in showSubtitle: %s' %(e))
+			Log.Exception('Fatal error happened in downloadSubtitle: %s' %(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in showSubtitle')
+			req.finish('Fatal error happened in downloadSubtitle')
 
 	''' get Subtitles '''
 	def getSubtitles(self, req, mediaKey=''):
