@@ -198,6 +198,16 @@ class git(object):
 			Log.Exception('The error was: ' + str(e))
 		return
 
+	''' Returns commit time and Id for a git branch '''
+	def getAtom_UpdateTime_Id(self, url, branch):		
+		# Build AtomUrl
+		atomUrl = url + '/commits/' + branch + '.atom'
+		# Get Atom
+		atom = HTML.ElementFromURL(atomUrl)
+		mostRecent = atom.xpath('//entry')[0].xpath('./updated')[0].text[:-6]
+		commitId = atom.xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
+		return {'commitId' : commitId, 'mostRecent' : mostRecent}
+
 	''' This function will return a list of bundles, where there is an update avail '''
 	def getUpdateList(self, req):
 		Log.Debug('Got a call for getUpdateList')
@@ -210,13 +220,29 @@ class git(object):
 				# Now walk them one by one
 				for bundle in bundles:
 					if bundle.startswith('https://github'):
-						gitTime = datetime.datetime.strptime(self.getLastUpdateTime(req, UAS=True, url=bundle), '%Y-%m-%d %H:%M:%S')
-						sBundleTime = Dict['installed'][bundle]['date']
-						bundleTime = datetime.datetime.strptime(sBundleTime, '%Y-%m-%d %H:%M:%S')
-						if bundleTime < gitTime:
-							gitInfo = Dict['installed'][bundle]
-							gitInfo['gitHubTime'] = str(gitTime)
-							result[bundle] = gitInfo
+						# Going the new detection way with the commitId?
+						if 'CommitId' in Dict['installed'][bundle]:
+							updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
+							if Dict['installed'][bundle]['CommitId'] != updateInfo['commitId']:
+								gitInfo = Dict['installed'][bundle]
+								gitInfo['gitHubTime'] = updateInfo['mostRecent']
+								result[bundle] = gitInfo
+						else:
+							# Sadly has to use timestamps							
+							Log.Info('Using timestamps to detect avail update for ' + bundle)
+							gitTime = datetime.datetime.strptime(self.getLastUpdateTime(req, UAS=True, url=bundle), '%Y-%m-%d %H:%M:%S')
+							sBundleTime = Dict['installed'][bundle]['date']
+							bundleTime = datetime.datetime.strptime(sBundleTime, '%Y-%m-%d %H:%M:%S')
+							if bundleTime < gitTime:
+								gitInfo = Dict['installed'][bundle]
+								gitInfo['gitHubTime'] = str(gitTime)
+								result[bundle] = gitInfo
+							else:
+								# Let's get a CommitId stamped for future times
+								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
+								Log.Info('Stamping %s with a commitId of %s for future ref' %(bundle, updateInfo['commitId']))							
+								Dict['installed'][bundle]['CommitId'] = updateInfo['commitId']
+								Dict.Save()
 				Log.Debug('Updates avail: ' + str(result))
 				req.clear()
 				req.set_status(200)
@@ -296,11 +322,6 @@ class git(object):
 								uasListjson = getUASCacheList()
 								bFound = False
 								for git in uasListjson:
-									'''
-									if target == 'com.plexapp.plugins.Plex2csv':
-										print 'GED KIG HER'
-										continue
-									'''
 									if target == uasListjson[git]['identifier']:
 										Log.Debug('Found %s is part of uas' %(target))
 										targetGit = {}
@@ -544,8 +565,11 @@ class git(object):
 			# Walk the one by one, so we can handle upper/lower case
 			for git in gits:
 				if url.upper() == git['repo'].upper():
+					# Get the last Commit Id of the branch
+					Id = HTML.ElementFromURL(url + '/commits/' + branch + '.atom').xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
 					key = git['repo']
 					del git['repo']
+					git['CommitId'] = Id
 					git['branch'] = branch
 					git['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 					Dict['installed'][key] = git
@@ -557,9 +581,12 @@ class git(object):
 					break
 			if bNotInUAS:
 				key = url
+				# Get the last Commit Id of the branch
+				Id = HTML.ElementFromURL(url + '/commits/master.atom').xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
 				pFile = Core.storage.join_path(self.PLUGIN_DIR, bundleName, 'Contents', 'Info.plist')
 				pl = plistlib.readPlist(pFile)
 				git = {}
+				git['CommitId'] = Id
 				git['title'] = os.path.basename(bundleName)[:-7]
 				git['description'] = ''
 				git['branch'] = branch

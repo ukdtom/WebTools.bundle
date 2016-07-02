@@ -6,6 +6,7 @@ V2.3 DEV:
 		#176	UAS:	Critical error in updateInstallDict
 		#178	WT: 	Fixed issue with intruder detection
 		#184	WT:		Logging can fail on Mac OS 
+		#134	UAS:	Wrong time for Latest Update on Github
 		
 	New:
 		#170	WT:		Added a user guide from Trumpy81. URL is /manual/WebTools-User-Manual.pdf
