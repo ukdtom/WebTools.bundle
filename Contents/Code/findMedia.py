@@ -11,7 +11,8 @@
 import urllib
 import unicodedata
 import json
-import time, sys
+import time, sys, os
+from consts import DEBUGMODE
 
 # Consts used here
 AmountOfMediasInDatabase = 0																																				# Int of amount of medias in a database section
@@ -301,7 +302,8 @@ class findMedia(object):
 								mediasFromFileSystem.append(Core.storage.join_path(root,file))
 								statusMsg = 'Scanning file: ' + file
 					Log.Debug('***** Finished scanning filesystem *****')
-#					Log.Debug(mediasFromFileSystem)
+					if DEBUGMODE:
+						Log.Debug(mediasFromFileSystem)
 					runningState = 2
 			except ValueError:
 				statusMsg = 'Idle'
@@ -376,7 +378,8 @@ class findMedia(object):
 					if len(shows) == 0:
 						statusMsg = 'Scanning database: %s : Done' %(totalSize)
 						Log.Debug('***** Done scanning the database *****')
-#						Log.Debug(mediasFromDB)
+						if DEBUGMODE:
+							Log.Debug(mediasFromDB)
 						runningState = 1
 						break
 				return
@@ -416,14 +419,15 @@ class findMedia(object):
 							raise ValueError('Aborted')
 						iCount += 1
 						filename = part.get('file')		
-						filename = String.Unquote(filename).encode('utf8', 'ignore')	
+						filename = String.Unquote(filename).encode('utf8', 'ignore')
 						mediasFromDB.append(filename)
 						statusMsg = 'Scanning database: item %s of %s : Working' %(iCount, totalSize)
 					iStart += self.MediaChuncks
 					if len(medias) == 0:
 						statusMsg = 'Scanning database: %s : Done' %(totalSize)
 						Log.Debug('***** Done scanning the database *****')
-#						Log.Debug(mediasFromDB)
+						if DEBUGMODE:
+							Log.Debug(mediasFromDB)
 						runningState = 1
 						break
 				return
