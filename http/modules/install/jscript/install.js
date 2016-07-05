@@ -109,6 +109,20 @@ install.show_options = function() {
 }
 
 install.installfromgit = function(github) {
+	var branch = null;
+	
+	// Retrieve channel element
+	var $channel = $('#channellist .panel[data-url="' + github + '"]');
+	if($channel.length !== 0) {
+			// Try retrieve selected branch
+			var $branchDropdown = $('.branch-dropdown', $channel);
+
+			if($branchDropdown.length !== 0) {
+				branch = $branchDropdown.val();
+			}
+		}
+
+	
 	if ((typeof(github) != 'undefined') && (github.length > 0)) {
 		//var gitlink = $('#gitlink').val().replace(/\//g,'--wt--');
 		$('#myModalLabel').html('Install Plugin');
@@ -121,7 +135,8 @@ install.installfromgit = function(github) {
 			data: {
 				'module': 'git',
 				'function': 'getGit',
-				'url': github
+				'url': github,
+				'branch': branch
 			},
 			type: 'GET',
 			dataType: 'text',
@@ -206,6 +221,7 @@ install.loadChannels = function(InitalRun) {
 						var tempkey = object.key;
 						delete object.key;
 						install.allBundles[tempkey] = object;
+						console.log(object);
 					})
 
 					callback();
@@ -361,6 +377,10 @@ install.showChannels = function(button, type, page, highlight) {
 
 	for (var i = start; i < end; i++) {
 		var key = install.channelstoshow[i];
+		var bundleInfo = install.allBundles[key];
+		console.log(bundleInfo);
+		var dropdown_branch = '';
+		
 		var link_install = '';
 		var link_update = '';
 		var link_uninstall = '';
@@ -370,7 +390,32 @@ install.showChannels = function(button, type, page, highlight) {
 		var rowspan = 3;
 		var repolink = '';
 
-		if ((typeof(install.allBundles[key].date) != 'undefined') && (install.allBundles[key].date.length > 0)) {
+		if((typeof(bundleInfo.branches) != 'undefined') && Array.isArray(bundleInfo.branches)) {
+			// Retrieve selected branch
+			var selectedBranch = null;
+
+			if(typeof(bundleInfo.branch) != 'undefined') {
+				selectedBranch = bundleInfo.branch;
+			}
+
+			// Build list of dropdown choices
+			var choices = '';
+
+			for(var bi = 0; bi < bundleInfo.branches.length; bi++) {
+				var branch = bundleInfo.branches[bi];
+
+				choices += (
+					'<option value="' + branch.name + '"' + (branch.name == selectedBranch ? 'selected' : '') + '>' +
+						branch.label +
+					'</option>'
+				);
+			}
+
+			// Build dropdown element
+			dropdown_branch = '<select class="branch-dropdown">' + choices + '</select>';
+		}
+
+	if ((typeof(bundleInfo.date) != 'undefined') && (bundleInfo.date.length > 0)) {
 			isInstalled = true;
 			rowspan = 3;
 			if ((key.indexOf('http') != -1) && (key.indexOf('https') != -1)) {
@@ -381,16 +426,20 @@ install.showChannels = function(button, type, page, highlight) {
 		
 		if ((key.indexOf('http') != -1) && (key.indexOf('https') != -1)) {
 			if (isInstalled === false) {
-				link_install = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Install</button>';
+				//link_install = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Install</button>';
+				link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Install</button>';
 			}
 			repolink = '<a href="' + key + '" target="_NEW">' + key + '</a>';
-			link_update += ' <button class="btn btn-default btn-xs" onclick="install.checkForUpdates(\'' + install.allBundles[key].bundle + '\',\'' + key + '\')">Check for Updates</button>';
+			//link_update += ' <button class="btn btn-default btn-xs" onclick="install.checkForUpdates(\'' + install.allBundles[key].bundle + '\',\'' + key + '\')">Check for Updates</button>';
+			link_update += ' <button class="btn btn-default btn-xs" onclick="install.checkForUpdates(\'' + bundleInfo.bundle + '\',\'' + key + '\')">Check for Updates</button>';
 		}
 		
 		
 		//if ((type == 'Unknown') && ((typeof(install.allBundles[key].date) != 'undefined') && (install.allBundles[key].date.length > 0))) {
+		//if ((type == 'Unknown') && ((typeof(bundleInfo.date) != 'undefined') && (bundleInfo.date.length > 0))) {
 		if (isInstalled === true) {
-			link_uninstall = ' <button class="btn btn-default btn-xs" onclick="install.removebundleconfirm(\'' + key + '\')">Uninstall Bundle</button></div>';
+			//link_uninstall = ' <button class="btn btn-default btn-xs" onclick="install.removebundleconfirm(\'' + key + '\')">Uninstall Bundle</button></div>';
+			link_uninstall = ' <button class="btn btn-default btn-xs" onclick="install.removebundleconfirm(\'' + key + '\')">Uninstall Bundle</button>';
 		}
 		//}
 		
@@ -398,28 +447,46 @@ install.showChannels = function(button, type, page, highlight) {
 			var iconurl = 'icons/NoIcon.png';
 			var supporturl = '-';
 			var updateTime = '-';
-			if (install.allBundles[key].icon.length > 0) {
-				iconurl = 'uas/Resources/' + install.allBundles[key].icon;
+			//if (install.allBundles[key].icon.length > 0) {
+			//	iconurl = 'uas/Resources/' + install.allBundles[key].icon;
+			if (bundleInfo.icon.length > 0) {
+				iconurl = 'uas/Resources/' + bundleInfo.icon;
 			}
-			if (typeof(install.allBundles[key].supporturl) != 'undefined') {
-				supporturl = '<a href="' + install.allBundles[key].supporturl + '" target="_NEW">' + install.allBundles[key].supporturl + '</a>';
-			}
+			
+			//if (typeof(install.allBundles[key].supporturl) != 'undefined') {
+			//	supporturl = '<a href="' + install.allBundles[key].supporturl + '" target="_NEW">' + install.allBundles[key].supporturl + '</a>';
+			//}
+			
+			if (typeof(bundleInfo.supporturl) != 'undefined') {
+				supporturl = '<a href="' + bundleInfo.supporturl + '" target="_NEW">' + bundleInfo.supporturl + '</a>';
+ 			}
+			
+			if (typeof(bundleInfo.latestupdateongit) != 'undefined') {
+				updateTime = bundleInfo.latestupdateongit;
+ 			}
 
-			if (typeof(install.allBundles[key].latestupdateongit) != 'undefined') {
-				updateTime = install.allBundles[key].latestupdateongit;
-			}
+			//if (typeof(install.allBundles[key].latestupdateongit) != 'undefined') {
+			//	updateTime = install.allBundles[key].latestupdateongit;
+			//}
 
-			var newEntry = ['<div class="panel panel-default" id="' + install.allBundles[key].bundle.replace('.', '').replace(' ', '') + '">'];
-			newEntry.push('<div class="panel-heading"><h4 class="panel-title">' + install.allBundles[key].title + '</h4></div>');
+			//var newEntry = ['<div class="panel panel-default" id="' + install.allBundles[key].bundle.replace('.', '').replace(' ', '') + '">'];
+			//newEntry.push('<div class="panel-heading"><h4 class="panel-title">' + install.allBundles[key].title + '</h4></div>');
+			var newEntry = ['<div class="panel panel-default" id="' + bundleInfo.bundle.replace('.', '').replace(' ', '') + '" data-url="' + key + '">'];
+			newEntry.push('<div class="panel-heading"><h4 class="panel-title">' + bundleInfo.title + '</h4></div>');
 			newEntry.push('<div class="panel-body subtitle"><table class="table table-condensed">');
-			newEntry.push('<tr><td rowspan="' + rowspan + '" class="icontd"><img src="' + iconurl + '" class="icon"></td><td>' + install.allBundles[key].description + '</td></tr>')
-			newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Categories:&nbsp;</span> <span class="changeDisplay">' + install.allBundles[key].type + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Repo:&nbsp;</span> <span class="changeDisplay">' + repolink + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Support:&nbsp;</span> <span class="changeDisplay">' + supporturl + '&nbsp;</span></div></td></tr>')
-
+			//newEntry.push('<tr><td rowspan="' + rowspan + '" class="icontd"><img src="' + iconurl + '" class="icon"></td><td>' + install.allBundles[key].description + '</td></tr>')
+			//newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Categories:&nbsp;</span> <span class="changeDisplay">' + install.allBundles[key].type + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Repo:&nbsp;</span> <span class="changeDisplay">' + repolink + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Support:&nbsp;</span> <span class="changeDisplay">' + supporturl + '&nbsp;</span></div></td></tr>')
+			newEntry.push('<tr><td rowspan="' + rowspan + '" class="icontd"><img src="' + iconurl + '" class="icon"></td><td>' + bundleInfo.description + '</td></tr>')
+			newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Categories:&nbsp;</span> <span class="changeDisplay">' + bundleInfo.type + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Repo:&nbsp;</span> <span class="changeDisplay">' + repolink + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Support:&nbsp;</span> <span class="changeDisplay">' + supporturl + '&nbsp;</span></div></td></tr>')
+ 
 			//if (isInstalled === true) {
-				newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Installed:&nbsp;</span> <span class="changeDisplay"> ' + install.allBundles[key].date + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Latest Update on Github:&nbsp;</span> <span class="changeDisplay"><span id="updateTime_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '') + '">' + updateTime + '&nbsp;</span></span></div></td></tr>')
+				//newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Installed:&nbsp;</span> <span class="changeDisplay"> ' + install.allBundles[key].date + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Latest Update on Github:&nbsp;</span> <span class="changeDisplay"><span id="updateTime_' + install.allBundles[key].bundle.replace('.', '').replace(' ', '') + '">' + updateTime + '&nbsp;</span></span></div></td></tr>')
+			newEntry.push('<tr><td colspan="2"><div class="categoryDiv changeDisplay marginRight"><span class="changeDisplay subheadline">Installed:&nbsp;</span> <span class="changeDisplay"> ' + bundleInfo.date + '&nbsp;</span></div><div class="categoryDiv changeDisplay"><span class="changeDisplay subheadline">Latest Update on Github:&nbsp;</span> <span class="changeDisplay"><span id="updateTime_' + bundleInfo.bundle.replace('.', '').replace(' ', '') + '">' + updateTime + '&nbsp;</span></span></div></td></tr>')
 			//}
 			newEntry.push('</table></div>');
-			newEntry.push('<div class="panel-footer">' + link_install + link_update + link_uninstall + '</div>');
+			//newEntry.push('<div class="panel-footer">' + link_install + link_update + link_uninstall + '</div>');
+			newEntry.push('<div class="panel-footer">' + dropdown_branch + link_install + link_update + link_uninstall + '</div>');
+ 			
 			newEntry.push('</div>');
 
 			$('#channellist').append(newEntry.join('\n'));
