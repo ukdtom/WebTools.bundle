@@ -3,6 +3,7 @@ webtools.functions.findmedia = {
   hasoptions: true,
 	loading:  new asynchelper(true, false),
 	options: {},
+	resetSettings: function() {},
 	save_options: function() {},
 	show_options: function() {},
 	sections: [],
@@ -78,8 +79,30 @@ findmedia.loading.inline([
 		$('.modal').modal('hide');	
 	});
 
-findmedia.show_options = function() {
+findmedia.resetSettings = function() {
+	$('#myModalLabel').html('Resetting settings');
+	$('#myModalBody').html('Resetting settings...');
+	$('#myModalFoot').html('');
 
+	$.ajax({
+						url: '/webtools2?module=findMedia&function=resetSettings',
+						cache: false,
+						type: 'POST',
+						dataType: 'text',
+						success: function(data) {
+							$('#myModalBody').html('Settings has been reset.');
+							webtools.log('Options reset successfully.');
+							$('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+						},
+						error: function(data) {
+							$('#myModalBody').html('Failed resetting settings.');
+							webtools.log('Settings has not been reset due to an error.');
+							$('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+						}
+					});	
+}
+
+findmedia.show_options = function() {
 	// Define the default view of options for SubtitleMGMT.
 	$('#myModalLabel').html('Preferences');
 	$('#myModalBody').html('<div class="alert alert-danger" role="alert" id="OptionsModalAlert"></div><table class="table table-bordered" id="OptionsTable"></table>');
@@ -87,16 +110,100 @@ findmedia.show_options = function() {
 
 
 	$('#OptionsModalAlert').hide();
+	
+	var ignored_dirs_string = '';
+	findmedia.options.IGNORED_DIRS.forEach( function (ignored_dir) {
+		if (ignored_dir.length > 0) {
+			ignored_dirs_string += ignored_dir + ',';
+		}
+	});
+	ignored_dirs_string = ignored_dirs_string.substring(0,ignored_dirs_string.length-1);
+	
+	var valid_extensions_string = '';
+	findmedia.options.VALID_EXTENSIONS.forEach( function (extensions) {
+		if (extensions.length > 0) {
+			valid_extensions_string += extensions + ',';
+		}
+	});
+	valid_extensions_string = valid_extensions_string.substring(0,valid_extensions_string.length-1);
+	
+	var ignore_hidden_checked = '';
+	if (findmedia.options.IGNORE_HIDDEN === true) {
+		ignore_hidden_checked = 'checked=' + findmedia.options.IGNORE_HIDDEN;
+	}
+	
 	var options = [
-		'<tr><td><input type="checkbox" name="options_ignore_hidden"></td><td>Ignore hidden</td></tr>',
-		'<tr><td><input type="checkbox" name="options_ignored_dirs"></td><td>Ignored directories:</td></tr>',
-		'<tr><td><input type="checkbox" name="options_valid_extensions"></td><td>Valid Extensions:</td></tr>',
-		'<tr><td><input type="text" name="items_per_page" size="2"></td><td>Items per page <span id="items_per_page_max_min"></span></td></tr>'
+		'<tr><td colspan="2">Seperate values with , (comma).</td></tr>',	
+		'<tr><td>Ignore Hidden:</td><td><input type="checkbox" name="options_ignore_hidden" ' + ignore_hidden_checked + '></td></tr>',
+		'<tr><td>Ignored Directories:</td><td><input type="text" name="options_ignored_dirs" value="' + ignored_dirs_string + '"></td></tr>',
+		'<tr><td>Valid Extensions:</td><td><input type="text" name="options_valid_extensions" value="' + valid_extensions_string + '"></td></tr>',
+		'<tr><td colspan="2"><button type="button" class="btn btn-default" onclick="findmedia.resetSettings();">Reset settings to default</button></td></tr>'
 	]
 
 	$('#OptionsTable').html(options.join('<br>'));
 
 	$('#myModal').modal('show');
+}
+
+findmedia.save_options = function() {
+	console.log($("input[name=options_ignore_hidden]").prop('checked'));
+	findmedia.options.IGNORE_HIDDEN = $("input[name=options_ignore_hidden]").prop('checked');
+	//if ($("input[name=options_ignore_hidden]").val() == 'on') {
+	//	findmedia.options.IGNORE_HIDDEN = true;
+	//}
+	
+	
+	
+	
+	var ignored_dirs = $("input[name=options_ignored_dirs]").val().split(',');
+	findmedia.options.IGNORED_DIRS = [''];
+	ignored_dirs.forEach(function (dir) {
+		if(dir.length > 0) {
+			findmedia.options.IGNORED_DIRS.push(dir);
+		}
+	}) 
+
+	var valid_extensions = $("input[name=options_valid_extensions]").val().split(',');
+	findmedia.options.VALID_EXTENSIONS = [''];
+	valid_extensions.forEach(function (dir) {
+		if(dir.length > 0) {
+			findmedia.options.VALID_EXTENSIONS.push(dir);
+		}
+	})
+	
+	var save_options_to_server = new asynchelper(false, true);
+	save_options_to_server.inline([
+		function(callback) {
+			var optionkeys = [];
+			for (var key in findmedia.options) {
+				optionkeys.push(key);
+				save_options_to_server.functionsarray.push(function(callback, optionkeys) {
+					var currentkey = optionkeys.shift();
+					$.ajax({
+						url: '/webtools2?module=findMedia&function=setSetting',
+						cache: false,
+						type: 'POST',
+						data: {key: currentkey, value: findmedia.options[currentkey].toString()},
+						dataType: 'text',
+						success: function(data) {
+							webtools.log('Options saved successfully.');
+							callback('Successfully saved ' + currentkey, optionkeys);
+						},
+						error: function(data) {
+							webtools.log('Options has not been saved due to an error.');
+							callback('Failed saving ' + currentkey, optionkeys);
+						}
+					});
+
+				});
+
+			}
+			callback('Fetched Optionkeys', optionkeys);
+		}
+	], function(result) {
+		webtools.log(result);
+		$('.modal').modal('hide');
+	});
 }
 
 findmedia.scanning_start = function(sectionKey) {
@@ -116,7 +223,7 @@ findmedia.scanning_start = function(sectionKey) {
 			}
 
 		});
-	
+
 }
 
 findmedia.scanning_wait = function() {

@@ -29,6 +29,7 @@ from findMedia import findMedia
 from language import language
 from plex2csv import plex2csv
 from wt import wt
+from scheduler import scheduler
 
 
 import os, sys
@@ -302,6 +303,9 @@ class webTools2Handler(BaseHandler):
 				self = plex2csv().reqprocess(self)
 			elif module == 'wt':
 				self = wt().reqprocess(self)
+			elif module == 'scheduler':
+				print 'Ged WebSrv Scheduler'
+				self = scheduler().reqprocess(self)
 			else:
 				self.clear()
 				self.set_status(412)
@@ -331,6 +335,8 @@ class webTools2Handler(BaseHandler):
 				self = findMedia().reqprocessPost(self)
 			elif module == 'wt':		
 				self = wt().reqprocessPost(self)
+			elif module == 'scheduler':		
+				self = scheduler().reqprocessPost(self)
 			else:
 				self.clear()
 				self.set_status(412)

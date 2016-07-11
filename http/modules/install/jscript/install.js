@@ -157,6 +157,7 @@ install.installfromgit = function(github) {
   Fetch channels and get a list of types (categories)
 */
 install.loadChannels = function(InitalRun) {
+	
 	webtools.loading();
 	$('#navfoot').html('');
 	if (typeof($('#channelmenu>button.btn-active').html()) != 'undefined') {
@@ -207,6 +208,7 @@ install.loadChannels = function(InitalRun) {
 				dataType: 'JSON',
 				type: 'GET',
 				success: function(data) {
+					console.log(data);
 					//install.allBundles = data;
 					var tempArray = [];
 					for (var key in data) {

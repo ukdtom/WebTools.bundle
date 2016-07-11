@@ -7,6 +7,7 @@ V2.3 DEV:
 		#178	WT: 	Fixed issue with intruder detection
 		#184	WT:		Logging can fail on Mac OS 
 		#134	UAS:	Wrong time for Latest Update on Github
+		#187	UAS:	Fix for correct sorting. Now sorts alphabetical without concerning about capital/lower case letters.
 		
 	New:
 		#170	WT:		Added a user guide from Trumpy81. URL is /manual/WebTools-User-Manual.pdf
