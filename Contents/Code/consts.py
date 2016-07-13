@@ -3,8 +3,9 @@
 #
 #	Author: dane22, a Plex Community member
 #
-# This module is for constants used by WebTools and it's modules
+# This module is for constants used by WebTools and it's modules, as well as to control developer mode
 #
+# For info about the debug file, see the docs
 ######################################################################################################################
 
 import io, os, json
@@ -35,18 +36,27 @@ class consts(object):
 		if os.path.isfile(debugFile):
 			DEBUGMODE = True
 			VERSION = VERSION + ' ****** WARNING Debug mode on *********'
-			# Read it for params
-			json_file = io.open(debugFile, "rb")
-			debug = json_file.read()
-			json_file.close()
-			debugParams = JSON.ObjectFromString(str(debug))
-			Log.Debug('Override debug params are %s' %str(debugParams))
-			if 'UAS_Repo' in debugParams:
-				UAS_URL = debugParams['UAS_Repo']
-			if 'UAS_RepoBranch' in debugParams:
-				UAS_BRANCH = debugParams['UAS_RepoBranch']
-			if 'WT_AUTH' in debugParams:
-				WT_AUTH = debugParams['WT_AUTH']
+			try:
+				# Read it for params
+				json_file = io.open(debugFile, "rb")
+				debug = json_file.read()
+				json_file.close()
+				debugParams = JSON.ObjectFromString(str(debug))
+				Log.Debug('Override debug params are %s' %str(debugParams))
+				if 'UAS_Repo' in debugParams:
+					UAS_URL = debugParams['UAS_Repo']
+				if 'UAS_RepoBranch' in debugParams:
+					UAS_BRANCH = debugParams['UAS_RepoBranch']
+				if 'WT_AUTH' in debugParams:
+					WT_AUTH = debugParams['WT_AUTH']
+			except:
+				pass
+			Log.Debug('******** Using the following debug params ***********')
+			Log.Debug('DEBUGMODE: ' + str(DEBUGMODE))
+			Log.Debug('UAS_Repo: ' + UAS_URL)
+			Log.Debug('UAS_RepoBranch: ' + UAS_BRANCH)
+			Log.Debug('Authenticate: ' + str(WT_AUTH))
+			Log.Debug('*****************************************************')
 		else:
 			DEBUGMODE = False
 
