@@ -9,6 +9,7 @@ V2.3 DEV:
 		#134	UAS:	Wrong time for Latest Update on Github
 		#187	UAS:	Fix for correct sorting. Now sorts alphabetical without concerning about capital/lower case letters.
 		#189	WT:		Fix for startup issue if on Windows and lang is set to CP1251
+		#190	LV:		Fix for issue with cyrilian characters, when not running UTF-8
 		
 	New:
 		#170	WT:		Added a user guide from Trumpy81. URL is /manual/WebTools-User-Manual.pdf
