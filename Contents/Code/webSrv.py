@@ -18,6 +18,7 @@ from tornado.ioloop import IOLoop
 from tornado.escape import json_encode, xhtml_escape
 
 import threading
+import os, sys
 
 # Migrated to new way
 from plextvhelper import plexTV
@@ -30,9 +31,7 @@ from language import language
 from plex2csv import plex2csv
 from wt import wt
 from scheduler import scheduler
-
-
-import os, sys
+from nfoExporter import nfoExporter
 
 # Below used to find path of this file
 from inspect import getsourcefile
@@ -337,6 +336,8 @@ class webTools2Handler(BaseHandler):
 				self = wt().reqprocessPost(self)
 			elif module == 'scheduler':		
 				self = scheduler().reqprocessPost(self)
+			elif module == 'nfoExporter':	
+				self = nfoExporter().reqprocessPost(self)
 			else:
 				self.clear()
 				self.set_status(412)

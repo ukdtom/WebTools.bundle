@@ -14,6 +14,7 @@
 SECRETKEY = ''
 
 #********** Imports needed *********
+import sys, locale
 from webSrv import startWeb, stopWeb
 from random import randint   #Used for Cookie generation
 import uuid			#Used for secrectKey
@@ -27,6 +28,10 @@ def Start():
 	if DEBUGMODE:		
 		print("********  Started %s on %s at %s **********" %(NAME  + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M")))
 	Log.Debug("*******  Started %s on %s at %s ***********" %(NAME + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M")))
+	# TODO: Nasty workaround for issue 189
+	if (Platform.OS == 'Windows' and locale.getpreferredencoding() == 'cp1251'):
+		sys.setdefaultencoding("cp1251")
+		Log.Debug("Default set to cp1251")
 	HTTP.CacheTime = 0
 	DirectoryObject.thumb = R(ICON)
 	ObjectContainer.title1 = NAME + ' V' + VERSION 
