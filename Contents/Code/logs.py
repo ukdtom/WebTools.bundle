@@ -11,6 +11,7 @@ import time
 import json
 import os, sys, io
 import zipfile
+import codecs, locale
 
 class logs(object):
 	# Defaults used by the rest of the class
@@ -134,7 +135,9 @@ class logs(object):
 			else:
 				file = os.path.join(self.LOGDIR, fileName)
 			retFile = []
-			with io.open(file, 'rb') as content_file:
+#			with codecs.open(file, encoding=locale.getpreferredencoding()) as content_file:
+			with codecs.open(file, encoding=locale.getpreferredencoding(), errors='ignore') as content_file:
+#			with io.open(file, 'rb') as content_file:
 				content = content_file.readlines()
 				for line in content:
 					line = line.replace('\n', '')
