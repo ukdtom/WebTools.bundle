@@ -10,6 +10,7 @@ import mmap
 from consts import DEBUGMODE
 import datetime
 from lxml import etree
+from shutil import move
 
 statusMsg = 'idle'																																									# Response to getStatus
 runningState = 0																																										# Internal tracker of where we are
@@ -82,7 +83,7 @@ class nfoExporter(object):
 			return XML.ElementFromURL(url).xpath('//MediaContainer/@viewGroup')[0]
 
 		def scanMovieSection(req, sectionNumber):
-			print 'Ged1 scanMovieSection'			
+			Log.Debug('Starting scanMovieSection')		
 			global AmountOfMediasInDatabase
 			global mediasFromDB
 			global statusMsg
@@ -99,15 +100,9 @@ class nfoExporter(object):
 
 
 				print 'Ged FAKE Timestamp REMOVE'
-				timeStamp = 1468544934
-				now = int((datetime.datetime.now()-datetime.datetime(1970,1,1)).total_seconds())
-				print 'Ged3 Now    ', now
-				print 'Ged4 LastRun', timeStamp
-
-
-
-
-		
+#				timeStamp = 1468544934
+#				timeStamp = 0
+				now = int((datetime.datetime.now()-datetime.datetime(1970,1,1)).total_seconds())	
 				Log.Debug('Starting scanMovieDb for section %s' %(sectionNumber))
 				Log.Debug('Only grap medias updated since: ' + datetime.datetime.fromtimestamp(int(timeStamp)).strftime('%Y-%m-%d %H:%M:%S'))
 				runningState = -1
@@ -153,22 +148,32 @@ class nfoExporter(object):
 							doc = etree.ElementTree(nfo)
 
 							''' Now digest the media, and add to the XML '''
+							# Id
+							try:
+								guid = videoDetails.get('guid').split('//')[1].split('?')[0]
+								Id = etree.SubElement(nfo, 'id')
+								if 'imdb' in videoDetails.get('guid'):
+									Id.text = unicode(guid)
+								if 'themoviedb' in videoDetails.get('guid'):
+									Id.set('TMDB', guid)
+							except:
+								pass
 							# Title
 							try:
 								title = etree.SubElement(nfo, 'title')
-								title.text = videoDetails.get('title')
+								title.text = unicode(videoDetails.get('title'))
 							except:
 								pass
 							# originalTitle
 							try:
 								originaltitle = etree.SubElement(nfo, 'originaltitle')
-								originaltitle.text = videoDetails.get('originalTitle')
+								originaltitle.text = unicode(videoDetails.get('originalTitle'))
 							except:
 								pass
 							# titleSort
 							try:
 								titlesort = etree.SubElement(nfo, 'titlesort')
-								titlesort.text = videoDetails.get('titleSort')
+								titlesort.text = unicode(videoDetails.get('titleSort'))
 							except:
 								pass
 							# Summery aka plot
@@ -180,37 +185,37 @@ class nfoExporter(object):
 							# rating
 							try:
 								rating = etree.SubElement(nfo, 'rating')
-								rating.text = videoDetails.get('rating')
+								rating.text = unicode(videoDetails.get('rating'))
 							except:
 								pass
 							# ratingsource
 							try:
 								ratingsource = etree.SubElement(nfo, 'ratingsource')
-								ratingsource.text = videoDetails.get('ratingImage').split(':')[0]
+								ratingsource.text = unicode(videoDetails.get('ratingImage').split(':')[0])
 							except:
 								pass
 							# contentRating
 							try:
 								contentRating = etree.SubElement(nfo, 'contentRating')
-								contentRating.text = videoDetails.get('contentRating')
+								contentRating.text = unicode(videoDetails.get('contentRating'))
 							except:
 								pass
 							# studio
 							try:
 								studio = etree.SubElement(nfo, 'studio')
-								studio.text = videoDetails.get('studio')
+								studio.text = unicode(videoDetails.get('studio'))
 							except:
 								pass
 							# year
 							try:
 								year = etree.SubElement(nfo, 'year')
-								year.text = videoDetails.get('year')
+								year.text = unicode(videoDetails.get('year'))
 							except:
 								pass
 							# tagline
 							try:
 								tagline = etree.SubElement(nfo, 'tagline')
-								tagline.text = videoDetails.get('tagline')
+								tagline.text = unicode(videoDetails.get('tagline'))
 							except:
 								pass
 							# Genre
@@ -219,7 +224,7 @@ class nfoExporter(object):
 								for Genre in Genres:
 									try:
 										genre = etree.SubElement(nfo, 'genre')
-										genre.text = Genre.xpath('@tag')[0]
+										genre.text = unicode(Genre.xpath('@tag')[0])
 									except:
 										pass
 							except:
@@ -230,7 +235,7 @@ class nfoExporter(object):
 								for Collection in Collections:
 									try:
 										collection = etree.SubElement(nfo, 'collection')
-										collection.text = Collection.xpath('@tag')[0]
+										collection.text = unicode(Collection.xpath('@tag')[0])
 									except:
 										pass
 							except:
@@ -238,7 +243,7 @@ class nfoExporter(object):
 							# originallyAvailableAt aka releasedate
 							try:
 								releasedate = etree.SubElement(nfo, 'releasedate')
-								releasedate.text = videoDetails.get('originallyAvailableAt')
+								releasedate.text = unicode(videoDetails.get('originallyAvailableAt'))
 							except:
 								pass
 							# Director
@@ -247,7 +252,7 @@ class nfoExporter(object):
 								for Director in Directors:
 									try:
 										director = etree.SubElement(nfo, 'director')
-										director.text = Director.xpath('@tag')[0]
+										director.text = unicode(Director.xpath('@tag')[0])
 									except:
 										pass
 							except:
@@ -258,7 +263,7 @@ class nfoExporter(object):
 								for Writer in Writers:
 									try:
 										writer = etree.SubElement(nfo, 'writer')
-										writer.text = Writer.xpath('@tag')[0]
+										writer.text = unicode(Writer.xpath('@tag')[0])
 									except:
 										pass
 							except:
@@ -269,7 +274,7 @@ class nfoExporter(object):
 								for Producer in Producers:
 									try:
 										producer = etree.SubElement(nfo, 'producer')
-										producer.text = Producer.xpath('@tag')[0]
+										producer.text = unicode(Producer.xpath('@tag')[0])
 									except:
 										pass
 							except:
@@ -280,7 +285,7 @@ class nfoExporter(object):
 								for Country in Countries:
 									try:
 										country = etree.SubElement(nfo, 'country')
-										country.text = Country.xpath('@tag')[0]
+										country.text = unicode(Country.xpath('@tag')[0])
 									except:
 										pass
 							except:
@@ -294,13 +299,13 @@ class nfoExporter(object):
 									# name
 									try:
 										name = etree.SubElement(role, 'name')
-										name.text = Role.xpath('@tag')[0]
+										name.text = unicode(Role.xpath('@tag')[0])
 									except:
 										pass
 									# role
 									try:
 										actorRole = etree.SubElement(role, 'role')
-										actorRole.text = Role.xpath('@role')[0]
+										actorRole.text = unicode(Role.xpath('@role')[0])
 									except:
 										pass
 									# order
@@ -328,9 +333,7 @@ class nfoExporter(object):
 								Log.Debug('Name and path to nfo file is: ' + nfoFile)
 								self.makeNFOBackup(nfoFile)
 								# Now save the .nfo file
-					#			saveFile = io.open(nfoFile, 'w', encoding='utf8')		
 								doc.write(nfoFile, xml_declaration=True, pretty_print=True, encoding='UTF-8')
-					#			saveFile.close()
 
 								# Make poster
 								posterUrl = 'http://127.0.0.1:32400' + videoDetails.get('thumb')
@@ -350,25 +353,15 @@ class nfoExporter(object):
 
 
 						except Exception, e:
-							Log.Exception('Exception happend in generating nfo file: ' + str(e))
+							Log.Exception('Exception happend in generating nfo file: ' + str(e))			
 
-						print 'Ged slut'
-
-				
-
-#						mediasFromDB.append(filename)
 						statusMsg = 'Scanning database: item %s of %s : Working' %(iCount, totalSize)
 					iStart += self.MediaChuncks
 					if len(videos) == 0:
 						statusMsg = 'Scanning database: %s : Done' %(totalSize)
 						Log.Debug('***** Done scanning the database *****')
-						if DEBUGMODE:
-							Log.Debug('Ged hello world')
 						runningState = 1
 						break
-
-
-
 				# Stamp dict with new timestamp
 				Dict['nfoExportTimeStamps'][sectionNumber] = now
 				Dict.Save()
@@ -376,11 +369,6 @@ class nfoExporter(object):
 			except Exception, e:
 				Log.Exception('Fatal error in scanMovieDb: ' + str(e))
 				runningState = 99
-
-
-
-
-
 		# End scanMovieDb
 
 

@@ -16,6 +16,7 @@ V2.3 DEV:
 		#171	PMS:	Added Search to the backend
 		#175	PMS: 	Autodownload Repo if json is missing
 		#185	WT:		Enhance developer/debug mode
+		#191	WT:		Version numbering moved to VERSION file in the root of the bundle
 
 
 ####

@@ -12,7 +12,7 @@ import io, os, json
 
 DEBUGMODE = False
 WT_AUTH = True
-VERSION = '2.3 DEV'
+VERSION = 'ERROR'
 UAS_URL = 'https://github.com/ukdtom/UAS2Res'
 UAS_BRANCH = 'master'
 PREFIX = '/applications/webtools'
@@ -29,6 +29,12 @@ class consts(object):
 		global UAS_URL
 		global UAS_BRANCH
 		global VERSION
+
+		versionFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'VERSION')
+		with io.open(versionFile, "rb") as version_file:
+			VERSION = version_file.read()
+			print 'Ged 55', VERSION
+
 
 		# Switch to debug mode if needed
 		debugFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'debug')
