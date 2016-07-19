@@ -31,7 +31,7 @@ from language import language
 from plex2csv import plex2csv
 from wt import wt
 from scheduler import scheduler
-from nfoExporter import nfoExporter
+from jsonExporter import jsonExporter
 
 # Below used to find path of this file
 from inspect import getsourcefile
@@ -336,8 +336,8 @@ class webTools2Handler(BaseHandler):
 				self = wt().reqprocessPost(self)
 			elif module == 'scheduler':		
 				self = scheduler().reqprocessPost(self)
-			elif module == 'nfoExporter':	
-				self = nfoExporter().reqprocessPost(self)
+			elif module == 'jsonExporter':	
+				self = jsonExporter().reqprocessPost(self)
 			else:
 				self.clear()
 				self.set_status(412)

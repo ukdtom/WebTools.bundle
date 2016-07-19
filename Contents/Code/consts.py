@@ -18,6 +18,7 @@ UAS_BRANCH = 'master'
 PREFIX = '/applications/webtools'
 NAME = 'WebTools'
 ICON = 'WebTools.png'
+JSONTIMESTAMP = 0
 
 
 class consts(object):	
@@ -29,6 +30,7 @@ class consts(object):
 		global UAS_URL
 		global UAS_BRANCH
 		global VERSION
+		global JSONTIMESTAMP
 
 		versionFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'VERSION')
 		with io.open(versionFile, "rb") as version_file:
@@ -53,6 +55,8 @@ class consts(object):
 					UAS_BRANCH = debugParams['UAS_RepoBranch']
 				if 'WT_AUTH' in debugParams:
 					WT_AUTH = debugParams['WT_AUTH']
+				if 'JSONTIMESTAMP' in debugParams:
+					JSONTIMESTAMP = debugParams['JSONTIMESTAMP']
 			except:
 				pass
 			Log.Debug('******** Using the following debug params ***********')
