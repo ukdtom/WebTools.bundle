@@ -94,7 +94,7 @@ class jsonExporter(object):
 #					pass
 				media['About This File'] = 'JSON Export Made with WebTools for Plex'
 				# Simple entries
-				elements = ['guid', 'title', 'originalTitle', 'titleSort', 'type', 'summary', 'duration', 'rating', 'ratingImage', 'contentRating', 'studio', 'year', 'tagline', 'originallyAvailableAt']
+				elements = ['guid', 'title', 'originalTitle', 'titleSort', 'type', 'summary', 'duration', 'rating', 'ratingImage', 'contentRating', 'studio', 'year', 'tagline', 'originallyAvailableAt', 'audienceRatingImage', 'audienceRating']
 				for element in elements:
 					makeSimpleEntry(media, videoDetails, element)
 				arrayElements = ['Genre', 'Collection', 'Director', 'Writer', 'Producer', 'Country', 'Label']
