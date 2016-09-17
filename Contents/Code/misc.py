@@ -5,6 +5,8 @@
 #
 # This module is for misc utils
 #
+# Path of code here shamelessly stolen from Plex scanner bundle
+#
 ######################################################################################################################
 
 import os, re, string, unicodedata, sys

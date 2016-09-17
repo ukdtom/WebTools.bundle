@@ -17,11 +17,11 @@ class plexTV(object):
 		self.serverUrl = self.mainUrl + '/pms/servers'
 		self.resourceURL = self.mainUrl + '/pms/resources.xml'
 		# Mandentory headers
+		id = self.get_thisPMSIdentity()
 		self.myHeader = {}
-		self.myHeader['X-Plex-Client-Identifier'] = NAME + '-' + self.get_thisPMSIdentity()
-		self.myHeader['Accept'] = 'application/xml'
+		self.myHeader['X-Plex-Client-Identifier'] = NAME + '-' + id
+		self.myHeader['Accept'] = 'application/json'
 		self.myHeader['X-Plex-Product'] = NAME
-		self.myHeader['X-Plex-Device-Name'] = NAME + '-' + self.get_thisPMSIdentity()
 		self.myHeader['X-Plex-Version'] = VERSION
 		self.myHeader['X-Plex-Platform'] = Platform.OS
 
@@ -31,7 +31,7 @@ class plexTV(object):
 		authString = String.Base64Encode('%s:%s' % (user, pwd))
 		self.myHeader['Authorization'] = 'Basic ' + authString
 		try:
-			token = XML.ElementFromURL(self.loginUrl, headers=self.myHeader, method='POST').xpath('//user')[0].get('authenticationToken')
+			token = JSON.ObjectFromURL(self.loginUrl + '.json', headers=self.myHeader, method='POST')['user']['authToken']		
 			Log.Info('Authenticated towards plex.tv with success')				
 			return token
 		except Ex.HTTPError, e:
