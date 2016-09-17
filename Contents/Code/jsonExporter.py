@@ -100,6 +100,19 @@ class jsonExporter(object):
 				arrayElements = ['Genre', 'Collection', 'Director', 'Writer', 'Producer', 'Country', 'Label']
 				for element in arrayElements:
 					makeArrayEntry(media, videoDetails, element)
+				# Locked fields
+				Locked = []
+				try:
+					Fields = videoDetails.xpath('//Field')
+					for Field in Fields:
+						try:
+							if Field.xpath('@locked')[0] == '1':
+								Locked.append(unicode(Field.xpath('@name')[0]))
+						except:
+							pass
+					media['Field'] = Locked
+				except:
+					pass
 				# Role aka actor
 				try:
 					Roles = videoDetails.xpath('//Role')

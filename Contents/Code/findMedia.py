@@ -13,6 +13,7 @@ import unicodedata
 import json
 import time, sys, os
 from consts import DEBUGMODE
+from misc import misc
 
 # Consts used here
 AmountOfMediasInDatabase = 0																																				# Int of amount of medias in a database section
@@ -113,7 +114,6 @@ class findMedia(object):
 			req.clear()		
 			req.set_status(200)
 
-
 	# Set settings
 	def setSetting(self, req):
 		try:
@@ -207,6 +207,8 @@ class findMedia(object):
 			MissingFromFS = []
 			try:
 				for item in mediasFromDB:
+					s = item
+					item = misc().Unicodize(item)
 					if bAbort:
 						raise ValueError('Aborted')
 					if not os.path.isfile(item):
@@ -281,8 +283,22 @@ class findMedia(object):
 					filePath2 = urllib.unquote(filePath).decode('utf8')
 					if filePath2.startswith('u'):
 						filePath2 = filePath2[1:]
+
+
+					filePath2 = misc().Unicodize(filePath2)
+					print 'Ged1', filePath2
+					print 'Ged2', filePath2.encode('utf8', 'ignore')
+					print 'Ged3', String.Unquote(filePath2.encode('utf8', 'ignore'))			
+
+
+#					Log.Debug("Handling file #%s: %s" %(bScanStatusCount, String.Unquote(filePath2).encode('utf8', 'ignore')))
+
 					Log.Debug("Handling file #%s: %s" %(bScanStatusCount, String.Unquote(filePath2).encode('utf8', 'ignore')))
-					for root, subdirs, files in os.walk(String.Unquote(filePath2).encode('utf8', 'ignore')):
+
+#					for root, subdirs, files in os.walk(String.Unquote(filePath2).encode('utf8', 'ignore')):
+					for root, subdirs, files in os.walk(filePath2):
+
+
 						# Need to check if directory in ignore list?
 						if os.path.basename(root) in Dict['findMedia']['IGNORED_DIRS']:
 							continue
