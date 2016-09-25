@@ -18,7 +18,7 @@ from misc import misc
 # Consts used here
 AmountOfMediasInDatabase = 0																																				# Int of amount of medias in a database section
 mediasFromDB = []																																										# Files from the database
-mediasFromFileSystem = []																																						# Files from the file system
+mediasFromFileSystem = []																																					# Files from the file system
 statusMsg = 'idle'																																									# Response to getStatus
 runningState = 0																																										# Internal tracker of where we are
 bAbort = False																																											# Flag to set if user wants to cancel
@@ -207,12 +207,10 @@ class findMedia(object):
 			MissingFromFS = []
 			try:
 				for item in mediasFromDB:
-					s = item
-					item = misc().Unicodize(item)
 					if bAbort:
 						raise ValueError('Aborted')
-					if not os.path.isfile(item):
-						MissingFromFS.append(item)
+					if item not in mediasFromFileSystem:
+						MissingFromFS.append(item)				
 				return MissingFromFS
 			except ValueError:
 				Log.Info('Aborted in findMissingFromFS')
@@ -221,13 +219,14 @@ class findMedia(object):
 			global MissingFromDB
 			Log.Debug('Finding items missing from Database')
 			MissingFromDB = []
-			try:
+			try:				
 				for item in mediasFromFileSystem:
 					if bAbort:
 						raise ValueError('Aborted')
 					if item not in mediasFromDB:
-						MissingFromDB.append(item)
+						MissingFromDB.append(item)							
 				return MissingFromDB
+				
 			except ValueError:
 				Log.Info('Aborted in findMissingFromDB')
 
@@ -272,38 +271,24 @@ class findMedia(object):
 			global statusMsg
 			try:
 				runningState = -1
-				Log.Debug("*********************** FileSystem Paths: *****************************************")
+				Log.Debug("*********************** FileSystem scan Paths: *****************************************")
 				bScanStatusCount = 0
 				# Wondering why I do below. Part of find-unmatched, and forgot....SIGH
-				files = str(filePath)[2:-2].replace("'", "").split(', ')
-				Log.Debug(files)
-				for filePath in files:
+				files = str(filePath)[2:-2].replace("'", "").split(', ')				
+				#for filePath in files:
+				for filePath in filePath:
 					# Decode filePath 
 					bScanStatusCount += 1
 					filePath2 = urllib.unquote(filePath).decode('utf8')
-					if filePath2.startswith('u'):
-						filePath2 = filePath2[1:]
-
-
-					filePath2 = misc().Unicodize(filePath2)
-					print 'Ged1', filePath2
-					print 'Ged2', filePath2.encode('utf8', 'ignore')
-					print 'Ged3', String.Unquote(filePath2.encode('utf8', 'ignore'))			
-
-
-#					Log.Debug("Handling file #%s: %s" %(bScanStatusCount, String.Unquote(filePath2).encode('utf8', 'ignore')))
-
-					Log.Debug("Handling file #%s: %s" %(bScanStatusCount, String.Unquote(filePath2).encode('utf8', 'ignore')))
-
-#					for root, subdirs, files in os.walk(String.Unquote(filePath2).encode('utf8', 'ignore')):
+					filePath2 = misc().Unicodize(filePath2)					
+					Log.Debug("Handling filepath #%s: %s" %(bScanStatusCount, filePath2.encode('utf8', 'ignore')))
 					for root, subdirs, files in os.walk(filePath2):
-
-
 						# Need to check if directory in ignore list?
 						if os.path.basename(root) in Dict['findMedia']['IGNORED_DIRS']:
 							continue
 						# Lets look at the file
-						for file in files:
+						for file in files:					
+							file = misc().Unicodize(file).encode('utf8')
 							if bAbort:
 								Log.Info('Aborted in getFiles')
 								raise ValueError('Aborted')
@@ -314,8 +299,12 @@ class findMedia(object):
 								# Filter out local extras
 								if '-' in file:
 									if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1] in Extras:
-										continue
-								mediasFromFileSystem.append(Core.storage.join_path(root,file))
+										continue								
+								composed_file = misc().Unicodize(Core.storage.join_path(root,file))						
+								if Platform.OS == 'Windows':
+									# I hate windows
+									composed_file = composed_file[4:]								
+								mediasFromFileSystem.append(composed_file)
 								statusMsg = 'Scanning file: ' + file
 					Log.Debug('***** Finished scanning filesystem *****')
 					if DEBUGMODE:
@@ -435,7 +424,7 @@ class findMedia(object):
 							raise ValueError('Aborted')
 						iCount += 1
 						filename = part.get('file')		
-						filename = String.Unquote(filename).encode('utf8', 'ignore')
+						filename = unicode(misc().Unicodize(part.get('file')).encode('utf8', 'ignore'))
 						mediasFromDB.append(filename)
 						statusMsg = 'Scanning database: item %s of %s : Working' %(iCount, totalSize)
 					iStart += self.MediaChuncks
@@ -470,7 +459,7 @@ class findMedia(object):
 			locations = response[0].xpath('//Directory[@key=' + sectionNumber + ']/Location')
 			sectionLocations = []
 			for location in locations:
-				sectionLocations.append(location.get('path'))
+				sectionLocations.append(os.path.normpath(location.get('path')))
 			Log.Debug('Going to scan section %s with a title of %s and a type of %s and locations as %s' %(sectionNumber, sectionTitle, sectionType, str(sectionLocations)))
 			if runningState in [0,99]:
 				Thread.Create(scanMedias, globalize=True, sectionNumber=sectionNumber, sectionLocations=sectionLocations, sectionType=sectionType, req=req)

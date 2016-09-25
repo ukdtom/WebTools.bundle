@@ -28,6 +28,7 @@ def Start():
 	if DEBUGMODE:		
 		print("********  Started %s on %s at %s **********" %(NAME  + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M")))
 	Log.Debug("*******  Started %s on %s at %s ***********" %(NAME + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M")))
+	Log.Debug('Locale is: ' + str(locale.getdefaultlocale()))
 	# TODO: Nasty workaround for issue 189
 	if (Platform.OS == 'Windows' and locale.getpreferredencoding() == 'cp1251'):
 		sys.setdefaultencoding("cp1251")
