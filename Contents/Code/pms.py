@@ -89,17 +89,19 @@ def updateAllBundleInfoFromUAS():
 					installBranch = ''
 					# Check if already present, and if an install date also is there
 					installDate = ""
+					CommitId = ""
 					if key in Dict['PMS-AllBundleInfo']:
 						jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
-						if 'branch' in jsonPMSAllBundleInfo:
-							installBranch = Dict['PMS-AllBundleInfo'][key]['branch']
 						if 'date' in jsonPMSAllBundleInfo:
 							installDate = Dict['PMS-AllBundleInfo'][key]['date']
+						if 'CommitId' in jsonPMSAllBundleInfo:						
+							CommitId = Dict['PMS-AllBundleInfo'][key]['CommitId']
 					del git['repo']
 					# Add/Update our Dict
 					Dict['PMS-AllBundleInfo'][key] = git
-					Dict['PMS-AllBundleInfo'][key]['branch'] = installBranch
 					Dict['PMS-AllBundleInfo'][key]['date'] = installDate
+					Dict['PMS-AllBundleInfo'][key]['CommitId'] = CommitId
+
 			except Exception, e:
 				Log.Exception('Critical error in updateAllBundleInfoFromUAS1 while walking the gits: ' + str(e))
 			Dict.Save()
@@ -476,15 +478,18 @@ class pms(object):
 					if filePath.startswith('media://'):
 						# Path to symblink
 						filePath = filePath.replace('media:/', os.path.join(Core.app_support_path, 'Media', 'localhost'))
-						# Subtitle name
-						agent, sub = filePath.split('_')
-						tmp, agent = agent.split('com.')
-						# Agent used
-						agent = 'com.' + agent				
-						filePath2 = filePath.replace('Contents', os.path.join('Contents', 'Subtitle Contributions'))
-						filePath2, language = filePath2.split('Subtitles')
-						language = language[1:3]	
-						filePath3 = os.path.join(filePath2[:-1], agent, language, sub)
+						try:
+							# Subtitle name
+							agent, sub = filePath.rsplit('_',1)
+							tmp, agent = agent.split('com.')
+							# Agent used
+							agent = 'com.' + agent
+							filePath2 = filePath.replace('Contents', os.path.join('Contents', 'Subtitle Contributions'))
+							filePath2, language = filePath2.split('Subtitles')
+							language = language[1:3]	
+							filePath3 = os.path.join(filePath2[:-1], agent, language, sub)
+						except Exception, e:
+							Log.Exception('Exception in delSub generation file Path: ' + str(e))
 						subtitlesXMLPath, tmp = filePath.split('Contents')
 						agentXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitle Contributions', agent + '.xml')							
 						subtitlesXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitles.xml')

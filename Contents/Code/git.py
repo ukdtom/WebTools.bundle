@@ -221,12 +221,20 @@ class git(object):
 				for bundle in bundles:
 					if bundle.startswith('https://github'):
 						# Going the new detection way with the commitId?
-						if 'CommitId' in Dict['installed'][bundle]:
-							updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
-							if Dict['installed'][bundle]['CommitId'] != updateInfo['commitId']:
-								gitInfo = Dict['installed'][bundle]
-								gitInfo['gitHubTime'] = updateInfo['mostRecent']
-								result[bundle] = gitInfo
+						if 'CommitId' in Dict['installed'][bundle]:	
+							if 'release' in Dict['installed'][bundle]:								
+								relUrl = 'https://api.github.com/repos' + bundle[18:] + '/releases/latest'
+								Id = JSON.ObjectFromURL(relUrl)['id']
+								if Dict['installed'][bundle]['CommitId'] != Id:
+									gitInfo = Dict['installed'][bundle]
+									gitInfo['gitHubTime'] = JSON.ObjectFromURL(relUrl)['published_at']
+									result[bundle] = gitInfo
+							else:
+								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
+								if Dict['installed'][bundle]['CommitId'] != updateInfo['commitId']:
+									gitInfo = Dict['installed'][bundle]
+									gitInfo['gitHubTime'] = updateInfo['mostRecent']
+									result[bundle] = gitInfo
 						else:
 							# Sadly has to use timestamps							
 							Log.Info('Using timestamps to detect avail update for ' + bundle)
@@ -565,8 +573,12 @@ class git(object):
 			# Walk the one by one, so we can handle upper/lower case
 			for git in gits:
 				if url.upper() == git['repo'].upper():
-					# Get the last Commit Id of the branch
-					Id = HTML.ElementFromURL(url + '/commits/' + branch + '.atom').xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
+					# Needs to seperate between release downloads, and branch downloads
+					if 'RELEASE' in branch.upper():
+						relUrl = 'https://api.github.com/repos' + url[18:] + '/releases/latest'
+						Id = JSON.ObjectFromURL(relUrl)['id']
+					else:
+						Id = HTML.ElementFromURL(url + '/commits/' + branch + '.atom').xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
 					key = git['repo']
 					del git['repo']
 					git['CommitId'] = Id
@@ -603,6 +615,26 @@ class git(object):
 			Dict.Save()
 			return
 
+		''' Get latest Release version '''
+		def getLatestRelease(url):
+			# Get release info if present
+			try:
+				relUrl = 'https://api.github.com/repos' + url[18:] + '/releases/latest'
+				relInfo = JSON.ObjectFromURL(relUrl)
+				downloadUrl = None
+				for asset in relInfo['assets']:
+					if asset['name'].upper() == Dict['PMS-AllBundleInfo'][url]['release'].upper():
+						downloadUrl = asset['browser_download_url']
+						continue	
+				if downloadUrl:
+					return downloadUrl
+				else:
+					raise "Download URL not found"
+			except Exception, ex:
+				Log.Critical('Release info not found on Github: ' + relUrl)
+				pass			
+			return
+
 		''' Download the bundle '''
 		def downloadBundle2tmp(url, bundleName, branch):
 			# Helper function
@@ -627,7 +659,10 @@ class git(object):
 				# Get the dict with the installed bundles, and init it if it doesn't exists
 				if not 'installed' in Dict:
 					Dict['installed'] = {}
-				zipPath = url + '/archive/' + branch + '.zip'
+				if 'RELEASE' in branch.upper():
+					zipPath = getLatestRelease(url)
+				else:
+					zipPath = url + '/archive/' + branch + '.zip'
 				try:
 					# Grap file from Github
 					zipfile = Archive.ZipFromURL(zipPath)
@@ -811,7 +846,16 @@ class git(object):
 		Log.Debug('Starting install')
 		req.clear()
 		url = req.get_argument('url', 'missing')
+		# Set branch to url argument, or master if missing
 		branch = req.get_argument('branch', 'master')
+		# Got a release url, and if not, go for what's in the dict for branch
+		try:
+			branch = Dict['PMS-AllBundleInfo'][url]['release']+'_WTRELEASE'
+		except:
+			try:
+				branch = Dict['PMS-AllBundleInfo'][url]['branch']
+			except:
+				pass
 		if url == 'missing':
 			req.set_status(412)
 			req.finish("<html><body>Missing url of git</body></html>")
@@ -864,9 +908,14 @@ class git(object):
 			branch = 'master'
 		# Check for updates
 		try:
-			url += '/commits/%s.atom' % branch
-			Log.Debug('URL is: ' + url)
-			response = Datetime.ParseDate(HTML.ElementFromURL(url).xpath('//entry')[0].xpath('./updated')[0].text).strftime("%Y-%m-%d %H:%M:%S")
+			if '_WTRELEASE' in branch:
+				url = 'https://api.github.com/repos' + url[18:] + '/releases/latest'
+				Log.Debug('URL is: ' + url)				
+				response = JSON.ObjectFromURL(url)['published_at']
+			else:
+				url += '/commits/%s.atom' % branch
+				Log.Debug('URL is: ' + url)
+				response = Datetime.ParseDate(HTML.ElementFromURL(url).xpath('//entry')[0].xpath('./updated')[0].text).strftime("%Y-%m-%d %H:%M:%S")
 			Log.Debug('Last update for: ' + url + ' is: ' + str(response))
 			if UAS:
 				return response

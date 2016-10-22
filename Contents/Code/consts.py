@@ -10,15 +10,15 @@
 
 import io, os, json
 
-DEBUGMODE = False
-WT_AUTH = True
-VERSION = 'ERROR'
-UAS_URL = 'https://github.com/ukdtom/UAS2Res'
-UAS_BRANCH = 'master'
+DEBUGMODE = False																	# default for debug mode
+WT_AUTH = True																		# validate password
+VERSION = 'ERROR'																	# version of WebTools
+UAS_URL = 'https://github.com/ukdtom/UAS2Res'			# USA2 Repo branch
+UAS_BRANCH = 'master'															# UAS2 branch to check
 PREFIX = '/applications/webtools'
 NAME = 'WebTools'
 ICON = 'WebTools.png'
-JSONTIMESTAMP = 0
+JSONTIMESTAMP = 0																	# timestamp for json export
 
 
 class consts(object):	
@@ -32,6 +32,7 @@ class consts(object):
 		global VERSION
 		global JSONTIMESTAMP
 
+		# Grap version number from the version file
 		versionFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'VERSION')
 		with io.open(versionFile, "rb") as version_file:
 			VERSION = version_file.read().replace('\n','')
@@ -64,6 +65,7 @@ class consts(object):
 			Log.Debug('UAS_Repo: ' + UAS_URL)
 			Log.Debug('UAS_RepoBranch: ' + UAS_BRANCH)
 			Log.Debug('Authenticate: ' + str(WT_AUTH))
+			Log.Debug('JSON timestamp: ' + str(JSONTIMESTAMP))
 			Log.Debug('*****************************************************')
 		else:
 			DEBUGMODE = False

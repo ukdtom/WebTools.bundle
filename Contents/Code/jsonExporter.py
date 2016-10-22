@@ -37,7 +37,6 @@ class jsonExporter(object):
 			Dict['jsonExportTimeStamps'] = {}
 			Dict.Save()
 
-
 	''' Grap the tornado req, and process it for a POST request'''
 	def reqprocessPost(self, req):
 		function = req.get_argument('function', 'missing')
@@ -56,7 +55,10 @@ class jsonExporter(object):
 		''' Return the type of the section '''
 		def getSectionType(section):
 			url = 'http://127.0.0.1:32400/library/sections/' + section + '/all?X-Plex-Container-Start=1&X-Plex-Container-Size=0'
-			return XML.ElementFromURL(url).xpath('//MediaContainer/@viewGroup')[0]
+			try:
+				return XML.ElementFromURL(url).xpath('//MediaContainer/@viewGroup')[0]
+			except:
+				return "None"
 
 		''' Create a simple entry in the videoDetails tree '''
 		def makeSimpleEntry(media, videoDetails, el):
@@ -172,7 +174,6 @@ class jsonExporter(object):
 			except Exception, e:
 				Log.Exception('Exception happend in generating json file: ' + str(e))
 			
-
 		''' Scan a movie section '''
 		def scanMovieSection(req, sectionNumber):
 			Log.Debug('Starting scanMovieSection')		
@@ -219,8 +220,7 @@ class jsonExporter(object):
 						if bAbort:
 							raise ValueError('Aborted')
 						iCount += 1
-						makeFiles(video.get('ratingKey'))
-		
+						makeFiles(video.get('ratingKey'))		
 						statusMsg = 'Scanning database: item %s of %s : Working' %(iCount, totalSize)
 					iStart += self.MediaChuncks
 					if len(videos) == 0:
@@ -255,10 +255,10 @@ class jsonExporter(object):
 			elif getSectionType(section) == 'show':
 				scanShowSection(req, section)
 			else:
-				Log.debug('Unknown section type for section:' + section + ' type: ' + getSectionType(section))
+				Log.Debug('Unknown section type for section:' + section + ' type: ' + getSectionType(section))
 				req.clear()
 				req.set_status(404)
-				req.finish("Unknown sectiontype")
+				req.finish("Unknown sectiontype or sectiion")
 		except Exception, e:
 			Log.Exception('Exception in json export' + str(e))
 

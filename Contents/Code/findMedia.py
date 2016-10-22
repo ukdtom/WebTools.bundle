@@ -16,14 +16,18 @@ from consts import DEBUGMODE
 from misc import misc
 
 # Consts used here
-AmountOfMediasInDatabase = 0																																				# Int of amount of medias in a database section
-mediasFromDB = []																																										# Files from the database
-mediasFromFileSystem = []																																					# Files from the file system
-statusMsg = 'idle'																																									# Response to getStatus
-runningState = 0																																										# Internal tracker of where we are
-bAbort = False																																											# Flag to set if user wants to cancel
-Extras = ['behindthescenes','deleted','featurette','interview','scene','short','trailer']						# Local extras
-KEYS = ['IGNORE_HIDDEN', 'IGNORED_DIRS', 'VALID_EXTENSIONS'] 																				# Valid keys for prefs
+AmountOfMediasInDatabase = 0																																												# Int of amount of medias in a database section
+mediasFromDB = []																																																		# Files from the database
+mediasFromFileSystem = []																																														# Files from the file system
+statusMsg = 'idle'																																																	# Response to getStatus
+runningState = 0																																																		# Internal tracker of where we are
+bAbort = False																																																			# Flag to set if user wants to cancel
+Extras = ['behindthescenes','deleted','featurette','interview','scene','short','trailer']														# Local extras
+ExtrasDirs = ['behind the scenes', 'deleted scenes', 'featurettes', 'interviews', 'scenes', 'shorts', 'trailers']		# Directories to be ignored
+KEYS = ['IGNORE_HIDDEN', 'IGNORED_DIRS', 'VALID_EXTENSIONS'] 																												# Valid keys for prefs
+excludeElements='Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Role,Similar,Writer'
+excludeFields='summary,tagline'
+
 
 
 class findMedia(object):	
@@ -48,11 +52,10 @@ class findMedia(object):
 			Dict['findMedia'] = {
 				'IGNORE_HIDDEN' : True,
 				'IGNORED_DIRS' : [".@__thumb",".AppleDouble","lost+found"],
-				'VALID_EXTENSIONS' : ['.m4v', '.3gp', '.nsv', '.ts', '.ty', '.strm', '.rm', '.rmvb', '.m3u',
-															'.mov', '.qt', '.divx', '.xvid', '.bivx', '.vob', '.nrg', '.img', '.iso', 
-															'.pva', '.wmv', '.asf', '.asx', '.ogm', '.m2v', '.avi', '.bin', '.dat', 
-															'.dvr-ms', '.mpg', '.mpeg', '.mp4', '.mkv', '.avc', '.vp3', '.svq3', '.nuv',
-															'.viv', '.dv', '.fli', '.flv', '.rar', '.001', '.wpl', '.zip', '.mp3']				
+				'VALID_EXTENSIONS' : ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 
+														'fli', 'flv', 'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 
+														'nuv', 'ogm', 'ogv', 'tp', 'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr', 
+														'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm']		
 				}
 			Dict.Save()
 
@@ -292,18 +295,23 @@ class findMedia(object):
 							if bAbort:
 								Log.Info('Aborted in getFiles')
 								raise ValueError('Aborted')
-							if os.path.splitext(file)[1] in Dict['findMedia']['VALID_EXTENSIONS']:
+							if os.path.splitext(file)[1].lower()[1:] in Dict['findMedia']['VALID_EXTENSIONS']:
 								# File has a valid extention
 								if file.startswith('.') and Dict['findMedia']['IGNORE_HIDDEN']:
 									continue
 								# Filter out local extras
 								if '-' in file:
-									if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1] in Extras:
-										continue								
+									if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1].lower() in Extras:
+										continue
+								# filter out local extras directories
+								if os.path.basename(os.path.normpath(root)).lower() in ExtrasDirs:
+									continue															
 								composed_file = misc().Unicodize(Core.storage.join_path(root,file))						
 								if Platform.OS == 'Windows':
 									# I hate windows
-									composed_file = composed_file[4:]								
+									pos = composed_file.find(':') -1
+									#composed_file = composed_file[4:]								
+									composed_file = composed_file[pos:]								
 								mediasFromFileSystem.append(composed_file)
 								statusMsg = 'Scanning file: ' + file
 					Log.Debug('***** Finished scanning filesystem *****')
@@ -338,7 +346,7 @@ class findMedia(object):
 				# So let's walk the library
 				while True:
 					# Grap shows
-					shows = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iCShow) + '&X-Plex-Container-Size=' + str(self.MediaChuncks)).xpath('//Directory')
+					shows = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iCShow) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Directory')
 					# Grap individual show
 					for show in shows:
 						statusShow = show.get('title')
@@ -347,7 +355,7 @@ class findMedia(object):
 						iCSeason = 0
 						# Grap seasons
 						while True:
-							seasons = XML.ElementFromURL('http://127.0.0.1:32400' + show.get('key') + '?X-Plex-Container-Start=' + str(iCSeason) + '&X-Plex-Container-Size=' + str(self.MediaChuncks)).xpath('//Directory')
+							seasons = XML.ElementFromURL('http://127.0.0.1:32400' + show.get('key') + '?X-Plex-Container-Start=' + str(iCSeason) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Directory')
 							# Grap individual season
 							for season in seasons:			
 								if season.get('title') == 'All episodes':
@@ -360,7 +368,7 @@ class findMedia(object):
 								iEpisode = 0
 								iCEpisode = 0
 								while True:
-									episodes = XML.ElementFromURL('http://127.0.0.1:32400' + season.get('key') + '?X-Plex-Container-Start=' + str(iCEpisode) + '&X-Plex-Container-Size=' + str(self.MediaChuncks)).xpath('//Part')
+									episodes = XML.ElementFromURL('http://127.0.0.1:32400' + season.get('key') + '?X-Plex-Container-Start=' + str(iCEpisode) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Part')
 									for episode in episodes:
 										if bAbort:
 											raise ValueError('Aborted')
@@ -417,7 +425,7 @@ class findMedia(object):
 				# So let's walk the library
 				while True:
 					# Grap a chunk from the server
-					medias = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iStart) + '&X-Plex-Container-Size=' + str(self.MediaChuncks)).xpath('//Part')
+					medias = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iStart) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Part')
 					# Walk the chunk
 					for part in medias:
 						if bAbort:
