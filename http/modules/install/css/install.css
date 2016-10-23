@@ -9,6 +9,17 @@
 .aligncenter {text-align: center;}
 .subheadline {font-weight: bold; margin-right: 5px;}
 .installhidden {display: none;}
+
+.branch-dropdown {
+  margin-right: 4px;
+  padding: 2px 0 2px 2px;
+
+  font-size: 12px;
+
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
 @media screen and (max-width:678px) {
   .changeDisplay{display: block; font-size: 10pt; word-break: break-word}
   .marginRight {margin-right:0px;}

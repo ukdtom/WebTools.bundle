@@ -32,18 +32,31 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="/" id="MainLink">Webtools</a>
-              <a class="navbar-brand" id="SubLink" onclick=""></a>
+              <a class="navbar-brand" href="/" id="MainLink">WebTools</a>
+              <!-- removed in favor of dropdown menu of all modules instead. highlighting the current selected. <a class="navbar-brand" id="SubLink" onclick=""></a> -->
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
+								<li class="dropdown" id="SublinkMainLi">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span id="SublinkMainTitle">Choose Module</span><span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu" id="SublinkMenu">
+                  </ul>
+                </li>
                 <li class="dropdown" id="ModuleMenu">
                 </li>
                 <li class="dropdown" id="OptionsMainLi">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Options<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu" id="OptionsMenu">
+                  </ul>
+                </li>
+								<li class="dropdown" id="HelpMainLi">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Help<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu" id="HelpMenu">
+										<li><a target="_NEW" href="https://forums.plex.tv/discussion/126254">WebTools Forum Thread</a></li>
+										<li><a target="_NEW" href="https://github.com/dagalufh/WebTools.bundle">WebTools Github</a></li>
+										<li><a target="_NEW" href="/manual/WebTools-User-Manual.pdf">WebTools Manual(PDF)</a></li>
                   </ul>
                 </li>
                   <li><a href="/logout">Logout</a></li>

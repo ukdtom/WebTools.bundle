@@ -9,22 +9,37 @@
 
 import datetime			# Used for a timestamp in the dict
 import json
-import io, os, shutil
+import io, os, shutil, sys
 import plistlib
 import pms
 import tempfile
+from consts import DEBUGMODE, UAS_URL, UAS_BRANCH, NAME
 
 class git(object):
-	# Defaults used by the rest of the class
+	init_already = False							# Make sure part of init only run once
+
+	# Init of the class
 	def __init__(self):
-		Log.Debug('******* Starting git *******')
 		self.url = ''
 		self.PLUGIN_DIR = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name)
-		self.UAS_URL = 'https://github.com/ukdtom/UAS2Res'
 		self.IGNORE_BUNDLE = ['WebTools.bundle', 'SiteConfigurations.bundle', 'Services.bundle']
 		self.OFFICIAL_APP_STORE = 'https://nine.plugins.plexapp.com'
-		Log.Debug("Plugin directory is: %s" %(self.PLUGIN_DIR))
 
+
+		# Only init this part once during the lifetime of this
+		if not git.init_already:
+			git.init_already = True
+			Log.Debug('******* Starting git *******')
+			Log.Debug("Plugin directory is: %s" %(self.PLUGIN_DIR))
+			# See a few times, that the json file was missing, so here we check, and if not then force a download
+			try:
+				jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
+				if not os.path.isfile(jsonFileName):
+					Log.Critical('UAS dir was missing the json, so doing a forced download here')
+					self.updateUASCache(None, cliForce = True)
+			except Exception, e:
+				Log.Exception('Exception happend when trying to force download from UASRes: ' + str(e))
+		
 	''' Grap the tornado req, and process it for GET request'''
 	def reqprocess(self, req):	
 		function = req.get_argument('function', 'missing')
@@ -143,7 +158,7 @@ class git(object):
 						Core.storage.save(path, data)
 					except Exception, e:
 						bError = True
-						Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
+						Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
 				else:
 					# We got a directory here
 					Log.Debug(filename.split('/')[-2])
@@ -155,7 +170,7 @@ class git(object):
 							Core.storage.ensure_dirs(path)
 						except Exception, e:
 							bError = True
-							Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
+							Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
 			# Now we need to nuke files that should no longer be there!
 			for root, dirs, files in os.walk(bundleName):
 				for fname in files:
@@ -174,14 +189,24 @@ class git(object):
 		except Exception, e:
 			Log.Critical('***************************************************************')
 			Log.Critical('Error when updating WebTools')
-			Log.Critical('The error was: ' + str(e))
 			Log.Critical('***************************************************************')
 			Log.Critical('DARN....When we tried to upgrade WT, we had an error :-(')
 			Log.Critical('Only option now might be to do a manual install, like you did the first time')
 			Log.Critical('Do NOT FORGET!!!!')
 			Log.Critical('We NEED this log, so please upload to Plex forums')
 			Log.Critical('***************************************************************')
+			Log.Exception('The error was: ' + str(e))
 		return
+
+	''' Returns commit time and Id for a git branch '''
+	def getAtom_UpdateTime_Id(self, url, branch):		
+		# Build AtomUrl
+		atomUrl = url + '/commits/' + branch + '.atom'
+		# Get Atom
+		atom = HTML.ElementFromURL(atomUrl)
+		mostRecent = atom.xpath('//entry')[0].xpath('./updated')[0].text[:-6]
+		commitId = atom.xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
+		return {'commitId' : commitId, 'mostRecent' : mostRecent}
 
 	''' This function will return a list of bundles, where there is an update avail '''
 	def getUpdateList(self, req):
@@ -195,13 +220,37 @@ class git(object):
 				# Now walk them one by one
 				for bundle in bundles:
 					if bundle.startswith('https://github'):
-						gitTime = datetime.datetime.strptime(self.getLastUpdateTime(req, UAS=True, url=bundle), '%Y-%m-%d %H:%M:%S')
-						sBundleTime = Dict['installed'][bundle]['date']
-						bundleTime = datetime.datetime.strptime(sBundleTime, '%Y-%m-%d %H:%M:%S')
-						if bundleTime < gitTime:
-							gitInfo = Dict['installed'][bundle]
-							gitInfo['gitHubTime'] = str(gitTime)
-							result[bundle] = gitInfo
+						# Going the new detection way with the commitId?
+						if 'CommitId' in Dict['installed'][bundle]:	
+							if 'release' in Dict['installed'][bundle]:								
+								relUrl = 'https://api.github.com/repos' + bundle[18:] + '/releases/latest'
+								Id = JSON.ObjectFromURL(relUrl)['id']
+								if Dict['installed'][bundle]['CommitId'] != Id:
+									gitInfo = Dict['installed'][bundle]
+									gitInfo['gitHubTime'] = JSON.ObjectFromURL(relUrl)['published_at']
+									result[bundle] = gitInfo
+							else:
+								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
+								if Dict['installed'][bundle]['CommitId'] != updateInfo['commitId']:
+									gitInfo = Dict['installed'][bundle]
+									gitInfo['gitHubTime'] = updateInfo['mostRecent']
+									result[bundle] = gitInfo
+						else:
+							# Sadly has to use timestamps							
+							Log.Info('Using timestamps to detect avail update for ' + bundle)
+							gitTime = datetime.datetime.strptime(self.getLastUpdateTime(req, UAS=True, url=bundle), '%Y-%m-%d %H:%M:%S')
+							sBundleTime = Dict['installed'][bundle]['date']
+							bundleTime = datetime.datetime.strptime(sBundleTime, '%Y-%m-%d %H:%M:%S')
+							if bundleTime < gitTime:
+								gitInfo = Dict['installed'][bundle]
+								gitInfo['gitHubTime'] = str(gitTime)
+								result[bundle] = gitInfo
+							else:
+								# Let's get a CommitId stamped for future times
+								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
+								Log.Info('Stamping %s with a commitId of %s for future ref' %(bundle, updateInfo['commitId']))							
+								Dict['installed'][bundle]['CommitId'] = updateInfo['commitId']
+								Dict.Save()
 				Log.Debug('Updates avail: ' + str(result))
 				req.clear()
 				req.set_status(200)
@@ -212,7 +261,7 @@ class git(object):
 				req.clear()
 				req.set_status(204)
 		except Exception, e:
-			Log.Debug('Fatal error happened in getUpdateList: ' + str(e))
+			Log.Exception('Fatal error happened in getUpdateList: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -238,7 +287,7 @@ class git(object):
 					results[title] = git
 				return results	
 			except Exception, e:
-				Log.Debug('Exception in Migrate/getUASCacheList : ' + str(e))				
+				Log.Exception('Exception in Migrate/getUASCacheList : ' + str(e))
 				return ''
 
 		# Grap indentifier from plist file and timestamp
@@ -281,11 +330,6 @@ class git(object):
 								uasListjson = getUASCacheList()
 								bFound = False
 								for git in uasListjson:
-									'''
-									if target == 'com.plexapp.plugins.Plex2csv':
-										print 'GED KIG HER'
-										continue
-									'''
 									if target == uasListjson[git]['identifier']:
 										Log.Debug('Found %s is part of uas' %(target))
 										targetGit = {}
@@ -343,7 +387,7 @@ class git(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(json.dumps(migratedBundles))
 		except Exception, e:
-			Log.Critical('Fatal error happened in migrate: ' + str(e))
+			Log.Exception('Fatal error happened in migrate: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -359,7 +403,7 @@ class git(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(Dict['uasTypes']))
 		except Exception, e:
-			Log.Critical('Exception in uasTypes: ' + str(e))
+			Log.Exception('Exception in uasTypes: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -367,9 +411,12 @@ class git(object):
 			return req
 
 	''' This will update the UAS Cache directory from GitHub '''
-	def updateUASCache(self, req):
+	def updateUASCache(self, req, cliForce= False):
 		Log.Debug('Starting to update the UAS Cache')
-		debugForce = ('false' != req.get_argument('debugForce', 'false'))
+		if not cliForce:
+			Force = ('false' != req.get_argument('Force', 'false'))
+		else:
+			Force = True
 		# Main call
 		try:
 			# Start by getting the time stamp for the last update
@@ -381,9 +428,9 @@ class git(object):
 			else:
 				lastUpdateUAS = datetime.datetime.strptime(str(lastUpdateUAS), '%Y-%m-%d %H:%M:%S.%f')
 			# Now get the last update time from the UAS repository on GitHub
-			masterUpdate = datetime.datetime.strptime(self.getLastUpdateTime(req, True, self.UAS_URL), '%Y-%m-%d %H:%M:%S')
+			masterUpdate = datetime.datetime.strptime(self.getLastUpdateTime(req, True, UAS_URL), '%Y-%m-%d %H:%M:%S')
 			# Do we need to update the cache, and add 2 min. tolerance here?
-			if ((masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120) or debugForce):
+			if ((masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120) or Force):
 				# We need to update UAS Cache
 				# Target Directory
 				targetDir = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas')
@@ -399,22 +446,26 @@ class git(object):
 						errMsg = errMsg + 'sudo chown plex:plex ./WebTools.bundle -R\n'
 						errMsg = errMsg + 'And if on Synology, the command is:\n'
 						errMsg = errMsg + 'sudo chown plex:users ./WebTools.bundle -R\n'
-					Log.Critical('Exception in updateUASCache ' + str(e)) 
-					req.clear()
-					req.set_status(500)
-					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish('Exception in updateUASCache: ' + errMsg)
-					return req
+					Log.Exception('Exception in updateUASCache ' + errMsg)
+					if not cliForce: 
+						req.clear()
+						req.set_status(500)
+						req.set_header('Content-Type', 'application/json; charset=utf-8')
+						req.finish('Exception in updateUASCache: ' + errMsg)
+						return req
+					else:
+						return
 				# Grap file from Github
 				try:
-					zipfile = Archive.ZipFromURL(self.UAS_URL+ '/archive/master.zip')
+					zipfile = Archive.ZipFromURL(UAS_URL+ '/archive/' + UAS_BRANCH + '.zip')							
 				except Exception, e:
-					Log.Critical('Could not download UAS Repo from GitHub')
-					req.clear()
-					req.set_status(500)
-					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish('Exception in updateUASCache while downloading UAS repo from Github: ' + str(e))
-					return req
+					Log.Exception('Could not download UAS Repo from GitHub'  + str(e))
+					if not cliForce:
+						req.clear()
+						req.set_status(500)
+						req.set_header('Content-Type', 'application/json; charset=utf-8')
+						req.finish('Exception in updateUASCache while downloading UAS repo from Github: ' + str(e))
+						return req					
 				for filename in zipfile:
 					# Walk contents of the zip, and extract as needed
 					data = zipfile[filename]
@@ -426,7 +477,7 @@ class git(object):
 							Core.storage.save(path, data)
 						except Exception, e:
 							bError = True
-							Log.Critical("Unexpected Error " + str(e))
+							Log.Exception("Unexpected Error " + str(e))
 					else:
 						# We got a directory here
 						Log.Debug(filename.split('/')[-2])
@@ -438,7 +489,7 @@ class git(object):
 								Core.storage.ensure_dirs(path)
 							except Exception, e:
 								bError = True
-								Log.Critical("Unexpected Error " + str(e))			
+								Log.Exception("Unexpected Error " + str(e))
 				# Update the AllBundleInfo as well
 				pms.updateAllBundleInfoFromUAS()
 				pms.updateUASTypesCounters()
@@ -446,17 +497,19 @@ class git(object):
 				Log.Debug('UAS Cache already up to date')
 			# Set timestamp in the Dict
 			Dict['UAS'] = datetime.datetime.now()
-			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('UASCache is up to date')	
+			if not cliForce:
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish('UASCache is up to date')	
 		except Exception, e:
-			Log.Critical('Exception in updateUASCache ' + str(e)) 
-			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Exception in updateUASCache ' + str(e))
-			return req
+			Log.Exception('Exception in updateUASCache ' + str(e))
+			if not cliForce:
+				req.clear()
+				req.set_status(500)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish('Exception in updateUASCache ' + str(e))
+				return req
 
 	''' list will return a list of all installed gits from GitHub'''
 	def list(self, req):
@@ -520,8 +573,15 @@ class git(object):
 			# Walk the one by one, so we can handle upper/lower case
 			for git in gits:
 				if url.upper() == git['repo'].upper():
+					# Needs to seperate between release downloads, and branch downloads
+					if 'RELEASE' in branch.upper():
+						relUrl = 'https://api.github.com/repos' + url[18:] + '/releases/latest'
+						Id = JSON.ObjectFromURL(relUrl)['id']
+					else:
+						Id = HTML.ElementFromURL(url + '/commits/' + branch + '.atom').xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
 					key = git['repo']
 					del git['repo']
+					git['CommitId'] = Id
 					git['branch'] = branch
 					git['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 					Dict['installed'][key] = git
@@ -533,9 +593,12 @@ class git(object):
 					break
 			if bNotInUAS:
 				key = url
+				# Get the last Commit Id of the branch
+				Id = HTML.ElementFromURL(url + '/commits/master.atom').xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
 				pFile = Core.storage.join_path(self.PLUGIN_DIR, bundleName, 'Contents', 'Info.plist')
 				pl = plistlib.readPlist(pFile)
 				git = {}
+				git['CommitId'] = Id
 				git['title'] = os.path.basename(bundleName)[:-7]
 				git['description'] = ''
 				git['branch'] = branch
@@ -550,6 +613,26 @@ class git(object):
 				Log.Debug('Dict stamped with the following install entry: ' + key + ' - '  + str(git))
 				pms.updateUASTypesCounters()
 			Dict.Save()
+			return
+
+		''' Get latest Release version '''
+		def getLatestRelease(url):
+			# Get release info if present
+			try:
+				relUrl = 'https://api.github.com/repos' + url[18:] + '/releases/latest'
+				relInfo = JSON.ObjectFromURL(relUrl)
+				downloadUrl = None
+				for asset in relInfo['assets']:
+					if asset['name'].upper() == Dict['PMS-AllBundleInfo'][url]['release'].upper():
+						downloadUrl = asset['browser_download_url']
+						continue	
+				if downloadUrl:
+					return downloadUrl
+				else:
+					raise "Download URL not found"
+			except Exception, ex:
+				Log.Critical('Release info not found on Github: ' + relUrl)
+				pass			
 			return
 
 		''' Download the bundle '''
@@ -576,12 +659,15 @@ class git(object):
 				# Get the dict with the installed bundles, and init it if it doesn't exists
 				if not 'installed' in Dict:
 					Dict['installed'] = {}
-				zipPath = url + '/archive/' + branch + '.zip'
+				if 'RELEASE' in branch.upper():
+					zipPath = getLatestRelease(url)
+				else:
+					zipPath = url + '/archive/' + branch + '.zip'
 				try:
 					# Grap file from Github
 					zipfile = Archive.ZipFromURL(zipPath)
 				except Exception, e:
-					Log.Critical('Exception in downloadBundle2tmp while downloading from GitHub: ' + str(e)) 
+					Log.Exception('Exception in downloadBundle2tmp while downloading from GitHub: ' + str(e))
 					return False
 				# Create base directory
 				Core.storage.ensure_dirs(Core.storage.join_path(self.PLUGIN_DIR, bundleName))
@@ -610,7 +696,7 @@ class git(object):
 									Log.Debug('Install is an upgrade')
 									break
 				except Exception, e:
-					Log.Critical('Exception in downloadBundle2tmp while walking the downloaded file to find the plist: ' + str(e)) 
+					Log.Exception('Exception in downloadBundle2tmp while walking the downloaded file to find the plist: ' + str(e))
 					return False					
 				if bUpgrade:
 					# Since this is an upgrade, we need to check, if the dev wants us to delete the Cache directory
@@ -661,7 +747,7 @@ class git(object):
 							Core.storage.save(path, data)
 						except Exception, e:
 							bError = True
-							Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
+							Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
 					else:
 						if cutStr not in filename:
 							continue
@@ -676,7 +762,7 @@ class git(object):
 								Core.storage.ensure_dirs(path)
 							except Exception, e:
 								bError = True
-								Log.Critical('Exception happend in downloadBundle2tmp: ' + str(e))
+								Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
 
 				if not bError and bUpgrade:
 					# Copy files that should be kept between upgrades ("keepFiles")
@@ -724,7 +810,7 @@ class git(object):
 						shutil.move(extractDir, bundleName)
 					except Exception, e:
 						bError = True
-						Log.Critical('Unable to update plugin: ' + str(e))
+						Log.Exception('Unable to update plugin: ' + str(e))
 
 					# Delete temporary directory
 					try:
@@ -753,14 +839,23 @@ class git(object):
 							pass
 					return True
 			except Exception, e:
-				Log.Critical('Exception in downloadBundle2tmp: ' + str(e)) 
+				Log.Exception('Exception in downloadBundle2tmp: ' + str(e))
 				return False
 
 		# Starting install main
 		Log.Debug('Starting install')
 		req.clear()
 		url = req.get_argument('url', 'missing')
+		# Set branch to url argument, or master if missing
 		branch = req.get_argument('branch', 'master')
+		# Got a release url, and if not, go for what's in the dict for branch
+		try:
+			branch = Dict['PMS-AllBundleInfo'][url]['release']+'_WTRELEASE'
+		except:
+			try:
+				branch = Dict['PMS-AllBundleInfo'][url]['branch']
+			except:
+				pass
 		if url == 'missing':
 			req.set_status(412)
 			req.finish("<html><body>Missing url of git</body></html>")
@@ -798,7 +893,6 @@ class git(object):
 			req.set_status(404)
 			req.finish("<html><body>Missing url of git</body></html>")
 			return req
-
 		# Retrieve current branch name
 		if Dict['installed'].get(url, {}).get('branch'):
 			# Use installed branch name
@@ -806,15 +900,22 @@ class git(object):
 		elif Dict['PMS-AllBundleInfo'].get(url, {}).get('branch'):
 			# Use branch name from bundle info
 			branch = Dict['PMS-AllBundleInfo'][url]['branch']
+		# UAS branch override ?
+		elif url == UAS_URL :
+			branch = UAS_BRANCH
 		else:
 			# Otherwise fallback to the "master" branch
 			branch = 'master'
-
 		# Check for updates
 		try:
-			url += '/commits/%s.atom' % branch
-			Log.Debug('URL is: ' + url)
-			response = Datetime.ParseDate(HTML.ElementFromURL(url).xpath('//entry')[0].xpath('./updated')[0].text).strftime("%Y-%m-%d %H:%M:%S")
+			if '_WTRELEASE' in branch:
+				url = 'https://api.github.com/repos' + url[18:] + '/releases/latest'
+				Log.Debug('URL is: ' + url)				
+				response = JSON.ObjectFromURL(url)['published_at']
+			else:
+				url += '/commits/%s.atom' % branch
+				Log.Debug('URL is: ' + url)
+				response = Datetime.ParseDate(HTML.ElementFromURL(url).xpath('//entry')[0].xpath('./updated')[0].text).strftime("%Y-%m-%d %H:%M:%S")
 			Log.Debug('Last update for: ' + url + ' is: ' + str(response))
 			if UAS:
 				return response
@@ -824,7 +925,7 @@ class git(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(str(response))
 		except Exception, e:
-			Log.Critical('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
+			Log.Exception('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')

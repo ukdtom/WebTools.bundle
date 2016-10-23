@@ -9,7 +9,7 @@
 import shutil
 import time
 import json
-import os, sys
+import os, sys, io
 import zipfile
 
 class logs(object):
@@ -28,10 +28,10 @@ class logs(object):
 				self.LOGDIR = os.path.join(os.environ[key], 'Plex Media Server', 'Logs')
 			else:
 				self.LOGDIR = os.path.join(os.environ['HOME'], 'Library', 'Logs', 'Plex Media Server')
-				if not os.direxists(self.LOGDIR):
+				if not os.path.isdir(self.LOGDIR):
 					self.LOGDIR = os.path.join(Core.app_support_path, 'Logs')
 		except Exception, e:
-			Log.Debug('Fatal error happened in Logs list: ' + str(e))
+			Log.Exception('Fatal error happened in Logs list: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -84,7 +84,7 @@ class logs(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Entry logged')
 		except Exception, e:
-			Log.Debug('Fatal error happened in Logs entry: ' + str(e))
+			Log.Exception('Fatal error happened in Logs entry: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -113,7 +113,7 @@ class logs(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(sorted(retFiles)))
 		except Exception, e:
-			Log.Debug('Fatal error happened in Logs list: ' + str(e))
+			Log.Exception('Fatal error happened in Logs list: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -134,7 +134,7 @@ class logs(object):
 			else:
 				file = os.path.join(self.LOGDIR, fileName)
 			retFile = []
-			with io.open(file, 'rb') as content_file:
+			with io.open(file, 'r', errors='ignore') as content_file:
 				content = content_file.readlines()
 				for line in content:
 					line = line.replace('\n', '')
@@ -146,7 +146,7 @@ class logs(object):
 			req.finish(json.dumps(retFile))
 			return req
 		except Exception, e:
-			Log.Debug('Fatal error happened in Logs show: ' + str(e))
+			Log.Exception('Fatal error happened in Logs show: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -171,8 +171,10 @@ class logs(object):
 						param, value = fullFileName.split(self.LOGDIR,1)
 						myZip.write(os.path.join(root, filename), arcname=value)
 				myZip.close()
-				req.set_header('Content-Type', 'application/force-download')
-				req.set_header ('Content-Disposition', 'attachment; filename=' + downFile)
+				req.set_header ('Content-Disposition', 'attachment; filename="' + downFile + '"')
+				req.set_header('Cache-Control', 'no-cache')
+				req.set_header('Pragma', 'no-cache')
+				req.set_header('Content-Type', 'application/zip')
 				with io.open(zipFileName, 'rb') as f:
 					try:
 						while True:
@@ -186,7 +188,7 @@ class logs(object):
 								os.remove(zipFileName)
 								return req
 					except Exception, e:
-						Log.Debug('Fatal error happened in Logs download: ' + str(e))
+						Log.Exception('Fatal error happened in Logs download: ' + str(e))
 						req.clear()
 						req.set_status(500)
 						req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -198,26 +200,28 @@ class logs(object):
 					else:
 						file = os.path.join(self.LOGDIR, fileName)
 					retFile = []
-					with io.open(file, 'rb') as content_file:
+					with io.open(file, 'r', errors='ignore') as content_file:
 						content = content_file.readlines()
 						for line in content:
 							line = line.replace('\n', '')
 							line = line.replace('\r', '')
 							retFile.append(line)
-					req.set_header('Content-Type', 'application/force-download')
-					req.set_header ('Content-Disposition', 'attachment; filename=' + fileName)
+					req.set_header ('Content-Disposition', 'attachment; filename="' + fileName + '"')
+					req.set_header('Content-Type', 'application/text/plain')
+					req.set_header('Cache-Control', 'no-cache')
+					req.set_header('Pragma', 'no-cache')
 					for line in retFile:
 						req.write(line + '\n')
 					req.finish()
 					return req
 				except Exception, e:
-					Log.Debug('Fatal error happened in Logs download: ' + str(e))
+					Log.Exception('Fatal error happened in Logs download: ' + str(e))
 					req.clear()
 					req.set_status(500)
 					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish('Fatal error happened in Logs download: ' + str(e))			
+					req.finish('Fatal error happened in Logs download: ' + str(e))
 		except Exception, e:
-			Log.Debug('Fatal error happened in Logs download: ' + str(e))
+			Log.Exception('Fatal error happened in Logs download: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')

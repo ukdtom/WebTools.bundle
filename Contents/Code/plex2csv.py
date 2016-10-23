@@ -25,15 +25,43 @@ class plex2csv(object):
 			req.set_status(412)
 			req.finish("Missing function parameter")
 		elif function == 'getFields':
-			# Call scanSection
+			# Call getFields
 			return self.getFields(req)
 		elif function == 'getFieldListbyIdx':
-			# Call scanSection
+			# Call getFieldListbyIdx
 			return self.getFieldListbyIdx(req)
+		elif function == 'getDefaultLevels':
+			# Call getDefaultLevels
+			return self.getDefaultLevels(req)
 		else:
 			req.clear()
 			req.set_status(412)
 			req.finish("Unknown function call")
+
+	'''	Returns a jason with the build-in levels
+			Param needed is type=[movie,show,audio,picture]
+	'''
+	def getDefaultLevels(self, req):
+		def getMovieDefLevels(req):
+			myResult = []
+			fields = json.dumps(plex2csv_moviefields.movieDefaultLevels, sort_keys=True)
+			print 'Ged1', fields
+			print 'Ged2'
+			for key, value in fields:
+				print 'Ged2', key
+				myResult.append(key)
+			req.clear()
+			req.set_status(200)
+			req.finish(json.dumps(myResult))
+
+		# Main code
+		type = req.get_argument('type', 'missing')
+		if type == 'missing':
+			req.clear()
+			req.set_status(412)
+			req.finish("Missing type parameter")
+		if type=='movie':
+			getMovieDefLevels(req)	
 
 	''' Returns an array of possible fields for a section type.
 			Param needed is type=[movie,show,audio,picture]
@@ -53,18 +81,16 @@ class plex2csv(object):
 		if type=='movie':
 			getMovieListbyIdx(req)
 
-
-
 	''' This will return a list of fields avail
 			Param needed is type=[movie,show,audio,picture]
 	'''
 	def getFields(self, req):
 		def getFullMovieFieldsList(req):
-			print 'Ged 1'
 			req.clear()
 			req.set_status(200)
 			req.finish(json.dumps(plex2csv_moviefields.fields))
 					
+		# Main code
 		type = req.get_argument('type', 'missing')
 		if type == 'missing':
 			req.clear()

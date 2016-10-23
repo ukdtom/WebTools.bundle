@@ -6,6 +6,7 @@
 #
 ######################################################################################################################
 
+from consts import DEBUGMODE, WT_AUTH, VERSION, NAME
 import sys
 # Add modules dir to search path
 modules = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'Contents', 'Code', 'modules')
@@ -17,6 +18,7 @@ from tornado.ioloop import IOLoop
 from tornado.escape import json_encode, xhtml_escape
 
 import threading
+import os, sys
 
 # Migrated to new way
 from plextvhelper import plexTV
@@ -28,9 +30,8 @@ from findMedia import findMedia
 from language import language
 from plex2csv import plex2csv
 from wt import wt
-
-
-import os
+from scheduler import scheduler
+from jsonExporter import jsonExporter
 
 # Below used to find path of this file
 from inspect import getsourcefile
@@ -75,7 +76,6 @@ class webTools(object):
 	def __init__(self):
 		# Not used yet
 		return
-
 
 	''' Return version number, and other info '''
 	def getVersion(self):
@@ -123,7 +123,6 @@ class LoginHandler(BaseHandler):
 
 	def post(self):
 		global AUTHTOKEN
-
 		# Check for an auth header, in case a frontend wanted to use that
 		# Header has precedence compared to params
 		auth_header = self.request.headers.get('Authorization', None)
@@ -149,57 +148,104 @@ class LoginHandler(BaseHandler):
 		Log.Info('User is: ' + user)
 		# Allow no password when in debug mode
 		if DEBUGMODE:
-			self.allow()
-			Log.Info('All is good, we are authenticated')
-			self.redirect('/')
-		# Let's start by checking if the server is online
-		if plexTV().auth2myPlex():
-			token = ''
-			try:
-				# Authenticate
-				retVal = plexTV().isServerOwner(plexTV().login(user, pwd))
-				self.clear()
-				if retVal == 0:
-					# All is good
-					self.allow()
-					Log.Info('All is good, we are authenticated')
-					self.redirect('/')
-				elif retVal == 1:
-					# Server not found
-					Log.Info('Server not found on plex.tv')
-					self.set_status(404)
-				elif retVal == 2:
-					# Not the owner
-					Log.Info('USer is not the server owner')
-					self.set_status(403)
-				else:
-					# Unknown error
-					Log.Critical('Unknown error, when authenticating')
-					self.set_status(403)
-			except Ex.HTTPError, e:
-				Log.Critical('Exception in Login: ' + str(e))
-				self.clear()
-				self.set_status(e.code)
-				self.finish(e)
-				return self
+			if not WT_AUTH:
+				self.allow()
+				Log.Info('All is good, we are authenticated')
+				self.redirect('/')
+			else:
+				# Let's start by checking if the server is online
+				if plexTV().auth2myPlex():
+					token = ''
+					try:
+						# Authenticate
+						login_token = plexTV().login(user, pwd)
+						if login_token == None:	
+							Log.ERROR('Bad credentials detected, denying access')
+							self.clear()
+							self.set_status(401)
+							self.finish('Authentication error')
+							return self
+						retVal = plexTV().isServerOwner(login_token)
+						self.clear()
+						if retVal == 0:
+							# All is good
+							self.allow()
+							Log.Info('All is good, we are authenticated')
+							self.redirect('/')
+						elif retVal == 1:
+							# Server not found
+							Log.Info('Server not found on plex.tv')
+							self.set_status(404)
+						elif retVal == 2:
+							# Not the owner
+							Log.Info('USer is not the server owner')
+							self.set_status(403)
+						else:
+							# Unknown error
+							Log.Critical('Unknown error, when authenticating')
+							self.set_status(403)
+					except Ex.HTTPError, e:
+						Log.Exception('Exception in Login: ' + str(e))
+						self.clear()
+						self.set_status(e.code)
+						self.finish(str(e))
+						return self
 		else:
-			Log.Info('Server is not online according to plex.tv')
-			# Server is offline
-			if Dict['password'] == '':
-				Log.Info('First local login, so we need to set the local password')
-				Dict['password'] = pwd
-				Dict['pwdset'] = True
-				Dict.Save
-				self.allow()
-				self.redirect('/')
-			elif Dict['password'] == pwd:
-				self.allow()
-				Log.Info('Local password accepted')
-				self.redirect('/')
-			elif Dict['password'] != pwd:
-				Log.Critical('Either local login failed, or PMS lost connection to plex.tv')
-				self.clear()
-				self.set_status(401)
+			# Let's start by checking if the server is online
+			if plexTV().auth2myPlex():
+				token = ''
+				try:
+					# Authenticate
+					login_token = plexTV().login(user, pwd)
+					if login_token == None:	
+						Log.ERROR('Bad credentials detected, denying access')
+						self.clear()
+						self.set_status(401)
+						self.finish('Authentication error')
+						return self
+					retVal = plexTV().isServerOwner(login_token)
+					self.clear()
+					if retVal == 0:
+						# All is good
+						self.allow()
+						Log.Info('All is good, we are authenticated')
+						self.redirect('/')
+					elif retVal == 1:
+						# Server not found
+						Log.Info('Server not found on plex.tv')
+						self.set_status(404)
+					elif retVal == 2:
+						# Not the owner
+						Log.Info('USer is not the server owner')
+						self.set_status(403)
+					else:
+						# Unknown error
+						Log.Critical('Unknown error, when authenticating')
+						self.set_status(403)
+				except Ex.HTTPError, e:
+					Log.Exception('Exception in Login: ' + str(e))
+					self.clear()
+					self.set_status(e.code)
+					self.finish(str(e))
+					return self
+			else:
+				Log.Info('Server is not online according to plex.tv')
+				# Server is offline
+				if Dict['password'] == '':
+					Log.Info('First local login, so we need to set the local password')
+					Dict['password'] = pwd
+					Dict['pwdset'] = True
+					Dict.Save
+					self.allow()
+					self.redirect('/')
+				elif Dict['password'] == pwd:
+					self.allow()
+					Log.Info('Local password accepted')
+					self.redirect('/')
+				elif Dict['password'] != pwd:
+					Log.Critical('Either local login failed, or PMS lost connection to plex.tv')
+					self.clear()
+					self.set_status(401)
 
 	def allow(self):
 		self.set_secure_cookie(NAME, Hash.MD5(Dict['SharedSecret']+Dict['password']), expires_days = None)
@@ -213,7 +259,8 @@ class webTools2Handler(BaseHandler):
 	# Disable auth when debug
 	def prepare(self):
 		if DEBUGMODE:
-			self.set_secure_cookie(NAME, Hash.MD5(Dict['SharedSecret']+Dict['password']), expires_days = None)
+			if not WT_AUTH:
+				self.set_secure_cookie(NAME, Hash.MD5(Dict['SharedSecret']+Dict['password']), expires_days = None)
 
 	#******* GET REQUEST *********
 	@authenticated
@@ -255,6 +302,9 @@ class webTools2Handler(BaseHandler):
 				self = plex2csv().reqprocess(self)
 			elif module == 'wt':
 				self = wt().reqprocess(self)
+			elif module == 'scheduler':
+				print 'Ged WebSrv Scheduler'
+				self = scheduler().reqprocess(self)
 			else:
 				self.clear()
 				self.set_status(412)
@@ -284,6 +334,10 @@ class webTools2Handler(BaseHandler):
 				self = findMedia().reqprocessPost(self)
 			elif module == 'wt':		
 				self = wt().reqprocessPost(self)
+			elif module == 'scheduler':		
+				self = scheduler().reqprocessPost(self)
+			elif module == 'jsonExporter':	
+				self = jsonExporter().reqprocessPost(self)
 			else:
 				self.clear()
 				self.set_status(412)
@@ -370,8 +424,6 @@ def start_tornado():
 													ssl_options={
 																			"certfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', 'WebTools.crt'),
 																			"keyfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', 'WebTools.key')})
-
-
 	# Set web server port to the setting in the channel prefs
 	port = int(Prefs['WEB_Port_http'])
 	ports = int(Prefs['WEB_Port_https'])	
@@ -380,7 +432,7 @@ def start_tornado():
 
 	Log.Debug('Starting tornado on ports %s and %s' %(port, ports))
 	IOLoop.instance().start()
-	Log.Debug('Shutting down tornado')
+	Log.Debug('Started')
 
 ''' Stop the actual instance of tornado '''
 def stopWeb():
@@ -388,14 +440,11 @@ def stopWeb():
 	Log.Debug('Asked Tornado to exit')
 
 ''' Main call '''
-def startWeb(secretKey, version, debugmode):
+#def startWeb(secretKey, version):
+def startWeb(secretKey):
 	global SECRETKEY	
 	# Set the secret key for use by other calls in the future maybe?
 	SECRETKEY = secretKey
-	global VERSION
-	VERSION = version
-	global DEBUGMODE
-	DEBUGMODE = debugmode
 	stopWeb()
 	Log.Debug('tornado is handling the following URI: %s' %(handlers))
 	t = threading.Thread(target=start_tornado)

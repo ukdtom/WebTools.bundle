@@ -11,17 +11,23 @@
 import urllib
 import unicodedata
 import json
-import time
+import time, sys, os
+from consts import DEBUGMODE
+from misc import misc
 
 # Consts used here
-AmountOfMediasInDatabase = 0																																				# Int of amount of medias in a database section
-mediasFromDB = []																																										# Files from the database
-mediasFromFileSystem = []																																						# Files from the file system
-statusMsg = 'idle'																																									# Response to getStatus
-runningState = 0																																										# Internal tracker of where we are
-bAbort = False																																											# Flag to set if user wants to cancel
-Extras = ['behindthescenes','deleted','featurette','interview','scene','short','trailer']						# Local extras
-KEYS = ['IGNORE_HIDDEN', 'IGNORED_DIRS', 'VALID_EXTENSIONS'] 																				# Valid keys for prefs
+AmountOfMediasInDatabase = 0																																												# Int of amount of medias in a database section
+mediasFromDB = []																																																		# Files from the database
+mediasFromFileSystem = []																																														# Files from the file system
+statusMsg = 'idle'																																																	# Response to getStatus
+runningState = 0																																																		# Internal tracker of where we are
+bAbort = False																																																			# Flag to set if user wants to cancel
+Extras = ['behindthescenes','deleted','featurette','interview','scene','short','trailer']														# Local extras
+ExtrasDirs = ['Behind The Scenes', 'Deleted Scenes', 'Featurettes', 'Interviews', 'Scenes', 'Shorts', 'Trailers']		# Directories to be ignored
+KEYS = ['IGNORE_HIDDEN', 'IGNORED_DIRS', 'VALID_EXTENSIONS'] 																												# Valid keys for prefs
+excludeElements='Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Role,Similar,Writer'
+excludeFields='summary,tagline'
+
 
 
 class findMedia(object):	
@@ -46,11 +52,10 @@ class findMedia(object):
 			Dict['findMedia'] = {
 				'IGNORE_HIDDEN' : True,
 				'IGNORED_DIRS' : [".@__thumb",".AppleDouble","lost+found"],
-				'VALID_EXTENSIONS' : ['.m4v', '.3gp', '.nsv', '.ts', '.ty', '.strm', '.rm', '.rmvb', '.m3u',
-															'.mov', '.qt', '.divx', '.xvid', '.bivx', '.vob', '.nrg', '.img', '.iso', 
-															'.pva', '.wmv', '.asf', '.asx', '.ogm', '.m2v', '.avi', '.bin', '.dat', 
-															'.dvr-ms', '.mpg', '.mpeg', '.mp4', '.mkv', '.avc', '.vp3', '.svq3', '.nuv',
-															'.viv', '.dv', '.fli', '.flv', '.rar', '.001', '.wpl', '.zip', '.mp3']				
+				'VALID_EXTENSIONS' : ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 
+														'fli', 'flv', 'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 
+														'nuv', 'ogm', 'ogv', 'tp', 'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr', 
+														'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm']		
 				}
 			Dict.Save()
 
@@ -112,7 +117,6 @@ class findMedia(object):
 			req.clear()		
 			req.set_status(200)
 
-
 	# Set settings
 	def setSetting(self, req):
 		try:
@@ -125,34 +129,20 @@ class findMedia(object):
 				req.clear()
 				req.set_status(412)
 				req.finish("Unknown key parameter")
-
-
-
-
 			value = req.get_argument('value', 'missing')
 			if value == 'missing':
 				req.clear()
 				req.set_status(412)
 				req.finish("Missing value parameter")
-
-			print 'Ged2', value
 			value = value.replace("u'", "")
 			value = value.split(',')
-
 			for item in value:
-				print 'Ged3', item
-
-
-			print 'Ged4', value
-
-#str.replace(old, new[, max])
-
-			Dict['findMedia'][key] = value
+				Dict['findMedia'][key] = value
 			Dict.Save()
 			req.clear()		
 			req.set_status(200)
 		except Exception, e:
-			Log.Debug('Fatal error in setSetting: ' + str(e))
+			Log.Exception('Fatal error in setSetting: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.finish("Unknown error happened in findMedia-setSetting: " + str(e))
@@ -182,6 +172,7 @@ class findMedia(object):
 			if 'WebTools' in retMsg:
 				req.set_status(204)
 			else:
+				Log.Info('Result is: ' + str(retMsg))
 				req.set_status(200)
 				req.finish(retMsg)
 		elif runningState == 99: 
@@ -221,8 +212,8 @@ class findMedia(object):
 				for item in mediasFromDB:
 					if bAbort:
 						raise ValueError('Aborted')
-					if not os.path.isfile(item):
-						MissingFromFS.append(item)
+					if item not in mediasFromFileSystem:
+						MissingFromFS.append(item)				
 				return MissingFromFS
 			except ValueError:
 				Log.Info('Aborted in findMissingFromFS')
@@ -231,13 +222,14 @@ class findMedia(object):
 			global MissingFromDB
 			Log.Debug('Finding items missing from Database')
 			MissingFromDB = []
-			try:
+			try:				
 				for item in mediasFromFileSystem:
 					if bAbort:
 						raise ValueError('Aborted')
 					if item not in mediasFromDB:
-						MissingFromDB.append(item)
+						MissingFromDB.append(item)							
 				return MissingFromDB
+				
 			except ValueError:
 				Log.Info('Aborted in findMissingFromDB')
 
@@ -272,7 +264,7 @@ class findMedia(object):
 			except ValueError:
 				Log.Info('Aborted in ScanMedias')
 			except Exception, e:
-				Log.Critical('Exception happend in scanMedias: ' + str(e))
+				Log.Exception('Exception happend in scanMedias: ' + str(e))
 				statusMsg = 'Idle'
 
 		# Scan the file system
@@ -282,45 +274,56 @@ class findMedia(object):
 			global statusMsg
 			try:
 				runningState = -1
-				Log.Debug("*********************** FileSystem Paths: *****************************************")
+				Log.Debug("*********************** FileSystem scan Paths: *****************************************")
 				bScanStatusCount = 0
-				files = str(filePath)[2:-2].replace("'", "").split(', ')
-				Log.Debug(files)
-				for filePath in files:
+				# Wondering why I do below. Part of find-unmatched, and forgot....SIGH
+				files = str(filePath)[2:-2].replace("'", "").split(', ')				
+				#for filePath in files:
+				for filePath in filePath:
 					# Decode filePath 
 					bScanStatusCount += 1
 					filePath2 = urllib.unquote(filePath).decode('utf8')
-					if filePath2.startswith('u'):
-						filePath2 = filePath2[1:]
-					Log.Debug("Handling file #%s: %s" %(bScanStatusCount, String.Unquote(filePath2).encode('utf8', 'ignore')))
-					for root, subdirs, files in os.walk(String.Unquote(filePath2).encode('utf8', 'ignore')):
+					filePath2 = misc().Unicodize(filePath2)					
+					Log.Debug("Handling filepath #%s: %s" %(bScanStatusCount, filePath2.encode('utf8', 'ignore')))
+					for root, subdirs, files in os.walk(filePath2):
 						# Need to check if directory in ignore list?
 						if os.path.basename(root) in Dict['findMedia']['IGNORED_DIRS']:
 							continue
 						# Lets look at the file
-						for file in files:
+						for file in files:					
+							file = misc().Unicodize(file).encode('utf8')
 							if bAbort:
 								Log.Info('Aborted in getFiles')
 								raise ValueError('Aborted')
-							if os.path.splitext(file)[1] in Dict['findMedia']['VALID_EXTENSIONS']:
+							if os.path.splitext(file)[1].lower()[1:] in Dict['findMedia']['VALID_EXTENSIONS']:
 								# File has a valid extention
 								if file.startswith('.') and Dict['findMedia']['IGNORE_HIDDEN']:
 									continue
 								# Filter out local extras
 								if '-' in file:
-									if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1] in Extras:
+									if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1].lower() in Extras:
 										continue
-								mediasFromFileSystem.append(Core.storage.join_path(root,file))
+								# filter out local extras directories
+								if os.path.basename(os.path.normpath(root)).lower() in ExtrasDirs:
+									continue															
+								composed_file = misc().Unicodize(Core.storage.join_path(root,file))						
+								if Platform.OS == 'Windows':
+									# I hate windows
+									pos = composed_file.find(':') -1
+									#composed_file = composed_file[4:]								
+									composed_file = composed_file[pos:]								
+								mediasFromFileSystem.append(composed_file)
 								statusMsg = 'Scanning file: ' + file
 					Log.Debug('***** Finished scanning filesystem *****')
-#					Log.Debug(mediasFromFileSystem)
+					if DEBUGMODE:
+						Log.Debug(mediasFromFileSystem)
 					runningState = 2
 			except ValueError:
 				statusMsg = 'Idle'
 				runningState = 99
 				Log.Info('Aborted in getFiles')
 			except Exception, e:
-				Log.Critical('Exception happend in getFiles: ' + str(e))
+				Log.Exception('Exception happend in getFiles: ' + str(e))
 				runningState = 99
 
 		def scanShowDB(sectionNumber=0):
@@ -343,7 +346,7 @@ class findMedia(object):
 				# So let's walk the library
 				while True:
 					# Grap shows
-					shows = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iCShow) + '&X-Plex-Container-Size=' + str(self.MediaChuncks)).xpath('//Directory')
+					shows = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iCShow) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Directory')
 					# Grap individual show
 					for show in shows:
 						statusShow = show.get('title')
@@ -352,7 +355,7 @@ class findMedia(object):
 						iCSeason = 0
 						# Grap seasons
 						while True:
-							seasons = XML.ElementFromURL('http://127.0.0.1:32400' + show.get('key') + '?X-Plex-Container-Start=' + str(iCSeason) + '&X-Plex-Container-Size=' + str(self.MediaChuncks)).xpath('//Directory')
+							seasons = XML.ElementFromURL('http://127.0.0.1:32400' + show.get('key') + '?X-Plex-Container-Start=' + str(iCSeason) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Directory')
 							# Grap individual season
 							for season in seasons:			
 								if season.get('title') == 'All episodes':
@@ -365,7 +368,7 @@ class findMedia(object):
 								iEpisode = 0
 								iCEpisode = 0
 								while True:
-									episodes = XML.ElementFromURL('http://127.0.0.1:32400' + season.get('key') + '?X-Plex-Container-Start=' + str(iCEpisode) + '&X-Plex-Container-Size=' + str(self.MediaChuncks)).xpath('//Part')
+									episodes = XML.ElementFromURL('http://127.0.0.1:32400' + season.get('key') + '?X-Plex-Container-Start=' + str(iCEpisode) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Part')
 									for episode in episodes:
 										if bAbort:
 											raise ValueError('Aborted')
@@ -388,7 +391,8 @@ class findMedia(object):
 					if len(shows) == 0:
 						statusMsg = 'Scanning database: %s : Done' %(totalSize)
 						Log.Debug('***** Done scanning the database *****')
-#						Log.Debug(mediasFromDB)
+						if DEBUGMODE:
+							Log.Debug(mediasFromDB)
 						runningState = 1
 						break
 				return
@@ -397,7 +401,7 @@ class findMedia(object):
 				runningState = 99
 				Log.Info('Aborted in ScanShowDB')
 			except Exception, e:
-				Log.Debug('Fatal error in scanShowDB: ' + str(e))
+				Log.Exception('Fatal error in scanShowDB: ' + str(e))
 				runningState = 99
 		# End scanShowDB
 
@@ -421,26 +425,27 @@ class findMedia(object):
 				# So let's walk the library
 				while True:
 					# Grap a chunk from the server
-					medias = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iStart) + '&X-Plex-Container-Size=' + str(self.MediaChuncks)).xpath('//Part')
+					medias = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iStart) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Part')
 					# Walk the chunk
 					for part in medias:
 						if bAbort:
 							raise ValueError('Aborted')
 						iCount += 1
 						filename = part.get('file')		
-						filename = String.Unquote(filename).encode('utf8', 'ignore')	
+						filename = unicode(misc().Unicodize(part.get('file')).encode('utf8', 'ignore'))
 						mediasFromDB.append(filename)
 						statusMsg = 'Scanning database: item %s of %s : Working' %(iCount, totalSize)
 					iStart += self.MediaChuncks
 					if len(medias) == 0:
 						statusMsg = 'Scanning database: %s : Done' %(totalSize)
 						Log.Debug('***** Done scanning the database *****')
-#						Log.Debug(mediasFromDB)
+						if DEBUGMODE:
+							Log.Debug(mediasFromDB)
 						runningState = 1
 						break
 				return
 			except Exception, e:
-				Log.Debug('Fatal error in scanMovieDb: ' + str(e))
+				Log.Exception('Fatal error in scanMovieDb: ' + str(e))
 				runningState = 99
 		# End scanMovieDb
 
@@ -462,7 +467,7 @@ class findMedia(object):
 			locations = response[0].xpath('//Directory[@key=' + sectionNumber + ']/Location')
 			sectionLocations = []
 			for location in locations:
-				sectionLocations.append(location.get('path'))
+				sectionLocations.append(os.path.normpath(location.get('path')))
 			Log.Debug('Going to scan section %s with a title of %s and a type of %s and locations as %s' %(sectionNumber, sectionTitle, sectionType, str(sectionLocations)))
 			if runningState in [0,99]:
 				Thread.Create(scanMedias, globalize=True, sectionNumber=sectionNumber, sectionLocations=sectionLocations, sectionType=sectionType, req=req)
@@ -472,7 +477,7 @@ class findMedia(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Scanning already in progress')				
 		except Exception, ex:
-			Log.Debug('Fatal error happened in scanSection: ' + str(ex))
+			Log.Exception('Fatal error happened in scanSection: ' + str(ex))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')

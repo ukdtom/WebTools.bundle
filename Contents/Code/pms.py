@@ -4,13 +4,12 @@
 #
 #	Author: dane22, a Plex Community member
 #
-#
 ######################################################################################################################
+from consts import NAME
 import shutil, os
 import time, json
-import io
+import io, sys
 from xml.etree import ElementTree
-
 
 # Undate uasTypesCounters
 def updateUASTypesCounters():
@@ -38,46 +37,38 @@ def updateUASTypesCounters():
 						counter[bundleType] = {'installed': 1, 'total' : 1}
 		Dict['uasTypes'] = counter
 		Dict.Save()
-	except Exception, e:
-		print 'Fatal error happened in updateUASTypesCounters: ' + str(e)
-		Log.Debug('Fatal error happened in updateUASTypesCounters: ' + str(e))
+	except Exception, e:		
+		Log.Exception('Fatal error happened in updateUASTypesCounters: ' + str(e))
 
 #TODO fix updateAllBundleInfo
 # updateAllBundleInfo
 def updateAllBundleInfoFromUAS():
-	def updateInstallDict():
-		'''
-		# Debugging stuff
-		print 'Ged debugging stuff'
-		Dict['PMS-AllBundleInfo'].pop('https://github.com/ukdtom/plex2csv.bundle', None)
-		Dict['installed'].clear()
-		Dict.Save()
-		#Debug end
-		'''
-
-
-
+	def updateInstallDict():		
 		# Start by creating a fast lookup cache for all uas bundles
 		uasBundles = {}
 		bundles = Dict['PMS-AllBundleInfo']
 		for bundle in bundles:
 			uasBundles[bundles[bundle]['identifier']] = bundle
 		# Now walk the installed ones
-		for installedBundle in Dict['installed']:
-			if not installedBundle.startswith('https://'):
-				Log.Info('Checking unknown bundle: ' + installedBundle + ' to see if it is part of UAS now')
-				if installedBundle in uasBundles:
-					# Get the installed date of the bundle formerly known as unknown :-)
-					installedBranch = Dict['installed'][installedBundle]['branch']
-					installedDate = Dict['installed'][installedBundle]['date']
-					# Add updated stuff to the dicts
-					Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['branch'] = installedBranch
-					Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['date'] = installedDate
-					Dict['installed'][uasBundles[installedBundle]] = Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]
-					# Remove old stuff from the Ditcs
-					Dict['PMS-AllBundleInfo'].pop(installedBundle, None)
-					Dict['installed'].pop(installedBundle, None)
-					Dict.Save()
+		try:
+			installed = Dict['installed'].copy()
+			for installedBundle in installed:
+				if not installedBundle.startswith('https://'):
+					Log.Info('Checking unknown bundle: ' + installedBundle + ' to see if it is part of UAS now')
+					if installedBundle in uasBundles:
+						# Get the installed date of the bundle formerly known as unknown :-)
+						installedBranch = Dict['installed'][installedBundle]['branch']
+						installedDate = Dict['installed'][installedBundle]['date']
+						# Add updated stuff to the dicts
+						Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['branch'] = installedBranch
+						Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['date'] = installedDate
+						Dict['installed'][uasBundles[installedBundle]] = Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]
+						# Remove old stuff from the Dict
+						Dict['PMS-AllBundleInfo'].pop(installedBundle, None)
+						Dict['installed'].pop(installedBundle, None)
+						Dict.Save()
+		except Exception, e:
+			Log.Exception('Critical error in updateInstallDict while walking the gits: ' + str(e))
 		return
 
 	try:
@@ -98,31 +89,28 @@ def updateAllBundleInfoFromUAS():
 					installBranch = ''
 					# Check if already present, and if an install date also is there
 					installDate = ""
+					CommitId = ""
 					if key in Dict['PMS-AllBundleInfo']:
 						jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
-						if 'branch' in jsonPMSAllBundleInfo:
-							installBranch = Dict['PMS-AllBundleInfo'][key]['branch']
-
-
-
-						Log.Debug('Ged1: ' + installBranch)
-
 						if 'date' in jsonPMSAllBundleInfo:
 							installDate = Dict['PMS-AllBundleInfo'][key]['date']
+						if 'CommitId' in jsonPMSAllBundleInfo:						
+							CommitId = Dict['PMS-AllBundleInfo'][key]['CommitId']
 					del git['repo']
 					# Add/Update our Dict
 					Dict['PMS-AllBundleInfo'][key] = git
-					Dict['PMS-AllBundleInfo'][key]['branch'] = installBranch
 					Dict['PMS-AllBundleInfo'][key]['date'] = installDate
+					Dict['PMS-AllBundleInfo'][key]['CommitId'] = CommitId
+
 			except Exception, e:
-				Log.Critical('Critical error in updateInstallDict while walking the gits: ' + str(e))
+				Log.Exception('Critical error in updateAllBundleInfoFromUAS1 while walking the gits: ' + str(e))
 			Dict.Save()
 			updateUASTypesCounters()
 			updateInstallDict()
 		else:
 			Log.Debug('UAS was sadly not present')
 	except Exception, e:
-		Log.Critical('Fatal error happened in updateAllBundleInfoFromUAS: ' + str(e))
+		Log.Exception('Fatal error happened in updateAllBundleInfoFromUAS: ' + str(e))
 
 class pms(object):
 	# Defaults used by the rest of the class
@@ -147,6 +135,8 @@ class pms(object):
 			return self.getSubtitles(req)
 		elif function == 'showSubtitle':
 			return self.showSubtitle(req)
+		elif function == 'downloadSubtitle':
+			return self.downloadSubtitle(req)
 		elif function == 'tvShow':
 			return self.TVshow(req)
 		elif function == 'getAllBundleInfo':
@@ -157,6 +147,8 @@ class pms(object):
 			return self.getSectionLetterList(req)
 		elif function == 'getSectionByLetter':
 			return self.getSectionByLetter(req)
+		elif function == 'search':
+			return self.search(req)
 		else:
 			req.clear()
 			req.set_status(412)
@@ -204,6 +196,48 @@ class pms(object):
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
 
+	''' Search for a title '''
+	def search(self, req):
+		Log.Info('Search called')
+		try:
+			title = req.get_argument('title', '_WT_missing_')
+			if title == '_WT_missing_':
+				req.clear()
+				req.set_status(412)
+				req.finish("<html><body>Missing title parameter</body></html>")
+			else:
+				url = 'http://127.0.0.1:32400/search?query=' + String.Quote(title)
+				result = {}
+				# Fetch search result from PMS
+				foundMedias = XML.ElementFromURL(url)
+				# Grap all movies from the result
+				for media in foundMedias.xpath('//Video'):
+					value = {}
+					value['title'] = media.get('title')
+					value['type'] = media.get('type')
+					value['section'] = media.get('librarySectionID')			
+					key = media.get('ratingKey')					
+					result[key] = value
+				# Grap results for TV-Shows
+				for media in foundMedias.xpath('//Directory'):
+					value = {}
+					value['title'] = media.get('title')
+					value['type'] = media.get('type')
+					value['section'] = media.get('librarySectionID')			
+					key = media.get('ratingKey')					
+					result[key] = value
+				Log.Info('Search returned: %s' %(result))
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(result))
+		except Exception, e:
+			Log.Exception('Fatal error happened in search: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in search: ' + str(e))
+
 	''' Delete from an XML file '''
 	def DelFromXML(self, fileName, attribute, value):
 		Log.Debug('Need to delete element with an attribute named "%s" with a value of "%s" from file named "%s"' %(attribute, value, fileName))
@@ -214,16 +248,10 @@ class pms(object):
 			for Subtitles in root.findall("Language[Subtitle]"):
 				for node in Subtitles.findall("Subtitle"):
 					myValue = node.attrib.get(attribute)
-
-					print 'Ged9', myValue
-
 					if myValue:
 						if '_' in myValue:
 							drop, myValue = myValue.split("_")
 						if myValue == value:
-
-							print 'Ged10', value
-
 							Subtitles.remove(node)
 		tree.write(fileName, encoding='utf-8', xml_declaration=True)
 		return
@@ -252,7 +280,7 @@ class pms(object):
 				self.set_status(e.code)
 				self.finish(e)
 		except Exception, e:
-			Log.Debug('Fatal error happened in getParts: ' + str(e))
+			Log.Exception('Fatal error happened in getParts: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -283,7 +311,7 @@ class pms(object):
 			req.set_status(200)
 			req.finish("<html><body>Upload ok</body></html>")
 		except Exception, e:
-			Log.Debug('Fatal error happened in uploadFile: ' + str(e))
+			Log.Exception('Fatal error happened in uploadFile: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -299,7 +327,7 @@ class pms(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(Dict['PMS-AllBundleInfo']))
 		except Exception, e:
-			Log.Debug('Fatal error happened in getAllBundleInfo: ' + str(e))
+			Log.Exception('Fatal error happened in getAllBundleInfo: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -324,7 +352,7 @@ class pms(object):
 					Log.Debug('Bundle directory name digested as: %s' %(bundleInstallDir))
 					shutil.rmtree(bundleInstallDir)
 				except Exception, e:
-					Log.Critical("Unable to remove the bundle directory: " + str(e))
+					Log.Exception("Unable to remove the bundle directory: " + str(e))
 					req.clear()
 					req.set_status(500)
 					req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -376,7 +404,7 @@ class pms(object):
 					req.set_header('Content-Type', 'application/json; charset=utf-8')
 					req.finish('Fatal error happened when trying to restart the system.bundle')
 			except Exception, e:
-				Log.Debug('Fatal error happened in removeBundle: ' + str(e))
+				Log.Exception('Fatal error happened in removeBundle: ' + str(e))
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -409,8 +437,8 @@ class pms(object):
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Bundle %s was removed' %(bundleName))
-		except:
-			Log.Debug('Fatal error happened in delBundle')
+		except Exception, e:
+			Log.Exception('Fatal error happened in delBundle: %s' %(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -450,15 +478,18 @@ class pms(object):
 					if filePath.startswith('media://'):
 						# Path to symblink
 						filePath = filePath.replace('media:/', os.path.join(Core.app_support_path, 'Media', 'localhost'))
-						# Subtitle name
-						agent, sub = filePath.split('_')
-						tmp, agent = agent.split('com.')
-						# Agent used
-						agent = 'com.' + agent				
-						filePath2 = filePath.replace('Contents', os.path.join('Contents', 'Subtitle Contributions'))
-						filePath2, language = filePath2.split('Subtitles')
-						language = language[1:3]	
-						filePath3 = os.path.join(filePath2[:-1], agent, language, sub)
+						try:
+							# Subtitle name
+							agent, sub = filePath.rsplit('_',1)
+							tmp, agent = agent.split('com.')
+							# Agent used
+							agent = 'com.' + agent
+							filePath2 = filePath.replace('Contents', os.path.join('Contents', 'Subtitle Contributions'))
+							filePath2, language = filePath2.split('Subtitles')
+							language = language[1:3]	
+							filePath3 = os.path.join(filePath2[:-1], agent, language, sub)
+						except Exception, e:
+							Log.Exception('Exception in delSub generation file Path: ' + str(e))
 						subtitlesXMLPath, tmp = filePath.split('Contents')
 						agentXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitle Contributions', agent + '.xml')							
 						subtitlesXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitles.xml')
@@ -475,7 +506,7 @@ class pms(object):
 							url = 'http://127.0.0.1:32400/library/metadata/' + key + '/refresh?force=1'
 							HTTP.Request(url, cacheTime=0, immediate=True, method="PUT")
 						except Exception, e:
-							Log.Critical('Exception while deleting an agent based sub: ' + str(e))
+							Log.Exception('Exception while deleting an agent based sub: ' + str(e))
 							req.clear()
 							req.set_status(404)
 							req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -503,7 +534,7 @@ class pms(object):
 							req.finish(json.dumps(retVal))
 						except Exception, e:
 							# Could not find req. subtitle
-							Log.Debug('Fatal error happened in delSub, when deleting %s : %s' %(filePath, str(e)))
+							Log.Exception('Fatal error happened in delSub, when deleting ' + filePath + ' : ' + str(e))
 							req.clear()
 							req.set_status(404)
 							req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -516,7 +547,7 @@ class pms(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Could not find req. subtitle')
 		except Exception, e:
-			Log.Debug('Fatal error happened in delSub: ' + str(e))
+			Log.Exception('Fatal error happened in delSub: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -547,8 +578,8 @@ class pms(object):
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(json.dumps(mySeason))
-			except:
-				Log.Debug('Fatal error happened in TV-Show while fetching season')
+			except Exception, e:
+				Log.Exception('Fatal error happened in TV-Show while fetching season: %s' %(e))
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -574,8 +605,8 @@ class pms(object):
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(str(json.dumps(mySeasons)))
-			except:
-				Log.Debug('Fatal error happened in TV-Show while fetching seasons')
+			except Exception, e:
+				Log.Exception('Fatal error happened in TV-Show while fetching seasons: %s' %(e))
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -595,7 +626,7 @@ class pms(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(size)
 			except:
-				Log.Debug('Fatal error happened in TV-Show while fetching size')
+				Log.Exception('Fatal error happened in TV-Show while fetching size %s' %(e))
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -637,8 +668,8 @@ class pms(object):
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(json.dumps(episodes))
-			except:
-				Log.Debug('Fatal error happened in TV-Show while fetching contents')
+			except Exception, e:
+				Log.Exception('Fatal error happened in TV-Show while fetching contents %s' %(e))
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -676,8 +707,8 @@ class pms(object):
 				req.set_status(412)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Unknown action for TVshow')		
-		except:
-			Log.Debug('Fatal error happened in TVshow')
+		except Exception, e:
+			Log.Exception('Fatal error happened in TVshow: %s' %(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -705,18 +736,75 @@ class pms(object):
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(json.dumps(response))
-			except:
-				Log.Debug('Fatal error happened in showSubtitle')
+			except Exception, e:
+				Log.Exception('Fatal error happened in showSubtitle: %s' %(e))
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Fatal error happened in showSubtitle')
-		except:
-			Log.Debug('Fatal error happened in showSubtitle')
+		except Exception, e:
+			Log.Exception('Fatal error happened in showSubtitle: %s' %(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in showSubtitle')
+
+	''' Download Subtitle '''
+	def downloadSubtitle(self, req):
+		Log.Debug('Download Subtitle requested')
+		try:
+			key = req.get_argument('key', 'missing')
+			Log.Debug('Subtitle key is %s' %(key))
+			if key == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing key of subtitle')
+				return req
+			myURL='http://127.0.0.1:32400/library/streams/' + key
+			try:
+				# Grab the subtitle
+				try:
+					response = HTML.StringFromElement(HTML.ElementFromURL(myURL))
+				except Exception, e:
+					Log.Exception('Fatal error happened in downloadSubtitle: ' + str(e))
+					req.clear()
+					req.set_status(401)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish('Fatal error happened in downloadSubtitle: ' + str(e))			
+				# Make it nicer
+				response = response.replace('<p>', '',1)
+				response = response.replace('</p>', '',1)
+				response = response.replace('&gt;', '>')
+				response = response.split('\n')
+				# Prep the download http headers
+				req.set_header ('Content-Disposition', 'attachment; filename="subtitle.srt"')
+				req.set_header('Cache-Control', 'no-cache')
+				req.set_header('Pragma', 'no-cache')
+				req.set_header('Content-Type', 'application/text/plain')				
+				# Download the sub
+				try:
+					for line in response:
+						req.write(line + '\n')
+					req.finish()
+					return req
+				except Exception, e:
+					Log.Exception('Fatal error happened in downloadSubtitle: ' + str(e))
+					req.clear()
+					req.set_status(500)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish('Fatal error happened in downloadSubtitle: ' + str(e))
+			except Exception, e:
+				Log.Exception('Fatal error happened in downloadSubtitle: %s' %(e))
+				req.clear()
+				req.set_status(500)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish('Fatal error happened in showSubtitle')
+		except Exception, e:
+			Log.Exception('Fatal error happened in downloadSubtitle: %s' %(e))
+			req.clear()
+			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish('Fatal error happened in downloadSubtitle')
 
 	''' get Subtitles '''
 	def getSubtitles(self, req, mediaKey=''):
@@ -765,15 +853,15 @@ class pms(object):
 							for mediaStream in MediaStreams:				
 								if mediaStream.get('id') == subInfo['key']:									
 									subInfo['url'] = mediaStream.get('url')
-						except:
-							Log.Debug('Fatal error happened in getSubtitles')
+						except Exception, e:
+							Log.Exception('Fatal error happened in getSubtitles: %s' %(e))
 							req.clear()
 							req.set_status(500)
 							req.set_header('Content-Type', 'application/json; charset=utf-8')
 							req.finish('Fatal error happened in getSubtitles')
 					mediaInfo.append(subInfo)	
-			except:
-				Log.Debug('Fatal error happened in getSubtitles')
+			except Exception, e:
+				Log.Exception('Fatal error happened in getSubtitles %s' %(e))
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -785,8 +873,8 @@ class pms(object):
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(json.dumps(mediaInfo))
-		except:
-			Log.Debug('Fatal error happened in getSubtitles')
+		except Exception, e:
+			Log.Exception('Fatal error happened in getSubtitles: %s' %(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -816,7 +904,7 @@ class pms(object):
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(resultJson, sort_keys=True))
 		except Exception, e:
-			Log.Debug('Fatal error happened in getSectionLetterList ' + str(e))
+			Log.Exception('Fatal error happened in getSectionLetterList: %s ' %(str(e)))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -873,13 +961,13 @@ class pms(object):
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(json.dumps(Section))
 			except Exception, e:
-				Log.Debug('Fatal error happened in getSectionByLetter: ' + str(e))
+				Log.Exception('Fatal error happened in getSectionByLetter: ' + str(e))
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Fatal error happened in getSectionByLetter: ' + str(e))
 		except Exception, e:
-			Log.Debug('Fatal error happened in getSectionByLetter: ' + str(e))
+			Log.Exception('Fatal error happened in getSectionByLetter: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -928,14 +1016,14 @@ class pms(object):
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(json.dumps(Section))
-			except:
-				Log.Debug('Fatal error happened in getSection')
+			except Exception, e:
+				Log.Exception('Fatal error happened in getSection %s' %(str(e)))
 				req.clear()
 				req.set_status(500)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Fatal error happened in getSection')
-		except:
-			Log.Debug('Fatal error happened in getSection')
+		except Exception, e:
+			Log.Exception('Fatal error happened in getSection: %s' %(str(e)))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -955,8 +1043,8 @@ class pms(object):
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(Sections))
-		except:
-			Log.Debug('Fatal error happened in getSectionsList')
+		except Exception, e:
+			Log.Exception('Fatal error happened in getSectionsList: %s' %(str(e)))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -981,14 +1069,14 @@ class pms(object):
 					req.clear()
 					req.set_status(200)
 					req.finish(section.get('totalSize'))
-				except:					
-					Log.Debug('Fatal error happened in GetSectionSize')
+				except Exception, e:	
+					Log.Exception('Fatal error happened in GetSectionSize: %s' %(str(e)))
 					req.clear()
 					req.set_status(500)
 					req.set_header('Content-Type', 'application/json; charset=utf-8')
 					req.finish('Fatal error happened in GetSectionSize')
-		except:
-			Log.Debug('Fatal error happened in getSectionSize')
+		except Exception, e:
+			Log.Exception('Fatal error happened in getSectionSize: %s' %(str(e)))
 			req.clear()
 			req.set_status(500)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')

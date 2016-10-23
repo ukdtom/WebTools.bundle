@@ -5,7 +5,7 @@
 #
 ######################################################################################################################
 
-import json
+import json, sys
 
 class settings(object):
 
@@ -80,9 +80,10 @@ class settings(object):
 					req.finish("Old Password did not match")			
 				return req
 		except Ex.HTTPError, e:
+			Log.Exception('Error in setPwd: ' + str(e))
 			req.clear()
 			req.set_status(e.code)
-			req.finish(e)
+			req.finish(str(e))
 			return req
 
 	# Return the value of a specific setting
@@ -106,10 +107,11 @@ class settings(object):
 				req.finish("Setting saved")			
 			return req
 		except Ex.HTTPError, e:
+			Log.Exception('Error in putSetting: ' + str(e))
 			req.clear()
 			req.set_status(e.code)
-			req.finish(e)
-			return req
+			req.finish(str(e))
+
 
 	# Return the value of a specific setting
 	def getSetting(self, req):
@@ -133,10 +135,11 @@ class settings(object):
 					req.finish(json.dumps('Setting not found'))
 				return req
 		except Ex.HTTPError, e:
+			Log.Exception('Error in getSetting: ' + str(e))
 			req.clear()
 			req.set_status(e.code)
-			req.finish(e)
-			return req
+			req.finish(str(e))
+
 
 	# Return all settings from the Dict
 	def getSettings(self, req):
@@ -155,16 +158,8 @@ class settings(object):
 			req.finish(json.dumps(mySetting))
 			return req
 		except Ex.HTTPError, e:
+			Log.Exception('Error in getSettings: ' + str(e))
 			req.clear()
 			req.set_status(e.code)
-			req.finish(e)
-			return req
-
-	
-
-
-
-
-
-
+			req.finish(str(e))
 

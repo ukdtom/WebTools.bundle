@@ -39,10 +39,11 @@ logviewer.fetchlogfiles = function() {
     cache: false,
     success: function(data) {
       data.forEach(function(logname) {
-        $('#LogfileList').append('<option value="' + logname + '">' + logname);
+				var downloadlogname = logname.replace(/ /g, "%20");
+        $('#LogfileList').append('<option value="' + downloadlogname + '">' + logname);
       });
-      $('#LogfileList').val("Plex Media Server.log");
-      logviewer.viewlogfile("Plex Media Server.log");
+      $('#LogfileList').val("Plex%20Media%20Server.log");
+      logviewer.viewlogfile("Plex%20Media%20Server.log");
     },
     error: function(data, statustext, errorthrown) {
       data.url = this.url;
@@ -54,12 +55,7 @@ logviewer.fetchlogfiles = function() {
 logviewer.viewlogfile = function(filename) {
 	webtools.clearresult();
   $.ajax({
-    url: '/webtools2',
-    data: {
-      'module': 'logs',
-      'function': 'show',
-      'fileName': filename
-    },
+    url: '/webtools2?module=logs&function=show&fileName=' + filename,
     cache: false,
     type: 'GET',
     dataType: 'JSON',
@@ -100,15 +96,17 @@ logviewer.viewlogfile = function(filename) {
     error: function(data) {
       data.url = this.url;
       webtools.log('Failed fetching ' + filename);
-      webtools.display_error('Failed fetching the settings from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+      webtools.display_error('Failed fetching the logfile from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
     }
   });
 }
 
 logviewer.download = function(filename) {
   if (typeof(filename) != 'undefined') {
+		webtools.log('Trying to download: ' + filename);
     window.location.href = '/webtools2?module=logs&function=download&fileName=' + filename;
   } else {
+		webtools.log('Trying to download: ' + filename);
     window.location.href = '/webtools2?module=logs&function=download';
   }
 }

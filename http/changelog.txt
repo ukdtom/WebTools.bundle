@@ -1,3 +1,30 @@
+V2.3 Release:
+	Fix:
+		#110	UAS:	Allow it to fetch from release info as well
+		#134	UAS:	Wrong time for Latest Update on Github		
+		#165  LV:		Fixed issue with spaces in filenames
+		#166	UAS:	Removed highlight of All after selecting category
+		#172	WT:		Fixed issue with Factory reset
+		#176	UAS:	Critical error in updateInstallDict
+		#178	WT: 	Fixed issue with intruder detection
+		#184	WT:		Logging can fail on Mac OS 		
+		#187	UAS:	Fix for correct sorting. Now sorts alphabetical without concerning about capital/lower case letters.
+		#188	UAS:	New way with consts and debug broken on Windows
+		#189	WT:		Fix for startup issue if on Windows and lang is set to CP1251
+		#190	LV:		Fix for issue with cyrilian characters, when not running UTF-8
+		#197	SUB:	Error while deleting any subtitle (Sub-Zero, and file stored within metadata)
+		
+	New:
+		#170	WT:		Added a user guide from Trumpy81. URL is /manual/WebTools-User-Manual.pdf
+		#171	PMS:	Added Search to the backend
+		#175	PMS: 	Autodownload Repo if json is missing
+		#185	WT:		Enhance developer/debug mode
+		#191	WT:		Version numbering moved to VERSION file in the root of the bundle
+		#204	FM:		New Modul: FindMedia
+
+
+####
+
 V2.2 Release:
 
 BACKEND:
