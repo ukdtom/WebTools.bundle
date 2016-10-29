@@ -1,6 +1,6 @@
 ######################################################################################################################
 #	Git bundles helper unit
-# A WebTools bundle plugin					
+# A WebTools bundle plugin
 #
 #	Author: dane22, a Plex Community member
 #
@@ -39,9 +39,9 @@ class git(object):
 					self.updateUASCache(None, cliForce = True)
 			except Exception, e:
 				Log.Exception('Exception happend when trying to force download from UASRes: ' + str(e))
-		
+
 	''' Grap the tornado req, and process it for GET request'''
-	def reqprocess(self, req):	
+	def reqprocess(self, req):
 		function = req.get_argument('function', 'missing')
 		if function == 'missing':
 			req.clear()
@@ -49,7 +49,7 @@ class git(object):
 			req.finish("<html><body>Missing function parameter</body></html>")
 		elif function == 'getGit':
 			# Call install with the url
-			return self.install(req)	
+			return self.install(req)
 		elif function == 'list':
 			return self.list(req)
 		elif function == 'getLastUpdateTime':
@@ -70,7 +70,7 @@ class git(object):
 			req.finish("<html><body>Unknown function call</body></html>")
 
 	''' Grap the tornado req, and process it for a PUT request'''
-	def reqprocessPUT(self, req):		
+	def reqprocessPUT(self, req):
 		function = req.get_argument('function', 'missing')
 		if function == 'missing':
 			req.clear()
@@ -151,7 +151,7 @@ class git(object):
 				# Grap the file
 				data = zipfile[filename]
 				if not str(filename).endswith('/'):
-					# Pure file, so save it	
+					# Pure file, so save it
 					path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
 					Log.Debug('Extracting file' + path)
 					try:
@@ -199,7 +199,7 @@ class git(object):
 		return
 
 	''' Returns commit time and Id for a git branch '''
-	def getAtom_UpdateTime_Id(self, url, branch):		
+	def getAtom_UpdateTime_Id(self, url, branch):
 		# Build AtomUrl
 		atomUrl = url + '/commits/' + branch + '.atom'
 		# Get Atom
@@ -221,8 +221,8 @@ class git(object):
 				for bundle in bundles:
 					if bundle.startswith('https://github'):
 						# Going the new detection way with the commitId?
-						if 'CommitId' in Dict['installed'][bundle]:	
-							if 'release' in Dict['installed'][bundle]:								
+						if 'CommitId' in Dict['installed'][bundle]:
+							if 'release' in Dict['installed'][bundle]:
 								relUrl = 'https://api.github.com/repos' + bundle[18:] + '/releases/latest'
 								Id = JSON.ObjectFromURL(relUrl)['id']
 								if Dict['installed'][bundle]['CommitId'] != Id:
@@ -236,23 +236,24 @@ class git(object):
 									gitInfo['gitHubTime'] = updateInfo['mostRecent']
 									result[bundle] = gitInfo
 						else:
-							# Sadly has to use timestamps							
+							# Sadly has to use timestamps
 							Log.Info('Using timestamps to detect avail update for ' + bundle)
 							gitTime = datetime.datetime.strptime(self.getLastUpdateTime(req, UAS=True, url=bundle), '%Y-%m-%d %H:%M:%S')
 							sBundleTime = Dict['installed'][bundle]['date']
 							bundleTime = datetime.datetime.strptime(sBundleTime, '%Y-%m-%d %H:%M:%S')
+							# Check bundles for old empty branch info
+                                                        if Dict['installed'][bundle]['branch'] == '':
+								# Fix for old stuff, where branch was empty
+								Dict['installed'][bundle]['branch'] = 'master'
+								Dict.Save()
 							if bundleTime < gitTime:
 								gitInfo = Dict['installed'][bundle]
 								gitInfo['gitHubTime'] = str(gitTime)
 								result[bundle] = gitInfo
 							else:
-								# Let's get a CommitId stamped for future times								
-								if Dict['installed'][bundle]['branch'] == '':
-									# Fix for old stuff, where branch was empty
-									Dict['installed'][bundle]['branch'] = 'master'
-									Dict.Save()
+								# Let's get a CommitId stamped for future times
 								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
-								Log.Info('Stamping %s with a commitId of %s for future ref' %(bundle, updateInfo['commitId']))							
+								Log.Info('Stamping %s with a commitId of %s for future ref' %(bundle, updateInfo['commitId']))
 								Dict['installed'][bundle]['CommitId'] = updateInfo['commitId']
 								Dict.Save()
 				Log.Debug('Updates avail: ' + str(result))
@@ -280,7 +281,7 @@ class git(object):
 				jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
 				json_file = io.open(jsonFileName, "rb")
 				response = json_file.read()
-				json_file.close()	
+				json_file.close()
 				gits = JSON.ObjectFromString(str(response))
 				# Walk it, and reformat to desired output
 				results = {}
@@ -289,7 +290,7 @@ class git(object):
 					title = git['repo']
 					del git['repo']
 					results[title] = git
-				return results	
+				return results
 			except Exception, e:
 				Log.Exception('Exception in Migrate/getUASCacheList : ' + str(e))
 				return ''
@@ -299,12 +300,12 @@ class git(object):
 			try:
 				pFile = Core.storage.join_path(self.PLUGIN_DIR, pluginDir, 'Contents', 'Info.plist')
 				pl = plistlib.readPlist(pFile)
-				createStamp = datetime.datetime.fromtimestamp(os.path.getmtime(pFile)).strftime('%Y-%m-%d %H:%M:%S')			
+				createStamp = datetime.datetime.fromtimestamp(os.path.getmtime(pFile)).strftime('%Y-%m-%d %H:%M:%S')
 				return (pl['CFBundleIdentifier'], createStamp)
 			except Exception, e:
 				errMsg = str(e) + '\nfor something in directory: ' + Core.storage.join_path(self.PLUGIN_DIR, pluginDir)
 				errMsg = errMsg + '\nSkipping migration of directory'
-				Log.Error('Exception in Migrate/getIdentifier : ' + errMsg)				
+				Log.Error('Exception in Migrate/getIdentifier : ' + errMsg)
 				pass
 
 		# Main call
@@ -329,7 +330,7 @@ class git(object):
 								try:
 									(target, dtStamp) = getIdentifier(pluginDir)
 								except Exception, e:
-									continue				
+									continue
 								# try and see if part of uas Cache
 								uasListjson = getUASCacheList()
 								bFound = False
@@ -354,7 +355,7 @@ class git(object):
 										Dict['installed'][git] = targetGit
 										# If it existed as unknown as well, we need to remove that
 										Dict['PMS-AllBundleInfo'].pop(uasListjson[git]['identifier'], None)
-										Dict['installed'].pop(uasListjson[git]['identifier'], None)										
+										Dict['installed'].pop(uasListjson[git]['identifier'], None)
 										Dict.Save()
 										migratedBundles[git] = targetGit
 										bFound = True
@@ -451,7 +452,7 @@ class git(object):
 						errMsg = errMsg + 'And if on Synology, the command is:\n'
 						errMsg = errMsg + 'sudo chown plex:users ./WebTools.bundle -R\n'
 					Log.Exception('Exception in updateUASCache ' + errMsg)
-					if not cliForce: 
+					if not cliForce:
 						req.clear()
 						req.set_status(500)
 						req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -461,7 +462,7 @@ class git(object):
 						return
 				# Grap file from Github
 				try:
-					zipfile = Archive.ZipFromURL(UAS_URL+ '/archive/' + UAS_BRANCH + '.zip')							
+					zipfile = Archive.ZipFromURL(UAS_URL+ '/archive/' + UAS_BRANCH + '.zip')
 				except Exception, e:
 					Log.Exception('Could not download UAS Repo from GitHub'  + str(e))
 					if not cliForce:
@@ -469,12 +470,12 @@ class git(object):
 						req.set_status(500)
 						req.set_header('Content-Type', 'application/json; charset=utf-8')
 						req.finish('Exception in updateUASCache while downloading UAS repo from Github: ' + str(e))
-						return req					
+						return req
 				for filename in zipfile:
 					# Walk contents of the zip, and extract as needed
 					data = zipfile[filename]
 					if not str(filename).endswith('/'):
-						# Pure file, so save it				
+						# Pure file, so save it
 						path = self.getSavePath(targetDir, filename)
 						Log.Debug('Extracting file' + path)
 						try:
@@ -505,7 +506,7 @@ class git(object):
 				req.clear()
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('UASCache is up to date')	
+				req.finish('UASCache is up to date')
 		except Exception, e:
 			Log.Exception('Exception in updateUASCache ' + str(e))
 			if not cliForce:
@@ -538,7 +539,7 @@ class git(object):
 	''' Download install/update from GitHub '''
 	def install(self, req):
 		''' Grap bundle name '''
-		def grapBundleName(url):	
+		def grapBundleName(url):
 			gitName = url.rsplit('/', 1)[-1]
 
 			# Forgot to name git to end with .bundle?
@@ -629,14 +630,14 @@ class git(object):
 				for asset in relInfo['assets']:
 					if asset['name'].upper() == Dict['PMS-AllBundleInfo'][url]['release'].upper():
 						downloadUrl = asset['browser_download_url']
-						continue	
+						continue
 				if downloadUrl:
 					return downloadUrl
 				else:
 					raise "Download URL not found"
 			except Exception, ex:
 				Log.Critical('Release info not found on Github: ' + relUrl)
-				pass			
+				pass
 			return
 
 		''' Download the bundle '''
@@ -685,7 +686,7 @@ class git(object):
 							cutStr = filename[:pos]
 							bError = False
 							# so we hit the Info.plist file, and now we can make sure, that/if this is an upgrade or not
-							# So let's grap the identifier from the info file	of the bundle to be migrated	
+							# So let's grap the identifier from the info file	of the bundle to be migrated
 							# We start by temporary save that as Plug-ins/WT-tmp.plist
 							Core.storage.save(self.PLUGIN_DIR + '/WT-tmp.plist', zipfile[filename])
 							# Now read out the identifier
@@ -701,7 +702,7 @@ class git(object):
 									break
 				except Exception, e:
 					Log.Exception('Exception in downloadBundle2tmp while walking the downloaded file to find the plist: ' + str(e))
-					return False					
+					return False
 				if bUpgrade:
 					# Since this is an upgrade, we need to check, if the dev wants us to delete the Cache directory
 					if url in Dict['installed'].keys():
@@ -744,7 +745,7 @@ class git(object):
 						if cutStr not in filename:
 							continue
 
-						# Pure file, so save it	
+						# Pure file, so save it
 						path = extractDir + filename.replace(cutStr, '')
 						Log.Debug('Extracting file: ' + path)
 						try:
@@ -885,7 +886,7 @@ class git(object):
 	def getLastUpdateTime(self, req, UAS=False, url=''):
 		Log.Debug('Starting getLastUpdateTime')
 		# Wanted to internally check for UAS update?
-		if not UAS:			
+		if not UAS:
 			url = req.get_argument('url', 'missing')
 		if url == 'missing':
 			req.clear()
@@ -914,7 +915,7 @@ class git(object):
 		try:
 			if '_WTRELEASE' in branch:
 				url = 'https://api.github.com/repos' + url[18:] + '/releases/latest'
-				Log.Debug('URL is: ' + url)				
+				Log.Debug('URL is: ' + url)
 				response = JSON.ObjectFromURL(url)['published_at']
 			else:
 				url += '/commits/%s.atom' % branch
@@ -942,7 +943,7 @@ class git(object):
 			jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
 			json_file = io.open(jsonFileName, "rb")
 			response = json_file.read()
-			json_file.close()	
+			json_file.close()
 			gits = JSON.ObjectFromString(str(response))
 			# Walk it, and reformat to desired output
 			results = {}
@@ -950,7 +951,7 @@ class git(object):
 				result = {}
 				title = git['repo']
 				del git['repo']
-				results[title] = git	
+				results[title] = git
 			Log.Debug('getListofBundles returned: ' + str(results))
 			req.clear()
 			req.set_status(200)
