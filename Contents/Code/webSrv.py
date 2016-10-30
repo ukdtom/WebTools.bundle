@@ -51,11 +51,17 @@ def getActualHTTPPath():
 	else:
 		return HTTPPath
 
-# Path to http folder within the bundle
+# Path to bundle folder within the bundle
 def isCorrectPath(req):	
 	installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split('WEBTOOLS.BUNDLE',1)
 	targetPath = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name).upper()
 	if installedPlugInPath[:-1] != targetPath:
+		Log.Debug('************************************************')
+		Log.Debug('Wrong installation path detected!!!!')
+		Log.Debug('')
+		Log.Debug('Correct path is:')
+		Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebTools.bundle'))
+		Log.Debug('************************************************')
 		installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).split('/Contents',1)
 		msg = '<h1>Wrong installation path detected</h1>'
 		msg = msg + '<p>It seems like you installed WebTools into the wrong folder</p>'

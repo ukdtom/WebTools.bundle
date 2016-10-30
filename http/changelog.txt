@@ -3,6 +3,7 @@ V2.4 DEV:
 		#212	WT:		Problems with browser caching
 		#218	FM:		Extradirs
 		#213	WT:		Need a Misc function to Unicodize a filepath
+		#219	WT:		Improve detection of bad installation path
 
 
 ####
