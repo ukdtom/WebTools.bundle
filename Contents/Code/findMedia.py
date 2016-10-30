@@ -23,7 +23,7 @@ statusMsg = 'idle'																																																	# Response to
 runningState = 0																																																		# Internal tracker of where we are
 bAbort = False																																																			# Flag to set if user wants to cancel
 Extras = ['behindthescenes','deleted','featurette','interview','scene','short','trailer']														# Local extras
-ExtrasDirs = ['behind the scenes', 'deleted scenes', 'featurettes', 'interviews', 'scenes', 'shorts', 'trailers']		# Directories to be ignored
+ExtrasDirs = ['Behind The Scenes', 'Deleted Scenes', 'Featurettes', 'Interviews', 'Scenes', 'Shorts', 'Trailers']		# Directories to be ignored
 KEYS = ['IGNORE_HIDDEN', 'IGNORED_DIRS', 'VALID_EXTENSIONS'] 																												# Valid keys for prefs
 excludeElements='Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Role,Similar,Writer'
 excludeFields='summary,tagline'
@@ -44,7 +44,9 @@ class findMedia(object):
 			self.populatePrefs()
 			Log.Debug('******* Starting findMedia *******')
 		self.MediaChuncks = 40
-		self.CoreUrl = 'http://127.0.0.1:32400/library/sections/'
+		self.CoreUrl = misc.GetLoopBack() + '/library/sections/'
+
+
 
 	''' Populate the defaults, if not already there '''
 	def populatePrefs(self):
@@ -283,7 +285,7 @@ class findMedia(object):
 					# Decode filePath 
 					bScanStatusCount += 1
 					filePath2 = urllib.unquote(filePath).decode('utf8')
-					filePath2 = misc().Unicodize(filePath2)					
+					filePath2 = misc.Unicodize(filePath2)					
 					Log.Debug("Handling filepath #%s: %s" %(bScanStatusCount, filePath2.encode('utf8', 'ignore')))
 					for root, subdirs, files in os.walk(filePath2):
 						# Need to check if directory in ignore list?
@@ -291,7 +293,7 @@ class findMedia(object):
 							continue
 						# Lets look at the file
 						for file in files:					
-							file = misc().Unicodize(file).encode('utf8')
+							file = misc.Unicodize(file).encode('utf8')
 							if bAbort:
 								Log.Info('Aborted in getFiles')
 								raise ValueError('Aborted')
@@ -304,9 +306,10 @@ class findMedia(object):
 									if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1].lower() in Extras:
 										continue
 								# filter out local extras directories
-								if os.path.basename(os.path.normpath(root)).lower() in ExtrasDirs:
+#								if os.path.basename(os.path.normpath(root)).lower() in ExtrasDirs:
+								if os.path.basename(os.path.normpath(root)) in ExtrasDirs:
 									continue															
-								composed_file = misc().Unicodize(Core.storage.join_path(root,file))						
+								composed_file = misc.Unicodize(Core.storage.join_path(root,file))						
 								if Platform.OS == 'Windows':
 									# I hate windows
 									pos = composed_file.find(':') -1
@@ -355,7 +358,7 @@ class findMedia(object):
 						iCSeason = 0
 						# Grap seasons
 						while True:
-							seasons = XML.ElementFromURL('http://127.0.0.1:32400' + show.get('key') + '?X-Plex-Container-Start=' + str(iCSeason) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Directory')
+							seasons = XML.ElementFromURL(misc.GetLoopBack() + show.get('key') + '?X-Plex-Container-Start=' + str(iCSeason) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Directory')
 							# Grap individual season
 							for season in seasons:			
 								if season.get('title') == 'All episodes':
@@ -368,7 +371,7 @@ class findMedia(object):
 								iEpisode = 0
 								iCEpisode = 0
 								while True:
-									episodes = XML.ElementFromURL('http://127.0.0.1:32400' + season.get('key') + '?X-Plex-Container-Start=' + str(iCEpisode) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Part')
+									episodes = XML.ElementFromURL(misc.GetLoopBack() + season.get('key') + '?X-Plex-Container-Start=' + str(iCEpisode) + '&X-Plex-Container-Size=' + str(self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Part')
 									for episode in episodes:
 										if bAbort:
 											raise ValueError('Aborted')
@@ -432,7 +435,7 @@ class findMedia(object):
 							raise ValueError('Aborted')
 						iCount += 1
 						filename = part.get('file')		
-						filename = unicode(misc().Unicodize(part.get('file')).encode('utf8', 'ignore'))
+						filename = unicode(misc.Unicodize(part.get('file')).encode('utf8', 'ignore'))
 						mediasFromDB.append(filename)
 						statusMsg = 'Scanning database: item %s of %s : Working' %(iCount, totalSize)
 					iStart += self.MediaChuncks

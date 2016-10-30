@@ -11,11 +11,11 @@ import datetime
 import json
 from shutil import move
 
-FILEEXT = '.json'
-
-statusMsg = 'idle'																																									# Response to getStatus
-runningState = 0																																										# Internal tracker of where we are
-bAbort = False																																											# Flag to set if user wants to cancel
+# Consts used here
+FILEEXT = '.json'																																			# File ext of export file
+statusMsg = 'idle'																																		# Response to getStatus
+runningState = 0																																			# Internal tracker of where we are
+bAbort = False																																				# Flag to set if user wants to cancel
 
 class jsonExporter(object):
 	init_already = False							# Make sure init only run once
@@ -37,6 +37,25 @@ class jsonExporter(object):
 			Dict['jsonExportTimeStamps'] = {}
 			Dict.Save()
 
+	''' Grap the tornado req, and process it for a GET'''
+	def reqprocess(self, req):	
+		print 'Ged jason Get called'
+		function = req.get_argument('function', 'missing')
+		if function == 'missing':
+			req.clear()
+			req.set_status(412)
+			req.finish("Missing function parameter")
+		elif function == 'getStatus':
+			# Call scanSection
+			return self.getStatus(req)	
+		elif function == 'getResult':
+			# Call getResult
+			return self.getResult(req)
+		else:
+			req.clear()
+			req.set_status(412)
+			req.finish("Unknown function call")
+
 	''' Grap the tornado req, and process it for a POST request'''
 	def reqprocessPost(self, req):
 		function = req.get_argument('function', 'missing')
@@ -50,6 +69,17 @@ class jsonExporter(object):
 			req.clear()
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
+
+	# Return current status
+	def getStatus(self, req):
+		global runningState		
+		req.clear()		
+		req.set_status(200)
+		req.set_header('Content-Type', 'application/json; charset=utf-8')
+		if runningState == 0:
+			req.finish('Idle')	
+		else:
+			req.finish(statusMsg)
 
 	def export(self, req):
 		''' Return the type of the section '''
@@ -263,7 +293,7 @@ class jsonExporter(object):
 			Log.Exception('Exception in json export' + str(e))
 
 
-
+jsonExporter = jsonExporter()
 
 
 

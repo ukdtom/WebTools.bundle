@@ -250,7 +250,7 @@ class git(object):
 								gitInfo['gitHubTime'] = str(gitTime)
 								result[bundle] = gitInfo
 							else:
-								# Let's get a CommitId stamped for future times
+								# Let's get a CommitId stamped for future times								
 								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
 								Log.Info('Stamping %s with a commitId of %s for future ref' %(bundle, updateInfo['commitId']))							
 								Dict['installed'][bundle]['CommitId'] = updateInfo['commitId']

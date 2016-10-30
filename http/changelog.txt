@@ -1,3 +1,12 @@
+V2.4 DEV:
+	Fix:
+		#212	WT:		Problems with browser caching
+		#218	FM:		Extradirs
+		#213	WT:		Need a Misc function to Unicodize a filepath
+
+
+####
+
 V2.3 Release:
 	Fix:
 		#110	UAS:	Allow it to fetch from release info as well
