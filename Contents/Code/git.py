@@ -241,6 +241,10 @@ class git(object):
 							gitTime = datetime.datetime.strptime(self.getLastUpdateTime(req, UAS=True, url=bundle), '%Y-%m-%d %H:%M:%S')
 							sBundleTime = Dict['installed'][bundle]['date']
 							bundleTime = datetime.datetime.strptime(sBundleTime, '%Y-%m-%d %H:%M:%S')
+							# Fix for old stuff, where branch was empty
+							if Dict['installed'][bundle]['branch'] == '':
+								Dict['installed'][bundle]['branch'] = 'master'
+								Dict.Save()
 							if bundleTime < gitTime:
 								gitInfo = Dict['installed'][bundle]
 								gitInfo['gitHubTime'] = str(gitTime)
