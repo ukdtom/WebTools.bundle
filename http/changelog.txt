@@ -1,9 +1,16 @@
 V2.4 DEV:
 	Fix:
+		#209	WT:		WT Autoupdate broke
 		#212	WT:		Problems with browser caching
-		#218	FM:		Extradirs
 		#213	WT:		Need a Misc function to Unicodize a filepath
+		#214	UAS:	UAS: Channel Update from manual app installer broken
+		#216	WT:		WebTools and ports used
+		#218	FM:		Extradirs
 		#219	WT:		Improve detection of bad installation path
+
+	New:
+		#206	WT:		Add setting of locale to the log
+
 
 
 ####

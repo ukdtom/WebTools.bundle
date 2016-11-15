@@ -124,14 +124,16 @@ class git(object):
 		bundleName = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
 		Log.Info('WT install dir is: ' + bundleName)
 		try:
-			if url == 'https://api.github.com/repos/dagalufh/WebTools.bundle/releases/latest':
+			if 'https://api.github.com/repos/' in url:
 				Log.Debug('Getting release info from url: ' + url)
 				jsonReponse = JSON.ObjectFromURL(url)
-				wtURL = jsonReponse['assets'][0]['browser_download_url']
+				# Walk assets to find the one named WebTools.bundle.zip
+				for asset in jsonReponse['assets']:
+					if asset['name'] == 'WebTools.bundle.zip':
+						wtURL = asset['browser_download_url']					
 			else:
 				wtURL = url.replace('tree', 'archive') + '.zip'
 			Log.Info('WT Download url detected as: ' + wtURL)
-
 			# Grap file from Github
 			zipfile = Archive.ZipFromURL(wtURL)
 			bError = True

@@ -1,5 +1,5 @@
 ######################################################################################################################
-#	Plex2CSV module unit					
+#	WebTools module unit					
 #
 #	Author: dane22, a Plex Community member
 #
@@ -39,7 +39,7 @@ class consts(object):
 				VERSION = version_file.read().replace('\n','')
 		except:
 			if not self.isCorrectPath():
-				VERSION = 'WRONG INSTALL PATH!!!!....Correct path is: ' + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebTools.bundle')
+				VERSION = '*** WRONG INSTALL PATH!!!!....Correct path is: ' + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebTools.bundle' + '***')
 
 		# Switch to debug mode if needed
 		debugFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'debug')

@@ -306,7 +306,6 @@ class findMedia(object):
 									if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1].lower() in Extras:
 										continue
 								# filter out local extras directories
-#								if os.path.basename(os.path.normpath(root)).lower() in ExtrasDirs:
 								if os.path.basename(os.path.normpath(root)) in ExtrasDirs:
 									continue															
 								composed_file = misc.Unicodize(Core.storage.join_path(root,file))						
