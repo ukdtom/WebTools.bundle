@@ -1,17 +1,19 @@
 V2.4 DEV:
 	Fix:
+		#202	WT:		Added word-wrap to dialogbox
 		#209	WT:		WT Autoupdate broke
 		#212	WT:		Problems with browser caching
 		#213	WT:		Need a Misc function to Unicodize a filepath
 		#214	UAS:	UAS: Channel Update from manual app installer broken
+		#215	WT:		Fixed removal of "Library" menu when leaving module.
 		#216	WT:		WebTools and ports used
 		#218	FM:		Extradirs
 		#219	WT:		Improve detection of bad installation path
-
+		#221	WT:		Fixed sorting
 	New:
 		#206	WT:		Add setting of locale to the log
-
-
+		#174	WT:		Notifies if there is a new version upon logon.
+		#177	UAS:	Added force update of repo button/functionality
 
 ####
 

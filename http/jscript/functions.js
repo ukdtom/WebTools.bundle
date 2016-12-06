@@ -56,6 +56,7 @@ webtools.list_modules.inline([
 			//Name:VersionFetch
 			webtools.loading();
 			$('#OptionsMenu').html('');
+			$('#ModuleMenu').html('');
 			$.ajax({
 				url: '/version',
 				cache: false,
@@ -232,6 +233,7 @@ webtools.activate_module = function(modulename) {
 	webtools.longermodulestart = false;
 	$('#navfoot').html('');
 	$('#ContentFoot').html('');
+	$('#ModuleMenu').html('');
 	$('#OptionsMenu').html(webtools.defaultoptionsmenu);
 
 	$.ajax({
@@ -708,7 +710,7 @@ webtools.dynamicSort = function(property) {
 		property = property.substr(1);
 	}
 	return function(a, b) {
-		var result = (a[property].toLowerCase() < b[property].toLowerCase()) ? -1 : (a[property] > b[property]) ? 1 : 0;
+		var result = (a[property].toLowerCase() < b[property].toLowerCase()) ? -1 : (a[property].toLowerCase() > b[property].toLowerCase()) ? 1 : 0;
 		return result * sortOrder;
 	}
 }

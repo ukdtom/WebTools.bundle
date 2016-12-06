@@ -68,6 +68,17 @@ body {background-color: #242424; padding-top:70px;  padding-bottom:70px;}
   .div-medium {width: auto;}
  
 }
+
+/* Source: http://snipplr.com/view/10979/css-cross-browser-word-wrap */
+.wordwrap { 
+   white-space: pre-wrap;      /* CSS3 */   
+   white-space: -moz-pre-wrap; /* Firefox */    
+   white-space: -pre-wrap;     /* Opera <7 */   
+   white-space: -o-pre-wrap;   /* Opera 7 */    
+   word-wrap: break-word;      /* IE */
+}
+
+
 /*
 @media screen and (max-width:1346px) {
   .page-selector-dropdown {display: inline;}

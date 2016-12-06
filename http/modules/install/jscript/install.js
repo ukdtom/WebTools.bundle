@@ -22,7 +22,8 @@ webtools.functions.install = {
 	updatefrompreferences: function() {},
 	massiveupdateongoinginstalls: 0,
 	channelstoshow: [],
-	show_quickjump: function() {}
+	show_quickjump: function() {},
+	forceRepoUpdate: function() {}
 };
 
 // Alias:
@@ -53,7 +54,7 @@ install.start = function() {
 
 			var submenu = ['<table class="table channeltable">',
 				'<tr>',
-				'<td id="installmenu" class="channelmenu"><button class="btn btn-default" onclick="javascript:install.show_quickjump();">Quick Jump To Bundle</button> <button type="button" class="btn btn-default" onClick="install.initiatemigrate();">Migrate manually/previously installed channels</button> <button type="button" class="btn btn-default" onClick="install.massiveupdatechecker();">Check for updates for all installed channels</button></td>',
+				'<td id="installmenu" class="channelmenu"><button class="btn btn-default" onclick="javascript:install.show_quickjump();">Quick Jump To Bundle</button> <button type="button" class="btn btn-default" onClick="install.initiatemigrate();">Migrate manually/previously installed channels</button> <button type="button" class="btn btn-default" onClick="install.massiveupdatechecker();">Check for updates for all installed channels</button> <button type="button" class="btn btn-default" onClick="install.forceRepoUpdate();">Force repo update</button></td>',
 				'</tr>',
 				'<tr>',
 				'<td id="channelmenu" class="channelmenu"></td>',
@@ -834,4 +835,31 @@ install.quickjump = function(key) {
 	var elementToHighlight = $('#All');
 	install.showChannels(elementToHighlight, elementToHighlight.attr('id'), targetPage, key);
 
+}
+
+install.forceRepoUpdate = function() {
+	webtools.loading();
+	$('#myModalLabel').html('Force repo update');
+	$.ajax({
+		url: '/webtools2?module=git&function=updateUASCache&force=true',
+		cache: false,
+		type: 'GET',
+		dataType: 'text',
+		success: function(data) {
+				webtools.log('Successfully called UpdateUASCache. Received: ' + data);
+				$('#myModalBody').html("UAS repo cache has been successfully updated.");
+				$('#myModalFoot').html('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+
+		},
+		error: function(data) {
+			data.url = this.url;
+
+			webtools.log('Failed calling UpdateUASCache. Received: ' + data);
+			if (data.responseText.indexOf('Errno 13') != -1) {
+				webtools.display_error('Failed updating UAS Cache. Looks like permissions are not correct, because we where denied access to create a needed directory.<br>If running on Linux, you might have to issue: <b>sudo chown plex:plex ./WebTools.bundle -R</b>' , data);
+			} else {
+				webtools.display_error('Failed updating UAS Cache. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>' , data);
+			}
+		}
+	})
 }

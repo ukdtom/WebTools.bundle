@@ -21,6 +21,7 @@
 			dataType: 'JSON',
 			global: false,
 			success: function(data) {
+				webtools.version = data.version;
 				$('#MainLink').html('Webtools - v' + data.version);
 				var LoginFormContent = ['<table class="table table-bordered" style="max-width: 500px;">'];
 
@@ -96,7 +97,64 @@
 				pwd: $('input[name="pwd"]').val()
 			},
 			success: function(data) {
-				document.location.href = '/';
+				$.ajax({
+					url: '/webtools2',
+					data: {
+						'module': 'git',
+						'function': 'getReleaseInfo',
+						'url': 'https://github.com/dagalufh/WebTools.bundle',
+						'version': 'latest'
+					},
+					type: 'GET',
+					datatype: 'JSON',
+					cache: false,
+					success: function(data) {
+						data = JSON.parse(data);
+						infoarray = [];
+
+						if (typeof(data.published_at) == 'undefined') {
+							//infoarray.push('No releases available.');
+							document.location.href = '/';
+						} else {
+							
+							//console.log('version compare: ' + compare(webtools.version, data.name.substring(1)) + ' A: ' + webtools.version + '> B: ' + data.tag_name);
+							switch (compare(webtools.version, data.tag_name)) {
+								case 0:
+									console.log("You are on latest.");
+									document.location.href = '/';
+									//infoarray.push('You are on the latest and greatest!');
+									//$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.install_WT();">Re-Install WebTools</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+									break;
+								case -1:
+									infoarray.push('Currently Installed Version: ' + webtools.version);
+									infoarray.push('Latest Update: ' + data.published_at);
+									infoarray.push('Version Name: ' + data.name);
+									infoarray.push('Author: <a target="_NEW" href="' + data.author.html_url + '">' + data.author.login + '</a>');
+									infoarray.push('Release Notes: ' + data.body);
+									infoarray.push('Download url: <a target="_NEW" href="' + data.zipball_url + '">' + data.zipball_url + '</a>');
+									infoarray.push('You\'ve fallen behind. Time to update to the greatest!');
+									$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="document.location.href='/'">Continue with Login</button>');
+									$('#myModalBody').html(infoarray.join('<br>'));
+									break;
+								case 1:
+									console.log("You are in the future.");
+									document.location.href = '/';
+									//infoarray.push('You are ahead of time. Your version is newer than the one on Github.');
+									//$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.install_WT();">Re-Install WebTools</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
+									break;
+							}
+						}
+						
+					},
+					error: function() {
+						//console.log("Error while fetching updates.");
+						//$('#updateinfo').html('An error occured while trying to fetch information from Github. Try again in a little while.');
+										// After successfull send them back to the regular page.
+						document.location.href = '/';
+					}
+				});
+				
+
 			},
 			error: function(data) {
 				$('#LoginMessage').addClass('bg-danger');
