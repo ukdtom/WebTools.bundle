@@ -53,14 +53,14 @@ def getActualHTTPPath():
 
 # Path to bundle folder within the bundle
 def isCorrectPath(req):	
-	installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split('WEBTOOLS.BUNDLE',1)
+	installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split('WEBTOOLSNEXT.BUNDLE',1)
 	targetPath = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name).upper()
 	if installedPlugInPath[:-1] != targetPath:
 		Log.Debug('************************************************')
 		Log.Debug('Wrong installation path detected!!!!')
 		Log.Debug('')
 		Log.Debug('Correct path is:')
-		Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebTools.bundle'))
+		Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebToolsNext.bundle'))
 		Log.Debug('************************************************')
 		installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).split('/Contents',1)
 		msg = '<h1>Wrong installation path detected</h1>'
@@ -68,7 +68,7 @@ def isCorrectPath(req):
 		msg = msg + '<p>You installed WebTools here:<p>'
 		msg = msg + installedPlugInPath
 		msg = msg + '<p>but the correct folder is:<p>'
-		msg = msg + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebTools.bundle')
+		msg = msg + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebToolsNext.bundle')
 		req.clear()
 		req.set_status(404)
 		req.finish(msg)
@@ -128,6 +128,7 @@ class LogoutHandler(BaseHandler):
 
 class LoginHandler(BaseHandler):
 	def get(self):
+		Log.Debug('Ged her')
 		isCorrectPath(self)
 		Log.Info('Returning login page: ' + Core.storage.join_path(getActualHTTPPath() , 'login.html'))
 		self.render(Core.storage.join_path(getActualHTTPPath(), 'login.html'), next=self.get_argument("next","/"))

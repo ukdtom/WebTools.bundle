@@ -15,8 +15,8 @@ WT_AUTH = True																		# validate password
 VERSION = 'ERROR'																	# version of WebTools
 UAS_URL = 'https://github.com/ukdtom/UAS2Res'			# USA2 Repo branch
 UAS_BRANCH = 'master'															# UAS2 branch to check
-PREFIX = '/applications/webtools'
-NAME = 'WebTools'
+PREFIX = '/applications/webtoolsnext'
+NAME = 'WebToolsNext'
 ICON = 'WebTools.png'
 JSONTIMESTAMP = 0																	# timestamp for json export
 
