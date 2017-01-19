@@ -841,7 +841,7 @@ install.forceRepoUpdate = function() {
 	webtools.loading();
 	$('#myModalLabel').html('Force repo update');
 	$.ajax({
-		url: '/webtools2?module=git&function=updateUASCache&force=true',
+		url: '/webtools2?module=git&function=updateUASCache&Force=true',
 		cache: false,
 		type: 'GET',
 		dataType: 'text',
