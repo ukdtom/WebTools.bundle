@@ -39,7 +39,7 @@ class consts(object):
 				VERSION = version_file.read().replace('\n','')
 		except:
 			if not self.isCorrectPath():
-				VERSION = '*** WRONG INSTALL PATH!!!!....Correct path is: ' + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebTools.bundle' + '***')
+				VERSION = '*** WRONG INSTALL PATH!!!!....Correct path is: ' + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle' + '***')
 
 		# Switch to debug mode if needed
 		debugFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'debug')
@@ -76,7 +76,7 @@ class consts(object):
 
 		# Verify install path
 		def isCorrectPath(self):	
-			installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split('WEBTOOLS.BUNDLE',1)
+			installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split(str(NAME).upper() + '.BUNDLE',1)
 			targetPath = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name).upper()
 			if installedPlugInPath[:-1] != targetPath:
 				Log.Debug('************************************************')
