@@ -715,6 +715,17 @@ webtools.dynamicSort = function(property) {
 	}
 }
 
+//Find in string - Wildcard and insentetive search
+function _searchInString(str, value) {
+    return new RegExp(value.toLowerCase().trim()).test(str.toLowerCase().trim());
+}
+webtools.searchBundle = function (bundle, value) {
+    value.replace("*", "");
+    return $.grep(bundle, function (obj) {
+        return _searchInString(obj.title, value) || _searchInString(obj.description, value);
+    });
+}
+
 webtools.searchkeyword = function(tablename) {
 	webtools.keywordarray = [];
 	webtools.currentkeyword = 0;

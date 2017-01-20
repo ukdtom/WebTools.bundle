@@ -6,7 +6,8 @@ webtools.functions.install = {
 	},
 	items_per_page_max: 50,
 	items_per_page_min: 5,
-	show_options: function() {},
+	search_apps: function () { },
+	show_options: function () { },
 	save_options: function() {},
 	initiatedownload: function() {},
 	loadChannels: function() {},
@@ -18,6 +19,7 @@ webtools.functions.install = {
 	removebundleconfirm: function() {},
 	removebundlework: function() {},
 	allBundles: {},
+	backupAllBundles: {},
 	initiatemigrate: function() {},
 	updatefrompreferences: function() {},
 	massiveupdateongoinginstalls: 0,
@@ -54,7 +56,7 @@ install.start = function() {
 
 			var submenu = ['<table class="table channeltable">',
 				'<tr>',
-				'<td id="installmenu" class="channelmenu"><button class="btn btn-default" onclick="javascript:install.show_quickjump();">Quick Jump To Bundle</button> <button type="button" class="btn btn-default" onClick="install.initiatemigrate();">Migrate manually/previously installed channels</button> <button type="button" class="btn btn-default" onClick="install.massiveupdatechecker();">Check for updates for all installed channels</button> <button type="button" class="btn btn-default" onClick="install.forceRepoUpdate();">Force repo update</button></td>',
+				'<td id="installmenu" class="channelmenu"><input type="text" class="form-control pull-left search" placeholder="Search..." id="search"><div class="input-group-btn pull-left"><button class="btn btn-secondary" type="button" onclick="javascript:install.search_apps();">Search</button></div><button class="btn btn-default" onclick="javascript:install.show_quickjump();">Quick Jump To Bundle</button> <button type="button" class="btn btn-default" onClick="install.initiatemigrate();">Migrate manually/previously installed channels</button> <button type="button" class="btn btn-default" onClick="install.massiveupdatechecker();">Check for updates for all installed channels</button> <button type="button" class="btn btn-default" onClick="install.forceRepoUpdate();">Force repo update</button></td>',
 				'</tr>',
 				'<tr>',
 				'<td id="channelmenu" class="channelmenu"></td>',
@@ -93,6 +95,43 @@ install.start = function() {
 
 	launcher.start();
 };
+
+//Hackz: Size of weird object received from backend. TODO: Get list from backend not object.
+Object.size = function (obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+
+//Searching in allBundles for keyword.
+//Will look in description and title
+install.search_apps = function () {
+    var searchValue = $("#search").val();
+
+    if (Object.size(install.backupAllBundles) > Object.size(install.allBundles)) install.allBundles = install.backupAllBundles;
+    var allBundles = install.allBundles;
+
+    install.backupAllBundles = install.allBundles;
+
+    //Temp array.. TODO: Get list from backend instead
+    var tempArray = [];
+    for (var key in allBundles) {
+        allBundles[key].key = key;
+        tempArray.push(allBundles[key]);
+    }
+
+    tempArray = webtools.searchBundle(tempArray, searchValue);
+
+    install.allBundles = {};
+    tempArray.forEach(function (object) {
+        var tempkey = object.key;
+        delete object.key;
+        install.allBundles[tempkey] = object;
+    })
+    install.showChannels($('#channelmenu>button.btn-active'), $('#channelmenu>button.btn-active').attr('id'));
+}
 
 install.show_options = function() {
 	webtools.loading();
@@ -141,7 +180,7 @@ install.installfromgit = function(github) {
 			},
 			type: 'GET',
 			dataType: 'text',
-			success: function(data) {
+			success: function (data) {
 				$('#myModalBody').html('Done. Your channel has been successfully installed. Data will be refreshed from the server.');
 				$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="$(\'#gitlink\').val(\'\');install.loadChannels();" data-dismiss="modal">Close</button>');
 			},
@@ -157,8 +196,7 @@ install.installfromgit = function(github) {
 /*
   Fetch channels and get a list of types (categories)
 */
-install.loadChannels = function(InitalRun) {
-	
+install.loadChannels = function (InitalRun) {
 	webtools.loading();
 	$('#navfoot').html('');
 	if (typeof($('#channelmenu>button.btn-active').html()) != 'undefined') {
@@ -301,7 +339,7 @@ install.loadChannels = function(InitalRun) {
 /*
  Show channels that are of a specific type (category)
 */
-install.showChannels = function(button, type, page, highlight) {
+install.showChannels = function (button, type, page, highlight) {
 	webtools.loading();
 
 	if (typeof(highlight) != 'undefined') {
