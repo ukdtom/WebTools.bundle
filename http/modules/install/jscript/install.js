@@ -119,7 +119,6 @@ install.search_apps = function () {
 
     if (Object.size(install.backupAllBundles) > Object.size(install.allBundles)) install.allBundles = install.backupAllBundles;
     var allBundles = install.allBundles;
-
     install.backupAllBundles = install.allBundles;
 
     //Temp array.. TODO: Get list from backend instead
@@ -174,8 +173,9 @@ install.show_options = function() {
 	$('#OptionsModalAlert').hide();
 }
 
-install.installfromgit = function(github) {
-	var branch = null;
+install.installfromgit = function(github, popupmsg) {
+    var branch = null;
+    popupmsg = (popupmsg ? "<br /><br />" + popupmsg : "");
 	
 	// Retrieve channel element
 	var $channel = $('#channellist .panel[data-url="' + github + '"]');
@@ -207,7 +207,12 @@ install.installfromgit = function(github) {
 			type: 'GET',
 			dataType: 'text',
 			success: function (data) {
-				$('#myModalBody').html('Done. Your channel has been successfully installed. Data will be refreshed from the server.');
+			    $('#myModalBody').html('Done. Your channel has been successfully installed. Data will be refreshed from the server.' + (popupmsg ? "<br /><br />" : ""));
+			    //Popupmsg displaying html tags as text. 
+			    //Security reasons because we are getting this from the semi-public json in UAS repo
+			    var popupmsgEle = document.createElement("DIV");
+			    popupmsgEle.innerHTML = popupmsg;
+			    $('#myModalBody').append(popupmsgEle.textContent || popupmsgEle.innerText || "");
 				$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="$(\'#gitlink\').val(\'\');install.loadChannels();" data-dismiss="modal">Close</button>');
 			},
 			error: function(data) {
@@ -290,7 +295,6 @@ install.loadChannels = function (InitalRun) {
 						install.allBundles[tempkey] = object;
 						console.log(object);
 					})
-
 					callback();
 				},
 				error: function(data) {
@@ -446,6 +450,8 @@ install.showChannels = function (button, type, page, highlight) {
 		var key = install.channelstoshow[i];
 		var bundleInfo = install.allBundles[key];
 		console.log(bundleInfo);
+		var popupmsg = (bundleInfo.popupmsg ? bundleInfo.popupmsg : "");
+
 		var dropdown_branch = '';
 		
 		var link_install = '';
@@ -456,7 +462,6 @@ install.showChannels = function (button, type, page, highlight) {
 		var installDate = '';
 		var rowspan = 3;
 		var repolink = '';
-
 		if((typeof(bundleInfo.branches) != 'undefined') && Array.isArray(bundleInfo.branches)) {
 			// Retrieve selected branch
 			var selectedBranch = null;
@@ -486,7 +491,7 @@ install.showChannels = function (button, type, page, highlight) {
 			isInstalled = true;
 			rowspan = 3;
 			if ((key.indexOf('http') != -1) && (key.indexOf('https') != -1)) {
-				link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Re-Install with latest available</button>';
+			    link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\', \'' + popupmsg + '\')">Re-Install with latest available</button>';
 			}
 		}
 
@@ -494,7 +499,7 @@ install.showChannels = function (button, type, page, highlight) {
 		if ((key.indexOf('http') != -1) && (key.indexOf('https') != -1)) {
 			if (isInstalled === false) {
 				//link_install = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Install</button>';
-				link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Install</button>';
+			    link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\', \'' + popupmsg + '\')">Install</button>';
 			}
 			repolink = '<a href="' + key + '" target="_NEW">' + key + '</a>';
 			//link_update += ' <button class="btn btn-default btn-xs" onclick="install.checkForUpdates(\'' + install.allBundles[key].bundle + '\',\'' + key + '\')">Check for Updates</button>';
