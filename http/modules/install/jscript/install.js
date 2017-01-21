@@ -49,8 +49,8 @@ install.start = function() {
 				'',
 				'',
 				'To automatically download and install a channel for Plex, enter it\'s GitHub link below:',
-				'<input type="text" id="gitlink"><button id="gitbutton" class="btn btn-default" onClick="install.installfromgit(document.getElementById(\'gitlink\').value);">Install</button>',
-				'Example: https://github.com/ukdtom/plex2csv.bundle <p class="text-danger">We do not offer any support for these channels. We only provide a installation method.</p>',
+				'<input type="text" id="gitlink" placeholder="https://github.com/ukdtom/ExportTools.bundle"><button id="gitbutton" class="btn btn-default" onClick="install.installfromgit(document.getElementById(\'gitlink\').value);">Install</button>',
+				'Example: https://github.com/ukdtom/ExportTools.bundle <p class="text-danger">We do not offer any support for these channels. We only provide a installation method.</p>',
 				'<div id="install_availablechannels"></div>'
 			];
 
@@ -173,7 +173,22 @@ install.show_options = function() {
 	$('#OptionsModalAlert').hide();
 }
 
-install.installfromgit = function(github, popupmsg) {
+install.installfromgit = function (github, popupmsg) {
+    github = github.trim();
+    //If the user insert this manually we need to find the popupmsg
+    //We only do this for the ExportTools bundle because the ExportTool is displayed as an example
+    if (github === "https://github.com/ukdtom/ExportTools.bundle" && !popupmsg) {
+        //Temp array.. TODO: Get list from backend instead
+        for (var key in install.allBundles) {
+            var currentBundle = install.allBundles[key];
+
+            //TODO: Get ID's on bundles (That will never ever change)
+            if (currentBundle.bundle === "ExportTools.bundle") {
+                popupmsg = currentBundle.popupmsg;
+                break;
+            }
+        }
+    }
     var branch = null;
     popupmsg = (popupmsg ? "<br /><br />" + popupmsg : "");
 	
