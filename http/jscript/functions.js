@@ -77,7 +77,7 @@ webtools.list_modules.inline([
 				},
 				error: function(data) {
 					data.url = this.url;
-					webtools.display_error('Failed fetching the version from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+					webtools.display_error('Failed fetching the version from the server.', data);
 					webtools.list_modules.abort('Error: ' + data.statusText);
 				}
 			});
@@ -146,7 +146,7 @@ webtools.list_modules.inline([
 				},
 				error: function(data) {
 					data.url = this.url;
-					webtools.display_error('Failed fetching the languagecodes from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+					webtools.display_error('Failed fetching the languagecodes from the server.', data);
 					webtools.list_modules.abort('Error: ' + data.statusText);
 				}
 			});
@@ -277,16 +277,21 @@ webtools.activate_module = function(modulename) {
 		},
 		error: function(data) {
 			data.url = this.url;
-			webtools.display_error('Failed activating the module. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+			webtools.display_error('Failed activating the module.', data);
 		}
 	});
 };
 
 // The only purpose of this is to display a modal with an error message.
 webtools.display_error = function(message, ajaxobject) {
-	$('#myModalLabel').html('An error occured.');
+    $('#myModalLabel').html('An error occured.');
+    
+    message += '<br /><br /> Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex thread <a href="https://forums.plex.tv/discussion/126254" target="_blank">here</a> if it occurs again. ';
+    message += '<br /> You can find the log file for WebTools here: *\Plex Media Server\Logs\PMS Plugin Logs\com.plexapp.plugins.WebTools.log';
 
-	if (typeof(ajaxobject) != 'undefined') {
+	if (typeof (ajaxobject) != 'undefined') {
+	    message += '<br /><br />';
+	    message += 'Technical details: <br />';
 		message += '<hr>Errorinfo:' + '<br>Requested URL: ' + ajaxobject.url + '<br>Error Code/Message: ' + ajaxobject.status + '/' + ajaxobject.statusText;
 	}
 
@@ -337,7 +342,7 @@ webtools.listlogfiles = function(callback, activatemodulename) {
 		},
 		error: function(data) {
 			data.url = this.url;
-			webtools.display_error('Failed fetching the logfilenames from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+			webtools.display_error('Failed fetching the logfilenames from the server.', data);
 
 			if (typeof(callback) != 'undefined') {
 				webtools.list_modules.abort('Error: ' + data.statusText);

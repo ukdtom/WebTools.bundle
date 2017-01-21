@@ -273,7 +273,7 @@ install.loadChannels = function (InitalRun) {
 						if (data.responseText.indexOf('Errno 13') != -1) {
 							webtools.display_error('Failed updating UAS Cache. Looks like permissions are not correct, because we where denied access to create a needed directory.<br>If running on Linux, you might have to issue: <b>sudo chown plex:plex ./WebTools.bundle -R</b>' , data);
 						} else {
-							webtools.display_error('Failed updating UAS Cache. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>' , data);
+							webtools.display_error('Failed updating UAS Cache.' , data);
 						}
 						loader.abort();
 					}
@@ -314,7 +314,7 @@ install.loadChannels = function (InitalRun) {
 				},
 				error: function(data) {
 					data.url = this.url;
-					webtools.display_error('Failed fetching the list of channels from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+					webtools.display_error('Failed fetching the list of channels from the server. ', data);
 					loader.abort();
 				}
 			})
@@ -337,7 +337,7 @@ install.loadChannels = function (InitalRun) {
 				},
 				error: function(data) {
 					data.url = this.url;
-					webtools.display_error('Failed fetching the list of categories from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+					webtools.display_error('Failed fetching the list of categories from the server. ', data);
 					loader.abort();
 				}
 			})
@@ -618,7 +618,7 @@ install.checkForUpdates = function(spanname, github) {
 		},
 		error: function(data) {
 			data.url = this.url;
-			webtools.display_error('Failed checking for updates for the plugin. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+			webtools.display_error('Failed checking for updates for the plugin. ', data);
 		}
 	})
 
@@ -651,7 +651,7 @@ install.removebundlework = function(key) {
 				$('#myModalFoot').html('<button type="button" class="btn btn-default" onClick="install.loadChannels();" data-dismiss="modal">Close</button>');
 			} else {
 				data.url = this.url;
-				webtools.display_error('Failed uninstalling the bundle. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+				webtools.display_error('Failed uninstalling the bundle. ', data);
 			}
 		}
 	})
@@ -687,7 +687,7 @@ install.initiatemigrate = function() {
 		},
 		error: function(data) {
 			data.url = this.url;
-			webtools.display_error('Failed migrating previously installed channels.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+			webtools.display_error('Failed migrating previously installed channels.', data);
 		}
 	})
 }
@@ -723,7 +723,7 @@ install.massiveupdatechecker = function() {
 		},
 		error: function(data) {
 			data.url = this.url;
-			webtools.display_error('Failed migrating previously installed channels.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+			webtools.display_error('Failed migrating previously installed channels.', data);
 		}
 	})
 }
@@ -942,7 +942,7 @@ install.forceRepoUpdate = function() {
 			if (data.responseText.indexOf('Errno 13') != -1) {
 				webtools.display_error('Failed updating UAS Cache. Looks like permissions are not correct, because we where denied access to create a needed directory.<br>If running on Linux, you might have to issue: <b>sudo chown plex:plex ./WebTools.bundle -R</b>' , data);
 			} else {
-				webtools.display_error('Failed updating UAS Cache. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>' , data);
+				webtools.display_error('Failed updating UAS Cache.' , data);
 			}
 		}
 	})
