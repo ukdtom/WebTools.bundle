@@ -83,7 +83,7 @@ class consts(object):
 				Log.Debug('Wrong installation path detected!!!!')
 				Log.Debug('')
 				Log.Debug('Correct path is:')
-				Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebTools.bundle'))
+				Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle'))
 				Log.Debug('************************************************')
 				installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).split('/Contents',1)
 				return False
