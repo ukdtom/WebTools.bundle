@@ -36,7 +36,7 @@ class consts(object):
 		try:
 			versionFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'VERSION')
 			with io.open(versionFile, "rb") as version_file:
-				VERSION = version_file.read().replace('\n','')
+				VERSION = version_file.readline().split('\\', 1)[-1]
 		except:
 			if not self.isCorrectPath():
 				VERSION = '*** WRONG INSTALL PATH!!!!....Correct path is: ' + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle' + '***')
