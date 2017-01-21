@@ -286,7 +286,7 @@ webtools.activate_module = function(modulename) {
 webtools.display_error = function(message, ajaxobject) {
     $('#myModalLabel').html('An error occured.');
     
-    message += '<br /><br />Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex thread <a href="https://forums.plex.tv/discussion/126254" target="_blank" style="font-weigth:bolder;">here</a> if it occurs again. ';
+    message += '<br /><br />Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex thread <a href="https://forums.plex.tv/discussion/126254" target="_blank" style="font-weight: bold;">here</a> if it occurs again. ';
     message += '<br /><br />You can find the log file for WebTools here:<br /> */Plex Media Server/Logs/PMS Plugin Logs/com.plexapp.plugins.WebTools.log';
 
 	if (typeof (ajaxobject) != 'undefined') {
