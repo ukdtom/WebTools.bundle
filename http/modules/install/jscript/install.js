@@ -56,7 +56,7 @@ install.start = function() {
 
 			var submenu = ['<table class="table channeltable">',
 				'<tr>',
-				'<td id="installmenu" class="channelmenu"><input type="text" class="form-control pull-left search" placeholder="Search..." id="search"><div class="input-group-btn pull-left"><button class="btn btn-secondary" type="button" onclick="javascript:install.search_apps();">Search</button></div><button class="btn btn-default" onclick="javascript:install.show_quickjump();">Quick Jump To Bundle</button> <button type="button" class="btn btn-default" onClick="install.initiatemigrate();">Migrate manually/previously installed channels</button> <button type="button" class="btn btn-default" onClick="install.massiveupdatechecker();">Check for updates for all installed channels</button> <button type="button" class="btn btn-default" onClick="install.forceRepoUpdate();">Force repo update</button></td>',
+				'<td id="installmenu" class="channelmenu"><input type="text" class="form-control pull-left search" placeholder="Search..." id="search"><div class="input-group-btn pull-left"><button class="btn btn-default" type="button" onclick="javascript:install.search_apps();">Search</button></div><button class="btn btn-default" onclick="javascript:install.show_quickjump();">Quick Jump To Bundle</button> <button type="button" class="btn btn-default" onClick="install.initiatemigrate();">Migrate manually/previously installed channels</button> <button type="button" class="btn btn-default" onClick="install.massiveupdatechecker();">Check for updates for all installed channels</button> <button type="button" class="btn btn-default" onClick="install.forceRepoUpdate();">Force repo update</button></td>',
 				'</tr>',
 				'<tr>',
 				'<td id="channelmenu" class="channelmenu"></td>',
@@ -90,7 +90,14 @@ install.start = function() {
 
 	], function() {
 		// Finally, loadchannels
-		install.loadChannels(true);
+	    install.loadChannels(true);
+
+	    //on ENTER pressed when focusing the search input -> Search
+	    $("#search").on('keyup', function (e) {
+	        if (e.keyCode == 13) {
+	            install.search_apps();
+	        }
+	    });
 	})
 
 	launcher.start();
@@ -124,12 +131,31 @@ install.search_apps = function () {
 
     tempArray = webtools.searchBundle(tempArray, searchValue);
 
+    //Resseting total amount and installed amount
+    for (var categorykey in install.categories) {
+        install.categories[categorykey].total = 0;
+        install.categories[categorykey].installed = 0;
+    }
+
     install.allBundles = {};
     tempArray.forEach(function (object) {
         var tempkey = object.key;
         delete object.key;
         install.allBundles[tempkey] = object;
-    })
+
+        object.type.forEach(function (categorykey) {
+            if (object.date !== "") install.categories[categorykey].installed++; //Puhaa.. It's getting better with 3.0...
+            install.categories[categorykey].total++
+        });
+    });
+
+    //Again. This can be done way easier with ang.
+    //Getting each category and finding the installed and total span.
+    for (var categorykey in install.categories) {
+        $("#" + categorykey.trim().replace(' ', '')).find("#categoriesInstalled").text(install.categories[categorykey].installed);
+        $("#" + categorykey.trim().replace(' ', '')).find("#categoriesTotal").text(install.categories[categorykey].total);
+    }
+
     install.showChannels($('#channelmenu>button.btn-active'), $('#channelmenu>button.btn-active').attr('id'));
 }
 
@@ -286,7 +312,7 @@ install.loadChannels = function (InitalRun) {
 				type: 'GET',
 				success: function(data) {
 
-					install.categories = data;
+				    install.categories = data;
 					//install.categories.sort();
 					callback();
 				},
@@ -312,9 +338,9 @@ install.loadChannels = function (InitalRun) {
 		for (var categorykey in install.categories) {
 			if ((install.categories[categorykey].installed > 0) || (install.showOnlyInstalled === false)) {
 				if ((typeof(elementToHighlight) == 'undefined') && (categorykey.trim() == 'Application')) {
-					menu += '<button type="button" class="btn btn-default btn-active" id="' + categorykey.trim().replace(' ', '') + '" onclick="install.showChannels(this,\'' + categorykey.trim() + '\')">' + categorykey + ' (' + install.categories[categorykey].installed + '/' + install.categories[categorykey].total + ')</button> '
+				    menu += '<button type="button" class="btn btn-default btn-active" id="' + categorykey.trim().replace(' ', '') + '" onclick="install.showChannels(this,\'' + categorykey.trim() + '\')">' + categorykey + ' (<span id="categoriesInstalled">' + install.categories[categorykey].installed + '</span>/<span id="categoriesTotal">' + install.categories[categorykey].total + '</span>)</button> '
 				} else {
-					menu += '<button type="button" class="btn btn-default" id="' + categorykey.trim().replace(' ', '') + '" onclick="install.showChannels(this,\'' + categorykey.trim() + '\')">' + categorykey + ' (' + install.categories[categorykey].installed + '/' + install.categories[categorykey].total + ')</button> '
+				    menu += '<button type="button" class="btn btn-default" id="' + categorykey.trim().replace(' ', '') + '" onclick="install.showChannels(this,\'' + categorykey.trim() + '\')">' + categorykey + ' (<span id="categoriesInstalled">' + install.categories[categorykey].installed + '</span>/<span id="categoriesTotal">' + install.categories[categorykey].total + '</span>)</button> '
 				}
 			}
 		}
