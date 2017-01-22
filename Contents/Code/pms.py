@@ -837,7 +837,7 @@ class pms(object):
 					subInfo['languageCode'] = stream.get('languageCode')
 					if stream.get('key') == None:
 						location = 'Embedded'
-					elif stream.get('format') == '':
+					elif stream.get('format') == None:
 						location = 'Agent'
 					else:
 						location = 'Sidecar'									
