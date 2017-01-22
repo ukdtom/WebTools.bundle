@@ -239,14 +239,18 @@ subtitlemgmt.display_episodes = function() {
 			}
 			// End of options filtering
 			if (display_subtitle) {
-				anysubtitleadded = true;
+			    anysubtitleadded = true;
+			    var download = '';
 				var view = '';
 				var checkbox = '';
-				if ( (subtitle.location == 'Sidecar') || (subtitle.location == 'Agent') ) {
+				if (subtitle.location == 'Sidecar' || subtitle.location == 'Agent') {
 					checkbox = '<input type="checkbox" name="subtitle-' + subtitlemgmt.selected_section.contents[i].key + '" value="' + subtitlemgmt.selected_section.contents[i].key + ',' + subtitle.key + '">';
 					view = '<button class="btn btn-default btn-xs" onclick=\'subtitlemgmt.view_subtitle(' + subtitlemgmt.selected_section.contents[i].key + ',' + subtitle.key + ')\'>View</button>';
 				}
-				newEntry.push('<tr' + selectedsubtitle + '><td class="td-small">' + checkbox + '</td><td class="td-small">' + language + '</td><td>' + subtitle.location + '</td><td>' + subtitle.codec + '</td><td>' + view + '</td></tr>');
+				if (subtitle.location == 'Sidecar') {
+				    download = '<button class="btn btn-default btn-xs" onclick="window.open(\'webtools2?module=pms&function=downloadSubtitle&key=' + subtitle.key + '\');">Download</button>';
+				}
+				newEntry.push('<tr' + selectedsubtitle + '><td class="td-small">' + checkbox + '</td><td class="td-small">' + language + '</td><td>' + subtitle.location + '</td><td>' + subtitle.codec + '</td><td>' + view + ' ' + download + '</td></tr>');
 			}
 		});
 		
@@ -392,7 +396,6 @@ subtitlemgmt.showsubtitletable = function (context) {
     $('.subtitletable',$(context).parent()).hide();
   }
 }
-
 
 subtitlemgmt.view_subtitle = function(mediaKey, subtitleKey) {
 	webtools.loading();
