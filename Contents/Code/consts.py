@@ -19,6 +19,7 @@ PREFIX = '/applications/webtools'
 NAME = 'WebTools'
 ICON = 'WebTools.png'
 JSONTIMESTAMP = 0																	# timestamp for json export
+WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'				# URL to latest WebTools
 
 
 class consts(object):	
