@@ -91,7 +91,7 @@ subtitlemgmt.fetch_section_type_movies = function(section_key, pageToShow) {
 				},
 				error: function(data) {
 					data.url = this.url;
-					webtools.display_error('Failed fetching the size of the section from the server. Please restart the server.', data);
+					webtools.display_error('Failed fetching the size of the section from the server.', data);
 					get_section_video.abort('Error: ' + data.statusText);
 				}
 			});
@@ -119,7 +119,7 @@ subtitlemgmt.fetch_section_type_movies = function(section_key, pageToShow) {
 				},
 				error: function(data) {
 					data.url = this.url;
-					webtools.display_error('Failed fetching the section contents from the server. Please restart the server.', data);
+					webtools.display_error('Failed fetching the section contents from the server.', data);
 					get_section_video.abort('Error: ' + data.statusText);
 				}
 			});
@@ -415,7 +415,7 @@ subtitlemgmt.view_subtitle = function(mediaKey, subtitleKey) {
 		},
 		error: function(data) {
 			data.url = this.url;
-			webtools.display_error('Failed fetching the section contents from the server. Please restart the server.', data);
+			webtools.display_error('Failed fetching the section contents from the server.', data);
 		}
 	});
 }

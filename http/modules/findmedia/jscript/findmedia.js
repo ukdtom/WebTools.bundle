@@ -35,7 +35,7 @@ findmedia.loading.inline([
 				console.log('error:' + data);
 				data.url = this.url;
 				findmedia.loading.abort();
-				webtools.display_error('Failed fetching the settings from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+				webtools.display_error('Failed fetching the settings from the server.', data);
 			}
 		});
 	},
@@ -56,7 +56,7 @@ findmedia.loading.inline([
 			},
 			error: function(data) {
 				data.url = this.url;
-				webtools.display_error('Failed fetching the sections from the server. Please restart the server.', data);
+				webtools.display_error('Failed fetching the sections from the server. ', data);
 				findmedia.loading.abort('Error: ' + data.statusText);
 			}
 
@@ -218,7 +218,7 @@ findmedia.scanning_start = function(sectionKey) {
 			},
 			error: function(data) {
 				data.url = this.url;
-				webtools.display_error('Failed starting the scanning. Please restart the server.', data);
+				webtools.display_error('Failed starting the scanning. ', data);
 				findmedia.loading.abort('Error: ' + data.statusText);
 			}
 
@@ -243,7 +243,7 @@ findmedia.scanning_wait = function() {
 			},
 			error: function(data) {
 				data.url = this.url;
-				webtools.display_error('Failed fetching the status from the server. Please restart the server.', data);
+				webtools.display_error('Failed fetching the status from the server.', data);
 				findmedia.loading.abort('Error: ' + data.statusText);
 			}
 
@@ -304,7 +304,7 @@ findmedia.scanning_present_result = function() {
 			},
 			error: function(data) {
 				data.url = this.url;
-				webtools.display_error('Failed fetching the results from the server. Please restart the server.', data);
+				webtools.display_error('Failed fetching the results from the server.', data);
 				findmedia.loading.abort('Error: ' + data.statusText);
 			}
 

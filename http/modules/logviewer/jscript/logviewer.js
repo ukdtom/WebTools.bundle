@@ -47,7 +47,7 @@ logviewer.fetchlogfiles = function() {
     },
     error: function(data, statustext, errorthrown) {
       data.url = this.url;
-      webtools.display_error('Failed fetching the settings from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+      webtools.display_error('Failed fetching the settings from the server.', data);
     }
   });
 };
@@ -96,7 +96,7 @@ logviewer.viewlogfile = function(filename) {
     error: function(data) {
       data.url = this.url;
       webtools.log('Failed fetching ' + filename);
-      webtools.display_error('Failed fetching the logfile from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+      webtools.display_error('Failed fetching the logfile from the server.', data);
     }
   });
 }

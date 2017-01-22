@@ -6,7 +6,8 @@ webtools.functions.install = {
 	},
 	items_per_page_max: 50,
 	items_per_page_min: 5,
-	show_options: function() {},
+	search_apps: function () { },
+	show_options: function () { },
 	save_options: function() {},
 	initiatedownload: function() {},
 	loadChannels: function() {},
@@ -18,6 +19,7 @@ webtools.functions.install = {
 	removebundleconfirm: function() {},
 	removebundlework: function() {},
 	allBundles: {},
+	backupAllBundles: {},
 	initiatemigrate: function() {},
 	updatefrompreferences: function() {},
 	massiveupdateongoinginstalls: 0,
@@ -47,14 +49,14 @@ install.start = function() {
 				'',
 				'',
 				'To automatically download and install a channel for Plex, enter it\'s GitHub link below:',
-				'<input type="text" id="gitlink"><button id="gitbutton" class="btn btn-default" onClick="install.installfromgit(document.getElementById(\'gitlink\').value);">Install</button>',
-				'Example: https://github.com/ukdtom/plex2csv.bundle <p class="text-danger">We do not offer any support for these channels. We only provide a installation method.</p>',
+				'<input type="text" id="gitlink" placeholder="https://github.com/ukdtom/ExportTools.bundle"><button id="gitbutton" class="btn btn-default" onClick="install.installfromgit(document.getElementById(\'gitlink\').value);">Install</button>',
+				'Example: https://github.com/ukdtom/ExportTools.bundle <p class="text-danger">We do not offer any support for these channels. We only provide a installation method.</p>',
 				'<div id="install_availablechannels"></div>'
 			];
 
 			var submenu = ['<table class="table channeltable">',
 				'<tr>',
-				'<td id="installmenu" class="channelmenu"><button class="btn btn-default" onclick="javascript:install.show_quickjump();">Quick Jump To Bundle</button> <button type="button" class="btn btn-default" onClick="install.initiatemigrate();">Migrate manually/previously installed channels</button> <button type="button" class="btn btn-default" onClick="install.massiveupdatechecker();">Check for updates for all installed channels</button> <button type="button" class="btn btn-default" onClick="install.forceRepoUpdate();">Force repo update</button></td>',
+				'<td id="installmenu" class="channelmenu"><input type="text" class="form-control pull-left search" placeholder="Search..." id="search"><div class="input-group-btn pull-left"><button class="btn btn-default" type="button" onclick="javascript:install.search_apps();">Search</button></div><button class="btn btn-default" onclick="javascript:install.show_quickjump();">Quick Jump To Bundle</button> <button type="button" class="btn btn-default" onClick="install.initiatemigrate();">Migrate manually/previously installed channels</button> <button type="button" class="btn btn-default" onClick="install.massiveupdatechecker();">Check for updates for all installed channels</button> <button type="button" class="btn btn-default" onClick="install.forceRepoUpdate();">Force repo update</button></td>',
 				'</tr>',
 				'<tr>',
 				'<td id="channelmenu" class="channelmenu"></td>',
@@ -88,11 +90,73 @@ install.start = function() {
 
 	], function() {
 		// Finally, loadchannels
-		install.loadChannels(true);
+	    install.loadChannels(true);
+
+	    //on ENTER pressed when focusing the search input -> Search
+	    $("#search").on('keyup', function (e) {
+	        if (e.keyCode == 13) {
+	            install.search_apps();
+	        }
+	    });
 	})
 
 	launcher.start();
 };
+
+//Hackz: Size of weird object received from backend. TODO: Get list from backend not object.
+Object.size = function (obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+
+//Searching in allBundles for keyword.
+//Will look in description and title
+install.search_apps = function () {
+    var searchValue = $("#search").val();
+
+    if (Object.size(install.backupAllBundles) > Object.size(install.allBundles)) install.allBundles = install.backupAllBundles;
+    var allBundles = install.allBundles;
+    install.backupAllBundles = install.allBundles;
+
+    //Temp array.. TODO: Get list from backend instead
+    var tempArray = [];
+    for (var key in allBundles) {
+        allBundles[key].key = key;
+        tempArray.push(allBundles[key]);
+    }
+
+    tempArray = webtools.searchBundle(tempArray, searchValue);
+
+    //Resseting total amount and installed amount
+    for (var categorykey in install.categories) {
+        install.categories[categorykey].total = 0;
+        install.categories[categorykey].installed = 0;
+    }
+
+    install.allBundles = {};
+    tempArray.forEach(function (object) {
+        var tempkey = object.key;
+        delete object.key;
+        install.allBundles[tempkey] = object;
+
+        object.type.forEach(function (categorykey) {
+            if (object.date !== "") install.categories[categorykey].installed++; //Puhaa.. It's getting better with 3.0...
+            install.categories[categorykey].total++
+        });
+    });
+
+    //Again. This can be done way easier with ang.
+    //Getting each category and finding the installed and total span.
+    for (var categorykey in install.categories) {
+        $("#" + categorykey.trim().replace(' ', '')).find("#categoriesInstalled").text(install.categories[categorykey].installed);
+        $("#" + categorykey.trim().replace(' ', '')).find("#categoriesTotal").text(install.categories[categorykey].total);
+    }
+
+    install.showChannels($('#channelmenu>button.btn-active'), $('#channelmenu>button.btn-active').attr('id'));
+}
 
 install.show_options = function() {
 	webtools.loading();
@@ -109,8 +173,24 @@ install.show_options = function() {
 	$('#OptionsModalAlert').hide();
 }
 
-install.installfromgit = function(github) {
-	var branch = null;
+install.installfromgit = function (github, popupmsg) {
+    github = github.trim();
+    //If the user insert this manually we need to find the popupmsg
+    //We only do this for the ExportTools bundle because the ExportTool is displayed as an example
+    if (github === "https://github.com/ukdtom/ExportTools.bundle" && !popupmsg) {
+        //Temp array.. TODO: Get list from backend instead
+        for (var key in install.allBundles) {
+            var currentBundle = install.allBundles[key];
+
+            //TODO: Get ID's on bundles (That will never ever change)
+            if (currentBundle.bundle === "ExportTools.bundle") {
+                popupmsg = currentBundle.popupmsg;
+                break;
+            }
+        }
+    }
+    var branch = null;
+    popupmsg = (popupmsg ? "<br /><br />" + popupmsg : "");
 	
 	// Retrieve channel element
 	var $channel = $('#channellist .panel[data-url="' + github + '"]');
@@ -141,8 +221,13 @@ install.installfromgit = function(github) {
 			},
 			type: 'GET',
 			dataType: 'text',
-			success: function(data) {
-				$('#myModalBody').html('Done. Your channel has been successfully installed. Data will be refreshed from the server.');
+			success: function (data) {
+			    $('#myModalBody').html('Done. Your channel has been successfully installed. Data will be refreshed from the server.' + (popupmsg ? "<br /><br />" : ""));
+			    //Popupmsg displaying html tags as text. 
+			    //Security reasons because we are getting this from the semi-public json in UAS repo
+			    var popupmsgEle = document.createElement("DIV");
+			    popupmsgEle.innerHTML = popupmsg;
+			    $('#myModalBody').append(popupmsgEle.textContent || popupmsgEle.innerText || "");
 				$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="$(\'#gitlink\').val(\'\');install.loadChannels();" data-dismiss="modal">Close</button>');
 			},
 			error: function(data) {
@@ -157,8 +242,7 @@ install.installfromgit = function(github) {
 /*
   Fetch channels and get a list of types (categories)
 */
-install.loadChannels = function(InitalRun) {
-	
+install.loadChannels = function (InitalRun) {
 	webtools.loading();
 	$('#navfoot').html('');
 	if (typeof($('#channelmenu>button.btn-active').html()) != 'undefined') {
@@ -189,7 +273,7 @@ install.loadChannels = function(InitalRun) {
 						if (data.responseText.indexOf('Errno 13') != -1) {
 							webtools.display_error('Failed updating UAS Cache. Looks like permissions are not correct, because we where denied access to create a needed directory.<br>If running on Linux, you might have to issue: <b>sudo chown plex:plex ./WebTools.bundle -R</b>' , data);
 						} else {
-							webtools.display_error('Failed updating UAS Cache. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>' , data);
+							webtools.display_error('Failed updating UAS Cache.' , data);
 						}
 						loader.abort();
 					}
@@ -226,12 +310,11 @@ install.loadChannels = function(InitalRun) {
 						install.allBundles[tempkey] = object;
 						console.log(object);
 					})
-
 					callback();
 				},
 				error: function(data) {
 					data.url = this.url;
-					webtools.display_error('Failed fetching the list of channels from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+					webtools.display_error('Failed fetching the list of channels from the server. ', data);
 					loader.abort();
 				}
 			})
@@ -248,13 +331,13 @@ install.loadChannels = function(InitalRun) {
 				type: 'GET',
 				success: function(data) {
 
-					install.categories = data;
+				    install.categories = data;
 					//install.categories.sort();
 					callback();
 				},
 				error: function(data) {
 					data.url = this.url;
-					webtools.display_error('Failed fetching the list of categories from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+					webtools.display_error('Failed fetching the list of categories from the server. ', data);
 					loader.abort();
 				}
 			})
@@ -274,9 +357,9 @@ install.loadChannels = function(InitalRun) {
 		for (var categorykey in install.categories) {
 			if ((install.categories[categorykey].installed > 0) || (install.showOnlyInstalled === false)) {
 				if ((typeof(elementToHighlight) == 'undefined') && (categorykey.trim() == 'Application')) {
-					menu += '<button type="button" class="btn btn-default btn-active" id="' + categorykey.trim().replace(' ', '') + '" onclick="install.showChannels(this,\'' + categorykey.trim() + '\')">' + categorykey + ' (' + install.categories[categorykey].installed + '/' + install.categories[categorykey].total + ')</button> '
+				    menu += '<button type="button" class="btn btn-default btn-active" id="' + categorykey.trim().replace(' ', '') + '" onclick="install.showChannels(this,\'' + categorykey.trim() + '\')">' + categorykey + ' (<span id="categoriesInstalled">' + install.categories[categorykey].installed + '</span>/<span id="categoriesTotal">' + install.categories[categorykey].total + '</span>)</button> '
 				} else {
-					menu += '<button type="button" class="btn btn-default" id="' + categorykey.trim().replace(' ', '') + '" onclick="install.showChannels(this,\'' + categorykey.trim() + '\')">' + categorykey + ' (' + install.categories[categorykey].installed + '/' + install.categories[categorykey].total + ')</button> '
+				    menu += '<button type="button" class="btn btn-default" id="' + categorykey.trim().replace(' ', '') + '" onclick="install.showChannels(this,\'' + categorykey.trim() + '\')">' + categorykey + ' (<span id="categoriesInstalled">' + install.categories[categorykey].installed + '</span>/<span id="categoriesTotal">' + install.categories[categorykey].total + '</span>)</button> '
 				}
 			}
 		}
@@ -301,7 +384,7 @@ install.loadChannels = function(InitalRun) {
 /*
  Show channels that are of a specific type (category)
 */
-install.showChannels = function(button, type, page, highlight) {
+install.showChannels = function (button, type, page, highlight) {
 	webtools.loading();
 
 	if (typeof(highlight) != 'undefined') {
@@ -382,6 +465,8 @@ install.showChannels = function(button, type, page, highlight) {
 		var key = install.channelstoshow[i];
 		var bundleInfo = install.allBundles[key];
 		console.log(bundleInfo);
+		var popupmsg = (bundleInfo.popupmsg ? bundleInfo.popupmsg : "");
+
 		var dropdown_branch = '';
 		
 		var link_install = '';
@@ -392,7 +477,6 @@ install.showChannels = function(button, type, page, highlight) {
 		var installDate = '';
 		var rowspan = 3;
 		var repolink = '';
-
 		if((typeof(bundleInfo.branches) != 'undefined') && Array.isArray(bundleInfo.branches)) {
 			// Retrieve selected branch
 			var selectedBranch = null;
@@ -422,7 +506,7 @@ install.showChannels = function(button, type, page, highlight) {
 			isInstalled = true;
 			rowspan = 3;
 			if ((key.indexOf('http') != -1) && (key.indexOf('https') != -1)) {
-				link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Re-Install with latest available</button>';
+			    link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\', \'' + popupmsg + '\')">Re-Install with latest available</button>';
 			}
 		}
 
@@ -430,7 +514,7 @@ install.showChannels = function(button, type, page, highlight) {
 		if ((key.indexOf('http') != -1) && (key.indexOf('https') != -1)) {
 			if (isInstalled === false) {
 				//link_install = '<div class="panel-footer"><button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Install</button>';
-				link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\')">Install</button>';
+			    link_install = '<button class="btn btn-default btn-xs" onclick="install.installfromgit(\'' + key + '\', \'' + popupmsg + '\')">Install</button>';
 			}
 			repolink = '<a href="' + key + '" target="_NEW">' + key + '</a>';
 			//link_update += ' <button class="btn btn-default btn-xs" onclick="install.checkForUpdates(\'' + install.allBundles[key].bundle + '\',\'' + key + '\')">Check for Updates</button>';
@@ -534,7 +618,7 @@ install.checkForUpdates = function(spanname, github) {
 		},
 		error: function(data) {
 			data.url = this.url;
-			webtools.display_error('Failed checking for updates for the plugin. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+			webtools.display_error('Failed checking for updates for the plugin. ', data);
 		}
 	})
 
@@ -567,7 +651,7 @@ install.removebundlework = function(key) {
 				$('#myModalFoot').html('<button type="button" class="btn btn-default" onClick="install.loadChannels();" data-dismiss="modal">Close</button>');
 			} else {
 				data.url = this.url;
-				webtools.display_error('Failed uninstalling the bundle. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+				webtools.display_error('Failed uninstalling the bundle. ', data);
 			}
 		}
 	})
@@ -603,7 +687,7 @@ install.initiatemigrate = function() {
 		},
 		error: function(data) {
 			data.url = this.url;
-			webtools.display_error('Failed migrating previously installed channels.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+			webtools.display_error('Failed migrating previously installed channels.', data);
 		}
 	})
 }
@@ -639,7 +723,7 @@ install.massiveupdatechecker = function() {
 		},
 		error: function(data) {
 			data.url = this.url;
-			webtools.display_error('Failed migrating previously installed channels.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+			webtools.display_error('Failed migrating previously installed channels.', data);
 		}
 	})
 }
@@ -841,7 +925,7 @@ install.forceRepoUpdate = function() {
 	webtools.loading();
 	$('#myModalLabel').html('Force repo update');
 	$.ajax({
-		url: '/webtools2?module=git&function=updateUASCache&force=true',
+		url: '/webtools2?module=git&function=updateUASCache&Force=true',
 		cache: false,
 		type: 'GET',
 		dataType: 'text',
@@ -858,7 +942,7 @@ install.forceRepoUpdate = function() {
 			if (data.responseText.indexOf('Errno 13') != -1) {
 				webtools.display_error('Failed updating UAS Cache. Looks like permissions are not correct, because we where denied access to create a needed directory.<br>If running on Linux, you might have to issue: <b>sudo chown plex:plex ./WebTools.bundle -R</b>' , data);
 			} else {
-				webtools.display_error('Failed updating UAS Cache. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.<br>' , data);
+				webtools.display_error('Failed updating UAS Cache.' , data);
 			}
 		}
 	})
