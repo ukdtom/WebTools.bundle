@@ -1,0 +1,38 @@
+﻿html{
+    height:100%;
+    overflow:hidden;
+    background-color: #1f1f1f;
+}
+body{
+    height:100%;
+    overflow:hidden;
+    background-color: #1f1f1f;
+    color:#FE9B00;
+}
+
+/* Push Tops */
+.pushTop5{
+    margin-top:5px;
+}
+.pushTop15{
+    margin-top:15px;
+}
+.pushTop35{
+    margin-top:35px;
+}
+
+/* Bolds */
+.bold300{
+    font-weight:300;
+}
+.bold600{
+    font-weight:600;
+}
+.bold900{
+    font-weight:900;
+}
+
+/* Misc */
+.textCenter{
+    text-align:center;
+}

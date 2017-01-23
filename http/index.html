@@ -1,7 +1,23 @@
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-	</head>
-	<body>
-        WEB TOOLS NEXT GEN COMING! 3.0
-	</body>
+    <head>
+        <!--EXTERNAL CSS INIT-->
+        <link rel="stylesheet" type="text/css" href="external/css/bootstrap.min.css"> <!-- No CSS preprocessor so no mapping for now -->
+        <link rel="stylesheet" type="text/css" href="external/css/bootstrap-theme.min.css">
+
+        <!--EXTERNAL SCRIPT INIT-->
+        <script src="external/scripts/jquery-3.1.1.min.js"></script>
+        <script src="external/scripts/bootstrap.min.js"></script>
+        <script src="external/scripts/angular.min.js"></script>
+        <script src="external/scripts/angular-route.min.js"></script>
+        <script src="external/scripts/languagecodes.js"></script>        
+        
+        <!-- STATIC SCRIPTS -->
+        <script src="static/scripts/app.js"></script>
+        <script src="static/scripts/controller/loginController.js"></script>
+
+    </head>
+    <body ng-app="webtools">
+        <div ng-view></div>
+    </body>
 </html>
