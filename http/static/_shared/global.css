@@ -1,24 +1,45 @@
 ﻿html{
+    width:100%;
     height:100%;
     overflow:hidden;
     background-color: #1f1f1f;
+    font-size:12px;
 }
 body{
+    width:100%;
     height:100%;
     overflow:hidden;
     background-color: #1f1f1f;
     color:#FE9B00;
 }
 
+.content{
+    width:calc(100% - 120px); /* Window - Menu */
+    height:calc(100% - 60px); /* Window - Head */
+    padding: 10px;
+    padding-left: 30px;
+    float:left;
+}
+
 /* Push Tops */
-.pushTop5{
+.pushTopTrivial{
     margin-top:5px;
 }
-.pushTop15{
+.pushTopMinor{
     margin-top:15px;
 }
-.pushTop35{
+.pushTopNormal{
     margin-top:35px;
+}
+/* Push Lefts */
+.pushLeftTrivial{
+    margin-left:5px;
+}
+.pushLeftMinor{
+    margin-left:15px;
+}
+.pushLeftNormal{
+    margin-left:35px;
 }
 
 /* Bolds */

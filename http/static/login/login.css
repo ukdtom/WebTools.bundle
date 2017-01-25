@@ -1,0 +1,30 @@
+﻿.vertical-center {
+    height: calc(100% - 120px);
+    display: flex;
+    align-items: center;
+    background-color: #1f1f1f;
+}
+.mainContainer{
+    margin: auto;
+    width: 335px;
+    height: 300px;
+    font-size: 18px;
+    background-color: rgba(0,0,0,.15);
+    padding: 20px;
+    border-radius: 10px;
+}
+.mainContainer input{
+    width:100%;
+}
+.mainContainer input::-webkit-input-placeholder{
+    font-size:10px;
+}
+.mainContainer input.mainBtn{
+    font-size:14px;
+}
+.newReleaseContainer{
+    width:550px;
+}
+#info_Notes{
+    max-width:550px;
+}
