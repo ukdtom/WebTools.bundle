@@ -2,14 +2,16 @@
     width:100%;
     height:100%;
     overflow:hidden;
-    background-color: #1f1f1f;
+    /*background-color: #1f1f1f;*/
+    background: url(asfalt.png) repeat; /* Credit Subtlepatterns.com */
     font-size:12px;
 }
 body{
     width:100%;
     height:100%;
     overflow:hidden;
-    background-color: #1f1f1f;
+    /*background-color: #1f1f1f;*/
+    background: url(asfalt.png) repeat; /* Credit Subtlepatterns.com */
     color:#FE9B00;
 }
 
@@ -19,6 +21,11 @@ body{
     padding: 10px;
     padding-left: 30px;
     float:left;
+    transition: width 0.5s;
+}
+.content.animation{
+    width:100%;
+    transition: width 0.5s;
 }
 
 /* Push Tops */

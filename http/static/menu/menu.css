@@ -23,12 +23,12 @@
     transition: left 0.5s;
 }
 
-.menu.animationClose{
+.menu.animation{
     width:0px;
     transition: width 0.5s;
 }
 
-.menu .toggle.animationMove{
+.menu .toggle.animation{
     left:-11px;
     transition: left 0.5s;
 }

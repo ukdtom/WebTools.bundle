@@ -17,6 +17,8 @@
         <link rel="stylesheet" type="text/css" href="static/_shared/global.css" />
         <script src="static/app.js"></script>
 
+        <script src="static/content/contentController.js"></script>
+
         <link rel="stylesheet" type="text/css" href="static/head/head.css" />
         <script src="static/head/headModel.js"></script>
         <script src="static/head/headService.js"></script>
@@ -32,7 +34,7 @@
     </head>
     <body ng-app="webtools">
         <div ng-include="'static/head/head.html'" class="head" ng-controller="headController"></div>
-        <div ng-include="'static/menu/menu.html'" class="menu" ng-controller="menuController" ng-class="{animationClose: !menuModel.visible}"></div>
-        <div ng-view class="content"></div>
+        <div ng-include="'static/menu/menu.html'" class="menu" ng-controller="menuController" ng-class="{animation: !menuModel.visible}"></div>
+        <div ng-view class="content" ng-controller="contentController" ng-class="{animation: !menuModel.visible}"></div>
     </body>
 </html>
