@@ -55,6 +55,8 @@ class findMedia(object):
 				retMsg = ['WebTools']
 				self.populatePrefs()
 				Log.Debug('******* Starting findMedia *******')
+				Log.Debug('********* Prefs are ***********')
+				Log.Debug(Dict['findMedia'])				
 			self.MediaChuncks = 40
 			self.CoreUrl = misc.GetLoopBack() + '/library/sections/'
 		except exception, e:
@@ -291,40 +293,43 @@ class findMedia(object):
 					filePath2 = urllib.unquote(Path).decode('utf8')
 					filePath2 = misc.Unicodize(filePath2)					
 					Log.Debug("Handling filepath #%s: %s" %(bScanStatusCount, filePath2.encode('utf8', 'ignore')))
-					for root, subdirs, files in os.walk(filePath2):
-						# Need to check if directory in ignore list?
-						if os.path.basename(root) in Dict['findMedia']['IGNORED_DIRS']:
-							continue
-						# Lets look at the file
-						for file in files:					
-							file = misc.Unicodize(file).encode('utf8')
-							if bAbort:
-								Log.Info('Aborted in getFiles')
-								raise ValueError('Aborted')
-							if os.path.splitext(file)[1].lower() in Dict['findMedia']['VALID_EXTENSIONS']:
-								# File has a valid extention
-								if file.startswith('.') and Dict['findMedia']['IGNORE_HIDDEN']:
-									continue
-								# Filter out local extras
-								if '-' in file:
-									if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1].lower() in Extras:
-										if DEBUGMODE:
-											Log.Debug('Ignoring Extras file %s' %(os.path.basename(file)))
+					try:
+						for root, subdirs, files in os.walk(filePath2):
+							# Need to check if directory in ignore list?
+							if os.path.basename(root) in Dict['findMedia']['IGNORED_DIRS']:
+								continue
+							# Lets look at the file
+							for file in files:					
+								file = misc.Unicodize(file).encode('utf8')
+								if bAbort:
+									Log.Info('Aborted in getFiles')
+									raise ValueError('Aborted')
+								if os.path.splitext(file)[1].lower() in Dict['findMedia']['VALID_EXTENSIONS']:
+									# File has a valid extention
+									if file.startswith('.') and Dict['findMedia']['IGNORE_HIDDEN']:
 										continue
-								# filter out local extras directories
-								if os.path.basename(os.path.normpath(root)).lower() in ExtrasDirs:
-									if DEBUGMODE:
-										Log.Debug('Ignoring Extras dir %s' %(root))
-									continue															
-								composed_file = misc.Unicodize(Core.storage.join_path(root,file))						
-								if Platform.OS == 'Windows':																		
-									# I hate windows
-									pos = composed_file.find(':') -1
-									if pos != -2:
-										# We dont got an UNC path here
-										composed_file = composed_file[pos:]								
-								mediasFromFileSystem.append(composed_file)
-								statusMsg = 'Scanning file: ' + file
+									# Filter out local extras
+									if '-' in file:
+										if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1].lower() in Extras:
+											if DEBUGMODE:
+												Log.Debug('Ignoring Extras file %s' %(os.path.basename(file)))
+											continue
+									# filter out local extras directories
+									if os.path.basename(os.path.normpath(root)).lower() in ExtrasDirs:
+										if DEBUGMODE:
+											Log.Debug('Ignoring Extras dir %s' %(root))
+										continue															
+									composed_file = misc.Unicodize(Core.storage.join_path(root,file))						
+									if Platform.OS == 'Windows':																		
+										# I hate windows
+										pos = composed_file.find(':') -1
+										if pos != -2:
+											# We dont got an UNC path here
+											composed_file = composed_file[pos:]								
+									mediasFromFileSystem.append(composed_file)
+									statusMsg = 'Scanning file: ' + file
+					except Exception, e:
+						Log.Critical('Exception happened in FM scanning filesystem: ' + str(e))
 					Log.Debug('***** Finished scanning filesystem *****')
 					if DEBUGMODE:
 						Log.Debug(mediasFromFileSystem)
