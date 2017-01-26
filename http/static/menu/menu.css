@@ -1,5 +1,5 @@
 ﻿.menu{
-    width: 120px;
+    width: 125px;
     height: calc(100% - 60px);
     background-color: rgba(0,0,0,.15);
     box-shadow:0 0 0 3px rgba(0,0,0,.2);
@@ -7,12 +7,24 @@
     float: left;
     transition: width 0.5s;
 }
+
+.menu .item{
+    margin:3px;
+    margin-top:25px;
+    height: 25px;
+    overflow: hidden;
+    cursor:pointer;
+}
+.menu .item:first-child{
+    margin-top:5px;
+}
+
 .menu .toggle{
     width: 32px;
     height: 32px;
     position: absolute;
     top: 50%;
-    left: 106px;
+    left: 110px;
     font-size: 20px;
     border-radius: 15px;
     background-color: #151515;
@@ -23,11 +35,11 @@
     transition: left 0.5s;
 }
 
+/* Animation */
 .menu.animation{
     width:0px;
     transition: width 0.5s;
 }
-
 .menu .toggle.animation{
     left:-11px;
     transition: left 0.5s;

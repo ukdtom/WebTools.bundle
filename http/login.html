@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--EXTERNAL CSS INIT-->
+        <link rel="stylesheet" type="text/css" href="external/css/bootstrap.min.css"> <!-- No CSS preprocessor so no mapping for now -->
+        <link rel="stylesheet" type="text/css" href="external/css/bootstrap-theme.min.css">
+
+        <!--EXTERNAL SCRIPT INIT-->
+        <script src="external/scripts/jquery-3.1.1.min.js"></script>
+        <script src="external/scripts/bootstrap.min.js"></script>
+        <script src="external/scripts/languagecodes.js"></script>
+        
+        <!-- STATIC -->
+        <link rel="stylesheet" type="text/css" href="static/_shared/global.css" />
+        <link rel="stylesheet" type="text/css" href="static/head/head.css" />
+        <link rel="stylesheet" type="text/css" href="static/login/login.css" />
+        <script src="static/login/login.js"></script>
+    </head>
+    <body>
+        <div class="head">
+            <div class="title" id="webtoolsVersion">Loading...</div>
+        </div>
+        <div id="main" class="jumbotron vertical-center">
+            <div class="mainContainer">
+                <div class="row">
+                    <div class="col-sm-12 textCenter bold600">
+                        Signing in towards plex.tv<br />
+                        Use your regular Plex credentials
+                    </div>
+                </div>
+                <div class="row pushTopMinor">
+                    <div class="col-sm-12">Username</div>
+                </div>
+                <div class="row pushTopTrivial">
+                    <div class="col-sm-12"><input type="text" placeholder="Username" name="user" class="form-control" /></div>
+                </div>
+                <div class="row pushTopTrivial">
+                    <div class="col-sm-12">Password</div>
+                </div>
+                <div class="row pushTopTrivial">
+                    <div class="col-sm-12"><input type="password" placeholder="Password" name="pwd" class="form-control" /></div>
+                </div>
+                <div class="row pushTopMinor">
+                    <div class="col-sm-12"><input type="submit" value="Sign in" id="login" class="btn btn-default pull-right mainBtn bold600" /></div>
+                </div>
+            </div>
+        </div>
+        <div id="warning" style="display:none;">
+            <div class="newReleaseContainer bold600 pushLeftMinor">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="bold900 pushTopMinor">New Version available</div>
+                        New Version: <span id="info_Name"></span><br /><br />
+                        Release Notes:<br />
+                        <div id="info_Notes"></div><br />
+                        <button type="button" id="info_Continue" class="btn btn-default mainBtn bold600 pull-left" onclick="document.location.href = '/'">Continue</button>
+                        <button type="button" id="info_Download" class="btn btn-primary mainBtn bold600 pull-left pushLeftMinor">Download Latest</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

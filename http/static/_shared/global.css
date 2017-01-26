@@ -16,7 +16,7 @@ body{
 }
 
 .content{
-    width:calc(100% - 120px); /* Window - Menu */
+    width:calc(100% - 125px); /* Window - Menu */
     height:calc(100% - 60px); /* Window - Head */
     padding: 10px;
     padding-left: 30px;
@@ -36,6 +36,9 @@ body{
     margin-top:15px;
 }
 .pushTopNormal{
+    margin-top:25px;
+}
+.pushTopMajor{
     margin-top:35px;
 }
 /* Push Lefts */
@@ -46,6 +49,9 @@ body{
     margin-left:15px;
 }
 .pushLeftNormal{
+    margin-left:25px;
+}
+.pushLeftMajor{
     margin-left:35px;
 }
 
