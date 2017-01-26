@@ -7,5 +7,11 @@ webtools.config(function ($interpolateProvider, $routeProvider) {
         templateUrl: "/static/home/home.html",
         controller: "homeController"
     })
-    .otherwise({ redirectTo: '/' });
+    .when("/sub", {
+        templateUrl: "/static/sub_management/sub.html",
+        controller: "subController"
+    })
+    .otherwise({
+        templateUrl: "/static/404/404.html"
+    });
 })

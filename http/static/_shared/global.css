@@ -5,6 +5,7 @@
     /*background-color: #1f1f1f;*/
     background: url(asfalt.png) repeat; /* Credit Subtlepatterns.com */
     font-size:12px;
+    line-height:12px;
 }
 body{
     width:100%;
@@ -80,13 +81,13 @@ body{
 }
 
 /* Bolds */
-.bold300{
+.textBold300{
     font-weight:300;
 }
-.bold600{
+.textBold600{
     font-weight:600;
 }
-.bold900{
+.textBold900{
     font-weight:900;
 }
 
