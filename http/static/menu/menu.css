@@ -1,5 +1,5 @@
 ﻿.menu{
-    width: 125px;
+    width: 140px;
     height: calc(100% - 60px); /* Window - Head */
     background-color: rgba(0,0,0,.15);
     box-shadow:0 0 0 3px rgba(0,0,0,.2);
@@ -31,7 +31,7 @@
     height: 28px;
     position: absolute;
     top: 63px;
-    left: 47px;
+    left: 57px;
     font-size: 16px;
     border-radius: 15px;
     background: rgba(255, 156, 0, 0.73);

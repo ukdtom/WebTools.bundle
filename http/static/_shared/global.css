@@ -1,8 +1,11 @@
-﻿html{
+﻿/*
+    CONSIDER IMPLEMENTING .LESS
+*/
+
+html{
     width:100%;
     height: 100%;
     overflow: hidden;
-    /*background-color: #1f1f1f;*/
     background: url(asfalt.png) repeat; /* Credit Subtlepatterns.com */
     font-size:12px;
     line-height:12px;
@@ -26,13 +29,15 @@ body{
 
 
 .content{
-    width:calc(100% - 125px); /* Window - Menu */
+    width:calc(100% - 140px); /* Window - Menu */
     height:calc(100% - 60px); /* Window - Head */
     padding: 10px;
     padding-left: 30px;
     float:left;
     transition: width 0.5s;
     background-color: rgba(255, 255, 255, 0.00);
+    overflow-x:hidden;
+    overflow-y:auto;
 }
 .content.animation{
     width:100%;
