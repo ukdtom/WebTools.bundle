@@ -295,18 +295,28 @@ class findMedia(object):
 					Log.Debug("Handling filepath #%s: %s" %(bScanStatusCount, filePath2.encode('utf8', 'ignore')))
 					try:
 						for root, subdirs, files in os.walk(filePath2):
+							if DEBUGMODE:
+								Log.Debug('Extreme root: ' + root)
+								Log.Debug('Extreme subdirs: ' + str(subdirs))
+								Log.Debug('Extreme files: ' + str(files))
 							# Need to check if directory in ignore list?
 							if os.path.basename(root) in Dict['findMedia']['IGNORED_DIRS']:
+								if DEBUGMODE:
+									Log.Debug('root in ignored dirs: ' + root)
 								continue
 							# Lets look at the file
 							for file in files:					
 								file = misc.Unicodize(file).encode('utf8')
+								if DEBUGMODE:
+									Log.Debug('file in files: ' + file)
 								if bAbort:
 									Log.Info('Aborted in getFiles')
 									raise ValueError('Aborted')
 								if os.path.splitext(file)[1].lower() in Dict['findMedia']['VALID_EXTENSIONS']:
 									# File has a valid extention
 									if file.startswith('.') and Dict['findMedia']['IGNORE_HIDDEN']:
+										if DEBUGMODE:
+											Log.Debug('File hidden, so ignore : ' + file)
 										continue
 									# Filter out local extras
 									if '-' in file:
@@ -327,9 +337,12 @@ class findMedia(object):
 											# We dont got an UNC path here
 											composed_file = composed_file[pos:]								
 									mediasFromFileSystem.append(composed_file)
+									if DEBUGMODE:
+										Log.Debug('Scanning file: ' + file)
+										Log.Debug('appending file: ' + composed_file)
 									statusMsg = 'Scanning file: ' + file
 					except Exception, e:
-						Log.Critical('Exception happened in FM scanning filesystem: ' + str(e))
+						Log.Exception('Exception happened in FM scanning filesystem: ' + str(e))
 					Log.Debug('***** Finished scanning filesystem *****')
 					if DEBUGMODE:
 						Log.Debug(mediasFromFileSystem)
