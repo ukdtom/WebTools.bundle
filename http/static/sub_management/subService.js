@@ -1,6 +1,3 @@
-﻿angular.module('webtools').service('menuService', ['$http', 'menuModel', '$location', function ($http, menuModel, $location) {
+﻿angular.module('webtools').service('subService', ['$http', 'subModel', function ($http, subModel) {
 
-    this.navigateTo = function (path) {
-        $location.path(path);
-    }
 }]);

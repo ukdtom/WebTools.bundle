@@ -1,6 +1,6 @@
 ﻿var webtools = angular.module('webtools', ['ngRoute']);
 
-webtools.config(function ($interpolateProvider, $routeProvider) {
+webtools.config(function ($interpolateProvider, $routeProvider, $locationProvider) {
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
     $routeProvider
     .when("/", {
@@ -14,4 +14,6 @@ webtools.config(function ($interpolateProvider, $routeProvider) {
     .otherwise({
         templateUrl: "/static/404/404.html"
     });
+
+    $locationProvider.html5Mode(true);
 })

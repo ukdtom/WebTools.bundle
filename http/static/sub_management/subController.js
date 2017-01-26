@@ -1,7 +1,3 @@
-﻿angular.module('webtools').controller('menuController', ['$scope', 'menuModel', 'menuService', function ($scope, menuModel, menuService) {
-    $scope.menuModel = menuModel;
-
-    $scope.navigateTo = function (path) {
-        menuService.navigateTo(path);
-    }
+﻿angular.module('webtools').controller('subController', ['$scope', 'subModel', 'subService', function ($scope, subModel, subService) {
+    $scope.subModel = subModel;
 }]);

@@ -1,3 +1,3 @@
-﻿angular.module('webtools').service('menuModel', function () {
-    this.visible = true;
+﻿angular.module('webtools').service('subModel', function () {
+
 });

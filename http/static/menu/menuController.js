@@ -4,4 +4,7 @@
     $scope.navigateTo = function (path) {
         menuService.navigateTo(path);
     }
+    $scope.logout = function () {
+        menuService.logout();
+    }
 }]);
