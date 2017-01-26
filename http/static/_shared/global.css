@@ -22,6 +22,7 @@ body{
     padding-left: 30px;
     float:left;
     transition: width 0.5s;
+    background-color: rgba(255, 255, 255, 0.07);
 }
 .content.animation{
     width:100%;
