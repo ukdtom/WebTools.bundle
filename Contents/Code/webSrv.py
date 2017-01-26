@@ -128,6 +128,7 @@ class LogoutHandler(BaseHandler):
 
 class LoginHandler(BaseHandler):
 	def get(self):
+		Log.Debug('Ged her')
 		isCorrectPath(self)
 		Log.Info('Returning login page: ' + Core.storage.join_path(getActualHTTPPath() , 'login.html'))
 		self.render(Core.storage.join_path(getActualHTTPPath(), 'login.html'), next=self.get_argument("next","/"))
