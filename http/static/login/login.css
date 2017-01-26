@@ -2,7 +2,7 @@
     height: calc(100% - 120px);
     display: flex;
     align-items: center;
-    background: url(../_shared/asfalt.png) repeat; /* Credit Subtlepatterns.com */
+    background-color: rgba(255, 255, 255, 0.00);
     box-shadow: inset 0px 15px 15px -4px rgba(255, 255, 0, 0.06);
 }
 .mainContainer{
