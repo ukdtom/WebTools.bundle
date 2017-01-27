@@ -323,6 +323,7 @@ class pms(object):
 		api = req.get_argument('api', '2')
 		try:
 			req.clear()
+			Log.Debug('Returning: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')		
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			if api == '3':
@@ -339,9 +340,6 @@ class pms(object):
 		except Exception, e:
 			Log.Exception('Fatal error happened in getAllBundleInfo: ' + str(e))
 			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in getAllBundleInfo' + str(e))
 
 	# Delete Bundle
 	def delBundle(self, req):
@@ -847,7 +845,7 @@ class pms(object):
 					subInfo['languageCode'] = stream.get('languageCode')
 					if stream.get('key') == None:
 						location = 'Embedded'
-					elif stream.get('format') == '':
+					elif stream.get('format') == None:
 						location = 'Agent'
 					else:
 						location = 'Sidecar'									

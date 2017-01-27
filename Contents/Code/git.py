@@ -13,7 +13,7 @@ import io, os, shutil, sys
 import plistlib
 import pms
 import tempfile
-from consts import DEBUGMODE, UAS_URL, UAS_BRANCH, NAME
+from consts import DEBUGMODE, UAS_URL, UAS_BRANCH, NAME, WTURL
 
 class git(object):
 	init_already = False							# Make sure part of init only run once
@@ -120,7 +120,7 @@ class git(object):
 		# Reset dicts
 		nukeSpecialDicts()
 
-		url= req.get_argument('debugURL', 'https://api.github.com/repos/dagalufh/WebTools.bundle/releases/latest')
+		url= req.get_argument('debugURL', WTURL)
 		bundleName = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
 		Log.Info('WT install dir is: ' + bundleName)
 		try:
