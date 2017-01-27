@@ -4,7 +4,10 @@
         $location.path(path);
     }
 
-    this.logout = function () {
-        $window.location.href = '/logout';
+    this.redirectTo = function (url, isTargetBlank) {
+        if (isTargetBlank)
+            window.open(url, '_blank');
+        else
+            $window.location.href = url;
     }
 }]);

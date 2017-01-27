@@ -1,4 +1,5 @@
-﻿angular.module('webtools').controller('menuController', ['$scope', 'menuModel', 'menuService', function ($scope, menuModel, menuService) {
+﻿angular.module('webtools').controller('menuController', ['$scope', 'menuModel', 'menuService', 'webtoolsModel', function ($scope, menuModel, menuService, webtoolsModel) {
+    $scope.webtoolsModel = webtoolsModel;
     $scope.menuModel = menuModel;
 
     $scope.init = function () {
@@ -7,8 +8,8 @@
     $scope.navigateTo = function (path) {
         menuService.navigateTo(path);
     }
-    $scope.logout = function () {
-        menuService.logout();
+    $scope.redirectTo = function (url, isTargetBlank) {
+        menuService.redirectTo(url, isTargetBlank);
     }
 
     $scope.init();
