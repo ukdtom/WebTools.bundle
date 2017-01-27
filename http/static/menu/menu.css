@@ -1,38 +1,47 @@
 ﻿.menu{
-    width: 125px;
-    height: calc(100% - 60px);
+    width: 140px;
+    height: calc(100% - 60px); /* Window - Head */
     background-color: rgba(0,0,0,.15);
     box-shadow:0 0 0 3px rgba(0,0,0,.2);
-    overflow:hidden;
+    overflow:auto;
     float: left;
     transition: width 0.5s;
 }
 
 .menu .item{
-    margin:3px;
+    margin:4px;
     margin-top:25px;
     height: 25px;
     overflow: hidden;
     cursor:pointer;
+    text-align:center;
+    background: rgba(254, 155, 0, 0.04);
+    border-radius: 3px;
+    padding-top: 2px;
 }
 .menu .item:first-child{
-    margin-top:5px;
+    margin-top:10px;
+}
+.menu .item:hover{
+    background: rgba(254, 155, 0, 0.10);
 }
 
 .menu .toggle{
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     position: absolute;
-    top: 50%;
-    left: 110px;
-    font-size: 20px;
+    top: 63px;
+    left: 57px;
+    font-size: 16px;
     border-radius: 15px;
-    background-color: #151515;
-    border: 1px rgba(255, 255, 255, 0.15) solid;
+    background: rgba(255, 156, 0, 0.73);
     cursor: pointer;
-    padding: 5px;
-    color: rgb(222, 222, 222);
+    padding: 6px;
+    color: rgb(255, 255, 255);
     transition: left 0.5s;
+}
+.menu .toggle:hover{
+    background: rgb(255, 156, 0);
 }
 
 /* Animation */
@@ -41,13 +50,10 @@
     transition: width 0.5s;
 }
 .menu .toggle.animation{
-    left:-11px;
+    left:-10px;
     transition: left 0.5s;
 }
 
 /* Resp */
 @media screen and (max-height: 480px) {
-    .menu .toggle {
-        top:70px;
-    }
 }
