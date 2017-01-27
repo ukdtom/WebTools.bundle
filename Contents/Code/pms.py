@@ -320,18 +320,26 @@ class pms(object):
 	# getAllBundleInfo
 	def getAllBundleInfo(self, req):
 		Log.Debug('Got a call for getAllBundleInfo')
+		api = req.get_argument('api', '2')
 		try:
 			req.clear()
-			Log.Debug('Returning: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')
+			Log.Debug('Returning: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')		
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(Dict['PMS-AllBundleInfo']))
+			if api == '3':
+				retArray = []
+				for key, value in Dict['PMS-AllBundleInfo'].items():
+					d = {}
+					d[key] = value
+					retArray.append(d)
+				Log.Debug('Returning V3: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')
+				req.finish(json.dumps(retArray))
+			else:
+				Log.Debug('Returning V2: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')
+				req.finish(json.dumps(Dict['PMS-AllBundleInfo']))
 		except Exception, e:
 			Log.Exception('Fatal error happened in getAllBundleInfo: ' + str(e))
 			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in getAllBundleInfo' + str(e))
 
 	# Delete Bundle
 	def delBundle(self, req):
