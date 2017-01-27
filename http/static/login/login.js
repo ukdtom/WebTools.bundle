@@ -39,6 +39,9 @@ $(function () {
             if (Number(currentVersion[i]) < Number(latestVersion[i])) {
                 return true;
             }
+            if (Number(currentVersion[i]) > Number(latestVersion[i])) {
+                return false;
+            }
         }
         return false;
     }
