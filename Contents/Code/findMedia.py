@@ -23,10 +23,19 @@ statusMsg = 'idle'																																																	# Response to
 runningState = 0																																																		# Internal tracker of where we are
 bAbort = False																																																			# Flag to set if user wants to cancel
 Extras = ['behindthescenes','deleted','featurette','interview','scene','short','trailer']														# Local extras
-ExtrasDirs = ['Behind The Scenes', 'Deleted Scenes', 'Featurettes', 'Interviews', 'Scenes', 'Shorts', 'Trailers']		# Directories to be ignored
+ExtrasDirs = ['behind the scenes', 'deleted scenes', 'featurettes', 'interviews', 'scenes', 'shorts', 'trailers']		# Directories to be ignored
 KEYS = ['IGNORE_HIDDEN', 'IGNORED_DIRS', 'VALID_EXTENSIONS'] 																												# Valid keys for prefs
 excludeElements='Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Role,Similar,Writer'
 excludeFields='summary,tagline'
+
+DEFAULTPREFS = {
+				'IGNORE_HIDDEN' : True,
+				'IGNORED_DIRS' : [".@__thumb",".AppleDouble","lost+found"],
+				'VALID_EXTENSIONS' : ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 
+														'fli', 'flv', 'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 
+														'nuv', 'ogm', 'ogv', 'tp', 'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr', 
+														'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm']		
+				}
 
 
 
@@ -37,28 +46,25 @@ class findMedia(object):
 	# Defaults used by the rest of the class
 	def __init__(self):
 		global retMsg
-		# Only init once during the lifetime of this
-		if not findMedia.init_already:
-			findMedia.init_already = True
-			retMsg = ['WebTools']
-			self.populatePrefs()
-			Log.Debug('******* Starting findMedia *******')
-		self.MediaChuncks = 40
-		self.CoreUrl = misc.GetLoopBack() + '/library/sections/'
-
+		global MediaChuncks
+		global CoreUrl
+		try:
+			# Only init once during the lifetime of this
+			if not findMedia.init_already:
+				findMedia.init_already = True
+				retMsg = ['WebTools']
+				self.populatePrefs()
+				Log.Debug('******* Starting findMedia *******')
+			self.MediaChuncks = 40
+			self.CoreUrl = misc.GetLoopBack() + '/library/sections/'
+		except exception, e:
+			Log.Critical('Exception in FM Init was %s' %(e))
 
 
 	''' Populate the defaults, if not already there '''
 	def populatePrefs(self):
 		if Dict['findMedia'] == None:
-			Dict['findMedia'] = {
-				'IGNORE_HIDDEN' : True,
-				'IGNORED_DIRS' : [".@__thumb",".AppleDouble","lost+found"],
-				'VALID_EXTENSIONS' : ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 
-														'fli', 'flv', 'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 
-														'nuv', 'ogm', 'ogv', 'tp', 'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr', 
-														'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm']		
-				}
+			Dict['findMedia'] = DEFAULTPREFS
 			Dict.Save()
 
 	''' Grap the tornado req, and process it '''
@@ -278,13 +284,11 @@ class findMedia(object):
 				runningState = -1
 				Log.Debug("*********************** FileSystem scan Paths: *****************************************")
 				bScanStatusCount = 0
-				# Wondering why I do below. Part of find-unmatched, and forgot....SIGH
-				files = str(filePath)[2:-2].replace("'", "").split(', ')				
 				#for filePath in files:
-				for filePath in filePath:
+				for Path in filePath:
 					# Decode filePath 
 					bScanStatusCount += 1
-					filePath2 = urllib.unquote(filePath).decode('utf8')
+					filePath2 = urllib.unquote(Path).decode('utf8')
 					filePath2 = misc.Unicodize(filePath2)					
 					Log.Debug("Handling filepath #%s: %s" %(bScanStatusCount, filePath2.encode('utf8', 'ignore')))
 					for root, subdirs, files in os.walk(filePath2):
@@ -297,16 +301,20 @@ class findMedia(object):
 							if bAbort:
 								Log.Info('Aborted in getFiles')
 								raise ValueError('Aborted')
-							if os.path.splitext(file)[1].lower()[1:] in Dict['findMedia']['VALID_EXTENSIONS']:
+							if os.path.splitext(file)[1].lower() in Dict['findMedia']['VALID_EXTENSIONS']:
 								# File has a valid extention
 								if file.startswith('.') and Dict['findMedia']['IGNORE_HIDDEN']:
 									continue
 								# Filter out local extras
 								if '-' in file:
 									if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1].lower() in Extras:
+										if DEBUGMODE:
+											Log.Debug('Ignoring Extras file %s' %(os.path.basename(file)))
 										continue
 								# filter out local extras directories
-								if os.path.basename(os.path.normpath(root)) in ExtrasDirs:
+								if os.path.basename(os.path.normpath(root)).lower() in ExtrasDirs:
+									if DEBUGMODE:
+										Log.Debug('Ignoring Extras dir %s' %(root))
 									continue															
 								composed_file = misc.Unicodize(Core.storage.join_path(root,file))						
 								if Platform.OS == 'Windows':

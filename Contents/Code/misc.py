@@ -46,7 +46,20 @@ class misc(object):
 		# Strip control characters.
 		s = re.sub(RE_UNICODE_CONTROL, '', s)
 		return s
-  
 
+
+	####################################################################################################
+	# This function will return the loopback address
+	####################################################################################################
+	def GetLoopBack(self):
+		# For now, simply return the IPV4 LB Addy, until PMS is better with this
+		return 'http://127.0.0.1:32400'
+		try:
+			httpResponse = HTTP.Request('http://[::1]:32400/web', immediate=True, timeout=5)
+			return 'http://[::1]:32400'
+		except:
+			return 'http://127.0.0.1:32400'
+
+misc = misc()
 
 
