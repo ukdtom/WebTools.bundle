@@ -71,7 +71,7 @@ $(function () {
                     success: function (data) {
                         data = JSON.parse(data);
                         downloadUrl = data.zipball_url;
-                        if (typeof (data.published_at) == 'undefined') {
+                        if (!data.published_at) {
                             document.location.href = '/'; //No new version available
                         } else if (anyNewVersion(version, data.tag_name)) {
                             $("#info_LocalVersion").html(version);
