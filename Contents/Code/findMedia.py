@@ -34,9 +34,9 @@ DEFAULTPREFS = {
 				'VALID_EXTENSIONS' : ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 
 														'fli', 'flv', 'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 
 														'nuv', 'ogm', 'ogv', 'tp', 'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr', 
-														'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm']		
+														'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm'],
+				'IGNORE_EXTRAS' : True
 				}
-
 
 
 class findMedia(object):	
@@ -67,6 +67,10 @@ class findMedia(object):
 	def populatePrefs(self):
 		if Dict['findMedia'] == None:
 			Dict['findMedia'] = DEFAULTPREFS
+			Dict.Save()
+		# New key from V3.0, so need to handle seperately
+		if 'IGNORE_EXTRAS' not in Dict['findMedia'].keys():
+			Dict['findMedia']['IGNORE_EXTRAS'] = True
 			Dict.Save()
 
 	''' Grap the tornado req, and process it '''
@@ -323,16 +327,17 @@ class findMedia(object):
 											Log.Debug('File hidden, so ignore : ' + file)
 										continue
 									# Filter out local extras
-									if '-' in file:
-										if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1].lower() in Extras:
+									if not Dict['findMedia']['IGNORE_EXTRAS']:
+										if '-' in file:
+											if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1].lower() in Extras:
+												if DEBUGMODE:
+													Log.Debug('Ignoring Extras file %s' %(os.path.basename(file)))
+												continue
+										# filter out local extras directories
+										if os.path.basename(os.path.normpath(root)).lower() in ExtrasDirs:
 											if DEBUGMODE:
-												Log.Debug('Ignoring Extras file %s' %(os.path.basename(file)))
-											continue
-									# filter out local extras directories
-									if os.path.basename(os.path.normpath(root)).lower() in ExtrasDirs:
-										if DEBUGMODE:
-											Log.Debug('Ignoring Extras dir %s' %(root))
-										continue															
+												Log.Debug('Ignoring Extras dir %s' %(root))
+											continue															
 									composed_file = misc.Unicodize(Core.storage.join_path(root,file))						
 									if Platform.OS == 'Windows':																		
 										# I hate windows
