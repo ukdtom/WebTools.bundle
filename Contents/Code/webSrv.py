@@ -17,6 +17,7 @@ from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.escape import json_encode, xhtml_escape
 
+
 import threading
 import os, sys
 
@@ -128,7 +129,6 @@ class LogoutHandler(BaseHandler):
 
 class LoginHandler(BaseHandler):
 	def get(self):
-		Log.Debug('Ged her')
 		isCorrectPath(self)
 		Log.Info('Returning login page: ' + Core.storage.join_path(getActualHTTPPath() , 'login.html'))
 		self.render(Core.storage.join_path(getActualHTTPPath(), 'login.html'), next=self.get_argument("next","/"))
@@ -313,7 +313,7 @@ class webTools2Handler(BaseHandler):
 			elif module == 'findMedia':
 				self = findMedia().reqprocess(self)
 			elif module == 'jsonExporter':
-#				self = jsonExporter().reqprocess(self)
+#				self = jsonExporter.reqprocess(self)
 				try:
 					m = getattr(module)
 
@@ -363,7 +363,7 @@ class webTools2Handler(BaseHandler):
 			elif module == 'scheduler':		
 				self = scheduler().reqprocessPost(self)
 			elif module == 'jsonExporter':	
-				self = jsonExporter().reqprocessPost(self)
+				self = jsonExporter.reqprocessPost(self)
 			else:
 				self.clear()
 				self.set_status(412)

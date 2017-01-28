@@ -39,7 +39,6 @@ class jsonExporter(object):
 
 	''' Grap the tornado req, and process it for a GET'''
 	def reqprocess(self, req):	
-		print 'Ged jason Get called'
 		function = req.get_argument('function', 'missing')
 		if function == 'missing':
 			req.clear()
@@ -172,7 +171,7 @@ class jsonExporter(object):
 						Actors.append(Actor)
 					media['Role'] = Actors
 				except Exception, e:
-					Log.Exception('Ged Exception', str(e))
+					Log.Exception('Exception in MakeFiles: ' + str(e))
 					pass									
 				# Let's start by grapping relevant files for this movie
 				fileNames = videoDetails.xpath('//Part')
