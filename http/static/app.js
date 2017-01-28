@@ -1,6 +1,6 @@
 ﻿var webtools = angular.module('webtools', ['ngRoute']);
 
-webtools.config(function ($interpolateProvider, $routeProvider, $locationProvider) {
+webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', function ($interpolateProvider, $routeProvider, $locationProvider) {
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
     $routeProvider
     .when("/", {
@@ -33,8 +33,12 @@ webtools.config(function ($interpolateProvider, $routeProvider, $locationProvide
         templateUrl: "/static/changelog/cl.html",
         controller: "clController"
     })
-    //Otherwise show 404 page doesnt exist
+    //Otherwise show page doesnt exist 404
     .otherwise({
         templateUrl: "/static/404/404.html"
     });
-})
+}]);
+
+webtools.run(['webtoolsService', function (webtoolsService) {
+    webtoolsService.initWebToolsVersion();
+}]);

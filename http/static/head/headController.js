@@ -1,9 +1,4 @@
-﻿angular.module('webtools').controller('headController', ['$scope', 'headModel', 'headService', function ($scope, headModel, headService) {
+﻿angular.module('webtools').controller('headController', ['$scope', 'headModel', 'headService', 'webtoolsModel', function ($scope, headModel, headService, webtoolsModel) {
+    $scope.webtoolsModel = webtoolsModel;
     $scope.headModel = headModel;
-
-    $scope.init = function () {
-        headService.initWebToolsVersion();
-    }
-
-    $scope.init();
 }]);

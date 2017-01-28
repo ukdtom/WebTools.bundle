@@ -1,0 +1,51 @@
+﻿/*
+    Dummy Block
+*/
+
+html{
+    /*background: url("../static/_shared/asfalt.png") repeat; /* Credit Subtlepatterns.com */
+}
+body{
+}
+::-webkit-scrollbar-thumb {
+}
+::-webkit-scrollbar-thumb:hover{
+}
+.content{
+}
+.line{
+}
+
+/* Login */
+.vertical-center {
+}
+.mainContainer{
+}
+
+/* Head */
+.head{
+}
+.head .title{
+}
+
+/* Menu */
+.menu{
+}
+.menu .item{
+}
+.menu .item:hover{
+}
+.menu .toggle{
+}
+.menu .toggle:hover{
+}
+
+/* Theme */
+.theme{
+}
+.theme .block{
+}
+.theme .block:hover:not(.activeTheme){
+}
+.theme .block.activeTheme{
+}

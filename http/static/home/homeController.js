@@ -1,3 +1,3 @@
-﻿angular.module('webtools').controller('homeController', ['$scope', function ($scope) {
-    
+﻿angular.module('webtools').controller('homeController', ['$scope', 'webtoolsModel', function ($scope, webtoolsModel) {
+    $scope.webtoolsModel = webtoolsModel;
 }]);

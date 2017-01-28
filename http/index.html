@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="webtools" ng-controller="webtoolsController">
     <head>
         <!--EXTERNAL CSS INIT-->
         <link rel="stylesheet" type="text/css" href="external/css/bootstrap.min.css"> <!-- No CSS preprocessor so no mapping for now -->
@@ -17,9 +17,11 @@
         <link rel="stylesheet" type="text/css" href="static/_shared/global.css" />
         <script src="static/app.js"></script>
 
-        <script src="static/home/homeController.js"></script>
-        <script src="static/content/contentController.js"></script>
         <script src="static/_shared/webtoolsModel.js"></script>
+        <script src="static/_shared/webtoolsService.js"></script>
+        <script src="static/_shared/webtoolsController.js"></script>
+
+        <script src="static/home/homeController.js"></script>
 
         <link rel="stylesheet" type="text/css" href="static/head/head.css" />
         <script src="static/head/headModel.js"></script>
@@ -61,13 +63,14 @@
         <script src="static/changelog/clService.js"></script>
         <script src="static/changelog/clController.js"></script>
 
+        <link rel="stylesheet" type="text/css" ng-href="custom_themes/{[{webtoolsThemeModel.activeTheme}]}" />
         <!-- META -->
         <meta charset="utf-8">
         <base href="/">
     </head>
-    <body ng-app="webtools">
+    <body>
         <div ng-include="'static/head/head.html'" class="head" ng-controller="headController"></div>
         <div ng-include="'static/menu/menu.html'" class="menu" ng-controller="menuController" ng-class="{animation: !menuModel.visible}"></div>
-        <div ng-view class="content" ng-controller="contentController" ng-class="{animation: !menuModel.visible}"></div>
+        <div ng-view class="content" ng-class="{animation: !webtoolsMenuModel.visible}"></div>
     </body>
 </html>
