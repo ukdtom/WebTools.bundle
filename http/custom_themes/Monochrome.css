@@ -22,6 +22,17 @@ body{
 .line{
     border-bottom: 1px solid rgba(254, 155, 0, 0.14);
 }
+webtools-loading{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+webtools-loading .webtoolsLoading {
+    color: rgb(240, 173, 78);
+}
+content-loading{
+}
+content-loading .contentLoading {
+    color: rgb(240, 173, 78);
+}
 
 /* Login */
 .vertical-center {

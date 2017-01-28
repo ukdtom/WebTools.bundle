@@ -1,4 +1,5 @@
-﻿angular.module('webtools').controller('themeController', ['$scope', 'themeModel', 'themeService', function ($scope, themeModel, themeService) {
+﻿angular.module('webtools').controller('themeController', ['$scope', 'themeModel', 'themeService', 'webtoolsModel', function ($scope, themeModel, themeService, webtoolsModel) {
+    $scope.webtoolsModel = webtoolsModel;
     $scope.themeModel = themeModel;
 
     themeService.getThemes();

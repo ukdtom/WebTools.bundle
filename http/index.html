@@ -1,9 +1,15 @@
-﻿<!DOCTYPE html>
+﻿<!--
+    CREATED BY OLIVER CHRISTENSEN
+    GitHub: Creoludifico
+    Plex Forum: omc1000
+-->
+<!DOCTYPE html>
 <html lang="en" ng-app="webtools" ng-controller="webtoolsController">
     <head>
         <!--EXTERNAL CSS INIT-->
         <link rel="stylesheet" type="text/css" href="external/css/bootstrap.min.css"> <!-- No CSS preprocessor so no mapping for now -->
         <link rel="stylesheet" type="text/css" href="external/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="external/css/font-awesome.min.css">
         
         <!--EXTERNAL SCRIPT INIT-->
         <script src="external/scripts/jquery-2.2.4.min.js"></script>
@@ -63,12 +69,16 @@
         <script src="static/changelog/clService.js"></script>
         <script src="static/changelog/clController.js"></script>
 
+        <script src="static/_shared/Directive/loading.js"></script>
+
         <link rel="stylesheet" type="text/css" ng-href="custom_themes/{[{webtoolsThemeModel.activeTheme}]}" />
+
         <!-- META -->
         <meta charset="utf-8">
         <base href="/">
     </head>
     <body>
+        <webtools-loading ng-if="webtoolsModel.globalLoading"></webtools-loading>
         <div ng-include="'static/head/head.html'" class="head" ng-controller="headController"></div>
         <div ng-include="'static/menu/menu.html'" class="menu" ng-controller="menuController" ng-class="{animation: !menuModel.visible}"></div>
         <div ng-view class="content" ng-class="{animation: !webtoolsMenuModel.visible}"></div>

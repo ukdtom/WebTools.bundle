@@ -44,6 +44,33 @@ body{
     transition: width 0.5s;
 }
 
+/* Loading */
+webtools-loading{
+    display: block;
+    z-index: 2;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+webtools-loading .webtoolsLoading {
+    position:fixed;
+    top: calc(50% - 50px);
+    left: calc(50% - 50px);
+    font-size:100px;
+    color: rgb(51, 122, 183);
+}
+content-loading{
+    margin-left:50px;
+    margin-top:30px;
+    display: block;
+    z-index: 2;
+}
+content-loading .contentLoading {
+    font-size:60px;
+    color: rgb(51, 122, 183);
+}
+
 /* Push Tops */
 .pushTopTrivial{
     margin-top:5px;

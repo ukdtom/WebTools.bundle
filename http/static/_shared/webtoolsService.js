@@ -1,5 +1,5 @@
 ﻿angular.module('webtools').service('webtoolsService', ['$http', '$window', '$log', 'webtoolsModel', function ($http, $window, $log, webtoolsModel) {
-
+    var self = this;
     //Private
     var anyNewVersion = function (currentVersion, latestVersion) {
         currentVersion = currentVersion.split(" ")[0].toString().split('.');
@@ -17,6 +17,7 @@
         return false;
     }
     var checkIsNewVersionAvailable = function (callback) {
+        webtoolsModel.globalLoading = true;
         $http.get(webtoolsModel.apiUrl, {
             params: {
                 "module": "git",
@@ -29,21 +30,26 @@
                 webtoolsModel.isNewVersionAvailable = true;
             }
             if (callback) callback(resp.data);
+            webtoolsModel.globalLoading = false;
         }, function (errroResp) {
-            log("var checkIsNewVersionAvailable - Could not check for new version", "Core", true)
+            self.log("var checkIsNewVersionAvailable - Could not check for new version", "Core", true);
+            webtoolsModel.globalLoading = false;
         });
     }
 
     //Public
     this.loadWebToolsVersion = function (callback) {
+        webtoolsModel.globalLoading = true;
         $http.get("/version")
         .then(function (resp) {
             webtoolsModel.version = resp.data.version;
             webtoolsModel.versionFormated = "WebTools - v" + resp.data.version;
+            webtoolsModel.globalLoading = false;
             checkIsNewVersionAvailable();
             if (callback) callback(resp.data);
         }), function (errroResp) {
-            log("webtoolsService.loadWebToolsVersion -  - Could not resolve WebToolVersion", "Core", true)
+            self.log("webtoolsService.loadWebToolsVersion -  - Could not resolve WebToolVersion", "Core", true);
+            webtoolsModel.globalLoading = false;
         };
     };
     this.log = function (text, location, error) {

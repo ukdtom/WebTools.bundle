@@ -61,6 +61,8 @@ $(function () {
     var login = function () {
         var user = $('input[name="user"]').val();
         var pwd = $('input[name="pwd"]').val();
+        var webToolsLoadingEle = $("webtools-loading");
+        webToolsLoadingEle.show();
 
         $.ajax({
             cache: false,
@@ -99,14 +101,17 @@ $(function () {
                         } else {
                             document.location.href = '/'; //On latest or newer version
                         }
+                        webToolsLoadingEle.hide();
                     },
                     error: function () {
                         document.location.href = '/';
+                        webToolsLoadingEle.hide();
                     }
                 });
             },
             error: function (data) {
                 console.log(data);
+                webToolsLoadingEle.hide();
             }
         });
     };
