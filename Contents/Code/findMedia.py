@@ -313,8 +313,8 @@ class findMedia(object):
 									Log.Info('Aborted in getFiles')
 									raise ValueError('Aborted')
 								if DEBUGMODE:
-									Log.Debug('File extention is : ' + os.path.splitext(file)[1].lower())
-								if os.path.splitext(file)[1].lower() in Dict['findMedia']['VALID_EXTENSIONS']:
+									Log.Debug('File extention is : ' + os.path.splitext(file)[1][1:].lower())
+								if os.path.splitext(file)[1][1:].lower() in Dict['findMedia']['VALID_EXTENSIONS']:
 									if DEBUGMODE:
 										Log.Debug('File has valid extention, so checking it out')
 									# File has a valid extention
