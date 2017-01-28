@@ -131,10 +131,16 @@ findmedia.show_options = function() {
 	if (findmedia.options.IGNORE_HIDDEN === true) {
 		ignore_hidden_checked = 'checked=' + findmedia.options.IGNORE_HIDDEN;
 	}
+
+	var ignore_extras_checked = '';
+	if (findmedia.options.IGNORE_EXTRAS === true) {
+	    ignore_extras_checked = 'checked=' + findmedia.options.IGNORE_EXTRAS;
+	}
 	
 	var options = [
 		'<tr><td colspan="2">Seperate values with , (comma).</td></tr>',	
 		'<tr><td>Ignore Hidden:</td><td><input type="checkbox" name="options_ignore_hidden" ' + ignore_hidden_checked + '></td></tr>',
+		'<tr><td>Ignore Extras:</td><td><input type="checkbox" name="options_ignore_extras" ' + ignore_extras_checked + '></td></tr>',
 		'<tr><td>Ignored Directories:</td><td><input type="text" name="options_ignored_dirs" value="' + ignored_dirs_string + '"></td></tr>',
 		'<tr><td>Valid Extensions:</td><td><input type="text" name="options_valid_extensions" value="' + valid_extensions_string + '"></td></tr>',
 		'<tr><td colspan="2"><button type="button" class="btn btn-default" onclick="findmedia.resetSettings();">Reset settings to default</button></td></tr>'
@@ -148,6 +154,7 @@ findmedia.show_options = function() {
 findmedia.save_options = function() {
 	console.log($("input[name=options_ignore_hidden]").prop('checked'));
 	findmedia.options.IGNORE_HIDDEN = $("input[name=options_ignore_hidden]").prop('checked');
+	findmedia.options.IGNORE_EXTRAS = $("input[name=options_ignore_extras]").prop('checked');
 	//if ($("input[name=options_ignore_hidden]").val() == 'on') {
 	//	findmedia.options.IGNORE_HIDDEN = true;
 	//}
