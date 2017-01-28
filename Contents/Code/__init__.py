@@ -22,7 +22,8 @@ from random import randint   #Used for Cookie generation
 import uuid			#Used for secrectKey
 import time
 import socket
-from consts import DEBUGMODE, VERSION, PREFIX, NAME, ICON
+from consts import DEBUGMODE, VERSION, PREFIX, NAME, ICON, consts
+#from consts import consts
 
 #********** Initialize *********
 def Start():

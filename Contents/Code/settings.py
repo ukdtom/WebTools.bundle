@@ -58,7 +58,6 @@ class settings(object):
 		Log.Debug('Recieved a call for setPwd')
 		try:
 			req.clear()
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			oldPwd = req.get_argument('oldPwd', 'missing')
 			if oldPwd == 'missing':
 				req.set_status(412)
@@ -91,7 +90,6 @@ class settings(object):
 		Log.Debug('Recieved a call for putSetting')
 		try:
 			req.clear()
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			name = req.get_argument('name', 'missing')
 			if name == 'missing':
 				req.set_status(412)
@@ -118,7 +116,6 @@ class settings(object):
 		Log.Debug('Recieved a call for getSetting')
 		try:
 			req.clear()
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			name = req.get_argument('name', 'missing')
 			if name == 'missing':
 				req.set_status(412)
@@ -154,7 +151,6 @@ class settings(object):
 			Log.Debug('Returning settings as %s' %(mySetting))
 			req.clear()
 			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(mySetting))
 			return req
 		except Ex.HTTPError, e:

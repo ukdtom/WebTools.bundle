@@ -186,7 +186,6 @@ class git(object):
 
 			req.clear()
 			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Upgraded ok')
 		except Exception, e:
 			Log.Critical('***************************************************************')
@@ -260,7 +259,6 @@ class git(object):
 				Log.Debug('Updates avail: ' + str(result))
 				req.clear()
 				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(result)
 			else:
 				Log.Debug('No bundles are installed')
@@ -270,7 +268,6 @@ class git(object):
 			Log.Exception('Fatal error happened in getUpdateList: ' + str(e))
 			req.clear()
 			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in getUpdateList ' + str(e))
 
 	''' This function will migrate bundles that has been installed without using our UAS into our UAS '''
@@ -390,13 +387,11 @@ class git(object):
 			else:
 				req.clear()
 				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(json.dumps(migratedBundles))
 		except Exception, e:
 			Log.Exception('Fatal error happened in migrate: ' + str(e))
 			req.clear()
 			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in migrate: ' + str(e))
 			return req
 
@@ -406,13 +401,11 @@ class git(object):
 		try:
 			req.clear()
 			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(Dict['uasTypes']))
 		except Exception, e:
 			Log.Exception('Exception in uasTypes: ' + str(e))
 			req.clear()
 			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in uasTypes: ' + str(e))
 			return req
 
@@ -456,7 +449,6 @@ class git(object):
 					if not cliForce: 
 						req.clear()
 						req.set_status(500)
-						req.set_header('Content-Type', 'application/json; charset=utf-8')
 						req.finish('Exception in updateUASCache: ' + errMsg)
 						return req
 					else:
@@ -469,7 +461,6 @@ class git(object):
 					if not cliForce:
 						req.clear()
 						req.set_status(500)
-						req.set_header('Content-Type', 'application/json; charset=utf-8')
 						req.finish('Exception in updateUASCache while downloading UAS repo from Github: ' + str(e))
 						return req					
 				for filename in zipfile:
@@ -506,14 +497,12 @@ class git(object):
 			if not cliForce:
 				req.clear()
 				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('UASCache is up to date')	
 		except Exception, e:
 			Log.Exception('Exception in updateUASCache ' + str(e))
 			if not cliForce:
 				req.clear()
 				req.set_status(500)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Exception in updateUASCache ' + str(e))
 				return req
 
@@ -523,7 +512,6 @@ class git(object):
 			Log.Debug('Installed channes are: ' + str(Dict['installed']))
 			req.clear()
 			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(Dict['installed']))
 		else:
 			Log.Debug('installed dict not found')
@@ -873,13 +861,11 @@ class git(object):
 			Log.Debug('******* Ending install *******')
 			req.clear()
 			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('All is cool')
 			return req
 		else:
 			Log.Critical('Fatal error happened in install for :' + url)
 			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in install for :' + url + ' with branch ' + branch)
 			return req
 
@@ -928,13 +914,11 @@ class git(object):
 			else:
 				req.clear()
 				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish(str(response))
 		except Exception, e:
 			Log.Exception('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
 			req.clear()
 			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
 
 	''' Get list of avail bundles in the UAS '''
@@ -956,13 +940,11 @@ class git(object):
 			Log.Debug('getListofBundles returned: ' + str(results))
 			req.clear()
 			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(results))
 		except:
 			Log.Critical('Fatal error happened in getListofBundles')
 			req.clear()
 			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in getListofBundles')
 
 	''' Get release info for a bundle '''
@@ -1007,6 +989,5 @@ class git(object):
 			Log.Critical('Fatal error happened in getReleaseInfo')
 			req.clear()
 			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in getInfo')
 
