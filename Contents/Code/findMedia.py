@@ -166,12 +166,14 @@ class findMedia(object):
 	def resetSettings(self, req):
 		Dict['findMedia'] = None
 		self.populatePrefs()
-		req.clear()
+		req.clear()		
+		req.set_header('Content-Type', 'application/json; charset=utf-8')
 		req.set_status(200)
 
 	# Return the settings of this plugin
 	def getSettings(self, req):
-		req.clear()
+		req.clear()		
+		req.set_header('Content-Type', 'application/json; charset=utf-8')
 		req.set_status(200)
 		req.finish(json.dumps(Dict['findMedia']))
 
@@ -180,6 +182,7 @@ class findMedia(object):
 		# Are we in idle mode?
 		if runningState == 0:
 			req.clear()		
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			if 'WebTools' in retMsg:
 				req.set_status(204)
 			else:
@@ -201,6 +204,7 @@ class findMedia(object):
 		global runningState		
 		req.clear()		
 		req.set_status(200)
+		req.set_header('Content-Type', 'application/json; charset=utf-8')
 		if runningState == 0:
 			req.finish('Idle')	
 		else:
@@ -508,11 +512,13 @@ class findMedia(object):
 			else:
 				req.clear()		
 				req.set_status(409)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Scanning already in progress')				
 		except Exception, ex:
 			Log.Exception('Fatal error happened in scanSection: ' + str(ex))
 			req.clear()
 			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in scanSection: ' + str(ex))
 			return req
 

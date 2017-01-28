@@ -74,6 +74,7 @@ class jsonExporter(object):
 		global runningState		
 		req.clear()		
 		req.set_status(200)
+		req.set_header('Content-Type', 'application/json; charset=utf-8')
 		if runningState == 0:
 			req.finish('Idle')	
 		else:

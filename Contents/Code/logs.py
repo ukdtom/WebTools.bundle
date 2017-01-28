@@ -34,6 +34,7 @@ class logs(object):
 			Log.Exception('Fatal error happened in Logs list: ' + str(e))
 			req.clear()
 			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in Logs list: ' + str(e))
 		Log.Debug('Log Root dir is: ' + self.LOGDIR)
 
@@ -80,11 +81,13 @@ class logs(object):
 			Log.Debug('FrontEnd: ' + text)
 			req.clear()
 			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Entry logged')
 		except Exception, e:
 			Log.Exception('Fatal error happened in Logs entry: ' + str(e))
 			req.clear()
 			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in Logs entry: ' + str(e))
 
 	''' This metode will return a list of logfiles. accepts a filter parameter '''
@@ -107,11 +110,13 @@ class logs(object):
 			Log.Debug('Returning %s' %retFiles)		
 			req.clear()
 			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(sorted(retFiles)))
 		except Exception, e:
 			Log.Exception('Fatal error happened in Logs list: ' + str(e))
 			req.clear()
 			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in Logs list: ' + str(e))
 
 	''' This will return contents of the logfile as an array. Req. a parameter named fileName '''
@@ -137,12 +142,14 @@ class logs(object):
 					retFile.append(line)
 			req.clear()
 			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(retFile))
 			return req
 		except Exception, e:
 			Log.Exception('Fatal error happened in Logs show: ' + str(e))
 			req.clear()
 			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in Logs show: ' + str(e))
 
 	''' This will download a zipfile with the complete log directory. if parameter fileName is specified, only that file will be downloaded, and not zipped'''
@@ -184,6 +191,7 @@ class logs(object):
 						Log.Exception('Fatal error happened in Logs download: ' + str(e))
 						req.clear()
 						req.set_status(500)
+						req.set_header('Content-Type', 'application/json; charset=utf-8')
 						req.finish('Fatal error happened in Logs download: ' + str(e))
 			else:
 				try:
@@ -210,10 +218,12 @@ class logs(object):
 					Log.Exception('Fatal error happened in Logs download: ' + str(e))
 					req.clear()
 					req.set_status(500)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
 					req.finish('Fatal error happened in Logs download: ' + str(e))
 		except Exception, e:
 			Log.Exception('Fatal error happened in Logs download: ' + str(e))
 			req.clear()
 			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in Logs download: ' + str(e))
 
