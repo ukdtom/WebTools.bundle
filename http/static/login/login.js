@@ -22,6 +22,18 @@ $(function () {
                 console.log("WEBTOOLS NOT AVAILABLE!");
             }
         });
+
+        //$.ajax({ //YOU WILL NEVER BE AUTH FOR THIS
+        //    url: '/webtools2?module=settings&function=getSetting&name=wt_csstheme',
+        //    cache: false,
+        //    success: function (data) {
+        //        $("#themeCSS").attr("href", "custom_themes/" + data);
+        //    },
+        //    error: function (data) {
+        //        console.log("THEME NOT AVAILABLE!");
+        //    }
+        //});
+
         $("#info_Download").click(downloadLatest);
         $("#login").click(login);
     }

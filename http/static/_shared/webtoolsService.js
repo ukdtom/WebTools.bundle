@@ -17,7 +17,7 @@
         return false;
     }
     var checkIsNewVersionAvailable = function (callback) {
-        $http.get("/webtools2", {
+        $http.get(webtoolsModel.apiUrl, {
             params: {
                 "module": "git",
                 "function": "getReleaseInfo",
@@ -35,7 +35,7 @@
     }
 
     //Public
-    this.initWebToolsVersion = function (callback) {
+    this.loadWebToolsVersion = function (callback) {
         $http.get("/version")
         .then(function (resp) {
             webtoolsModel.version = resp.data.version;
@@ -43,17 +43,18 @@
             checkIsNewVersionAvailable();
             if (callback) callback(resp.data);
         }), function (errroResp) {
-            log("webtoolsService.initWebToolsVersion -  - Could not resolve WebToolVersion", "Core", true)
+            log("webtoolsService.loadWebToolsVersion -  - Could not resolve WebToolVersion", "Core", true)
         };
     };
     this.log = function (text, location, error) {
         if (!location) location = "Empty";
 
-        $http.post("/webtools2?module=logs&function=entry&text=[" + text + "] " + $window.encodeURIComponent(location), {
-            dataType: "text"
-        })
-        .then(function (resp) {
-            if (error) $log.error("Error occurred! " + text + " " + location);
+        var text = location + " - " + text;  
+        $http({
+            method: "POST",
+            url: webtoolsModel.apiUrl + "?module=logs&function=entry&text=" + text,
+        }).then(function (resp) {
+            if (error) $log.error("Error occurred! " + text);
         }), function (errorResp) {
             $log.error("webtoolsService.log - LOGGING NOT AVAILABLE! " + text + " " + location + " - RESPONSE: " + errorResp);
         };

@@ -4,6 +4,6 @@
     <div ng-repeat="theme in themeModel.themes" class="pushTopMinor">
         <div class="block pushTopTrivial pull-left textBold600" 
              ng-class="{'activeTheme' : theme === themeModel.activeTheme}" 
-             ng-click="themeModel.activeTheme = theme;">{[{theme}]}</div>
+             ng-click="selectTheme(theme);">{[{theme}]}</div>
     </div>
 </div>

@@ -39,6 +39,7 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
     });
 }]);
 
-webtools.run(['webtoolsService', function (webtoolsService) {
-    webtoolsService.initWebToolsVersion();
+webtools.run(['webtoolsService', 'themeService', function (webtoolsService, themeService) {
+    webtoolsService.loadWebToolsVersion();
+    themeService.loadActiveTheme();
 }]);
