@@ -77,6 +77,29 @@ help:hover {
     background: rgba(254, 155, 0, 0.7);
 }
 
+/* Sub Management */
+.sub{
+}
+.sub .rowShow{
+    background: rgba(0, 0, 0, 0.45);
+    box-shadow: 10px 10px 10px 1px rgba(255, 203, 130, 0.07);
+}
+.sub .rowShow.expanded .lineShow .type{
+    border-bottom-color: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow.expanded .lineShow .title{
+    border-bottom-color: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow .lineShow .contentShow .detail{
+    background: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem{
+    border-bottom-color: rgba(255, 255, 255, 0.10);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.checked{
+    background: rgba(255, 255, 255, 0.04);
+}
+
 /* Theme */
 .theme{
 }

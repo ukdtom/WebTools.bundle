@@ -77,6 +77,29 @@ help {
     background: rgba(64, 139, 255, 0.73);
 }
 
+/* Sub Management */
+.sub{
+}
+.sub .rowShow{
+    background: rgba(0, 77, 255, 0.15);
+    box-shadow: 10px 10px 10px 1px black;
+}
+.sub .rowShow.expanded .lineShow .type{
+    border-bottom-color: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow.expanded .lineShow .title{
+    border-bottom-color: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow .lineShow .contentShow .detail{
+    background: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem{
+    border-bottom-color: rgba(255, 255, 255, 0.10);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.checked{
+    background: rgba(255, 255, 255, 0.04);
+}
+
 /* Theme */
 .theme{
 }

@@ -95,6 +95,19 @@ help:hover {
 .pushTopMajor{
     margin-top:35px;
 }
+/* Push Bóooottoms */
+.pushBottomTrivial{
+    margin-bottom:5px;
+}
+.pushBottomMinor{
+    margin-bottom:15px;
+}
+.pushBottomNormal{
+    margin-bottom:25px;
+}
+.pushBottomMajor{
+    margin-bottom:35px;
+}
 /* Push Lefts */
 .pushLeftTrivial{
     margin-left:5px;
@@ -107,6 +120,19 @@ help:hover {
 }
 .pushLeftMajor{
     margin-left:35px;
+}
+/* Push Rights */
+.pushRightTrivial{
+    margin-right:5px;
+}
+.pushRightMinor{
+    margin-right:15px;
+}
+.pushRightNormal{
+    margin-right:25px;
+}
+.pushRightMajor{
+    margin-right:35px;
 }
 
 /* Size */
@@ -144,4 +170,8 @@ help:hover {
     margin-right: 3px;
     height: 1px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+.noLeftRightMargin{ /* Just aint happy without it :-) */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }

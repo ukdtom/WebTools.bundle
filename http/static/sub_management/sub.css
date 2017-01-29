@@ -1,19 +1,19 @@
 ﻿.sub{
 }
 
+/* Shows */
 .sub .rowShow{
     margin-top:10px;
-    height: 50px;
+    min-height: 50px;
     width: 100%;
     background: rgba(0, 77, 255, 0.15);
-    box-shadow: 10px 10px 20px 1px black;
-    color: #ffffff;
+    box-shadow: 10px 10px 10px 1px black;
     border-radius: 5px;
     overflow:hidden;
 }
 
 .sub .rowShow.expanded{
-    height:300px;
+    min-height:200px;
 }
 
 .sub .rowShow .lineShow{
@@ -21,12 +21,14 @@
 }
 
 .sub .rowShow .lineShow .type{
-    border-right: solid 1px rgba(255, 255, 255, 0.03);
-    height:100%;
+    min-height: 50px;
     margin-left: -10px;
     width:40px;
     float:left;
     cursor:pointer;
+}
+.sub .rowShow.expanded .lineShow .type{
+    border-bottom: solid 1px rgba(255, 255, 255, 0.03);
 }
 
 .sub .rowShow .lineShow .type img{
@@ -49,13 +51,47 @@
     border-bottom: solid 1px rgba(255, 255, 255, 0.03);
 }
 
+/* Details */
 .sub .rowShow .lineShow .contentShow{
     float:left;
     padding:12px;
+    width:100%;
 }
 
+.sub .rowShow .lineShow .contentShow .detail{
+    min-height:60px;
+    width:100%;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius:5px;
+    padding:10px;
+}
+
+.sub .rowShow .lineShow .contentShow .detail .subItem{
+    border-bottom: solid 1px rgba(255, 255, 255, 0.10);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.checked{
+    background: rgba(255, 255, 255, 0.04);
+    border-radius:3px;
+}
+
+.sub .rowShow .lineShow .contentShow .detail .subItem div:not(.selectSubtitle){
+    padding-top:5px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem .selectSubtitle{
+    cursor:pointer;
+    font-size:20px;
+}
+
+/* Responsive */
 @media screen and (max-width: 480px) {
     .sub .rowShow .lineShow .type{
         display:none;
+    }
+    .sub .rowShow .lineShow .contentShow .detail .subHeader{
+        display:none;
+    }
+    .sub .rowShow .lineShow .contentShow .detail .subItem div{
+        float:none;
+        width:initial;
     }
 }

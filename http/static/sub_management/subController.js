@@ -5,5 +5,8 @@
 
     $scope.expandShow = function (show) {
         show.expanded = !show.expanded;
+        if (!show.details) {
+            subService.getShowDetails(show);
+        }
     }
 }]);
