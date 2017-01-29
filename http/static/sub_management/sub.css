@@ -1,2 +1,97 @@
 ﻿.sub{
 }
+
+/* Shows */
+.sub .rowShow{
+    margin-top:10px;
+    min-height: 50px;
+    width: 100%;
+    background: rgba(0, 77, 255, 0.15);
+    box-shadow: 10px 10px 10px 1px black;
+    border-radius: 5px;
+    overflow:hidden;
+}
+
+.sub .rowShow.expanded{
+    min-height:200px;
+}
+
+.sub .rowShow .lineShow{
+    height:100%;
+}
+
+.sub .rowShow .lineShow .type{
+    min-height: 50px;
+    margin-left: -10px;
+    width:40px;
+    float:left;
+    cursor:pointer;
+}
+.sub .rowShow.expanded .lineShow .type{
+    border-bottom: solid 1px rgba(255, 255, 255, 0.03);
+}
+
+.sub .rowShow .lineShow .type img{
+    width: 34px;
+    height: 34px;
+    padding: 4px;
+    margin-top: 7px;
+    border-radius: 10px;
+}
+
+.sub .rowShow .lineShow .title{
+    float:left;
+    padding:12px;
+    height:50px;
+    width: calc(100% - 50px);
+    cursor:pointer;
+}
+
+.sub .rowShow.expanded .lineShow .title{
+    border-bottom: solid 1px rgba(255, 255, 255, 0.03);
+}
+
+/* Details */
+.sub .rowShow .lineShow .contentShow{
+    float:left;
+    padding:12px;
+    width:100%;
+}
+
+.sub .rowShow .lineShow .contentShow .detail{
+    min-height:60px;
+    width:100%;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius:5px;
+    padding:10px;
+}
+
+.sub .rowShow .lineShow .contentShow .detail .subItem{
+    border-bottom: solid 1px rgba(255, 255, 255, 0.10);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.checked{
+    background: rgba(255, 255, 255, 0.04);
+    border-radius:3px;
+}
+
+.sub .rowShow .lineShow .contentShow .detail .subItem div:not(.selectSubtitle){
+    padding-top:5px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem .selectSubtitle{
+    cursor:pointer;
+    font-size:20px;
+}
+
+/* Responsive */
+@media screen and (max-width: 480px) {
+    .sub .rowShow .lineShow .type{
+        display:none;
+    }
+    .sub .rowShow .lineShow .contentShow .detail .subHeader{
+        display:none;
+    }
+    .sub .rowShow .lineShow .contentShow .detail .subItem div{
+        float:none;
+        width:initial;
+    }
+}

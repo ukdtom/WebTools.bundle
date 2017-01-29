@@ -1,4 +1,4 @@
-﻿var webtools = angular.module('webtools', ['ngRoute']);
+﻿var webtools = angular.module('webtools', ['ngRoute', 'ngDialog']);
 
 webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', function ($interpolateProvider, $routeProvider, $locationProvider) {
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
@@ -39,6 +39,7 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
     });
 }]);
 
-webtools.run(['webtoolsService', function (webtoolsService) {
-    webtoolsService.initWebToolsVersion();
+webtools.run(['webtoolsService', 'themeService', function (webtoolsService, themeService) {
+    webtoolsService.loadWebToolsVersion();
+    themeService.loadActiveTheme();
 }]);

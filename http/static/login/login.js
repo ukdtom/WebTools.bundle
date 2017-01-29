@@ -22,6 +22,18 @@ $(function () {
                 console.log("WEBTOOLS NOT AVAILABLE!");
             }
         });
+
+        //$.ajax({ //YOU WILL NEVER BE AUTH FOR THIS
+        //    url: '/webtools2?module=settings&function=getSetting&name=wt_csstheme',
+        //    cache: false,
+        //    success: function (data) {
+        //        $("#themeCSS").attr("href", "custom_themes/" + data);
+        //    },
+        //    error: function (data) {
+        //        console.log("THEME NOT AVAILABLE!");
+        //    }
+        //});
+
         $("#info_Download").click(downloadLatest);
         $("#login").click(login);
     }
@@ -49,6 +61,8 @@ $(function () {
     var login = function () {
         var user = $('input[name="user"]').val();
         var pwd = $('input[name="pwd"]').val();
+        var webToolsLoadingEle = $("webtools-loading");
+        webToolsLoadingEle.show();
 
         $.ajax({
             cache: false,
@@ -87,14 +101,17 @@ $(function () {
                         } else {
                             document.location.href = '/'; //On latest or newer version
                         }
+                        webToolsLoadingEle.hide();
                     },
                     error: function () {
                         document.location.href = '/';
+                        webToolsLoadingEle.hide();
                     }
                 });
             },
             error: function (data) {
                 console.log(data);
+                webToolsLoadingEle.hide();
             }
         });
     };

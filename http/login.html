@@ -1,9 +1,20 @@
+<!--
+    CREATED BY OLIVER CHRISTENSEN
+    GitHub: Creoludifico
+    Plex Forum: omc1000
+-->
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <title>WebTools</title>
+        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+        <base href="/">
+        <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+
         <!--EXTERNAL CSS INIT-->
         <link rel="stylesheet" type="text/css" href="external/css/bootstrap.min.css"> <!-- No CSS preprocessor so no mapping for now -->
         <link rel="stylesheet" type="text/css" href="external/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="external/css/font-awesome.min.css">
 
         <!--EXTERNAL SCRIPT INIT-->
         <script src="external/scripts/jquery-3.1.1.min.js"></script>
@@ -14,9 +25,14 @@
         <link rel="stylesheet" type="text/css" href="static/_shared/global.css" />
         <link rel="stylesheet" type="text/css" href="static/head/head.css" />
         <link rel="stylesheet" type="text/css" href="static/login/login.css" />
+        <link id="themeCSS" rel="stylesheet" type="text/css" href="custom_themes/WhiteBlue.css" /> <!-- No Auth = always WhiteBlue -->
         <script src="static/login/login.js"></script>
     </head>
     <body>
+        <webtools-loading style="display:none;">
+            <div class="webtoolsLoading fa fa-cog fa-spin fa-3x fa-fw"></div>
+        </webtools-loading>
+
         <div class="head">
             <div class="title" id="webtoolsVersion">Loading...</div>
         </div>

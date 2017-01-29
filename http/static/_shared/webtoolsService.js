@@ -1,5 +1,5 @@
 ﻿angular.module('webtools').service('webtoolsService', ['$http', '$window', '$log', 'webtoolsModel', function ($http, $window, $log, webtoolsModel) {
-
+    var self = this;
     //Private
     var anyNewVersion = function (currentVersion, latestVersion) {
         currentVersion = currentVersion.split(" ")[0].toString().split('.');
@@ -17,7 +17,8 @@
         return false;
     }
     var checkIsNewVersionAvailable = function (callback) {
-        $http.get("/webtools2", {
+        webtoolsModel.globalLoading = true;
+        $http.get(webtoolsModel.apiUrl, {
             params: {
                 "module": "git",
                 "function": "getReleaseInfo",
@@ -29,34 +30,40 @@
                 webtoolsModel.isNewVersionAvailable = true;
             }
             if (callback) callback(resp.data);
+            webtoolsModel.globalLoading = false;
         }, function (errroResp) {
-            log("var checkIsNewVersionAvailable - Could not check for new version", "Core", true)
+            self.log("var checkIsNewVersionAvailable - Could not check for new version", "Core", true);
+            webtoolsModel.globalLoading = false;
         });
     }
 
     //Public
-    this.initWebToolsVersion = function (callback) {
+    this.loadWebToolsVersion = function (callback) {
+        webtoolsModel.globalLoading = true;
         $http.get("/version")
         .then(function (resp) {
             webtoolsModel.version = resp.data.version;
             webtoolsModel.versionFormated = "WebTools - v" + resp.data.version;
+            webtoolsModel.globalLoading = false;
             checkIsNewVersionAvailable();
             if (callback) callback(resp.data);
-        }), function (errroResp) {
-            log("webtoolsService.initWebToolsVersion -  - Could not resolve WebToolVersion", "Core", true)
-        };
+        }, function (errroResp) {
+            self.log("webtoolsService.loadWebToolsVersion -  - Could not resolve WebToolVersion", "Core", true);
+            webtoolsModel.globalLoading = false;
+        });
     };
     this.log = function (text, location, error) {
         if (!location) location = "Empty";
 
-        $http.post("/webtools2?module=logs&function=entry&text=[" + text + "] " + $window.encodeURIComponent(location), {
-            dataType: "text"
-        })
-        .then(function (resp) {
-            if (error) $log.error("Error occurred! " + text + " " + location);
-        }), function (errorResp) {
+        var text = location + " - " + text;  
+        $http({
+            method: "POST",
+            url: webtoolsModel.apiUrl + "?module=logs&function=entry&text=" + text,
+        }).then(function (resp) {
+            if (error) $log.error("Error occurred! " + text);
+        }, function (errorResp) {
             $log.error("webtoolsService.log - LOGGING NOT AVAILABLE! " + text + " " + location + " - RESPONSE: " + errorResp);
-        };
+        });
     };
 
 }]);

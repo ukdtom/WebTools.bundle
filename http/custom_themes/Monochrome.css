@@ -22,6 +22,23 @@ body{
 .line{
     border-bottom: 1px solid rgba(254, 155, 0, 0.14);
 }
+webtools-loading{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+webtools-loading .webtoolsLoading {
+    color: rgb(240, 173, 78);
+}
+content-loading{
+}
+content-loading .contentLoading {
+    color: rgb(240, 173, 78);
+}
+help {
+    color: rgba(238, 238, 238, 0.80);
+}
+help:hover {
+    color: rgba(238, 238, 238, 1);
+}
 
 /* Login */
 .vertical-center {
@@ -58,6 +75,29 @@ body{
 }
 .menu .toggle:hover{
     background: rgba(254, 155, 0, 0.7);
+}
+
+/* Sub Management */
+.sub{
+}
+.sub .rowShow{
+    background: rgba(0, 0, 0, 0.45);
+    box-shadow: 10px 10px 10px 1px rgba(255, 203, 130, 0.07);
+}
+.sub .rowShow.expanded .lineShow .type{
+    border-bottom-color: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow.expanded .lineShow .title{
+    border-bottom-color: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow .lineShow .contentShow .detail{
+    background: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem{
+    border-bottom-color: rgba(255, 255, 255, 0.10);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.checked{
+    background: rgba(255, 255, 255, 0.04);
 }
 
 /* Theme */

@@ -1,16 +1,44 @@
 <div class="sub">
-    <div class="textSize4 textBold600">Subtitle Management</div>
+    <div class="textSize4 textBold600 pull-left">Subtitle Management</div><help src="static/sub_management/subHelp.html"></help>
+    <div> <b>IT'S NOT DONE YET TOMMY :-)</b></div><br />
     <div class="pushTopTrivial">This is an unofficial manager for subtitles.</div>
-    <div>Usage is on your own risk!</div>
+    <div>Usage is on your own risk!</div> 
+    <div class="pushTopMinor">To get started, select one of your Libraries or click on the "?" for additional help</div>
 
-    <div class="pushTopMinor">Current features:</div>
-    <div>List all subtitles for a movie/tv show in your library. Both local (next to the movie in it's folder or one subfolder) and in the agents folder.</div>
-    <div>View the subtitle and see it's contents to determine what to delete.</div>
-    <div>Delete selected sidecar from the harddrive.</div>
-    <div>Options for output.</div>
-
-    <div class="pushTopMinor">To get started, select one of your Libraries via the Libraries menu at the top.</div>
-
-    <br /><br /><br />
-    All the above text will get a rework when the tool has been implemented and the new functions will play<br />
+    <content-loading ng-if="webtoolsModel.subLoading" class="pushTopMinor"></content-loading>
+    <div ng-if="!webtoolsModel.subLoading" class="pushTopMinor">
+        <div class="row rowShow" ng-repeat="show in subModel.shows track by show.key | orderBy : 'title'" ng-class="{'expanded': show.expanded}">
+            <div class="col-sm-12 lineShow">
+                <div class="type" ng-click="expandShow(show)"><img ng-src="icons/{[{show.type}]}.png" /></div>
+                <div class="title textSize3 textBold600" ng-click="expandShow(show)">{[{show.title}]}</div>
+                <div class="contentShow" ng-if="show.expanded">
+                    <content-loading ng-if="show.loading"></content-loading>
+                    <div ng-if="!show.loading">
+                        <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.details track by detail.key | orderBy : 'title'">
+                            <div class="col-sm-12 detail">
+                                <div class="row pushBottomMinor">
+                                    <div class="col-xs-12 textBold900">{[{detail.title}]}</div>
+                                </div>
+                                <div class="row subHeader noLeftRightMargin">
+                                    <div class="col-xs-2 textBold600"></div>
+                                    <div class="col-xs-3 textBold600">Lang</div>
+                                    <div class="col-xs-4 textBold600">Location</div>
+                                    <div class="col-xs-3 textBold600">Codec</div>
+                                </div>
+                                <div class="row subItem noLeftRightMargin pushTopTrivial" ng-repeat="subtitle in detail.subtitles track by subtitle.key" ng-class="{'checked': subtitle.checked}">
+                                    <div class="col-xs-2 selectSubtitle" ng-click="subtitle.checked = !subtitle.checked">
+                                        <div class="fa fa-square-o" ng-if="!subtitle.checked"></div>
+                                        <div class="fa fa-check-square-o" ng-if="subtitle.checked"></div>
+                                    </div>
+                                    <div class="col-xs-3"><span ng-if="subtitle.languageCode">{[{subtitle.languageCode}]}</span><span ng-if="!subtitle.languageCode">None</span></div>
+                                    <div class="col-xs-4">{[{subtitle.location}]}</div>
+                                    <div class="col-xs-3">{[{subtitle.codec}]}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
