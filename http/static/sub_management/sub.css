@@ -1,2 +1,61 @@
 ﻿.sub{
 }
+
+.sub .rowShow{
+    margin-top:10px;
+    height: 50px;
+    width: 100%;
+    background: rgba(0, 77, 255, 0.15);
+    box-shadow: 10px 10px 20px 1px black;
+    color: #ffffff;
+    border-radius: 5px;
+    overflow:hidden;
+}
+
+.sub .rowShow.expanded{
+    height:300px;
+}
+
+.sub .rowShow .lineShow{
+    height:100%;
+}
+
+.sub .rowShow .lineShow .type{
+    border-right: solid 1px rgba(255, 255, 255, 0.03);
+    height:100%;
+    margin-left: -10px;
+    width:40px;
+    float:left;
+    cursor:pointer;
+}
+
+.sub .rowShow .lineShow .type img{
+    width: 34px;
+    height: 34px;
+    padding: 4px;
+    margin-top: 7px;
+    border-radius: 10px;
+}
+
+.sub .rowShow .lineShow .title{
+    float:left;
+    padding:12px;
+    height:50px;
+    width: calc(100% - 50px);
+    cursor:pointer;
+}
+
+.sub .rowShow.expanded .lineShow .title{
+    border-bottom: solid 1px rgba(255, 255, 255, 0.03);
+}
+
+.sub .rowShow .lineShow .contentShow{
+    float:left;
+    padding:12px;
+}
+
+@media screen and (max-width: 480px) {
+    .sub .rowShow .lineShow .type{
+        display:none;
+    }
+}

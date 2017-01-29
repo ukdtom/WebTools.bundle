@@ -25,10 +25,10 @@
             themeModel.activeTheme = resp.data;
             if (callback) callback(resp.data);
             webtoolsModel.themeLoading = false;
-        }), function (errorResp) {
+        }, function (errorResp) {
             webtoolsService.log("themeService.loadActiveTheme - Theme could not be loaded!", "Theme", true);
             webtoolsModel.themeLoading = false;
-        };
+        });
     }
 
     this.saveTheme = function (theme, callback) {
@@ -37,8 +37,8 @@
             url: webtoolsModel.apiUrl + "?module=settings&function=putSetting&name=wt_csstheme&value=" + theme,
         }).then(function (resp) {
             if (callback) callback(resp.data);
-        }), function (errorResp) {
+        }, function (errorResp) {
             webtoolsService.log("themeService.saveTheme - Theme could not get saved!", "Theme", true);
-        };
+        });
     }
 }]);

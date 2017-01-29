@@ -33,6 +33,12 @@ content-loading{
 content-loading .contentLoading {
     color: rgb(240, 173, 78);
 }
+help {
+    color: rgba(238, 238, 238, 0.80);
+}
+help:hover {
+    color: rgba(238, 238, 238, 1);
+}
 
 /* Login */
 .vertical-center {

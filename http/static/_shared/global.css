@@ -71,6 +71,17 @@ content-loading .contentLoading {
     color: rgb(51, 122, 183);
 }
 
+/* Help */
+help {
+    font-size:22px;
+    margin:0 15px;
+    cursor:pointer;
+    color: rgba(217, 237, 247, 0.80);
+}
+help:hover {
+    color: rgba(217, 237, 247, 1);
+}
+
 /* Push Tops */
 .pushTopTrivial{
     margin-top:5px;

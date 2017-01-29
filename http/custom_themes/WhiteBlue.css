@@ -36,6 +36,9 @@ content-loading{
 content-loading .contentLoading {
     color: rgb(51, 122, 183);
 }
+help {
+    color: rgba(217, 237, 247, 0.80);
+}
 
 /* Login */
 .vertical-center {

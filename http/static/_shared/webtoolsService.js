@@ -47,10 +47,10 @@
             webtoolsModel.globalLoading = false;
             checkIsNewVersionAvailable();
             if (callback) callback(resp.data);
-        }), function (errroResp) {
+        }, function (errroResp) {
             self.log("webtoolsService.loadWebToolsVersion -  - Could not resolve WebToolVersion", "Core", true);
             webtoolsModel.globalLoading = false;
-        };
+        });
     };
     this.log = function (text, location, error) {
         if (!location) location = "Empty";
@@ -61,9 +61,9 @@
             url: webtoolsModel.apiUrl + "?module=logs&function=entry&text=" + text,
         }).then(function (resp) {
             if (error) $log.error("Error occurred! " + text);
-        }), function (errorResp) {
+        }, function (errorResp) {
             $log.error("webtoolsService.log - LOGGING NOT AVAILABLE! " + text + " " + location + " - RESPONSE: " + errorResp);
-        };
+        });
     };
 
 }]);

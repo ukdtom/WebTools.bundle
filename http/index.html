@@ -15,13 +15,16 @@
         <link rel="stylesheet" type="text/css" href="external/css/bootstrap.min.css"> <!-- No CSS preprocessor so no mapping for now -->
         <link rel="stylesheet" type="text/css" href="external/css/bootstrap-theme.min.css">
         <link rel="stylesheet" type="text/css" href="external/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="external/css/ngDialog.min.css">
+        <link rel="stylesheet" type="text/css" href="external/css/ngDialog-theme-default.min.css">
         
         <!--EXTERNAL SCRIPT INIT-->
         <script src="external/scripts/jquery-2.2.4.min.js"></script>
         <script src="external/scripts/bootstrap.min.js"></script>
         <script src="external/scripts/angular.min.js"></script>
         <script src="external/scripts/angular-route.min.js"></script>
-        <script src="external/scripts/languagecodes.js"></script>        
+        <script src="external/scripts/ngDialog.min.js"></script>
+        <script src="external/scripts/languagecodes.js"></script>
         
         <!-- STATIC -->
         <!-- TODO: Bundle Config? -->
@@ -74,7 +77,8 @@
         <script src="static/changelog/clService.js"></script>
         <script src="static/changelog/clController.js"></script>
 
-        <script src="static/_shared/Directive/loading.js"></script>
+        <script src="static/_shared/Directive/loading/loading.js"></script>
+        <script src="static/_shared/Directive/help/help.js"></script>
 
         <link rel="stylesheet" type="text/css" ng-href="custom_themes/{[{webtoolsThemeModel.activeTheme}]}" />
     </head>

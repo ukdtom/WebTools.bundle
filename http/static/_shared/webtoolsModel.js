@@ -4,6 +4,7 @@
     this.isNewVersionAvailable = false;
 
     this.globalLoading = false;
+    this.subLoading = false;
     this.themeLoading = false;
 
     this.apiUrl = "/webtools2";
