@@ -14,19 +14,22 @@
                 <div class="contentShow" ng-if="show.expanded">
                     <content-loading ng-if="show.loading"></content-loading>
                     <div ng-if="!show.loading">
-                        <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.details track by detail.key | orderBy : 'title'">
+                        <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.details track by detail.key | orderBy : 'title'" ng-init="detail.subAllChecked = false">
                             <div class="col-sm-12 detail">
                                 <div class="row pushBottomMinor">
                                     <div class="col-xs-12 textBold900">{[{detail.title}]}</div>
                                 </div>
                                 <div class="row subHeader noLeftRightMargin">
-                                    <div class="col-xs-2 textBold600"></div>
+                                    <div class="col-xs-2 selectAll" ng-click="toggleAllSubtitlesChecked(detail);">
+                                        <div class="fa fa-square-o" ng-if="!detail.subAllChecked"></div>
+                                        <div class="fa fa-check-square-o" ng-if="detail.subAllChecked"></div>
+                                    </div>
                                     <div class="col-xs-3 textBold600">Lang</div>
                                     <div class="col-xs-4 textBold600">Location</div>
                                     <div class="col-xs-3 textBold600">Codec</div>
                                 </div>
                                 <div class="row subItem noLeftRightMargin pushTopTrivial" ng-repeat="subtitle in detail.subtitles track by subtitle.key" ng-class="{'checked': subtitle.checked}">
-                                    <div class="col-xs-2 selectSubtitle" ng-click="subtitle.checked = !subtitle.checked">
+                                    <div class="col-xs-2 selectSubtitle" ng-click="subtitle.checked = !subtitle.checked; detail.subAllChecked = getAllSubtitlesChecked(detail);">
                                         <div class="fa fa-square-o" ng-if="!subtitle.checked"></div>
                                         <div class="fa fa-check-square-o" ng-if="subtitle.checked"></div>
                                     </div>
