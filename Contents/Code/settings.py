@@ -91,6 +91,7 @@ class settings(object):
 		Log.Debug('Recieved a call for putSetting')
 		try:
 			req.clear()
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			name = req.get_argument('name', 'missing')
 			if name == 'missing':
 				req.set_status(412)
@@ -117,6 +118,7 @@ class settings(object):
 		Log.Debug('Recieved a call for getSetting')
 		try:
 			req.clear()
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			name = req.get_argument('name', 'missing')
 			if name == 'missing':
 				req.set_status(412)
@@ -126,11 +128,11 @@ class settings(object):
 				if retVal:
 					Log.Debug('Returning %s' %(retVal))
 					req.set_status(200)
-					req.finish(retVal)
+					req.finish(json.dumps(retVal))
 				else:
 					Log.Debug('Variable %s not found' %(name))					
 					req.set_status(404)
-					req.finish('Setting not found')
+					req.finish(json.dumps('Setting not found'))
 				return req
 		except Ex.HTTPError, e:
 			Log.Exception('Error in getSetting: ' + str(e))

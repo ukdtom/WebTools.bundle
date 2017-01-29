@@ -21,6 +21,9 @@ from tornado.escape import json_encode, xhtml_escape
 import threading
 import os, sys
 
+import apiv3
+
+
 # Migrated to new way
 from plextvhelper import plexTV
 from git import git
@@ -419,6 +422,7 @@ handlers = [(r"/login", LoginHandler),
 						(r"/version", versionHandler),
 						(r'/', idxHandler),
 						(r'/index.html', idxHandler),
+						(r"/api/v3*$", apiv3.apiv3),
 						(r"/webtools2*$", webTools2Handler),
 						(r'/(.*)', MyStaticFileHandler, {'path': getActualHTTPPath()})
 ]
@@ -429,6 +433,7 @@ if Prefs['Force_SSL']:
 									(r"/version", ForceTSLHandler),
 									(r'/', ForceTSLHandler),
 									(r'/index.html', ForceTSLHandler),
+									(r"/api/v3*$", apiv3.apiv3),
 									(r"/webtools2*$", webTools2Handler)
 ]
 else:

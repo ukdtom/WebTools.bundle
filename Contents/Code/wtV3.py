@@ -11,34 +11,27 @@
 import glob
 import json
 import shutil, sys
+from consts import BUNDLEDIRNAME, NAME
 
-from consts import BUNDLEDIRNAME
-
-class wt(object):	
+class wtV3(object):	
 
 	''' Grap the tornado get req, and process it '''
-	def reqprocess(self, req):	
+	@classmethod
+	def reqprocessGET(self, req):	
 		function = req.get_argument('function', 'missing')
-		if function == 'missing':
-			req.clear()
-			req.set_status(412)
-			req.finish("Missing function parameter")
-		elif function == 'getCSS':
+		if function == 'getCSS':
 			# Call getCSS
 			return self.getCSS(req)
 		else:
 			req.clear()
 			req.set_status(412)
-			req.finish("Unknown function call")
+			req.finish('Unknown function call')
 
 	''' Grap the tornado req, and process it for a POST request'''
-	def reqprocessPost(self, req):		
+	@classmethod
+	def reqprocessPUT(self, req):		
 		function = req.get_argument('function', 'missing')
-		if function == 'missing':
-			req.clear()
-			req.set_status(412)
-			req.finish('Missing function parameter')
-		elif function == 'reset':
+		if function == 'reset':
 			return self.reset(req)
 		else:
 			req.clear()
@@ -46,31 +39,30 @@ class wt(object):
 			req.finish('Unknown function call')
 
 	# Reset WT to factory settings
+	@classmethod
 	def reset(self, req):
 		try:
 			Log.Info('Factory Reset called')
-			cachePath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', 'com.plexapp.plugins.WebTools')
-			dataPath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', 'com.plexapp.plugins.WebTools')
+			cachePath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', 'com.plexapp.plugins.' + NAME)
+#			dataPath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', 'com.plexapp.plugins.' + NAME) 
 			shutil.rmtree(cachePath)
 			try:
-#				shutil.rmtree(dataPath)
 				Dict.Reset()
 			except:
 				Log.Critical('Fatal error in clearing dict during reset')
 			# Restart system bundle
-			HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.WebTools/restart', cacheTime=0, immediate=True)
+			HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.' + NAME + '/restart', cacheTime=0, immediate=True)
 			req.clear()
 			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('WebTools has been reset')
 		except Exception, e:
 			Log.Exception('Fatal error happened in wt.reset: ' + str(e))
 			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.set_status(500)			
 			req.finish('Fatal error happened in wt.reset: %s' %(str(e)))
 
 	# Get a list of all css files in http/custom_themes
+	@classmethod
 	def getCSS(self,req):			
 		Log.Debug('getCSS requested')
 		try:
@@ -92,8 +84,5 @@ class wt(object):
 			Log.Exception('Fatal error happened in getCSS: ' + str(e))
 			req.clear()
 			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in getCSS: ' + str(e))
 
-				
-	
