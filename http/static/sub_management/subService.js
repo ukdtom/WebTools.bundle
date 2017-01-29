@@ -1,4 +1,4 @@
-﻿angular.module('webtools').service('subService', ['$http', 'subModel', 'webtoolsModel', 'webtoolsService', function ($http, subModel, webtoolsModel, webtoolsService) {
+﻿angular.module('webtools').service('subService', ['$http', 'subModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', function ($http, subModel, webtoolsModel, webtoolsService, DialogFactory) {
     this.getShows = function (callback) {
         webtoolsModel.subLoading = true;
         $http({
@@ -34,6 +34,42 @@
             debugger;
             webtoolsService.log("subService.getShowDetails - Show details could not be loaded!", "Sub", true);
             show.loading = false;
+        });
+    }
+
+    this.deleteSubtitle = function (detail, subtitle, callback) {
+        detail.loading = true;
+        subModel.deleteCountAsyncRunning++;
+        $http({
+            method: "DELETE",
+            url: webtoolsModel.apiUrl + "?module=pms&function=delSub&key=" + detail.key + "&subKey=" + subtitle.key,
+        }).then(function (resp) {
+            for (var i = 0; i < detail.subtitles.length; i++) {
+                if (detail.subtitles[i].key === subtitle.key)
+                    detail.subtitles.splice(detail.subtitles[i].indexOf, 1);
+            }
+            if (detail.subtitles.length === 0) detail.subAllChecked = false;
+
+            if (callback) callback(resp.data);
+            subModel.deleteCountAsyncRunning--;
+            if (subModel.deleteCountAsyncRunning === 0) detail.loading = false;
+        }, function (errorResp) {
+            if (errorResp.status === 403) {
+                if (!subModel.deleteErrorDialogActive){
+                    subModel.deleteErrorDialogActive = true;
+                    var dialog = new DialogFactory();
+                    dialog.create("<p class='textSize3'>WebTools do not have permission to delete these files.</p>"); //TODO: Move to template. Maybe a better description too
+                    dialog.setPlain();
+                    dialog.closeEvent(function () {
+                        subModel.deleteErrorDialogActive = false;
+                    });
+                    dialog.showError();
+                }
+            } else {
+                webtoolsService.log("subService.deleteSubtitle", "Sub", true);
+            }
+            subModel.deleteCountAsyncRunning--;
+            if (subModel.deleteCountAsyncRunning === 0) detail.loading = false;
         });
     }
 }]);

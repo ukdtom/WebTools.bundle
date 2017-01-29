@@ -94,10 +94,10 @@ help:hover {
     background: rgba(255, 255, 255, 0.03);
 }
 .sub .rowShow .lineShow .contentShow .detail .subItem{
-    border-bottom-color: rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.04);
 }
 .sub .rowShow .lineShow .contentShow .detail .subItem.checked{
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 /* Theme */

@@ -66,25 +66,34 @@
     padding:10px;
 }
 
-.sub .rowShow .lineShow .contentShow .detail .selectAll{
-    cursor:pointer;
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions{
     font-size:20px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions div:first-child{
+    width:20px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions > div{
+    float:left;
+    cursor:pointer;
+}
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions > div:not(:first-child){
+    margin-left:10px;
 }
 
 .sub .rowShow .lineShow .contentShow .detail .subItem{
-    border-bottom: solid 1px rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.04);
 }
 .sub .rowShow .lineShow .contentShow .detail .subItem.checked{
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.08);
     border-radius:3px;
 }
 
-.sub .rowShow .lineShow .contentShow .detail .subItem div:not(.selectSubtitle){
-    padding-top:5px;
-}
 .sub .rowShow .lineShow .contentShow .detail .subItem .selectSubtitle{
     cursor:pointer;
     font-size:20px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem div:not(.selectSubtitle){
+    padding-top:5px;
 }
 
 /* Responsive */
@@ -92,8 +101,13 @@
     .sub .rowShow .lineShow .type{
         display:none;
     }
-    .sub .rowShow .lineShow .contentShow .detail .subHeader{
+    .sub .rowShow .lineShow .contentShow .detail .subHeader > div:not(.selectActions){
         display:none;
+    }
+    .sub .rowShow .lineShow .contentShow .detail .selectActions > div{
+        float:none !important;
+        width:initial;
+        margin-left: 0 !important;
     }
     .sub .rowShow .lineShow .contentShow .detail .subItem div{
         float:none;
