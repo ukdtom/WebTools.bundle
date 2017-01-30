@@ -40,7 +40,7 @@
         show.loading = true;
         $http({
             method: "GET",
-            url: webtoolsModel.apiUrl + "?module=pms&function=getSection&key=" + show.key + "&start=0&size=20",
+            url: webtoolsModel.apiUrl + "?module=pms&function=getSection&key=" + show.key + "&start=0&size=9999",
         }).then(function (resp) {
             show.tvshows = resp.data;
             if (callback) callback(resp.data);
@@ -55,7 +55,7 @@
         tvshow.loading = true;
         $http({
             method: "GET",
-            url: webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeasons&key=" + tvshow.key + "&start=0&size=20",
+            url: webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeasons&key=" + tvshow.key + "&start=0&size=9999",
         }).then(function (resp) {
             tvshow.seasons = resp.data;
             if (callback) callback(resp.data);
@@ -70,7 +70,7 @@
         season.loading = true;
         $http({
             method: "GET",
-            url: webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeason&key=" + season.key + "&start=0&size=20&getSubs=true",
+            url: webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeason&key=" + season.key + "&start=0&size=9999&getSubs=true",
         }).then(function (resp) {
             season.details = resp.data;
             if (callback) callback(resp.data);
