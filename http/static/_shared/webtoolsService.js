@@ -55,14 +55,27 @@
     this.log = function (text, location, error) {
         if (!location) location = "Empty";
 
-        var text = location + " - " + text;  
+        var text = location + " - " + text;
+
+        if(error) var dialog = new DialogFactory();
         $http({
             method: "POST",
             url: webtoolsModel.apiUrl + "?module=logs&function=entry&text=" + text,
         }).then(function (resp) {
-            if (error) $log.error("Error occurred! " + text);
+            if (error) {
+                $log.error("Error occurred! " + text);
+                dialog.create("<p class='textSize3'>Error occurred!</p>Contact DEV here: <a href='https://github.com/ukdtom/WebTools.bundle'>WebTools</a></p><br /><p>Technical Info: " + text + "</p>");
+            }
         }, function (errorResp) {
             $log.error("webtoolsService.log - LOGGING NOT AVAILABLE! " + text + " " + location + " - RESPONSE: " + errorResp);
+            if (error) {
+                dialog.create("<p class='textSize4'>Fatal error!</p><p class='textSize3'>Please contact DEV</p><p><a href='https://github.com/ukdtom/WebTools.bundle'>WebTools</a></p><br /><p>Technical Info: " + text + "</p>");
+            }
+        }).finally(function () {
+            if (error) {
+                dialog.setPlain();
+                dialog.showError();
+            }
         });
     };
 

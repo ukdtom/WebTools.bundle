@@ -29,7 +29,8 @@
             var dialog = ngDialog.open({ //TODO: Style with error colors
                 template: src,
                 width: "600px",
-                plain: plain
+                plain: plain,
+                className: 'ngdialog-theme-default error-dialog'
             });
 
             if (closeCallback) {

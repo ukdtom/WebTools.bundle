@@ -71,6 +71,12 @@ content-loading .contentLoading {
     color: rgb(51, 122, 183);
 }
 
+/* Error Dialog (This is not for Custom Themes - Maybe Later?) */
+.error-dialog .ngdialog-content{
+    border: #a94442 5px solid;
+    color: #a94442 !important;
+}
+
 /* Help */
 help {
     font-size:22px;
