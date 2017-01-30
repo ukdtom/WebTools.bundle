@@ -64,7 +64,7 @@
         }).then(function (resp) {
             if (error) {
                 $log.error("Error occurred! " + text);
-                dialog.create("<p class='textSize3'>Error occurred!</p>Contact DEV here: <a href='https://github.com/ukdtom/WebTools.bundle'>WebTools</a></p><br /><p>Technical Info: " + text + "</p>");
+                dialog.create("<p class='textSize3'>Error occurred!</p><a href='https://github.com/ukdtom/WebTools.bundle'>WebTools</a></p><br /><p>Technical Info: " + text + "</p>");
             }
         }, function (errorResp) {
             $log.error("webtoolsService.log - LOGGING NOT AVAILABLE! " + text + " " + location + " - RESPONSE: " + errorResp);

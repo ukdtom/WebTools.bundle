@@ -26,7 +26,7 @@
             }
         }
         function showError() {
-            var dialog = ngDialog.open({ //TODO: Style with error colors
+            var dialog = ngDialog.open({
                 template: src,
                 width: "600px",
                 plain: plain,
