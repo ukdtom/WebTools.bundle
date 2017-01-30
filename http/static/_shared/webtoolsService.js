@@ -31,8 +31,8 @@
             }
             if (callback) callback(resp.data);
             webtoolsModel.globalLoading = false;
-        }, function (errroResp) {
-            self.log("var checkIsNewVersionAvailable - Could not check for new version", "Core", true);
+        }, function (errorResp) {
+            self.log("var checkIsNewVersionAvailable - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Core", true);
             webtoolsModel.globalLoading = false;
         });
     }
@@ -47,8 +47,8 @@
             webtoolsModel.globalLoading = false;
             checkIsNewVersionAvailable();
             if (callback) callback(resp.data);
-        }, function (errroResp) {
-            self.log("webtoolsService.loadWebToolsVersion -  - Could not resolve WebToolVersion", "Core", true);
+        }, function (errorResp) {
+            self.log("webtoolsService.loadWebToolsVersion - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Core", true);
             webtoolsModel.globalLoading = false;
         });
     };

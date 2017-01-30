@@ -51,13 +51,36 @@
     border-bottom: solid 1px rgba(255, 255, 255, 0.03);
 }
 
-/* Details */
+/**/
 .sub .rowShow .lineShow .contentShow{
     float:left;
     padding:12px;
     width:100%;
 }
+.sub .rowShow .lineShow .contentShow .tvshowheader{
+    width:100%;
+    height:50px;
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div{
+    float:left;
+    cursor:pointer;
+}
 
+/* Tv Show */
+.sub .rowShow .lineShow .contentShow .tvshow{
+    height: 40px;
+    border-radius: 10px;
+    background-color: rgba(85, 128, 255, 0.31);
+    padding:10px;
+    float:left;
+    margin:5px;
+    cursor:pointer;
+}
+.sub .rowShow .lineShow .contentShow .tvshow:hover{
+    background-color: rgba(85, 128, 255, 0.51);
+}
+
+/* Details */
 .sub .rowShow .lineShow .contentShow .detail{
     min-height:60px;
     width:100%;
@@ -65,7 +88,6 @@
     border-radius:5px;
     padding:10px;
 }
-
 .sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions{
     font-size:20px;
 }
@@ -86,6 +108,12 @@
 .sub .rowShow .lineShow .contentShow .detail .subItem.checked{
     background: rgba(255, 255, 255, 0.08);
     border-radius:3px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected{
+    background: rgba(2, 255, 0, 0.04);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected.checked{
+    background: rgba(2, 255, 0, 0.08);
 }
 
 .sub .rowShow .lineShow .contentShow .detail .subItem .selectSubtitle{

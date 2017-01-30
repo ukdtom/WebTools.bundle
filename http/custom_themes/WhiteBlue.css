@@ -90,6 +90,12 @@ help {
 .sub .rowShow.expanded .lineShow .title{
     border-bottom-color: rgba(255, 255, 255, 0.03);
 }
+.sub .rowShow .lineShow .contentShow .tvshow{
+    background-color: rgba(85, 128, 255, 0.31);
+}
+.sub .rowShow .lineShow .contentShow .tvshow:hover{
+    background-color: rgba(85, 128, 255, 0.51);
+}
 .sub .rowShow .lineShow .contentShow .detail{
     background: rgba(255, 255, 255, 0.03);
 }
@@ -98,6 +104,12 @@ help {
 }
 .sub .rowShow .lineShow .contentShow .detail .subItem.checked{
     background: rgba(255, 255, 255, 0.08);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected{
+    background: rgba(2, 255, 0, 0.04);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected.checked{
+    background: rgba(2, 255, 0, 0.08);
 }
 
 /* Theme */
