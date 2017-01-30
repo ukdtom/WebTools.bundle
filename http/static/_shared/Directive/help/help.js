@@ -1,4 +1,4 @@
-﻿angular.module('webtools').directive('help', ['webtoolsService', 'ngDialog', function (webtoolsService, ngDialog) {
+﻿angular.module('webtools').directive('help', ['webtoolsService', 'DialogFactory', function (webtoolsService, DialogFactory) {
     return {
         restrict: 'E',
         scope: {},
@@ -9,14 +9,12 @@
                 webtoolsService.log("Directive Help - src url not defined!", "DirectiveHelp", true);
                 return;
             }
+            var dialog = new DialogFactory();
+            dialog.create(src);
 
             element.on('click', function (event) {
                 event.preventDefault();
-                ngDialog.open({
-                    template: src,
-                    //className: 'ngdialog-theme-default',
-                    width: "600px"
-                });
+                dialog.show();
             });
         }
     };

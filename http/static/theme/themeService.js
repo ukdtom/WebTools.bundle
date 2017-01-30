@@ -11,7 +11,7 @@
             if (callback) callback(resp.data);
             webtoolsModel.themeLoading = false;
         }, function (errorResp) {
-            webtoolsService.log("themeService.getThemes - Themes could not get resolved!", "Theme", true);
+            webtoolsService.log("themeService.getThemes - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Theme", true);
             webtoolsModel.themeLoading = false;
         });
     }
@@ -26,7 +26,7 @@
             if (callback) callback(resp.data);
             webtoolsModel.themeLoading = false;
         }, function (errorResp) {
-            webtoolsService.log("themeService.loadActiveTheme - Theme could not be loaded!", "Theme", true);
+            webtoolsService.log("themeService.loadActiveTheme - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Theme", true);
             webtoolsModel.themeLoading = false;
         });
     }
@@ -38,7 +38,7 @@
         }).then(function (resp) {
             if (callback) callback(resp.data);
         }, function (errorResp) {
-            webtoolsService.log("themeService.saveTheme - Theme could not get saved!", "Theme", true);
+            webtoolsService.log("themeService.saveTheme - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Theme", true);
         });
     }
 }]);

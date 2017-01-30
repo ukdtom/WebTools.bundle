@@ -7,7 +7,7 @@
     min-height: 50px;
     width: 100%;
     background: rgba(0, 77, 255, 0.15);
-    box-shadow: 10px 10px 10px 1px black;
+    box-shadow: 3px 3px 10px 1px black;
     border-radius: 5px;
     overflow:hidden;
 }
@@ -51,13 +51,41 @@
     border-bottom: solid 1px rgba(255, 255, 255, 0.03);
 }
 
-/* Details */
+/**/
 .sub .rowShow .lineShow .contentShow{
     float:left;
     padding:12px;
     width:100%;
 }
+.sub .rowShow .lineShow .contentShow .tvshowheader{
+    width:100%;
+    min-height:50px;
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div{
+    padding:5px;
+    cursor:pointer;
+    background: rgba(0, 0, 0, 0.13);
+    overflow:hidden;
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div:hover{
+    background: rgba(0, 0, 0, 0.33);
+}
 
+/* Tv Show */
+.sub .rowShow .lineShow .contentShow .tvshow{
+    height: 40px;
+    border-radius: 10px;
+    background-color: rgba(85, 128, 255, 0.31);
+    padding:10px;
+    float:left;
+    margin:5px;
+    cursor:pointer;
+}
+.sub .rowShow .lineShow .contentShow .tvshow:hover{
+    background-color: rgba(85, 128, 255, 0.51);
+}
+
+/* Details */
 .sub .rowShow .lineShow .contentShow .detail{
     min-height:60px;
     width:100%;
@@ -65,21 +93,40 @@
     border-radius:5px;
     padding:10px;
 }
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions{
+    font-size:20px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions div:first-child{
+    width:20px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions > div{
+    float:left;
+    cursor:pointer;
+}
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions > div:not(:first-child){
+    margin-left:10px;
+}
 
 .sub .rowShow .lineShow .contentShow .detail .subItem{
-    border-bottom: solid 1px rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.04);
 }
 .sub .rowShow .lineShow .contentShow .detail .subItem.checked{
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.08);
     border-radius:3px;
 }
-
-.sub .rowShow .lineShow .contentShow .detail .subItem div:not(.selectSubtitle){
-    padding-top:5px;
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected{
+    background: rgba(2, 255, 0, 0.04);
 }
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected.checked{
+    background: rgba(2, 255, 0, 0.08);
+}
+
 .sub .rowShow .lineShow .contentShow .detail .subItem .selectSubtitle{
     cursor:pointer;
     font-size:20px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem div:not(.selectSubtitle){
+    padding-top:5px;
 }
 
 /* Responsive */
@@ -87,8 +134,13 @@
     .sub .rowShow .lineShow .type{
         display:none;
     }
-    .sub .rowShow .lineShow .contentShow .detail .subHeader{
+    .sub .rowShow .lineShow .contentShow .detail .subHeader > div:not(.selectActions){
         display:none;
+    }
+    .sub .rowShow .lineShow .contentShow .detail .selectActions > div{
+        float:none !important;
+        width:initial;
+        margin-left: 0 !important;
     }
     .sub .rowShow .lineShow .contentShow .detail .subItem div{
         float:none;

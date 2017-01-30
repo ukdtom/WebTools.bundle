@@ -480,7 +480,6 @@ class pms(object):
 					Log.Debug('Fatal error happened in delSub, subtitle not found')
 					req.clear()
 					req.set_status(406)
-					req.set_header('Content-Type', 'application/json; charset=utf-8')
 					req.finish('Hmmm....This is invalid, and most likely due to trying to delete an embedded sub :-)')
 				else:
 					if filePath.startswith('media://'):
@@ -517,7 +516,6 @@ class pms(object):
 							Log.Exception('Exception while deleting an agent based sub: ' + str(e))
 							req.clear()
 							req.set_status(404)
-							req.set_header('Content-Type', 'application/json; charset=utf-8')
 							req.finish('Exception while deleting an agent based sub: ' + str(e))
 						retValues = {}
 						retValues['FilePath']=filePath3
@@ -544,21 +542,18 @@ class pms(object):
 							# Could not find req. subtitle
 							Log.Exception('Fatal error happened in delSub, when deleting ' + filePath + ' : ' + str(e))
 							req.clear()
-							req.set_status(404)
-							req.set_header('Content-Type', 'application/json; charset=utf-8')
+							req.set_status(403)
 							req.finish('Fatal error happened in delSub, when deleting %s : %s' %(filePath, str(e)))
 			else:
 				# Could not find req. subtitle
 				Log.Debug('Fatal error happened in delSub, subtitle not found')
 				req.clear()
 				req.set_status(404)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
 				req.finish('Could not find req. subtitle')
 		except Exception, e:
 			Log.Exception('Fatal error happened in delSub: ' + str(e))
 			req.clear()
 			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in delSub: ' + str(e))
 
 	''' TVShow '''
