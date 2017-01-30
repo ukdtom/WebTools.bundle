@@ -63,8 +63,7 @@
                             {[{tvshow.title}]}
                         </div>
                         <content-loading ng-if="(subModel.selectedTvShow && subModel.selectedTvShow.loading) || (subModel.selectedSeason && subModel.selectedSeason.loading)"></content-loading>
-                        <div class="tvshowheader textSize3 textBold600">
-                            <!--LAV OM TIL DIRECTIVE-->
+                        <div class="tvshowheader textSize3 textBold600"> <!--LAV OM TIL DIRECTIVE-->
                             <div ng-if="subModel.selectedTvShow && !subModel.selectedTvShow.loading && !subModel.selectedSeason">
                                 <div ng-click="subModel.selectedTvShow = null">{[{subModel.selectedTvShow.title}]} <i class="fa fa-undo" aria-hidden="true"></i></div>
                             </div>

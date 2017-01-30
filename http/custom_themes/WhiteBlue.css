@@ -82,7 +82,7 @@ help {
 }
 .sub .rowShow{
     background: rgba(0, 77, 255, 0.15);
-    box-shadow: 10px 10px 10px 1px black;
+    box-shadow: 3px 3px 10px 1px black;
 }
 .sub .rowShow.expanded .lineShow .type{
     border-bottom-color: rgba(255, 255, 255, 0.03);
@@ -95,6 +95,12 @@ help {
 }
 .sub .rowShow .lineShow .contentShow .tvshow:hover{
     background-color: rgba(85, 128, 255, 0.51);
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div{
+    background: rgba(0, 0, 0, 0.13);
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div:hover{
+    background: rgba(0, 0, 0, 0.33);
 }
 .sub .rowShow .lineShow .contentShow .detail{
     background: rgba(255, 255, 255, 0.03);

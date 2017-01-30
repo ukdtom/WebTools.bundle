@@ -7,7 +7,7 @@
     min-height: 50px;
     width: 100%;
     background: rgba(0, 77, 255, 0.15);
-    box-shadow: 10px 10px 10px 1px black;
+    box-shadow: 3px 3px 10px 1px black;
     border-radius: 5px;
     overflow:hidden;
 }
@@ -59,11 +59,16 @@
 }
 .sub .rowShow .lineShow .contentShow .tvshowheader{
     width:100%;
-    height:50px;
+    min-height:50px;
 }
 .sub .rowShow .lineShow .contentShow .tvshowheader div{
-    float:left;
+    padding:5px;
     cursor:pointer;
+    background: rgba(0, 0, 0, 0.13);
+    overflow:hidden;
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div:hover{
+    background: rgba(0, 0, 0, 0.33);
 }
 
 /* Tv Show */
