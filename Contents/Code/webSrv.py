@@ -6,7 +6,7 @@
 #
 ######################################################################################################################
 
-from consts import DEBUGMODE, WT_AUTH, VERSION, NAME
+from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, MODULES
 import sys
 # Add modules dir to search path
 modules = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'Contents', 'Code', 'modules')
@@ -175,7 +175,7 @@ class LoginHandler(BaseHandler):
 						# Authenticate
 						login_token = plexTV().login(user, pwd)
 						if login_token == None:	
-							Log.ERROR('Bad credentials detected, denying access')
+							Log.Error('Bad credentials detected, denying access')
 							self.clear()
 							self.set_status(401)
 							self.finish('Authentication error')
@@ -193,7 +193,7 @@ class LoginHandler(BaseHandler):
 							self.set_status(404)
 						elif retVal == 2:
 							# Not the owner
-							Log.Info('USer is not the server owner')
+							Log.Info('User is not the server owner')
 							self.set_status(403)
 						else:
 							# Unknown error
@@ -302,6 +302,16 @@ class webTools2Handler(BaseHandler):
 			callFunction = getattr(modClass, 'reqprocess')
 			self = modClass().reqprocess(self)
 			'''
+
+			#TODO: Remove/Alter this when done
+			if module.upper() in MODULES:
+				if '3.' in VERSION:
+					Log.Critical('Api V2 is about to be retired....Please update your calls towards Api V3 instead')
+					self.clear()
+					self.set_status(403)
+					self.finish('Oliver!!!!  This has been migrated to api V3 :-)')
+
+
 
 			
 

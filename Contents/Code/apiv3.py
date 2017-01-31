@@ -12,6 +12,7 @@ from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, MODULES
 
 # Import modules
 from wtV3 import wtV3
+from pmsV3 import pmsV3
 
 class BaseHandler(RequestHandler):	
 	def get_current_user(self):
@@ -39,7 +40,7 @@ class apiv3(BaseHandler):
 		if module.upper() not in MODULES:
 			self.clear()
 			self.set_status(404)
-			self.finish('Missing module or unknown module')
+			self.finish('Missing module or unknown module: ' + module)
 			self.module = None
 		else:
 			self.module = module
@@ -48,10 +49,12 @@ class apiv3(BaseHandler):
 	@authenticated
 	# Get Request
 	def get(self, **params):
-		Log.Debug('Recieved a GET call for module: ' + self.module)
+		Log.Debug('Recieved an apiV3 GET call for module: ' + self.module)
 		try:
 			if self.module == 'wt':
 				self = wtV3().reqprocessGET(self)
+			elif self.module == 'pms':
+				self = pmsV3().reqprocessGET(self)
 			else:
 				self.clear()
 				self.set_status(501)
