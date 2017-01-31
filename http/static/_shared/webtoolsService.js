@@ -18,13 +18,11 @@
     }
     var checkIsNewVersionAvailable = function (callback) {
         webtoolsModel.globalLoading = true;
-        $http.get(webtoolsModel.apiUrl, {
-            params: {
-                "module": "git",
-                "function": "getReleaseInfo",
-                "url": webtoolsModel.repoUrl,
-                "version": "latest",
-            }
+
+        var url = webtoolsModel.apiUrl + "?module=git&function=getReleaseInfo&url=" + webtoolsModel.repoUrl + "&version=latest";
+        $http({
+            method: "GET",
+            url: url,
         }).then(function (resp) {
             if (resp.data.published_at && anyNewVersion(webtoolsModel.version, resp.data.tag_name)) {
                 webtoolsModel.isNewVersionAvailable = true;
@@ -32,7 +30,7 @@
             if (callback) callback(resp.data);
             webtoolsModel.globalLoading = false;
         }, function (errorResp) {
-            self.log("var checkIsNewVersionAvailable - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Core", true);
+            self.log("var checkIsNewVersionAvailable - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Core", true, url);
             webtoolsModel.globalLoading = false;
         });
     }
@@ -40,40 +38,45 @@
     //Public
     this.loadWebToolsVersion = function (callback) {
         webtoolsModel.globalLoading = true;
-        $http.get("/version")
-        .then(function (resp) {
+
+        var url = "/version";
+        $http({
+            method: "GET",
+            url: url,
+        }).then(function (resp) {
             webtoolsModel.version = resp.data.version;
             webtoolsModel.versionFormated = "WebTools - v" + resp.data.version;
             webtoolsModel.globalLoading = false;
             checkIsNewVersionAvailable();
             if (callback) callback(resp.data);
         }, function (errorResp) {
-            self.log("webtoolsService.loadWebToolsVersion - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Core", true);
+            self.log("webtoolsService.loadWebToolsVersion - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Core", true, url);
             webtoolsModel.globalLoading = false;
         });
     };
-    this.log = function (text, location, error) {
+    this.log = function (text, location, error, errorUrl) {
         if (!location) location = "Empty";
 
         var text = "Location: " + location + "<br />" + "Error: " + text;
         
         if (text.indexOf("Unexpected token F in JSON at position") !== -1) {
-            text += "<br />REQUEST HEADER SET TO JSON, BUT NO JSON.DUMPS!!";
+            text += "<br />REQUEST HEADER SET TO JSON, BUT NO JSON.DUMPS";
         }
 
-        if(error) var dialog = new DialogFactory();
+        if (error) var dialog = new DialogFactory();
+        var url = webtoolsModel.apiUrl + "?module=logs&function=entry&text=" + text; 
         $http({
             method: "POST",
-            url: webtoolsModel.apiUrl + "?module=logs&function=entry&text=" + text,
+            url: url,
         }).then(function (resp) {
             if (error) {
                 $log.error("Error occurred! " + text);
-                dialog.create("<p class='textSize3'>Error occurred!</p><a href='https://github.com/ukdtom/WebTools.bundle' target='_blank'>WebTools</a></p><br /><p><b>Technical Info:</b> <br />" + text + "</p>");
+                dialog.create("<p class='textSize3'>Error occurred!</p><a href='https://github.com/ukdtom/WebTools.bundle' target='_blank'>WebTools</a></p><br /><p><b>Technical Info:</b> <br />Url: " + errorUrl + "<br /> " + text + "</p>");
             }
         }, function (errorResp) {
             $log.error("webtoolsService.log - LOGGING NOT AVAILABLE! " + text + " " + location + " - RESPONSE: " + errorResp);
             if (error) {
-                dialog.create("<p class='textSize4'>Fatal error!</p><p class='textSize3'>Please contact DEV</p><p><a href='https://github.com/ukdtom/WebTools.bundle' target='_blank'>WebTools</a></p><br /><p><b>Technical Info:</b> <br />" + text + "</p>");
+                dialog.create("<p class='textSize4'>Fatal error!</p><p class='textSize3'>Please contact DEV</p><p><a href='https://github.com/ukdtom/WebTools.bundle' target='_blank'>WebTools</a></p><br /><p><b>Technical Info:</b> <br />Url: " + errorUrl + "<br /> " + text + "</p><br /><br /> LOGGING FAILED! URL: " + url);
             }
         }).finally(function () {
             if (error) {
