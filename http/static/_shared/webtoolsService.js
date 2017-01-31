@@ -1,4 +1,4 @@
-﻿angular.module('webtools').service('webtoolsService', ['$http', '$window', '$log', 'webtoolsModel', function ($http, $window, $log, webtoolsModel) {
+﻿angular.module('webtools').service('webtoolsService', ['$http', '$window', '$log', 'webtoolsModel', 'DialogFactory', function ($http, $window, $log, webtoolsModel, DialogFactory) {
     var self = this;
     //Private
     var anyNewVersion = function (currentVersion, latestVersion) {
@@ -55,7 +55,11 @@
     this.log = function (text, location, error) {
         if (!location) location = "Empty";
 
-        var text = location + " - " + text;
+        var text = "Location: " + location + "<br />" + "Error: " + text;
+        
+        if (text.indexOf("Unexpected token F in JSON at position") !== -1) {
+            text += "<br />REQUEST HEADER SET TO JSON, BUT NO JSON.DUMPS!!";
+        }
 
         if(error) var dialog = new DialogFactory();
         $http({
@@ -64,12 +68,12 @@
         }).then(function (resp) {
             if (error) {
                 $log.error("Error occurred! " + text);
-                dialog.create("<p class='textSize3'>Error occurred!</p><a href='https://github.com/ukdtom/WebTools.bundle'>WebTools</a></p><br /><p>Technical Info: " + text + "</p>");
+                dialog.create("<p class='textSize3'>Error occurred!</p><a href='https://github.com/ukdtom/WebTools.bundle' target='_blank'>WebTools</a></p><br /><p><b>Technical Info:</b> <br />" + text + "</p>");
             }
         }, function (errorResp) {
             $log.error("webtoolsService.log - LOGGING NOT AVAILABLE! " + text + " " + location + " - RESPONSE: " + errorResp);
             if (error) {
-                dialog.create("<p class='textSize4'>Fatal error!</p><p class='textSize3'>Please contact DEV</p><p><a href='https://github.com/ukdtom/WebTools.bundle'>WebTools</a></p><br /><p>Technical Info: " + text + "</p>");
+                dialog.create("<p class='textSize4'>Fatal error!</p><p class='textSize3'>Please contact DEV</p><p><a href='https://github.com/ukdtom/WebTools.bundle' target='_blank'>WebTools</a></p><br /><p><b>Technical Info:</b> <br />" + text + "</p>");
             }
         }).finally(function () {
             if (error) {
