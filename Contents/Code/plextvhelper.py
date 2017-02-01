@@ -37,6 +37,10 @@ class plexTV(object):
 		except Ex.HTTPError, e:
 			Log.Exception('Login error: ' + str(e))
 			return None
+		except Exception, e:
+			Log.Exception('Login error: ' + str(e))
+			return None
+
 		
 	''' Is user the owner of the server?
 			user identified by token
