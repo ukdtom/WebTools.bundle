@@ -23,13 +23,23 @@
     }
 
     this.getMovieDetails = function (show, callback) {
+        var skip = (show.skip ? show.skip : 0);
+        var take = 20;
+
         show.loading = true;
-        var url = webtoolsModel.apiUrl + "?module=pms&function=getSection&key=" + show.key + "&start=0&size=20&getSubs=true";
+        var url = webtoolsModel.apiUrl + "?module=pms&function=getSection&key=" + show.key + "&start=" + skip + "&size=" + take + "&getSubs=true";
         $http({
             method: "GET",
             url: url,
         }).then(function (resp) {
-            show.details = resp.data;
+            if (resp.data.length !== take) show.full = true;
+
+            for (var i = 0; i < resp.data.length; i++) {
+                show.details.push(resp.data[i]);
+            }
+            show.skip = show.details.length;
+
+
             if (callback) callback(resp.data);
             show.loading = false;
         }, function (errorResp) {
@@ -72,7 +82,7 @@
 
     this.getTvShowSeasonDetails = function (season, callback) {
         season.loading = true;
-        var url = webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeason&key=" + season.key + "&start=0&size=9999&getSubs=true";
+        var url = webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeason&key=" + season.key + "&getSubs=true";
         $http({
             method: "GET",
             url: url,
