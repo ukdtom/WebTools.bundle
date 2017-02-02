@@ -12,45 +12,10 @@
                 <div class="title textSize3 textBold600" ng-click="expandShow(show)">{[{show.title}]}</div>
                 <div class="contentShow" ng-if="show.expanded">
                     <div ng-if="show.type === 'movie'"> 
-                        <!--NEDENFOR LAV OM TIL DIRECTIVE-->
                         <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.details track by detail.key | orderBy : 'title'" ng-init="detail.subAllChecked = false;detail.loading = false;">
                             <div class="col-sm-12 detail">            
-                            <content-loading ng-if="detail.loading"></content-loading>
-                                <div ng-if="!detail.loading">
-                                    <div class="row pushBottomMinor noLeftRightMargin">
-                                        <div class="col-xs-12">
-                                            <div class="textBold900 pushLeftTrivial">{[{detail.title}]}</div>
-                                        </div>
-                                    </div>
-                                    <div class="row subHeader noLeftRightMargin">
-                                        <div class="col-md-2 col-sm-3 col-xs-5 selectActions">
-                                            <div ng-click="toggleAllSubtitles(detail);" ng-if="detail.subtitles.length > 0">
-                                                <div class="fa fa-square-o" ng-if="!detail.subAllChecked" title="Select All"></div>
-                                                <div class="fa fa-check-square-o" ng-if="detail.subAllChecked" title="Deselect all"></div>
-                                            </div>
-                                            <div ng-click="upload();">
-                                                <div class="fa fa-upload" title="Upload Subtitle"></div>
-                                            </div>
-                                            <div ng-click="deleteSelected(detail);" ng-if="detail.subtitles.length > 0">
-                                                <div class="fa fa-trash-o" title="Delete Selected"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 col-sm-2 col-xs-2 textBold600">Lang</div>
-                                        <div class="col-md-2 col-sm-2 col-xs-3 textBold600">Location</div>
-                                        <div class="col-md-6 col-sm-5 col-xs-2 textBold600">Codec</div>
-                                    </div>
-                                    <div class="row subItem noLeftRightMargin pushTopTrivial" ng-repeat="subtitle in detail.subtitles track by subtitle.key" ng-class="{'checked': subtitle.checked, 'selected': subtitle.selected}">
-                                        <div class="col-md-2 col-sm-3 col-xs-5 selectSubtitle" ng-if="subtitle.location !== 'Embedded'" ng-click="subtitle.checked = !subtitle.checked; detail.subAllChecked = getAllSubtitlesChecked(detail);">
-                                            <div class="fa fa-square-o" ng-if="!subtitle.checked"></div>
-                                            <div class="fa fa-check-square-o" ng-if="subtitle.checked"></div>
-                                        </div>
-                                        <div class="col-md-2 col-sm-3 col-xs-5" ng-if="subtitle.location === 'Embedded'"></div>
-
-                                        <div class="col-md-2 col-sm-2 col-xs-2"><span ng-if="subtitle.languageCode">{[{subtitle.languageCode}]}</span><span ng-if="!subtitle.languageCode">None</span></div>
-                                        <div class="col-md-2 col-sm-2 col-xs-3">{[{subtitle.location}]}</div>
-                                        <div class="col-md-6 col-sm-5 col-xs-2">{[{subtitle.codec}]}</div>
-                                    </div>
-                                </div>
+                                <content-loading ng-if="detail.loading"></content-loading>
+                                <div ng-if="!detail.loading" sub-details></div>
                             </div>
                         </div>
                         <content-loading ng-if="show.loading"></content-loading>
@@ -64,12 +29,12 @@
                             {[{tvshow.title}]}
                         </div>
                         <content-loading ng-if="(subModel.selectedTvShow && subModel.selectedTvShow.loading) || (subModel.selectedSeason && subModel.selectedSeason.loading)"></content-loading>
-                        <div class="tvshowheader textSize3 textBold600"> <!--LAV OM TIL DIRECTIVE-->
+                        <div class="tvshowheader textSize3 textBold600">
                             <div ng-if="subModel.selectedTvShow && !subModel.selectedTvShow.loading && !subModel.selectedSeason">
-                                <div ng-click="subModel.selectedTvShow = null">{[{subModel.selectedTvShow.title}]} <i class="fa fa-undo" aria-hidden="true"></i></div>
+                                <div ng-click="subModel.selectedTvShow = null"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> {[{subModel.selectedTvShow.title}]} </div>
                             </div>
                             <div ng-if="subModel.selectedTvShow && !subModel.selectedTvShow.loading && subModel.selectedSeason && !subModel.selectedSeason.loading">
-                                <div ng-click="subModel.selectedSeason = null">{[{subModel.selectedTvShow.title}]} : {[{subModel.selectedSeason.title}]} <i class="fa fa-undo" aria-hidden="true"></i></div>
+                                <div ng-click="subModel.selectedSeason = null"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> {[{subModel.selectedTvShow.title}]} : {[{subModel.selectedSeason.title}]} </div>
                             </div>
                         </div>
                         <div class="tvshow" 
@@ -84,42 +49,8 @@
                              ng-init="detail.subAllChecked = false;detail.loading = false;" 
                              ng-if="subModel.selectedTvShow && !subModel.selectedTvShow.loading && subModel.selectedSeason && !subModel.selectedSeason.loading">
                             <div class="col-sm-12 detail">
-                                <content-loading ng-if="detail.loading"></content-loading><!--NEDENFOR LAV OM TIL DIRECTIVE-->
-                                <div ng-if="!detail.loading">
-                                    <div class="row pushBottomMinor noLeftRightMargin">
-                                        <div class="col-xs-12">
-                                            <div class="textBold900 pushLeftTrivial">{[{detail.title}]}</div>
-                                        </div>
-                                    </div>
-                                    <div class="row subHeader noLeftRightMargin">
-                                        <div class="col-md-2 col-sm-3 col-xs-5 selectActions">
-                                            <div ng-click="toggleAllSubtitles(detail);">
-                                                <div class="fa fa-square-o" ng-if="!detail.subAllChecked" title="Select All"></div>
-                                                <div class="fa fa-check-square-o" ng-if="detail.subAllChecked" title="Deselect all"></div>
-                                            </div>
-                                            <div ng-click="upload();">
-                                                <div class="fa fa-upload" title="Upload Subtitle"></div>
-                                            </div>
-                                            <div ng-click="deleteSelected(detail);">
-                                                <div class="fa fa-trash-o" title="Delete Selected"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 col-sm-2 col-xs-2 textBold600">Lang</div>
-                                        <div class="col-md-2 col-sm-2 col-xs-3 textBold600">Location</div>
-                                        <div class="col-md-6 col-sm-5 col-xs-2 textBold600">Codec</div>
-                                    </div>
-                                    <div class="row subItem noLeftRightMargin pushTopTrivial" ng-repeat="subtitle in detail.subtitles track by subtitle.key" ng-class="{'checked': subtitle.checked, 'selected': subtitle.selected}">
-                                        <div class="col-md-2 col-sm-3 col-xs-5 selectSubtitle" ng-if="subtitle.location !== 'Embedded'" ng-click="subtitle.checked = !subtitle.checked; detail.subAllChecked = getAllSubtitlesChecked(detail);">
-                                            <div class="fa fa-square-o" ng-if="!subtitle.checked"></div>
-                                            <div class="fa fa-check-square-o" ng-if="subtitle.checked"></div>
-                                        </div>
-                                        <div class="col-md-2 col-sm-3 col-xs-5" ng-if="subtitle.location === 'Embedded'"></div>
-
-                                        <div class="col-md-2 col-sm-2 col-xs-2"><span ng-if="subtitle.languageCode">{[{subtitle.languageCode}]}</span><span ng-if="!subtitle.languageCode">None</span></div>
-                                        <div class="col-md-2 col-sm-2 col-xs-3">{[{subtitle.location}]}</div>
-                                        <div class="col-md-6 col-sm-5 col-xs-2">{[{subtitle.codec}]}</div>
-                                    </div>
-                                </div>
+                                <content-loading ng-if="detail.loading"></content-loading>
+                                <div ng-if="!detail.loading" sub-details></div>
                             </div>
                         </div>
                     </div>
