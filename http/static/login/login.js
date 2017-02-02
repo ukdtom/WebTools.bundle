@@ -36,6 +36,13 @@ $(function () {
 
         $("#info_Download").click(downloadLatest);
         $("#login").click(login);
+
+        $('input[name="user"]').focus();
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                login();
+            }
+        });
     }
 
     var downloadLatest = function () {
@@ -103,15 +110,25 @@ $(function () {
                         }
                         webToolsLoadingEle.hide();
                     },
-                    error: function () {
+                    error: function (errorResp) {
                         document.location.href = '/';
                         webToolsLoadingEle.hide();
                     }
                 });
             },
-            error: function (data) {
-                console.log(data);
+            error: function (errorResp) {
                 webToolsLoadingEle.hide();
+                var error = $("#error");
+                var wrong = $("#wrong");
+                error.hide();
+                wrong.hide();
+                if (errorResp.status === 401 || errorResp.status === 412) {
+                    wrong.show();
+                } else {
+                    error.html("Error occurred! " + (errorResp.responseText ? errorResp.responseText : "No error msg!"));
+                    error.show();
+                    console.log(errorResp);
+                }
             }
         });
     };
