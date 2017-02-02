@@ -121,7 +121,7 @@ install.search_apps = function () {
     var allBundles = install.allBundles;
     install.backupAllBundles = install.allBundles;
 
-    //Temp array.. TODO: Get list from backend instead
+    //Temp array.. TODO: Get list from backend instead - WILL IN V3
     var tempArray = [];
     for (var key in allBundles) {
         allBundles[key].key = key;

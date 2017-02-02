@@ -48,6 +48,7 @@ webtools.functions.subtitlemgmt = {
 	display_season: function() {},
 	display_episodes: function () { },
 	view_subtitle: function () { },
+    search_shows: function() { },
 	subtitle_select_all: function() {},
 	subtitle_delete_confirm: function() {},
 	subtitle_delete: function() {},
