@@ -8,7 +8,7 @@
 .mainContainer{
     margin: auto;
     width: 335px;
-    height: 300px;
+    height: 320px;
     font-size: 18px;
     background-color: rgba(0,0,0,.15);
     padding: 20px;
@@ -22,6 +22,12 @@
 }
 .mainContainer input.mainBtn{
     font-size:14px;
+}
+.mainContainer .warning{
+    display:none;
+    color:#f44336;    
+    margin-top: 12px;
+    text-align: center;
 }
 .newReleaseContainer{
     width:550px;

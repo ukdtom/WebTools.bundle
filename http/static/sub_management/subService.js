@@ -1,9 +1,10 @@
 ﻿angular.module('webtools').service('subService', ['$http', 'subModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', function ($http, subModel, webtoolsModel, webtoolsService, DialogFactory) {
     this.getShows = function (callback) {
         webtoolsModel.subLoading = true;
+        var url = webtoolsModel.apiUrl + "?module=pms&function=getSectionsList"; 
         $http({
             method: "GET",
-            url: webtoolsModel.apiUrl + "?module=pms&function=getSectionsList",
+            url: url,
         }).then(function (resp) {
             subModel.shows = [];
             angular.forEach(resp.data, function (media) {
@@ -16,67 +17,81 @@
             if (callback) callback(resp.data);
             webtoolsModel.subLoading = false;
         }, function (errorResp) {
-            webtoolsService.log("subService.getShows - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true);
+            webtoolsService.log("subService.getShows - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
             webtoolsModel.subLoading = false;
         });
     }
 
     this.getMovieDetails = function (show, callback) {
+        var skip = (show.skip ? show.skip : 0);
+        var take = 20;
+
         show.loading = true;
+        var url = webtoolsModel.apiUrl + "?module=pms&function=getSection&key=" + show.key + "&start=" + skip + "&size=" + take + "&getSubs=true";
         $http({
             method: "GET",
-            url: webtoolsModel.apiUrl + "?module=pms&function=getSection&key=" + show.key + "&start=0&size=20&getSubs=true",
+            url: url,
         }).then(function (resp) {
-            show.details = resp.data;
+            if (resp.data.length !== take) show.full = true;
+
+            for (var i = 0; i < resp.data.length; i++) {
+                show.details.push(resp.data[i]);
+            }
+            show.skip = show.details.length;
+
+
             if (callback) callback(resp.data);
             show.loading = false;
         }, function (errorResp) {
-            webtoolsService.log("subService.getMovieDetails - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true);
+            webtoolsService.log("subService.getMovieDetails - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
             show.loading = false;
         });
     }
 
     this.getTvShowDetails = function (show, callback) {
         show.loading = true;
+        var url = webtoolsModel.apiUrl + "?module=pms&function=getSection&key=" + show.key + "&start=0&size=9999";
         $http({
             method: "GET",
-            url: webtoolsModel.apiUrl + "?module=pms&function=getSection&key=" + show.key + "&start=0&size=9999",
+            url: url,
         }).then(function (resp) {
             show.tvshows = resp.data;
             if (callback) callback(resp.data);
             show.loading = false;
         }, function (errorResp) {
-            webtoolsService.log("subService.getTvShowDetails - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true);
+            webtoolsService.log("subService.getTvShowDetails - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
             show.loading = false;
         });
     }
 
     this.getTvShowSeasons = function (tvshow, callback) {
         tvshow.loading = true;
+        var url = webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeasons&key=" + tvshow.key + "&start=0&size=9999";
         $http({
             method: "GET",
-            url: webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeasons&key=" + tvshow.key + "&start=0&size=9999",
+            url: url,
         }).then(function (resp) {
             tvshow.seasons = resp.data;
             if (callback) callback(resp.data);
             tvshow.loading = false;
         }, function (errorResp) {
-            webtoolsService.log("subService.getTvShowSeasons - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true);
+            webtoolsService.log("subService.getTvShowSeasons - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
             tvshow.loading = false;
         });
     }
 
     this.getTvShowSeasonDetails = function (season, callback) {
         season.loading = true;
+        var url = webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeason&key=" + season.key + "&getSubs=true";
         $http({
             method: "GET",
-            url: webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeason&key=" + season.key + "&start=0&size=9999&getSubs=true",
+            url: url,
         }).then(function (resp) {
             season.details = resp.data;
             if (callback) callback(resp.data);
             season.loading = false;
         }, function (errorResp) {
-            webtoolsService.log("subService.getTvShowSeasonDetails - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true);
+            webtoolsService.log("subService.getTvShowSeasonDetails - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
             season.loading = false;
         });
     }
@@ -84,9 +99,10 @@
     this.deleteSubtitle = function (detail, subtitle, callback) {
         detail.loading = true;
         subModel.deleteCountAsyncRunning++;
+        var url = webtoolsModel.apiUrl + "?module=pms&function=delSub&key=" + detail.key + "&subKey=" + subtitle.key;
         $http({
             method: "DELETE",
-            url: webtoolsModel.apiUrl + "?module=pms&function=delSub&key=" + detail.key + "&subKey=" + subtitle.key,
+            url: url,
         }).then(function (resp) {
             for (var i = 0; i < detail.subtitles.length; i++) {
                 if (detail.subtitles[i].key === subtitle.key)
@@ -110,7 +126,7 @@
                     dialog.showError();
                 }
             } else {
-                webtoolsService.log("subService.deleteSubtitle - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true);
+                webtoolsService.log("subService.deleteSubtitle - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
             }
             subModel.deleteCountAsyncRunning--;
             if (subModel.deleteCountAsyncRunning === 0) detail.loading = false;

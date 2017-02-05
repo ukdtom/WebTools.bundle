@@ -1,4 +1,3 @@
-﻿angular.module('webtools').controller('headController', ['$scope', 'headModel', 'headService', 'webtoolsModel', function ($scope, headModel, headService, webtoolsModel) {
+﻿angular.module('webtools').controller('headController', ['$scope', 'webtoolsModel', function ($scope, webtoolsModel) {
     $scope.webtoolsModel = webtoolsModel;
-    $scope.headModel = headModel;
 }]);

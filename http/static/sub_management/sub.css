@@ -57,6 +57,17 @@
     padding:12px;
     width:100%;
 }
+.sub .rowShow .lineShow .contentShow .loadmore{
+    height: 40px;
+    padding-top: 8px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.13);
+    cursor:pointer;
+    overflow:hidden;
+}
+.sub .rowShow .lineShow .contentShow .loadmore:hover{
+    background: rgba(0, 0, 0, 0.33);
+}
 .sub .rowShow .lineShow .contentShow .tvshowheader{
     width:100%;
     min-height:50px;

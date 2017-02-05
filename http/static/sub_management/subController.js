@@ -6,6 +6,7 @@
     $scope.expandShow = function (show) {
         show.expanded = !show.expanded;
         if (!show.details && show.type === "movie") {
+            show.details = [];
             subService.getMovieDetails(show);
         } else if (!show.details && show.type === "show") {
             subService.getTvShowDetails(show);
@@ -24,6 +25,12 @@
             subService.getTvShowSeasonDetails(season);
         }
     };
+
+    $scope.loadmore = function (show) {
+        if (show.details && show.type === "movie") {
+            subService.getMovieDetails(show);
+        }
+    }
 
     $scope.getAllSubtitlesChecked = function (detail) {
         for (var i = 0; i < detail.subtitles.length; i++) {

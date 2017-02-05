@@ -213,7 +213,7 @@ class LoginHandler(BaseHandler):
 					# Authenticate
 					login_token = plexTV().login(user, pwd)
 					if login_token == None:	
-						Log.ERROR('Bad credentials detected, denying access')
+						Log.Error('Bad credentials detected, denying access')
 						self.clear()
 						self.set_status(401)
 						self.finish('Authentication error')
@@ -231,7 +231,7 @@ class LoginHandler(BaseHandler):
 						self.set_status(404)
 					elif retVal == 2:
 						# Not the owner
-						Log.Info('USer is not the server owner')
+						Log.Info('User is not the server owner')
 						self.set_status(403)
 					else:
 						# Unknown error
