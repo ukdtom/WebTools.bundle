@@ -30,12 +30,16 @@
             if (callback) callback(resp.data);
             webtoolsModel.globalLoading = false;
         }, function (errorResp) {
-            self.log("var checkIsNewVersionAvailable - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Core", true, url);
+            self.log("var checkIsNewVersionAvailable - " + self.formatError(errorResp), "Core", true, url);
             webtoolsModel.globalLoading = false;
         });
     }
 
     //Public
+    this.formatError = function (errorResp) {
+        return (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!"));
+    }
+
     this.loadWebToolsVersion = function (callback) {
         webtoolsModel.globalLoading = true;
 
@@ -50,7 +54,7 @@
             checkIsNewVersionAvailable();
             if (callback) callback(resp.data);
         }, function (errorResp) {
-            self.log("webtoolsService.loadWebToolsVersion - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Core", true, url);
+            self.log("webtoolsService.loadWebToolsVersion - " + self.formatError(errorResp), "Core", true, url);
             webtoolsModel.globalLoading = false;
         });
     };

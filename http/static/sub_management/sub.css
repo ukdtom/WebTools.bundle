@@ -91,6 +91,7 @@
     float:left;
     margin:5px;
     cursor:pointer;
+    overflow:hidden;
 }
 .sub .rowShow .lineShow .contentShow .tvshow:hover{
     background-color: rgba(85, 128, 255, 0.51);

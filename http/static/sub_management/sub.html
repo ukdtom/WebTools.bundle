@@ -23,31 +23,31 @@
                     </div>
                     <div ng-if="!show.loading && show.type === 'show'">
                         <div class="tvshow" 
-                             ng-if="!subModel.selectedTvShow" 
-                             ng-click="expandTvShow(tvshow)" 
+                             ng-if="!show.selectedTvShow" 
+                             ng-click="expandTvShow(show, tvshow)" 
                              ng-repeat="tvshow in show.tvshows track by tvshow.key | orderBy : 'title'">
                             {[{tvshow.title}]}
                         </div>
-                        <content-loading ng-if="(subModel.selectedTvShow && subModel.selectedTvShow.loading) || (subModel.selectedSeason && subModel.selectedSeason.loading)"></content-loading>
+                        <content-loading ng-if="(show.selectedTvShow && show.selectedTvShow.loading) || (show.selectedSeason && show.selectedSeason.loading)"></content-loading>
                         <div class="tvshowheader textSize3 textBold600">
-                            <div ng-if="subModel.selectedTvShow && !subModel.selectedTvShow.loading && !subModel.selectedSeason">
-                                <div ng-click="subModel.selectedTvShow = null"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> {[{subModel.selectedTvShow.title}]} </div>
+                            <div ng-if="show.selectedTvShow && !show.selectedTvShow.loading && !show.selectedSeason">
+                                <div ng-click="show.selectedTvShow = null"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> {[{show.selectedTvShow.title}]} </div>
                             </div>
-                            <div ng-if="subModel.selectedTvShow && !subModel.selectedTvShow.loading && subModel.selectedSeason && !subModel.selectedSeason.loading">
-                                <div ng-click="subModel.selectedSeason = null"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> {[{subModel.selectedTvShow.title}]} : {[{subModel.selectedSeason.title}]} </div>
+                            <div ng-if="show.selectedTvShow && !show.selectedTvShow.loading && show.selectedSeason && !show.selectedSeason.loading">
+                                <div ng-click="show.selectedSeason = null"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> {[{show.selectedTvShow.title}]} : {[{show.selectedSeason.title}]} </div>
                             </div>
                         </div>
                         <div class="tvshow" 
-                             ng-if="subModel.selectedTvShow && !subModel.selectedTvShow.loading && !subModel.selectedSeason" 
-                             ng-click="expandTvShowSeason(season)" 
-                             ng-repeat="season in subModel.selectedTvShow.seasons track by season.key | orderBy : 'title'">
+                             ng-if="show.selectedTvShow && !show.selectedTvShow.loading && !show.selectedSeason" 
+                             ng-click="expandTvShowSeason(show, season)" 
+                             ng-repeat="season in show.selectedTvShow.seasons track by season.key | orderBy : 'title'">
                              {[{season.title}]}
                         </div>
                         <div class="row" 
                              ng-class="{'pushTopNormal': !$first}" 
-                             ng-repeat="detail in subModel.selectedSeason.details track by detail.key | orderBy : 'title'" 
+                             ng-repeat="detail in show.selectedSeason.details track by detail.key | orderBy : 'title'" 
                              ng-init="detail.subAllChecked = false;detail.loading = false;" 
-                             ng-if="subModel.selectedTvShow && !subModel.selectedTvShow.loading && subModel.selectedSeason && !subModel.selectedSeason.loading">
+                             ng-if="show.selectedTvShow && !show.selectedTvShow.loading && show.selectedSeason && !show.selectedSeason.loading">
                             <div class="col-sm-12 detail">
                                 <content-loading ng-if="detail.loading"></content-loading>
                                 <div ng-if="!detail.loading" sub-details></div>

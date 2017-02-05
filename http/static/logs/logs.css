@@ -1,2 +1,52 @@
 ﻿.logs{
+    /*max-width:100%;*/
+    overflow:hidden;
+    height:100%;
+}
+.logs .download{
+    padding: 7px;
+    height: 36px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px 1px black;
+    background: rgba(0, 77, 255, 0.25);
+    cursor:pointer;
+    float:left;
+}
+.logs .download:hover{
+    background: rgba(0, 77, 255, 0.40);
+}
+
+.logs .logDetails{
+    height: calc(100% - 166px);
+    overflow-x:hidden;
+    overflow-y:auto;
+    background: rgba(128, 128, 128, 0.14);
+    padding: 5px;
+}
+
+.logs .logDetails .row {
+    border-bottom: 1px rgba(128, 128, 128, 0.15) solid;
+    min-height: 40px;
+    word-break: break-word;
+}
+.logs .logDetails .row:nth-child(odd) {
+}
+.logs .logDetails .row:nth-child(even) {
+    background: rgba(0, 77, 255, 0.05);
+}
+
+.logs .logDetails .row .index {
+    float:left;
+    width:40px;
+    overflow:hidden;
+}
+.logs .logDetails .row .detail {
+    float:left;
+    width:calc(100% - 40px);
+}
+.logs .logDetails .row > div {
+}
+
+
+@media screen and (max-width: 480px) {
 }

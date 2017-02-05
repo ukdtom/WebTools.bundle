@@ -13,14 +13,14 @@
         }
     };
 
-    $scope.expandTvShow = function (tvshow) {
-        $scope.subModel.selectedTvShow = tvshow;
+    $scope.expandTvShow = function (show, tvshow) {
+        show.selectedTvShow = tvshow;
         if (!tvshow.seasons) {
             subService.getTvShowSeasons(tvshow);
         }
     };
-    $scope.expandTvShowSeason = function (season) {
-        $scope.subModel.selectedSeason = season;
+    $scope.expandTvShowSeason = function (show, season) {
+        show.selectedSeason = season;
         if (!season.details) {
             subService.getTvShowSeasonDetails(season);
         }
