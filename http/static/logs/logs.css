@@ -5,15 +5,16 @@
 }
 .logs .download{
     padding: 7px;
-    height: 36px;
+    min-height: 36px;
     border-radius: 10px;
     box-shadow: 2px 2px 4px 1px black;
-    background: rgba(0, 77, 255, 0.25);
+    background: rgba(40, 96, 144, 1);
     cursor:pointer;
     float:left;
+    margin:5px;
 }
 .logs .download:hover{
-    background: rgba(0, 77, 255, 0.40);
+    background: rgba(40, 96, 144, 0.8);
 }
 
 .logs .logDetails{
