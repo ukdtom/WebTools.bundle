@@ -23,6 +23,8 @@
     overflow-y:auto;
     background: rgba(128, 128, 128, 0.14);
     padding: 5px;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
 }
 
 .logs .logDetails .row {
