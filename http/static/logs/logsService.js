@@ -32,6 +32,17 @@
             url: url
         }).then(function (resp) {
             selectedLog.details = resp.data;
+            selectedLog.big = false;
+            var logLength = selectedLog.details.length;
+            var cutLength = 14998;
+            if (logLength > cutLength) {
+                selectedLog.details.splice(cutLength, logLength - cutLength);
+                var warningMsg = " ---------- MORE LINES AVAILABLE IN THE ORIGINAL FILE! If you want to view the rest of the file go download it ---------- ";
+                selectedLog.details.push(warningMsg);
+                selectedLog.details.push(warningMsg);
+                selectedLog.details.push(warningMsg);
+                selectedLog.big = true;
+            }
             if(callback) callback(resp.data)
             webtoolsModel.logsLoading = false;
         }, function (errorResp) {

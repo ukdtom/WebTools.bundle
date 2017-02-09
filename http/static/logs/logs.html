@@ -21,13 +21,14 @@
     </div>
 
     <content-loading ng-if="webtoolsModel.logsLoading"></content-loading>
-    <div ng-if="logsModel.selectedLog.details.length === 0">
-        <div class="col-xs-12">File empty</div>
+    <div class="row" ng-if="logsModel.selectedLog.details.length === 0">
+        <div class="col-xs-12 textBold600">File empty</div>
     </div>
-    <div class="logDetails" ng-if="!webtoolsModel.logsLoading && logsModel.selectedLog.details">
-        <div class="row" sly-repeat="detail in logsModel.selectedLog.details" ng-class="{'danger' : isDanger(detail)}">
-            <div class="col-xs-12"><div class="index">#{[{$index+1}]}</div> <div class="detail">{[{detail}]}</div></div>
-        </div>
+    <div class="row" ng-if="logsModel.selectedLog.big">
+        <div class="col-xs-12 textBold600 textSize3 warning">It's not recommended to view files this large in the browser (15.000 LINES+). If you want to view the whole file go download it.</div>
+    </div>
+    <div class="logDetails pushTopMinor" ng-if="!webtoolsModel.logsLoading && logsModel.selectedLog.details">
+        <log-file-display data="logsModel.selectedLog.details"></log-file-display>
     </div>
 
 </div>

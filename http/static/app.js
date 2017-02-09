@@ -1,4 +1,4 @@
-﻿var webtools = angular.module('webtools', ['ngRoute', 'ngDialog', 'sly']);
+﻿var webtools = angular.module('webtools', ['ngRoute', 'ngDialog']);
 
 webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', function ($interpolateProvider, $routeProvider, $locationProvider) {
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
