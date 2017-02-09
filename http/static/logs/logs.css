@@ -18,7 +18,7 @@
 }
 
 .logs .logDetails{
-    height: calc(100% - 166px);
+    height: calc(100% - 200px);
     overflow-x:hidden;
     overflow-y:auto;
     background: rgba(128, 128, 128, 0.14);
@@ -38,12 +38,12 @@
 
 .logs .logDetails .row .index {
     float:left;
-    width:40px;
+    width:60px;
     overflow:hidden;
 }
 .logs .logDetails .row .detail {
     float:left;
-    width:calc(100% - 40px);
+    width:calc(100% - 60px);
 }
 .logs .logDetails .row > div {
 }
