@@ -8,11 +8,10 @@
 ######################################################################################################################
 
 from tornado.web import *
-from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, MODULES
+from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES
+import sys
 
-# Import modules
-from wtV3 import wtV3
-from pmsV3 import pmsV3
+import wtV3, pmsV3, logsV3
 
 class BaseHandler(RequestHandler):	
 	def get_current_user(self):
@@ -20,90 +19,79 @@ class BaseHandler(RequestHandler):
 
 # API V3
 class apiv3(BaseHandler):	
-
 	module = None
+	function = None
 
-	# Disable auth when debug
+	# Disable auth when debug, and get module
 	def prepare(self):
 		# Set Default header
 		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-		# Got a valid module call
-		self.validModules()
+		# Get the module
+		params = self.request.uri[8:].upper().split('/')		
+		for param in params:
+			if param in V3MODULES:
+				self.module = param
+			else:
+				self.function = param
 		# Check if we should bypass auth
 		if DEBUGMODE:
 			if not WT_AUTH:
 				self.set_secure_cookie(NAME, Hash.MD5(Dict['SharedSecret']+Dict['password']), expires_days = None)
-
-	# Check if a valid module was requested
-	def validModules(self):
-		module = self.get_argument('module', 'missing')
-		if module.upper() not in MODULES:
+		# No valid module found?
+		if not self.module:
 			self.clear()
 			self.set_status(404)
-			self.finish('Missing module or unknown module: ' + module)
-			self.module = None
-		else:
-			self.module = module
+			self.finish('Missing module or unknown module')
+
+	# Make the call
+	def makeCall(self):
+		Log.Debug('Recieved an apiV3 GET call for module: ' + self.module + ' for methode: ' + self.request.method)
+		# Generate a handle to the class
+		try:	myClass = getattr(pmsV3, V3MODULES[self.module])
+		except:	
+			try:	myClass = getattr(wtV3, V3MODULES[self.module])
+			except:	
+				try:	myClass = getattr(logsV3, V3MODULES[self.module])
+
+
+				except Exception, e:
+					Log.Debug('Exception getting the class in apiV3: ' + str(e))
+					self.clear()
+					self.set_status(501)
+					self.finish('Bad module?')
+		try:
+			#Make the call
+			getattr(myClass, 'getFunction')(self.request.method.lower(), self)
+		except Exception, e:
+			Log.Debug('Exception apiV3 call reqprocess: ' + str(e))
+			self.clear()
+			self.set_status(501)
+			self.finish('Bad reqprocess call?')
+
 
 	#******* GET REQUEST *********
 	@authenticated
 	# Get Request
 	def get(self, **params):
-		Log.Debug('Recieved an apiV3 GET call for module: ' + self.module)
-		try:
-			if self.module == 'wt':
-				self = wtV3().reqprocessGET(self)
-			elif self.module == 'pms':
-				self = pmsV3().reqprocessGET(self)
-			else:
-				self.clear()
-				self.set_status(501)
-				self.finish('Not implemented')
-				self.module = None
-		except Exception, e:
-			Log.Debug('Exception in apiV3: ' + str(e))
-			self.clear()
-			self.set_status(500)
-			self.finish('Fatal error: %s' %(str(e)))
-			self.module = None
+		self.makeCall()
 
 	#******* POST REQUEST *********
 	@authenticated
 	def post(self, **params):
-		Log.Debug('Recieved a POST call for module: ' + module)
-		try:
-			if self.module == 'wt':
-				self = wtV3().reqprocessPOST(self)
-			else:
-				self.clear()
-				self.set_status(501)
-				self.finish('Not implemented')
-				self.module = None
-		except Exception, e:
-			Log.Debug('Exception in apiV3: ' + str(e))
-			self.clear()
-			self.set_status(500)
-			self.finish('Fatal error: %s' %(str(e)))
-			self.module = None
+		self.makeCall()
 
 	#******* PUT REQUEST *********
 	@authenticated
 	def put(self, **params):
-		Log.Debug('Recieved a PUT call for module: ' + self.module)
-		try:
-			if self.module == 'wt':
-				self = wtV3().reqprocessPUT(self)
-			else:
-				self.clear()
-				self.set_status(501)
-				self.finish('Not implemented')
-				self.module = None
-		except Exception, e:
-			Log.Debug('Exception in apiV3: ' + str(e))
-			self.clear()
-			self.set_status(500)
-			self.finish('Fatal error: %s' %(str(e)))
-			self.module = None
+		self.makeCall()
+
+	#******* DELETE REQUEST *********
+	@authenticated
+	def delete(self, **params):
+		self.makeCall()
+
+
+
 
 
 

@@ -13,34 +13,64 @@ import json
 import shutil, sys
 from consts import BUNDLEDIRNAME, NAME
 
+GET = ['GETCSS']
+PUT = ['RESET']
+POST = ['']
+DELETE = ['']
+
+
 class wtV3(object):	
 
-	''' Grap the tornado get req, and process it '''
+	''' Get the relevant function and call it '''
 	@classmethod
-	def reqprocessGET(self, req):	
-		function = req.get_argument('function', 'missing')
-		if function == 'getCSS':
-			# Call getCSS
-			return self.getCSS(req)
-		else:
+	def getFunction(self, metode, req):		
+		params = req.request.uri[8:].upper().split('/')		
+		self.function = None
+		if metode == 'get':
+			for param in params:
+				if param in GET:
+					self.function = param
+					break
+				else:
+					pass
+		elif metode == 'post':
+			for param in params:
+				if param in POST:
+					self.function = param
+					break
+				else:
+					pass
+		elif metode == 'put':
+			for param in params:
+				if param in PUT:
+					self.function = param
+					break
+				else:
+					pass
+		elif metode == 'delete':
+			for param in params:
+				if param in DELETE:
+					self.function = param
+					break
+				else:
+					pass
+		if self.function == None:
+			Log.Debug('Function to call is None')
 			req.clear()
 			req.set_status(412)
 			req.finish('Unknown function call')
+		else:
+			Log.Debug('Function to call is: ' + self.function)
+			try:
+				getattr(self, self.function)(req)				
+			except Exception, e:
+				Log.Exception('Exception in process of: ' + str(e))
 
-	''' Grap the tornado req, and process it for a POST request'''
-	@classmethod
-	def reqprocessPUT(self, req):		
-		function = req.get_argument('function', 'missing')
-		if function == 'reset':
-			return self.reset(req)
-		else:
-			req.clear()
-			req.set_status(412)
-			req.finish('Unknown function call')
+	#********** Functions below ******************
 
 	# Reset WT to factory settings
 	@classmethod
-	def reset(self, req):
+	def RESET(self, req):
 		try:
 			Log.Info('Factory Reset called')
 			cachePath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', 'com.plexapp.plugins.' + NAME)
@@ -63,7 +93,7 @@ class wtV3(object):
 
 	# Get a list of all css files in http/custom_themes
 	@classmethod
-	def getCSS(self,req):			
+	def GETCSS(self,req):			
 		Log.Debug('getCSS requested')
 		try:
 			targetDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'http', 'custom_themes')

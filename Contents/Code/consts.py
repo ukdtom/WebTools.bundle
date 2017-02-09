@@ -21,8 +21,11 @@ ICON = 'WebTools.png'
 JSONTIMESTAMP = 0																																		# timestamp for json export
 WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'				# URL to latest WebTools
 BUNDLEDIRNAME = ''																																	# Name of the bundle dir
-#MODULES = ['LOGS','GIT','SETTINGS', 'LANGUAGE', 'FINDMEDIA', 'WT', 'JSONEXPORTER', 'PMS']
-MODULES = ['WT', 'PMS']
+#V3MODULES = ['GIT','SETTINGS', 'LANGUAGE', 'FINDMEDIA', 'JSONEXPORTER', 'PMS']
+V3MODULES = {'WT' : 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3'}
+
+
+#['WT', 'PMS']
 
 class consts(object):	
 	init_already = False							# Make sure part of init only run once

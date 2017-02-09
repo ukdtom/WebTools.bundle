@@ -12,145 +12,161 @@ import time, json
 import io, sys
 from xml.etree import ElementTree
 
-# Undate uasTypesCounters
-def updateUASTypesCounters():
-	try:
-		counter = {}
-		# Grap a list of all bundles
-		bundleList = Dict['PMS-AllBundleInfo']
-		for bundle in bundleList:
-			for bundleType in bundleList[bundle]['type']:
-				if bundleType in counter:
-					tCounter = int(counter[bundleType]['total'])
-					tCounter += 1
-					iCounter = int(counter[bundleType]['installed'])
-					if 'date' not in bundleList[bundle]:
-						bundleList[bundle]['date'] = ''
-					if bundleList[bundle]['date'] != '':
-						iCounter += 1
-					counter[bundleType] = {'installed': iCounter, 'total' : tCounter}
-				else:
-					if 'date' not in bundleList[bundle]:
-						counter[bundleType] = {'installed': 0, 'total' : 1}
-					elif bundleList[bundle]['date'] == '':
-						counter[bundleType] = {'installed': 0, 'total' : 1}
-					else:
-						counter[bundleType] = {'installed': 1, 'total' : 1}
-		Dict['uasTypes'] = counter
-		Dict.Save()
-	except Exception, e:		
-		Log.Exception('Fatal error happened in updateUASTypesCounters: ' + str(e))
 
-#TODO fix updateAllBundleInfo
-# updateAllBundleInfo
-def updateAllBundleInfoFromUAS():
-	def updateInstallDict():		
-		# Start by creating a fast lookup cache for all uas bundles
-		uasBundles = {}
-		bundles = Dict['PMS-AllBundleInfo']
-		for bundle in bundles:
-			uasBundles[bundles[bundle]['identifier']] = bundle
-		# Now walk the installed ones
-		try:
-			installed = Dict['installed'].copy()
-			for installedBundle in installed:
-				if not installedBundle.startswith('https://'):
-					Log.Info('Checking unknown bundle: ' + installedBundle + ' to see if it is part of UAS now')
-					if installedBundle in uasBundles:
-						# Get the installed date of the bundle formerly known as unknown :-)
-						installedBranch = Dict['installed'][installedBundle]['branch']
-						installedDate = Dict['installed'][installedBundle]['date']
-						# Add updated stuff to the dicts
-						Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['branch'] = installedBranch
-						Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['date'] = installedDate
-						Dict['installed'][uasBundles[installedBundle]] = Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]
-						# Remove old stuff from the Dict
-						Dict['PMS-AllBundleInfo'].pop(installedBundle, None)
-						Dict['installed'].pop(installedBundle, None)
-						Dict.Save()
-		except Exception, e:
-			Log.Exception('Critical error in updateInstallDict while walking the gits: ' + str(e))
-		return
+GET = ['GETALLBUNDLEINFO']
+PUT = ['']
+POST = ['SEARCH', 'UPLOADFILE']
+DELETE = ['']
 
-	try:
-		# start by checking if UAS cache has been populated
-		jsonUAS = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
-		if os.path.exists(jsonUAS):
-			Log.Debug('UAS was present')
-			# Let's open it, and walk the gits one by one
-			json_file = io.open(jsonUAS, "rb")
-			response = json_file.read()
-			json_file.close()
-			# Convert to a JSON Object
-			gits = JSON.ObjectFromString(str(response))
-			try:
-				for git in gits:
-					# Rearrange data
-					key = git['repo']				
-					installBranch = ''
-					# Check if already present, and if an install date also is there
-					installDate = ""
-					CommitId = ""
-					if key in Dict['PMS-AllBundleInfo']:
-						jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
-						if 'date' in jsonPMSAllBundleInfo:
-							installDate = Dict['PMS-AllBundleInfo'][key]['date']
-						if 'CommitId' in jsonPMSAllBundleInfo:						
-							CommitId = Dict['PMS-AllBundleInfo'][key]['CommitId']
-					del git['repo']
-					# Add/Update our Dict
-					Dict['PMS-AllBundleInfo'][key] = git
-					Dict['PMS-AllBundleInfo'][key]['date'] = installDate
-					Dict['PMS-AllBundleInfo'][key]['CommitId'] = CommitId
-
-			except Exception, e:
-				Log.Exception('Critical error in updateAllBundleInfoFromUAS1 while walking the gits: ' + str(e))
-			Dict.Save()
-			updateUASTypesCounters()
-			updateInstallDict()
-		else:
-			Log.Debug('UAS was sadly not present')
-	except Exception, e:
-		Log.Exception('Fatal error happened in updateAllBundleInfoFromUAS: ' + str(e))
 
 class pmsV3(object):
 	# Defaults used by the rest of the class
 	def __init__(self):
-		self.LOGDIR = Core.storage.join_path(Core.app_support_path, 'Logs')
 		self.PLUGIN_DIR = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name)
 
-	''' Grap the tornado get req, and process it '''
+	''' Get the relevant function and call it '''
 	@classmethod
-	def reqprocessGET(self, req):		
-		function = req.get_argument('function', 'missing')
-		if function == 'getSectionsList':					#Done
-			return self.getSectionsList(req)			
-		elif function == 'getSectionSize':				#Done
-			return self.getSectionSize(req)
-		elif function == 'getSection':						#Done
-			return self.getSection(req)
-		elif function == 'getSubtitles':					#Done
-			return self.getSubtitles(req)
-		elif function == 'showSubtitle':					#Done
-			return self.showSubtitle(req)
-		elif function == 'downloadSubtitle':			#Done
-			return self.downloadSubtitle(req)
-		elif function == 'tvShow':
-			return self.TVshow(req)
-		elif function == 'getAllBundleInfo':
-			return self.getAllBundleInfo(req)
-		elif function == 'getParts':							#Done
-			return self.getParts(req)
-		elif function == 'getSectionLetterList':	#Done
-			return self.getSectionLetterList(req)
-		elif function == 'getSectionByLetter':		#Done
-			return self.getSectionByLetter(req)
-		elif function == 'search':								#Done
-			return self.search(req)
-		else:
+	def getFunction(self, metode, req):		
+		params = req.request.uri[8:].upper().split('/')		
+		self.function = None
+		if metode == 'get':
+			for param in params:
+				if param in GET:
+					self.function = param
+					break
+				else:
+					pass
+		elif metode == 'post':
+			for param in params:
+				if param in POST:
+					self.function = param
+					break
+				else:
+					pass
+		elif metode == 'put':
+			for param in params:
+				if param in PUT:
+					self.function = param
+					break
+				else:
+					pass
+		elif metode == 'delete':
+			for param in params:
+				if param in DELETE:
+					self.function = param
+					break
+				else:
+					pass
+		if self.function == None:
+			Log.Debug('Function to call is None')
 			req.clear()
 			req.set_status(412)
 			req.finish('Unknown function call')
+		else:
+			Log.Debug('Function to call is: ' + self.function)
+			try:
+				getattr(self, self.function)(req)				
+			except Exception, e:
+				Log.Exception('Exception in process of: ' + str(e))
+
+	# getAllBundleInfo
+	@classmethod
+	def GETALLBUNDLEINFO(self, req):
+		Log.Debug('Got a call for getAllBundleInfo')
+		try:
+			req.clear()
+			Log.Debug('Returning: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')		
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			retArray = []
+			for key, value in Dict['PMS-AllBundleInfo'].items():
+				d = {}
+				d[key] = value
+				retArray.append(d)
+			Log.Debug('Returning: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')
+			req.finish(json.dumps(retArray))
+		except Exception, e:
+			Log.Exception('Fatal error happened in getAllBundleInfo: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in getParts: ' + str(e))
+
+	''' uploadFile Takes remoteFile and localFile (Type file) as params '''
+	@classmethod
+	def UPLOADFILE(self, req, body = None):
+		Log.Debug('Got a call for uploadFile')
+		try:
+			# Target filename present?			
+			remoteFile = req.get_argument('remoteFile', 'missing')
+			if remoteFile == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing remoteFile parameter')
+			# Upload file present?
+			if not 'localFile' in req.request.files:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing upload file parameter named localFile')
+			else:
+				# Grap the upload file			
+				localFile = req.request.files['localFile'][0]
+				# Save it
+				output_file = io.open(remoteFile, 'wb')
+				output_file.write(localFile['body'])
+				output_file.close
+				req.clear()
+				req.set_status(200)
+				req.finish('Upload ok')
+		except Exception, e:
+			Log.Exception('Fatal error happened in uploadFile: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in uploadFile: ' + str(e))
+
+	''' Search for a title '''
+	@classmethod
+	def SEARCH(self, req, body = None):
+		Log.Info('Search called')
+		try:
+			title = req.get_argument('title', '_WT_missing_')
+			if title == '_WT_missing_':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing title parameter')
+			else:
+				url = misc.GetLoopBack() + '/search?query=' + String.Quote(title)
+				result = {}
+				# Fetch search result from PMS
+				foundMedias = XML.ElementFromURL(url)
+				# Grap all movies from the result
+				for media in foundMedias.xpath('//Video'):
+					value = {}
+					value['title'] = media.get('title')
+					value['type'] = media.get('type')
+					value['section'] = media.get('librarySectionID')			
+					key = media.get('ratingKey')					
+					result[key] = value
+				# Grap results for TV-Shows
+				for media in foundMedias.xpath('//Directory'):
+					value = {}
+					value['title'] = media.get('title')
+					value['type'] = media.get('type')
+					value['section'] = media.get('librarySectionID')			
+					key = media.get('ratingKey')					
+					result[key] = value
+				Log.Info('Search returned: %s' %(result))
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(result))
+		except Exception, e:
+			Log.Exception('Fatal error happened in search: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in search: ' + str(e))
+
+
+#*********************************************************************************************
 
 	# getParts
 	@classmethod
@@ -285,47 +301,7 @@ class pmsV3(object):
 			req.set_status(500)
 			req.finish('Fatal error happened in getSectionByLetter: ' + str(e))
 
-	''' Search for a title '''
-	@classmethod
-	def search(self, req):
-		Log.Info('Search called')
-		try:
-			title = req.get_argument('title', '_WT_missing_')
-			if title == '_WT_missing_':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing title parameter')
-			else:
-				url = misc.GetLoopBack() + '/search?query=' + String.Quote(title)
-				result = {}
-				# Fetch search result from PMS
-				foundMedias = XML.ElementFromURL(url)
-				# Grap all movies from the result
-				for media in foundMedias.xpath('//Video'):
-					value = {}
-					value['title'] = media.get('title')
-					value['type'] = media.get('type')
-					value['section'] = media.get('librarySectionID')			
-					key = media.get('ratingKey')					
-					result[key] = value
-				# Grap results for TV-Shows
-				for media in foundMedias.xpath('//Directory'):
-					value = {}
-					value['title'] = media.get('title')
-					value['type'] = media.get('type')
-					value['section'] = media.get('librarySectionID')			
-					key = media.get('ratingKey')					
-					result[key] = value
-				Log.Info('Search returned: %s' %(result))
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(result))
-		except Exception, e:
-			Log.Exception('Fatal error happened in search: ' + str(e))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in search: ' + str(e))
+
 
 	''' Download Subtitle '''
 	@classmethod
@@ -606,6 +582,9 @@ class pmsV3(object):
 
 
 
+###############################################################################################
+
+
 
 
 	''' Grap the tornado req, and process it for a DELETE request'''
@@ -636,19 +615,7 @@ class pmsV3(object):
 			req.set_status(412)
 			req.finish("<html><body>Unknown function call</body></html>")
 
-	''' Grap the tornado req, and process it for a POST request'''
-	def reqprocessPost(self, req):		
-		function = req.get_argument('function', 'missing')
-		if function == 'missing':
-			req.clear()
-			req.set_status(412)
-			req.finish("<html><body>Missing function parameter</body></html>")
-		elif function == 'uploadFile':
-			return self.uploadFile(req)
-		else:
-			req.clear()
-			req.set_status(412)
-			req.finish("<html><body>Unknown function call</body></html>")
+
 
 	''' Delete from an XML file '''
 	def DelFromXML(self, fileName, attribute, value):
@@ -670,60 +637,9 @@ class pmsV3(object):
 
 
 
-	# uploadFile
-	def uploadFile(self, req):
-		Log.Debug('Got a call for uploadFile')
-		try:
-			# Target filename present?
-			remoteFile = req.get_argument('remoteFile', 'missing')
-			if remoteFile == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish("<html><body>Missing remoteFile parameter</body></html>")
-			# Upload file present?
-			if not 'localFile' in req.request.files:
-				req.clear()
-				req.set_status(412)
-				req.finish("<html><body>Missing upload file parameter named localFile</body></html>")
-			# Grap the upload file			
-			localFile = req.request.files['localFile'][0]
-			# Save it
-			output_file = io.open(remoteFile, 'wb')
-			output_file.write(localFile['body'])
-			output_file.close
-			req.clear()
-			req.set_status(200)
-			req.finish("<html><body>Upload ok</body></html>")
-		except Exception, e:
-			Log.Exception('Fatal error happened in uploadFile: ' + str(e))
-			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in uploadFile: ' + str(e))
 
-	# getAllBundleInfo
-	def getAllBundleInfo(self, req):
-		Log.Debug('Got a call for getAllBundleInfo')
-		api = req.get_argument('api', '2')
-		try:
-			req.clear()
-			Log.Debug('Returning: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')		
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			if api == '3':
-				retArray = []
-				for key, value in Dict['PMS-AllBundleInfo'].items():
-					d = {}
-					d[key] = value
-					retArray.append(d)
-				Log.Debug('Returning V3: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')
-				req.finish(json.dumps(retArray))
-			else:
-				Log.Debug('Returning V2: ' + str(len(Dict['PMS-AllBundleInfo'])) + ' items')
-				req.finish(json.dumps(Dict['PMS-AllBundleInfo']))
-		except Exception, e:
-			Log.Exception('Fatal error happened in getAllBundleInfo: ' + str(e))
-			req.clear()
+
+
 
 	# Delete Bundle
 	def delBundle(self, req):
@@ -1110,4 +1026,108 @@ class pmsV3(object):
 
 
 
+
+
+#####################################
+
+# Undate uasTypesCounters
+def updateUASTypesCounters():
+	try:
+		counter = {}
+		# Grap a list of all bundles
+		bundleList = Dict['PMS-AllBundleInfo']
+		for bundle in bundleList:
+			for bundleType in bundleList[bundle]['type']:
+				if bundleType in counter:
+					tCounter = int(counter[bundleType]['total'])
+					tCounter += 1
+					iCounter = int(counter[bundleType]['installed'])
+					if 'date' not in bundleList[bundle]:
+						bundleList[bundle]['date'] = ''
+					if bundleList[bundle]['date'] != '':
+						iCounter += 1
+					counter[bundleType] = {'installed': iCounter, 'total' : tCounter}
+				else:
+					if 'date' not in bundleList[bundle]:
+						counter[bundleType] = {'installed': 0, 'total' : 1}
+					elif bundleList[bundle]['date'] == '':
+						counter[bundleType] = {'installed': 0, 'total' : 1}
+					else:
+						counter[bundleType] = {'installed': 1, 'total' : 1}
+		Dict['uasTypes'] = counter
+		Dict.Save()
+	except Exception, e:		
+		Log.Exception('Fatal error happened in updateUASTypesCounters: ' + str(e))
+
+#TODO fix updateAllBundleInfo
+# updateAllBundleInfo
+def updateAllBundleInfoFromUAS():
+	def updateInstallDict():		
+		# Start by creating a fast lookup cache for all uas bundles
+		uasBundles = {}
+		bundles = Dict['PMS-AllBundleInfo']
+		for bundle in bundles:
+			uasBundles[bundles[bundle]['identifier']] = bundle
+		# Now walk the installed ones
+		try:
+			installed = Dict['installed'].copy()
+			for installedBundle in installed:
+				if not installedBundle.startswith('https://'):
+					Log.Info('Checking unknown bundle: ' + installedBundle + ' to see if it is part of UAS now')
+					if installedBundle in uasBundles:
+						# Get the installed date of the bundle formerly known as unknown :-)
+						installedBranch = Dict['installed'][installedBundle]['branch']
+						installedDate = Dict['installed'][installedBundle]['date']
+						# Add updated stuff to the dicts
+						Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['branch'] = installedBranch
+						Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]['date'] = installedDate
+						Dict['installed'][uasBundles[installedBundle]] = Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]
+						# Remove old stuff from the Dict
+						Dict['PMS-AllBundleInfo'].pop(installedBundle, None)
+						Dict['installed'].pop(installedBundle, None)
+						Dict.Save()
+		except Exception, e:
+			Log.Exception('Critical error in updateInstallDict while walking the gits: ' + str(e))
+		return
+
+	try:
+		# start by checking if UAS cache has been populated
+		jsonUAS = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
+		if os.path.exists(jsonUAS):
+			Log.Debug('UAS was present')
+			# Let's open it, and walk the gits one by one
+			json_file = io.open(jsonUAS, "rb")
+			response = json_file.read()
+			json_file.close()
+			# Convert to a JSON Object
+			gits = JSON.ObjectFromString(str(response))
+			try:
+				for git in gits:
+					# Rearrange data
+					key = git['repo']				
+					installBranch = ''
+					# Check if already present, and if an install date also is there
+					installDate = ""
+					CommitId = ""
+					if key in Dict['PMS-AllBundleInfo']:
+						jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
+						if 'date' in jsonPMSAllBundleInfo:
+							installDate = Dict['PMS-AllBundleInfo'][key]['date']
+						if 'CommitId' in jsonPMSAllBundleInfo:						
+							CommitId = Dict['PMS-AllBundleInfo'][key]['CommitId']
+					del git['repo']
+					# Add/Update our Dict
+					Dict['PMS-AllBundleInfo'][key] = git
+					Dict['PMS-AllBundleInfo'][key]['date'] = installDate
+					Dict['PMS-AllBundleInfo'][key]['CommitId'] = CommitId
+
+			except Exception, e:
+				Log.Exception('Critical error in updateAllBundleInfoFromUAS1 while walking the gits: ' + str(e))
+			Dict.Save()
+			updateUASTypesCounters()
+			updateInstallDict()
+		else:
+			Log.Debug('UAS was sadly not present')
+	except Exception, e:
+		Log.Exception('Fatal error happened in updateAllBundleInfoFromUAS: ' + str(e))
 

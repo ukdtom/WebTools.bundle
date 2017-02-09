@@ -6,7 +6,7 @@
 #
 ######################################################################################################################
 
-from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, MODULES
+from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES
 import sys
 # Add modules dir to search path
 modules = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'Contents', 'Code', 'modules')
@@ -22,7 +22,6 @@ import threading
 import os, sys
 
 import apiv3
-
 
 # Migrated to new way
 from plextvhelper import plexTV
@@ -149,13 +148,13 @@ class LoginHandler(BaseHandler):
 					Log.Info('Missing username')
 					self.clear()
 					self.set_status(412)
-					self.finish("<html><body>Missing username</body></html>")
+					self.finish('Missing username')
 			pwd = self.get_argument('pwd', '')
 			if pwd == '':
 				Log.Info('Missing password')
 				self.clear()
 				self.set_status(412)
-				self.finish("<html><body>Missing password</body></html>")
+				self.finish('Missing password')
 		else:
 			Log.Info('Auth header found')
 			auth_decoded = String.Base64Decode(auth_header[6:])
@@ -205,6 +204,12 @@ class LoginHandler(BaseHandler):
 						self.set_status(e.code)
 						self.finish(str(e))
 						return self
+					except Exception, e:
+						Log.Exception('Exception in Login: ' + str(e))
+						self.clear()
+						self.set_status(e.code)
+						self.finish(str(e))
+						return self
 		else:
 			# Let's start by checking if the server is online
 			if plexTV().auth2myPlex():
@@ -238,6 +243,12 @@ class LoginHandler(BaseHandler):
 						Log.Critical('Unknown error, when authenticating')
 						self.set_status(403)
 				except Ex.HTTPError, e:
+					Log.Exception('Exception in Login: ' + str(e))
+					self.clear()
+					self.set_status(e.code)
+					self.finish(str(e))
+					return self
+				except Exception, e:
 					Log.Exception('Exception in Login: ' + str(e))
 					self.clear()
 					self.set_status(e.code)
@@ -304,12 +315,12 @@ class webTools2Handler(BaseHandler):
 			'''
 
 			#TODO: Remove/Alter this when done
-			if module.upper() in MODULES:
-				if '3.' in VERSION:
+			if module.upper() in V3MODULES:
+				if '2.' not in VERSION:
 					Log.Critical('Api V2 is about to be retired....Please update your calls towards Api V3 instead')
-					self.clear()
-					self.set_status(403)
-					self.finish('Oliver!!!!  This has been migrated to api V3 :-)')
+#					self.clear()
+#					self.set_status(403)
+#					self.finish('Oliver!!!!  This has been migrated to api V3 :-)')
 
 
 
@@ -359,7 +370,7 @@ class webTools2Handler(BaseHandler):
 		if module == 'missing':
 			self.clear()
 			self.set_status(404)
-			self.finish("<html><body>Missing function call</body></html>")
+			self.finish('Missing function call')
 			return
 		else:
 			Log.Debug('Recieved a post call for module: ' + module)
@@ -391,7 +402,7 @@ class webTools2Handler(BaseHandler):
 		if module == 'missing':
 			self.clear()
 			self.set_status(404)
-			self.finish("<html><body>Missing function call</body></html>")
+			self.finish('Missing function call')
 			return
 		else:
 			Log.Debug('Recieved a delete call for module: ' + module)
@@ -400,7 +411,7 @@ class webTools2Handler(BaseHandler):
 			else:
 				self.clear()
 				self.set_status(412)
-				self.finish("<html><body>Unknown module call</body></html>")
+				self.finish('Unknown module call')
 				return
 
 	#******* PUT REQUEST *********
@@ -432,7 +443,7 @@ handlers = [(r"/login", LoginHandler),
 						(r"/version", versionHandler),
 						(r'/', idxHandler),
 						(r'/index.html', idxHandler),
-						(r"/api/v3*$", apiv3.apiv3),
+						(r"/api/v3.*$", apiv3.apiv3),
 						(r"/webtools2*$", webTools2Handler),
 						(r'/(.*)', MyStaticFileHandler, {'path': getActualHTTPPath()})
 ]
@@ -443,7 +454,7 @@ if Prefs['Force_SSL']:
 									(r"/version", ForceTSLHandler),
 									(r'/', ForceTSLHandler),
 									(r'/index.html', ForceTSLHandler),
-									(r"/api/v3*$", apiv3.apiv3),
+									(r"/api/v3.*$", apiv3.apiv3),
 									(r"/webtools2*$", webTools2Handler)
 ]
 else:
