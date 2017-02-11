@@ -12,10 +12,10 @@ import json
 import os, sys, io
 import zipfile
 
-GET = ['']
+GET = ['LIST', 'SHOW', 'DOWNLOAD']
 PUT = ['ENTRY']
-POST = ['LIST', 'SHOW', 'DOWNLOAD']
-DELETE = ['']
+POST = []
+DELETE = []
 
 class logsV3(object):
 	# Defaults used by the rest of the class
@@ -43,7 +43,7 @@ class logsV3(object):
 			req.finish('Fatal error happened in Logs list: ' + str(e))
 		Log.Debug('Log Root dir is: ' + self.LOGDIR)
 
-	''' Get the relevant function and call it '''
+	''' Get the relevant function and call it with optinal params '''
 	@classmethod
 	def getFunction(self, metode, req):		
 		self.init()
@@ -82,10 +82,25 @@ class logsV3(object):
 			req.clear()
 			req.set_status(412)
 			req.finish('Unknown function call')
-		else:
-			Log.Debug('Function to call is: ' + self.function)
+		else:		
+			# Check for optional argument
+			paramsStr = req.request.uri[req.request.uri.upper().find(self.function) + len(self.function):]			
+			# remove starting and ending slash
+			if paramsStr.endswith('/'):
+				paramsStr = paramsStr[:-1]
+			if paramsStr.startswith('/'):
+				paramsStr = paramsStr[1:]
+			# Turn into a list
+			params = paramsStr.split('/')
+			# If empty list, turn into None
+			if params[0] == '':
+				params = None
 			try:
-				getattr(self, self.function)(req)				
+				Log.Debug('Function to call is: ' + self.function + ' with params: ' + str(params))
+				if params == None:
+					getattr(self, self.function)(req)
+				else:
+					getattr(self, self.function)(req, params)
 			except Exception, e:
 				Log.Exception('Exception in process of: ' + str(e))
 
@@ -93,7 +108,7 @@ class logsV3(object):
 
 	''' This metode will add an entry to the logfile. Req param is: "text" '''
 	@classmethod
-	def ENTRY(self, req):
+	def ENTRY(self, req, *args):
 		Log.Debug('Starting Logs.entry function')
 		try:
 			text = req.get_argument('text', '')
@@ -109,11 +124,15 @@ class logsV3(object):
 
 	''' This will download a zipfile with the complete log directory. if parameter fileName is specified, only that file will be downloaded, and not zipped'''
 	@classmethod
-	def DOWNLOAD(self, req):
+	def DOWNLOAD(self, req, *args):
 		try:
-			fileName = req.get_argument('fileName', 'missing')
+			self.init()
+			if not args:
+				fileName = ''
+			else:
+				fileName = list(args)[0][0]			
 			Log.Debug('About to download logs and fileName param is: %s' %(fileName))
-			if fileName == 'missing':
+			if fileName == '':
 				# Need to download entire log dir as a zip			
 				# Get current date and time, and add to filename
 				downFile = 'PMSLogs_' + time.strftime("%Y%m%d-%H%M%S") + '.zip'
@@ -182,11 +201,18 @@ class logsV3(object):
 
 	''' This will return contents of the logfile as an array. Req. a parameter named fileName '''
 	@classmethod
-	def SHOW(self, req):
+	def SHOW(self, req, *args):
 		try:
-			fileName = req.get_argument('fileName', 'missing')
+			self.init()
+			if args == None:
+				fileName = ''
+			else:
+				if len(args) > 0:
+					fileName = list(args)[0][0]
+				else:
+					fileName = ''
 			Log.Debug('About to show log named: %s' %(fileName))
-			if fileName == 'missing':
+			if fileName == '':
 				req.clear()
 				req.set_status(412)
 				req.finish('Missing fileName of log to show')
@@ -196,17 +222,22 @@ class logsV3(object):
 			else:
 				file = os.path.join(self.LOGDIR, fileName)
 			retFile = []
-			with io.open(file, 'r', errors='ignore') as content_file:
-				content = content_file.readlines()
-				for line in content:
-					line = line.replace('\n', '')
-					line = line.replace('\r', '')
-					retFile.append(line)
-			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(retFile))
-			return req
+			try:
+				with io.open(file, 'r', errors='ignore') as content_file:
+					content = content_file.readlines()
+					for line in content:
+						line = line.replace('\n', '')
+						line = line.replace('\r', '')
+						retFile.append(line)
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(retFile))
+			except Exception, e:
+				Log.Exception('Fatal error happened in Logs show: ' + str(e))
+				req.clear()
+				req.set_status(404)
+				req.finish('Fatal error happened in Logs show: ' + str(e))				
 		except Exception, e:
 			Log.Exception('Fatal error happened in Logs show: ' + str(e))
 			req.clear()
@@ -215,10 +246,17 @@ class logsV3(object):
 
 	''' This metode will return a list of logfiles. accepts a filter parameter '''
 	@classmethod
-	def LIST(self, req):
+	def LIST(self, req, *args):
 		Log.Debug('Starting Logs.List function')
 		try:
-			fileFilter = req.get_argument('filter', '')
+			self.init()
+			if args == None:
+				fileFilter = ''
+			else:
+				if len(args) > 0:
+					fileFilter = list(args)[0][0]
+				else:
+					fileFilter = ''
 			retFiles = []
 			Log.Debug('List logfiles called for directory %s' %(self.LOGDIR))
 			for root, dirs, files in os.walk(self.LOGDIR, topdown=True):
@@ -231,11 +269,17 @@ class logsV3(object):
 							retFiles.append(filename)
 					else:
 						retFiles.append(filename)
-			Log.Debug('Returning %s' %retFiles)		
-			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(sorted(retFiles)))
+			if retFiles == []:
+				Log.Debug('Nothing found')		
+				req.clear()
+				req.set_status(404)
+				req.finish('Nothing found')
+			else:
+				Log.Debug('Returning %s' %retFiles)		
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(sorted(retFiles)))
 		except Exception, e:
 			Log.Exception('Fatal error happened in Logs list: ' + str(e))
 			req.clear()

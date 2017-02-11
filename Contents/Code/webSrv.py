@@ -88,9 +88,13 @@ class webTools(object):
 
 	''' Return version number, and other info '''
 	def getVersion(self):
+		scheme = Dict['wt_csstheme']
+		if scheme == None:
+			scheme = ''
 		retVal = {'version': VERSION, 
 						'PasswordSet': Dict['pwdset'],
-						'PlexTVOnline': plexTV().auth2myPlex()}
+						'PlexTVOnline': plexTV().auth2myPlex(),
+						'wt_csstheme': scheme}
 		Log.Info('Version requested, returning ' + str(retVal))
 		return retVal
 

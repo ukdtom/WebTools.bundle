@@ -55,7 +55,7 @@ class apiv3(BaseHandler):
 
 
 				except Exception, e:
-					Log.Debug('Exception getting the class in apiV3: ' + str(e))
+					Log.Exception('Exception getting the class in apiV3: ' + str(e))
 					self.clear()
 					self.set_status(501)
 					self.finish('Bad module?')
@@ -63,7 +63,7 @@ class apiv3(BaseHandler):
 			#Make the call
 			getattr(myClass, 'getFunction')(self.request.method.lower(), self)
 		except Exception, e:
-			Log.Debug('Exception apiV3 call reqprocess: ' + str(e))
+			Log.Exception('Exception apiV3 call reqprocess: ' + str(e))
 			self.clear()
 			self.set_status(501)
 			self.finish('Bad reqprocess call?')
