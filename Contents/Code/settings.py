@@ -147,6 +147,7 @@ class settings(object):
 		try:
 			mySetting = {}
 			mySetting['options_hide_integrated'] = (Dict['options_hide_integrated'] == 'true')
+			mySetting['options_hide_withoutsubs'] = (Dict['options_hide_withoutsubs'] == 'true')
 			mySetting['options_hide_local'] = (Dict['options_hide_local'] == 'true')
 			mySetting['options_only_multiple'] = (Dict['options_only_multiple'] == 'true')
 			mySetting['items_per_page'] = int(Dict['items_per_page'])

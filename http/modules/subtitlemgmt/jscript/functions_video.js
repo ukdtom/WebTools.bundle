@@ -167,10 +167,15 @@ subtitlemgmt.display_episodes = function () {
 	$('#ContentBody').html('');
 
 	for (var i = start; i < end; i++) {
+	    if (subtitlemgmt.options.options_hide_withoutsubs && subtitlemgmt.selected_section.contents[i].subtitles.length === 0) {
+	        continue;
+	    }
+
 		var discoveredlanguages = [];
 		
 	    // DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
-		subtitlemgmt.selected_section.contents[i].subtitles.forEach(function(subtitle) {
+		subtitlemgmt.selected_section.contents[i].subtitles.forEach(function (subtitle) {
+
 			if (discoveredlanguages.length == 0) {
 				discoveredlanguages.push([subtitle.languageCode, 1]);
 			} else {
@@ -201,6 +206,7 @@ subtitlemgmt.display_episodes = function () {
 
 		var anysubtitleadded = false;
 	    // DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
+
 		subtitlemgmt.selected_section.contents[i].subtitles.forEach(function(subtitle) {
 			var display_subtitle = true;
 			var language = 'None';
@@ -233,11 +239,11 @@ subtitlemgmt.display_episodes = function () {
 				});
 			}
 
-			if ((subtitlemgmt.options.options_hide_integrated) && (subtitle.location == 'Embedded')) {
+			if (subtitlemgmt.options.options_hide_integrated && subtitle.location == 'Embedded') {
 				display_subtitle = false;
 			}
 
-			if ((subtitlemgmt.options.options_hide_local) && (subtitle.location == 'Sidecar')) {
+			if (subtitlemgmt.options.options_hide_local && subtitle.location == 'Sidecar') {
 				display_subtitle = false;
 			}
 			// End of options filtering
@@ -258,6 +264,10 @@ subtitlemgmt.display_episodes = function () {
 		// DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
 
 		if (anysubtitleadded === false) {
+		    if (subtitlemgmt.options.options_hide_withoutsubs) {
+		        continue;
+		    }
+
 			newEntry.pop();
 			// DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
 			newEntry.push('<tr><td>No subtitles that matched your filter. Video has a total of ' + subtitlemgmt.selected_section.contents[i].subtitles.length + ' subtitles.</td></tr>');
