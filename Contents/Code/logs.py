@@ -81,12 +81,13 @@ class logs(object):
 			Log.Debug('FrontEnd: ' + text)
 			req.clear()
 			req.set_status(200)
-			
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Entry logged')
 		except Exception, e:
 			Log.Exception('Fatal error happened in Logs entry: ' + str(e))
 			req.clear()
 			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in Logs entry: ' + str(e))
 
 	''' This metode will return a list of logfiles. accepts a filter parameter '''

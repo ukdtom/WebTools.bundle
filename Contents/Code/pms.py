@@ -1050,6 +1050,7 @@ class pms(object):
 			Log.Exception('Fatal error happened in getSectionsList: %s' %(str(e)))
 			req.clear()
 			req.set_status(500)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in getSectionsList')
 
 	''' Get a section size '''

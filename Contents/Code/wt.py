@@ -12,6 +12,8 @@ import glob
 import json
 import shutil, sys
 
+from consts import BUNDLEDIRNAME
+
 class wt(object):	
 
 	''' Grap the tornado get req, and process it '''
@@ -72,7 +74,7 @@ class wt(object):
 	def getCSS(self,req):			
 		Log.Debug('getCSS requested')
 		try:
-			targetDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebToolsNext.bundle', 'http', 'custom_themes')
+			targetDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'http', 'custom_themes')
 			myList = glob.glob(targetDir + '/*.css')
 			if len(myList) == 0:
 				req.clear()
