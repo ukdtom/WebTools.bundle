@@ -17,7 +17,7 @@ body{
     color: rgba(255, 255, 255, 1);
 }
 ::-webkit-scrollbar {
-    width: 3px;
+    width: 10px;
 }
 ::-webkit-scrollbar-thumb {
   background-color: rgba(255, 255, 255, 0.30);
@@ -169,6 +169,9 @@ help:hover {
 /* Misc */
 .textCenter{
     text-align:center;
+}
+.warning{
+    color: #a94442;
 }
 .line{
     display: block;

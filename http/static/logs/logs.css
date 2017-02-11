@@ -1,2 +1,56 @@
 ﻿.logs{
+    /*max-width:100%;*/
+    overflow:hidden;
+    height:100%;
+}
+.logs .download{
+    padding: 7px;
+    min-height: 36px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px 1px black;
+    background-color: rgba(40, 96, 144, 1);
+    cursor:pointer;
+    float:left;
+    margin:5px;
+}
+.logs .download:hover{
+    background-color: rgba(40, 96, 144, 0.8);
+}
+
+.logs .logDetails{
+    height: calc(100% - 250px);
+    overflow-x:hidden;
+    overflow-y:auto;
+    background-color: rgba(128, 128, 128, 0.14);
+    padding: 5px;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+}
+
+.logs .logDetails table {
+    width:100%;
+}
+.logs .logDetails table tr {
+    border-bottom: 1px rgba(128, 128, 128, 0.15) solid;
+    word-break: break-word;
+}
+.logs .logDetails table tr:nth-child(odd) {
+}
+.logs .logDetails table tr:nth-child(even) {
+    background-color: rgba(0, 77, 255, 0.05);
+}
+.logs .logDetails table tr.danger {
+    background-color:#a94442;
+}
+.logs .logDetails table tr td {
+    height:40px;
+    padding:5px;
+}
+.logs .logDetails table tr td.index {
+    width:60px;
+    word-break:break-all;
+}
+.logs .logDetails table tr td.detail {
+    width:calc(100% - 60px);
 }

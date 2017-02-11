@@ -5,6 +5,7 @@
 
     this.globalLoading = false;
     this.subLoading = false;
+    this.logsLoading = false;
     this.themeLoading = false;
 
     this.apiUrl = "/webtools2";

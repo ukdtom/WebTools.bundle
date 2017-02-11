@@ -17,7 +17,7 @@
             if (callback) callback(resp.data);
             webtoolsModel.subLoading = false;
         }, function (errorResp) {
-            webtoolsService.log("subService.getShows - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
+            webtoolsService.log("subService.getShows - " + webtoolsService.formatError(errorResp), "Sub", true, url);
             webtoolsModel.subLoading = false;
         });
     }
@@ -43,7 +43,7 @@
             if (callback) callback(resp.data);
             show.loading = false;
         }, function (errorResp) {
-            webtoolsService.log("subService.getMovieDetails - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
+            webtoolsService.log("subService.getMovieDetails - " + webtoolsService.formatError(errorResp), "Sub", true, url);
             show.loading = false;
         });
     }
@@ -59,7 +59,7 @@
             if (callback) callback(resp.data);
             show.loading = false;
         }, function (errorResp) {
-            webtoolsService.log("subService.getTvShowDetails - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
+            webtoolsService.log("subService.getTvShowDetails - " + webtoolsService.formatError(errorResp), "Sub", true, url);
             show.loading = false;
         });
     }
@@ -75,7 +75,7 @@
             if (callback) callback(resp.data);
             tvshow.loading = false;
         }, function (errorResp) {
-            webtoolsService.log("subService.getTvShowSeasons - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
+            webtoolsService.log("subService.getTvShowSeasons - " + webtoolsService.formatError(errorResp), "Sub", true, url);
             tvshow.loading = false;
         });
     }
@@ -91,7 +91,7 @@
             if (callback) callback(resp.data);
             season.loading = false;
         }, function (errorResp) {
-            webtoolsService.log("subService.getTvShowSeasonDetails - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
+            webtoolsService.log("subService.getTvShowSeasonDetails - " + webtoolsService.formatError(errorResp), "Sub", true, url);
             season.loading = false;
         });
     }
@@ -126,7 +126,7 @@
                     dialog.showError();
                 }
             } else {
-                webtoolsService.log("subService.deleteSubtitle - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "Sub", true, url);
+                webtoolsService.log("subService.deleteSubtitle - " + webtoolsService.formatError(errorResp), "Sub", true, url);
             }
             subModel.deleteCountAsyncRunning--;
             if (subModel.deleteCountAsyncRunning === 0) detail.loading = false;

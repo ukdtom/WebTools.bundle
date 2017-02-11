@@ -47,6 +47,7 @@
 /* Animation */
 .menu.animation{
     width:0px;
+    overflow:hidden;
     transition: width 0.5s;
 }
 .menu .toggle.animation{
