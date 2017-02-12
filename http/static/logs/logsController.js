@@ -15,9 +15,21 @@
     $scope.downloadLogs = function () {
         $window.location.href = webtoolsModel.apiV3Url + '/logs/download';
     }
-
     $scope.downloadLog = function () {
         $window.location.href = webtoolsModel.apiV3Url + '/logs/download/' + $scope.logsModel.selectedLog.value;
+    }
+
+    $scope.searchKeyword = function () {
+
+    }
+    $scope.searchPrevious = function () {
+
+    }
+    $scope.searchNext = function () {
+
+    }
+    $scope.searchJumpToTop = function () {
+
     }
 
     $scope.$on("$destroy", function () {

@@ -143,6 +143,17 @@ help:hover {
 .logs .download:hover{
     background-color: rgba(255, 152, 0, 0.5);
 }
+.logs .search{
+    background-color: rgba(104, 74, 30, 0.3);
+}
+.logs .search .searchInput{
+    color:#000000;
+}
+.logs .search .btnSearch{
+    color:#000000;
+}
+.logs .search .toggleSearch{
+}
 .logs .logDetails{
     background-color: rgba(128, 128, 128, 0.14);
 }

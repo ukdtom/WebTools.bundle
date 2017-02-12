@@ -1,26 +1,72 @@
 ﻿.logs{
-    /*max-width:100%;*/
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:auto;
     height:100%;
 }
+.logs .selectLog{
+    float:left;
+    width:400px;
+    margin:5px;
+}
 .logs .download{
-    padding: 7px;
-    min-height: 36px;
-    border-radius: 10px;
+    float:left;
+    padding: 5px;
+    height:30px;
+    border-radius: 5px;
     box-shadow: 2px 2px 4px 1px black;
     background-color: rgba(40, 96, 144, 1);
     cursor:pointer;
-    float:left;
     margin:5px;
+    white-space: nowrap;
+    overflow:hidden;
 }
 .logs .download:hover{
     background-color: rgba(40, 96, 144, 0.8);
 }
 
+/* Search */
+.logs .search{
+    position:fixed;
+    right:30px;
+    top:65px;
+    z-index:3;
+    background-color: rgba(0, 34, 64, 0.4);
+    border-radius: 10px;
+    margin-right:5px;
+    overflow:hidden;
+    padding: 6px;
+}
+.logs .search .searchInput{
+    float:left;
+    margin:3px;
+    padding:2px;
+    max-width:200px;
+    color:#000000;
+    font-size:0.8em;
+}
+.logs .search .btnSearch{
+    float:left;
+    margin:3px;
+    padding:2px;
+
+    cursor:pointer;
+    color:#000000;
+    font-size:0.8em;
+}
+.logs .search .toggleSearch{
+    float:left;
+    padding:5px;
+    cursor:pointer;
+    width:25px;
+}
+.logs .search .hideFields input, 
+.logs .search .hideFields button{
+    display:none;
+}
+
+/* Details */
 .logs .logDetails{
-    height: calc(100% - 250px);
-    overflow-x:hidden;
-    overflow-y:auto;
+    margin-bottom:40px; /* Minus fixed search */
     background-color: rgba(128, 128, 128, 0.14);
     padding: 5px;
     transform: translate3d(0, 0, 0);
@@ -28,6 +74,7 @@
     -webkit-backface-visibility: hidden;
 }
 
+/* Directive logFileDisplay */
 .logs .logDetails table {
     width:100%;
 }
@@ -53,4 +100,8 @@
 }
 .logs .logDetails table tr td.detail {
     width:calc(100% - 60px);
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
 }

@@ -2,4 +2,8 @@
     this.logs = [];
     this.selectedLog = null;
     this.detailsLimit = 500;
+
+    this.searchVisible = true;
+    this.searchKeywordValue = "";
+    
 });

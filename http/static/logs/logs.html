@@ -1,34 +1,41 @@
 <div class="logs">
-
-    <div class="textSize4 textBold600">LogViewer Tool</div>
-
-    <div class="row pushTopMajor">
+    <div class="row search" ng-if="logsModel.selectedLog.details.length !== 0">
         <div class="col-xs-12">
-            <div class="download textBold600" ng-if="logsModel.selectedLog && logsModel.selectedLog.value" ng-click="downloadLog()"><i class="fa fa-download" aria-hidden="true"></i> Download selected logfile</div>
-            <div class="download textBold600" ng-click="downloadLogs()"><i class="fa fa-download" aria-hidden="true"></i> Download all logfiles as zip</div>
+            <div ng-class="{'hideFields' : !logsModel.searchVisible}">
+                <input class="searchInput" ng-model="logsModel.searchKeywordValue" placeholder="search..." />
+                <button class="btnSearch" ng-click="searchKeyword()">Search keyword</button>
+                <button class="btnSearch" ng-click="searchPrevious()">Previous</button>
+                <button class="btnSearch" ng-click="searchNext()">Next</button>
+                <button class="btnSearch" ng-click="searchJumpToTop()">Jump to top</button>
+                <div class="toggleSearch" ng-click="logsModel.searchVisible = !logsModel.searchVisible"><i class="fa" ng-class="{'fa-eye-slash' : !logsModel.searchVisible, 'fa-eye' : logsModel.searchVisible}" aria-hidden="true"></i></div>
+            </div>
         </div>
     </div>
-    <div class="row pushTopMinor">
+
+    <div class="textSize4 textBold600 pushBottomMinor">LogViewer Tool</div>
+    <div class="row">
         <div class="col-xs-12">
-            <div class="form-group">
+            <div class="form-group selectLog">
                 <select class="form-control" 
                         ng-model="logsModel.selectedLog"
                         ng-options="log as log.value for log in logsModel.logs track by log.id"
                         ng-change="loadLog(logsModel.selectedLog)">
                 </select>
             </div>
+            <div class="download textBold600 pushLeftMinor" ng-if="logsModel.selectedLog && logsModel.selectedLog.value" ng-click="downloadLog()"><i class="fa fa-download" aria-hidden="true"></i> Download selected logfile</div>
+            <div class="download textBold600 pushLeftMinor" ng-click="downloadLogs()"><i class="fa fa-download" aria-hidden="true"></i> Download all logfiles as zip</div>
         </div>
     </div>
 
-    <content-loading ng-if="webtoolsModel.logsLoading"></content-loading>
     <div class="row" ng-if="logsModel.selectedLog.details.length === 0">
         <div class="col-xs-12 textBold600">File empty</div>
     </div>
     <div class="row" ng-if="logsModel.selectedLog.big">
         <div class="col-xs-12 textBold600 textSize3 warning">It's not recommended to view files this large in the browser (15.000 LINES+). If you want to view the whole file go download it.</div>
     </div>
+
+    <content-loading ng-if="webtoolsModel.logsLoading"></content-loading>
     <div class="logDetails pushTopMinor" ng-if="!webtoolsModel.logsLoading && logsModel.selectedLog.details">
         <log-file-display data="logsModel.selectedLog.details"></log-file-display>
     </div>
-
 </div>
