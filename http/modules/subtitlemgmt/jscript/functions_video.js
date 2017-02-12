@@ -131,7 +131,7 @@ subtitlemgmt.fetch_section_type_movies = function(section_key, pageToShow) {
 	get_section_video.start(section_key);
 }
 
-subtitlemgmt.display_episodes = function() {
+subtitlemgmt.display_episodes = function () {
 	window.scrollTo(0, 0);
 	/*
 	    Go through all the options and modify the output accordingly.
@@ -154,9 +154,12 @@ subtitlemgmt.display_episodes = function() {
 	if (subtitlemgmt.selected_section.parents_key.length > 0) {
 		$('#ContentHeader').html('<a class="customlink" onclick="javascript:subtitlemgmt.fetch_section_type_show(' + subtitlemgmt.selected_section.parents_key[0] + ',0)">' + subtitlemgmt.selected_section.parents_title[0] + '</a> /' +
 			'<a class="customlink" onclick="javascript:subtitlemgmt.fetch_show_seasons(' + subtitlemgmt.selected_section.parents_key[1] + ',0)">' + subtitlemgmt.selected_section.parents_title[1] + '</a> /' +
-			subtitlemgmt.selected_section.title);
+			subtitlemgmt.selected_section.title + (subtitlemgmt.selected_section.type === 'movie' ? '<div class="input-group-btn"><input type="search" class="form-control search" placeholder="search.." style="width:200px;margin-top:5px;float:left;" id="searchvalue"></input><button class="btn btn-default" type="button" onclick="javascript:subtitlemgmt.search_shows();" style="margin-top:5px">Search</button></div>' : ''))
+        
 	} else {
-		$('#ContentHeader').html(subtitlemgmt.selected_section.title);
+	    /* QUICK FIXED.. MOVING TO V3 SOON ...*/
+	    /* QUICK FIXED.. MOVING TO V3 SOON ...*/
+	    $('#ContentHeader').html(subtitlemgmt.selected_section.title + '<div class="input-group-btn"><input type="search" class="form-control search" placeholder="search.." style="width:200px;margin-top:5px;float:left;" id="searchvalue"></input><button class="btn btn-default" type="button" onclick="javascript:subtitlemgmt.search_shows();" style="margin-top:5px">Search</button></div>');
 	}
 
 	//subtitlemgmt.calculate_pages();
@@ -164,10 +167,15 @@ subtitlemgmt.display_episodes = function() {
 	$('#ContentBody').html('');
 
 	for (var i = start; i < end; i++) {
+	    if (subtitlemgmt.options.options_hide_withoutsubs && subtitlemgmt.selected_section.contents[i].subtitles.length === 0) {
+	        continue;
+	    }
+
 		var discoveredlanguages = [];
 		
-		// DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
-		subtitlemgmt.selected_section.contents[i].subtitles.forEach(function(subtitle) {
+	    // DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
+		subtitlemgmt.selected_section.contents[i].subtitles.forEach(function (subtitle) {
+
 			if (discoveredlanguages.length == 0) {
 				discoveredlanguages.push([subtitle.languageCode, 1]);
 			} else {
@@ -197,7 +205,8 @@ subtitlemgmt.display_episodes = function() {
 		newEntry.push('<tr><th></th><th class="td-small">Lang.</th><th>Location</th><th>Codec</th><th></th></tr>');
 
 		var anysubtitleadded = false;
-		// DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
+	    // DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
+
 		subtitlemgmt.selected_section.contents[i].subtitles.forEach(function(subtitle) {
 			var display_subtitle = true;
 			var language = 'None';
@@ -230,11 +239,11 @@ subtitlemgmt.display_episodes = function() {
 				});
 			}
 
-			if ((subtitlemgmt.options.options_hide_integrated) && (subtitle.location == 'Embedded')) {
+			if (subtitlemgmt.options.options_hide_integrated && subtitle.location == 'Embedded') {
 				display_subtitle = false;
 			}
 
-			if ((subtitlemgmt.options.options_hide_local) && (subtitle.location == 'Sidecar')) {
+			if (subtitlemgmt.options.options_hide_local && subtitle.location == 'Sidecar') {
 				display_subtitle = false;
 			}
 			// End of options filtering
@@ -255,6 +264,10 @@ subtitlemgmt.display_episodes = function() {
 		// DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
 
 		if (anysubtitleadded === false) {
+		    if (subtitlemgmt.options.options_hide_withoutsubs) {
+		        continue;
+		    }
+
 			newEntry.pop();
 			// DISABLE HERE IF NOT TO USE FETCH ALL AT ONCE
 			newEntry.push('<tr><td>No subtitles that matched your filter. Video has a total of ' + subtitlemgmt.selected_section.contents[i].subtitles.length + ' subtitles.</td></tr>');
@@ -266,7 +279,13 @@ subtitlemgmt.display_episodes = function() {
 	}
 
 	$('.modal').modal('hide');
-	//subtitlemgmt.check_visibility();
+    //subtitlemgmt.check_visibility();
+
+	$("input").on('keyup', function (e) {
+	    if (e.keyCode == 13) {
+	        subtitlemgmt.search_shows();
+	    }
+	});
 }
 
 $(window).scroll(function() {
@@ -419,6 +438,66 @@ subtitlemgmt.view_subtitle = function(mediaKey, subtitleKey) {
 			webtools.display_error('Failed fetching the section contents from the server.', data);
 		}
 	});
+}
+
+var getSubs = function (key, callback) {
+    $.ajax({
+        url: '/webtools2?module=pms&function=getSubtitles&key=' + key + '&getFile=false',
+        cache: false,
+        dataType: 'JSON',
+        success: function (data) {
+            callback({ subs: data, key: key });
+        },
+        error: function(data) {
+            data.url = this.url;
+            webtools.display_error('Failed getting subs.', data);
+        }
+    });
+    
+}
+
+subtitlemgmt.search_shows = function () {
+    $.ajax({
+        url: '/webtools2?module=pms&function=search&title=' + $("#searchvalue").val(),
+        cache: false,
+        dataType: 'JSON',
+        success: function (data) {
+            subtitlemgmt.selected_section.contents = [];
+            subtitlemgmt.selected_section.contentstype = 'video';
+
+            //Quick solution before release of v3 - Will become much much better with v3
+            var counter = 0;
+            var asyncCounter = 0;
+            for (var key in data) {
+                var obj = data[key];
+                if (obj.type !== "movie") {
+                    asyncCounter++;
+                    continue;
+                }
+
+                counter++;
+                getSubs(key, function (data2) {
+                    asyncCounter++;
+
+                    data[data2.key].subtitles = data2.subs;
+                    data[data2.key].subtitles.showsubs = true;
+                    subtitlemgmt.selected_section.contents.push(data[data2.key]);
+
+                    var size = Object.keys(data).length;
+                    if (asyncCounter === size) {
+                        subtitlemgmt.display_episodes();
+                    }
+                });
+
+                if (counter === 15) break;
+            }
+
+        },
+        error: function(data) {
+            data.url = this.url;
+            webtools.display_error('Failed searching.', data);
+        }
+    });
 }
 
 subtitlemgmt.subtitle_select_all = function(videoKey, boolean) {

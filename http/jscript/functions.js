@@ -89,7 +89,7 @@ webtools.list_modules.inline([
 			url: '/webtools2?module=wt&function=getCSS',
 			cache: false,
 			dataType: 'JSON',
-			success: function(data,textStatus, xhr) {
+			success: function (data, textStatus, xhr) {
 				if (xhr.status == 200) {
 					webtools.stylesheets = data;
 				} else {

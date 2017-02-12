@@ -66,6 +66,9 @@ def makeSettings():
 	if Dict['options_hide_integrated'] == None:
 		Dict['options_hide_integrated'] = 'false'
 	# Set default value for http part, if run for the first time
+	if Dict['options_hide_withoutsubs'] == None:
+		Dict['options_hide_withoutsubs'] = 'false'
+	# Set default value for http part, if run for the first time
 	if Dict['options_hide_local'] == None:
 		Dict['options_hide_local'] = 'false'
 	# Set default value for http part, if run for the first time
