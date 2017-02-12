@@ -150,7 +150,7 @@ help:hover {
     color:#000000;
 }
 .logs .search .btnSearch{
-    background-color: #286090;
+    background-color: #191919;
 }
 .logs .search .toggleSearch{
 }
@@ -163,10 +163,17 @@ help:hover {
 .logs .logDetails table tr:nth-child(odd) {
 }
 .logs .logDetails table tr:nth-child(even) {
-    background-color: rgba(0, 77, 255, 0.05);
+    background-color: rgba(0, 0, 0, 0.12);
 }
 .logs .logDetails table tr.danger {
     background-color:#a94442;
+}
+.logs .logDetails table tr.lineFound{
+    background-color: rgba(119, 119, 119, 0.4);
+}
+.logs .logDetails table tr.lineFound.focused{
+    background-color: rgba(119, 119, 119, 0.8);
+    box-shadow: 0px 0px 2px 0px yellow;
 }
 
 /* Theme */
