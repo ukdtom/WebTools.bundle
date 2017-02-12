@@ -5,5 +5,8 @@
 
     this.searchVisible = true;
     this.searchKeywordValue = "";
+    this.searchKeywordValueLast = "";
+    this.searchCurrentIndex = 0;
+    this.searchFoundLines = [];
     
 });

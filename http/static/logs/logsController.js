@@ -9,6 +9,9 @@
     }
 
     $scope.loadLog = function (selectedLog) {
+        $scope.logsModel.searchKeywordValue = "";
+        $scope.logsModel.searchKeywordValueLast = "";
+        $scope.logsModel.searchFoundLine = [];
         logsService.getLogDetails(selectedLog);
     }
 
@@ -20,16 +23,18 @@
     }
 
     $scope.searchKeyword = function () {
-
+        if ($scope.logsModel.searchKeywordValue && $scope.logsModel.searchKeywordValue === $scope.logsModel.searchKeywordValueLast) {
+            if ($scope.logsModel.searchFoundLines.length > 0) $scope.$broadcast("logs_search_nextLine");
+        }
+        else {
+            $scope.$broadcast("logs_search_findKeywords");
+        }
     }
     $scope.searchPrevious = function () {
-
-    }
-    $scope.searchNext = function () {
-
+        if ($scope.logsModel.searchFoundLines.length > 0) $scope.$broadcast("logs_search_previousLine");
     }
     $scope.searchJumpToTop = function () {
-
+        $scope.$broadcast("logs_search_jumpToTop");
     }
 
     $scope.$on("$destroy", function () {
