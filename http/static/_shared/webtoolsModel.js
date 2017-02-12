@@ -11,6 +11,12 @@
     this.apiUrl = "/webtools2";
     this.apiV3Url = "/api/v3";
 
+    this.optionOnlyMultiple = "options_only_multiple";
+    this.optionHideLocal = "options_hide_local";
+    this.optionHideIntegrated = "options_hide_integrated";
+    this.itemsPerPage = "items_per_page";
+    this.wtCssTheme = "wt_csstheme";
+
     this.repoUrl = "https://github.com/ukdtom/WebTools.bundle";
     this.threadUrl = "https://forums.plex.tv/discussion/126254";
 });

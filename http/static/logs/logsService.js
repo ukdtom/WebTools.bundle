@@ -28,7 +28,7 @@
         webtoolsModel.logsLoading = true;
 
         //var url = webtoolsModel.apiUrl + "?module=logs&function=show&fileName=" + selectedLog.value; //V2
-        var url = webtoolsModel.apiV3Url + "/logs/show/" + encodeURI(selectedLog.value); //V3
+        var url = webtoolsModel.apiV3Url + "/logs/show/" + selectedLog.value; //V3
         $http({
             method: "GET",
             url: url
@@ -51,9 +51,5 @@
             webtoolsService.log("logsService.getLogDetails - " + webtoolsService.formatError(errorResp), "Logs", true, url);
             webtoolsModel.logsLoading = false;
         });
-    }
-
-    this.downloadLogs = function () {
-
     }
 }]);

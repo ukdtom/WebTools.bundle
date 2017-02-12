@@ -71,7 +71,7 @@
         //var url = webtoolsModel.apiUrl + "?module=logs&function=entry&text=" + text; //V2
         var url = webtoolsModel.apiV3Url + "/logs/entry"; //V3
         $http({
-            method: "POST",
+            method: "PUT",
             url: url,
             data: {
                 text: text
@@ -82,9 +82,10 @@
                 dialog.create("<p class='textSize3'>Error occurred!</p><a href='https://github.com/ukdtom/WebTools.bundle' target='_blank'>WebTools</a></p><br /><p><b>Technical Info:</b> <br />Url: " + errorUrl + "<br /> " + text + "</p>");
             }
         }, function (errorResp) {
-            $log.error("webtoolsService.log - LOGGING NOT AVAILABLE! " + text + " " + location + " - RESPONSE: " + errorResp);
+            $log.error("webtoolsService.log - LOGGING NOT AVAILABLE! - RESPONSE: " + errorResp);
+            $log.error("Tried to log: " + text + " " + location);
             if (error) {
-                dialog.create("<p class='textSize4'>Fatal error!</p><p class='textSize3'>Please contact DEV</p><p><a href='https://github.com/ukdtom/WebTools.bundle' target='_blank'>WebTools</a></p><br /><p><b>Technical Info:</b> <br />Url: " + errorUrl + "<br /> " + text + "</p><br /><br /> LOGGING FAILED! URL: " + url);
+                dialog.create("<p class='textSize4'>Fatal error!</p><p class='textSize3'>Please contact DEV</p><p><a href='https://github.com/ukdtom/WebTools.bundle' target='_blank'>WebTools</a></p><br /><p><b>Technical Info:</b> <br />Url: " + errorUrl + "<br /> " + text + "</p><br /><p>LOGGING FAILED! URL: " + url + "</p><p>RESPONSE: " + (errorResp && typeof errorResp.data === 'string' ? errorResp.data : "Response data is not a string!!") + "</p>");
             }
         }).finally(function () {
             if (error) {

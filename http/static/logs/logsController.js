@@ -13,7 +13,7 @@
     }
 
     $scope.downloadLogs = function () {
-        $window.location.href = $window.location.href = webtoolsModel.apiV3Url + '/logs/download';
+        $window.location.href = webtoolsModel.apiV3Url + '/logs/download';
     }
 
     $scope.downloadLog = function () {
