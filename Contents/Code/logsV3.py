@@ -182,6 +182,7 @@ class logsV3(object):
 						file = os.path.join(self.LOGDIR, 'PMS Plugin Logs', fileName)
 					else:
 						file = os.path.join(self.LOGDIR, fileName)
+					file = String.Unquote(file, usePlus=False)
 					retFile = []
 					with io.open(file, 'r', errors='ignore') as content_file:
 						content = content_file.readlines()
@@ -230,6 +231,7 @@ class logsV3(object):
 				file = os.path.join(self.LOGDIR, 'PMS Plugin Logs', fileName)
 			else:
 				file = os.path.join(self.LOGDIR, fileName)
+			file = String.Unquote(file, usePlus=False)
 			retFile = []
 			try:
 				with io.open(file, 'r', errors='ignore') as content_file:
