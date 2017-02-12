@@ -68,10 +68,14 @@
         }
 
         if (error) var dialog = new DialogFactory();
-        var url = webtoolsModel.apiUrl + "?module=logs&function=entry&text=" + text; 
+        //var url = webtoolsModel.apiUrl + "?module=logs&function=entry&text=" + text; //V2
+        var url = webtoolsModel.apiV3Url + "/logs/entry"; //V3
         $http({
             method: "POST",
             url: url,
+            data: {
+                text: text
+            }
         }).then(function (resp) {
             if (error) {
                 $log.error("Error occurred! " + text);

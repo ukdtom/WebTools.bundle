@@ -13,11 +13,11 @@
     }
 
     $scope.downloadLogs = function () {
-        $window.location.href = '/webtools2?module=logs&function=download';
+        $window.location.href = $window.location.href = webtoolsModel.apiV3Url + '/logs/download';
     }
 
     $scope.downloadLog = function () {
-        $window.location.href = '/webtools2?module=logs&function=download&fileName=' + logsModel.selectedLog.value;
+        $window.location.href = webtoolsModel.apiV3Url + '/logs/download/' + $scope.logsModel.selectedLog.value;
     }
 
     $scope.$on("$destroy", function () {

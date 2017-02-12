@@ -1,7 +1,8 @@
 ﻿angular.module('webtools').service('logsService', ['$http', 'logsModel', 'webtoolsService', 'webtoolsModel', function ($http, logsModel, webtoolsService, webtoolsModel) {
     this.getLogs = function (callback) {
 
-        var url = webtoolsModel.apiUrl + "?module=logs&function=list";
+        //var url = webtoolsModel.apiUrl + "?module=logs&function=list"; //V2
+        var url = webtoolsModel.apiV3Url + "/logs/list/"; //V3
         $http({
             method: "GET",
             url: url,
@@ -26,7 +27,8 @@
     this.getLogDetails = function (selectedLog, callback) {
         webtoolsModel.logsLoading = true;
 
-        var url = webtoolsModel.apiUrl + "?module=logs&function=show&fileName=" + selectedLog.value;
+        //var url = webtoolsModel.apiUrl + "?module=logs&function=show&fileName=" + selectedLog.value; //V2
+        var url = webtoolsModel.apiV3Url + "/logs/show/" + encodeURI(selectedLog.value); //V3
         $http({
             method: "GET",
             url: url

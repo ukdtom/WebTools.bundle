@@ -9,6 +9,7 @@
     this.themeLoading = false;
 
     this.apiUrl = "/webtools2";
+    this.apiV3Url = "/api/v3";
 
     this.repoUrl = "https://github.com/ukdtom/WebTools.bundle";
     this.threadUrl = "https://forums.plex.tv/discussion/126254";
