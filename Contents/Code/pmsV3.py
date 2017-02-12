@@ -60,7 +60,7 @@ class pmsV3(object):
 		if self.function == None:
 			Log.Debug('Function to call is None')
 			req.clear()
-			req.set_status(412)
+			req.set_status(404)
 			req.finish('Unknown function call')
 		else:
 			Log.Debug('Function to call is: ' + self.function)

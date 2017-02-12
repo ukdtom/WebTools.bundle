@@ -62,7 +62,7 @@ class wtV3(object):
 		if self.function == None:
 			Log.Debug('Function to call is None')
 			req.clear()
-			req.set_status(412)
+			req.set_status(404)
 			req.finish('Unknown function call')
 		else:		
 			# Check for optional argument
@@ -90,7 +90,7 @@ class wtV3(object):
 
 	# Reset WT to factory settings
 	@classmethod
-	def RESET(self, req):
+	def RESET(self, req, *args):
 		try:
 			Log.Info('Factory Reset called')
 			cachePath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', 'com.plexapp.plugins.' + NAME)
@@ -113,7 +113,7 @@ class wtV3(object):
 
 	# Get a list of all css files in http/custom_themes
 	@classmethod
-	def GETCSS(self,req):			
+	def GETCSS(self,req, *args):			
 		Log.Debug('getCSS requested')
 		try:
 			targetDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'http', 'custom_themes')
