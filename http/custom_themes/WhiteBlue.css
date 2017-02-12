@@ -48,6 +48,12 @@ help {
 .mainContainer{
     background-color: rgba(0,0,0,.15);
 }
+.mainContainer input.mainBtn{ /*Default blue..*/
+}
+.mainContainer input.mainBtn:focus{ /*Default blue..*/
+}
+.mainContainer input.mainBtn:hover{ /*Default blue..*/
+}
 
 /* Head */
 .head{

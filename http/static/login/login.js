@@ -5,6 +5,7 @@
 $(function () {
     var version = 0;
     var downloadUrl = "";
+    var wtCssTheme = "wt_csstheme";
 
     var init = function () {
         $.ajax({
@@ -16,23 +17,16 @@ $(function () {
             success: function (data) {
                 version = data.version;
                 $("#webtoolsVersion").html('WebTools - v' + version);
+
+                if (data[wtCssTheme]) {
+                    $("#themeCSS").attr("href", "custom_themes/" + data[wtCssTheme]);
+                }
             },
             error: function (data) {
                 $("#webtoolsVersion").html("WebTools not available... Please contact Devs!");
                 console.log("WEBTOOLS NOT AVAILABLE!");
             }
         });
-
-        //$.ajax({ //YOU WILL NEVER BE AUTH FOR THIS
-        //    url: '/webtools2?module=settings&function=getSetting&name=wt_csstheme',
-        //    cache: false,
-        //    success: function (data) {
-        //        $("#themeCSS").attr("href", "custom_themes/" + data);
-        //    },
-        //    error: function (data) {
-        //        console.log("THEME NOT AVAILABLE!");
-        //    }
-        //});
 
         $("#info_Download").click(downloadLatest);
         $("#login").click(login);

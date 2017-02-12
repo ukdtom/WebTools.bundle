@@ -48,6 +48,23 @@ help:hover {
 .mainContainer{
     background-color: rgba(0,0,0,.15);
 }
+.mainContainer input.mainBtn{
+    color:#fff;
+    background-color: #f0ad4e;
+    background-image: none;
+    border-color: #eea236;
+}
+.mainContainer input.mainBtn:focus{
+    color:#fff;
+    background-color:#ec971f;
+    border-color:#985f0d;
+}
+.mainContainer input.mainBtn:hover{
+    color:#fff;
+    background-color:#ec971f;
+    border-color:#d58512;
+}
+
 
 /* Head */
 .head{
