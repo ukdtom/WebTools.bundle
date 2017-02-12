@@ -12,21 +12,21 @@ import time, json
 import io, sys
 from xml.etree import ElementTree
 
-
-GET = ['GETALLBUNDLEINFO']
+GET = ['GETALLBUNDLEINFO', 'GETSECTIONSLIST', 'GETSECTIONSIZE', 'GETSECTIONLETTERLIST', 'GETSECTION']
 PUT = ['']
 POST = ['SEARCH', 'UPLOADFILE']
 DELETE = ['']
 
-
 class pmsV3(object):
 	# Defaults used by the rest of the class
-	def __init__(self):
+	@classmethod
+	def init(self):
 		self.PLUGIN_DIR = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name)
 
-	''' Get the relevant function and call it '''
+	''' Get the relevant function and call it with optinal params '''
 	@classmethod
 	def getFunction(self, metode, req):		
+		self.init()
 		params = req.request.uri[8:].upper().split('/')		
 		self.function = None
 		if metode == 'get':
@@ -60,18 +60,262 @@ class pmsV3(object):
 		if self.function == None:
 			Log.Debug('Function to call is None')
 			req.clear()
-			req.set_status(412)
+			req.set_status(404)
 			req.finish('Unknown function call')
-		else:
-			Log.Debug('Function to call is: ' + self.function)
+		else:		
+			# Check for optional argument
+			paramsStr = req.request.uri[req.request.uri.upper().find(self.function) + len(self.function):]			
+			# remove starting and ending slash
+			if paramsStr.endswith('/'):
+				paramsStr = paramsStr[:-1]
+			if paramsStr.startswith('/'):
+				paramsStr = paramsStr[1:]
+			# Turn into a list
+			params = paramsStr.split('/')
+			# If empty list, turn into None
+			if params[0] == '':
+				params = None
 			try:
-				getattr(self, self.function)(req)				
+				Log.Debug('Function to call is: ' + self.function + ' with params: ' + str(params))
+				if params == None:
+					getattr(self, self.function)(req)
+				else:
+					getattr(self, self.function)(req, params)
 			except Exception, e:
 				Log.Exception('Exception in process of: ' + str(e))
 
+	#********** Functions below ******************
+
+	''' get Subtitles '''
+	@classmethod
+	def getSubtitles(self, req, mediaKey=''):
+		Log.Debug('Subtitles requested')
+		try:
+			if mediaKey != '':
+				key = mediaKey
+			else:
+				key = req.get_argument('key', 'missing')
+			Log.Debug('Media rating key is %s' %(key))
+			if key == 'missing':
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing rating key of media')
+				return req
+			getFile = req.get_argument('getFile', 'missing')
+			if getFile != 'missing':
+				Log.Debug('getFile is %s' %(getFile))
+			# Path to media
+			myURL= misc.GetLoopBack() + '/library/metadata/' + key
+			mediaInfo = []
+			try:
+				bDoGetTree = True
+				# Only grap subtitle here
+				streams = XML.ElementFromURL(myURL).xpath('//Stream[@streamType="3"]')					
+				for stream in streams:
+					subInfo = {}
+					subInfo['key'] = stream.get('id')
+					subInfo['codec'] = stream.get('codec')
+					subInfo['selected'] = stream.get('selected')
+					subInfo['languageCode'] = stream.get('languageCode')
+					if stream.get('key') == None:
+						location = 'Embedded'
+					elif stream.get('format') == None:
+						location = 'Agent'
+					else:
+						location = 'Sidecar'									
+					subInfo['location'] = location
+					# Get tree info, if not already done so, and if it's a none embedded srt, and we asked for all
+					if getFile == 'true':
+						if location != None:
+							if bDoGetTree:							
+								MediaStreams = XML.ElementFromURL(myURL + '/tree').xpath('//MediaStream')
+								bDoGetTree = False
+					if getFile == 'true':
+						try:								
+							for mediaStream in MediaStreams:				
+								if mediaStream.get('id') == subInfo['key']:									
+									subInfo['url'] = mediaStream.get('url')
+						except Exception, e:
+							Log.Exception('Fatal error happened in getSubtitles: %s' %(e))
+							req.clear()
+							req.set_status(500)
+							req.finish('Fatal error happened in getSubtitles')
+					mediaInfo.append(subInfo)	
+			except Exception, e:
+				Log.Exception('Fatal error happened in getSubtitles %s' %(e))
+				req.clear()
+				req.set_status(500)
+				req.finish('Fatal error happened in getSubtitles')
+			if mediaKey != '':
+				return mediaInfo
+			else:
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(mediaInfo))
+		except Exception, e:
+			Log.Exception('Fatal error happened in getSubtitles: %s' %(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in getSubtitles')
+
+	''' get section '''
+	@classmethod
+	def GETSECTION(self,req, *args):
+		Log.Debug('Section requested')
+		# Get params
+		try:
+			if not args:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing params')
+			params = args[0]
+			try:
+				start = params[params.index('start')+1]
+			except Exception, e:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing start in params')
+			try:
+				size = params[params.index('size')+1]
+			except Exception, e:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing size in params')
+			try:
+				key = params[params.index('key')+1]
+			except Exception, e:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing key in params')			
+			getSubs = ('getSubs' in params)
+			try:
+				letterKey = params[params.index('letterKey')+1].upper()
+			except Exception, e:
+				letterKey = None
+			# Got all the needed params, so lets grap the contents
+			try:
+				if letterKey:
+					myURL = misc.GetLoopBack() + '/library/sections/' + key + '/firstCharacter/' + letterKey + '?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
+				else:
+					myURL = misc.GetLoopBack() + '/library/sections/' + key + '/all?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
+				rawSection = XML.ElementFromURL(myURL)
+				Section=[]
+				for media in rawSection:
+					if getSubs == True:
+						subtitles = self.getSubtitles(req, mediaKey=media.get('ratingKey'))
+						media = {'key':media.get('ratingKey'), 'title':media.get('title'), 'subtitles':subtitles}
+					else:
+						media = {'key':media.get('ratingKey'), 'title':media.get('title')}
+					Section.append(media)					
+				Log.Debug('Returning %s' %(Section))
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(Section))
+			except Exception, e:
+				Log.Exception('Fatal error happened in getSection %s' %(str(e)))
+				req.clear()
+				req.set_status(500)
+				req.finish('Fatal error happened in getSection')
+		except Exception, e:
+			Log.Exception('Fatal error happened in getSection: %s' %(str(e)))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in getSection')
+
+	''' get section letter-list '''
+	@classmethod
+	def GETSECTIONLETTERLIST(self, req, *args):
+		Log.Debug('Section requested')
+		try:
+			if not args:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing key of section')
+			else:
+				key = list(args)[0][0]	
+				# Got all the needed params, so lets grap the list
+				myURL = misc.GetLoopBack() + '/library/sections/' + key + '/firstCharacter'
+				resultJson = { }			
+				sectionLetterList = XML.ElementFromURL(myURL).xpath('//Directory')
+				for sectionLetter in sectionLetterList:
+					resultJson[sectionLetter.get('title')] = {
+														'key' : sectionLetter.get('key'), 'size': sectionLetter.get('size')}					
+				Log.Debug('Returning %s' %(resultJson))
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(resultJson, sort_keys=True))
+		except Ex.HTTPError, e:
+			req.clear()
+			req.set_status(e.code)
+			req.finish(str(e))
+		except Exception, e:
+			Log.Exception('Fatal error happened in getSectionLetterList: %s ' %(str(e)))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in getSectionLetterList: ' + str(e))
+
+	''' Get a section size '''
+	@classmethod
+	def GETSECTIONSIZE(self, req, *args):
+		Log.Debug('Retrieve Section size')
+		try:
+			if not args:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing key of section')
+			else:
+				key = list(args)[0][0]	
+
+				myURL = misc.GetLoopBack() + '/library/sections/' + key + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+				try:
+					section = XML.ElementFromURL(myURL)
+					Log.Debug('Returning size as %s' %(section.get('totalSize')))
+					req.clear()
+					req.set_status(200)
+					req.finish(section.get('totalSize'))
+				except Ex.HTTPError, e:
+					Log.Debug('Error happened in GetSectionSize: %s' %(str(e)))
+					req.clear()
+					req.set_status(e.code)
+					req.finish('Fatal error happened in GetSectionSize:  %s'  %(str(e)))
+				except Exception, e:	
+					Log.Exception('Fatal error happened in GetSectionSize: %s' %(str(e)))
+					req.clear()
+					req.set_status(500)
+					req.finish('Fatal error happened in GetSectionSize:  %s'  %(str(e)))
+		except Exception, e:
+			Log.Exception('Fatal error happened in getSectionSize: %s' %(str(e)))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in getSectionSize')
+
+	''' get sections list '''
+	@classmethod
+	def GETSECTIONSLIST(self,req):
+		Log.Debug('getSectionsList requested')
+		try:
+			rawSections = XML.ElementFromURL(misc.GetLoopBack() + '/library/sections')
+			Sections=[]
+			for directory in rawSections:
+				Section = {'key':directory.get('key'),'title':directory.get('title'),'type':directory.get('type')}
+				Sections.append(Section)
+			Log.Debug('Returning Sectionlist as %s' %(Sections))
+			req.clear()
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(Sections))
+		except Exception, e:
+			Log.Exception('Fatal error happened in getSectionsList: %s' %(str(e)))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in getSectionsList')
+
 	# getAllBundleInfo
 	@classmethod
-	def GETALLBUNDLEINFO(self, req):
+	def GETALLBUNDLEINFO(self, req, *args):
 		Log.Debug('Got a call for getAllBundleInfo')
 		try:
 			req.clear()
@@ -93,7 +337,7 @@ class pmsV3(object):
 
 	''' uploadFile Takes remoteFile and localFile (Type file) as params '''
 	@classmethod
-	def UPLOADFILE(self, req, body = None):
+	def UPLOADFILE(self, req, *args):
 		Log.Debug('Got a call for uploadFile')
 		try:
 			# Target filename present?			
@@ -125,46 +369,52 @@ class pmsV3(object):
 
 	''' Search for a title '''
 	@classmethod
-	def SEARCH(self, req, body = None):
+	def SEARCH(self, req, *args):
 		Log.Info('Search called')
 		try:
-			title = req.get_argument('title', '_WT_missing_')
-			if title == '_WT_missing_':
-				req.clear()
+			try:
+				# Get the Payload
+				data = json.loads(req.request.body.decode('utf-8'))
+			except Exception, e:
 				req.set_status(412)
-				req.finish('Missing title parameter')
+				req.finish('Not a valid payload?')
 			else:
-				url = misc.GetLoopBack() + '/search?query=' + String.Quote(title)
-				result = {}
-				# Fetch search result from PMS
-				foundMedias = XML.ElementFromURL(url)
-				# Grap all movies from the result
-				for media in foundMedias.xpath('//Video'):
-					value = {}
-					value['title'] = media.get('title')
-					value['type'] = media.get('type')
-					value['section'] = media.get('librarySectionID')			
-					key = media.get('ratingKey')					
-					result[key] = value
-				# Grap results for TV-Shows
-				for media in foundMedias.xpath('//Directory'):
-					value = {}
-					value['title'] = media.get('title')
-					value['type'] = media.get('type')
-					value['section'] = media.get('librarySectionID')			
-					key = media.get('ratingKey')					
-					result[key] = value
-				Log.Info('Search returned: %s' %(result))
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(result))
+				# Get entry for old pwd
+				if 'title' in data:
+					url = misc.GetLoopBack() + '/search?query=' + String.Quote(data['title'])
+					result = {}
+					# Fetch search result from PMS
+					foundMedias = XML.ElementFromURL(url)
+					# Grap all movies from the result
+					for media in foundMedias.xpath('//Video'):
+						value = {}
+						value['title'] = media.get('title')
+						value['type'] = media.get('type')
+						value['section'] = media.get('librarySectionID')			
+						key = media.get('ratingKey')					
+						result[key] = value
+					# Grap results for TV-Shows
+					for media in foundMedias.xpath('//Directory'):
+						value = {}
+						value['title'] = media.get('title')
+						value['type'] = media.get('type')
+						value['section'] = media.get('librarySectionID')			
+						key = media.get('ratingKey')					
+						result[key] = value
+					Log.Info('Search returned: %s' %(result))
+					req.clear()
+					req.set_status(200)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish(json.dumps(result))
+				else:
+					req.clear()
+					req.set_status(412)
+					req.finish('Missing title in payload')
 		except Exception, e:
 			Log.Exception('Fatal error happened in search: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.finish('Fatal error happened in search: ' + str(e))
-
 
 #*********************************************************************************************
 
@@ -204,104 +454,6 @@ class pmsV3(object):
 			req.clear()
 			req.set_status(500)
 			req.finish('Fatal error happened in getParts: ' + str(e))
-
-	''' get section letter-list '''
-	@classmethod
-	def getSectionLetterList(self, req):
-		Log.Debug('Section requested')
-		try:
-			key = req.get_argument('key', 'missing')
-			Log.Debug('Section key is %s' %(key))
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing key of section')
-				return req
-			# Got all the needed params, so lets grap the list
-			myURL = misc.GetLoopBack() + '/library/sections/' + key + '/firstCharacter'
-			resultJson = { }			
-			sectionLetterList = XML.ElementFromURL(myURL).xpath('//Directory')
-			for sectionLetter in sectionLetterList:
-				resultJson[sectionLetter.get('title')] = {
-													'key' : sectionLetter.get('key'), 'size': sectionLetter.get('size')}					
-			Log.Debug('Returning %s' %(resultJson))
-			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(resultJson, sort_keys=True))
-		except Ex.HTTPError, e:
-			req.clear()
-			req.set_status(e.code)
-			req.finish(str(e))
-		except Exception, e:
-			Log.Exception('Fatal error happened in getSectionLetterList: %s ' %(str(e)))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in getSectionLetterList: ' + str(e))
-
-	''' get getSectionByLetter '''
-	@classmethod
-	def getSectionByLetter(self,req):
-		Log.Debug('getSectionByLetter requested')
-		try:
-			key = req.get_argument('key', 'missing')
-			Log.Debug('Section key is %s' %(key))
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing key of section')
-				return req
-			start = req.get_argument('start', 'missing')
-			Log.Debug('Section start is %s' %(start))
-			if start == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing start of section')
-				return req
-			size = req.get_argument('size', 'missing')
-			Log.Debug('Section size is %s' %(size))
-			if size == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing size of section')
-				return req
-			letterKey = req.get_argument('letterKey', 'missing')
-			Log.Debug('letterKey is %s' %(letterKey))
-			if letterKey == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing letterKey')
-				return req
-			getSubs = req.get_argument('getSubs', 'missing')
-			# Got all the needed params, so lets grap the contents
-			try:
-				myURL = misc.GetLoopBack() + '/library/sections/' + key + '/firstCharacter/' + letterKey + '?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
-				rawSection = XML.ElementFromURL(myURL)
-				Section=[]
-				for media in rawSection:
-					if getSubs != 'true':
-						media = {'key':media.get('ratingKey'), 'title':media.get('title')}
-					else:
-						subtitles = self.getSubtitles(req, mediaKey=media.get('ratingKey'))
-						media = {'key':media.get('ratingKey'), 'title':media.get('title'), 'subtitles':subtitles}
-					Section.append(media)					
-				Log.Debug('Returning %s' %(Section))
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(Section))
-			except Exception, e:
-				Log.Exception('Fatal error happened in getSectionByLetter: ' + str(e))
-				req.clear()
-				req.set_status(500)
-				req.finish('Fatal error happened in getSectionByLetter: ' + str(e))
-		except Exception, e:
-			Log.Exception('Fatal error happened in getSectionByLetter: ' + str(e))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in getSectionByLetter: ' + str(e))
-
-
 
 	''' Download Subtitle '''
 	@classmethod
@@ -391,230 +543,12 @@ class pmsV3(object):
 			req.set_status(500)
 			req.finish('Fatal error happened in showSubtitle')
 
-	''' get section '''
-	@classmethod
-	def getSection(self,req):
-		Log.Debug('Section requested')
-		try:
-			key = req.get_argument('key', 'missing')
-			Log.Debug('Section key is %s' %(key))
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing key of section')
-				return req
-			start = req.get_argument('start', 'missing')
-			Log.Debug('Section start is %s' %(start))
-			if start == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing start of section')
-				return req
-			size = req.get_argument('size', 'missing')
-			Log.Debug('Section size is %s' %(size))
-			if size == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing size of section')
-				return req
-			getSubs = req.get_argument('getSubs', 'missing')
-			# Got all the needed params, so lets grap the contents
-			try:
-				myURL = misc.GetLoopBack() + '/library/sections/' + key + '/all?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
-				rawSection = XML.ElementFromURL(myURL)
-				Section=[]
-				for media in rawSection:
-					if getSubs != 'true':
-						media = {'key':media.get('ratingKey'), 'title':media.get('title')}
-					else:
-						subtitles = self.getSubtitles(req, mediaKey=media.get('ratingKey'))
-						media = {'key':media.get('ratingKey'), 'title':media.get('title'), 'subtitles':subtitles}
-					Section.append(media)					
-				Log.Debug('Returning %s' %(Section))
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(Section))
-			except Exception, e:
-				Log.Exception('Fatal error happened in getSection %s' %(str(e)))
-				req.clear()
-				req.set_status(500)
-				req.finish('Fatal error happened in getSection')
-		except Exception, e:
-			Log.Exception('Fatal error happened in getSection: %s' %(str(e)))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in getSection')
-
-	''' get Subtitles '''
-	@classmethod
-	def getSubtitles(self, req, mediaKey=''):
-		Log.Debug('Subtitles requested')
-		try:
-			if mediaKey != '':
-				key = mediaKey
-			else:
-				key = req.get_argument('key', 'missing')
-			Log.Debug('Media rating key is %s' %(key))
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing rating key of media')
-				return req
-			getFile = req.get_argument('getFile', 'missing')
-			if getFile != 'missing':
-				Log.Debug('getFile is %s' %(getFile))
-			# Path to media
-			myURL= misc.GetLoopBack() + '/library/metadata/' + key
-			mediaInfo = []
-			try:
-				bDoGetTree = True
-				# Only grap subtitle here
-				streams = XML.ElementFromURL(myURL).xpath('//Stream[@streamType="3"]')					
-				for stream in streams:
-					subInfo = {}
-					subInfo['key'] = stream.get('id')
-					subInfo['codec'] = stream.get('codec')
-					subInfo['selected'] = stream.get('selected')
-					subInfo['languageCode'] = stream.get('languageCode')
-					if stream.get('key') == None:
-						location = 'Embedded'
-					elif stream.get('format') == None:
-						location = 'Agent'
-					else:
-						location = 'Sidecar'									
-					subInfo['location'] = location
-					# Get tree info, if not already done so, and if it's a none embedded srt, and we asked for all
-					if getFile == 'true':
-						if location != None:
-							if bDoGetTree:							
-								MediaStreams = XML.ElementFromURL(myURL + '/tree').xpath('//MediaStream')
-								bDoGetTree = False
-					if getFile == 'true':
-						try:								
-							for mediaStream in MediaStreams:				
-								if mediaStream.get('id') == subInfo['key']:									
-									subInfo['url'] = mediaStream.get('url')
-						except Exception, e:
-							Log.Exception('Fatal error happened in getSubtitles: %s' %(e))
-							req.clear()
-							req.set_status(500)
-							req.finish('Fatal error happened in getSubtitles')
-					mediaInfo.append(subInfo)	
-			except Exception, e:
-				Log.Exception('Fatal error happened in getSubtitles %s' %(e))
-				req.clear()
-				req.set_status(500)
-				req.finish('Fatal error happened in getSubtitles')
-			if mediaKey != '':
-				return mediaInfo
-			else:
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(mediaInfo))
-		except Exception, e:
-			Log.Exception('Fatal error happened in getSubtitles: %s' %(e))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in getSubtitles')
-
-	''' Get a section size '''
-	@classmethod
-	def getSectionSize(self, req):
-		Log.Debug('Retrieve Section size')
-		try:
-			key = req.get_argument('key', 'missing')
-			Log.Debug('Section key is %s' %(key))
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing key of section')
-				return req
-			else:
-				myURL = misc.GetLoopBack() + '/library/sections/' + key + '/all?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
-				try:
-					section = XML.ElementFromURL(myURL)
-					Log.Debug('Returning size as %s' %(section.get('totalSize')))
-					req.clear()
-					req.set_status(200)
-					req.finish(section.get('totalSize'))
-				except Ex.HTTPError, e:
-					Log.Debug('Error happened in GetSectionSize: %s' %(str(e)))
-					req.clear()
-					req.set_status(e.code)
-					req.finish('Fatal error happened in GetSectionSize:  %s'  %(str(e)))
-				except Exception, e:	
-					Log.Exception('Fatal error happened in GetSectionSize: %s' %(str(e)))
-					req.clear()
-					req.set_status(500)
-					req.finish('Fatal error happened in GetSectionSize:  %s'  %(str(e)))
-		except Exception, e:
-			Log.Exception('Fatal error happened in getSectionSize: %s' %(str(e)))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in getSectionSize')
-
-	''' get sections list '''
-	@classmethod
-	def getSectionsList(self,req):
-		Log.Debug('getSectionsList requested')
-		try:
-			rawSections = XML.ElementFromURL(misc.GetLoopBack() + '/library/sections')
-			Sections=[]
-			for directory in rawSections:
-				Section = {'key':directory.get('key'),'title':directory.get('title'),'type':directory.get('type')}
-				Sections.append(Section)
-			Log.Debug('Returning Sectionlist as %s' %(Sections))
-			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(Sections))
-		except Exception, e:
-			Log.Exception('Fatal error happened in getSectionsList: %s' %(str(e)))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in getSectionsList')
-
-
 
 
 
 
 
 ###############################################################################################
-
-
-
-
-	''' Grap the tornado req, and process it for a DELETE request'''
-	def reqprocessDelete(self, req):		
-		function = req.get_argument('function', 'missing')
-		if function == 'missing':
-			req.clear()
-			req.set_status(412)
-			req.finish("<html><body>Missing function parameter</body></html>")
-		elif function == 'delSub':
-			return self.delSub(req)
-		elif function == 'delBundle':
-			return self.delBundle(req)
-		else:
-			req.clear()
-			req.set_status(412)
-			req.finish("<html><body>Unknown function call</body></html>")
-
-	''' Grap the tornado req, and process it for a PUT request'''
-	def reqprocessPUT(self, req):		
-		function = req.get_argument('function', 'missing')
-		if function == 'missing':
-			req.clear()
-			req.set_status(412)
-			req.finish("<html><body>Missing function parameter</body></html>")
-		else:
-			req.clear()
-			req.set_status(412)
-			req.finish("<html><body>Unknown function call</body></html>")
-
 
 
 	''' Delete from an XML file '''

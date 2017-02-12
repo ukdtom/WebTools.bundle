@@ -80,7 +80,7 @@ class logsV3(object):
 		if self.function == None:
 			Log.Debug('Function to call is None')
 			req.clear()
-			req.set_status(412)
+			req.set_status(404)
 			req.finish('Unknown function call')
 		else:		
 			# Check for optional argument
@@ -111,11 +111,20 @@ class logsV3(object):
 	def ENTRY(self, req, *args):
 		Log.Debug('Starting Logs.entry function')
 		try:
-			text = req.get_argument('text', '')
-			Log.Debug('FrontEnd: ' + text)
-			req.clear()
-			req.set_status(200)
-			req.finish('Entry logged')
+			try:
+				# Get the Payload
+				data = json.loads(req.request.body.decode('utf-8'))
+			except Exception, e:
+				req.set_status(412)
+				req.finish('Not a valid payload?')
+			if 'text' in data:
+				Log.Debug('FrontEnd: ' + data['text'])
+				req.clear()
+				req.set_status(200)
+				req.finish('Entry logged')
+			else:
+				req.set_status(404)
+				req.finish('Missing text from payload?')
 		except Exception, e:
 			Log.Exception('Fatal error happened in Logs entry: ' + str(e))
 			req.clear()
@@ -173,6 +182,7 @@ class logsV3(object):
 						file = os.path.join(self.LOGDIR, 'PMS Plugin Logs', fileName)
 					else:
 						file = os.path.join(self.LOGDIR, fileName)
+					file = String.Unquote(file, usePlus=False)
 					retFile = []
 					with io.open(file, 'r', errors='ignore') as content_file:
 						content = content_file.readlines()
@@ -221,6 +231,7 @@ class logsV3(object):
 				file = os.path.join(self.LOGDIR, 'PMS Plugin Logs', fileName)
 			else:
 				file = os.path.join(self.LOGDIR, fileName)
+			file = String.Unquote(file, usePlus=False)
 			retFile = []
 			try:
 				with io.open(file, 'r', errors='ignore') as content_file:
