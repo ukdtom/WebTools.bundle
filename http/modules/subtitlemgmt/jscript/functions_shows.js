@@ -40,7 +40,7 @@ subtitlemgmt.fetch_section_type_show = function(section_key, pageToShow) {
         error: function(data) {
           data.url = this.url;
           webtools.log('Error: Failed fetching the size of the section. The section was: ' + subtitlemgmt.selected_section.title)
-          webtools.display_error('Failed fetching the size of the section from the server. Please restart the server.', data);
+          webtools.display_error('Failed fetching the size of the section from the server. ', data);
           get_show.abort('Error: ' + data.statusText);
         }
       });
@@ -61,7 +61,7 @@ subtitlemgmt.fetch_section_type_show = function(section_key, pageToShow) {
         },
         error: function(data) {
           data.url = this.url;
-          webtools.display_error('Failed fetching the section contents from the server. Please restart the server.', data);
+          webtools.display_error('Failed fetching the section contents from the server.', data);
           get_show.abort('Error: ' + data.statusText);
         }
       });
@@ -135,7 +135,7 @@ subtitlemgmt.fetch_show_seasons = function(show_key, pageToShow) {
         },
         error: function(data) {
           data.url = this.url;
-          webtools.display_error('Failed fetching the seasons from the server. Please restart the server.', data);
+          webtools.display_error('Failed fetching the seasons from the server.', data);
           get_season.abort('Error: ' + data.statusText);
         }
       });
@@ -193,7 +193,7 @@ subtitlemgmt.fetch_season_episodes = function(season_key, pageToShow) {
         },
         error: function(data) {
           data.url = this.url;
-          webtools.display_error('Failed fetching the episodes from the server. Please restart the server.', data);
+          webtools.display_error('Failed fetching the episodes from the server.', data);
           get_episodes.abort('Error: ' + data.statusText);
         }
       });

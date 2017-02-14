@@ -1,6 +1,7 @@
 Main Developers:
 Dane22 (Python, Backend)
 Dagalufh (JS/HTML, Frontend)
+Creoludifico (JS/HTML, Frontend)
 
 Custom theme's by:
 trumpy81

@@ -51,18 +51,24 @@ def getActualHTTPPath():
 	else:
 		return HTTPPath
 
-# Path to http folder within the bundle
+# Path to bundle folder within the bundle
 def isCorrectPath(req):	
-	installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split('WEBTOOLS.BUNDLE',1)
+	installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split(str(NAME).upper() + '.BUNDLE',1)
 	targetPath = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name).upper()
 	if installedPlugInPath[:-1] != targetPath:
+		Log.Debug('************************************************')
+		Log.Debug('Wrong installation path detected!!!!')
+		Log.Debug('')
+		Log.Debug('Correct path is:')
+		Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle'))
+		Log.Debug('************************************************')
 		installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).split('/Contents',1)
 		msg = '<h1>Wrong installation path detected</h1>'
-		msg = msg + '<p>It seems like you installed WebTools into the wrong folder</p>'
-		msg = msg + '<p>You installed WebTools here:<p>'
+		msg = msg + '<p>It seems like you installed ' + NAME + ' into the wrong folder</p>'
+		msg = msg + '<p>You installed ' + NAME + ' here:<p>'
 		msg = msg + installedPlugInPath
 		msg = msg + '<p>but the correct folder is:<p>'
-		msg = msg + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, 'WebTools.bundle')
+		msg = msg + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
 		req.clear()
 		req.set_status(404)
 		req.finish(msg)
@@ -86,8 +92,12 @@ class webTools(object):
 		return retVal
 
 #**************** Handler Classes for Rest **********************
+class MyStaticFileHandler(StaticFileHandler):
+	def set_extra_headers(self, path):
+		# Disable cache
+		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
 
-class BaseHandler(RequestHandler):
+class BaseHandler(RequestHandler):	
 	def get_current_user(self):
 		return self.get_secure_cookie(NAME)
 
@@ -105,6 +115,7 @@ class idxHandler(BaseHandler):
 	@authenticated
 	def get(self):
 		Log.Info('Returning: ' + Core.storage.join_path(getActualHTTPPath(), 'index.html'))
+		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
 		self.render(Core.storage.join_path(getActualHTTPPath(), 'index.html'))
 
 ''' Logout handler '''
@@ -253,9 +264,10 @@ class LoginHandler(BaseHandler):
 class versionHandler(RequestHandler):
 	def get(self, **params):
 		self.set_header('Content-Type', 'application/json; charset=utf-8')
+		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
 		self.write(webTools().getVersion())
 
-class webTools2Handler(BaseHandler):
+class webTools2Handler(BaseHandler):	
 	# Disable auth when debug
 	def prepare(self):
 		if DEBUGMODE:
@@ -265,7 +277,8 @@ class webTools2Handler(BaseHandler):
 	#******* GET REQUEST *********
 	@authenticated
 	# Get Request
-	def get(self, **params):		
+	def get(self, **params):
+		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')		
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
 			self.clear()
@@ -286,6 +299,8 @@ class webTools2Handler(BaseHandler):
 			self = modClass().reqprocess(self)
 			'''
 
+			
+
 			if module == 'git':			
 				self = git().reqprocess(self)
 			elif module == 'logs':
@@ -296,6 +311,17 @@ class webTools2Handler(BaseHandler):
 				self = settings().reqprocess(self)
 			elif module == 'findMedia':
 				self = findMedia().reqprocess(self)
+			elif module == 'jsonExporter':
+#				self = jsonExporter().reqprocess(self)
+				try:
+					m = getattr(module)
+
+				except Exception, e:
+					print 'Ged json Exception: ' + str(e)
+
+
+
+
 			elif module == 'language':
 				self = language().reqprocess(self)
 			elif module == 'plex2csv':
@@ -311,11 +337,10 @@ class webTools2Handler(BaseHandler):
 				self.finish('Unknown module call')
 				return
 
-
-
 	#******* POST REQUEST *********
 	@authenticated
 	def post(self, **params):
+		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')		
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
 			self.clear()
@@ -347,6 +372,7 @@ class webTools2Handler(BaseHandler):
 	#******* DELETE REQUEST *********
 	@authenticated
 	def delete(self, **params):
+		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')		
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
 			self.clear()
@@ -366,6 +392,7 @@ class webTools2Handler(BaseHandler):
 	#******* PUT REQUEST *********
 	@authenticated
 	def put(self, **params):
+		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')		
 		module = self.get_argument('module', 'missing')
 		if module == 'missing':
 			self.clear()
@@ -392,7 +419,7 @@ handlers = [(r"/login", LoginHandler),
 						(r'/', idxHandler),
 						(r'/index.html', idxHandler),
 						(r"/webtools2*$", webTools2Handler),
-						(r'/(.*)', StaticFileHandler, {'path': getActualHTTPPath()})
+						(r'/(.*)', MyStaticFileHandler, {'path': getActualHTTPPath()})
 ]
 
 if Prefs['Force_SSL']:
@@ -409,6 +436,7 @@ else:
 httpsHandlers = handlers
 
 #********* Tornado itself *******************
+
 ''' Start the actual instance of tornado '''
 def start_tornado():
 	myCookie = Hash.MD5(Dict['SharedSecret'] + NAME)

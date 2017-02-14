@@ -46,8 +46,9 @@ webtools.functions.subtitlemgmt = {
 	fetch_section_type_movies: function() {},
 	display_show: function() {},
 	display_season: function() {},
-	display_episodes: function() {},
-	view_subtitle: function() {},
+	display_episodes: function () { },
+	view_subtitle: function () { },
+    search_shows: function() { },
 	subtitle_select_all: function() {},
 	subtitle_delete_confirm: function() {},
 	subtitle_delete: function() {},
@@ -150,7 +151,7 @@ subtitlemgmt.get_section_list.inline([
 			},
 			error: function(data) {
 				data.url = this.url;
-				webtools.display_error('Failed fetching the settings from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+				webtools.display_error('Failed fetching the settings from the server.', data);
 				subtitlemgmt.get_section_list.abort('Error: ' + data.statusText);
 			}
 		});
@@ -189,7 +190,7 @@ subtitlemgmt.get_section_list.inline([
 			},
 			error: function(data) {
 				data.url = this.url;
-				webtools.display_error('Failed fetching the sections from the server. Please restart the server.', data);
+				webtools.display_error('Failed fetching the sections from the server.', data);
 				subtitlemgmt.get_section_list.abort('Error: ' + data.statusText);
 			}
 
@@ -224,6 +225,7 @@ subtitlemgmt.save_options = function() {
 	subtitlemgmt.options.options_auto_select_duplicate = $("input[name=options_auto_select_duplicate]").prop("checked");
 	subtitlemgmt.options.options_hide_empty_subtitles = $("input[name=options_hide_empty_subtitles]").prop("checked");
 	subtitlemgmt.options.options_hide_integrated = $("input[name=options_hide_integrated]").prop("checked");
+	subtitlemgmt.options.options_hide_withoutsubs = $("input[name=options_hide_withoutsubs]").prop("checked");
 	subtitlemgmt.options.options_hide_local = $("input[name=options_hide_local]").prop("checked");
 	subtitlemgmt.options.options_only_multiple = $("input[name=options_only_multiple]").prop("checked");
 	subtitlemgmt.options.debug = $("input[name=debug]").prop("checked");
@@ -330,6 +332,7 @@ subtitlemgmt.show_options = function() {
 	$('#OptionsModalAlert').hide();
 	var options = ['<tr><td><input type="checkbox" name="options_hide_local"></td><td>Hide local subtitles</td></tr>',
 		'<tr><td><input type="checkbox" name="options_hide_integrated"></td><td>Hide integrated subtitles</td></tr>',
+		'<tr><td><input type="checkbox" name="options_hide_withoutsubs"></td><td>Hide media without subs</td></tr>',
 		'<tr><td><input type="checkbox" name="options_only_multiple"></td><td>Show only multiple subtitles/language</td></tr>',
 		'<tr><td><input type="checkbox" name="debug"></td><td>Show debug in logs</td></tr>',
 		'<tr><td><input type="text" name="items_per_page" size="2"></td><td>Items per page <span id="items_per_page_max_min"></span></td></tr>'
@@ -339,6 +342,7 @@ subtitlemgmt.show_options = function() {
 
 	$("input[name=debug]").prop("checked", subtitlemgmt.options.debug);
 	$("input[name=options_hide_integrated]").prop("checked", subtitlemgmt.options.options_hide_integrated);
+	$("input[name=options_hide_withoutsubs]").prop("checked", subtitlemgmt.options.options_hide_withoutsubs);
 	$("input[name=options_hide_local]").prop("checked", subtitlemgmt.options.options_hide_local);
 	$("input[name=options_hide_empty_subtitles]").prop("checked", subtitlemgmt.options.options_hide_empty_subtitles);
 	$("input[name=options_only_multiple]").prop("checked", subtitlemgmt.options.options_only_multiple);

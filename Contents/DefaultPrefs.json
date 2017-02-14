@@ -1,13 +1,13 @@
 [
 	{
 		"id":"WEB_Port_http",
-		"label":"Enter the port that this plugin should use for http",
+		"label":"Enter the port that this plugin should use for http. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]",
 		"type":"text",
 		"default":"33400"
 	},
 	{
 		"id":"WEB_Port_https",
-		"label":"Enter the port that this plugin should use for https",
+		"label":"Enter the port that this plugin should use for https. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]",
 		"type":"text",
 		"default":"33443"
 	},

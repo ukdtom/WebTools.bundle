@@ -31,22 +31,43 @@ class misc(object):
 	''' Below function shamefully stolen from the scanner.bundle, yet modified a bit '''
 	# Safely return Unicode.
 	def Unicodize(self, s):
-		# Precompose.
-		try: s = unicodedata.normalize('NFKC', s.decode('utf-8'))
+		filename = s
+		form = 'NFC'
+		try: filename = unicodedata.normalize(form, unicode(s.decode('utf-8')))
 		except:
-		  try: s = unicodedata.normalize('NFKC', s.decode(sys.getdefaultencoding()))
+		  try: filename = unicodedata.normalize(form, unicode(s.decode(sys.getdefaultencoding())))
 		  except:
-		    try: s = unicodedata.normalize('NFKC', s.decode(sys.getfilesystemencoding()))
+		    try: filename = unicodedata.normalize(form, unicode(s.decode(sys.getfilesystemencoding())))
 		    except:
-		      try: s = unicodedata.normalize('NFKC', s.decode('ISO-8859-1'))
+		      try: filename = unicodedata.normalize(form, unicode(s.decode('ISO-8859-1')))
 		      except:
-		        try: s = unicodedata.normalize('NFKC', s)
+		        try: filename = unicodedata.normalize(form, s)
 		        except Exception, e:
-		          Log(type(e).__name__ + ' exception precomposing: ' + str(e))
-		# Strip control characters.
-		s = re.sub(RE_UNICODE_CONTROL, '', s)
-		return s
-  
+		          Log(type(e).__name__ + ' exception precomposing: ' + str(e) + ' with ' + form)
+		try:
+		  filename = re.sub(RE_UNICODE_CONTROL, '', filename)
+		except:
+		  Log.Debug('Couldn\'t strip control characters: ' + filename)
+		return filename
+
+	####################################################################################################
+	# This function will return the loopback address
+	####################################################################################################
+	def GetLoopBack(self):
+		# For now, simply return the IPV4 LB Addy, until PMS is better with this
+		return 'http://127.0.0.1:32400'
+
+		''' Code below not used for now
+		try:
+			httpResponse = HTTP.Request('http://[::1]:32400/web', immediate=True, timeout=5)
+			return 'http://[::1]:32400'
+		except:
+			return 'http://127.0.0.1:32400'
+		'''
+
+
+misc = misc()
+
 
 
 

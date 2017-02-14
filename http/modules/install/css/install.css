@@ -9,6 +9,7 @@
 .aligncenter {text-align: center;}
 .subheadline {font-weight: bold; margin-right: 5px;}
 .installhidden {display: none;}
+.search{max-width:250px}
 
 .branch-dropdown {
   margin-right: 4px;

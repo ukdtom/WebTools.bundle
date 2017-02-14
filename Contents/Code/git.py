@@ -13,7 +13,7 @@ import io, os, shutil, sys
 import plistlib
 import pms
 import tempfile
-from consts import DEBUGMODE, UAS_URL, UAS_BRANCH, NAME
+from consts import DEBUGMODE, UAS_URL, UAS_BRANCH, NAME, WTURL
 
 class git(object):
 	init_already = False							# Make sure part of init only run once
@@ -120,18 +120,20 @@ class git(object):
 		# Reset dicts
 		nukeSpecialDicts()
 
-		url= req.get_argument('debugURL', 'https://api.github.com/repos/dagalufh/WebTools.bundle/releases/latest')
+		url= req.get_argument('debugURL', WTURL)
 		bundleName = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
 		Log.Info('WT install dir is: ' + bundleName)
 		try:
-			if url == 'https://api.github.com/repos/dagalufh/WebTools.bundle/releases/latest':
+			if 'https://api.github.com/repos/' in url:
 				Log.Debug('Getting release info from url: ' + url)
 				jsonReponse = JSON.ObjectFromURL(url)
-				wtURL = jsonReponse['assets'][0]['browser_download_url']
+				# Walk assets to find the one named WebTools.bundle.zip
+				for asset in jsonReponse['assets']:
+					if asset['name'] == 'WebTools.bundle.zip':
+						wtURL = asset['browser_download_url']					
 			else:
 				wtURL = url.replace('tree', 'archive') + '.zip'
 			Log.Info('WT Download url detected as: ' + wtURL)
-
 			# Grap file from Github
 			zipfile = Archive.ZipFromURL(wtURL)
 			bError = True
@@ -241,12 +243,16 @@ class git(object):
 							gitTime = datetime.datetime.strptime(self.getLastUpdateTime(req, UAS=True, url=bundle), '%Y-%m-%d %H:%M:%S')
 							sBundleTime = Dict['installed'][bundle]['date']
 							bundleTime = datetime.datetime.strptime(sBundleTime, '%Y-%m-%d %H:%M:%S')
+							# Fix for old stuff, where branch was empty
+							if Dict['installed'][bundle]['branch'] == '':
+								Dict['installed'][bundle]['branch'] = 'master'
+								Dict.Save()
 							if bundleTime < gitTime:
 								gitInfo = Dict['installed'][bundle]
 								gitInfo['gitHubTime'] = str(gitTime)
 								result[bundle] = gitInfo
 							else:
-								# Let's get a CommitId stamped for future times
+								# Let's get a CommitId stamped for future times								
 								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
 								Log.Info('Stamping %s with a commitId of %s for future ref' %(bundle, updateInfo['commitId']))							
 								Dict['installed'][bundle]['CommitId'] = updateInfo['commitId']

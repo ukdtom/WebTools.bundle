@@ -56,6 +56,7 @@ webtools.list_modules.inline([
 			//Name:VersionFetch
 			webtools.loading();
 			$('#OptionsMenu').html('');
+			$('#ModuleMenu').html('');
 			$.ajax({
 				url: '/version',
 				cache: false,
@@ -76,7 +77,7 @@ webtools.list_modules.inline([
 				},
 				error: function(data) {
 					data.url = this.url;
-					webtools.display_error('Failed fetching the version from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+					webtools.display_error('Failed fetching the version from the server.', data);
 					webtools.list_modules.abort('Error: ' + data.statusText);
 				}
 			});
@@ -88,7 +89,7 @@ webtools.list_modules.inline([
 			url: '/webtools2?module=wt&function=getCSS',
 			cache: false,
 			dataType: 'JSON',
-			success: function(data,textStatus, xhr) {
+			success: function (data, textStatus, xhr) {
 				if (xhr.status == 200) {
 					webtools.stylesheets = data;
 				} else {
@@ -145,7 +146,7 @@ webtools.list_modules.inline([
 				},
 				error: function(data) {
 					data.url = this.url;
-					webtools.display_error('Failed fetching the languagecodes from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+					webtools.display_error('Failed fetching the languagecodes from the server.', data);
 					webtools.list_modules.abort('Error: ' + data.statusText);
 				}
 			});
@@ -232,6 +233,7 @@ webtools.activate_module = function(modulename) {
 	webtools.longermodulestart = false;
 	$('#navfoot').html('');
 	$('#ContentFoot').html('');
+	$('#ModuleMenu').html('');
 	$('#OptionsMenu').html(webtools.defaultoptionsmenu);
 
 	$.ajax({
@@ -275,17 +277,21 @@ webtools.activate_module = function(modulename) {
 		},
 		error: function(data) {
 			data.url = this.url;
-			webtools.display_error('Failed activating the module. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+			webtools.display_error('Failed activating the module.', data);
 		}
 	});
 };
 
 // The only purpose of this is to display a modal with an error message.
 webtools.display_error = function(message, ajaxobject) {
-	$('#myModalLabel').html('An error occured.');
+    $('#myModalLabel').html('An error occured.');
+    
+    message += '<br /><br />Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex thread <a href="https://forums.plex.tv/discussion/126254" target="_blank" style="font-weight: bold;">here</a> if it occurs again. ';
+    message += '<br /><br />You can download the log files <a onclick="window.open(\'webtools2?module=logs&function=download\',\'_blank\');" target="_blank" style="font-weight: bold;cursor:pointer;">here</a>';
 
-	if (typeof(ajaxobject) != 'undefined') {
-		message += '<hr>Errorinfo:' + '<br>Requested URL: ' + ajaxobject.url + '<br>Error Code/Message: ' + ajaxobject.status + '/' + ajaxobject.statusText;
+	if (typeof (ajaxobject) != 'undefined') {
+	    message += '<br /><br />';
+	    message += '<hr>Technical details:<br /><br>Requested URL: ' + ajaxobject.url + '<br>Error Code/Message: ' + ajaxobject.status + '/' + ajaxobject.statusText;
 	}
 
 	$('#myModalBody').html(message);
@@ -335,7 +341,7 @@ webtools.listlogfiles = function(callback, activatemodulename) {
 		},
 		error: function(data) {
 			data.url = this.url;
-			webtools.display_error('Failed fetching the logfilenames from the server. Reload the page and try again.<br>If the error persists please restart the server.<br>Contact devs on the Plex forums if it occurs again.', data);
+			webtools.display_error('Failed fetching the logfilenames from the server.', data);
 
 			if (typeof(callback) != 'undefined') {
 				webtools.list_modules.abort('Error: ' + data.statusText);
@@ -708,9 +714,20 @@ webtools.dynamicSort = function(property) {
 		property = property.substr(1);
 	}
 	return function(a, b) {
-		var result = (a[property].toLowerCase() < b[property].toLowerCase()) ? -1 : (a[property] > b[property]) ? 1 : 0;
+		var result = (a[property].toLowerCase() < b[property].toLowerCase()) ? -1 : (a[property].toLowerCase() > b[property].toLowerCase()) ? 1 : 0;
 		return result * sortOrder;
 	}
+}
+
+//Find in string - Wildcard and insentetive search
+function _searchInString(str, value) {
+    return new RegExp(value.toLowerCase().trim()).test(str.toLowerCase().trim());
+}
+webtools.searchBundle = function (bundle, value) {
+    value.replace("*", "");
+    return $.grep(bundle, function (obj) {
+        return _searchInString(obj.title, value) || _searchInString(obj.description, value);
+    });
 }
 
 webtools.searchkeyword = function(tablename) {

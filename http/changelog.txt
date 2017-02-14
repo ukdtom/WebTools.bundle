@@ -1,3 +1,45 @@
+V2.4 DEV:
+	Fix:
+		#166	WT:		Themes - v2.2 release - Default theme error
+		#197	SUB:		Error while deleting any subtitle (Sub-Zero, and file stored within metadata)
+		#202	WT:		Added word-wrap to dialogbox
+		#203	UAS:		Non UAS 2 UAS
+		#209	WT:		WT Autoupdate broke
+		#212	WT:		Problems with browser caching
+		#213	WT:		Need a Misc function to Unicodize a filepath
+		#214	UAS:		UAS: Channel Update from manual app installer broken
+		#215	WT:		Fixed removal of "Library" menu when leaving module.
+		#216	WT:		WebTools and ports used
+		#218	FM:		Extradirs
+		#219	WT:		Improve detection of bad installation path
+		#221	WT:		Fixed sorting
+		#227	FM:		FindMedia failing
+		#232	WT:		New line in VERSION on git pull
+		#233	WT:		Hardcoded strings to const/var
+		#235	FM:		FM Module and Extra dirs
+		#237	FM:		FM and initialize defaults
+		#239	WT:		http/credits.txt
+		#240	UAS:		UAS main screen
+		#241	WT:		Update Wiki Page
+		#243	SUB:	Module navigator broken
+		#244	WT:		Editing the update window
+		#245	SUB:		Subs identified as Sidecar, when agent based
+		#248	WT:		Debug mode force uas repo to test branch
+	New:
+		#168	WT:		Error message
+		#171	SUB:	Add search function to SUB module for movies
+		#174	WT:		Notifies if there is a new version upon logon.
+		#177	UAS:		Added force update of repo button/functionality
+		#181	SUB:		Add a download button for sidecar subtitles
+		#205	SUB:	Add an option to shorten the list to only items with 'unfiltered' subtitles
+		#206	WT:		Add setting of locale to the log
+		#230	UAS:		Add ability to search plugins
+		#231	UAS:		Add possibility to show a msg when a plugin is installed
+		#234	UAS:		New key to UAS json
+		#238	FM:		FM and Extras
+
+####
+
 V2.3 Release:
 	Fix:
 		#110	UAS:	Allow it to fetch from release info as well

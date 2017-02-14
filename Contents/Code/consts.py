@@ -1,5 +1,5 @@
 ######################################################################################################################
-#	Plex2CSV module unit					
+#	WebTools module unit					
 #
 #	Author: dane22, a Plex Community member
 #
@@ -19,6 +19,7 @@ PREFIX = '/applications/webtools'
 NAME = 'WebTools'
 ICON = 'WebTools.png'
 JSONTIMESTAMP = 0																	# timestamp for json export
+WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'				# URL to latest WebTools
 
 
 class consts(object):	
@@ -33,9 +34,13 @@ class consts(object):
 		global JSONTIMESTAMP
 
 		# Grap version number from the version file
-		versionFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'VERSION')
-		with io.open(versionFile, "rb") as version_file:
-			VERSION = version_file.read().replace('\n','')
+		try:
+			versionFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'VERSION')
+			with io.open(versionFile, "rb") as version_file:
+				VERSION = version_file.read().splitlines()[0]								
+		except:
+			if not self.isCorrectPath():
+				VERSION = '*** WRONG INSTALL PATH!!!!....Correct path is: ' + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle' + '***')
 
 		# Switch to debug mode if needed
 		debugFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'debug')
@@ -69,6 +74,25 @@ class consts(object):
 			Log.Debug('*****************************************************')
 		else:
 			DEBUGMODE = False
+
+		# Verify install path
+		def isCorrectPath(self):	
+			installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split(str(NAME).upper() + '.BUNDLE',1)
+			targetPath = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name).upper()
+			if installedPlugInPath[:-1] != targetPath:
+				Log.Debug('************************************************')
+				Log.Debug('Wrong installation path detected!!!!')
+				Log.Debug('')
+				Log.Debug('Correct path is:')
+				Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle'))
+				Log.Debug('************************************************')
+				installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).split('/Contents',1)
+				return False
+			else:
+				Log.Info('Verified a correct install path as: ' + targetPath)
+				return True
+
+
 
 consts = consts()
 
