@@ -1,4 +1,4 @@
-V2.4 DEV:
+V2.4:
 	Fix:
 		#166	WT:		Themes - v2.2 release - Default theme error
 		#197	SUB:		Error while deleting any subtitle (Sub-Zero, and file stored within metadata)
