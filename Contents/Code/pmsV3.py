@@ -15,7 +15,7 @@ from xml.etree import ElementTree
 GET = ['GETALLBUNDLEINFO', 'GETSECTIONSLIST', 'GETSECTIONSIZE', 'GETSECTIONLETTERLIST', 'GETSECTION', 'GETSUBTITLES', 'GETPARTS', 'SHOWSUBTITLE', 'GETSHOWSIZE', 'GETSHOWSEASONS', 'GETSHOWSEASON', 'GETSHOWCONTENTS']
 PUT = ['']
 POST = ['SEARCH', 'UPLOADFILE']
-DELETE = ['DELBUNDLE']
+DELETE = ['DELBUNDLE', 'DELSUB']
 
 class pmsV3(object):
 	# Defaults used by the rest of the class
@@ -86,26 +86,145 @@ class pmsV3(object):
 
 	#********** Functions below ******************
 
+	# Delete subtitle
+	@classmethod
+	def DELSUB(self, req, *args):
+		Log.Debug('Delete subtitle requested')
+		try:
+			# Start by checking if we got what it takes ;-)
+			# Get params
+			if not args:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing params')
+			params = args[0]
+			try:
+				key = params[params.index('key')+1]
+			except:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing key')
+			try:
+				subKey = params[params.index('sub')+1]
+			except:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing sub')
+			myURL= misc.GetLoopBack() + '/library/metadata/' + key + '/tree'
+			# Grap the sub
+			sub = XML.ElementFromURL(myURL).xpath('//MediaStream[@id=' + subKey + ']')
+			if len(sub) > 0:
+				# Sub did exists, but does it have an url?
+				filePath = sub[0].get('url')							
+				if not filePath:
+					# Got an embedded sub here
+					Log.Debug('Fatal error happened in delSub, subtitle not found')
+					req.clear()
+					req.set_status(406)
+					req.finish('Hmmm....This is invalid, and most likely due to trying to delete an embedded sub :-)')
+				else:
+					if filePath.startswith('media://'):
+						# Path to symblink
+						filePath = filePath.replace('media:/', os.path.join(Core.app_support_path, 'Media', 'localhost'))
+						try:
+							# Subtitle name
+							agent, sub = filePath.rsplit('_',1)
+							tmp, agent = agent.split('com.')
+							# Agent used
+							agent = 'com.' + agent
+							filePath2 = filePath.replace('Contents', os.path.join('Contents', 'Subtitle Contributions'))
+							filePath2, language = filePath2.split('Subtitles')
+							language = language[1:3]	
+							filePath3 = os.path.join(filePath2[:-1], agent, language, sub)
+						except Exception, e:
+							Log.Exception('Exception in delSub generation file Path: ' + str(e))
+						subtitlesXMLPath, tmp = filePath.split('Contents')
+						agentXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitle Contributions', agent + '.xml')							
+						subtitlesXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitles.xml')
+						self.DelFromXML(agentXMLPath, 'media', sub)
+						self.DelFromXML(subtitlesXMLPath, 'media', sub)
+						# Nuke the actual file
+						try:
+							# Delete the actual file
+							os.remove(filePath)
+							# Delete the symb link
+							os.remove(filePath3)
+							#TODO: Refresh is sadly not working for me, so could use some help here :-(
+							#Let's refresh the media
+							url = misc.GetLoopBack() + '/library/metadata/' + key + '/refresh?force=1'
+							HTTP.Request(url, cacheTime=0, immediate=True, method="PUT")
+						except Exception, e:
+							Log.Exception('Exception while deleting an agent based sub: ' + str(e))
+							req.clear()
+							req.set_status(404)
+							req.finish('Exception while deleting an agent based sub: ' + str(e))
+						retValues = {}
+						retValues['FilePath']=filePath3
+						retValues['SymbLink']=filePath
+						Log.Debug('Agent subtitle returning %s' %(retValues))
+						req.clear()
+						req.set_status(200)
+						req.set_header('Content-Type', 'application/json; charset=utf-8')
+						req.finish(json.dumps(retValues))
+					elif filePath.startswith('file://'):
+						# We got a sidecar here, so killing time.....YES
+						filePath = filePath.replace('file://', '')
+						try:
+							# Delete the actual file
+							os.remove(filePath)
+							retVal = {}
+							retVal['Deleted file'] = filePath
+							Log.Debug('Deleted the sub %s' %(filePath))
+							req.clear()
+							req.set_status(200)
+							req.set_header('Content-Type', 'application/json; charset=utf-8')
+							req.finish(json.dumps(retVal))
+						except Exception, e:
+							# Could not find req. subtitle
+							Log.Exception('Fatal error happened in delSub, when deleting ' + filePath + ' : ' + str(e))
+							req.clear()
+							req.set_status(403)
+							req.finish('Fatal error happened in delSub, when deleting %s : %s' %(filePath, str(e)))
+			else:
+				# Could not find req. subtitle
+				Log.Debug('Fatal error happened in delSub, subtitle not found')
+				req.clear()
+				req.set_status(404)
+				req.finish('Could not find req. subtitle')
+		except Ex.HTTPError, e:
+			req.clear()
+			req.set_status(e.code)
+			req.finish(str(e))
+		except Exception, e:
+			Log.Exception('Fatal error happened in delSub: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in delSub: ' + str(e))
+
 	# Get Contents
 	@classmethod
-	def GETSHOWCONTENTS(req, *args):
+	def GETSHOWCONTENTS(self, req, *args):
 		try:
-			# Start of items to grap
-			start = req.get_argument('start', 'missing')
-			if start == 'missing':
+			# Get params
+			if not args:
 				req.clear()
 				req.set_status(412)
-				req.finish('You are missing start param')
-				return req
-			# Amount of items to grap
-			size = req.get_argument('size', 'missing')
-			if size == 'missing':
+				req.finish('Missing params')
+			params = args[0]
+			key = params[0]
+			try:
+				start = params[params.index('start')+1]
+			except Exception, e:
 				req.clear()
 				req.set_status(412)
-				req.finish("You are missing size param")
-				return req
-			# Get subs info as well ?
-			bGetSubs = (req.get_argument('getSubs', 'False').upper()=='TRUE')
+				req.finish('Missing start in params')
+			try:
+				size = params[params.index('size')+1]
+			except Exception, e:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing size in params')		
+			bGetSubs = ('getSubs' in params)
 			myURL = 'http://127.0.0.1:32400/library/metadata/' + key + '/allLeaves?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
 			shows = XML.ElementFromURL(myURL).xpath('//Video')
 			episodes=[]
@@ -116,7 +235,7 @@ class pmsV3(object):
 				episode['season'] = media.get('parentIndex')
 				episode['episode'] = media.get('index')
 				if bGetSubs:
-					episode['subtitles'] = self.getSubtitles(req, mediaKey=episode['key'])
+					episode['subtitles'] = self.GETSUBTITLES(req, mediaKey=episode['key'])
 				episodes.append(episode)					
 			Log.Debug('Returning episodes as %s' %(episodes))
 			req.clear()
@@ -174,9 +293,6 @@ class pmsV3(object):
 			req.set_status(500)
 			req.finish('Fatal error happened in TV-Show while fetching season')
 
-
-
-
 	# Get Seasons list
 	@classmethod
 	def GETSHOWSEASONS(self, req, *args):
@@ -220,7 +336,6 @@ class pmsV3(object):
 			req.clear()
 			req.set_status(500)
 			req.finish('Fatal error happened in TV-Show while fetching seasons: %s' %(e))
-
 
 	# Get TVShow Size
 	@classmethod
@@ -587,7 +702,7 @@ class pmsV3(object):
 				Section=[]
 				for media in rawSection:
 					if getSubs == True:
-						subtitles = self.getSubtitles(req, mediaKey=media.get('ratingKey'))
+						subtitles = self.GETSUBTITLES(req, mediaKey=media.get('ratingKey'))
 						media = {'key':media.get('ratingKey'), 'title':media.get('title'), 'subtitles':subtitles}
 					else:
 						media = {'key':media.get('ratingKey'), 'title':media.get('title')}
@@ -859,6 +974,7 @@ class pmsV3(object):
 			req.finish('Fatal error happened in downloadSubtitle')
 
 	''' Delete from an XML file Internal class function'''
+	@classmethod
 	def DelFromXML(self, fileName, attribute, value):
 		Log.Debug('Need to delete element with an attribute named "%s" with a value of "%s" from file named "%s"' %(attribute, value, fileName))
 		with io.open(fileName, 'r') as f:
@@ -878,160 +994,6 @@ class pmsV3(object):
 
 
 ##################################### Below need to be converted to API V3 ##########################################################
-
-	# Delete subtitle
-	def delSub(self, req):
-		Log.Debug('Delete subtitle requested')
-		try:
-			# Start by checking if we got what it takes ;-)
-			key = req.get_argument('key', 'missing')
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish("<html><body>Missing key to media</body></html>")
-				return req
-			subKey = req.get_argument('subKey', 'missing')
-			if subKey == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish("<html><body>Missing subKey to subtitle</body></html>")
-				return req
-			myURL='http://127.0.0.1:32400/library/metadata/' + key + '/tree'
-			# Grap the sub
-			sub = XML.ElementFromURL(myURL).xpath('//MediaStream[@id=' + subKey + ']')
-			if len(sub) > 0:
-				# Sub did exists, but does it have an url?
-				filePath = sub[0].get('url')							
-				if not filePath:
-					# Got an embedded sub here
-					Log.Debug('Fatal error happened in delSub, subtitle not found')
-					req.clear()
-					req.set_status(406)
-					req.finish('Hmmm....This is invalid, and most likely due to trying to delete an embedded sub :-)')
-				else:
-					if filePath.startswith('media://'):
-						# Path to symblink
-						filePath = filePath.replace('media:/', os.path.join(Core.app_support_path, 'Media', 'localhost'))
-						try:
-							# Subtitle name
-							agent, sub = filePath.rsplit('_',1)
-							tmp, agent = agent.split('com.')
-							# Agent used
-							agent = 'com.' + agent
-							filePath2 = filePath.replace('Contents', os.path.join('Contents', 'Subtitle Contributions'))
-							filePath2, language = filePath2.split('Subtitles')
-							language = language[1:3]	
-							filePath3 = os.path.join(filePath2[:-1], agent, language, sub)
-						except Exception, e:
-							Log.Exception('Exception in delSub generation file Path: ' + str(e))
-						subtitlesXMLPath, tmp = filePath.split('Contents')
-						agentXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitle Contributions', agent + '.xml')							
-						subtitlesXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitles.xml')
-						self.DelFromXML(agentXMLPath, 'media', sub)
-						self.DelFromXML(subtitlesXMLPath, 'media', sub)
-						# Nuke the actual file
-						try:
-							# Delete the actual file
-							os.remove(filePath)
-							# Delete the symb link
-							os.remove(filePath3)
-							#TODO: Refresh is sadly not working for me, so could use some help here :-(
-							#Let's refresh the media
-							url = 'http://127.0.0.1:32400/library/metadata/' + key + '/refresh?force=1'
-							HTTP.Request(url, cacheTime=0, immediate=True, method="PUT")
-						except Exception, e:
-							Log.Exception('Exception while deleting an agent based sub: ' + str(e))
-							req.clear()
-							req.set_status(404)
-							req.finish('Exception while deleting an agent based sub: ' + str(e))
-						retValues = {}
-						retValues['FilePath']=filePath3
-						retValues['SymbLink']=filePath
-						Log.Debug('Agent subtitle returning %s' %(retValues))
-						req.clear()
-						req.set_status(200)
-						req.set_header('Content-Type', 'application/json; charset=utf-8')
-						req.finish(json.dumps(retValues))
-					elif filePath.startswith('file://'):
-						# We got a sidecar here, so killing time.....YES
-						filePath = filePath.replace('file://', '')
-						try:
-							# Delete the actual file
-							os.remove(filePath)
-							retVal = {}
-							retVal['Deleted file'] = filePath
-							Log.Debug('Deleted the sub %s' %(filePath))
-							req.clear()
-							req.set_status(200)
-							req.set_header('Content-Type', 'application/json; charset=utf-8')
-							req.finish(json.dumps(retVal))
-						except Exception, e:
-							# Could not find req. subtitle
-							Log.Exception('Fatal error happened in delSub, when deleting ' + filePath + ' : ' + str(e))
-							req.clear()
-							req.set_status(403)
-							req.finish('Fatal error happened in delSub, when deleting %s : %s' %(filePath, str(e)))
-			else:
-				# Could not find req. subtitle
-				Log.Debug('Fatal error happened in delSub, subtitle not found')
-				req.clear()
-				req.set_status(404)
-				req.finish('Could not find req. subtitle')
-		except Exception, e:
-			Log.Exception('Fatal error happened in delSub: ' + str(e))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in delSub: ' + str(e))
-
-	''' TVShow '''
-	def TVshow(self, req):
-		Log.Debug('TV Show requested')
-
-
-
-
-
-
-
-		# Main func
-		try:
-			Log.Debug('Start TV Show')
-			key = req.get_argument('key', 'missing')
-			Log.Debug('Show key is %s' %(key))
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing key of Show')
-				return req
-			action = req.get_argument('action', 'missing')
-			Log.Debug('Show action is %s' %(action))
-			if action == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing action param of Show')
-				return req
-			# Let's follow the action here
-			if action == 'getSize':
-				getSize(req, key)
-			elif action == 'getContents':
-				getContents(req, key)
-			elif action == 'getSeasons':
-				getSeasons(req, key)
-			elif action == 'getSeason':
-				getSeason(req, key)
-			else:
-				Log.Debug('Unknown action for TVshow')
-				req.clear()
-				req.set_status(412)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Unknown action for TVshow')		
-		except Exception, e:
-			Log.Exception('Fatal error happened in TVshow: %s' %(e))
-			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in TVshow')
-
 
 
 
