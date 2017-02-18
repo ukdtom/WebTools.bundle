@@ -49,7 +49,7 @@ subtitlemgmt.fetch_section_type_show = function(section_key, pageToShow) {
       var start = (Number(subtitlemgmt.selected_section.currentpage) * Number(subtitlemgmt.options.items_per_page));
       webtools.loading('Library Size: ' + subtitlemgmt.selected_section.totalsize + '<br>Currently fetching: ' + start + '->' + (start + subtitlemgmt.options.items_per_page));
       $.ajax({
-        url: '/webtools2?module=pms&function=getSection&key=' + subtitlemgmt.selected_section.key + '&start=' + start + '&size=' + subtitlemgmt.options.items_per_page,
+        url: '/webtools2?module=pms&function=getSection&key=' + subtitlemgmt.selected_section.key + '&start=' + start + '&size=9999',
         cache: false,
         dataType: 'JSON',
         success: function(data) {
