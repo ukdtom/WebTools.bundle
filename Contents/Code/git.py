@@ -202,12 +202,17 @@ class git(object):
 
 	''' Returns commit time and Id for a git branch '''
 	def getAtom_UpdateTime_Id(self, url, branch):		
-		# Build AtomUrl
-		atomUrl = url + '/commits/' + branch + '.atom'
-		# Get Atom
-		atom = HTML.ElementFromURL(atomUrl)
-		mostRecent = atom.xpath('//entry')[0].xpath('./updated')[0].text[:-6]
-		commitId = atom.xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
+		try:
+			# Build AtomUrl
+			atomUrl = url + '/commits/' + branch + '.atom'
+			# Get Atom
+			atom = HTML.ElementFromURL(atomUrl)
+			mostRecent = atom.xpath('//entry')[0].xpath('./updated')[0].text[:-6]
+			commitId = atom.xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
+		except Exception, e:
+			commitId = '0'
+			mostRecent = 'Not found'
+			pass
 		return {'commitId' : commitId, 'mostRecent' : mostRecent}
 
 	''' This function will return a list of bundles, where there is an update avail '''
