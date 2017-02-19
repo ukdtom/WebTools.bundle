@@ -12,10 +12,10 @@ import time, json
 import io, sys
 from xml.etree import ElementTree
 
-GET = ['GETALLBUNDLEINFO', 'GETSECTIONSLIST', 'GETSECTIONSIZE', 'GETSECTIONLETTERLIST', 'GETSECTION']
+GET = ['GETALLBUNDLEINFO', 'GETSECTIONSLIST', 'GETSECTIONSIZE', 'GETSECTIONLETTERLIST', 'GETSECTION', 'GETSUBTITLES', 'GETPARTS', 'SHOWSUBTITLE', 'GETSHOWSIZE', 'GETSHOWSEASONS', 'GETSHOWSEASON', 'GETSHOWCONTENTS']
 PUT = ['']
 POST = ['SEARCH', 'UPLOADFILE']
-DELETE = ['']
+DELETE = ['DELBUNDLE', 'DELSUB']
 
 class pmsV3(object):
 	# Defaults used by the rest of the class
@@ -86,24 +86,521 @@ class pmsV3(object):
 
 	#********** Functions below ******************
 
-	''' get Subtitles '''
+	# Delete subtitle
 	@classmethod
-	def getSubtitles(self, req, mediaKey=''):
-		Log.Debug('Subtitles requested')
+	def DELSUB(self, req, *args):
+		Log.Debug('Delete subtitle requested')
 		try:
-			if mediaKey != '':
-				key = mediaKey
-			else:
-				key = req.get_argument('key', 'missing')
-			Log.Debug('Media rating key is %s' %(key))
-			if key == 'missing':
+			# Start by checking if we got what it takes ;-)
+			# Get params
+			if not args:
 				req.clear()
 				req.set_status(412)
-				req.finish('Missing rating key of media')
-				return req
-			getFile = req.get_argument('getFile', 'missing')
-			if getFile != 'missing':
-				Log.Debug('getFile is %s' %(getFile))
+				req.finish('Missing params')
+			params = args[0]
+			try:
+				key = params[params.index('key')+1]
+			except:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing key')
+			try:
+				subKey = params[params.index('sub')+1]
+			except:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing sub')
+			myURL= misc.GetLoopBack() + '/library/metadata/' + key + '/tree'
+			# Grap the sub
+			sub = XML.ElementFromURL(myURL).xpath('//MediaStream[@id=' + subKey + ']')
+			if len(sub) > 0:
+				# Sub did exists, but does it have an url?
+				filePath = sub[0].get('url')							
+				if not filePath:
+					# Got an embedded sub here
+					Log.Debug('Fatal error happened in delSub, subtitle not found')
+					req.clear()
+					req.set_status(406)
+					req.finish('Hmmm....This is invalid, and most likely due to trying to delete an embedded sub :-)')
+				else:
+					if filePath.startswith('media://'):
+						# Path to symblink
+						filePath = filePath.replace('media:/', os.path.join(Core.app_support_path, 'Media', 'localhost'))
+						try:
+							# Subtitle name
+							agent, sub = filePath.rsplit('_',1)
+							tmp, agent = agent.split('com.')
+							# Agent used
+							agent = 'com.' + agent
+							filePath2 = filePath.replace('Contents', os.path.join('Contents', 'Subtitle Contributions'))
+							filePath2, language = filePath2.split('Subtitles')
+							language = language[1:3]	
+							filePath3 = os.path.join(filePath2[:-1], agent, language, sub)
+						except Exception, e:
+							Log.Exception('Exception in delSub generation file Path: ' + str(e))
+						subtitlesXMLPath, tmp = filePath.split('Contents')
+						agentXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitle Contributions', agent + '.xml')							
+						subtitlesXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitles.xml')
+						self.DelFromXML(agentXMLPath, 'media', sub)
+						self.DelFromXML(subtitlesXMLPath, 'media', sub)
+						# Nuke the actual file
+						try:
+							# Delete the actual file
+							os.remove(filePath)
+							# Delete the symb link
+							os.remove(filePath3)
+							#TODO: Refresh is sadly not working for me, so could use some help here :-(
+							#Let's refresh the media
+							url = misc.GetLoopBack() + '/library/metadata/' + key + '/refresh?force=1'
+							HTTP.Request(url, cacheTime=0, immediate=True, method="PUT")
+						except Exception, e:
+							Log.Exception('Exception while deleting an agent based sub: ' + str(e))
+							req.clear()
+							req.set_status(404)
+							req.finish('Exception while deleting an agent based sub: ' + str(e))
+						retValues = {}
+						retValues['FilePath']=filePath3
+						retValues['SymbLink']=filePath
+						Log.Debug('Agent subtitle returning %s' %(retValues))
+						req.clear()
+						req.set_status(200)
+						req.set_header('Content-Type', 'application/json; charset=utf-8')
+						req.finish(json.dumps(retValues))
+					elif filePath.startswith('file://'):
+						# We got a sidecar here, so killing time.....YES
+						filePath = filePath.replace('file://', '')
+						try:
+							# Delete the actual file
+							os.remove(filePath)
+							retVal = {}
+							retVal['Deleted file'] = filePath
+							Log.Debug('Deleted the sub %s' %(filePath))
+							req.clear()
+							req.set_status(200)
+							req.set_header('Content-Type', 'application/json; charset=utf-8')
+							req.finish(json.dumps(retVal))
+						except Exception, e:
+							# Could not find req. subtitle
+							Log.Exception('Fatal error happened in delSub, when deleting ' + filePath + ' : ' + str(e))
+							req.clear()
+							req.set_status(403)
+							req.finish('Fatal error happened in delSub, when deleting %s : %s' %(filePath, str(e)))
+			else:
+				# Could not find req. subtitle
+				Log.Debug('Fatal error happened in delSub, subtitle not found')
+				req.clear()
+				req.set_status(404)
+				req.finish('Could not find req. subtitle')
+		except Ex.HTTPError, e:
+			req.clear()
+			req.set_status(e.code)
+			req.finish(str(e))
+		except Exception, e:
+			Log.Exception('Fatal error happened in delSub: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in delSub: ' + str(e))
+
+	# Get Contents
+	@classmethod
+	def GETSHOWCONTENTS(self, req, *args):
+		try:
+			# Get params
+			if not args:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing params')
+			params = args[0]
+			key = params[0]
+			try:
+				start = params[params.index('start')+1]
+			except Exception, e:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing start in params')
+			try:
+				size = params[params.index('size')+1]
+			except Exception, e:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing size in params')		
+			bGetSubs = ('getSubs' in params)
+			myURL = 'http://127.0.0.1:32400/library/metadata/' + key + '/allLeaves?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
+			shows = XML.ElementFromURL(myURL).xpath('//Video')
+			episodes=[]
+			for media in shows:
+				episode = {}
+				episode['key'] = media.get('ratingKey')
+				episode['title'] = media.get('title')
+				episode['season'] = media.get('parentIndex')
+				episode['episode'] = media.get('index')
+				if bGetSubs:
+					episode['subtitles'] = self.GETSUBTITLES(req, mediaKey=episode['key'])
+				episodes.append(episode)					
+			Log.Debug('Returning episodes as %s' %(episodes))
+			req.clear()
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(episodes))
+		except Exception, e:
+			Log.Exception('Fatal error happened in TV-Show while fetching contents %s' %(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in TV-Show while fetching contents')
+
+	# Get Season contents
+	@classmethod
+	def GETSHOWSEASON(self, req, *args):
+		Log.Debug('GETSEASON requested')
+		# Get params
+		try:
+			if not args:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing params')
+		except Exception, e:
+			Log.Debug('Fatal error digesting params: ' + str(args[0]))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error digesting params: ' + str(args[0]))
+		Log.Debug('Argumets are: ' + str(args[0]))
+		key = args[0][0]
+		bGetSubs = ('getSub' in args[0])
+		bGetFile = ('getFile' in args[0])
+		try:
+			myURL = misc.GetLoopBack() + '/library/metadata/' + key + '/tree'
+			episodes = XML.ElementFromURL(myURL).xpath('.//MetadataItem/MetadataItem')
+			mySeason = []
+			for episode in episodes:
+				myEpisode = {}
+				myEpisode['key'] = episode.get('id')					
+				myEpisode['title'] = episode.get('title')					
+				myEpisode['episode'] = episode.get('index')
+				if bGetSubs:
+					if bGetFile:
+						myEpisode['subtitles'] = self.GETSUBTITLES(req, 'getFile', mediaKey=myEpisode['key'])
+					else:
+						myEpisode['subtitles'] = self.GETSUBTITLES(req, mediaKey=myEpisode['key'])
+				mySeason.append(myEpisode)
+			Log.Debug('returning: %s' %(mySeason))
+			req.clear()
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(mySeason))
+		except Exception, e:
+			Log.Exception('Fatal error happened in TV-Show while fetching season: %s' %(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in TV-Show while fetching season')
+
+	# Get Seasons list
+	@classmethod
+	def GETSHOWSEASONS(self, req, *args):
+		Log.Debug('GETSHOWSEASONS requested')
+		# Get params
+		try:
+			if not args:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing params')
+			key = args[0][0]
+		except Exception, e:
+			Log.Debug('Fatal error digesting params: ' + str(args[0]))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error digesting params: ' + str(args[0]))
+		Log.Debug('Key is: ' + key)
+		try:
+			myURL = misc.GetLoopBack() + '/library/metadata/' + key + '/children'				
+			mySeasons = []
+			seasons = XML.ElementFromURL(myURL).xpath('//Directory')
+			for season in seasons:
+				if season.get('ratingKey'):
+					mySeason = {}
+					mySeason['title'] = season.get('title')
+					mySeason['key'] = season.get('ratingKey')					
+					mySeason['season'] = season.get('index')
+					mySeason['size'] = season.get('leafCount')					
+					mySeasons.append(mySeason)
+			Log.Debug('Returning seasons as %s' %(mySeasons))
+			req.clear()
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(str(json.dumps(mySeasons)))
+		except Ex.HTTPError, e:
+			req.clear()
+			req.set_status(e.code)
+			req.finish(str(e))
+		except Exception, e:
+			Log.Exception('Fatal error happened in TV-Show while fetching seasons: %s' %(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in TV-Show while fetching seasons: %s' %(e))
+
+	# Get TVShow Size
+	@classmethod
+	def GETSHOWSIZE(self, req, *args):
+		Log.Debug('GETSHOWSIZE requested')
+		# Get params
+		try:
+			if not args:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing params')
+			key = args[0][0]
+		except Exception, e:
+			Log.Debug('Fatal error digesting params: ' + str(args[0]))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error digesting params: ' + str(args[0]))
+		Log.Debug('Key is: ' + key)
+		# Grap TV-Show size
+		myURL = misc.GetLoopBack() + '/library/metadata/' + key + '/allLeaves?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+		try:
+			size = XML.ElementFromURL(myURL).get('totalSize')		
+			Log.Debug('Returning size as %s' %(size))
+			req.clear()
+			req.set_status(200)
+			req.finish(size)
+		except Ex.HTTPError, e:
+			req.clear()
+			req.set_status(e.code)
+			req.finish(str(e))
+		except:
+			Log.Exception('Fatal error happened in TV-Show while fetching size %s' %(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in TV-Show while fetching size')
+
+	# Delete Bundle
+	@classmethod
+	def DELBUNDLE(self, req, *args):
+		Log.Debug('Delete bundle requested')
+		def removeBundle(bundleName, bundleIdentifier, url):
+			try:				
+				bundleDataDir = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', bundleIdentifier)
+				bundleCacheDir = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', bundleIdentifier)
+				bundlePrefsFile = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Preferences', bundleIdentifier + '.xml')
+				try:
+					# Find the bundle directory, regarding of the case used
+					dirs = os.listdir(self.PLUGIN_DIR)
+					for pluginDir in dirs:
+						if pluginDir.endswith('.bundle'):
+							# It's a bundle
+							if pluginDir.upper() == bundleName.upper():
+								bundleInstallDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, pluginDir)
+					Log.Debug('Bundle directory name digested as: %s' %(bundleInstallDir))
+					shutil.rmtree(bundleInstallDir)
+				except Exception, e:
+					Log.Exception('Unable to remove the bundle directory: ' + str(e))
+					req.clear()
+					req.set_status(500)
+					req.finish('Fatal error happened when trying to remove the bundle directory: ' + str(e))
+				try:
+					shutil.rmtree(bundleDataDir)
+				except:
+					Log.Debug('Unable to remove the bundle data directory.')
+					Log.Debug('This can be caused by bundle data directory was never generated')
+					Log.Debug('Ignoring this')
+				try:
+					shutil.rmtree(bundleCacheDir)
+				except:
+					Log.Debug('Unable to remove the bundle cache directory.')
+					Log.Debug('This can be caused by bundle data directory was never generated')
+					Log.Debug('Ignoring this')
+				try:
+					os.remove(bundlePrefsFile)
+				except:
+					Log.Debug('Unable to remove the bundle preferences file.')
+					Log.Debug('This can be caused by bundle prefs was never generated')
+					Log.Debug('Ignoring this')
+				# Remove entry from list dict
+				Dict['installed'].pop(url, None)
+				# remove entry from PMS-AllBundleInfo dict
+				if url.startswith('https://'):
+					if 'Unknown' in Dict['PMS-AllBundleInfo'][url]['type']:
+						# Manual install or migrated, so nuke the entire key
+						Dict['PMS-AllBundleInfo'].pop(url, None)
+					else:
+						# UAS bundle, so only nuke date field
+						git = Dict['PMS-AllBundleInfo'][url]
+						git['date'] = ''
+						Dict['PMS-AllBundleInfo'][url] = git
+				else:
+					# Manual install or migrated, so nuke the entire key
+					Dict['PMS-AllBundleInfo'].pop(url, None)
+				Dict.Save()
+				updateUASTypesCounters()
+# TODO
+				try:
+					Log.Debug('Remider to self...TODO....Restart of System Bundle hangs :-(')
+#					HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart', immediate=True)
+				except:
+					Log.Debug('Unable to restart System.bundle. Channel may not vanish without PMS restart.')
+					req.clear()
+					req.set_status(500)
+					req.finish('Fatal error happened when trying to restart the system.bundle')
+			except Exception, e:
+				Log.Exception('Fatal error happened in removeBundle: ' + str(e))
+				req.clear()
+				req.set_status(500)
+				req.finish('Fatal error happened in removeBundle' + str(e))
+		# Main function
+		try:
+			# Start by checking if we got what it takes ;-)
+			try:
+				if not args:
+					req.clear()
+					req.set_status(412)
+					req.finish('Missing params')
+				params = args[0]
+				bundleName = params[0]
+			except Exception, e:
+				Log.Debug('Fatal error digesting params: ' + str(params))
+				req.clear()
+				req.set_status(500)
+				req.finish('Fatal error digesting params: ' + str(params))
+			installedBundles = Dict['installed']
+			bFoundBundle = False
+			for installedBundle in installedBundles:
+				if installedBundles[installedBundle]['bundle'].upper() == bundleName.upper():
+					removeBundle(bundleName, installedBundles[installedBundle]['identifier'], installedBundle)
+					bFoundBundle = True
+					break
+			if not bFoundBundle:
+				Log.Debug('Bundle %s was not found' %(bundleName))
+				req.clear()
+				req.set_status(404)
+				req.finish('Bundle %s was not found' %(bundleName))
+			Log.Debug('Bundle %s was removed' %(bundleName))
+			req.clear()
+			req.set_status(200)
+			req.finish('Bundle %s was removed' %(bundleName))
+		except Exception, e:
+			Log.Exception('Fatal error happened in delBundle: %s' %(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in delBundle')
+
+	''' Show Subtitle '''
+	@classmethod
+	def SHOWSUBTITLE(self, req, *args):
+		Log.Debug('Show Subtitle requested')
+		try:
+			try:
+				if not args:
+					req.clear()
+					req.set_status(412)
+					req.finish('Missing params')
+				params = args[0]
+				key = params[0]
+			except Exception, e:
+				Log.Debug('Fatal error digesting params: ' + str(params))
+				req.clear()
+				req.set_status(500)
+				req.finish('Fatal error digesting params: ' + str(params))
+			Log.Debug('Subtitle key is %s' %(key))
+			myURL= misc.GetLoopBack() + '/library/streams/' + key
+			try:
+				response = HTML.StringFromElement(HTML.ElementFromURL(myURL))
+				response = response.replace('<p>', '',1)
+				response = response.replace('</p>', '',1)
+				response = response.replace('&gt;', '>')
+				response = response.split('\n')
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(response))
+			except Ex.HTTPError, e:
+				req.clear()
+				req.set_status(e.code)
+				req.finish(str(e))
+			except Exception, e:
+				Log.Exception('Fatal error happened in showSubtitle: %s' %(e))
+				req.clear()
+				req.set_status(500)
+				req.finish('Fatal error happened in showSubtitle')
+		except Exception, e:
+			Log.Exception('Fatal error happened in showSubtitle: %s' %(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in showSubtitle')
+
+	# getParts
+	@classmethod
+	def GETPARTS(self, req, *args):
+		Log.Debug('Got a call for getParts')
+		try:
+			# Get params
+			try:
+				if not args:
+					req.clear()
+					req.set_status(412)
+					req.finish('Missing params')
+				params = args[0]
+				key = params[0]
+			except Exception, e:
+				Log.Debug('Fatal error digesting params: ' + str(params))
+				req.clear()
+				req.set_status(500)
+				req.finish('Fatal error digesting params: ' + str(params))
+			try:
+				partsUrl = misc.GetLoopBack() + '/library/metadata/' + key
+				partsInfo = {}
+				parts = XML.ElementFromURL(partsUrl).xpath('//Part')
+				for part in parts:
+					partsInfo[part.get('id')] = part.get('file')
+				# Not found
+				if not partsInfo:
+					Log.Debug('getParts didnt find parts for key: ' + key)
+					req.clear()
+					req.set_status(404)
+					req.finish('getParts didnt find parts for key: ' + key)
+				else:	
+					Log.Debug('Returning: ' + json.dumps(partsInfo))
+					req.set_status(200)
+					req.set_header('Content-Type', 'application/json; charset=utf-8')
+					req.finish(json.dumps(partsInfo))
+			except Ex.HTTPError, e:
+				self.clear()
+				self.set_status(e.code)
+				self.finish(str(e))
+			except Exception, e:
+				Log.Debug(str(e))
+				self.clear()
+				self.set_status(500)
+				self.finish(str(e))
+		except Exception, e:
+			Log.Exception('Fatal error happened in getParts: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in getParts: ' + str(e))
+
+	''' get Subtitles '''
+	@classmethod
+	def GETSUBTITLES(self, req, *args, **kwargs):
+		Log.Debug('Subtitles requested')
+		try:
+			getFile = False
+			# Get params
+			try:
+				if not args:
+					if 'mediaKey' not in kwargs:
+						req.clear()
+						req.set_status(412)
+						req.finish('Missing params')
+				else:
+					params = args[0]
+					getFile = ('getFile' in params)				
+				if 'mediaKey' in kwargs:
+					key = kwargs['mediaKey']				
+				else:
+					key = params[0]
+			except Exception, e:
+				Log.Debug('Fatal error digesting params: ' + str(params))
+				req.clear()
+				req.set_status(500)
+				req.finish('Fatal error digesting params: ' + str(params))
 			# Path to media
 			myURL= misc.GetLoopBack() + '/library/metadata/' + key
 			mediaInfo = []
@@ -125,12 +622,12 @@ class pmsV3(object):
 						location = 'Sidecar'									
 					subInfo['location'] = location
 					# Get tree info, if not already done so, and if it's a none embedded srt, and we asked for all
-					if getFile == 'true':
+					if getFile == True:
 						if location != None:
 							if bDoGetTree:							
 								MediaStreams = XML.ElementFromURL(myURL + '/tree').xpath('//MediaStream')
 								bDoGetTree = False
-					if getFile == 'true':
+					if getFile == True:
 						try:								
 							for mediaStream in MediaStreams:				
 								if mediaStream.get('id') == subInfo['key']:									
@@ -146,9 +643,11 @@ class pmsV3(object):
 				req.clear()
 				req.set_status(500)
 				req.finish('Fatal error happened in getSubtitles')
-			if mediaKey != '':
+			# Internal call?
+			if 'mediaKey' in kwargs:
 				return mediaInfo
 			else:
+				# Nope, external call, so return http response
 				req.clear()
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -203,7 +702,7 @@ class pmsV3(object):
 				Section=[]
 				for media in rawSection:
 					if getSubs == True:
-						subtitles = self.getSubtitles(req, mediaKey=media.get('ratingKey'))
+						subtitles = self.GETSUBTITLES(req, mediaKey=media.get('ratingKey'))
 						media = {'key':media.get('ratingKey'), 'title':media.get('title'), 'subtitles':subtitles}
 					else:
 						media = {'key':media.get('ratingKey'), 'title':media.get('title')}
@@ -333,7 +832,7 @@ class pmsV3(object):
 			Log.Exception('Fatal error happened in getAllBundleInfo: ' + str(e))
 			req.clear()
 			req.set_status(500)
-			req.finish('Fatal error happened in getParts: ' + str(e))
+			req.finish('Fatal error happened in getAllBundleInfo: ' + str(e))
 
 	''' uploadFile Takes remoteFile and localFile (Type file) as params '''
 	@classmethod
@@ -418,42 +917,7 @@ class pmsV3(object):
 
 #*********************************************************************************************
 
-	# getParts
-	@classmethod
-	def getParts(self, req):
-		Log.Debug('Got a call for getParts')
-		try:
-			key = req.get_argument('key', 'missing')
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing key parameter')
-			try:
-				partsUrl = misc.GetLoopBack() + '/library/metadata/' + key
-				partsInfo = {}
-				parts = XML.ElementFromURL(partsUrl).xpath('//Part')
-				for part in parts:
-					partsInfo[part.get('id')] = part.get('file')
-				# Not found
-				if not partsInfo:
-					Log.Debug('getParts didnt find parts for key: ' + key)
-					req.clear()
-					req.set_status(404)
-					req.finish('getParts didnt find parts for key: ' + key)
-				else:	
-					Log.Debug('Returning: ' + json.dumps(partsInfo))
-					req.set_status(200)
-					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish(json.dumps(partsInfo))
-			except Ex.HTTPError, e:
-				self.clear()
-				self.set_status(e.code)
-				self.finish(e)
-		except Exception, e:
-			Log.Exception('Fatal error happened in getParts: ' + str(e))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in getParts: ' + str(e))
+
 
 	''' Download Subtitle '''
 	@classmethod
@@ -509,49 +973,8 @@ class pmsV3(object):
 			req.set_status(500)
 			req.finish('Fatal error happened in downloadSubtitle')
 
-	''' Show Subtitle '''
+	''' Delete from an XML file Internal class function'''
 	@classmethod
-	def showSubtitle(self, req):
-		Log.Debug('Show Subtitle requested')
-		try:
-			key = req.get_argument('key', 'missing')
-			Log.Debug('Subtitle key is %s' %(key))
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing key of subtitle')
-				return req
-			myURL= misc.GetLoopBack() + '/library/streams/' + key
-			try:
-				response = HTML.StringFromElement(HTML.ElementFromURL(myURL))
-				response = response.replace('<p>', '',1)
-				response = response.replace('</p>', '',1)
-				response = response.replace('&gt;', '>')
-				response = response.split('\n')
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(response))
-			except Exception, e:
-				Log.Exception('Fatal error happened in showSubtitle: %s' %(e))
-				req.clear()
-				req.set_status(500)
-				req.finish('Fatal error happened in showSubtitle')
-		except Exception, e:
-			Log.Exception('Fatal error happened in showSubtitle: %s' %(e))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in showSubtitle')
-
-
-
-
-
-
-###############################################################################################
-
-
-	''' Delete from an XML file '''
 	def DelFromXML(self, fileName, attribute, value):
 		Log.Debug('Need to delete element with an attribute named "%s" with a value of "%s" from file named "%s"' %(attribute, value, fileName))
 		with io.open(fileName, 'r') as f:
@@ -570,399 +993,12 @@ class pmsV3(object):
 		return
 
 
+##################################### Below need to be converted to API V3 ##########################################################
 
 
 
 
-
-	# Delete Bundle
-	def delBundle(self, req):
-		Log.Debug('Delete bundle requested')
-		def removeBundle(bundleName, bundleIdentifier, url):
-			try:				
-				bundleDataDir = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', bundleIdentifier)
-				bundleCacheDir = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', bundleIdentifier)
-				bundlePrefsFile = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Preferences', bundleIdentifier + '.xml')
-				try:
-					# Find the bundle directory, regarding of the case used
-					dirs = os.listdir(self.PLUGIN_DIR)
-					for pluginDir in dirs:
-						if pluginDir.endswith('.bundle'):
-							# It's a bundle
-							if pluginDir.upper() == bundleName.upper():
-								bundleInstallDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, pluginDir)
-					Log.Debug('Bundle directory name digested as: %s' %(bundleInstallDir))
-					shutil.rmtree(bundleInstallDir)
-				except Exception, e:
-					Log.Exception("Unable to remove the bundle directory: " + str(e))
-					req.clear()
-					req.set_status(500)
-					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish('Fatal error happened when trying to remove the bundle directory: ' + str(e))
-				try:
-					shutil.rmtree(bundleDataDir)
-				except:
-					Log.Debug("Unable to remove the bundle data directory.")
-					Log.Debug("This can be caused by bundle data directory was never generated")
-					Log.Debug("Ignoring this")
-				try:
-					shutil.rmtree(bundleCacheDir)
-				except:
-					Log.Debug("Unable to remove the bundle cache directory.")
-					Log.Debug("This can be caused by bundle data directory was never generated")
-					Log.Debug("Ignoring this")
-				try:
-					os.remove(bundlePrefsFile)
-				except:
-					Log.Debug("Unable to remove the bundle preferences file.")
-					Log.Debug("This can be caused by bundle prefs was never generated")
-					Log.Debug("Ignoring this")
-				# Remove entry from list dict
-				Dict['installed'].pop(url, None)
-				# remove entry from PMS-AllBundleInfo dict
-				if url.startswith('https://'):
-					if 'Unknown' in Dict['PMS-AllBundleInfo'][url]['type']:
-						# Manual install or migrated, so nuke the entire key
-						Dict['PMS-AllBundleInfo'].pop(url, None)
-					else:
-						# UAS bundle, so only nuke date field
-						git = Dict['PMS-AllBundleInfo'][url]
-						git['date'] = ''
-						Dict['PMS-AllBundleInfo'][url] = git
-				else:
-					# Manual install or migrated, so nuke the entire key
-					Dict['PMS-AllBundleInfo'].pop(url, None)
-				Dict.Save()
-				updateUASTypesCounters()
-
-# TODO
-				try:
-					Log.Debug('Remider to self...TODO....Restart of System Bundle hangs :-(')
-#					HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart', immediate=True)
-				except:
-					Log.Debug("Unable to restart System.bundle. Channel may not vanish without PMS restart.")
-					req.clear()
-					req.set_status(500)
-					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish('Fatal error happened when trying to restart the system.bundle')
-			except Exception, e:
-				Log.Exception('Fatal error happened in removeBundle: ' + str(e))
-				req.clear()
-				req.set_status(500)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Fatal error happened in removeBundle' + str(e))
-
-		# Main function
-		try:
-			# Start by checking if we got what it takes ;-)
-			bundleName = req.get_argument('bundleName', 'missing')
-			if bundleName == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish("<html><body>Missing bundleName</body></html>")
-				return req
-			installedBundles = Dict['installed']
-			bFoundBundle = False
-			for installedBundle in installedBundles:
-				if installedBundles[installedBundle]['bundle'].upper() == bundleName.upper():
-					removeBundle(bundleName, installedBundles[installedBundle]['identifier'], installedBundle)
-					bFoundBundle = True
-					break
-			if not bFoundBundle:
-				Log.Debug('Bundle %s was not found' %(bundleName))
-				req.clear()
-				req.set_status(404)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Bundle %s was not found' %(bundleName))
-			Log.Debug('Bundle %s was removed' %(bundleName))
-			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Bundle %s was removed' %(bundleName))
-		except Exception, e:
-			Log.Exception('Fatal error happened in delBundle: %s' %(e))
-			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in delBundle')
-
-	# Delete subtitle
-	def delSub(self, req):
-		Log.Debug('Delete subtitle requested')
-		try:
-			# Start by checking if we got what it takes ;-)
-			key = req.get_argument('key', 'missing')
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish("<html><body>Missing key to media</body></html>")
-				return req
-			subKey = req.get_argument('subKey', 'missing')
-			if subKey == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish("<html><body>Missing subKey to subtitle</body></html>")
-				return req
-			myURL='http://127.0.0.1:32400/library/metadata/' + key + '/tree'
-			# Grap the sub
-			sub = XML.ElementFromURL(myURL).xpath('//MediaStream[@id=' + subKey + ']')
-			if len(sub) > 0:
-				# Sub did exists, but does it have an url?
-				filePath = sub[0].get('url')							
-				if not filePath:
-					# Got an embedded sub here
-					Log.Debug('Fatal error happened in delSub, subtitle not found')
-					req.clear()
-					req.set_status(406)
-					req.finish('Hmmm....This is invalid, and most likely due to trying to delete an embedded sub :-)')
-				else:
-					if filePath.startswith('media://'):
-						# Path to symblink
-						filePath = filePath.replace('media:/', os.path.join(Core.app_support_path, 'Media', 'localhost'))
-						try:
-							# Subtitle name
-							agent, sub = filePath.rsplit('_',1)
-							tmp, agent = agent.split('com.')
-							# Agent used
-							agent = 'com.' + agent
-							filePath2 = filePath.replace('Contents', os.path.join('Contents', 'Subtitle Contributions'))
-							filePath2, language = filePath2.split('Subtitles')
-							language = language[1:3]	
-							filePath3 = os.path.join(filePath2[:-1], agent, language, sub)
-						except Exception, e:
-							Log.Exception('Exception in delSub generation file Path: ' + str(e))
-						subtitlesXMLPath, tmp = filePath.split('Contents')
-						agentXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitle Contributions', agent + '.xml')							
-						subtitlesXMLPath = os.path.join(subtitlesXMLPath, 'Contents', 'Subtitles.xml')
-						self.DelFromXML(agentXMLPath, 'media', sub)
-						self.DelFromXML(subtitlesXMLPath, 'media', sub)
-						# Nuke the actual file
-						try:
-							# Delete the actual file
-							os.remove(filePath)
-							# Delete the symb link
-							os.remove(filePath3)
-							#TODO: Refresh is sadly not working for me, so could use some help here :-(
-							#Let's refresh the media
-							url = 'http://127.0.0.1:32400/library/metadata/' + key + '/refresh?force=1'
-							HTTP.Request(url, cacheTime=0, immediate=True, method="PUT")
-						except Exception, e:
-							Log.Exception('Exception while deleting an agent based sub: ' + str(e))
-							req.clear()
-							req.set_status(404)
-							req.finish('Exception while deleting an agent based sub: ' + str(e))
-						retValues = {}
-						retValues['FilePath']=filePath3
-						retValues['SymbLink']=filePath
-						Log.Debug('Agent subtitle returning %s' %(retValues))
-						req.clear()
-						req.set_status(200)
-						req.set_header('Content-Type', 'application/json; charset=utf-8')
-						req.finish(json.dumps(retValues))
-					elif filePath.startswith('file://'):
-						# We got a sidecar here, so killing time.....YES
-						filePath = filePath.replace('file://', '')
-						try:
-							# Delete the actual file
-							os.remove(filePath)
-							retVal = {}
-							retVal['Deleted file'] = filePath
-							Log.Debug('Deleted the sub %s' %(filePath))
-							req.clear()
-							req.set_status(200)
-							req.set_header('Content-Type', 'application/json; charset=utf-8')
-							req.finish(json.dumps(retVal))
-						except Exception, e:
-							# Could not find req. subtitle
-							Log.Exception('Fatal error happened in delSub, when deleting ' + filePath + ' : ' + str(e))
-							req.clear()
-							req.set_status(403)
-							req.finish('Fatal error happened in delSub, when deleting %s : %s' %(filePath, str(e)))
-			else:
-				# Could not find req. subtitle
-				Log.Debug('Fatal error happened in delSub, subtitle not found')
-				req.clear()
-				req.set_status(404)
-				req.finish('Could not find req. subtitle')
-		except Exception, e:
-			Log.Exception('Fatal error happened in delSub: ' + str(e))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in delSub: ' + str(e))
-
-	''' TVShow '''
-	def TVshow(self, req):
-		Log.Debug('TV Show requested')
-		# Get Season contents
-		def getSeason(req, key):
-			try:
-				bGetSubs = (req.get_argument('getSubs', 'False').upper()=='TRUE')
-				Log.Debug('Got a season request')
-				myURL = 'http://127.0.0.1:32400/library/metadata/' + key + '/tree'
-				episodes = XML.ElementFromURL(myURL).xpath('.//MetadataItem/MetadataItem')
-				mySeason = []
-				for episode in episodes:
-					myEpisode = {}
-					myEpisode['key'] = episode.get('id')					
-					myEpisode['title'] = episode.get('title')					
-					myEpisode['episode'] = episode.get('index')
-					if bGetSubs:
-						myEpisode['subtitles'] = self.getSubtitles(req, mediaKey=myEpisode['key'])
-					mySeason.append(myEpisode)
-				Log.Debug('returning: %s' %(mySeason))
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(mySeason))
-			except Exception, e:
-				Log.Exception('Fatal error happened in TV-Show while fetching season: %s' %(e))
-				req.clear()
-				req.set_status(500)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Fatal error happened in TV-Show while fetching season')
-
-
-		# Get Seasons list
-		def getSeasons(req, key):
-			try:
-				myURL = 'http://127.0.0.1:32400/library/metadata/' + key + '/children'				
-				mySeasons = []
-				seasons = XML.ElementFromURL(myURL).xpath('//Directory')
-				for season in seasons:
-					if season.get('ratingKey'):
-						mySeason = {}
-						mySeason['title'] = season.get('title')
-						mySeason['key'] = season.get('ratingKey')					
-						mySeason['season'] = season.get('index')
-						mySeason['size'] = season.get('leafCount')					
-						mySeasons.append(mySeason)
-				Log.Debug('Returning seasons as %s' %(mySeasons))
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(str(json.dumps(mySeasons)))
-			except Exception, e:
-				Log.Exception('Fatal error happened in TV-Show while fetching seasons: %s' %(e))
-				req.clear()
-				req.set_status(500)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Fatal error happened in TV-Show while fetching seasons')
-
-
-		# Get Size function
-		def getSize(req, key):
-			Log.Debug('Get TV-Show Size req. for %s' %(key))
-			# Grap TV-Show size
-			myURL = 'http://127.0.0.1:32400/library/metadata/' + key + '/allLeaves?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
-			try:
-				size = XML.ElementFromURL(myURL).get('totalSize')		
-				Log.Debug('Returning size as %s' %(size))
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(size)
-			except:
-				Log.Exception('Fatal error happened in TV-Show while fetching size %s' %(e))
-				req.clear()
-				req.set_status(500)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Fatal error happened in TV-Show while fetching size')
-
-		# Get Contents
-		def getContents(req, key):
-			try:
-				# Start of items to grap
-				start = req.get_argument('start', 'missing')
-				if start == 'missing':
-					req.clear()
-					req.set_status(412)
-					req.finish('You are missing start param')
-					return req
-				# Amount of items to grap
-				size = req.get_argument('size', 'missing')
-				if size == 'missing':
-					req.clear()
-					req.set_status(412)
-					req.finish("You are missing size param")
-					return req
-				# Get subs info as well ?
-				bGetSubs = (req.get_argument('getSubs', 'False').upper()=='TRUE')
-				myURL = 'http://127.0.0.1:32400/library/metadata/' + key + '/allLeaves?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
-				shows = XML.ElementFromURL(myURL).xpath('//Video')
-				episodes=[]
-				for media in shows:
-					episode = {}
-					episode['key'] = media.get('ratingKey')
-					episode['title'] = media.get('title')
-					episode['season'] = media.get('parentIndex')
-					episode['episode'] = media.get('index')
-					if bGetSubs:
-						episode['subtitles'] = self.getSubtitles(req, mediaKey=episode['key'])
-					episodes.append(episode)					
-				Log.Debug('Returning episodes as %s' %(episodes))
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(episodes))
-			except Exception, e:
-				Log.Exception('Fatal error happened in TV-Show while fetching contents %s' %(e))
-				req.clear()
-				req.set_status(500)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Fatal error happened in TV-Show while fetching contents')
-
-		# Main func
-		try:
-			Log.Debug('Start TV Show')
-			key = req.get_argument('key', 'missing')
-			Log.Debug('Show key is %s' %(key))
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing key of Show')
-				return req
-			action = req.get_argument('action', 'missing')
-			Log.Debug('Show action is %s' %(action))
-			if action == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing action param of Show')
-				return req
-			# Let's follow the action here
-			if action == 'getSize':
-				getSize(req, key)
-			elif action == 'getContents':
-				getContents(req, key)
-			elif action == 'getSeasons':
-				getSeasons(req, key)
-			elif action == 'getSeason':
-				getSeason(req, key)
-			else:
-				Log.Debug('Unknown action for TVshow')
-				req.clear()
-				req.set_status(412)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish('Unknown action for TVshow')		
-		except Exception, e:
-			Log.Exception('Fatal error happened in TVshow: %s' %(e))
-			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in TVshow')
-
-
-
-
-
-
-
-
-
-
-
-
-
-#####################################
+################ Functions exposed to other modules #####################
 
 # Undate uasTypesCounters
 def updateUASTypesCounters():
@@ -1054,7 +1090,6 @@ def updateAllBundleInfoFromUAS():
 					Dict['PMS-AllBundleInfo'][key] = git
 					Dict['PMS-AllBundleInfo'][key]['date'] = installDate
 					Dict['PMS-AllBundleInfo'][key]['CommitId'] = CommitId
-
 			except Exception, e:
 				Log.Exception('Critical error in updateAllBundleInfoFromUAS1 while walking the gits: ' + str(e))
 			Dict.Save()
