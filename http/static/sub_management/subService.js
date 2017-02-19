@@ -1,7 +1,7 @@
 ﻿angular.module('webtools').service('subService', ['$http', 'subModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', function ($http, subModel, webtoolsModel, webtoolsService, DialogFactory) {
     this.getShows = function (callback) {
         webtoolsModel.subLoading = true;
-        var url = webtoolsModel.apiUrl + "?module=pms&function=getSectionsList"; 
+        var url = webtoolsModel.apiV3Url + "/pms/getSectionsList"; //V3
         $http({
             method: "GET",
             url: url,
@@ -27,7 +27,7 @@
         var take = 20;
 
         show.loading = true;
-        var url = webtoolsModel.apiUrl + "?module=pms&function=getSection&key=" + show.key + "&start=" + skip + "&size=" + take + "&getSubs=true";
+        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/" + skip + "/size/" + take + "/getSubs"; //V3
         $http({
             method: "GET",
             url: url,
@@ -50,7 +50,7 @@
 
     this.getTvShowDetails = function (show, callback) {
         show.loading = true;
-        var url = webtoolsModel.apiUrl + "?module=pms&function=getSection&key=" + show.key + "&start=0&size=9999";
+        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/0/size/9999";
         $http({
             method: "GET",
             url: url,
@@ -66,7 +66,7 @@
 
     this.getTvShowSeasons = function (tvshow, callback) {
         tvshow.loading = true;
-        var url = webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeasons&key=" + tvshow.key + "&start=0&size=9999";
+        var url = webtoolsModel.apiV3Url + "/pms/getShowSeasons/" + tvshow.key;
         $http({
             method: "GET",
             url: url,
@@ -82,7 +82,7 @@
 
     this.getTvShowSeasonDetails = function (season, callback) {
         season.loading = true;
-        var url = webtoolsModel.apiUrl + "?module=pms&function=tvShow&action=getSeason&key=" + season.key + "&getSubs=true";
+        var url = webtoolsModel.apiV3Url + "/pms/getShowSeason/" + season.key + "/getSub";
         $http({
             method: "GET",
             url: url,
@@ -99,7 +99,7 @@
     this.deleteSubtitle = function (detail, subtitle, callback) {
         detail.loading = true;
         subModel.deleteCountAsyncRunning++;
-        var url = webtoolsModel.apiUrl + "?module=pms&function=delSub&key=" + detail.key + "&subKey=" + subtitle.key;
+        var url = webtoolsModel.apiV3Url + "/pms/delSub/key/" + detail.key + "/sub/" + subtitle.key;
         $http({
             method: "DELETE",
             url: url,
