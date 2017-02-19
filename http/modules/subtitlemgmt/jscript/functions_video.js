@@ -131,7 +131,7 @@ subtitlemgmt.fetch_section_type_movies = function(section_key, pageToShow) {
 	get_section_video.start(section_key);
 }
 
-subtitlemgmt.display_episodes = function () {
+subtitlemgmt.display_episodes = function (forceAll) {
 	window.scrollTo(0, 0);
 	/*
 	    Go through all the options and modify the output accordingly.
@@ -166,6 +166,11 @@ subtitlemgmt.display_episodes = function () {
 
 	$('#ContentBody').html('');
 
+
+	if (forceAll) {
+	    start = 0
+	    end = subtitlemgmt.selected_section.contents.length;
+	}
 	for (var i = start; i < end; i++) {
 	    if (subtitlemgmt.options.options_hide_withoutsubs && subtitlemgmt.selected_section.contents[i].subtitles.length === 0) {
 	        continue;
