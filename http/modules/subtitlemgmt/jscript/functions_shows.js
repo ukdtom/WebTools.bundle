@@ -49,7 +49,7 @@ subtitlemgmt.fetch_section_type_show = function(section_key, pageToShow) {
       var start = (Number(subtitlemgmt.selected_section.currentpage) * Number(subtitlemgmt.options.items_per_page));
       webtools.loading('Library Size: ' + subtitlemgmt.selected_section.totalsize + '<br>Currently fetching: ' + start + '->' + (start + subtitlemgmt.options.items_per_page));
       $.ajax({
-        url: '/webtools2?module=pms&function=getSection&key=' + subtitlemgmt.selected_section.key + '&start=' + start + '&size=9999',
+        url: '/webtools2?module=pms&function=getSection&key=' + subtitlemgmt.selected_section.key + '&start=0&size=9999',
         cache: false,
         dataType: 'JSON',
         success: function(data) {
@@ -199,7 +199,7 @@ subtitlemgmt.fetch_season_episodes = function(season_key, pageToShow) {
       });
     }
   ], function() {
-    subtitlemgmt.display_episodes();
+    subtitlemgmt.display_episodes(true);
   });
   get_episodes.start(season_key);
 }
@@ -234,7 +234,7 @@ subtitlemgmt.display_season = function() {
   if (end > subtitlemgmt.selected_section.contents.length) {
     end = subtitlemgmt.selected_section.contents.length
   }
-  for (var i = (subtitlemgmt.selected_section.currentpage * subtitlemgmt.options.items_per_page); i < end; i++) {
+  for (var i = 0; i < subtitlemgmt.selected_section.contents.length; i++) {
     newEntry.push('<tr><td><a class="customlink" onclick="javascript:subtitlemgmt.fetch_season_episodes(' + subtitlemgmt.selected_section.contents[i].key + ',0)">' + subtitlemgmt.selected_section.contents[i].title + '</a></td><td>Episodes in season: ' + subtitlemgmt.selected_section.contents[i].size + '</td></tr>');
 
   }
