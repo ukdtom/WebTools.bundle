@@ -1,3 +1,10 @@
+V2.4.1:
+	Fix:
+		#264	UAS:	v2.4 of WebTools UnsupportedAppStore Error
+		#265	SUB:	No paging by letter, for TV-Shows
+
+####
+
 V2.4:
 	Fix:
 		#166	WT:		Themes - v2.2 release - Default theme error
