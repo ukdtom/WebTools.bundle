@@ -86,7 +86,6 @@
 				return false;
 			}
 		}
-
 		$.ajax({
 			url: '/login',
 			cache: false,
@@ -111,12 +110,13 @@
 					success: function(data) {
 						data = JSON.parse(data);
 						infoarray = [];
+						debugger;
 
 						if (typeof(data.published_at) == 'undefined') {
 							//infoarray.push('No releases available.');
 							document.location.href = '/';
 						} else {
-							
+
 							//console.log('version compare: ' + compare(webtools.version, data.name.substring(1)) + ' A: ' + webtools.version + '> B: ' + data.tag_name);
 							switch (compare(webtools.version, data.tag_name)) {
 								case 0:
@@ -125,7 +125,8 @@
 									//infoarray.push('You are on the latest and greatest!');
 									//$('#myModalFoot').html('<button type="button" class="btn btn-default" onclick="webtools.install_WT();">Re-Install WebTools</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
 									break;
-								case -1:
+							    case -1:
+							        document.location.href = '/';
 									infoarray.push('Currently Installed Version: ' + webtools.version);
 									infoarray.push('Latest Update: ' + data.published_at);
 									infoarray.push('Version Name: ' + data.name);

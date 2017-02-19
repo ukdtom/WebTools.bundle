@@ -538,7 +538,7 @@ webtools.updates_check_display = function() {
 	$('#myModal').modal('show');
 };
 
-webtools.updates_check = function() {
+webtools.updates_check = function () {
 	$('#updateinfo').html('Please wait while fetching information from Github.');
 	$.ajax({
 		url: '/webtools2',
@@ -565,6 +565,7 @@ webtools.updates_check = function() {
 				infoarray.push('Release Notes: ' + data.body);
 				infoarray.push('Download url: <a target="_NEW" href="' + data.zipball_url + '">' + data.zipball_url + '</a>');
 				//console.log('version compare: ' + compare(webtools.version, data.name.substring(1)) + ' A: ' + webtools.version + '> B: ' + data.tag_name);
+                
 
 				switch (compare(webtools.version, data.tag_name)) {
 					case 0:
