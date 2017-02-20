@@ -15,7 +15,7 @@ import pmsV3
 import tempfile
 from consts import DEBUGMODE, UAS_URL, UAS_BRANCH, NAME, WTURL
 
-GET = ['GETLASTUPDATETIME', 'LIST', 'GETRELEASEINFO']
+GET = ['GETUPDATELIST', 'GETLISTOFBUNDLES', 'UASTYPES', 'GETLASTUPDATETIME', 'LIST', 'GETRELEASEINFO']
 PUT = []
 POST = ['UPDATEUASCACHE']
 DELETE = []
@@ -31,8 +31,6 @@ class gitV3(object):
 		self.PLUGIN_DIR = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name)
 		self.IGNORE_BUNDLE = ['WebTools.bundle', 'SiteConfigurations.bundle', 'Services.bundle']
 		self.OFFICIAL_APP_STORE = 'https://nine.plugins.plexapp.com'
-
-
 		# Only init this part once during the lifetime of this
 		if not self.init_already:
 			self.init_already = True
@@ -110,91 +108,40 @@ class gitV3(object):
 
 	#********** Functions below ******************
 
-	''' Get the last update time for a master branch. if UAS is set to True, then this is an internal req. for UAS '''
-	@classmethod
-	def GETLASTUPDATETIME(self, req, *args, **kvargs):
-		Log.Debug('Starting getLastUpdateTime')
-		#TODO: Fix internal calls as well
-
-		# For now, set UAS to default (False), but needs to be an internal param
-		UAS = False
-
-
-		# Wanted to internally check for UAS update?
-
-		# Get params
-		if not args:
-			req.clear()
-			req.set_status(412)
-			req.finish('Missing url of git')
-		params = args[0]
-		try:
-			url = String.Unquote(params[0])
-		except Exception, e:
-			req.clear()
-			req.set_status(412)
-			req.finish('Missing url of git')
-
-
-
-		if not url.startswith('http'):
-			req.clear()
-			req.set_status(400)
-			req.finish('Bad url of git')
-
-
-
-
-		# Retrieve current branch name
-		if Dict['installed'].get(url, {}).get('branch'):
-			# Use installed branch name
-			branch = Dict['installed'][url]['branch']
-		elif Dict['PMS-AllBundleInfo'].get(url, {}).get('branch'):
-			# Use branch name from bundle info
-			branch = Dict['PMS-AllBundleInfo'][url]['branch']
-		# UAS branch override ?
-		elif url == UAS_URL :
-			branch = UAS_BRANCH
-		else:
-			# Otherwise fallback to the "master" branch
-			branch = 'master'
-		# Check for updates
-		try:
-			if '_WTRELEASE' in branch:
-				url = 'https://api.github.com/repos' + url[18:] + '/releases/latest'
-				Log.Debug('URL is: ' + url)				
-				response = JSON.ObjectFromURL(url)['published_at']
-			else:
-				url += '/commits/%s.atom' % branch
-				Log.Debug('URL is: ' + url)
-				response = Datetime.ParseDate(HTML.ElementFromURL(url).xpath('//entry')[0].xpath('./updated')[0].text).strftime("%Y-%m-%d %H:%M:%S")
-			Log.Debug('Last update for: ' + url + ' is: ' + str(response))
-			if UAS:
-				return response
-			else:
-				req.clear()
-				req.set_status(200)
-				req.finish(str(response))
-		except Exception, e:
-			Log.Exception('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
-
-
 	''' This will update the UAS Cache directory from GitHub '''
 	@classmethod
-	def UPDATEUASCACHE(self, req, cliForce= False, *args, **kvargs):
+	def UPDATEUASCACHE(self, req, *args, **kvargs):
 #(self, req, cliForce= False):
 
 		Log.Debug('Starting to update the UAS Cache')
 
-		if not cliForce:
-			Force = ('force' in args[0])
+		# kvargs present means we got an internal call here
+		if kvargs:
+			try:
+				cliForce = kvargs['cliForce']
+			except Exception, e:
+				Log.Debug('Internal call detected, but failed with: ' + str(e))
+		# Web-Call
 		else:
-			Force = True
+			# Get params
+			if not args:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing url of git')
+			params = args[0]
+			try:
+				url = String.Unquote(params[0])
+				UAS = False
+			except Exception, e:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing url of git')
 
 
+
+		# Just set to false, since Internal only
+		cliForce = False
+		Force = False
 
 
 
@@ -211,7 +158,7 @@ class gitV3(object):
 			else:
 				lastUpdateUAS = datetime.datetime.strptime(str(lastUpdateUAS), '%Y-%m-%d %H:%M:%S.%f')
 			# Now get the last update time from the UAS repository on GitHub
-			masterUpdate = datetime.datetime.strptime(self.getLastUpdateTime(req, True, UAS_URL), '%Y-%m-%d %H:%M:%S')
+			masterUpdate = datetime.datetime.strptime(self.GETLASTUPDATETIME(req, True, UAS_URL), '%Y-%m-%d %H:%M:%S')
 			# Do we need to update the cache, and add 2 min. tolerance here?
 			if ((masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120) or Force):
 				# We need to update UAS Cache
@@ -291,6 +238,185 @@ class gitV3(object):
 				req.finish('Exception in updateUASCache ' + str(e))
 				return req
 
+	''' This function will return a list of bundles, where there is an update avail '''
+	@classmethod
+	def GETUPDATELIST(self, req):
+		Log.Debug('Got a call for getUpdateList')
+		try:
+			# Are there any bundles installed?
+			if 'installed' in Dict:
+				bundles = Dict['installed']
+				Log.Debug('Installed channes are: ' + str(bundles))
+				result = {}
+				# Now walk them one by one
+				for bundle in bundles:
+					if bundle.startswith('https://github'):
+						# Going the new detection way with the commitId?
+						if 'CommitId' in Dict['installed'][bundle]:	
+							if 'release' in Dict['installed'][bundle]:								
+								relUrl = 'https://api.github.com/repos' + bundle[18:] + '/releases/latest'
+								Id = JSON.ObjectFromURL(relUrl)['id']
+								if Dict['installed'][bundle]['CommitId'] != Id:
+									gitInfo = Dict['installed'][bundle]
+									gitInfo['gitHubTime'] = JSON.ObjectFromURL(relUrl)['published_at']
+									result[bundle] = gitInfo
+							else:
+								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
+								if Dict['installed'][bundle]['CommitId'] != updateInfo['commitId']:
+									gitInfo = Dict['installed'][bundle]
+									gitInfo['gitHubTime'] = updateInfo['mostRecent']
+									result[bundle] = gitInfo
+						else:
+							# Sadly has to use timestamps							
+							Log.Info('Using timestamps to detect avail update for ' + bundle)
+							gitTime = datetime.datetime.strptime(self.GETLASTUPDATETIME(req, UAS=True, url=bundle), '%Y-%m-%d %H:%M:%S')
+							sBundleTime = Dict['installed'][bundle]['date']
+							bundleTime = datetime.datetime.strptime(sBundleTime, '%Y-%m-%d %H:%M:%S')
+							# Fix for old stuff, where branch was empty
+							if Dict['installed'][bundle]['branch'] == '':
+								Dict['installed'][bundle]['branch'] = 'master'
+								Dict.Save()
+							if bundleTime < gitTime:
+								gitInfo = Dict['installed'][bundle]
+								gitInfo['gitHubTime'] = str(gitTime)
+								result[bundle] = gitInfo
+							else:
+								# Let's get a CommitId stamped for future times								
+								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
+								Log.Info('Stamping %s with a commitId of %s for future ref' %(bundle, updateInfo['commitId']))							
+								Dict['installed'][bundle]['CommitId'] = updateInfo['commitId']
+								Dict.Save()
+				Log.Debug('Updates avail: ' + str(result))
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(result)
+			else:
+				Log.Debug('No bundles are installed')
+				req.clear()
+				req.set_status(204)
+		except Exception, e:
+			Log.Exception('Fatal error happened in getUpdateList: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in getUpdateList ' + str(e))
+
+	''' Get list of avail bundles in the UAS '''
+	@classmethod
+	def GETLISTOFBUNDLES(self, req, *args):
+		Log.Debug('Starting getListofBundles')
+		try:
+			jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
+			json_file = io.open(jsonFileName, "rb")
+			response = json_file.read()
+			json_file.close()	
+			gits = JSON.ObjectFromString(str(response))
+			# Walk it, and reformat to desired output
+			results = {}
+			for git in gits:
+				result = {}
+				title = git['repo']
+				del git['repo']
+				results[title] = git	
+			Log.Debug('getListofBundles returned: ' + str(results))
+			req.clear()
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(results))
+		except:
+			Log.Critical('Fatal error happened in getListofBundles')
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in getListofBundles')
+
+	''' This will return a list of UAS bundle types from the UAS Cache '''
+	@classmethod
+	def UASTYPES(self, req, *args):
+		Log.Debug('Starting uasTypes')
+		try:
+			if 'uasTypes' in Dict:
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(Dict['uasTypes']))
+			else:
+				req.clear()
+				req.set_status(404)
+				req.finish('Not found')
+		except Exception, e:
+			Log.Exception('Exception in uasTypes: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in uasTypes: ' + str(e))
+			return req
+
+	''' Get the last update time for a master branch. if UAS is set to True, then this is an internal req. for UAS '''
+	@classmethod
+	def GETLASTUPDATETIME(self, req, *args, **kvargs):
+		Log.Debug('Starting getLastUpdateTime')
+		# kvargs present means we got an internal call here
+		if kvargs:
+			try:
+				url = kvargs['url']
+				UAS = kvargs['UAS']
+			except Exception, e:
+				Log.Debug('Internal call detected, but failed with: ' + str(e))
+		# Web-Call
+		else:
+			# Get params
+			if not args:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing url of git')
+			params = args[0]
+			try:
+				url = String.Unquote(params[0])
+				UAS = False
+			except Exception, e:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing url of git')
+		if not url.startswith('http'):
+			req.clear()
+			req.set_status(400)
+			req.finish('Bad url of git')
+		Log.Debug('url is: ' + url)
+		# Retrieve current branch name
+		if Dict['installed'].get(url, {}).get('branch'):
+			# Use installed branch name
+			branch = Dict['installed'][url]['branch']
+		elif Dict['PMS-AllBundleInfo'].get(url, {}).get('branch'):
+			# Use branch name from bundle info
+			branch = Dict['PMS-AllBundleInfo'][url]['branch']
+		# UAS branch override ?
+		elif url == UAS_URL :
+			branch = UAS_BRANCH
+		else:
+			# Otherwise fallback to the "master" branch
+			branch = 'master'
+		# Check for updates
+		try:
+			if '_WTRELEASE' in branch:
+				url = 'https://api.github.com/repos' + url[18:] + '/releases/latest'
+				Log.Debug('URL is: ' + url)				
+				response = JSON.ObjectFromURL(url)['published_at']
+			else:
+				url += '/commits/%s.atom' % branch
+				Log.Debug('URL is: ' + url)
+				response = Datetime.ParseDate(HTML.ElementFromURL(url).xpath('//entry')[0].xpath('./updated')[0].text).strftime("%Y-%m-%d %H:%M:%S")
+			Log.Debug('Last update for: ' + url + ' is: ' + str(response))
+			if UAS:
+				return response
+			else:
+				req.clear()
+				req.set_status(200)
+				req.finish(str(response))
+		except Exception, e:
+			Log.Exception('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in getLastUpdateTime for :' + url +  ' was: ' + str(e))
+
 	''' Get release info for a bundle '''
 	@classmethod
 	def GETRELEASEINFO(self, req, *args):
@@ -360,6 +486,27 @@ class gitV3(object):
 			Log.Debug('installed dict not found')
 			req.clear()
 			req.set_status(204)
+
+################### Internal functions #############################
+
+	''' Returns commit time and Id for a git branch '''
+	@classmethod
+	def getAtom_UpdateTime_Id(self, url, branch):		
+		# Build AtomUrl
+		atomUrl = url + '/commits/' + branch + '.atom'
+		# Get Atom
+		atom = HTML.ElementFromURL(atomUrl)
+		mostRecent = atom.xpath('//entry')[0].xpath('./updated')[0].text[:-6]
+		commitId = atom.xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
+		return {'commitId' : commitId, 'mostRecent' : mostRecent}
+
+	@classmethod
+	def getSavePath(self, plugin, path):
+		fragments = path.split('/')[1:]
+		# Remove the first fragment if it matches the bundle name
+		if len(fragments) and fragments[0].lower() == plugin.lower():
+			fragments = fragments[1:]
+		return Core.storage.join_path(plugin, *fragments)
 
 ####################################################################
 
@@ -478,78 +625,7 @@ class gitV3(object):
 			Log.Exception('The error was: ' + str(e))
 		return
 
-	''' Returns commit time and Id for a git branch '''
-	def getAtom_UpdateTime_Id(self, url, branch):		
-		# Build AtomUrl
-		atomUrl = url + '/commits/' + branch + '.atom'
-		# Get Atom
-		atom = HTML.ElementFromURL(atomUrl)
-		mostRecent = atom.xpath('//entry')[0].xpath('./updated')[0].text[:-6]
-		commitId = atom.xpath('//entry')[0].xpath('./id')[0].text.split('/')[-1][:10]
-		return {'commitId' : commitId, 'mostRecent' : mostRecent}
 
-	''' This function will return a list of bundles, where there is an update avail '''
-	def getUpdateList(self, req):
-		Log.Debug('Got a call for getUpdateList')
-		try:
-			# Are there any bundles installed?
-			if 'installed' in Dict:
-				bundles = Dict['installed']
-				Log.Debug('Installed channes are: ' + str(bundles))
-				result = {}
-				# Now walk them one by one
-				for bundle in bundles:
-					if bundle.startswith('https://github'):
-						# Going the new detection way with the commitId?
-						if 'CommitId' in Dict['installed'][bundle]:	
-							if 'release' in Dict['installed'][bundle]:								
-								relUrl = 'https://api.github.com/repos' + bundle[18:] + '/releases/latest'
-								Id = JSON.ObjectFromURL(relUrl)['id']
-								if Dict['installed'][bundle]['CommitId'] != Id:
-									gitInfo = Dict['installed'][bundle]
-									gitInfo['gitHubTime'] = JSON.ObjectFromURL(relUrl)['published_at']
-									result[bundle] = gitInfo
-							else:
-								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
-								if Dict['installed'][bundle]['CommitId'] != updateInfo['commitId']:
-									gitInfo = Dict['installed'][bundle]
-									gitInfo['gitHubTime'] = updateInfo['mostRecent']
-									result[bundle] = gitInfo
-						else:
-							# Sadly has to use timestamps							
-							Log.Info('Using timestamps to detect avail update for ' + bundle)
-							gitTime = datetime.datetime.strptime(self.getLastUpdateTime(req, UAS=True, url=bundle), '%Y-%m-%d %H:%M:%S')
-							sBundleTime = Dict['installed'][bundle]['date']
-							bundleTime = datetime.datetime.strptime(sBundleTime, '%Y-%m-%d %H:%M:%S')
-							# Fix for old stuff, where branch was empty
-							if Dict['installed'][bundle]['branch'] == '':
-								Dict['installed'][bundle]['branch'] = 'master'
-								Dict.Save()
-							if bundleTime < gitTime:
-								gitInfo = Dict['installed'][bundle]
-								gitInfo['gitHubTime'] = str(gitTime)
-								result[bundle] = gitInfo
-							else:
-								# Let's get a CommitId stamped for future times								
-								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
-								Log.Info('Stamping %s with a commitId of %s for future ref' %(bundle, updateInfo['commitId']))							
-								Dict['installed'][bundle]['CommitId'] = updateInfo['commitId']
-								Dict.Save()
-				Log.Debug('Updates avail: ' + str(result))
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(result)
-			else:
-				Log.Debug('No bundles are installed')
-				req.clear()
-				req.set_status(204)
-		except Exception, e:
-			Log.Exception('Fatal error happened in getUpdateList: ' + str(e))
-			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in getUpdateList ' + str(e))
 
 	''' This function will migrate bundles that has been installed without using our UAS into our UAS '''
 	def migrate(self, req, silent=False):
@@ -678,30 +754,7 @@ class gitV3(object):
 			req.finish('Fatal error happened in migrate: ' + str(e))
 			return req
 
-	''' This will return a list of UAS bundle types from the UAS Cache '''
-	def uasTypes(self, req):
-		Log.Debug('Starting uasTypes')
-		try:
-			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(Dict['uasTypes']))
-		except Exception, e:
-			Log.Exception('Exception in uasTypes: ' + str(e))
-			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in uasTypes: ' + str(e))
-			return req
 
-
-
-	def getSavePath(self, plugin, path):
-		fragments = path.split('/')[1:]
-		# Remove the first fragment if it matches the bundle name
-		if len(fragments) and fragments[0].lower() == plugin.lower():
-			fragments = fragments[1:]
-		return Core.storage.join_path(plugin, *fragments)
 
 	''' Download install/update from GitHub '''
 	def install(self, req):
@@ -1051,33 +1104,6 @@ class gitV3(object):
 
 
 
-	''' Get list of avail bundles in the UAS '''
-	def getListofBundles(self, req):
-		Log.Debug('Starting getListofBundles')
-		try:
-			jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
-			json_file = io.open(jsonFileName, "rb")
-			response = json_file.read()
-			json_file.close()	
-			gits = JSON.ObjectFromString(str(response))
-			# Walk it, and reformat to desired output
-			results = {}
-			for git in gits:
-				result = {}
-				title = git['repo']
-				del git['repo']
-				results[title] = git	
-			Log.Debug('getListofBundles returned: ' + str(results))
-			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(results))
-		except:
-			Log.Critical('Fatal error happened in getListofBundles')
-			req.clear()
-			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish('Fatal error happened in getListofBundles')
 
 
 
