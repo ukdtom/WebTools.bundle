@@ -162,7 +162,9 @@ class settingsV3(object):
 					mySetting['options_hide_local'] = (Dict['options_hide_local'] == 'true')
 					mySetting['options_only_multiple'] = (Dict['options_only_multiple'] == 'true')
 					mySetting['items_per_page'] = int(Dict['items_per_page'])
-					mySetting['wt_csstheme'] = Dict['wt_csstheme']
+					try:	mySetting['wt_csstheme'] = Dict['wt_csstheme']
+					except:	
+							mySetting['wt_csstheme'] = ''
 					Log.Debug('Returning settings as %s' %(mySetting))
 					req.clear()
 					req.set_status(200)
@@ -175,9 +177,9 @@ class settingsV3(object):
 					req.set_status(e.code)
 					req.finish(str(e))
 			else:
-				name = list(args)[0][0]	
-				retVal = Dict[name]
-				if retVal:
+				name = list(args)[0][0]
+				if name in Dict:
+					retVal = Dict[name]
 					Log.Debug('Returning %s' %(retVal))
 					req.set_status(200)
 					req.set_header('Content-Type', 'application/json; charset=utf-8')
