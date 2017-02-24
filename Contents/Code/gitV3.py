@@ -45,88 +45,24 @@ class gitV3(object):
 			except Exception, e:
 				Log.Exception('Exception happend when trying to force download from UASRes: ' + str(e))
 
-	''' Get the relevant function and call it with optinal params '''
-	@classmethod
-	def getFunction(self, metode, req):		
-		self.init()
-		params = req.request.uri[8:].upper().split('/')		
-		self.function = None
-		if metode == 'get':
-			for param in params:
-				if param in GET:
-					self.function = param
-					break
-				else:
-					pass
-		elif metode == 'post':
-			for param in params:
-				if param in POST:
-					self.function = param
-					break
-				else:
-					pass
-		elif metode == 'put':
-			for param in params:
-				if param in PUT:
-					self.function = param
-					break
-				else:
-					pass
-		elif metode == 'delete':
-			for param in params:
-				if param in DELETE:
-					self.function = param
-					break
-				else:
-					pass
-		if self.function == None:
-			Log.Debug('Function to call is None')
-			req.clear()
-			req.set_status(404)
-			req.finish('Unknown function call')
-		else:		
-			# Check for optional argument
-			paramsStr = req.request.uri[req.request.uri.upper().find(self.function) + len(self.function):]			
-			# remove starting and ending slash
-			if paramsStr.endswith('/'):
-				paramsStr = paramsStr[:-1]
-			if paramsStr.startswith('/'):
-				paramsStr = paramsStr[1:]
-			# Turn into a list
-			params = paramsStr.split('/')
-			# If empty list, turn into None
-			if params[0] == '':
-				params = None
-			try:
-				Log.Debug('Function to call is: ' + self.function + ' with params: ' + str(params))
-				if params == None:
-					getattr(self, self.function)(req)
-				else:
-					getattr(self, self.function)(req, params)
-			except Exception, e:
-				Log.Exception('Exception in process of: ' + str(e))
-
 	#********** Functions below ******************
-
 
 	''' Download install/update from GitHub '''
 	@classmethod
-	def INSTALL(self, req, *args, **kvargs):
+	def INSTALL(self, req, *args):
+
 		''' Grap bundle name '''
 		def grapBundleName(url):	
 			gitName = url.rsplit('/', 1)[-1]
-
 			# Forgot to name git to end with .bundle?
 			if not gitName.endswith('.bundle'):
 				bundleInfo = Dict['PMS-AllBundleInfo'].get(url, {})
-
 				if bundleInfo.get('bundle'):
 					# Use bundle name from plugin details
 					gitName = bundleInfo['bundle']
 				else:
 					# Fallback to just appending ".bundle" to the repository name
 					gitName = gitName + '.bundle'
-
 			gitName = Core.storage.join_path(self.PLUGIN_DIR, gitName)
 			Log.Debug('Bundle directory name digested as: %s' %(gitName))
 			return gitName
@@ -134,13 +70,11 @@ class gitV3(object):
 		''' Save Install info to the dict '''
 		def saveInstallInfo(url, bundleName, branch):
 			# If this is WebTools itself, then don't save
-			if 'WebTools.bundle' in bundleName:
+			if NAME in bundleName:
 				return
-
 			# Get the dict with the installed bundles, and init it if it doesn't exists
 			if not 'installed' in Dict:
 				Dict['installed'] = {}
-
 			# Start by loading the UAS Cache file list
 			jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
 			json_file = io.open(jsonFileName, "rb")
@@ -233,7 +167,6 @@ class gitV3(object):
 				if len(files) == 0 and removeRoot:
 					Log.Debug('Removing empty directory: ' + path)
 					os.rmdir(path)
-
 			try:
 				# Get the dict with the installed bundles, and init it if it doesn't exists
 				if not 'installed' in Dict:
@@ -296,7 +229,6 @@ class gitV3(object):
 								shutil.rmtree(DataDir)
 							else:
 								Log.Info('Keeping the Data directory ' + DataDir)
-
 				if bError:
 					Core.storage.remove_tree(Core.storage.join_path(self.PLUGIN_DIR, bundleName))
 					Log.Debug('The bundle downloaded is not a Plex Channel bundle!')
@@ -304,21 +236,16 @@ class gitV3(object):
 				bError = False
 				if not bUpgrade:
 					presentFiles = []
-
 				# Create temporary directory
 				tempDir = tempfile.mkdtemp(prefix='wt-')
 				extractDir = os.path.join(tempDir, os.path.basename(bundleName))
-
 				Log.Info('Extracting plugin to: %r', extractDir)
-
 				# Extract archive into temporary directory
 				for filename in zipfile:
 					data = zipfile[filename]
-
 					if not str(filename).endswith('/'):
 						if cutStr not in filename:
 							continue
-
 						# Pure file, so save it	
 						path = extractDir + filename.replace(cutStr, '')
 						Log.Debug('Extracting file: ' + path)
@@ -330,7 +257,6 @@ class gitV3(object):
 					else:
 						if cutStr not in filename:
 							continue
-
 						# We got a directory here
 						Log.Debug(filename.split('/')[-2])
 						if not str(filename.split('/')[-2]).startswith('.'):
@@ -342,61 +268,48 @@ class gitV3(object):
 							except Exception, e:
 								bError = True
 								Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
-
 				if not bError and bUpgrade:
 					# Copy files that should be kept between upgrades ("keepFiles")
 					keepFiles = Dict['PMS-AllBundleInfo'].get(url, {}).get('keepFiles', [])
-
 					for filename in keepFiles:
 						sourcePath = bundleName + filename
-
 						if not os.path.exists(sourcePath):
 							Log.Debug('File does not exist: %r', sourcePath)
 							continue
-
 						destPath = extractDir + filename
-
 						Log.Debug('Copying %r to %r', sourcePath, destPath)
-
 						# Ensure directories exist
 						destDir = os.path.dirname(destPath)
-
 						try:
 							Core.storage.ensure_dirs(destDir)
 						except Exception, e:
 							Log.Warn('Unable to create directory: %r - %s', destDir, e)
 							continue
-
 						# Copy file into temporary directory
 						try:
 							shutil.copy2(sourcePath, destPath)
 						except Exception, e:
 							Log.Warn('Unable to copy file to: %r - %s', destPath, e)
 							continue
-
 					# Remove any empty directories in plugin
 					removeEmptyFolders(extractDir)
-
 				if not bError:
 					try:
 						# Delete current plugin
 						if os.path.exists(bundleName):
 							Log.Info('Deleting %r', bundleName)
 							shutil.rmtree(bundleName)
-
 						# Move updated bundle into "Plug-ins" directory
 						Log.Info('Moving %r to %r', extractDir, bundleName)
 						shutil.move(extractDir, bundleName)
 					except Exception, e:
 						bError = True
 						Log.Exception('Unable to update plugin: ' + str(e))
-
 					# Delete temporary directory
 					try:
 						shutil.rmtree(tempDir)
 					except Exception, e:
 						Log.Warn('Unable to delete temporary directory: %r - %s', tempDir, e)
-
 				if not bError:
 					# Install went okay, so save info
 					saveInstallInfo(url, bundleName, branch)
@@ -405,15 +318,15 @@ class gitV3(object):
 						try:
 							pFile = Core.storage.join_path(self.PLUGIN_DIR, bundleName, 'Contents', 'Info.plist')
 							pl = plistlib.readPlist(pFile)
-							HTTP.Request('http://127.0.0.1:32400/:/plugins/%s/restart' % pl['CFBundleIdentifier'], cacheTime=0, immediate=True)
+							HTTP.Request(misc.GetLoopBack() + '/:/plugins/%s/restart' % pl['CFBundleIdentifier'], cacheTime=0, immediate=True)
 						except:
 							try:
-								HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart', immediate=True)
+								HTTP.Request(misc.GetLoopBack() + '/:/plugins/com.plexapp.system/restart', immediate=True)
 							except:
 								pass
 					else:
 						try:
-							HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart', immediate=True)
+							HTTP.Request(misc.GetLoopBack() + '/:/plugins/com.plexapp.system/restart', immediate=True)
 						except:
 							pass
 					return True
@@ -423,50 +336,26 @@ class gitV3(object):
 
 		# Starting install main
 		Log.Debug('Starting install')
-
-		print 'Ged start'
-
-		# kvargs present means we got an internal call here
-		if kvargs:
-
-			print 'Ged kvargs detected'
-
-			try:
-				cliForce = 'cliForce' in kvargs
-			except Exception, e:
-				Log.Debug('Internal call detected, but failed with: ' + str(e))
-		# Web-Call
-		else:
-			if args:
-		
-				print 'ged Args detected', str(args[0])
-
-
-				try:
-					cliForce = (args[0][0].upper() == 'FORCE')
-				except:
-					cliForce = False
-					pass
 		try:
-			cliForce
-		except Exception:
-			print 'Ged Not there'
-			cliForce = False
-			pass		
-		Force = cliForce
-
-
-
-
+			# Get the Payload
+			data = json.loads(req.request.body.decode('utf-8'))
+			try:
+				if 'url' in data:
+					# Got an url for a git
+					url = data['url']
+			except Exception, e:
+				req.set_status(412)
+				req.finish('Missing url in payload?')
+			if 'branch' in data:
+				# Got an url for a git
+				branch = data['branch']
+			else:
+				branch = 'master'
+		except Exception, e:
+			Log.Debug('Exception in Install was: ' + str(e))
+			req.set_status(412)
+			req.finish('Not a valid payload?')
 		req.clear()
-		url = req.get_argument('url', 'missing')
-		# Set branch to url argument, or master if missing
-		branch = req.get_argument('branch', 'master')
-
-
-
-
-
 		# Got a release url, and if not, go for what's in the dict for branch
 		try:
 			branch = Dict['PMS-AllBundleInfo'][url]['release']+'_WTRELEASE'
@@ -475,10 +364,6 @@ class gitV3(object):
 				branch = Dict['PMS-AllBundleInfo'][url]['branch']
 			except:
 				pass
-		if url == 'missing':
-			req.set_status(412)
-			req.finish("<html><body>Missing url of git</body></html>")
-			return req
 		# Get bundle name
 		bundleName = grapBundleName(url)
 		if downloadBundle2tmp(url, bundleName, branch):
@@ -486,16 +371,13 @@ class gitV3(object):
 			Log.Debug('******* Ending install *******')
 			req.clear()
 			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('All is cool')
 			return req
 		else:
 			Log.Critical('Fatal error happened in install for :' + url)
 			req.set_status(500)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Fatal error happened in install for :' + url + ' with branch ' + branch)
 			return req
-
 
 	''' This function will migrate bundles that has been installed without using our UAS into our UAS '''
 	@classmethod
@@ -539,7 +421,6 @@ class gitV3(object):
 		Log.Debug('Migrate function called')
 		# kvargs present means we got an internal call here
 		if kvargs:
-			print 'Ged KVArgs present INTERNAL CALL', str(kvargs)
 			try:
 				silent = 'silent' in kvargs
 			except Exception, e:
@@ -635,7 +516,6 @@ class gitV3(object):
 			req.finish('Fatal error happened in migrate: ' + str(e))
 			return req
 
-
 	''' This will update the UAS Cache directory from GitHub '''
 	@classmethod
 	def UPDATEUASCACHE(self, req, *args, **kvargs):
@@ -657,7 +537,6 @@ class gitV3(object):
 		try:
 			cliForce
 		except Exception:
-			print 'Ged Not there'
 			cliForce = False
 			pass		
 		Force = cliForce
@@ -934,7 +813,6 @@ class gitV3(object):
 	def GETRELEASEINFO(self, req, *args):
 		Log.Info('Starting getReleaseInfo')
 		try:
-
 			# Get params
 			if not args:
 				req.clear()
@@ -998,6 +876,67 @@ class gitV3(object):
 			Log.Debug('installed dict not found')
 			req.clear()
 			req.set_status(204)
+
+	''' Get the relevant function and call it with optinal params '''
+	@classmethod
+	def getFunction(self, metode, req):		
+		self.init()
+		params = req.request.uri[8:].upper().split('/')		
+		self.function = None
+		if metode == 'get':
+			for param in params:
+				if param in GET:
+					self.function = param
+					break
+				else:
+					pass
+		elif metode == 'post':
+			for param in params:
+				if param in POST:
+					self.function = param
+					break
+				else:
+					pass
+		elif metode == 'put':
+			for param in params:
+				if param in PUT:
+					self.function = param
+					break
+				else:
+					pass
+		elif metode == 'delete':
+			for param in params:
+				if param in DELETE:
+					self.function = param
+					break
+				else:
+					pass
+		if self.function == None:
+			Log.Debug('Function to call is None')
+			req.clear()
+			req.set_status(404)
+			req.finish('Unknown function call')
+		else:		
+			# Check for optional argument
+			paramsStr = req.request.uri[req.request.uri.upper().find(self.function) + len(self.function):]			
+			# remove starting and ending slash
+			if paramsStr.endswith('/'):
+				paramsStr = paramsStr[:-1]
+			if paramsStr.startswith('/'):
+				paramsStr = paramsStr[1:]
+			# Turn into a list
+			params = paramsStr.split('/')
+			# If empty list, turn into None
+			if params[0] == '':
+				params = None
+			try:
+				Log.Debug('Function to call is: ' + self.function + ' with params: ' + str(params))
+				if params == None:
+					getattr(self, self.function)(req)
+				else:
+					getattr(self, self.function)(req, params)
+			except Exception, e:
+				Log.Exception('Exception in process of: ' + str(e))
 
 ################### Internal functions #############################
 
@@ -1123,7 +1062,6 @@ class gitV3(object):
 
 			req.clear()
 			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish('Upgraded ok')
 		except Exception, e:
 			Log.Critical('***************************************************************')
@@ -1136,15 +1074,4 @@ class gitV3(object):
 			Log.Critical('***************************************************************')
 			Log.Exception('The error was: ' + str(e))
 		return
-
-
-
-
-
-
-
-
-
-
-
 
