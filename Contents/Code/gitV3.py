@@ -16,7 +16,7 @@ import tempfile
 from consts import DEBUGMODE, UAS_URL, UAS_BRANCH, NAME, WTURL
 
 GET = ['GETUPDATELIST', 'GETLISTOFBUNDLES', 'UASTYPES', 'GETLASTUPDATETIME', 'LIST', 'GETRELEASEINFO']
-PUT = ['INSTALL', 'MIGRATE']
+PUT = ['UPGRADEWT', 'INSTALL', 'MIGRATE']
 POST = ['UPDATEUASCACHE']
 DELETE = []
 
@@ -46,6 +46,123 @@ class gitV3(object):
 				Log.Exception('Exception happend when trying to force download from UASRes: ' + str(e))
 
 	#********** Functions below ******************
+
+	''' Upgrade WebTools itself '''
+	@classmethod
+	def UPGRADEWT(self, req, *args):
+		Log.Info('Starting upgradeWT')
+
+		#Helper function
+		''' This helper function will delete the dict named Installed
+				After doing so, it'll do a forced migrate
+		'''
+		def nukeSpecialDicts():
+			#TODO Make this
+			Dict['installed'] = {}
+			Dict.Save()
+			self.MIGRATE(req, silent=True)
+
+		# Helper function
+		def removeEmptyFolders(path, removeRoot=True):
+			'Function to remove empty folders'
+			if not os.path.isdir(path):
+				return
+			# remove empty subfolders
+			files = os.listdir(path)
+			if len(files):
+				for f in files:
+					fullpath = os.path.join(path, f)
+					if os.path.isdir(fullpath):
+						removeEmptyFolders(fullpath)
+			# if folder empty, delete it
+			files = os.listdir(path)
+			if len(files) == 0 and removeRoot:
+				Log.Debug('Removing empty directory: ' + path)
+				os.rmdir(path)
+
+		########### Main call #############
+		# Reset dicts
+		nukeSpecialDicts()
+		# Below no longer active
+		url= req.get_argument('debugURL', WTURL)
+
+		bundleName = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
+		Log.Info('WT install dir is: ' + bundleName)
+		try:
+			if 'https://api.github.com/repos/' in url:
+				Log.Debug('Getting release info from url: ' + url)
+				jsonReponse = JSON.ObjectFromURL(url)
+				# Walk assets to find the one named WebTools.bundle.zip
+				for asset in jsonReponse['assets']:
+					if asset['name'] == 'WebTools.bundle.zip':
+						wtURL = asset['browser_download_url']					
+			else:
+				wtURL = url.replace('tree', 'archive') + '.zip'
+			Log.Info('WT Download url detected as: ' + wtURL)
+			# Grap file from Github
+			zipfile = Archive.ZipFromURL(wtURL)
+			bError = True
+			bUpgrade = False
+			instFiles = []
+			# We need to cut of the main directory, which name we don't know
+			for filename in zipfile:
+				pos = filename.find('/')
+				cutStr = filename[:pos]
+				break
+			# Now build a list of files in the zip, while extracting them as well
+			for filename in zipfile:
+				myFile = filename.replace(cutStr, '')
+				if myFile != '/':
+					# Make a list of all files and dirs in the zip
+					instFiles.append(myFile)
+				# Grap the file
+				data = zipfile[filename]
+				if not str(filename).endswith('/'):
+					# Pure file, so save it	
+					path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
+					Log.Debug('Extracting file' + path)
+					try:
+						Core.storage.save(path, data)
+					except Exception, e:
+						bError = True
+						Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
+				else:
+					# We got a directory here
+					Log.Debug(filename.split('/')[-2])
+					if not str(filename.split('/')[-2]).startswith('.'):
+						# Not hidden, so let's create it
+						path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
+						Log.Debug('Extracting folder ' + path)
+						try:
+							Core.storage.ensure_dirs(path)
+						except Exception, e:
+							bError = True
+							Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
+			# Now we need to nuke files that should no longer be there!
+			for root, dirs, files in os.walk(bundleName):
+				for fname in files:
+					fileName = Core.storage.join_path(root, fname).replace(bundleName, '')
+					if fileName not in instFiles:
+						if 'uas' not in fileName:
+							Log.Debug('Removing not needed file: ' + fileName)
+							os.remove(Core.storage.join_path(root, fname))
+			# And now time to swipe empty directories
+			removeEmptyFolders(bundleName)
+
+			req.clear()
+			req.set_status(200)
+			req.finish('Upgraded ok')
+		except Exception, e:
+			Log.Critical('***************************************************************')
+			Log.Critical('Error when updating WebTools')
+			Log.Critical('***************************************************************')
+			Log.Critical('DARN....When we tried to upgrade WT, we had an error :-(')
+			Log.Critical('Only option now might be to do a manual install, like you did the first time')
+			Log.Critical('Do NOT FORGET!!!!')
+			Log.Critical('We NEED this log, so please upload to Plex forums')
+			Log.Critical('***************************************************************')
+			Log.Exception('The error was: ' + str(e))
+		return
 
 	''' Download install/update from GitHub '''
 	@classmethod
@@ -961,118 +1078,5 @@ class gitV3(object):
 
 ####################################################################
 
-	''' Upgrade WebTools itself '''
-	def upgradeWT(self, req):
-		Log.Info('Starting upgradeWT')
 
-		#Helper function
-		''' This helper function will delete the dict named Installed
-				After doing so, it'll do a forced migrate
-		'''
-		def nukeSpecialDicts():
-			#TODO Make this
-			Dict['installed'] = {}
-			Dict.Save()
-			self.migrate(req, silent=True)
-
-		# Helper function
-		def removeEmptyFolders(path, removeRoot=True):
-			'Function to remove empty folders'
-			if not os.path.isdir(path):
-				return
-			# remove empty subfolders
-			files = os.listdir(path)
-			if len(files):
-				for f in files:
-					fullpath = os.path.join(path, f)
-					if os.path.isdir(fullpath):
-						removeEmptyFolders(fullpath)
-			# if folder empty, delete it
-			files = os.listdir(path)
-			if len(files) == 0 and removeRoot:
-				Log.Debug('Removing empty directory: ' + path)
-				os.rmdir(path)
-
-		########### Main call #############
-		# Reset dicts
-		nukeSpecialDicts()
-
-		url= req.get_argument('debugURL', WTURL)
-		bundleName = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
-		Log.Info('WT install dir is: ' + bundleName)
-		try:
-			if 'https://api.github.com/repos/' in url:
-				Log.Debug('Getting release info from url: ' + url)
-				jsonReponse = JSON.ObjectFromURL(url)
-				# Walk assets to find the one named WebTools.bundle.zip
-				for asset in jsonReponse['assets']:
-					if asset['name'] == 'WebTools.bundle.zip':
-						wtURL = asset['browser_download_url']					
-			else:
-				wtURL = url.replace('tree', 'archive') + '.zip'
-			Log.Info('WT Download url detected as: ' + wtURL)
-			# Grap file from Github
-			zipfile = Archive.ZipFromURL(wtURL)
-			bError = True
-			bUpgrade = False
-			instFiles = []
-			# We need to cut of the main directory, which name we don't know
-			for filename in zipfile:
-				pos = filename.find('/')
-				cutStr = filename[:pos]
-				break
-			# Now build a list of files in the zip, while extracting them as well
-			for filename in zipfile:
-				myFile = filename.replace(cutStr, '')
-				if myFile != '/':
-					# Make a list of all files and dirs in the zip
-					instFiles.append(myFile)
-				# Grap the file
-				data = zipfile[filename]
-				if not str(filename).endswith('/'):
-					# Pure file, so save it	
-					path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
-					Log.Debug('Extracting file' + path)
-					try:
-						Core.storage.save(path, data)
-					except Exception, e:
-						bError = True
-						Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
-				else:
-					# We got a directory here
-					Log.Debug(filename.split('/')[-2])
-					if not str(filename.split('/')[-2]).startswith('.'):
-						# Not hidden, so let's create it
-						path = self.getSavePath(bundleName, filename.replace(cutStr, ''))
-						Log.Debug('Extracting folder ' + path)
-						try:
-							Core.storage.ensure_dirs(path)
-						except Exception, e:
-							bError = True
-							Log.Exception('Exception happend in downloadBundle2tmp: ' + str(e))
-			# Now we need to nuke files that should no longer be there!
-			for root, dirs, files in os.walk(bundleName):
-				for fname in files:
-					fileName = Core.storage.join_path(root, fname).replace(bundleName, '')
-					if fileName not in instFiles:
-						if 'uas' not in fileName:
-							Log.Debug('Removing not needed file: ' + fileName)
-							os.remove(Core.storage.join_path(root, fname))
-			# And now time to swipe empty directories
-			removeEmptyFolders(bundleName)
-
-			req.clear()
-			req.set_status(200)
-			req.finish('Upgraded ok')
-		except Exception, e:
-			Log.Critical('***************************************************************')
-			Log.Critical('Error when updating WebTools')
-			Log.Critical('***************************************************************')
-			Log.Critical('DARN....When we tried to upgrade WT, we had an error :-(')
-			Log.Critical('Only option now might be to do a manual install, like you did the first time')
-			Log.Critical('Do NOT FORGET!!!!')
-			Log.Critical('We NEED this log, so please upload to Plex forums')
-			Log.Critical('***************************************************************')
-			Log.Exception('The error was: ' + str(e))
-		return
 
