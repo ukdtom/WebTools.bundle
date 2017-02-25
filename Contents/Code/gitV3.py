@@ -993,6 +993,7 @@ class gitV3(object):
 				Log.Debug('Removing empty directory: ' + path)
 				os.rmdir(path)
 
+		########### Main call #############
 		# Reset dicts
 		nukeSpecialDicts()
 

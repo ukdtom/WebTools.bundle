@@ -475,23 +475,26 @@ def start_tornado():
 	settings = {"cookie_secret": "__" + myCookie + "__",
 							"login_url": "/login"}
 
-	application = Application(httpHandlers, **settings)
-	applicationTLS = Application(httpsHandlers, **settings)
-	http_server = HTTPServer(application)
-	# Use our own certificate for TLS
-	http_serverTLS = HTTPServer(applicationTLS, 
-													ssl_options={
-																			"certfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', 'WebTools.crt'),
-																			"keyfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', 'WebTools.key')})
-	# Set web server port to the setting in the channel prefs
-	port = int(Prefs['WEB_Port_http'])
-	ports = int(Prefs['WEB_Port_https'])	
-	http_server.listen(port)
-	http_serverTLS.listen(ports)
+	try:
 
-	Log.Debug('Starting tornado on ports %s and %s' %(port, ports))
-	IOLoop.instance().start()
-	Log.Debug('Started')
+		application = Application(httpHandlers, **settings)
+		applicationTLS = Application(httpsHandlers, **settings)
+		http_server = HTTPServer(application)
+		# Use our own certificate for TLS
+		http_serverTLS = HTTPServer(applicationTLS, 
+														ssl_options={
+																				"certfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', 'WebTools.crt'),
+																				"keyfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', 'WebTools.key')})
+		# Set web server port to the setting in the channel prefs
+		port = int(Prefs['WEB_Port_http'])
+		ports = int(Prefs['WEB_Port_https'])	
+		http_server.listen(port)
+		http_serverTLS.listen(ports)
+
+		Log.Debug('Starting tornado on ports %s and %s' %(port, ports))
+		IOLoop.instance().start()
+	except Exception, e:
+		Log.Exception('Problem starting Tornado: ' + str(e))
 
 ''' Stop the actual instance of tornado '''
 def stopWeb():
