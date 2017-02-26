@@ -793,7 +793,7 @@ class pmsV3(object):
 
 	''' get sections list '''
 	@classmethod
-	def GETSECTIONSLIST(self,req):
+	def GETSECTIONSLIST(self,req, *args):
 		Log.Debug('getSectionsList requested')
 		try:
 			rawSections = XML.ElementFromURL(misc.GetLoopBack() + '/library/sections')
@@ -801,11 +801,21 @@ class pmsV3(object):
 			for directory in rawSections:
 				Section = {'key':directory.get('key'),'title':directory.get('title'),'type':directory.get('type')}
 				Sections.append(Section)
-			Log.Debug('Returning Sectionlist as %s' %(Sections))
+			Log.Debug('Returning Sectionlist as %s' %(Sections))			
+			try:
+				params = args[0]
+				# Got a filter ?
+				for param in params:
+					if param.startswith('filter?'):
+						filter = param
+				result = misc.filterJson(json.dumps(Sections), filter)
+			except Exception, e:
+				result = Sections
+				pass			
 			req.clear()
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(Sections))
+			req.finish(json.dumps(result))
 		except Exception, e:
 			Log.Exception('Fatal error happened in getSectionsList: %s' %(str(e)))
 			req.clear()

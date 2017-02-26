@@ -9,7 +9,7 @@
 #
 ######################################################################################################################
 
-import os, re, string, unicodedata, sys
+import os, re, string, unicodedata, sys, json
 
 RE_UNICODE_CONTROL =  u'([\u0000-\u0008\u000b-\u000c\u000e-\u001f\ufffe-\uffff])' + \
                       u'|' + \
@@ -65,9 +65,33 @@ class misc(object):
 			return 'http://127.0.0.1:32400'
 		'''
 
+	####################################################################################################
+	# This function will return a filtered json, Non case sensitive, based on a url params filter
+	####################################################################################################
+	def filterJson(self, origen, filter):
+		# Remove start of filter string
+		filter = filter[7:]
+		# Split into filters
+		filterlist = filter.split('&')
+		jsonFilter = {}
+		for filter in filterlist:
+			filterEntry = filter.split('=')
+			jsonFilter[filterEntry[0]] = filterEntry[1]
+		try:
+			# Transform json input to python objects
+			input_dict = json.loads(origen)		
+			jsonOutput = []
+			for item in input_dict:
+				iFilters = len(jsonFilter) -1					
+				for filter in jsonFilter:
+					if jsonFilter[filter].upper() in item[filter].upper(): 
+						iFilters = iFilters - 1
+				if iFilters < 0:
+					jsonOutput.append(item)
+		except Exception, e:
+			Log.Exception('Exception in Misc.filterJson is: ' + str(e))
+			return
+		return jsonOutput
 
 misc = misc()
-
-
-
 
