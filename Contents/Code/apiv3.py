@@ -11,7 +11,7 @@ from tornado.web import *
 from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES
 import sys
 
-import wtV3, pmsV3, logsV3, languageV3, settingsV3, gitV3, findMediaV3
+import wtV3, pmsV3, logsV3, languageV3, settingsV3, gitV3, findMediaV3, jsonExporterV3
 
 class BaseHandler(RequestHandler):	
 	def get_current_user(self):
@@ -61,12 +61,13 @@ class apiv3(BaseHandler):
 							try:	myClass = getattr(gitV3, V3MODULES[self.module])
 							except:	
 								try:	myClass = getattr(findMediaV3, V3MODULES[self.module])
-
-								except Exception, e:
-									Log.Exception('Exception getting the class in apiV3: ' + str(e))
-									self.clear()
-									self.set_status(501)
-									self.finish('Bad module?')		
+								except:
+									try:	myClass = getattr(jsonExporterV3, V3MODULES[self.module])
+									except Exception, e:
+										Log.Exception('Exception getting the class in apiV3: ' + str(e))
+										self.clear()
+										self.set_status(501)
+										self.finish('Bad module?')		
 		try:
 			#Make the call
 			getattr(myClass, 'getFunction')(self.request.method.lower(), self)
@@ -75,7 +76,6 @@ class apiv3(BaseHandler):
 			self.clear()
 			self.set_status(501)
 			self.finish('Bad reqprocess call?')
-
 
 	#******* GET REQUEST *********
 	@authenticated

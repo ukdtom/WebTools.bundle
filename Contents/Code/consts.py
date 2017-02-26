@@ -21,8 +21,7 @@ ICON = 'WebTools.png'
 JSONTIMESTAMP = 0																																		# timestamp for json export
 WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'				# URL to latest WebTools
 BUNDLEDIRNAME = ''																																	# Name of the bundle dir
-#V3MODULES = ['GIT','SETTINGS', 'LANGUAGE', 'FINDMEDIA', 'JSONEXPORTER', 'PMS']
-V3MODULES = {'WT' : 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3', 'LANGUAGE': 'languageV3', 'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3'}
+V3MODULES = {'WT' : 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3', 'LANGUAGE': 'languageV3', 'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3'}
 
 
 #['WT', 'PMS']
