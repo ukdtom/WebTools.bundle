@@ -11,7 +11,7 @@ from tornado.web import *
 from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES
 import sys
 
-import wtV3, pmsV3, logsV3, languageV3, settingsV3, gitV3
+import wtV3, pmsV3, logsV3, languageV3, settingsV3, gitV3, findMediaV3
 
 class BaseHandler(RequestHandler):	
 	def get_current_user(self):
@@ -44,8 +44,9 @@ class apiv3(BaseHandler):
 			self.finish('Missing module or unknown module')
 
 	# Make the call
+	# TODO: Make this more dynamic if possible
 	def makeCall(self):
-		Log.Debug('Recieved an apiV3 GET call for module: ' + self.module + ' for methode: ' + self.request.method)
+		Log.Debug('Recieved an apiV3 GET call for module: ' + self.module + ' for methode: ' + self.request.method)		
 		# Generate a handle to the class
 		try:	myClass = getattr(pmsV3, V3MODULES[self.module])
 		except:	
@@ -58,12 +59,14 @@ class apiv3(BaseHandler):
 						try:	myClass = getattr(settingsV3, V3MODULES[self.module])
 						except:	
 							try:	myClass = getattr(gitV3, V3MODULES[self.module])
+							except:	
+								try:	myClass = getattr(findMediaV3, V3MODULES[self.module])
 
-							except Exception, e:
-								Log.Exception('Exception getting the class in apiV3: ' + str(e))
-								self.clear()
-								self.set_status(501)
-								self.finish('Bad module?')
+								except Exception, e:
+									Log.Exception('Exception getting the class in apiV3: ' + str(e))
+									self.clear()
+									self.set_status(501)
+									self.finish('Bad module?')		
 		try:
 			#Make the call
 			getattr(myClass, 'getFunction')(self.request.method.lower(), self)
