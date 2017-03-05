@@ -225,7 +225,7 @@ class pmsV3(object):
 				req.set_status(412)
 				req.finish('Missing size in params')		
 			bGetSubs = ('getSubs' in params)
-			myURL = 'http://127.0.0.1:32400/library/metadata/' + key + '/allLeaves?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
+			myURL = misc.GetLoopBack() + '/library/metadata/' + key + '/grandchildren?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
 			shows = XML.ElementFromURL(myURL).xpath('//Video')
 			episodes=[]
 			for media in shows:
@@ -355,7 +355,7 @@ class pmsV3(object):
 			req.finish('Fatal error digesting params: ' + str(args[0]))
 		Log.Debug('Key is: ' + key)
 		# Grap TV-Show size
-		myURL = misc.GetLoopBack() + '/library/metadata/' + key + '/allLeaves?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+		myURL = misc.GetLoopBack() + '/library/metadata/' + key + '/grandchildren?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
 		try:
 			size = XML.ElementFromURL(myURL).get('totalSize')		
 			Log.Debug('Returning size as %s' %(size))
