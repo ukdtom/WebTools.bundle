@@ -249,7 +249,7 @@ class findMediaV3(object):
 									Log.Debug('root in ignored dirs: ' + root)
 								continue
 							# Lets look at the file
-							for file in files:					
+							for file in files:				
 								file = misc.Unicodize(file).encode('utf8')
 								if DEBUGMODE:
 									Log.Debug('file in files: ' + file)
@@ -267,7 +267,7 @@ class findMediaV3(object):
 											Log.Debug('File hidden, so ignore : ' + file)
 										continue
 									# Filter out local extras
-									if not Dict['findMedia']['IGNORE_EXTRAS']:
+									if Dict['findMedia']['IGNORE_EXTRAS']:
 										if '-' in file:
 											if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1].lower() in Extras:
 												if DEBUGMODE:
@@ -284,7 +284,7 @@ class findMediaV3(object):
 										pos = composed_file.find(':') -1
 										if pos != -2:
 											# We dont got an UNC path here
-											composed_file = composed_file[pos:]								
+											composed_file = composed_file[pos:]							
 									mediasFromFileSystem.append(composed_file)
 									if DEBUGMODE:
 										Log.Debug('Scanning file: ' + file)
@@ -292,13 +292,14 @@ class findMediaV3(object):
 									statusMsg = 'Scanning file: ' + file
 					except Exception, e:
 						Log.Exception('Exception happened in FM scanning filesystem: ' + str(e))
+						return
 					Log.Debug('***** Finished scanning filesystem *****')
 					if DEBUGMODE:
 						Log.Debug(mediasFromFileSystem)
 					runningState = 2
 			except ValueError:
 				statusMsg = 'Idle'
-				runningState = 99
+				runningState = 0
 				Log.Info('Aborted in getFiles')
 			except Exception, e:
 				Log.Exception('Exception happend in getFiles: ' + str(e))
@@ -328,7 +329,9 @@ class findMediaV3(object):
 					# Walk the chunk
 					for part in medias:
 						if bAbort:
+							runningState = 0
 							raise ValueError('Aborted')
+							break
 						iCount += 1
 						filename = part.get('file')		
 						filename = unicode(misc.Unicodize(part.get('file')).encode('utf8', 'ignore'))
@@ -396,9 +399,6 @@ class findMediaV3(object):
 				req.clear()
 				req.set_status(412)
 				req.finish('Missing section parameter')
-
-			print 'Ged args', args[0], 'Number: ', sectionNumber
-
 			# Let's find out the info of section here			
 			response = XML.ElementFromURL(self.CoreUrl).xpath('//Directory[@key=' + sectionNumber + ']')
 			sectionTitle = response[0].get('title')
@@ -424,6 +424,8 @@ class findMediaV3(object):
 	# Abort
 	@classmethod
 	def ABORT(self, req, *args):
+		global runningState
+		runningState = 0
 		global bAbort
 		bAbort = True
 		req.clear()		
@@ -476,7 +478,6 @@ class findMediaV3(object):
 	# Return current status
 	@classmethod
 	def GETSTATUS(self, req, *args):
-		global runningState		
 		req.clear()		
 		req.set_status(200)
 		if runningState == 0:
