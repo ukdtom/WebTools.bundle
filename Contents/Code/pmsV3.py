@@ -12,9 +12,9 @@ import time, json
 import io, sys
 from xml.etree import ElementTree
 
-GET = ['GETALLBUNDLEINFO', 'GETSECTIONSLIST', 'GETSECTIONSIZE', 'GETSECTIONLETTERLIST', 'GETSECTION', 'GETSUBTITLES', 'GETPARTS', 'SHOWSUBTITLE', 'GETSHOWSIZE', 'GETSHOWSEASONS', 'GETSHOWSEASON', 'GETSHOWCONTENTS']
+GET = ['SEARCH', 'GETALLBUNDLEINFO', 'GETSECTIONSLIST', 'GETSECTIONSIZE', 'GETSECTIONLETTERLIST', 'GETSECTION', 'GETSUBTITLES', 'GETPARTS', 'SHOWSUBTITLE', 'GETSHOWSIZE', 'GETSHOWSEASONS', 'GETSHOWSEASON', 'GETSHOWCONTENTS', 'DOWNLOADSUBTITLE']
 PUT = ['']
-POST = ['SEARCH', 'UPLOADFILE']
+POST = ['UPLOADFILE']
 DELETE = ['DELBUNDLE', 'DELSUB']
 
 class pmsV3(object):
@@ -85,6 +85,63 @@ class pmsV3(object):
 				Log.Exception('Exception in process of: ' + str(e))
 
 	#********** Functions below ******************
+
+	''' Download Subtitle '''
+	@classmethod
+	def DOWNLOADSUBTITLE(self, req, *args):
+		Log.Debug('Download Subtitle requested')
+		try:
+			# Get the key of the sub
+			try:
+				key = args[0][0]
+			except Exception, e:
+				Log.Debug('Exception in downloadSubtitle when fetching the key was: ' + str(e))
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing key of subtitle')
+				return req				
+			Log.Debug('Subtitle key is %s' %(key))
+			myURL= misc.GetLoopBack() + '/library/streams/' + key
+			try:
+				# Grab the subtitle
+				try:
+					response = HTML.StringFromElement(HTML.ElementFromURL(myURL))
+				except Exception, e:
+					Log.Exception('Fatal error happened in downloadSubtitle: ' + str(e))
+					req.clear()
+					req.set_status(404)
+					req.finish('Fatal error happened in downloadSubtitle: ' + str(e))			
+				# Make it more nice
+				response = response.replace('<p>', '',1)
+				response = response.replace('</p>', '',1)
+				response = response.replace('&gt;', '>')
+				response = response.split('\n')
+				# Prep the download http headers
+				req.set_header ('Content-Disposition', 'attachment; filename="subtitle.srt"')
+				req.set_header('Cache-Control', 'no-cache')
+				req.set_header('Pragma', 'no-cache')
+				req.set_header('Content-Type', 'application/text/plain')				
+				# Download the sub
+				try:
+					for line in response:
+						req.write(line + '\n')
+					req.finish()
+					return req
+				except Exception, e:
+					Log.Exception('Fatal error happened in downloadSubtitle: ' + str(e))
+					req.clear()
+					req.set_status(500)
+					req.finish('Fatal error happened in downloadSubtitle: ' + str(e))
+			except Exception, e:
+				Log.Exception('Fatal error happened in downloadSubtitle: %s' %(e))
+				req.clear()
+				req.set_status(500)
+				req.finish('Fatal error happened in showSubtitle')
+		except Exception, e:
+			Log.Exception('Fatal error happened in downloadSubtitle: %s' %(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in downloadSubtitle')
 
 	# Delete subtitle
 	@classmethod
@@ -882,106 +939,43 @@ class pmsV3(object):
 		Log.Info('Search called')
 		try:
 			try:
-				# Get the Payload
-				data = json.loads(req.request.body.decode('utf-8'))
+				searchTitle = args[0][0]
 			except Exception, e:
+				Log.Debug('Exception here due to missing search title')
 				req.set_status(412)
-				req.finish('Not a valid payload?')
-			else:
-				# Get entry for old pwd
-				if 'title' in data:
-					url = misc.GetLoopBack() + '/search?query=' + String.Quote(data['title'])
-					result = {}
-					# Fetch search result from PMS
-					foundMedias = XML.ElementFromURL(url)
-					# Grap all movies from the result
-					for media in foundMedias.xpath('//Video'):
-						value = {}
-						value['title'] = media.get('title')
-						value['type'] = media.get('type')
-						value['section'] = media.get('librarySectionID')			
-						key = media.get('ratingKey')					
-						result[key] = value
-					# Grap results for TV-Shows
-					for media in foundMedias.xpath('//Directory'):
-						value = {}
-						value['title'] = media.get('title')
-						value['type'] = media.get('type')
-						value['section'] = media.get('librarySectionID')			
-						key = media.get('ratingKey')					
-						result[key] = value
-					Log.Info('Search returned: %s' %(result))
-					req.clear()
-					req.set_status(200)
-					req.set_header('Content-Type', 'application/json; charset=utf-8')
-					req.finish(json.dumps(result))
-				else:
-					req.clear()
-					req.set_status(412)
-					req.finish('Missing title in payload')
+				req.finish('No title to search for?')	
+			url = misc.GetLoopBack() + '/search?query=' + searchTitle
+			result = {}
+			# Fetch search result from PMS
+			foundMedias = XML.ElementFromURL(url)
+			# Grap all movies from the result
+			for media in foundMedias.xpath('//Video'):
+				value = {}
+				value['title'] = media.get('title')
+				value['type'] = media.get('type')
+				value['section'] = media.get('librarySectionID')			
+				key = media.get('ratingKey')					
+				result[key] = value
+			# Grap results for TV-Shows
+			for media in foundMedias.xpath('//Directory'):
+				value = {}
+				value['title'] = media.get('title')
+				value['type'] = media.get('type')
+				value['section'] = media.get('librarySectionID')			
+				key = media.get('ratingKey')					
+				result[key] = value
+			Log.Info('Search returned: %s' %(result))
+			req.clear()
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(result))
 		except Exception, e:
 			Log.Exception('Fatal error happened in search: ' + str(e))
 			req.clear()
 			req.set_status(500)
 			req.finish('Fatal error happened in search: ' + str(e))
 
-#*********************************************************************************************
-
-
-
-	''' Download Subtitle '''
-	@classmethod
-	def downloadSubtitle(self, req):
-		Log.Debug('Download Subtitle requested')
-		try:
-			key = req.get_argument('key', 'missing')
-			Log.Debug('Subtitle key is %s' %(key))
-			if key == 'missing':
-				req.clear()
-				req.set_status(412)
-				req.finish('Missing key of subtitle')
-				return req
-			myURL= misc.GetLoopBack() + '/library/streams/' + key
-			try:
-				# Grab the subtitle
-				try:
-					response = HTML.StringFromElement(HTML.ElementFromURL(myURL))
-				except Exception, e:
-					Log.Exception('Fatal error happened in downloadSubtitle: ' + str(e))
-					req.clear()
-					req.set_status(401)
-					req.finish('Fatal error happened in downloadSubtitle: ' + str(e))			
-				# Make it nicer
-				response = response.replace('<p>', '',1)
-				response = response.replace('</p>', '',1)
-				response = response.replace('&gt;', '>')
-				response = response.split('\n')
-				# Prep the download http headers
-				req.set_header ('Content-Disposition', 'attachment; filename="subtitle.srt"')
-				req.set_header('Cache-Control', 'no-cache')
-				req.set_header('Pragma', 'no-cache')
-				req.set_header('Content-Type', 'application/text/plain')				
-				# Download the sub
-				try:
-					for line in response:
-						req.write(line + '\n')
-					req.finish()
-					return req
-				except Exception, e:
-					Log.Exception('Fatal error happened in downloadSubtitle: ' + str(e))
-					req.clear()
-					req.set_status(500)
-					req.finish('Fatal error happened in downloadSubtitle: ' + str(e))
-			except Exception, e:
-				Log.Exception('Fatal error happened in downloadSubtitle: %s' %(e))
-				req.clear()
-				req.set_status(500)
-				req.finish('Fatal error happened in showSubtitle')
-		except Exception, e:
-			Log.Exception('Fatal error happened in downloadSubtitle: %s' %(e))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in downloadSubtitle')
+#************************************* Internal function *********************************************
 
 	''' Delete from an XML file Internal class function'''
 	@classmethod
