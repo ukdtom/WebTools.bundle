@@ -9,6 +9,7 @@
 ######################################################################################################################
 
 import io, os, json, inspect
+from random import randint   #Used for Cookie generation
 
 DEBUGMODE = False																																		# default for debug mode
 WT_AUTH = True																																			# validate password
@@ -22,9 +23,6 @@ JSONTIMESTAMP = 0																																		# timestamp for json export
 WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'				# URL to latest WebTools
 BUNDLEDIRNAME = ''																																	# Name of the bundle dir
 V3MODULES = {'WT' : 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3', 'LANGUAGE': 'languageV3', 'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3'}
-
-
-#['WT', 'PMS']
 
 class consts(object):	
 	init_already = False							# Make sure part of init only run once
@@ -40,15 +38,14 @@ class consts(object):
 		global NAME
 		global PREFIX
 
+		self.makeDefaultSettings()
 
 		# Lets find the name of the bundle directory
 		BUNDLEDIRNAME = os.path.split(os.path.split(os.path.split(os.path.dirname(os.path.abspath(inspect.stack()[0][1])))[0])[0])[1]
 		# Name of this plugin
 		NAME = os.path.splitext(BUNDLEDIRNAME)[0]
 		# Prefix
-		PREFIX = 'applications/' + str(NAME).lower()
-
-
+		PREFIX = '/applications/' + str(NAME).lower()
 		# Grap version number from the version file
 		try:
 			versionFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'VERSION')
@@ -57,7 +54,6 @@ class consts(object):
 		except:
 			if not self.isCorrectPath():
 				VERSION = '*** WRONG INSTALL PATH!!!!....Correct path is: ' + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME) + '***'
-
 		# Switch to debug mode if needed
 		debugFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'debug')
 		# Do we have a debug file ?
@@ -90,7 +86,6 @@ class consts(object):
 			Log.Debug('*****************************************************')
 		else:
 			DEBUGMODE = False
-
 		# Verify install path
 		def isCorrectPath(self):			
 			installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split(BUNDLEDIRNAME,1)
@@ -108,8 +103,51 @@ class consts(object):
 				Log.Info('Verified a correct install path as: ' + targetPath)
 				return True
 
+####################################################################################################
+# Make default Dict
+####################################################################################################
+	''' This will generate the default settings in the Dict if missing '''
+	def makeDefaultSettings(self):
+		# Used for Cookie generation
+		Dict['SharedSecret'] = VERSION + '.' + str(randint(0,9999))		
+		# Set default value for http part, if run for the first time
+		if Dict['options_hide_integrated'] == None:
+			Dict['options_hide_integrated'] = 'false'
+		# Set default value for http part, if run for the first time
+		if Dict['options_hide_local'] == None:
+			Dict['options_hide_local'] = 'false'
+		# Set default value for http part, if run for the first time
+		if Dict['options_hide_empty_subtitles'] == None:
+			Dict['options_hide_empty_subtitles'] = 'false'
+		# Set default value for http part, if run for the first time
+		if Dict['options_only_multiple'] == None:
+			Dict['options_only_multiple'] = 'false'
+		# Set default value for http part, if run for the first time
+		if Dict['options_auto_select_duplicate'] == None:
+			Dict['options_auto_select_duplicate'] = 'false'
+		# Set default value for http part, if run for the first time
+		if Dict['items_per_page'] == None:
+			Dict['items_per_page'] = '15'
+		# Create the password entry
+		if Dict['password'] == None:
+			Dict['password'] = ''
+		# Create the debug entry
+		if Dict['debug'] == None:
+			Dict['debug'] = 'false'
+		# Create the pwdset entry
+		if Dict['pwdset'] == None:
+			Dict['pwdset'] = False
+		# Init the installed dict
+		if Dict['installed'] == None:
+			Dict['installed'] = {}
+		# Init the allBundle Dict
+		if Dict['PMS-AllBundleInfo'] == None:
+			Dict['PMS-AllBundleInfo'] = {}
+		# Init the scheme used Dict
+		if Dict['wt_csstheme'] == None:
+			Dict['wt_csstheme'] = 'WhiteBlue.css'
+		return
 
 
 consts = consts()
-
 
