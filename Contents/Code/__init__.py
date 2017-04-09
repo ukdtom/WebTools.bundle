@@ -18,7 +18,6 @@ SECRETKEY = ''
 #********** Imports needed *********
 import sys, locale
 from webSrv import startWeb, stopWeb
-from random import randint   #Used for Cookie generation
 import uuid			#Used for secrectKey
 import time
 import socket

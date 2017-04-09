@@ -16,5 +16,11 @@
 		"label":"Select to force https",
 		"type":"bool",
 		"default":"false"
-	}	
+	},	
+	{
+		"id":"Base_URL",
+		"label":"Base url if behińd a Proxy. If not, leave as blank. (Do start with a slash, and do not end with one, like '/base'",
+		"type":"text",
+		"default":""
+	}
 ]

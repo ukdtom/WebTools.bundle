@@ -19,6 +19,7 @@ UAS_BRANCH = 'master'																																# UAS2 branch to check
 PREFIX = ''																																					# Prefix
 NAME = ''																																						# Name of plugin
 ICON = 'WebTools.png'
+BASEURL = ''																																				# Base url if behind a proxy
 JSONTIMESTAMP = 0																																		# timestamp for json export
 WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'				# URL to latest WebTools
 BUNDLEDIRNAME = ''																																	# Name of the bundle dir
@@ -37,6 +38,7 @@ class consts(object):
 		global BUNDLEDIRNAME
 		global NAME
 		global PREFIX
+		global BASEURL
 
 		self.makeDefaultSettings()
 
@@ -46,6 +48,12 @@ class consts(object):
 		NAME = os.path.splitext(BUNDLEDIRNAME)[0]
 		# Prefix
 		PREFIX = '/applications/' + str(NAME).lower()
+		if Prefs['Base_URL'] != None:
+			BASEURL = Prefs['Base_URL']
+		if not BASEURL.startswith('/'):
+			BASEURL = '/' + BASEURL
+		if BASEURL.endswith('/'):
+			BASEURL = BASEURL[:-1]
 		# Grap version number from the version file
 		try:
 			versionFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'VERSION')

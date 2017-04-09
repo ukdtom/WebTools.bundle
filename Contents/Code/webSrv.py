@@ -6,7 +6,7 @@
 #
 ######################################################################################################################
 
-from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES
+from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES, BASEURL
 import sys
 # Add modules dir to search path
 modules = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'Contents', 'Code', 'modules')
@@ -442,24 +442,24 @@ class webTools2Handler(BaseHandler):
 				self.finish("<html><body>Unknown module call</body></html>")
 				return
 
-handlers = [(r"/login", LoginHandler),
-						(r"/logout", LogoutHandler),
-						(r"/version", versionHandler),
-						(r'/', idxHandler),
-						(r'/index.html', idxHandler),
-						(r"/api/v3.*$", apiv3.apiv3),
-						(r"/webtools2*$", webTools2Handler),
-						(r'/(.*)', MyStaticFileHandler, {'path': getActualHTTPPath()})
+handlers = [(r"%s/login" %BASEURL, LoginHandler),
+						(r"%s/logout" %BASEURL, LogoutHandler),
+						(r"%s/version" %BASEURL, versionHandler),
+						(r'%s/' %BASEURL, idxHandler),
+						(r'%s/index.html' %BASEURL, idxHandler),
+						(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),
+						(r'%s/webtools2*$' %BASEURL, webTools2Handler),
+						(r'%s/(.*)' %BASEURL, MyStaticFileHandler, {'path': getActualHTTPPath()})
 ]
 
 if Prefs['Force_SSL']:
-	httpHandlers = [(r"/login", ForceTSLHandler),
-									(r"/logout", LogoutHandler),
-									(r"/version", ForceTSLHandler),
-									(r'/', ForceTSLHandler),
-									(r'/index.html', ForceTSLHandler),
-									(r"/api/v3.*$", apiv3.apiv3),
-									(r"/webtools2*$", webTools2Handler)
+	httpHandlers = [(r"%s/login" %BASEURL, ForceTSLHandler),
+									(r"%s/logout" %BASEURL, LogoutHandler),
+									(r"%s/version" %BASEURL, ForceTSLHandler),
+									(r'%s/' %BASEURL, ForceTSLHandler),
+									(r'%s/index.html' %BASEURL, ForceTSLHandler),
+									(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),
+									(r'%s/webtools2*$' %BASEURL, webTools2Handler)
 ]
 else:
 	httpHandlers = handlers
@@ -472,8 +472,9 @@ httpsHandlers = handlers
 def start_tornado():
 	myCookie = Hash.MD5(Dict['SharedSecret'] + NAME)
 
+	login_url = BASEURL + '/login'
 	settings = {"cookie_secret": "__" + myCookie + "__",
-							"login_url": "/login"}
+							"login_url": login_url}
 
 	try:
 
