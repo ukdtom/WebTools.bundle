@@ -19,7 +19,7 @@ from tornado.escape import json_encode, xhtml_escape
 
 
 import threading
-import os, sys
+import os, sys, time
 
 import apiv3
 
@@ -286,6 +286,27 @@ class versionHandler(RequestHandler):
 		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
 		self.write(webTools().getVersion())
 
+class imageHandler(RequestHandler):
+#	@authenticated
+	def get(self, **params):
+		# Get name of image
+		trash, image = self.request.uri.rsplit('/',1)
+		if Data.Exists(image):
+			# Get file extention
+			trash, extension = os.path.splitext(image)
+			# Set content-type in header
+			contenttype = 'image/' + extension[1:]
+			self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+			self.set_header('Content-type',  contenttype)
+			try:
+				self.write(Data.Load(image))
+				self.finish()
+			except Exception, e:
+				Log.Exception('Exception in imageHandler was: %s' %(str(e)))
+		else:
+			self.set_status(404)
+			self.finish()
+
 class webTools2Handler(BaseHandler):	
 	# Disable auth when debug
 	def prepare(self):
@@ -445,11 +466,12 @@ class webTools2Handler(BaseHandler):
 handlers = [(r"%s/login" %BASEURL, LoginHandler),
 						(r"%s/logout" %BASEURL, LogoutHandler),
 						(r"%s/version" %BASEURL, versionHandler),
-						(r'%s/' %BASEURL, idxHandler),
-						(r'%s/index.html' %BASEURL, idxHandler),
-						(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),
-						(r'%s/webtools2*$' %BASEURL, webTools2Handler),
-						(r'%s/(.*)' %BASEURL, MyStaticFileHandler, {'path': getActualHTTPPath()})
+						(r"%s/uas/Resources.*$" %BASEURL, imageHandler),																	# Grap images from Data framework
+						(r'%s/' %BASEURL, idxHandler),																										# Index
+						(r'%s/index.html' %BASEURL, idxHandler),																					# Index
+						(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),																					# API V3
+						(r'%s/webtools2*$' %BASEURL, webTools2Handler),																		# API V2
+						(r'%s/(.*)' %BASEURL, MyStaticFileHandler, {'path': getActualHTTPPath()})					# Static files
 ]
 
 if Prefs['Force_SSL']:
@@ -458,6 +480,7 @@ if Prefs['Force_SSL']:
 									(r"%s/version" %BASEURL, ForceTSLHandler),
 									(r'%s/' %BASEURL, ForceTSLHandler),
 									(r'%s/index.html' %BASEURL, ForceTSLHandler),
+									(r"%s/uas/Resources.*$" %BASEURL, imageHandler),														# Grap images from Data framework
 									(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),
 									(r'%s/webtools2*$' %BASEURL, webTools2Handler)
 ]
@@ -509,6 +532,7 @@ def startWeb(secretKey):
 	# Set the secret key for use by other calls in the future maybe?
 	SECRETKEY = secretKey
 	stopWeb()
+	time.sleep(3)
 	Log.Debug('tornado is handling the following URI: %s' %(handlers))
 	t = threading.Thread(target=start_tornado)
 	t.start()
