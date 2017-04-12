@@ -13,7 +13,7 @@ $(function () {
             global: false,
             type: 'GET',
             dataType: 'JSON',
-            url: '/version',
+            url: 'version',
             success: function (data) {
                 version = data.version;
                 $("#webtoolsVersion").html('WebTools - v' + version);
@@ -69,7 +69,7 @@ $(function () {
             cache: false,
             global: false,
             type: 'POST',
-            url: '/login',
+            url: 'login',
             data: {
                 user: user,
                 pwd: pwd
@@ -85,7 +85,7 @@ $(function () {
                     },
                     type: 'GET',
                     datatype: 'JSON',
-                    url: '/webtools2',
+                    url: 'webtools2',
                     success: function (data) {
                         data = JSON.parse(data);
                         downloadUrl = data.zipball_url;
