@@ -10,7 +10,8 @@
 
     this.basePath = "/";
     try {
-        this.basePath = "/" + $(location).prop('pathname').split('/')[1] + "/";
+        var locations = $(location).prop('pathname').split('/');
+        if (locations[2]) basePath = "/" + locations[1] + "/";
     }
     catch (err) {
         this.basePath = "/";

@@ -8,7 +8,8 @@ $(function () {
     var wtCssTheme = "wt_csstheme";
     var basePath = "/";
     try {
-        basePath = "/" + $(location).prop('pathname').split('/')[1] + "/";
+        var locations = $(location).prop('pathname').split('/');
+        if(locations[2]) basePath = "/" + locations[1] + "/";
     }
     catch (err) {
         basePath = "/";
