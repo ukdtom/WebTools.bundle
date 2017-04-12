@@ -8,8 +8,8 @@
     this.logsLoading = false;
     this.themeLoading = false;
 
-    this.apiUrl = "/webtools2";
-    this.apiV3Url = "/api/v3";
+    this.apiUrl = "webtools2";
+    this.apiV3Url = "api/v3";
 
     this.optionOnlyMultiple = "options_only_multiple";
     this.optionHideLocal = "options_hide_local";
