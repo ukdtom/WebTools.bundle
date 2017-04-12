@@ -35,7 +35,10 @@ class plexTV(object):
 			Log.Info('Authenticated towards plex.tv with success')				
 			return token
 		except Ex.HTTPError, e:
-			Log.Exception('Login error: ' + str(e))
+			Log.Exception('Login error: %s' %(str(e)))
+			return None
+		except Exception, e:
+			Log.Exception('Login error: %s' %(str(e)))
 			return None
 		
 	''' Is user the owner of the server?
@@ -49,11 +52,9 @@ class plexTV(object):
 	def isServerOwner(self, token):
 		Log.Debug('Checking server for ownership')
 		try:
-			# Ident of this server
-			PMSId = XML.ElementFromURL('http://127.0.0.1:32400/identity').get('machineIdentifier')
 			# Grap Resource list from plex.tv
 			self.myHeader['X-Plex-Token'] = token
-			elements = XML.ElementFromURL(self.resourceURL, headers=self.myHeader).xpath('//Device[@clientIdentifier="' + PMSId + '"]/@owned')
+			elements = XML.ElementFromURL(self.resourceURL, headers=self.myHeader).xpath('//Device[@clientIdentifier="' + get_thisPMSIdentity() + '"]/@owned')
 			if len(elements) < 1:
 				Log.Debug('Server %s was not found @ plex.tv' %(PMSId))
 				return 1
@@ -75,6 +76,9 @@ class plexTV(object):
 	''' Will return true, if PMS is authenticated towards plex.tv '''
 	def auth2myPlex(self):
 		return 'ok' == XML.ElementFromURL('http://127.0.0.1:32400').get('myPlexSigninState')
+
+
+
 	
 
 

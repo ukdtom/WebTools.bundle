@@ -38,8 +38,7 @@ class gitV3(object):
 			Log.Debug("Plugin directory is: %s" %(self.PLUGIN_DIR))
 			# See a few times, that the json file was missing, so here we check, and if not then force a download
 			try:
-				jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
-				if not os.path.isfile(jsonFileName):
+				if not Data.Exists('plugin_details.json'):
 					Log.Critical('UAS dir was missing the json, so doing a forced download here')
 					self.UPDATEUASCACHE(None, cliForce = True)
 			except Exception, e:
@@ -192,13 +191,7 @@ class gitV3(object):
 			# Get the dict with the installed bundles, and init it if it doesn't exists
 			if not 'installed' in Dict:
 				Dict['installed'] = {}
-			# Start by loading the UAS Cache file list
-			jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
-			json_file = io.open(jsonFileName, "rb")
-			response = json_file.read()
-			json_file.close()
-			# Convert to a JSON Object
-			gits = JSON.ObjectFromString(str(response))
+			gits = Data.LoadObject('plugin_details.json')
 			bNotInUAS = True
 			# Walk the one by one, so we can handle upper/lower case
 			for git in gits:
@@ -504,11 +497,7 @@ class gitV3(object):
 		def getUASCacheList():
 			try:
 				Log.Info('Migrating old bundles into WT')
-				jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
-				json_file = io.open(jsonFileName, "rb")
-				response = json_file.read()
-				json_file.close()	
-				gits = JSON.ObjectFromString(str(response))
+				gits = Data.LoadObject('plugin_details.json')
 				# Walk it, and reformat to desired output
 				results = {}
 				for git in gits:
@@ -671,28 +660,6 @@ class gitV3(object):
 			masterUpdate = datetime.datetime.strptime(self.GETLASTUPDATETIME(req, UAS=True, url=UAS_URL), '%Y-%m-%d %H:%M:%S')
 			# Do we need to update the cache, and add 2 min. tolerance here?
 			if ((masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120) or Force):
-				# We need to update UAS Cache
-				# Target Directory
-				targetDir = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas')
-				# Force creation, if missing
-				try:
-					Core.storage.ensure_dirs(targetDir)
-				except Exception, e:
-					errMsg = str(e)
-					if 'Errno 13' in errMsg:
-						errMsg = errMsg + '\n\nLooks like permissions are not correct, cuz we where denied access\n'
-						errMsg = errMsg + 'to create a needed directory.\n\n'
-						errMsg = errMsg + 'If running on Linux, you might have to issue:\n'
-						errMsg = errMsg + 'sudo chown plex:plex ./WebTools.bundle -R\n'
-						errMsg = errMsg + 'And if on Synology, the command is:\n'
-						errMsg = errMsg + 'sudo chown plex:users ./WebTools.bundle -R\n'
-					Log.Exception('Exception in updateUASCache ' + errMsg)
-					if not cliForce: 
-						req.clear()
-						req.set_status(500)
-						req.finish('Exception in updateUASCache: ' + errMsg)
-					else:
-						return
 				# Grap file from Github
 				try:
 					zipfile = Archive.ZipFromURL(UAS_URL+ '/archive/' + UAS_BRANCH + '.zip')							
@@ -707,26 +674,20 @@ class gitV3(object):
 					# Walk contents of the zip, and extract as needed
 					data = zipfile[filename]
 					if not str(filename).endswith('/'):
-						# Pure file, so save it				
-						path = self.getSavePath(targetDir, filename)
-						Log.Debug('Extracting file' + path)
+						# Pure file, so save it		
+						filename = os.path.basename(filename)		
+						Log.Debug('Extracting file: ' + filename)
 						try:
-							Core.storage.save(path, data)
+							if filename == 'plugin_details.json':
+								jsonObj = JSON.ObjectFromString(data, encoding='utf8')
+								Data.SaveObject(filename, jsonObj)
+							elif filename in ['.gitignore', 'README.md']:
+								continue
+							else:
+								Data.Save(filename, data)
 						except Exception, e:
 							bError = True
 							Log.Exception("Unexpected Error " + str(e))
-					else:
-						# We got a directory here
-						Log.Debug(filename.split('/')[-2])
-						if not str(filename.split('/')[-2]).startswith('.'):
-							# Not hidden, so let's create it
-							path = self.getSavePath(targetDir, filename)
-							Log.Debug('Extracting folder ' + path)
-							try:
-								Core.storage.ensure_dirs(path)
-							except Exception, e:
-								bError = True
-								Log.Exception("Unexpected Error " + str(e))
 				# Update the AllBundleInfo as well
 				pmsV3.updateAllBundleInfoFromUAS()
 				pmsV3.updateUASTypesCounters()
@@ -814,11 +775,7 @@ class gitV3(object):
 	def GETLISTOFBUNDLES(self, req, *args):
 		Log.Debug('Starting getListofBundles')
 		try:
-			jsonFileName = Core.storage.join_path(self.PLUGIN_DIR, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
-			json_file = io.open(jsonFileName, "rb")
-			response = json_file.read()
-			json_file.close()	
-			gits = JSON.ObjectFromString(str(response))
+			gits = Data.LoadObject('plugin_details.json')
 			# Walk it, and reformat to desired output
 			results = {}
 			for git in gits:
@@ -831,8 +788,8 @@ class gitV3(object):
 			req.set_status(200)
 			req.set_header('Content-Type', 'application/json; charset=utf-8')
 			req.finish(json.dumps(results))
-		except:
-			Log.Critical('Fatal error happened in getListofBundles')
+		except Exception, e:
+			Log.Exception('Fatal error happened in getListofBundles was %s' %(str(e)))
 			req.clear()
 			req.set_status(500)
 			req.finish('Fatal error happened in getListofBundles')

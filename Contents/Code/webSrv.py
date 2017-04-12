@@ -19,7 +19,7 @@ from tornado.escape import json_encode, xhtml_escape
 
 
 import threading
-import os, sys
+import os, sys, time
 
 import apiv3
 
@@ -114,16 +114,19 @@ class ForceTSLHandler(RequestHandler):
 		''' This is sadly up hill, due to the old version of Tornado used :-( '''
 		# Grap the host requested
 		host, port = self.request.headers['Host'].split(':')
-		newUrl = 'https://' + host + ':' + Prefs['WEB_Port_https'] + '/login'
+		newUrl = 'https://' + host + ':' + Prefs['WEB_Port_https'] + BASEURL + '/login'
 		self.redirect(newUrl, permanent=True)
 
 ''' If user didn't enter the full path '''
 class idxHandler(BaseHandler):
 	@authenticated
 	def get(self):
+
+		print 'Ged idx'
+
 		Log.Info('Returning: ' + Core.storage.join_path(getActualHTTPPath(), 'index.html'))
 		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-		self.render(Core.storage.join_path(getActualHTTPPath(), 'index.html'))
+		self.render(Core.storage.join_path(getActualHTTPPath(), '%s/index.html' %BASEURL))
 
 ''' Logout handler '''
 class LogoutHandler(BaseHandler):
@@ -131,7 +134,7 @@ class LogoutHandler(BaseHandler):
 	def get(self):
 		Log.Info('Clearing Auth Cookie')
 		self.clear_cookie(NAME)
-		self.redirect('/')
+		self.redirect('%s/' %BASEURL)
 
 class LoginHandler(BaseHandler):
 	def get(self):
@@ -169,7 +172,7 @@ class LoginHandler(BaseHandler):
 			if not WT_AUTH:
 				self.allow()
 				Log.Info('All is good, we are authenticated')
-				self.redirect('/')
+				self.redirect('%s/' %BASEURL)
 			else:
 				# Let's start by checking if the server is online
 				if plexTV().auth2myPlex():
@@ -189,7 +192,7 @@ class LoginHandler(BaseHandler):
 							# All is good
 							self.allow()
 							Log.Info('All is good, we are authenticated')
-							self.redirect('/')
+							self.redirect('%s/' %BASEURL)
 						elif retVal == 1:
 							# Server not found
 							Log.Info('Server not found on plex.tv')
@@ -233,7 +236,7 @@ class LoginHandler(BaseHandler):
 						# All is good
 						self.allow()
 						Log.Info('All is good, we are authenticated')
-						self.redirect('/')
+						self.redirect('%s/' %BASEURL)
 					elif retVal == 1:
 						# Server not found
 						Log.Info('Server not found on plex.tv')
@@ -267,11 +270,11 @@ class LoginHandler(BaseHandler):
 					Dict['pwdset'] = True
 					Dict.Save
 					self.allow()
-					self.redirect('/')
+					self.redirect('%s/' %BASEURL)
 				elif Dict['password'] == pwd:
 					self.allow()
 					Log.Info('Local password accepted')
-					self.redirect('/')
+					self.redirect('%s/' %BASEURL)
 				elif Dict['password'] != pwd:
 					Log.Critical('Either local login failed, or PMS lost connection to plex.tv')
 					self.clear()
@@ -285,6 +288,27 @@ class versionHandler(RequestHandler):
 		self.set_header('Content-Type', 'application/json; charset=utf-8')
 		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
 		self.write(webTools().getVersion())
+
+class imageHandler(RequestHandler):
+#	@authenticated
+	def get(self, **params):
+		# Get name of image
+		trash, image = self.request.uri.rsplit('/',1)
+		if Data.Exists(image):
+			# Get file extention
+			trash, extension = os.path.splitext(image)
+			# Set content-type in header
+			contenttype = 'image/' + extension[1:]
+			self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+			self.set_header('Content-type',  contenttype)
+			try:
+				self.write(Data.Load(image))
+				self.finish()
+			except Exception, e:
+				Log.Exception('Exception in imageHandler was: %s' %(str(e)))
+		else:
+			self.set_status(404)
+			self.finish()
 
 class webTools2Handler(BaseHandler):	
 	# Disable auth when debug
@@ -426,7 +450,7 @@ class webTools2Handler(BaseHandler):
 		if module == 'missing':
 			self.clear()
 			self.set_status(404)
-			self.finish("<html><body>Missing function call</body></html>")
+			self.finish('Missing function call')
 			return
 		else:
 			Log.Debug('Recieved a PUT call for module: ' + module)
@@ -439,17 +463,19 @@ class webTools2Handler(BaseHandler):
 			else:
 				self.clear()
 				self.set_status(412)
-				self.finish("<html><body>Unknown module call</body></html>")
+				self.finish('Unknown module call')
 				return
 
 handlers = [(r"%s/login" %BASEURL, LoginHandler),
 						(r"%s/logout" %BASEURL, LogoutHandler),
 						(r"%s/version" %BASEURL, versionHandler),
-						(r'%s/' %BASEURL, idxHandler),
-						(r'%s/index.html' %BASEURL, idxHandler),
-						(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),
-						(r'%s/webtools2*$' %BASEURL, webTools2Handler),
-						(r'%s/(.*)' %BASEURL, MyStaticFileHandler, {'path': getActualHTTPPath()})
+						(r"%s/uas/Resources.*$" %BASEURL, imageHandler),																	# Grap images from Data framework
+						(r'%s/' %BASEURL, idxHandler),																										# Index
+						(r'%s' %BASEURL, idxHandler),																										# Index
+						(r'%s/index.html' %BASEURL, idxHandler),																					# Index
+						(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),																					# API V3
+						(r'%s/webtools2*$' %BASEURL, webTools2Handler),																		# API V2
+						(r'%s/(.*)' %BASEURL, MyStaticFileHandler, {'path': getActualHTTPPath()})					# Static files
 ]
 
 if Prefs['Force_SSL']:
@@ -458,6 +484,7 @@ if Prefs['Force_SSL']:
 									(r"%s/version" %BASEURL, ForceTSLHandler),
 									(r'%s/' %BASEURL, ForceTSLHandler),
 									(r'%s/index.html' %BASEURL, ForceTSLHandler),
+									(r"%s/uas/Resources.*$" %BASEURL, imageHandler),														# Grap images from Data framework
 									(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),
 									(r'%s/webtools2*$' %BASEURL, webTools2Handler)
 ]
@@ -473,6 +500,10 @@ def start_tornado():
 	myCookie = Hash.MD5(Dict['SharedSecret'] + NAME)
 
 	login_url = BASEURL + '/login'
+
+	print 'Ged1', login_url
+
+
 	settings = {"cookie_secret": "__" + myCookie + "__",
 							"login_url": login_url}
 
@@ -509,6 +540,7 @@ def startWeb(secretKey):
 	# Set the secret key for use by other calls in the future maybe?
 	SECRETKEY = secretKey
 	stopWeb()
+	time.sleep(3)
 	Log.Debug('tornado is handling the following URI: %s' %(handlers))
 	t = threading.Thread(target=start_tornado)
 	t.start()

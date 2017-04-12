@@ -1063,18 +1063,13 @@ def updateAllBundleInfoFromUAS():
 		except Exception, e:
 			Log.Exception('Critical error in updateInstallDict while walking the gits: ' + str(e))
 		return
-
 	try:
 		# start by checking if UAS cache has been populated
-		jsonUAS = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http', 'uas', 'Resources', 'plugin_details.json')
-		if os.path.exists(jsonUAS):
+		if Data.Exists('plugin_details.json'):
 			Log.Debug('UAS was present')
 			# Let's open it, and walk the gits one by one
-			json_file = io.open(jsonUAS, "rb")
-			response = json_file.read()
-			json_file.close()
 			# Convert to a JSON Object
-			gits = JSON.ObjectFromString(str(response))
+			gits = Data.LoadObject('plugin_details.json')
 			try:
 				for git in gits:
 					# Rearrange data
