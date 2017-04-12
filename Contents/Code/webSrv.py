@@ -121,9 +121,6 @@ class ForceTSLHandler(RequestHandler):
 class idxHandler(BaseHandler):
 	@authenticated
 	def get(self):
-
-		print 'Ged idx'
-
 		Log.Info('Returning: ' + Core.storage.join_path(getActualHTTPPath(), 'index.html'))
 		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
 		self.render(Core.storage.join_path(getActualHTTPPath(), '%s/index.html' %BASEURL))
@@ -498,17 +495,10 @@ httpsHandlers = handlers
 ''' Start the actual instance of tornado '''
 def start_tornado():
 	myCookie = Hash.MD5(Dict['SharedSecret'] + NAME)
-
 	login_url = BASEURL + '/login'
-
-	print 'Ged1', login_url
-
-
 	settings = {"cookie_secret": "__" + myCookie + "__",
 							"login_url": login_url}
-
 	try:
-
 		application = Application(httpHandlers, **settings)
 		applicationTLS = Application(httpsHandlers, **settings)
 		http_server = HTTPServer(application)
