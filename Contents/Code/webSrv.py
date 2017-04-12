@@ -123,7 +123,7 @@ class idxHandler(BaseHandler):
 	def get(self):
 		Log.Info('Returning: ' + Core.storage.join_path(getActualHTTPPath(), 'index.html'))
 		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-		self.render(Core.storage.join_path(getActualHTTPPath(), '%s/index.html' %BASEURL))
+		self.render(Core.storage.join_path(getActualHTTPPath(), 'index.html'))
 
 ''' Logout handler '''
 class LogoutHandler(BaseHandler):
@@ -468,7 +468,7 @@ handlers = [(r"%s/login" %BASEURL, LoginHandler),
 						(r"%s/version" %BASEURL, versionHandler),
 						(r"%s/uas/Resources.*$" %BASEURL, imageHandler),																	# Grap images from Data framework
 						(r'%s/' %BASEURL, idxHandler),																										# Index
-						(r'%s' %BASEURL, idxHandler),																										# Index
+						(r'%s' %BASEURL, idxHandler),																											# Index
 						(r'%s/index.html' %BASEURL, idxHandler),																					# Index
 						(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),																					# API V3
 						(r'%s/webtools2*$' %BASEURL, webTools2Handler),																		# API V2
