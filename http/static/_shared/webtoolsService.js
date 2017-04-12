@@ -43,7 +43,7 @@
     this.loadWebToolsVersion = function (callback) {
         webtoolsModel.globalLoading = true;
 
-        var url = "/version";
+        var url = "version";
         $http({
             method: "GET",
             url: url,

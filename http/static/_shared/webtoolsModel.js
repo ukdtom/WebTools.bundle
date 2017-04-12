@@ -8,6 +8,14 @@
     this.logsLoading = false;
     this.themeLoading = false;
 
+    this.basePath = "/";
+    try {
+        this.basePath = "/" + $(location).prop('pathname').split('/')[1] + "/";
+    }
+    catch (err) {
+        this.basePath = "/";
+    }
+
     this.apiUrl = "webtools2";
     this.apiV3Url = "api/v3";
 

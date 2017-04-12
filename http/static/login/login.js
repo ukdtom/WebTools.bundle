@@ -6,6 +6,13 @@ $(function () {
     var version = 0;
     var downloadUrl = "";
     var wtCssTheme = "wt_csstheme";
+    var basePath = "/";
+    try {
+        basePath = "/" + $(location).prop('pathname').split('/')[1] + "/";
+    }
+    catch (err) {
+        basePath = "/";
+    }
 
     var init = function () {
         $.ajax({
@@ -90,7 +97,7 @@ $(function () {
                         data = JSON.parse(data);
                         downloadUrl = data.zipball_url;
                         if (!data.published_at) {
-                            document.location.href = '/'; //No new version available
+                            document.location.href = basePath; //No new version available
                         } else if (anyNewVersion(version, data.tag_name)) {
                             $("#info_LocalVersion").html(version);
                             $("#info_Version").html(data.published_at);
@@ -100,12 +107,12 @@ $(function () {
                             $("#main").hide();
                             $("#warning").show();
                         } else {
-                            document.location.href = '/'; //On latest or newer version
+                            document.location.href = basePath; //On latest or newer version
                         }
                         webToolsLoadingEle.hide();
                     },
                     error: function (errorResp) {
-                        document.location.href = '/';
+                        document.location.href = basePath;
                         webToolsLoadingEle.hide();
                     }
                 });
