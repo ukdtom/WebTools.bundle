@@ -121,6 +121,9 @@ class ForceTSLHandler(RequestHandler):
 class idxHandler(BaseHandler):
 	@authenticated
 	def get(self):
+		# If hitting root, but without an ending slash, redirect to that
+		if self.request.uri == BASEURL:
+			self.redirect('%s/' %BASEURL)
 		Log.Info('Returning: ' + Core.storage.join_path(getActualHTTPPath(), 'index.html'))
 		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
 		self.render(Core.storage.join_path(getActualHTTPPath(), 'index.html'))
