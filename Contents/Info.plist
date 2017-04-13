@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.plexapp.plugins.WebToolsNext</string>
+	<string>com.plexapp.plugins.WebTools</string>
 	<key>PlexClientPlatforms</key>
 	<string>*</string>
 	<key>PlexFrameworkVersion</key>
