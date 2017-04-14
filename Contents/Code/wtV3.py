@@ -12,8 +12,9 @@ import glob
 import json
 import shutil, sys
 from consts import BUNDLEDIRNAME, NAME
+from plextvhelper import plexTV
 
-GET = ['GETCSS']
+GET = ['GETCSS', 'GETUSERS']
 PUT = ['RESET']
 POST = ['']
 DELETE = ['']
@@ -87,6 +88,24 @@ class wtV3(object):
 				Log.Exception('Exception in process of: ' + str(e))
 
 	#********** Functions below ******************
+
+	# Get list of users
+	@classmethod
+	def GETUSERS(self, req, *args):
+		try:
+			users = plexTV().getUserList()
+			req.clear()
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(users))
+
+
+		except Exception, e:
+			Log.Exception('Fatal error happened in wt.getUsers: ' + str(e))
+			req.clear()
+			req.set_status(500)			
+			req.finish('Fatal error happened in wt.getUsers: %s' %(str(e)))
+
 
 	# Reset WT to factory settings
 	@classmethod

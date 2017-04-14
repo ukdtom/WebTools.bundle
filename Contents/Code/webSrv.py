@@ -88,15 +88,18 @@ class webTools(object):
 
 	''' Return version number, and other info '''
 	def getVersion(self):
-		scheme = Dict['wt_csstheme']
-		if scheme == None:
-			scheme = ''
-		retVal = {'version': VERSION, 
-						'PasswordSet': Dict['pwdset'],
-						'PlexTVOnline': plexTV().auth2myPlex(),
-						'wt_csstheme': scheme}
-		Log.Info('Version requested, returning ' + str(retVal))
-		return retVal
+		try:
+			scheme = Dict['wt_csstheme']
+			if scheme == None:
+				scheme = ''
+			retVal = {'version': VERSION, 
+							'PasswordSet': Dict['pwdset'],
+							'PlexTVOnline': plexTV().auth2myPlex(),
+							'wt_csstheme': scheme}
+			Log.Info('Version requested, returning ' + str(retVal))
+			return retVal
+		except Exception, e:
+			Log.Exception('Exception in getVersion: %s' %(str(e)))
 
 #**************** Handler Classes for Rest **********************
 class MyStaticFileHandler(StaticFileHandler):
@@ -219,48 +222,55 @@ class LoginHandler(BaseHandler):
 						return self
 		else:
 			# Let's start by checking if the server is online
-			if plexTV().auth2myPlex():
-				token = ''
-				try:
-					# Authenticate
-					login_token = plexTV().login(user, pwd)
-					if login_token == None:	
-						Log.Error('Bad credentials detected, denying access')
+			try:
+				if plexTV().auth2myPlex():
+					token = ''
+					try:
+						# Authenticate
+						login_token = plexTV().login(user, pwd)
+						if login_token == None:	
+							Log.Error('Bad credentials detected, denying access')
+							self.clear()
+							self.set_status(401)
+							self.finish('Authentication error')
+							return self
+						retVal = plexTV().isServerOwner(login_token)
 						self.clear()
-						self.set_status(401)
-						self.finish('Authentication error')
+						if retVal == 0:
+							# All is good
+							self.allow()
+							Log.Info('All is good, we are authenticated')
+							self.redirect('%s/' %BASEURL)
+						elif retVal == 1:
+							# Server not found
+							Log.Info('Server not found on plex.tv')
+							self.set_status(404)
+						elif retVal == 2:
+							# Not the owner
+							Log.Info('User is not the server owner')
+							self.set_status(403)
+						else:
+							# Unknown error
+							Log.Critical('Unknown error, when authenticating')
+							self.set_status(403)
+					except Ex.HTTPError, e:
+						Log.Exception('Exception in Login: ' + str(e))
+						self.clear()
+						self.set_status(e.code)
+						self.finish(str(e))
 						return self
-					retVal = plexTV().isServerOwner(login_token)
-					self.clear()
-					if retVal == 0:
-						# All is good
-						self.allow()
-						Log.Info('All is good, we are authenticated')
-						self.redirect('%s/' %BASEURL)
-					elif retVal == 1:
-						# Server not found
-						Log.Info('Server not found on plex.tv')
-						self.set_status(404)
-					elif retVal == 2:
-						# Not the owner
-						Log.Info('User is not the server owner')
-						self.set_status(403)
-					else:
-						# Unknown error
-						Log.Critical('Unknown error, when authenticating')
-						self.set_status(403)
-				except Ex.HTTPError, e:
-					Log.Exception('Exception in Login: ' + str(e))
-					self.clear()
-					self.set_status(e.code)
-					self.finish(str(e))
-					return self
-				except Exception, e:
-					Log.Exception('Exception in Login: ' + str(e))
-					self.clear()
-					self.set_status(e.code)
-					self.finish(str(e))
-					return self
+					except Exception, e:
+						Log.Exception('Exception in Login: ' + str(e))
+						self.clear()
+						self.set_status(e.code)
+						self.finish(str(e))
+						return self
+			except Exception, e:
+				Log.Exception('Exception in Login: ' + str(e))
+				self.clear()
+				self.set_status(e.code)
+				self.finish(str(e))
+				return self
 			else:
 				Log.Info('Server is not online according to plex.tv')
 				# Server is offline
