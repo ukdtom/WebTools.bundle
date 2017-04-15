@@ -99,9 +99,10 @@ class plexTV(object):
 				for server in servers:
 					if server.get('machineIdentifier') == self.id:
 						if len(sharedUsers.xpath('//SharedServer[@userID=' + user.get('id') + ']/@accessToken')) > 0:
-							usr = user.get('title')
+#							usr = user.get('title')
+							usr = user.get('id')
 							usrList[usr] = {}
-							usrList[usr]['id'] = user.get('id')
+							usrList[usr]['title'] = user.get('title')
 							usrList[usr]['recommendationsPlaylistId'] = user.get('recommendationsPlaylistId')
 							usrList[usr]['thumb'] = user.get('thumb')
 							usrList[usr]['protected'] = user.get('protected')

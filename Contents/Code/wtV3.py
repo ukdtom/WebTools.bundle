@@ -95,11 +95,12 @@ class wtV3(object):
 		try:
 			users = plexTV().getUserList()
 			req.clear()
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(users))
-
-
+			if users == None:
+				req.set_status(401)
+			else:
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(users))
 		except Exception, e:
 			Log.Exception('Fatal error happened in wt.getUsers: ' + str(e))
 			req.clear()
