@@ -10,22 +10,87 @@ import time
 import json
 from misc import misc
 from plextvhelper import plexTV
-#TODO: Remove when Plex framework allows token in the header
+#TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
 import urllib2
-from xml.etree import ElementTree
 #TODO End
 
 
 GET = ['LIST', 'DOWNLOAD']
 PUT = []
 POST = []
-DELETE = []
+DELETE = ['DELETE']
 
 class playlistsV3(object):
 	# Defaults used by the rest of the class
 	@classmethod
 	def init(self):
 		self.getListsURL = misc.GetLoopBack() + '/playlists/all'	
+
+	''' This metode will delete a playlist. accepts a user parameter '''
+	@classmethod
+	def DELETE(self, req, *args):
+		try:
+			user = None
+			if args != None:
+				# We got additional arguments
+				if len(args) > 0:
+					# Get them in lower case
+					arguments = [item.lower() for item in list(args)[0]]
+					if 'user' in arguments:
+						# Get key of the user
+						user = arguments[arguments.index('user') +1]
+				# So now user is either none (Owner) or a keyId of a user
+				# Now lets get the key of the playlist
+				if 'key' in arguments:
+					# Get key of the user
+					key = arguments[arguments.index('key') +1]
+					url = misc.GetLoopBack() + '/playlists/' + key
+				else:
+					Log.Error('Missing key of playlist')
+					req.clear()
+					req.set_status(412)			
+					req.finish('Missing key of playlist')
+			if user == None:
+				try:
+					# Delete playlist from the owner					
+					Log.Info('Deleting playlist with ID: %s' %key)		
+					HTTP.Request(url, cacheTime=0, immediate=True, method="DELETE")
+				except Ex.HTTPError, e:
+					Log.Exception('HTTP exception  when deleting a playlist for the owner was: %s' %(e))
+					req.clear()
+					req.set_status(e.code)			
+					req.finish(str(e))
+				except Exception, e:
+					Log.Exception('Exception happened when deleting a playlist for the owner was: %s' %(str(e)))
+					req.clear()
+					req.set_status(500)			
+					req.finish('Exception happened when deleting a playlist for the owner was: %s' %(str(e)))
+			else:
+				# We need to logon as a user in order to nuke the playlist
+				try:
+					# Get user list, among with their access tokens
+					users = plexTV().getUserList()	
+					#TODO Change to native framework call, when Plex allows token in header
+					opener = urllib2.build_opener(urllib2.HTTPHandler)
+					request = urllib2.Request(url)
+					request.add_header('X-Plex-Token', users[user]['accessToken'])
+					request.get_method = lambda: 'DELETE'
+					url = opener.open(request)
+				except Ex.HTTPError, e:
+					Log.Exception('HTTP exception  when deleting a playlist for the owner was: %s' %(e))
+					req.clear()
+					req.set_status(e.code)			
+					req.finish(str(e))
+				except Exception, e:
+					Log.Exception('Exception happened when deleting a playlist for the user was: %s' %(str(e)))
+					req.clear()
+					req.set_status(500)			
+					req.finish('Exception happened when deleting a playlist for the user was: %s' %(str(e)))
+		except Exception, e:
+			Log.Exception('Fatal error happened in playlists.delete: ' + str(e))
+			req.clear()
+			req.set_status(500)			
+			req.finish('Fatal error happened in playlists.delete: %s' %(str(e)))
 
 	''' This metode will return a list of playlists. accepts a user parameter '''
 	@classmethod
@@ -40,8 +105,6 @@ class playlistsV3(object):
 					if 'user' in arguments:
 						# Get key of the user
 						user = arguments[arguments.index('user') +1]
-					else:
-						Log.Info('Invalid params for playlists.list ignored')
 			# So now user is either none or a keyId
 			if user == None:
 				playlists = XML.ElementFromURL(self.getListsURL)
