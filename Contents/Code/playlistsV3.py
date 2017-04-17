@@ -9,9 +9,13 @@
 import time
 import json
 from misc import misc
+import datetime
 from plextvhelper import plexTV
+import re
 #TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
 import urllib2
+from xml.etree import ElementTree
+#import requests
 #TODO End
 
 
@@ -24,7 +28,132 @@ class playlistsV3(object):
 	# Defaults used by the rest of the class
 	@classmethod
 	def init(self):
-		self.getListsURL = misc.GetLoopBack() + '/playlists/all'	
+		self.getListsURL = misc.GetLoopBack() + '/playlists/all'
+
+	''' This metode will delete a playlist. accepts a user parameter '''
+	@classmethod
+	def DOWNLOAD(self, req, *args):
+		try:
+			user = None
+			if args != None:
+				# We got additional arguments
+				if len(args) > 0:
+					# Get them in lower case
+					arguments = [item.lower() for item in list(args)[0]]
+					if 'user' in arguments:
+						# Get key of the user
+						user = arguments[arguments.index('user') +1]
+				# So now user is either none (Owner) or a keyId of a user
+				# Now lets get the key of the playlist
+				if 'key' in arguments:
+					# Get key of the user
+					key = arguments[arguments.index('key') +1]
+					url = misc.GetLoopBack() + '/playlists/' + key + '/items'
+				else:
+					Log.Error('Missing key of playlist')
+					req.clear()
+					req.set_status(412)			
+					req.finish('Missing key of playlist')
+				try:
+					Log.Info('downloading playlist with ID: %s' %key)
+					if user == None:
+						# Get playlist from the owner					
+						playlist = XML.ElementFromURL(url)
+					else:
+						# Get Auth token for user
+						try:
+							# Get user list, among with their access tokens
+							users = plexTV().getUserList()	
+							#TODO Change to native framework call, when Plex allows token in header
+							opener = urllib2.build_opener(urllib2.HTTPHandler)
+							request = urllib2.Request(url)
+							request.add_header('X-Plex-Token', users[user]['accessToken'])
+							response = opener.open(request).read()
+							playlist = XML.ElementFromString(response)
+						except Ex.HTTPError, e:
+							Log.Exception('HTTP exception  when downloading a playlist for the owner was: %s' %(e))
+							req.clear()
+							req.set_status(e.code)			
+							req.finish(str(e))
+						except Exception, e:
+							Log.Exception('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
+							req.clear()
+							req.set_status(500)			
+							req.finish('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
+					# Get title of playlist
+					title = playlist.get('title')
+					playListType = playlist.get('playlistType')
+					# Replace invalid caracters for a filename with underscore
+					fileName = re.sub('[\/[:#*?"<>|]', '_', title).strip() + '.m3u8'
+					# Prep the download http headers
+					req.set_header ('Content-Disposition', 'attachment; filename=' + fileName)
+					req.set_header('Cache-Control', 'no-cache')
+					req.set_header('Pragma', 'no-cache')
+					req.set_header('Content-Type', 'application/text/plain')
+					#start writing
+					req.write(unicode('#EXTM3U') + '\n')
+					req.write(unicode('#Written by WebTools for Plex') + '\n')
+					req.write(unicode('#Playlist name: ' + title) + '\n')
+					req.write(unicode('#Playlist type: ' + playListType) + '\n')
+					# Lets grap the individual items
+					for item in playlist:
+						req.write(unicode('#{"Id":' + item.get('ratingKey') + ', "ListId":' + item.get('playlistItemID') + '}\n'))
+						row = '#EXTINF:'
+						# Get duration
+						try:
+							duration = int(item.get('duration'))/1000
+						except:
+							duration = -1
+							pass
+						row = row + str(duration) + ','
+						# Audio List
+						if playListType == 'audio':
+							try:
+								if item.get('originalTitle') == None:
+									row = row + item.get('grandparentTitle').replace(' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
+								else:
+									row = row + item.get('originalTitle').replace(' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
+								
+							except Exception, e:
+								Log.Exception('Exception digesting an audio entry was %s' %(str(e)))
+								pass
+						# Video
+						elif playListType == 'video':
+							try:
+								entryType =  item.get('type')
+								if entryType == 'movie':
+									# Movie
+									row = row + item.get('studio') + ' - ' + item.get('title')
+								else:
+									# Show
+									row = row + item.get('grandparentTitle') + ' - ' + item.get('title')
+							except Exception, e:
+								Log.Exception('Exception happened when digesting the line for Playlist was %s' %(str(e)))
+								pass
+						# Pictures
+						else:
+							row = row + item.get('title').replace(' - ', ' ')
+						# Add file path
+						row = row + '\n' + item.xpath('Media/Part/@file')[0]
+						req.write(unicode(row) + '\n')
+					req.set_status(200)
+					req.finish()
+				except Ex.HTTPError, e:
+					Log.Exception('HTTP exception  when downloading a playlist for the owner was: %s' %(e))
+					req.clear()
+					req.set_status(e.code)			
+					req.finish(str(e))
+				except Exception, e:
+					Log.Exception('Exception happened when downloading a playlist for the owner was: %s' %(str(e)))
+					req.clear()
+					req.set_status(500)			
+					req.finish('Exception happened when downloading a playlist for the owner was: %s' %(str(e)))
+		except Exception, e:
+			Log.Exception('Fatal error happened in playlists.download: ' + str(e))
+			req.clear()
+			req.set_status(500)			
+			req.finish('Fatal error happened in playlists.download: %s' %(str(e)))
+	
 
 	''' This metode will delete a playlist. accepts a user parameter '''
 	@classmethod
