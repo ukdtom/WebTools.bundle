@@ -21,7 +21,7 @@ from xml.etree import ElementTree
 
 GET = ['LIST', 'DOWNLOAD']
 PUT = []
-POST = []
+POST = ['COPY']
 DELETE = ['DELETE']
 
 class playlistsV3(object):
@@ -30,7 +30,146 @@ class playlistsV3(object):
 	def init(self):
 		self.getListsURL = misc.GetLoopBack() + '/playlists/all'
 
-	''' This metode will delete a playlist. accepts a user parameter '''
+	''' This metode will copy a playlist. between users '''
+	@classmethod
+	def COPY(self, req, *args):
+		users = None
+		# Start by getting the key of the PlayList
+		if args != None:
+			# We got additional arguments
+			if len(args) > 0:
+				# Get them in lower case
+				arguments = [item.lower() for item in list(args)[0]]
+			else:
+				Log.Critical('Missing Arguments')
+				req.clear()
+				req.set_status(412)			
+				req.finish('Missing Arguments')
+			# Get playlist Key
+			if 'key' in arguments:
+				# Get key of the user
+				key = arguments[arguments.index('key') +1]
+			else:
+				Log.Error('Missing key of playlist')
+				req.clear()
+				req.set_status(412)			
+				req.finish('Missing key of playlist')
+			# Get UserFrom
+			if 'userfrom' in arguments:
+				# Get the userfrom
+				userfrom = arguments[arguments.index('userfrom') +1]
+			else:
+				# Copy from the Owner
+				userfrom = None
+			# Get UserTo
+			if 'userto' in arguments:
+				# Get the userto
+				userto = arguments[arguments.index('userto') +1]
+			else:
+				Log.Error('Missing target user of playlist')
+				req.clear()
+				req.set_status(412)			
+				req.finish('Missing targetuser of playlist')
+			# Get user list, among with access token
+			users = plexTV().getUserList()
+			# Get the playlist that needs to be copied
+			url = misc.GetLoopBack() + '/playlists/' + key + '/items'
+			if userfrom == None:
+				# Get it from the owner
+				playlist = XML.ElementFromURL(url)
+			else:
+				#We need to logon as specified user
+				try:
+					# Get user playlist
+					#TODO Change to native framework call, when Plex allows token in header
+					opener = urllib2.build_opener(urllib2.HTTPHandler)
+					request = urllib2.Request(url)
+					request.add_header('X-Plex-Token', users[userfrom]['accessToken'])
+					response = opener.open(request).read()
+					playlist = XML.ElementFromString(response)
+				except Ex.HTTPError, e:
+					Log.Exception('HTTP exception  when downloading a playlist for the owner was: %s' %(e))
+					req.clear()
+					req.set_status(e.code)			
+					req.finish(str(e))
+				except Exception, e:
+					Log.Exception('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
+					req.clear()
+					req.set_status(500)			
+					req.finish('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
+			# Now walk the playlist, and do a lookup for the items, in order to grab the librarySectionUUID
+			jsonItems = {}
+			playlistType = playlist.get('playlistType')
+			playlistTitle = playlist.get('title')
+			playlistSmart = (playlist.get('smart') == 1)
+			for item in playlist:
+				itemKey = item.get('ratingKey')
+				xmlUrl = misc.GetLoopBack() + '/library/metadata/' + itemKey
+				UUID = XML.ElementFromURL(misc.GetLoopBack() + '/library/metadata/' + itemKey).get('librarySectionUUID')
+				if UUID in jsonItems:
+					jsonItems[UUID].append(itemKey)
+				else:
+					jsonItems[UUID] = []
+					jsonItems[UUID].append(itemKey)
+			# So we got all the info needed now from the source user, now time for the target user
+			try:
+				#TODO Change to native framework call, when Plex allows token in header
+				urltoPlayLists = misc.GetLoopBack() + '/playlists'
+				opener = urllib2.build_opener(urllib2.HTTPHandler)
+				request = urllib2.Request(urltoPlayLists)
+				request.add_header('X-Plex-Token', users[userto]['accessToken'])
+				response = opener.open(request).read()
+				playlistto = XML.ElementFromString(response)
+			except Ex.HTTPError, e:
+				Log.Exception('HTTP exception when downloading a playlist for the owner was: %s' %(e))
+				req.clear()
+				req.set_status(e.code)			
+				req.finish(str(e))
+			except Exception, e:
+				Log.Exception('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
+				req.clear()
+				req.set_status(500)			
+				req.finish('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
+			# So we got the target users list of playlists, and if the one we need to copy already is there, we delete it
+			for itemto in playlistto:
+				if playlistTitle == itemto.get('title'):
+					keyto = itemto.get('ratingKey')
+					deletePlayLIstforUsr(req, keyto, users[userto]['accessToken'])
+			# Make url for creation of playlist
+			targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + '&title=' + String.Quote(playlistTitle) + '&smart=0&uri=library://'
+			counter = 0
+			for lib in jsonItems:
+				if counter < 1:
+					targetFirstUrl += lib + '/directory//library/metadata/'
+					medias = ','.join(map(str, jsonItems[lib])) 
+					targetFirstUrl += String.Quote(medias)
+					# First url for the post created, so send it, and grab the response
+					try:
+						opener = urllib2.build_opener(urllib2.HTTPHandler)
+						request = urllib2.Request(targetFirstUrl)
+						request.add_header('X-Plex-Token', users[userto]['accessToken'])
+						request.get_method = lambda: 'POST'
+						response = opener.open(request).read()
+						ratingKey = XML.ElementFromString(response).xpath('Playlist/@ratingKey')[0]
+					except Exception, e:
+						Log.Exception('Exception creating first part of playlist was: %s' %(str(e)))
+					counter += 1
+				else:
+					# Remaining as put
+					medias = ','.join(map(str, jsonItems[lib])) 
+					targetSecondUrl = misc.GetLoopBack() + '/playlists/' + ratingKey + '/items?uri=library://' + lib + '/directory//library/metadata/' + String.Quote(medias)
+					opener = urllib2.build_opener(urllib2.HTTPHandler)
+					request = urllib2.Request(targetSecondUrl)
+					request.add_header('X-Plex-Token', users[userto]['accessToken'])
+					request.get_method = lambda: 'PUT'
+					opener.open(request)
+		else:
+			Log.Critical('Missing Arguments')
+			req.clear()
+			req.set_status(412)			
+			req.finish('Missing Arguments')
+
+	''' This metode will download a playlist. accepts a user parameter '''
 	@classmethod
 	def DOWNLOAD(self, req, *args):
 		try:
@@ -198,13 +337,9 @@ class playlistsV3(object):
 				# We need to logon as a user in order to nuke the playlist
 				try:
 					# Get user list, among with their access tokens
-					users = plexTV().getUserList()	
-					#TODO Change to native framework call, when Plex allows token in header
-					opener = urllib2.build_opener(urllib2.HTTPHandler)
-					request = urllib2.Request(url)
-					request.add_header('X-Plex-Token', users[user]['accessToken'])
-					request.get_method = lambda: 'DELETE'
-					url = opener.open(request)
+					users = plexTV().getUserList()
+					# Detele the playlist	
+					deletePlayLIstforUsr(req, key, users[user]['accessToken'])
 				except Ex.HTTPError, e:
 					Log.Exception('HTTP exception  when deleting a playlist for the owner was: %s' %(e))
 					req.clear()
@@ -214,7 +349,7 @@ class playlistsV3(object):
 					Log.Exception('Exception happened when deleting a playlist for the user was: %s' %(str(e)))
 					req.clear()
 					req.set_status(500)			
-					req.finish('Exception happened when deleting a playlist for the user was: %s' %(str(e)))
+					req.finish('Exception happened when deleting a playlist for the user was: %s' %(str(e)))				
 		except Exception, e:
 			Log.Exception('Fatal error happened in playlists.delete: ' + str(e))
 			req.clear()
@@ -323,4 +458,27 @@ class playlistsV3(object):
 					getattr(self, self.function)(req, params)
 			except Exception, e:
 				Log.Exception('Exception in process of: ' + str(e))
+
+
+#************************ Internal functions ************************
+def deletePlayLIstforUsr(req, key, token):
+	url = misc.GetLoopBack() + '/playlists/' + key
+	try:
+		#TODO Change to native framework call, when Plex allows token in header
+		opener = urllib2.build_opener(urllib2.HTTPHandler)
+		request = urllib2.Request(url)
+		request.add_header('X-Plex-Token', token)
+		request.get_method = lambda: 'DELETE'
+		url = opener.open(request)
+	except Ex.HTTPError, e:
+		Log.Exception('HTTP exception  when deleting a playlist for the owner was: %s' %(e))
+		req.clear()
+		req.set_status(e.code)			
+		req.finish(str(e))
+	except Exception, e:
+		Log.Exception('Exception happened when deleting a playlist for the user was: %s' %(str(e)))
+		req.clear()
+		req.set_status(500)			
+		req.finish('Exception happened when deleting a playlist for the user was: %s' %(str(e)))
+	return req
 
