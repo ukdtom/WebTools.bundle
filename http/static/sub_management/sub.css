@@ -143,6 +143,7 @@
 .sub .rowShow .lineShow .contentShow .detail .subItem .download{
     padding-top:0 !important;
     float:right;
+    padding-right:10px;
 }
 .sub .rowShow .lineShow .contentShow .detail .subItem .download div{
     padding-top:0 !important;

@@ -57,6 +57,11 @@
         subService.downloadSubtitle(subtitle.key);
     }
 
+    $scope.view = function (subtitle, $event) {
+        $event.stopPropagation();
+        subService.viewSubtitle(subtitle.key);
+    }
+
     $scope.delete = function (detail, subtitle) {
         subService.deleteSubtitle(detail, subtitle);
     };
