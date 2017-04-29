@@ -5,6 +5,7 @@
                 <input class="searchInput" ng-model="logsModel.searchKeywordValue" placeholder="search..." ng-enter="searchKeyword()" />
                 <button class="btnSearch" ng-click="searchKeyword()" title="Search keyword"><i class="fa fa-search" aria-hidden="true"></i></button>
                 <button class="btnSearch" ng-click="searchPrevious()" title="Previous" ng-class="{'disabled' : logsModel.searchFoundLines.length === 0}" ng-disabled="logsModel.searchFoundLines.length === 0"><i class="fa fa-backward" aria-hidden="true"></i></button>
+                <button class="btnSearch" ng-click="searchKeyword()" title="Next" ng-class="{'disabled' : logsModel.searchFoundLines.length === 0}" ng-disabled="logsModel.searchFoundLines.length === 0"><i class="fa fa-forward" aria-hidden="true"></i></button>
                 <button class="btnSearch" ng-click="searchJumpToTop()" title="Jump to top"><i class="fa fa-hand-o-up" aria-hidden="true"></i></button>
                 <div class="counter" ng-if="logsModel.searchKeywordValueLast">Found {[{logsModel.searchFoundLines.length}]} rows</div>
                 <button class="btnSearch toggleSearch" ng-click="logsModel.searchVisible = !logsModel.searchVisible" title="Hide/Show search menu"><i class="fa" ng-class="{'fa-eye-slash' : !logsModel.searchVisible, 'fa-eye' : logsModel.searchVisible}" aria-hidden="true"></i></button>
