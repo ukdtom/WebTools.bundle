@@ -52,6 +52,11 @@
 
     };
 
+    $scope.download = function (subtitle, $event) {
+        $event.stopPropagation();
+        subService.downloadSubtitle(subtitle.key);
+    }
+
     $scope.delete = function (detail, subtitle) {
         subService.deleteSubtitle(detail, subtitle);
     };

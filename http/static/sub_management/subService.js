@@ -1,4 +1,4 @@
-﻿angular.module('webtools').service('subService', ['$http', 'subModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', function ($http, subModel, webtoolsModel, webtoolsService, DialogFactory) {
+﻿angular.module('webtools').service('subService', ['$http', 'subModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', '$window', function ($http, subModel, webtoolsModel, webtoolsService, DialogFactory, $window) {
     this.getShows = function (callback) {
         webtoolsModel.subLoading = true;
         var url = webtoolsModel.apiV3Url + "/pms/getSectionsList"; //V3
@@ -131,5 +131,9 @@
             subModel.deleteCountAsyncRunning--;
             if (subModel.deleteCountAsyncRunning === 0) detail.loading = false;
         });
+    }
+
+    this.downloadSubtitle = function (subtitleKey) {
+        $window.open(webtoolsModel.apiV3Url + "/pms/downloadSubtitle/" + subtitleKey, "_blank");
     }
 }]);

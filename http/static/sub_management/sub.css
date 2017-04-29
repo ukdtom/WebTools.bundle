@@ -140,6 +140,13 @@
 .sub .rowShow .lineShow .contentShow .detail .subItem div:not(.selectSubtitle){
     padding-top:5px;
 }
+.sub .rowShow .lineShow .contentShow .detail .subItem .download{
+    padding-top:0 !important;
+    float:right;
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem .download div{
+    padding-top:0 !important;
+}
 
 /* Responsive */
 @media screen and (max-width: 480px) {

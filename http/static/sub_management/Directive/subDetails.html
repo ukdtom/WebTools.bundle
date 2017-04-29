@@ -25,6 +25,9 @@
         <div class="col-md-2 col-sm-3 col-xs-5 selectSubtitle" ng-if="subtitle.location !== 'Embedded'" ng-click="subtitle.checked = !subtitle.checked; detail.subAllChecked = getAllSubtitlesChecked(detail);">
             <div class="fa fa-square-o" ng-if="!subtitle.checked"></div>
             <div class="fa fa-check-square-o" ng-if="subtitle.checked"></div>
+            <div class="download" ng-click="download(subtitle, $event);" ng-if="subtitle.location !== 'Embedded'">
+                <div class="fa fa-download" title="Download Subtitle"></div>
+            </div>
         </div>
         <div class="col-md-2 col-sm-3 col-xs-5" ng-if="subtitle.location === 'Embedded'"></div>
 
