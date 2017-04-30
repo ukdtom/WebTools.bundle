@@ -8,6 +8,7 @@
     this.logsLoading = false;
     this.themeLoading = false;
     this.uasLoading = false;
+    this.fmLoading = false;
 
     this.basePath = "/";
     try {
