@@ -7,6 +7,7 @@
     this.subLoading = false;
     this.logsLoading = false;
     this.themeLoading = false;
+    this.uasLoading = false;
 
     this.basePath = "/";
     try {
