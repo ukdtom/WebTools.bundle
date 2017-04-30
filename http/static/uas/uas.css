@@ -1,2 +1,26 @@
 ﻿.uas{
+
+}
+.uas .type{
+    float:left;
+    width:200px;
+    height:45px;
+    padding:10px;
+    background:rgba(0, 77, 255, 0.20);
+    border:solid 2px rgba(88, 88, 88, 0.27);
+    border-radius:10px;
+    margin:5px;
+    overflow:hidden;
+    font-size:1.3em;
+    cursor:pointer;
+}
+.uas .type:hover{
+    background:rgba(0, 77, 255, 0.40);
+}
+
+.uas .repoContainer{
+    width:100%;
+    background:rgba(255, 255, 255, 0.02);
+    border-radius:2px;
+    padding:5px;
 }

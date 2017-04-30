@@ -1,5 +1,6 @@
-﻿angular.module('webtools').controller('uasController', ['$scope', 'uasModel', 'uasService', function ($scope, uasModel, uasService) {
+﻿angular.module('webtools').controller('uasController', ['$scope', 'uasModel', 'uasService', 'webtoolsModel', function ($scope, uasModel, uasService, webtoolsModel) {
+    $scope.webtoolsModel = webtoolsModel;
     $scope.uasModel = uasModel;
 
-    uasService.getListBundle();
+    uasService.getTypes();
 }]);

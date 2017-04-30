@@ -5,6 +5,16 @@
     <div>You can also search for updates for all installed channels managed by WebTools via the "Check for updates for all installed channels" button.</div>
     <div>Category names contain installed/total available channels.</div>
 
-    <br /><br /><br />
-    All the above text will get a rework when the tool has been implemented and the new functions will play<br />
+    <content-loading ng-if="webtoolsModel.uasLoading" class="pushTopMinor"></content-loading>
+    <div class="row pushTopMinor">
+        <div class="col-xs-12">
+            <div class="type" ng-repeat="(typeName, type) in uasModel.types">
+                <div class="pull-left">{[{typeName}]}</div>
+                <div class="pull-right">{[{type.installed}]}/{[{type.total}]}</div>
+            </div>
+        </div>
+    </div>
+    <div class="repoContainer">
+        Results
+    </div>
 </div>

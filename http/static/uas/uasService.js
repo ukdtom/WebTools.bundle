@@ -39,7 +39,7 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            uasModel.types = resp.data;
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
