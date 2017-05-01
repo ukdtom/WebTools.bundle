@@ -55,8 +55,6 @@ def MainMenu():
 	Log.Debug("**********  Starting MainMenu  **********")	
 	oc = ObjectContainer()
 	oc.add(DirectoryObject(key=Callback(MainMenu), title="To access this channel, type the url's below to a new browser tab"))
-	title = title='http://' + Network.Address + ':' + Prefs['WEB_Port_http']
-	print 'Ged', BASEURL, 'End'
 	if Prefs['Force_SSL']:
 		oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' + Network.Address + ':' + Prefs['WEB_Port_https'] + BASEURL))
 	else:
