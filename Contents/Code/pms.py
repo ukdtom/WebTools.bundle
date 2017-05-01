@@ -213,6 +213,7 @@ class pms(object):
 				# Grap all movies from the result
 				for media in foundMedias.xpath('//Video'):
 					value = {}
+					value['key'] = media.get('ratingKey')
 					value['title'] = media.get('title')
 					value['type'] = media.get('type')
 					value['section'] = media.get('librarySectionID')			
