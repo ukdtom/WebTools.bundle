@@ -1,20 +1,39 @@
 <div class="uas">
-    <div class="textSize4 textBold600">UnsupportedAppStore</div>
-    <div class="pushTopTrivial">Here you can either install a channel by it's Github repository link or by selecting one of the categories below.</div>
-    <div>If you have installed channels manually before installing WebTools, you can click on the "Migrate manually/previously installed channels" to make WebTools aware of them.</div>
-    <div>You can also search for updates for all installed channels managed by WebTools via the "Check for updates for all installed channels" button.</div>
-    <div>Category names contain installed/total available channels.</div>
-
+    <div class="textSize4 textBold600 pull-left">UnsupportedAppStore</div><help src="static/uas/uasHelp.html"></help>
     <content-loading ng-if="webtoolsModel.uasLoading" class="pushTopMinor"></content-loading>
-    <div class="row pushTopMinor">
-        <div class="col-xs-12">
-            <div class="type" ng-repeat="(typeName, type) in uasModel.types">
+    <div ng-if="!webtoolsModel.uasLoading">
+        <!--<div class="row pushTopMinor">
+            <div class="col-xs-12">
+                <div class="type"
+                     ng-repeat="(typeName, type) in uasModel.types"
+                     ng-click="setType(typeName, type)">
+                    <div class="pull-left">{[{typeName}]}</div>
+                    <div class="pull-right">{[{type.installed}]}/{[{type.total}]}</div>
+                </div>
+            </div>
+        </div>-->
+        <div class="typesMenu">
+            <div class="search">
+                <input class="searchInput" ng-model="search" placeholder="Search..." />
+                <button class="btnSearch" ng-click="searchList()" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+            <div class="type"
+                 ng-repeat="(typeName, type) in uasModel.types"
+                 ng-click="setType(typeName, type)">
                 <div class="pull-left">{[{typeName}]}</div>
                 <div class="pull-right">{[{type.installed}]}/{[{type.total}]}</div>
             </div>
         </div>
-    </div>
-    <div class="repoContainer">
-        Results
+        <div class="repoContainer" ng-if="uasModel.selectedType">
+            <div class="repo" ng-class="{'installed' : repo.installed}" ng-repeat="(key, repo) in uasModel.list" ng-if="typeExist(repo.type)">
+                <div class="title">{[{repo.title}]}</div>
+                <div class="description">{[{repo.description}]}</div>
+
+                <button class="btn btn-default pull-right mainBtn textBold600 textBold600" ng-click="installUpdate(repo)">
+                    <span ng-if="!repo.installed">Install</span>
+                    <span ng-if="repo.installed">Update</span>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
