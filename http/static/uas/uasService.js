@@ -7,7 +7,15 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            uasModel.installedList = resp.data;
+            for (installedItem in uasModel.installedList) {
+                if (!uasModel.list[installedItem]) {
+                    console.log("Item doesn't exist!");
+                    continue;
+                }
+                uasModel.list[installedItem].installed = true;
+            }
+
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
@@ -55,7 +63,7 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            uasModel.list = resp.data;
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
