@@ -756,7 +756,7 @@ class gitV3(object):
 				req.clear()
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(result)
+				req.finish(json.dumps(result))
 			else:
 				Log.Debug('No bundles are installed')
 				req.clear()
