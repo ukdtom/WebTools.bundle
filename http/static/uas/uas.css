@@ -81,18 +81,25 @@
     border: 1px solid #4c4c4c;
     height:90px;
 }
+.uas .repoContainer .repo .icon{
+    float:left;
+    width:60px;
+    height:100%;
+    margin-right:10px;
+}
+
 .uas .repoContainer .repo.installed{
-    background: rgba(0, 77, 255, 0.3);
+    background: rgba(0, 255, 33, 0.24);
 }
 .uas .repoContainer .repo .title{
-    width: calc(100% - 100px);
+    width: calc(100% - 200px); /*Minus install & icon*/
     float:left;
     font-size:1.4em;
 }
 .uas .repoContainer .repo .description{
     height: 40px;
     overflow: hidden;
-    width: calc(100% - 100px);
+    width: calc(100% - 200px); /*Minus install & icon*/
     float: left;
 }
 
