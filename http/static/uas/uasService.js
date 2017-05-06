@@ -48,6 +48,11 @@
             url: url,
         }).then(function (resp) {
             uasModel.types = resp.data;
+            for (typeName in uasModel.types) {
+                var type = uasModel.types[typeName];
+                type.viewInstalled = type.installed;
+                type.viewTotal = type.total;
+            }
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {

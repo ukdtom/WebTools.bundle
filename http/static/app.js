@@ -44,3 +44,39 @@ webtools.run(['webtoolsService', 'themeService', function (webtoolsService, them
     webtoolsService.loadWebToolsVersion();
     themeService.loadActiveTheme();
 }]);
+
+webtools.filter('searchBy', ['uasModel', function (uasModel) {
+    return function (items, searchValue) {
+        if (!searchValue) {
+            for (typeName in uasModel.types) {
+                var type = uasModel.types[typeName];
+                type.viewTotal = type.total;
+            }
+            return items;
+        }
+
+        for (typeName in uasModel.types) {
+            var type = uasModel.types[typeName];
+            type.viewTotal = 0;
+        }
+
+        var filtered = [];
+        for (name in items) {
+            var item = items[name];
+            if (item.title.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) {
+                filtered.push(item);
+
+                for (typeName in uasModel.types) {
+                    var type = uasModel.types[typeName];
+                    for (var i = 0; i < item.type.length; i++) {
+                        if (typeName === item.type[i]) {
+                            type.viewTotal++;
+                        }
+                    }
+                }
+            }
+        }
+
+        return filtered;
+    };
+}]);

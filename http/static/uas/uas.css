@@ -107,20 +107,3 @@
 .uas .repoContainer .repo .installUpdate:hover{
     color:#ababab;
 }
-/*.uas .repoContainer .repo .installUpdate{
-    position:absolute;
-    bottom:5px;
-    right:2px;
-    margin-right:5px;
-    padding: 5px;
-    height:30px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 4px 1px black;
-    background-color: rgba(40, 96, 144, 1);
-    cursor:pointer;
-    white-space: nowrap;
-    overflow:hidden;
-}
-.uas .repoContainer .repo .installUpdate:hover{
-    background-color: rgba(40, 96, 144, 0.8);
-}*/
