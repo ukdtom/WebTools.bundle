@@ -10,6 +10,7 @@
     box-shadow: 0 0 0 3px rgba(0,0,0,.2);
     z-index:2;
     border-radius:5px;
+    padding-bottom:10px;
 }
 .uas .typesMenu .search{
     width:100%;
@@ -35,20 +36,30 @@
 }
 .uas .typesMenu .type{
     float:right;
-    width:170px;
+    width:100%;
     height:40px;
     padding:10px;
-    background:rgba(255, 255, 255, 1.00);
-    color:black;
-    border:solid 2px rgba(88, 88, 88, 0.27);
-    border-radius:10px;
-    margin:5px;
     overflow:hidden;
     font-size:1.1em;
     cursor:pointer;
 }
 .uas .type:hover{
     background:rgba(200, 200, 200, 1.00);
+}
+.uas .type.active{
+    color:white;
+    background: #2370ca;
+    background: rgba(33,98,173,1);
+    background: -moz-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -webkit-gradient(left top,right top,color-stop(0%,rgba(33,98,173,1)),color-stop(25%,rgba(40,125,222,1)),color-stop(75%,rgba(40,125,222,1)),color-stop(100%,rgba(33,98,173,1)));
+    background: -webkit-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -o-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -ms-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%)!important;
+    background: linear-gradient(to right,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%)!important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2162ad',endColorstr='#2162ad',GradientType=1)!important;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    -moz-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
 }
 
 .uas .repoContainer{
@@ -59,32 +70,44 @@
 }
 
 .uas .repoContainer .repo{
-    margin-top: 10px;
-    float:left;
-    width: 350px;
-    height: 250px;
+    margin-top: 10px; 
     background: rgba(0, 77, 255, 0.15);
     box-shadow: 3px 3px 10px 1px black;
     border-radius: 5px;
     overflow: hidden;
-    margin:15px;
-    position:relative;
-    padding:5px;
+    margin: 15px;
+    position: relative;
+    padding: 5px;
+    border: 1px solid #4c4c4c;
+    height:90px;
 }
 .uas .repoContainer .repo.installed{
     background: rgba(0, 77, 255, 0.3);
 }
 .uas .repoContainer .repo .title{
-    width:100%;
+    width: calc(100% - 100px);
+    float:left;
     font-size:1.4em;
-    text-align:center;
 }
 .uas .repoContainer .repo .description{
-    height: 180px;
-    overflow:hidden;
+    height: 40px;
+    overflow: hidden;
+    width: calc(100% - 100px);
+    float: left;
 }
 
 .uas .repoContainer .repo .installUpdate{
+    height: 100%;
+    cursor: pointer;
+    width: 60px;
+    text-align: center;
+    padding-top: 30px;
+    border-left: solid 1px #404040;
+}
+.uas .repoContainer .repo .installUpdate:hover{
+    color:#ababab;
+}
+/*.uas .repoContainer .repo .installUpdate{
     position:absolute;
     bottom:5px;
     right:2px;
@@ -100,4 +123,4 @@
 }
 .uas .repoContainer .repo .installUpdate:hover{
     background-color: rgba(40, 96, 144, 0.8);
-}
+}*/

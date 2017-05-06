@@ -3,7 +3,9 @@
     $scope.uasModel = uasModel;
 
     $scope.init = function () {
-        uasService.getTypes();
+        uasService.getTypes(function (data) {
+            $scope.setType("Metadata Agent", data["Metadata Agent"]);
+        });
         uasService.getListBundle(function () {
             uasService.getInstalled();
         });
