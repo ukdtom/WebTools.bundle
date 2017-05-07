@@ -6,13 +6,19 @@
 
     <content-loading ng-if="webtoolsModel.subLoading" class="pushTopMinor"></content-loading>
     <div ng-if="!webtoolsModel.subLoading" class="pushTopMinor">
+
+        <!--<div class="search">
+            <input class="searchInput" ng-model="subModel.searchValue" placeholder="Search..." />
+            <button class="btnSearch" ng-click="searchSub()" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>    | subSearchFilter:subModel.searchResults    -->
+
         <div class="row rowShow" ng-repeat="show in subModel.shows track by show.key | orderBy : 'title'" ng-class="{'expanded': show.expanded}">
             <div class="col-sm-12 lineShow">
                 <div class="type" ng-click="expandShow(show)"><img ng-src="icons/{[{show.type}]}.png" /></div>
                 <div class="title textSize3 textBold600" ng-click="expandShow(show)">{[{show.title}]}</div>
                 <div class="contentShow" ng-if="show.expanded">
                     <div ng-if="show.type === 'movie'"> 
-                        <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.details track by detail.key | orderBy : 'title'" ng-init="detail.subAllChecked = false;detail.loading = false;">
+                        <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.details | orderBy : 'title' track by detail.key" ng-init="detail.subAllChecked = false;detail.loading = false;">
                             <div class="col-sm-12 detail">            
                                 <content-loading ng-if="detail.loading"></content-loading>
                                 <div ng-if="!detail.loading" sub-details></div>

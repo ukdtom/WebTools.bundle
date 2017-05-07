@@ -45,7 +45,7 @@ webtools.run(['webtoolsService', 'themeService', function (webtoolsService, them
     themeService.loadActiveTheme();
 }]);
 
-webtools.filter('searchBy', ['uasModel', function (uasModel) {
+webtools.filter('uasSearchBy', ['uasModel', function (uasModel) {
     return function (items, searchValue) {
         if (!searchValue) {
             for (typeName in uasModel.types) {
@@ -80,3 +80,18 @@ webtools.filter('searchBy', ['uasModel', function (uasModel) {
         return filtered;
     };
 }]);
+
+//webtools.filter('subSearchFilter', ['subModel', function (subModel) {
+//    return function (items, searchResults) {
+//        if (searchResults === null) return items;
+
+//        var filtered = [];
+//        for (var i = 0; i < items.length; i++) {
+//            var item = items[i];
+//            for (var searchResult in searchResults) {
+//                if (item.key === searchResult) filtered.push(item);
+//            }
+//        }
+//        return filtered;
+//    };
+//}]);

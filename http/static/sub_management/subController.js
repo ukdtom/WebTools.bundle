@@ -3,6 +3,10 @@
 
     subService.getShows();
 
+    //$scope.searchSub = function () {
+    //    subService.search();
+    //}
+
     $scope.expandShow = function (show) {
         show.expanded = !show.expanded;
         if (!show.details && show.type === "movie") {

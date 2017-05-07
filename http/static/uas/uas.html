@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="repoContainer" ng-if="uasModel.selectedType">
-            <div class="repo" ng-class="{'installed' : repo.installed}" ng-repeat="(key, repo) in uasModel.list | searchBy:searchValue" ng-if="typeExist(repo.type)">
+            <div class="repo" ng-class="{'installed' : repo.installed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue" ng-if="typeExist(repo.type)">
                 <!--<div class="lastUpdated" ng-if="repo.lastUpdated">
                     {[{repo.lastUpdated}]}
                 </div>-->
