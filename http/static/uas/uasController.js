@@ -23,8 +23,9 @@
         return false;
     }
 
-    $scope.installUpdate = function (repo) {
-
+    $scope.installUpdate = function (repo, repoUrl) {
+        repo.url = repoUrl;
+        uasService.installUpdate(repo);
     }
 
     $scope.init();

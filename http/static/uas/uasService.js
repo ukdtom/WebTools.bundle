@@ -1,4 +1,5 @@
-﻿angular.module('webtools').service('uasService', ['$http', 'uasModel', 'webtoolsModel', function ($http, uasModel, webtoolsModel) {
+﻿angular.module('webtools').service('uasService', ['$http', 'uasModel', 'webtoolsModel', 'webtoolsService', function ($http, uasModel, webtoolsModel, webtoolsService) {
+    var _this = this;
 
     this.getInstalled = function (callback) {
         webtoolsModel.uasLoading = true;
@@ -14,6 +15,8 @@
                     continue;
                 }
                 uasModel.list[installedItem].installed = true;
+                uasModel.list[installedItem].url = installedItem;
+                //_this.getLastUpdateTime(uasModel.list[installedItem]);
             }
 
             if (callback) callback(resp.data);
@@ -77,19 +80,19 @@
         });
     }
 
-    this.getLastUpdateTime = function (escapedUrl, callback) {
-        webtoolsModel.uasLoading = true;
-        var url = webtoolsModel.apiV3Url + "/git/getLastUpdateTime/" + escapedUrl;
+    this.getLastUpdateTime = function (repo, callback) {
+        repo.installUpdateLoading = true;
+        var url = webtoolsModel.apiV3Url + "/git/getLastUpdateTime/" + encodeURIComponent(repo.url);
         $http({
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            repo.lastUpdated = resp.data;
             if (callback) callback(resp.data);
-            webtoolsModel.uasLoading = false;
+            repo.installUpdateLoading = false;
         }, function (errorResp) {
             webtoolsService.log("uasService.getLastUpdateTime - " + webtoolsService.formatError(errorResp), "Uas", true, url);
-            webtoolsModel.uasLoading = false;
+            repo.installUpdateLoading = false;
         });
     }
 
@@ -158,22 +161,23 @@
         });
     }
 
-    this.installUpdate = function (repoUrl, callback) {
-        webtoolsModel.uasLoading = true;
+    this.installUpdate = function (repo, callback) {
+        repo.installUpdateLoading = true;
         var url = webtoolsModel.apiV3Url + "/git/install";
         $http({
             method: "PUT",
             url: url,
             data: {
-                url: repoUrl
+                url: repo.url
             }
         }).then(function (resp) {
-            debugger;
+            repo.installed = true;
             if (callback) callback(resp.data);
-            webtoolsModel.uasLoading = false;
+            repo.installUpdateLoading = false;
+            //_this.getLastUpdateTime(repo);
         }, function (errorResp) {
             webtoolsService.log("uasService.installUpdate - " + webtoolsService.formatError(errorResp), "Uas", true, url);
-            webtoolsModel.uasLoading = false;
+            repo.installUpdateLoading = false;
         });
     }
 

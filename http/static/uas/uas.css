@@ -113,4 +113,5 @@
 }
 .uas .repoContainer .repo .installUpdate:hover{
     color:#ababab;
+    background:rgba(0, 0, 0, 0.2)
 }

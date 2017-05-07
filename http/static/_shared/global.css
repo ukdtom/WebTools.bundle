@@ -70,6 +70,14 @@ content-loading .contentLoading {
     font-size:60px;
     color: rgb(51, 122, 183);
 }
+inline-loading{
+    display: block;
+    z-index: 2;
+}
+inline-loading .inlineLoading {
+    font-size:24px;
+    color: rgb(51, 122, 183);
+}
 
 /* Error Dialog (This is not for Custom Themes - Maybe Later?) */
 .error-dialog .ngdialog-content{

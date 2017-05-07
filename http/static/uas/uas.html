@@ -27,9 +27,15 @@
         </div>
         <div class="repoContainer" ng-if="uasModel.selectedType">
             <div class="repo" ng-class="{'installed' : repo.installed}" ng-repeat="(key, repo) in uasModel.list | searchBy:searchValue" ng-if="typeExist(repo.type)">
-                <div class="installUpdate pull-right mainBtn textBold600 textBold600" ng-click="installUpdate(repo)">
+                <!--<div class="lastUpdated" ng-if="repo.lastUpdated">
+                    {[{repo.lastUpdated}]}
+                </div>-->
+                <div class="installUpdate pull-right mainBtn textBold600 textBold600" ng-if="!repo.installUpdateLoading" ng-click="installUpdate(repo, key)">
                     <span ng-if="!repo.installed">Install</span>
                     <span ng-if="repo.installed">Update</span>
+                </div>
+                <div class="installUpdate pull-right mainBtn textBold600 textBold600" ng-if="repo.installUpdateLoading">
+                    <inline-loading></inline-loading>
                 </div>
 
                 <div class="icon" ng-style="{'background': 'url(uas/Resources/{[{repo.icon}]}) center center no-repeat', 'background-size': '90%'}"></div>
