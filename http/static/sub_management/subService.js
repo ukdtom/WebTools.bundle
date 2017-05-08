@@ -1,31 +1,7 @@
 ﻿angular.module('webtools').service('subService', ['$http', 'subModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', '$window', function ($http, subModel, webtoolsModel, webtoolsService, DialogFactory, $window) {
-    //this.search = function (callback) {
-    //    if (!subModel.searchValue) {
-    //        subModel.searchResults = null;
-    //        return;
-    //    }
-    //    webtoolsModel.subLoading = true;
-    //    var url = webtoolsModel.apiV3Url + "/pms/search/" + subModel.searchValue;
-    //    $http({
-    //        method: "GET",
-    //        url: url,
-    //    }).then(function (resp) {
-    //        subModel.searchResults = resp.data;
-
-    //        if (callback) callback(resp.data);
-    //        webtoolsModel.subLoading = false;
-    //    }, function (errorResp) {
-    //        webtoolsService.log("subService.search - " + webtoolsService.formatError(errorResp), "Sub", true, url);
-    //        webtoolsModel.subLoading = false;
-    //    });
-    //}
-
     this.getShows = function (callback) {
         webtoolsModel.subLoading = true;
         var url = webtoolsModel.apiV3Url + "/pms/getSectionsList";
-        //if (subModel.searchValue) {
-        //    url += "/filter?title=" + subModel.searchValue;
-        //}
         $http({
             method: "GET",
             url: url,
