@@ -340,6 +340,7 @@ class webTools2Handler(BaseHandler):
 			return
 		else:
 			Log.Debug('Recieved a get call for module: ' + module)
+			
 	
 #TODO
 			''' Attempt to create a dynamic import, but so far, it sadly breaks access to the PMS API :-(
@@ -356,6 +357,7 @@ class webTools2Handler(BaseHandler):
 			if module.upper() in V3MODULES:
 				if '2.' not in VERSION:
 					Log.Critical('Api V2 is about to be retired....Please update your calls towards Api V3 instead')
+					Log.Critical('Params was: ' + str(params))
 #					self.clear()
 #					self.set_status(403)
 #					self.finish('Oliver!!!!  This has been migrated to api V3 :-)')
@@ -516,10 +518,14 @@ def start_tornado():
 		applicationTLS = Application(httpsHandlers, **settings)
 		http_server = HTTPServer(application)
 		# Use our own certificate for TLS
+		CRTFile = os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', Prefs['Cert_CRT'])
+		Log.Info('Certificate crt file is %s' %CRTFile)
+		KEYFile = os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', Prefs['Cert_KEY'])
+		Log.Info('Certificate key file is %s' %KEYFile)
 		http_serverTLS = HTTPServer(applicationTLS, 
 														ssl_options={
-																				"certfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', 'WebTools.crt'),
-																				"keyfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', 'WebTools.key')})
+																				"certfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', CRTFile),
+																				"keyfile": KEYFile})
 		# Set web server port to the setting in the channel prefs
 		port = int(Prefs['WEB_Port_http'])
 		ports = int(Prefs['WEB_Port_https'])	

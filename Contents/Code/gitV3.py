@@ -648,18 +648,15 @@ class gitV3(object):
 		Force = cliForce
 		# Main call
 		try:
-			# Start by getting the time stamp for the last update
+			# Start by getting the SHA stamp for the last update
 			lastUpdateUAS = Dict['UAS']
-			Log.Debug('Last update time for UAS Cache is: %s' %(lastUpdateUAS))
-			if lastUpdateUAS == None:
-				# Not set yet, so default to Linux start date
-				lastUpdateUAS = datetime.datetime.strptime('01-01-1970 00:00:00', '%m-%d-%Y %H:%M:%S')
-			else:
-				lastUpdateUAS = datetime.datetime.strptime(str(lastUpdateUAS), '%Y-%m-%d %H:%M:%S.%f')
-			# Now get the last update time from the UAS repository on GitHub
-			masterUpdate = datetime.datetime.strptime(self.GETLASTUPDATETIME(req, UAS=True, url=UAS_URL), '%Y-%m-%d %H:%M:%S')
-			# Do we need to update the cache, and add 2 min. tolerance here?
-			if ((masterUpdate - lastUpdateUAS) > datetime.timedelta(seconds = 120) or Force):
+			# URL to the active UAS
+			urlUASAPI = UAS_URL.replace('https://github.com/','https://api.github.com/repos/') + '/branches/' + UAS_BRANCH
+			onlineSHA = JSON.ObjectFromURL(urlUASAPI)['commit']['sha']
+			Log.Debug('Local SHA for UAS is: %s' %lastUpdateUAS)
+			Log.Debug('Online SHA for UAS is: %s' %onlineSHA)
+			if ((lastUpdateUAS != onlineSHA) or Force):
+				print 'Ged Update time'
 				# Grap file from Github
 				try:
 					zipfile = Archive.ZipFromURL(UAS_URL+ '/archive/' + UAS_BRANCH + '.zip')							
@@ -693,8 +690,8 @@ class gitV3(object):
 				pmsV3.updateUASTypesCounters()
 			else:
 				Log.Debug('UAS Cache already up to date')
-			# Set timestamp in the Dict
-			Dict['UAS'] = datetime.datetime.now()
+			# Set Dict to the new SHA
+			Dict['UAS'] = onlineSHA
 			if not cliForce:
 				req.clear()
 				req.set_status(200)
@@ -759,7 +756,7 @@ class gitV3(object):
 				req.clear()
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(result)
+				req.finish(json.dumps(result))
 			else:
 				Log.Debug('No bundles are installed')
 				req.clear()

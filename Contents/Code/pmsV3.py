@@ -136,7 +136,7 @@ class pmsV3(object):
 				Log.Exception('Fatal error happened in downloadSubtitle: %s' %(e))
 				req.clear()
 				req.set_status(500)
-				req.finish('Fatal error happened in showSubtitle')
+				req.finish('Fatal error happened in downloadSubtitle')
 		except Exception, e:
 			Log.Exception('Fatal error happened in downloadSubtitle: %s' %(e))
 			req.clear()
@@ -490,7 +490,7 @@ class pmsV3(object):
 				updateUASTypesCounters()
 # TODO
 				try:
-					Log.Debug('Remider to self...TODO....Restart of System Bundle hangs :-(')
+					Log.Debug('Reminder to self...TODO....Restart of System Bundle hangs :-(')
 #					HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart', immediate=True)
 				except:
 					Log.Debug('Unable to restart System.bundle. Channel may not vanish without PMS restart.')
@@ -748,11 +748,21 @@ class pmsV3(object):
 			try:
 				letterKey = params[params.index('letterKey')+1].upper()
 			except Exception, e:
-				letterKey = None
+				letterKey = None			
+			try:
+				title = params[params.index('title')+1].upper()
+			except Exception, e:
+				title = None
+
+			print 'Ged title', title
+
+
 			# Got all the needed params, so lets grap the contents
 			try:
 				if letterKey:
 					myURL = misc.GetLoopBack() + '/library/sections/' + key + '/firstCharacter/' + letterKey + '?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
+				elif title:
+					myURL = misc.GetLoopBack() + '/library/sections/' + key + '/all?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size + '&title=' + title
 				else:
 					myURL = misc.GetLoopBack() + '/library/sections/' + key + '/all?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
 				rawSection = XML.ElementFromURL(myURL)

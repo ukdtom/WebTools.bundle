@@ -21,6 +21,18 @@
 		"id":"Base_URL",
 		"label":"Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)",
 		"type":"text",
-		"default":"test"
+		"default":""
+	},
+	{
+		"id":"Cert_CRT",
+		"label":"Name of Certificate crt file in Contents/Code/Certificate directory",
+		"type":"text",
+		"default":"WebTools.crt"
+	},
+	{
+		"id":"Cert_KEY",
+		"label":"Name of Certificate key file in Contents/Code/Certificate directory",
+		"type":"text",
+		"default":"WebTools.key"
 	}
 ]
