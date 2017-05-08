@@ -7,10 +7,10 @@
     <content-loading ng-if="webtoolsModel.subLoading" class="pushTopMinor"></content-loading>
     <div ng-if="!webtoolsModel.subLoading" class="pushTopMinor">
 
-        <!--<div class="search">
+        <div class="search">
             <input class="searchInput" ng-model="subModel.searchValue" placeholder="Search..." />
             <button class="btnSearch" ng-click="searchSub()" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
-        </div>    | subSearchFilter:subModel.searchResults    -->
+        </div><!--    | subSearchFilter:subModel.searchResults    -->
 
         <div class="row rowShow" ng-repeat="show in subModel.shows track by show.key | orderBy : 'title'" ng-class="{'expanded': show.expanded}">
             <div class="col-sm-12 lineShow">

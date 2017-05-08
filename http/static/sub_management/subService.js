@@ -51,7 +51,7 @@
         var take = 20;
 
         show.loading = true;
-        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/" + skip + "/size/" + take + "/getSubs"; //TODO FILTER SEARCH
+        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/" + skip + "/size/" + take + "/getSubs/filter?title=" + subModel.searchValue; //TODO FILTER SEARCH
         $http({
             method: "GET",
             url: url,
