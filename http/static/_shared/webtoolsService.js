@@ -17,6 +17,8 @@
         return false;
     }
     var checkIsNewVersionAvailable = function (callback) {
+        if (localStorage.wtGITcheck) return;
+
         webtoolsModel.globalLoading = true;
 
         var url = webtoolsModel.apiV3Url + "/git/getReleaseInfo/url/" + encodeURIComponent(webtoolsModel.repoUrl) + "/version/latest";
@@ -25,6 +27,8 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
+            localStorage.wtGITcheck = true;
+
             if (resp.data.published_at && anyNewVersion(webtoolsModel.version, resp.data.tag_name)) {
                 webtoolsModel.isNewVersionAvailable = true;
             }

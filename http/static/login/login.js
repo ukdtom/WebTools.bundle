@@ -3,6 +3,8 @@
 */
 
 $(function () {
+    localStorage.clear();
+
     var version = 0;
     var downloadUrl = "";
     var wtCssTheme = "wt_csstheme";
@@ -83,17 +85,20 @@ $(function () {
                 pwd: pwd
             },
             success: function (data) {
+                var url = "api/v3/git/getReleaseInfo/url/" + encodeURIComponent("https://github.com/ukdtom/WebTools.bundle") + "/version/latest";
                 $.ajax({
                     cache: false,
-                    data: {
-                        'module': 'git',
-                        'function': 'getReleaseInfo',
-                        'url': 'https://github.com/ukdtom/WebTools.bundle',
-                        'version': 'latest'
-                    },
+                    //data: {
+                    //    'module': 'git',
+                    //    'function': 'getReleaseInfo',
+                    //    'url': 'https://github.com/ukdtom/WebTools.bundle',
+                    //    'version': 'latest'
+                    //},
+                    //type: 'GET',
+                    //datatype: 'JSON',
+                    //url: 'webtools2',
                     type: 'GET',
-                    datatype: 'JSON',
-                    url: 'webtools2',
+                    url: url,
                     success: function (data) {
                         data = JSON.parse(data);
                         downloadUrl = data.zipball_url;
