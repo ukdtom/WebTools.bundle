@@ -3,9 +3,20 @@
 
     subService.getShows();
 
-    //$scope.searchSub = function () {
-    //    subService.search();
-    //}
+    $scope.searchSub = function () {
+        for (var i = 0; i < subModel.shows.length; i++) {
+            var show = subModel.shows[i];
+            if (show.details && show.type === "movie") {
+                show.skip = 0;
+                show.full = false;
+                show.details = [];
+                subService.getMovieDetails(show);
+            } else if (show.tvshows && show.type === "show") {
+                show.tvshows = [];
+                subService.getTvShowDetails(show);
+            }
+        }
+    }
 
     $scope.expandShow = function (show) {
         show.expanded = !show.expanded;

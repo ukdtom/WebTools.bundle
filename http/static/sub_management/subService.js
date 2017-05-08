@@ -51,7 +51,7 @@
         var take = 20;
 
         show.loading = true;
-        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/" + skip + "/size/" + take + "/getSubs/filter?title=" + subModel.searchValue; //TODO FILTER SEARCH
+        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/" + skip + "/size/" + take + "/getSubs/title/" + subModel.searchValue;
         $http({
             method: "GET",
             url: url,
@@ -63,7 +63,6 @@
             }
             show.skip = show.details.length;
 
-
             if (callback) callback(resp.data);
             show.loading = false;
         }, function (errorResp) {
@@ -74,7 +73,7 @@
 
     this.getTvShowDetails = function (show, callback) {
         show.loading = true;
-        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/0/size/9999";
+        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/0/size/9999/title/" + subModel.searchValue;
         $http({
             method: "GET",
             url: url,

@@ -8,22 +8,23 @@
     <div ng-if="!webtoolsModel.subLoading" class="pushTopMinor">
 
         <div class="search">
-            <input class="searchInput" ng-model="subModel.searchValue" placeholder="Search..." />
+            <input class="searchInput" ng-enter="searchSub()" ng-model="subModel.searchValue" placeholder="Search..." />
             <button class="btnSearch" ng-click="searchSub()" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
-        </div><!--    | subSearchFilter:subModel.searchResults    -->
+        </div>
 
         <div class="row rowShow" ng-repeat="show in subModel.shows track by show.key | orderBy : 'title'" ng-class="{'expanded': show.expanded}">
             <div class="col-sm-12 lineShow">
                 <div class="type" ng-click="expandShow(show)"><img ng-src="icons/{[{show.type}]}.png" /></div>
                 <div class="title textSize3 textBold600" ng-click="expandShow(show)">{[{show.title}]}</div>
                 <div class="contentShow" ng-if="show.expanded">
-                    <div ng-if="show.type === 'movie'"> 
+                    <div ng-if="show.type === 'movie'">
                         <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.details | orderBy : 'title' track by detail.key" ng-init="detail.subAllChecked = false;detail.loading = false;">
-                            <div class="col-sm-12 detail">            
+                            <div class="col-sm-12 detail">
                                 <content-loading ng-if="detail.loading"></content-loading>
                                 <div ng-if="!detail.loading" sub-details></div>
                             </div>
                         </div>
+                        <div class="row" ng-if="!show.loading && show.details.length === 0"> <span class="textSize3">No movies found in '{[{show.title}]}' with current search filter</span></div>
                         <content-loading ng-if="show.loading"></content-loading>
                         <div ng-if="!show.full && !show.loading" ng-click="loadmore(show)" class="loadmore textSize3"><span class="fa fa-tasks"></span> Load more</div>
                     </div>
@@ -34,6 +35,7 @@
                              ng-repeat="tvshow in show.tvshows track by tvshow.key | orderBy : 'title'">
                             {[{tvshow.title}]}
                         </div>
+                        <div class="row" ng-if="!show.loading && show.tvshows.length === 0"> <span class="textSize3">No series found in '{[{show.title}]}' with current search filter</span></div>
                         <content-loading ng-if="(show.selectedTvShow && show.selectedTvShow.loading) || (show.selectedSeason && show.selectedSeason.loading)"></content-loading>
                         <div class="tvshowheader textSize3 textBold600">
                             <div ng-if="show.selectedTvShow && !show.selectedTvShow.loading && !show.selectedSeason">
