@@ -11,14 +11,12 @@
             uasModel.installedList = resp.data;
             for (installedItem in uasModel.installedList) {
                 if (!uasModel.list[installedItem]) {
-                    console.log("Item doesn't exist!");
-                    continue;
+                    uasModel.list[installedItem] = uasModel.installedList[installedItem];
                 }
                 uasModel.list[installedItem].installed = true;
                 uasModel.list[installedItem].url = installedItem;
                 //_this.getLastUpdateTime(uasModel.list[installedItem]);
             }
-
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
@@ -34,7 +32,6 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
@@ -81,7 +78,7 @@
     }
 
     this.getLastUpdateTime = function (repo, callback) {
-        repo.installUpdateLoading = true;
+        repo.workingLoading = true;
         var url = webtoolsModel.apiV3Url + "/git/getLastUpdateTime/" + encodeURIComponent(repo.url);
         $http({
             method: "GET",
@@ -89,10 +86,10 @@
         }).then(function (resp) {
             repo.lastUpdated = resp.data;
             if (callback) callback(resp.data);
-            repo.installUpdateLoading = false;
+            repo.workingLoading = false;
         }, function (errorResp) {
             webtoolsService.log("uasService.getLastUpdateTime - " + webtoolsService.formatError(errorResp), "Uas", true, url);
-            repo.installUpdateLoading = false;
+            repo.workingLoading = false;
         });
     }
 
@@ -103,7 +100,6 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
@@ -120,7 +116,6 @@
             method: "POST",
             url: url,
         }).then(function (resp) {
-            debugger;
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
@@ -129,21 +124,21 @@
         });
     }
 
-    this.getThumb = function (thumbName, callback) {
-        webtoolsModel.uasLoading = true;
-        var url = webtoolsModel.apiV3Url + "/uas/Resources/" + thumbName;
-        $http({
-            method: "GET",
-            url: url,
-        }).then(function (resp) {
-            debugger;
-            if (callback) callback(resp.data);
-            webtoolsModel.uasLoading = false;
-        }, function (errorResp) {
-            webtoolsService.log("uasService.getThumb - " + webtoolsService.formatError(errorResp), "Uas", true, url);
-            webtoolsModel.uasLoading = false;
-        });
-    }
+    //this.getThumb = function (thumbName, callback) {
+    //    webtoolsModel.uasLoading = true;
+    //    var url = webtoolsModel.apiV3Url + "/uas/Resources/" + thumbName;
+    //    $http({
+    //        method: "GET",
+    //        url: url,
+    //    }).then(function (resp) {
+    //        debugger;
+    //        if (callback) callback(resp.data);
+    //        webtoolsModel.uasLoading = false;
+    //    }, function (errorResp) {
+    //        webtoolsService.log("uasService.getThumb - " + webtoolsService.formatError(errorResp), "Uas", true, url);
+    //        webtoolsModel.uasLoading = false;
+    //    });
+    //}
 
     this.migrate = function (callback) {
         webtoolsModel.uasLoading = true;
@@ -152,7 +147,6 @@
             method: "PUT",
             url: url,
         }).then(function (resp) {
-            debugger;
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
@@ -162,7 +156,7 @@
     }
 
     this.installUpdate = function (repo, callback) {
-        repo.installUpdateLoading = true;
+        repo.workingLoading = true;
         var url = webtoolsModel.apiV3Url + "/git/install";
         $http({
             method: "PUT",
@@ -173,11 +167,29 @@
         }).then(function (resp) {
             repo.installed = true;
             if (callback) callback(resp.data);
-            repo.installUpdateLoading = false;
+            repo.workingLoading = false;
+            //_this.getLastUpdateTime(repo);
+        }, function (errorResp) {
+            //webtoolsService.log("uasService.installUpdate - " + webtoolsService.formatError(errorResp), "Uas", true, url);
+            webtoolsService.log("Could not install or update bundle. Check the following URL<br /> BUNDLE URL: " + repo.url, "Uas", true, url); //CUSTOM ERROR BECAUSE OF MANUAL INSTALL -> Do not want regex check for urls..
+            repo.workingLoading = false;
+        });
+    }
+
+    this.delete = function (repo, callback) {
+        repo.workingLoading = true;
+        var url = webtoolsModel.apiV3Url + "/pms/delBundle/" + repo.bundle;
+        $http({
+            method: "DELETE",
+            url: url
+        }).then(function (resp) {
+            repo.installed = false;
+            if (callback) callback(resp.data);
+            repo.workingLoading = false;
             //_this.getLastUpdateTime(repo);
         }, function (errorResp) {
             webtoolsService.log("uasService.installUpdate - " + webtoolsService.formatError(errorResp), "Uas", true, url);
-            repo.installUpdateLoading = false;
+            repo.workingLoading = false;
         });
     }
 

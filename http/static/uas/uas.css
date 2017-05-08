@@ -1,6 +1,29 @@
 ﻿.uas{
 
 }
+.uas .uasBtn{
+    padding:2px 8px;
+    border: 1px solid grey;
+    border-radius:5px;
+    cursor:pointer;
+    background:rgba(0, 77, 255, 0.25);
+}
+.uas .uasBtn:hover{
+    background:rgba(0, 77, 255, 0.55);
+}
+
+.uas .manualInstall{
+    width:300px;
+    border-radius:5px;
+    border-bottom-right-radius:0;
+    border-top-right-radius:0;
+    color:black;
+}
+.uas .manualInstallBtn{
+    border-bottom-left-radius:0;
+    border-top-left-radius:0;
+}
+
 .uas .typesMenu{
     position:fixed;
     right:12px;
@@ -92,14 +115,14 @@
     background: rgba(0, 255, 33, 0.24);
 }
 .uas .repoContainer .repo .title{
-    width: calc(100% - 200px); /*Minus install & icon*/
+    width: calc(100% - 260px); /*Minus install & delete & icon*/
     float:left;
     font-size:1.4em;
 }
 .uas .repoContainer .repo .description{
     height: 40px;
     overflow: hidden;
-    width: calc(100% - 200px); /*Minus install & icon*/
+    width: calc(100% - 260px); /*Minus install & delete & icon*/
     float: left;
 }
 
@@ -112,6 +135,18 @@
     border-left: solid 1px #404040;
 }
 .uas .repoContainer .repo .installUpdate:hover{
+    color:#ababab;
+    background:rgba(0, 0, 0, 0.2)
+}
+.uas .repoContainer .repo .delete{
+    height: 100%;
+    cursor: pointer;
+    width: 60px;
+    text-align: center;
+    padding-top: 30px;
+    border-left: solid 1px #404040;
+}
+.uas .repoContainer .repo .delete:hover{
     color:#ababab;
     background:rgba(0, 0, 0, 0.2)
 }

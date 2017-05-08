@@ -5,9 +5,10 @@
     $scope.init = function () {
         uasService.getTypes(function (data) {
             if (data["Metadata Agent"]) $scope.setType("Metadata Agent", data["Metadata Agent"]);
-        });
-        uasService.getListBundle(function () {
-            uasService.getInstalled();
+
+            uasService.getListBundle(function () {
+                uasService.getInstalled();
+            });
         });
     }
 
@@ -28,5 +29,20 @@
         uasService.installUpdate(repo);
     }
 
-    $scope.init();
+    $scope.delete = function (repo, repoUrl) {
+        repo.url = repoUrl;
+        uasService.delete(repo);
+    }
+
+    $scope.migrate = function () {
+        uasService.migrate($scope.init);
+    }
+
+    $scope.forceUAScache = function () {
+        uasService.updateUASCache(true, $scope.init);
+    }
+
+    uasService.updateUASCache(false, function () {
+        $scope.init();
+    });
 }]);

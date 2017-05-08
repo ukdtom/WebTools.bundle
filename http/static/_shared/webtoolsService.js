@@ -19,7 +19,8 @@
     var checkIsNewVersionAvailable = function (callback) {
         webtoolsModel.globalLoading = true;
 
-        var url = webtoolsModel.apiUrl + "?module=git&function=getReleaseInfo&url=" + webtoolsModel.repoUrl + "&version=latest";
+        var url = webtoolsModel.apiV3Url + "/git/getReleaseInfo/url/" + encodeURIComponent(webtoolsModel.repoUrl) + "/version/latest";
+        //var url = webtoolsModel.apiUrl + "?module=git&function=getReleaseInfo&url=" + webtoolsModel.repoUrl + "&version=latest";
         $http({
             method: "GET",
             url: url,
