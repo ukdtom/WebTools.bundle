@@ -1017,6 +1017,8 @@ class pmsV3(object):
 # Undate uasTypesCounters
 def updateUASTypesCounters():
 	try:
+		alliCounter = 0
+		alltCounter = 0
 		counter = {}
 		# Grap a list of all bundles
 		bundleList = Dict['PMS-AllBundleInfo']
@@ -1025,11 +1027,13 @@ def updateUASTypesCounters():
 				if bundleType in counter:
 					tCounter = int(counter[bundleType]['total'])
 					tCounter += 1
+					alltCounter += 1
 					iCounter = int(counter[bundleType]['installed'])
 					if 'date' not in bundleList[bundle]:
 						bundleList[bundle]['date'] = ''
 					if bundleList[bundle]['date'] != '':
 						iCounter += 1
+						alliCounter += 1						
 					counter[bundleType] = {'installed': iCounter, 'total' : tCounter}
 				else:
 					if 'date' not in bundleList[bundle]:
@@ -1038,6 +1042,8 @@ def updateUASTypesCounters():
 						counter[bundleType] = {'installed': 0, 'total' : 1}
 					else:
 						counter[bundleType] = {'installed': 1, 'total' : 1}
+					alltCounter += 1
+		counter['All'] = {'installed': alliCounter, 'total' : alltCounter}		
 		Dict['uasTypes'] = counter
 		Dict.Save()
 	except Exception, e:		
