@@ -11,7 +11,7 @@
 import glob
 import json
 import shutil, sys
-from consts import BUNDLEDIRNAME, NAME
+from consts import BUNDLEDIRNAME, NAME, VERSION
 from plextvhelper import plexTV
 
 GET = ['GETCSS', 'GETUSERS']
@@ -155,4 +155,43 @@ class wtV3(object):
 			req.clear()
 			req.set_status(500)
 			req.finish('Fatal error happened in getCSS: ' + str(e))
+
+#********************* Internal functions ***********************************
+
+# This function will do a cleanup of old stuff, if needed
+def upgradeCleanup():
+	'''
+	We do take precedence here in a max of 3 integer digits in the version number !
+	'''
+	versionArray = VERSION.split('.')
+	try:
+		major = int(versionArray[0])
+	except Exception, e:
+		Log.Exception('Exception happened digesting the major number of the Version was %s' %(str(e)))
+	try:
+		minor = int(versionArray[1])
+	except Exception, e:
+		Log.Exception('Exception happened digesting the minor number of the Version was %s' %(str(e)))
+	try:
+		# When getting rev number, we need to filter out stuff like dev version
+		rev = int(versionArray[2].split(' ')[0])
+	except Exception, e:
+		Log.Exception('Exception happened digesting the rev number of the Version was %s' %(str(e)))
+	# Older than V3 ?
+	if major > 2:
+		# We need to delete the old uas dir, if present
+		dirUAS = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http', 'uas')
+		try:
+			shutil.rmtree(dirUAS)
+			Log.Debug('Found old uas V2 cache dir, so deleting that')
+		except Exception, e:
+			Log.Exception('We encountered an error during cleanup that was %s', %(str(e)))
+			pass
+
+
+
+
+
+
+
 

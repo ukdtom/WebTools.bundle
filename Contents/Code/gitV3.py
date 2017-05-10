@@ -168,7 +168,7 @@ class gitV3(object):
 	def INSTALL(self, req, *args):
 
 		''' Grap bundle name '''
-		def grapBundleName(url):	
+		def grapBundleName(url):
 			gitName = url.rsplit('/', 1)[-1]
 			# Forgot to name git to end with .bundle?
 			if not gitName.endswith('.bundle'):
