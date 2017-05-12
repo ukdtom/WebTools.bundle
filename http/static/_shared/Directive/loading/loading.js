@@ -16,3 +16,9 @@ angular.module('webtools').directive('inlineLoading', function () {
         template: '<div class="inlineLoading fa fa-cog fa-spin fa-3x fa-fw"></div>'
     };
 });
+angular.module('webtools').directive('inlineLoading2', function () {
+    return {
+        restrict: 'E',
+        template: '<div class="inlineLoading2 fa fa-cog fa-spin fa-3x fa-fw"></div>'
+    };
+});

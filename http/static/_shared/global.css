@@ -78,6 +78,15 @@ inline-loading .inlineLoading {
     font-size:24px;
     color: rgb(51, 122, 183);
 }
+inline-loading2{
+    display: block;
+    z-index: 2;
+    height:20px;
+}
+inline-loading2 .inlineLoading2 {
+    font-size:20px;
+    color: rgb(51, 122, 183);
+}
 
 /* Error Dialog (This is not for Custom Themes - Maybe Later?) */
 .error-dialog .ngdialog-content{

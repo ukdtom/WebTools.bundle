@@ -3,7 +3,10 @@
     <div class="row">
         <div class="col-xs-12">
             <input class="pull-left manualInstall" placeholder="Manual install url..." ng-model="manualInstallUrl" />
-            <div class="pull-left uasBtn manualInstallBtn" ng-click="installUpdate({}, manualInstallUrl)">Manual Install</div>
+            <div class="pull-left uasBtn manualInstallBtn" ng-click="installUpdate(manualRepo, manualInstallUrl, true)">
+                <span ng-if="!manualRepo.workingLoading">Manual Install</span>
+                <inline-loading2 ng-if="manualRepo.workingLoading"></inline-loading2>
+            </div>
             <div class="pull-left uasBtn pushLeftMinor" ng-click="migrate()">Migrate</div>
             <div class="pull-left uasBtn pushLeftMinor" ng-click="forceUAScache()">Force UAS update</div>
         </div>
@@ -34,24 +37,48 @@
             </div>
         </div>
         <div class="repoContainer" ng-if="uasModel.selectedType">
-            <div class="repo" ng-class="{'installed' : repo.installed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue" ng-if="typeExist(repo.type)">
+            <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue" ng-if="typeExist(repo.type)">
                 <!--<div class="lastUpdated" ng-if="repo.lastUpdated">
                     {[{repo.lastUpdated}]}
                 </div>-->
-                <div class="installUpdate pull-right mainBtn textBold600 textBold600" ng-if="!repo.workingLoading" ng-click="installUpdate(repo, key)">
-                    <span ng-if="!repo.installed">Install</span>
-                    <span ng-if="repo.installed">Update</span>
-                </div>
-                <div class="installUpdate pull-right mainBtn textBold600 textBold600" ng-if="repo.workingLoading">
-                    <inline-loading></inline-loading>
-                </div>
-                <div class="delete pull-right mainBtn textBold600 textBold600" ng-if="repo.installed && !repo.workingLoading" ng-click="delete(repo, key)">
-                    <span>Delete</span>
+                <div class="header" ng-click="repo.revealed = !repo.revealed">
+                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading" ng-click="installUpdate(repo, key);$event.stopPropagation();">
+                        <span ng-if="!repo.installed">Install</span>
+                        <span ng-if="repo.installed">Update</span>
+                    </div>
+                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="repo.workingLoading">
+                        <inline-loading></inline-loading>
+                    </div>
+                    <div class="uasBtn delete pull-right mainBtn textBold600" ng-if="repo.installed && !repo.workingLoading" ng-click="delete(repo, key);$event.stopPropagation();">
+                        <span>Delete</span>
+                    </div>
+
+                    <div class="icon" ng-style="{'background': 'url(uas/Resources/{[{repo.icon}]}) center center no-repeat', 'background-size': '90%'}"></div>
+                    <div class="title">{[{repo.title}]}</div>
+                    <div class="description">{[{repo.description}]}</div>
                 </div>
 
-                <div class="icon" ng-style="{'background': 'url(uas/Resources/{[{repo.icon}]}) center center no-repeat', 'background-size': '90%'}"></div>
-                <div class="title">{[{repo.title}]}</div>
-                <div class="description">{[{repo.description}]}</div>
+                <div ng-if="repo.revealed" class="details">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <div>Categories: <span ng-repeat="type in repo.type">{[{type}]}<span ng-if="!$last">, </span></span></div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div>Installed: {[{repo.date}]}</div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div>Manual: {[{repo.manual}]}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div>Repo: {[{key}]}</div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div>Support: {[{repo.supporturl}]}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
