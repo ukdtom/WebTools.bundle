@@ -2,6 +2,8 @@
     $scope.webtoolsModel = webtoolsModel;
     $scope.uasModel = uasModel;
 
+    $scope.manualRepo = {};
+
     $scope.init = function () {
         uasService.getTypes(function (data) {
             if (data["Metadata Agent"]) $scope.setType("Metadata Agent", data["Metadata Agent"]);
@@ -25,9 +27,11 @@
         return false;
     }
 
-    $scope.installUpdate = function (repo, repoUrl) {
+    $scope.installUpdate = function (repo, repoUrl, reinit) {
         repo.url = repoUrl;
-        uasService.installUpdate(repo);
+
+        if (reinit) uasService.installUpdate(repo, $scope.init);
+        else uasService.installUpdate(repo);
     }
 
     $scope.delete = function (repo, repoUrl) {

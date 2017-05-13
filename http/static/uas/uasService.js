@@ -9,7 +9,7 @@
             url: url,
         }).then(function (resp) {
             uasModel.installedList = resp.data;
-            for (installedItem in uasModel.installedList) {
+            for (var installedItem in uasModel.installedList) {
                 if (!uasModel.list[installedItem]) {
                     uasModel.list[installedItem] = uasModel.installedList[installedItem];
                 }
@@ -69,6 +69,11 @@
             url: url,
         }).then(function (resp) {
             uasModel.list = resp.data;
+            //for (var key in resp.data) {
+            //    var item = resp.data[key];
+            //    item.revealed = false;
+            //    uasModel.list.push(item);
+            //}
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
