@@ -7,6 +7,7 @@
 ######################################################################################################################
 
 from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES, BASEURL
+
 import sys
 # Add modules dir to search path
 modules = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'Contents', 'Code', 'modules')

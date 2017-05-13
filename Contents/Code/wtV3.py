@@ -10,7 +10,7 @@
 
 import glob
 import json
-import shutil, sys
+import shutil, sys, os
 from consts import BUNDLEDIRNAME, NAME, VERSION
 from plextvhelper import plexTV
 
@@ -163,6 +163,7 @@ def upgradeCleanup():
 	'''
 	We do take precedence here in a max of 3 integer digits in the version number !
 	'''
+	Log.Info('Running upgradeCleanup')
 	versionArray = VERSION.split('.')
 	try:
 		major = int(versionArray[0])
@@ -182,10 +183,11 @@ def upgradeCleanup():
 		# We need to delete the old uas dir, if present
 		dirUAS = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http', 'uas')
 		try:
-			shutil.rmtree(dirUAS)
-			Log.Debug('Found old uas V2 cache dir, so deleting that')
+			if os.path.isdir(dirUAS):
+				Log.Debug('Found old uas V2 cache dir, so deleting that')
+				shutil.rmtree(dirUAS)				
 		except Exception, e:
-			Log.Exception('We encountered an error during cleanup that was %s', %(str(e)))
+			Log.Exception('We encountered an error during cleanup that was %s' %(str(e)))
 			pass
 
 

@@ -94,6 +94,7 @@ class consts(object):
 			Log.Debug('*****************************************************')
 		else:
 			DEBUGMODE = False
+
 		# Verify install path
 		def isCorrectPath(self):			
 			installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split(BUNDLEDIRNAME,1)
