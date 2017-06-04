@@ -656,7 +656,6 @@ class gitV3(object):
 			Log.Debug('Local SHA for UAS is: %s' %lastUpdateUAS)
 			Log.Debug('Online SHA for UAS is: %s' %onlineSHA)
 			if ((lastUpdateUAS != onlineSHA) or Force):
-				print 'Ged Update time'
 				# Grap file from Github
 				try:
 					zipfile = Archive.ZipFromURL(UAS_URL+ '/archive/' + UAS_BRANCH + '.zip')							
@@ -685,6 +684,11 @@ class gitV3(object):
 						except Exception, e:
 							bError = True
 							Log.Exception("Unexpected Error " + str(e))
+
+				# Put a copy of the NoIcon.png file in the Data storage
+				fileName = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http', 'icons', 'NoIcon.png')
+				target = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', 'com.plexapp.plugins.' + NAME, 'DataItems', 'NoIcon.png')				
+				shutil.copyfile(fileName, target)
 				# Update the AllBundleInfo as well
 				pmsV3.updateAllBundleInfoFromUAS()
 				pmsV3.updateUASTypesCounters()

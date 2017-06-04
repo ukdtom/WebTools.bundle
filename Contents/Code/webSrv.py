@@ -313,6 +313,9 @@ class imageHandler(RequestHandler):
 			self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
 			self.set_header('Content-type',  contenttype)
 			try:
+				# Redirect to unknown icon, in case frontend dev forgets ;-)
+				if image == '':
+					image = 'NoIcon.png'
 				self.write(Data.Load(image))
 				self.finish()
 			except Exception, e:
