@@ -54,28 +54,53 @@
                     </div>
 
                     <div class="icon" ng-style="{'background': 'url(uas/Resources/{[{repo.icon}]}) center center no-repeat', 'background-size': '90%'}"></div>
-                    <div class="title">{[{repo.title}]}</div>
+                    <div class="title">
+                        <span ng-if="!repo.revealed" title="Toggle details"><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
+                        <span ng-if="repo.revealed" title="Toggle details"><i class="fa fa-arrow-up" aria-hidden="true"></i></span>
+                        {[{repo.title}]}
+                    </div>
                     <div class="description">{[{repo.description}]}</div>
                 </div>
 
                 <div ng-if="repo.revealed" class="details">
                     <div class="row">
-                        <div class="col-xs-4">
-                            <div>Categories: <span ng-repeat="type in repo.type">{[{type}]}<span ng-if="!$last">, </span></span></div>
+                        <div class="col-xs-1">
+                            Categories:
                         </div>
-                        <div class="col-xs-4">
-                            <div>Installed: {[{repo.date}]}</div>
-                        </div>
-                        <div class="col-xs-4">
-                            <div>Manual: {[{repo.manual}]}</div>
+                        <div class="col-xs-11">
+                            <span ng-repeat="type in repo.type">{[{type}]}<span ng-if="!$last">, </span></span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-6">
-                            <div>Repo: {[{key}]}</div>
+                        <div class="col-xs-1">
+                            Installed:
                         </div>
-                        <div class="col-xs-6">
-                            <div>Support: {[{repo.supporturl}]}</div>
+                        <div class="col-xs-11">
+                            {[{repo.date}]}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            Manual:
+                        </div>
+                        <div class="col-xs-11">
+                            <a target="_blank" href="{[{repo.manual}]}">{[{repo.manual}]}</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            Repo:
+                        </div>
+                        <div class="col-xs-11">
+                            <a target="_blank" href="{[{key}]}">{[{key}]}</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            Support:
+                        </div>
+                        <div class="col-xs-11">
+                            <a target="_blank" href="{[{repo.supporturl}]}">{[{repo.supporturl}]}</a>
                         </div>
                     </div>
                 </div>
