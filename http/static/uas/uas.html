@@ -37,12 +37,12 @@
             </div>
         </div>
         <div class="repoContainer" ng-if="uasModel.selectedType">
-            <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue" ng-if="typeExist(repo.type)">
+            <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue" ng-if="typeExist(uasModel.selectedType.name, repo.type)">
                 <!--<div class="lastUpdated" ng-if="repo.lastUpdated">
                     {[{repo.lastUpdated}]}
                 </div>-->
                 <div class="header" ng-click="repo.revealed = !repo.revealed">
-                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading" ng-click="installUpdate(repo, key);$event.stopPropagation();">
+                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && !typeExist('Unknown', repo.type)" ng-click="installUpdate(repo, key);$event.stopPropagation();">
                         <span ng-if="!repo.installed">Install</span>
                         <span ng-if="repo.installed">Update</span>
                     </div>
@@ -71,7 +71,7 @@
                             <span ng-repeat="type in repo.type">{[{type}]}<span ng-if="!$last">, </span></span>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" ng-if="repo.date">
                         <div class="col-xs-1">
                             Installed:
                         </div>
@@ -79,7 +79,7 @@
                             {[{repo.date}]}
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" ng-if="repo.manual">
                         <div class="col-xs-1">
                             Manual:
                         </div>
@@ -87,7 +87,7 @@
                             <a target="_blank" href="{[{repo.manual}]}">{[{repo.manual}]}</a>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" ng-if="!typeExist('Unknown', repo.type)">
                         <div class="col-xs-1">
                             Repo:
                         </div>
@@ -95,7 +95,7 @@
                             <a target="_blank" href="{[{key}]}">{[{key}]}</a>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" ng-if="repo.supporturl">
                         <div class="col-xs-1">
                             Support:
                         </div>

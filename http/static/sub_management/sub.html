@@ -8,8 +8,8 @@
     <div ng-if="!webtoolsModel.subLoading" class="pushTopMinor">
 
         <div class="search">
-            <input class="searchInput" ng-enter="searchSub()" ng-model="subModel.searchValue" placeholder="Search..." />
-            <button class="btnSearch" ng-click="searchSub()" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+            <input class="searchInput" ng-enter="searchSub()" ng-model="subModel.searchValue" ng-attr-placeholder="{[{searchPlaceholder}]}" ng-disabled="!isAnyShowExpanded()" />
+            <button class="btnSearch" ng-click="searchSub()" title="Search" ng-disabled="!isAnyShowExpanded()"><i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
 
         <div class="row rowShow" ng-repeat="show in subModel.shows track by show.key | orderBy : 'title'" ng-class="{'expanded': show.expanded}">

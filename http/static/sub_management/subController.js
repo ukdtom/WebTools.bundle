@@ -3,6 +3,8 @@
 
     subService.getShows();
 
+    $scope.searchPlaceholder = "Search...";
+
     $scope.searchSub = function () {
         for (var i = 0; i < subModel.shows.length; i++) {
             var show = subModel.shows[i];
@@ -16,6 +18,18 @@
                 subService.getTvShowDetails(show);
             }
         }
+    }
+
+    $scope.isAnyShowExpanded = function () {
+        var isExpanded = false;
+        for (var i = 0; i < subModel.shows.length; i++) {
+            var show = subModel.shows[i];
+            if (show.expanded) isExpanded = true;
+        }
+
+        if (isExpanded) $scope.searchPlaceholder = "Search...";
+        else $scope.searchPlaceholder = "Expand a show to search";
+        return isExpanded;
     }
 
     $scope.expandShow = function (show) {
