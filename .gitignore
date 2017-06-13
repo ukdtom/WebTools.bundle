@@ -52,4 +52,5 @@ debug
 #****************
 *copy*.*
 
-
+# VS Code
+.vscode
