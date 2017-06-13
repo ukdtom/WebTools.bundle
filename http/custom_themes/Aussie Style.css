@@ -1,0 +1,213 @@
+﻿/*
+    
+    DO NOT EDIT IN THIS CSS FILE 
+    WITHOUT UPDATING THE DEFAULT CSS FILES!
+
+*/
+
+html{
+    /*background: url("../static/_shared/asfalt.png") repeat; /* Credit Subtlepatterns.com */
+}
+body{
+    background-color: rgba(242,225,216,1);
+    color: rgba(119,59,34,0.7);
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(242,225,216,1);
+    outline: 1px solid rgba(255, 255, 255, 0.30);
+}
+::-webkit-scrollbar-thumb:hover{
+    background-color: rgba(242,225,216,1);
+}
+.content{
+    background-color: rgba(242,225,216,1);
+}
+.line{
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+webtools-loading{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+webtools-loading .webtoolsLoading {
+    color: rgb(51, 122, 183);
+}
+content-loading{
+}
+content-loading .contentLoading {
+    color: rgb(51, 122, 183);
+}
+help {
+    color: rgba(119,59,34,0.6);
+}
+help:hover {
+    color: rgba(104,69,44,.9);
+}
+
+/* Login */
+.vertical-center {
+    background-color: rgba(255, 255, 255, 0.00);
+    box-shadow: inset 0px 0px 0px 0px rgba(255, 255, 0, 0.06);
+}
+.mainContainer{
+    background-color: rgba(0,0,0,.15);
+}
+.mainContainer input.mainBtn{ /*Default blue..*/
+}
+.mainContainer input.mainBtn:focus{ /*Default blue..*/
+}
+.mainContainer input.mainBtn:hover{ /*Default blue..*/
+}
+
+/* Head */
+.head{
+    background-color: rgba(194,49,36,1);
+    box-shadow:0 0 0 0px rgba(0,0,0,1);
+}
+.head .title{
+    color: rgb(246,170,81,1);
+}
+
+/* Menu */
+.menu{
+    background-color: rgba(246,137,75,0.25);
+    box-shadow:0 0 0 0px rgba(0,0,0,0);
+}
+.menu .item{
+    background: rgba(217,150,121);
+    color: rgb(119,59,34,0.7);
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,.45);
+}
+.menu .item:hover{
+    background: rgba(119,59,34,0.23);
+    color: rgb(119,59,34,1);
+}
+.menu .toggle{
+    background: rgba(119,59,34,0.6);
+    color: rgb(246,170,81);
+}
+.menu .toggle:hover{
+    background: rgba(104,69,44,.9);
+}
+
+/* Sub Management */
+.sub{
+}
+.sub .search .btnSearch {
+    background: rgba(217,150,121);
+    color: rgb(119,59,34,0.7);
+}
+.sub .search .searchInput{
+    background-color: rgba(246,137,75,0.45);
+    color: #000000;
+}
+.sub .rowShow{
+    background: rgba(246,137,75,0.45);
+    box-shadow: 1px 1px 2px 1px rgba(0,0,0,.45);
+}
+.sub .rowShow.expanded .lineShow .type{
+    border-bottom-color: rgba(194,138,68,1);
+}
+.sub .rowShow.expanded .lineShow .title{
+    border-bottom-color: rgba(194,138,68,1);
+}
+.sub .rowShow .lineShow .contentShow .tvshow{
+    background-color: rgba(194,49,36,0.35);
+}
+.sub .rowShow .lineShow .contentShow .tvshow:hover{
+    background-color: rgba(194,49,36,0.55);
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div{
+    background: rgba(0, 0, 0, 0.13);
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div:hover{
+    background: rgba(0, 0, 0, 0.33);
+}
+.sub .rowShow .lineShow .contentShow .detail{
+    background: rgba(194,49,36,0.2);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem{
+    background: rgba(255, 255, 255,0.2);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.checked{
+    background: rgba(255, 255, 255,0.5);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected{
+    background: rgba(2, 255, 0, 0.04);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected.checked{
+    background: rgba(2, 255, 0, 0.08);
+}
+
+/* Logs */
+.logs .download{
+    background-color: rgba(246,137,75,0.25);
+    color: rgb(119,59,34,0.5);
+}
+.logs .download:hover{
+    background-color: rgba(119,59,34,0.23);
+    color: rgb(119,59,34,1);
+}
+.logs .search{
+    background-color: rgba(246,137,75,0.25);
+}
+.logs .search .searchInput{
+    background-color: rgba(242,225,216);
+    color: #000000;
+}
+.logs .search .btnSearch{
+    background-color: rgba(119,59,34,0.73);
+    color: rgb(246,170,81,1);
+}
+.logs .search .toggleSearch{
+}
+.logs .logDetails{
+    background-color: rgba(128, 128, 128, 0.14);
+}
+.logs .logDetails table tr {
+    border-bottom-color: rgba(242,225,216,0.15);
+}
+.logs .logDetails table tr:nth-child(odd) {
+}
+.logs .logDetails table tr:nth-child(even) {
+    background-color: rgba(242,225,216,0.35);
+}
+.logs .logDetails table tr.danger {
+    background-color: rgb(194,49,36,0.7);
+}
+.logs .logDetails table tr.lineFound{
+    background-color: rgba(0, 77, 255, 0.3);
+}
+.logs .logDetails table tr.lineFound.focused{
+    background-color: rgba(0, 77, 255, 1);
+    box-shadow: 0px 0px 2px 0px yellow;
+}
+
+/* UAS */
+.uas .typesMenu .search .btnSearch {
+    background-color: rgba(246,137,75,0.25);
+}
+.uas .header {
+    background-color: rgba(246,137,75,0.25);
+    box-shadow: 0px 0px 0px 0px black;
+}
+.uas .manualInstallBtn{
+    background-color: rgba(217,150,121);
+    color: rgb(119,59,34,0.7);
+}
+.uas .manualInstallBtn:hover{
+    background-color: rgba(119,59,34,0.23);
+    color: rgb(119,59,34,1);
+}
+
+/* Theme */
+.theme{
+}
+.theme .block{
+    border-color: rgba(217,150,121,0.4);
+}
+.theme .block:hover:not(.activeTheme){
+    background-color: rgba(246,137,75, 0.25);
+}
+.theme .block.activeTheme{
+    background-color: rgba(246,137,75,0.25);
+}

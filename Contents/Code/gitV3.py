@@ -480,8 +480,8 @@ class gitV3(object):
 			Log.Debug('Finished installing %s from branch %s' %(bundleName, branch))
 			Log.Debug('******* Ending install *******')
 			req.clear()
-			req.set_status(200)
-			req.finish('All is cool')
+			req.set_status(200)			
+			req.finish(json.dumps(Dict['installed'][url]))			
 			return req
 		else:
 			Log.Critical('Fatal error happened in install for :' + url)
