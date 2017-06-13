@@ -37,12 +37,12 @@
             </div>
         </div>
         <div class="repoContainer" ng-if="uasModel.selectedType">
-            <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue" ng-if="typeExist(repo.type)">
+            <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue" ng-if="typeExist(uasModel.selectedType.name, repo.type)">
                 <!--<div class="lastUpdated" ng-if="repo.lastUpdated">
                     {[{repo.lastUpdated}]}
                 </div>-->
                 <div class="header" ng-click="repo.revealed = !repo.revealed">
-                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && uasModel.selectedType.name !== 'Unknown'" ng-click="installUpdate(repo, key);$event.stopPropagation();">
+                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && !typeExist('Unknown', repo.type)" ng-click="installUpdate(repo, key);$event.stopPropagation();">
                         <span ng-if="!repo.installed">Install</span>
                         <span ng-if="repo.installed">Update</span>
                     </div>
@@ -87,7 +87,7 @@
                             <a target="_blank" href="{[{repo.manual}]}">{[{repo.manual}]}</a>
                         </div>
                     </div>
-                    <div class="row" ng-if="uasModel.selectedType.name !== 'Unknown'">
+                    <div class="row" ng-if="!typeExist('Unknown', repo.type)">
                         <div class="col-xs-1">
                             Repo:
                         </div>

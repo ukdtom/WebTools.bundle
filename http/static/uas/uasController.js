@@ -19,10 +19,10 @@
         $scope.uasModel.selectedType = type;
     }
 
-    $scope.typeExist = function (itemTypes) {
-        if (uasModel.selectedType.name === "All") return true;
+    $scope.typeExist = function (selectedTypeName, itemTypes) {
+        if (selectedTypeName === "All") return true;
         for (var i = 0; i < itemTypes.length; i++) {
-            if (uasModel.selectedType.name === itemTypes[i]) return true;
+            if (selectedTypeName === itemTypes[i]) return true;
         }
         return false;
     }
