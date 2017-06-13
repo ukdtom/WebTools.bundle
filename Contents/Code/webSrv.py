@@ -300,6 +300,7 @@ class versionHandler(RequestHandler):
 		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
 		self.write(webTools().getVersion())
 
+''' Handler to get images from the DATA API '''
 class imageHandler(RequestHandler):
 #	@authenticated
 	def get(self, **params):
@@ -483,26 +484,26 @@ class webTools2Handler(BaseHandler):
 				return
 
 handlers = [(r"%s/login" %BASEURL, LoginHandler),
-						(r"%s/logout" %BASEURL, LogoutHandler),
-						(r"%s/version" %BASEURL, versionHandler),
-						(r"%s/uas/Resources.*$" %BASEURL, imageHandler),																	# Grap images from Data framework
-						(r'%s/' %BASEURL, idxHandler),																										# Index
-						(r'%s' %BASEURL, idxHandler),																											# Index
-						(r'%s/index.html' %BASEURL, idxHandler),																					# Index
-						(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),																					# API V3
-						(r'%s/webtools2*$' %BASEURL, webTools2Handler),																		# API V2
-						(r'%s/(.*)' %BASEURL, MyStaticFileHandler, {'path': getActualHTTPPath()})					# Static files
+	(r"%s/logout" %BASEURL, LogoutHandler),
+	(r"%s/version" %BASEURL, versionHandler),
+	(r"%s/uas/Resources.*$" %BASEURL, imageHandler),											# Grap images from Data framework
+	(r'%s/' %BASEURL, idxHandler),																# Index
+	(r'%s' %BASEURL, idxHandler),																# Index
+	(r'%s/index.html' %BASEURL, idxHandler),													# Index
+	(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),													# API V3
+	(r'%s/webtools2*$' %BASEURL, webTools2Handler),												# API V2
+	(r'%s/(.*)' %BASEURL, MyStaticFileHandler, {'path': getActualHTTPPath()})					# Static files
 ]
 
 if Prefs['Force_SSL']:
 	httpHandlers = [(r"%s/login" %BASEURL, ForceTSLHandler),
-									(r"%s/logout" %BASEURL, LogoutHandler),
-									(r"%s/version" %BASEURL, ForceTSLHandler),
-									(r'%s/' %BASEURL, ForceTSLHandler),
-									(r'%s/index.html' %BASEURL, ForceTSLHandler),
-									(r"%s/uas/Resources.*$" %BASEURL, imageHandler),														# Grap images from Data framework
-									(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),
-									(r'%s/webtools2*$' %BASEURL, webTools2Handler)
+		(r"%s/logout" %BASEURL, LogoutHandler),
+		(r"%s/version" %BASEURL, ForceTSLHandler),
+		(r'%s/' %BASEURL, ForceTSLHandler),
+		(r'%s/index.html' %BASEURL, ForceTSLHandler),
+		(r"%s/uas/Resources.*$" %BASEURL, imageHandler),										# Grap images from Data framework
+		(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),
+		(r'%s/webtools2*$' %BASEURL, webTools2Handler)
 ]
 else:
 	httpHandlers = handlers
@@ -535,7 +536,6 @@ def start_tornado():
 		ports = int(Prefs['WEB_Port_https'])	
 		http_server.listen(port)
 		http_serverTLS.listen(ports)
-
 		Log.Debug('Starting tornado on ports %s and %s' %(port, ports))
 		IOLoop.instance().start()
 	except Exception, e:

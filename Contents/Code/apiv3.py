@@ -3,7 +3,7 @@
 #
 #	Author: dane22, a Plex Community member
 #
-# Handles calles to the API V3
+# 	Handles calles to the API V3
 #
 ######################################################################################################################
 
@@ -99,14 +99,3 @@ class apiv3(BaseHandler):
 	@authenticated
 	def delete(self, **params):
 		self.makeCall()
-
-
-
-
-
-
-
-
-
-
-
