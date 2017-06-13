@@ -10,12 +10,19 @@
         }).then(function (resp) {
             uasModel.installedList = resp.data;
             for (var installedItem in uasModel.installedList) {
-                if (!uasModel.list[installedItem]) {
-                    uasModel.list[installedItem] = uasModel.installedList[installedItem];
+                var item = uasModel.list[installedItem];
+                if (!item) {
+                    item = uasModel.installedList[installedItem];
+                    //item.description = "----";
                 }
-                uasModel.list[installedItem].installed = true;
-                uasModel.list[installedItem].url = installedItem;
-                uasModel.list[installedItem].date = uasModel.installedList[installedItem].date;
+                item.installed = true;
+                item.url = installedItem;
+                item.date = uasModel.installedList[installedItem].date;
+                item.supporturl = uasModel.installedList[installedItem].supporturl;
+
+                if (!item.icon) item.icon = "art-default.jpg";
+
+                uasModel.list[installedItem] = item;
                 //_this.getLastUpdateTime(uasModel.list[installedItem]);
             }
             if (callback) callback(resp.data);
@@ -25,7 +32,7 @@
             webtoolsModel.uasLoading = false;
         });
     }
-    
+
     this.getReleaseInfo = function (escapedUrl, callback) {
         webtoolsModel.uasLoading = true;
         var url = webtoolsModel.apiV3Url + "/git/getReleaseInfo/" + escapedUrl + "/version/[latest, all]";
@@ -115,7 +122,7 @@
     }
 
     this.updateUASCache = function (force, callback) {
-        if(!force) force = ""; else force = "/force";
+        if (!force) force = ""; else force = "/force";
         webtoolsModel.uasLoading = true;
         var url = webtoolsModel.apiV3Url + "/git/updateUASCache" + force;
         $http({

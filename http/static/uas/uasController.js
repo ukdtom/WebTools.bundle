@@ -21,7 +21,7 @@
 
     $scope.typeExist = function (itemTypes) {
         if (uasModel.selectedType.name === "All") return true;
-        for(var i = 0;i < itemTypes.length;i++){
+        for (var i = 0; i < itemTypes.length; i++) {
             if (uasModel.selectedType.name === itemTypes[i]) return true;
         }
         return false;
