@@ -71,15 +71,15 @@
                             <span ng-repeat="type in repo.type">{[{type}]}<span ng-if="!$last">, </span></span>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" ng-if="repo.date">
                         <div class="col-xs-1">
-                            Installed:
+                            Last updated:
                         </div>
                         <div class="col-xs-11">
                             {[{repo.date}]}
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" ng-if="repo.manual">
                         <div class="col-xs-1">
                             Manual:
                         </div>

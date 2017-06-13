@@ -15,6 +15,7 @@
                 }
                 uasModel.list[installedItem].installed = true;
                 uasModel.list[installedItem].url = installedItem;
+                uasModel.list[installedItem].date = uasModel.installedList[installedItem].date;
                 //_this.getLastUpdateTime(uasModel.list[installedItem]);
             }
             if (callback) callback(resp.data);
