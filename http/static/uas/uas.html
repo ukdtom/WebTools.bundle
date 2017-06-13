@@ -29,27 +29,27 @@
                 <button class="btnSearch" ng-click="DEADFUNCTION()" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
             </div>
             <div class="type"
-                 ng-repeat="(typeName, type) in uasModel.types"
-                 ng-click="setType(typeName, type)"
-                 ng-class="{'active' : uasModel.selectedType.name === typeName}">
-                <div class="pull-left">{[{typeName}]}</div>
+                 ng-repeat="(typeName, type) in uasModel.types | orderObjectBy: 'key'"
+                 ng-click="setType(type.key, type)"
+                 ng-class="{'active' : uasModel.selectedType.name === type.key}">
+                <div class="pull-left">{[{type.key}]}</div>
                 <div class="pull-right">{[{type.viewInstalled}]}/{[{type.viewTotal}]}</div>
             </div>
         </div>
         <div class="repoContainer" ng-if="uasModel.selectedType">
-            <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue" ng-if="typeExist(uasModel.selectedType.name, repo.type)">
+            <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue | orderObjectBy: 'title'" ng-if="typeExist(uasModel.selectedType.name, repo.type)">
                 <!--<div class="lastUpdated" ng-if="repo.lastUpdated">
                     {[{repo.lastUpdated}]}
                 </div>-->
                 <div class="header" ng-click="repo.revealed = !repo.revealed">
-                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && !typeExist('Unknown', repo.type)" ng-click="installUpdate(repo, key);$event.stopPropagation();">
+                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && !typeExist('Unknown', repo.type)" ng-click="installUpdate(repo, repo.key);$event.stopPropagation();">
                         <span ng-if="!repo.installed">Install</span>
                         <span ng-if="repo.installed">Update</span>
                     </div>
                     <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="repo.workingLoading">
                         <inline-loading></inline-loading>
                     </div>
-                    <div class="uasBtn delete pull-right mainBtn textBold600" ng-if="repo.installed && !repo.workingLoading" ng-click="delete(repo, key);$event.stopPropagation();">
+                    <div class="uasBtn delete pull-right mainBtn textBold600" ng-if="repo.installed && !repo.workingLoading" ng-click="delete(repo, repo.key);$event.stopPropagation();">
                         <span>Delete</span>
                     </div>
 
@@ -73,7 +73,7 @@
                     </div>
                     <div class="row" ng-if="repo.date">
                         <div class="col-xs-1">
-                            Installed:
+                            Last updated:
                         </div>
                         <div class="col-xs-11">
                             {[{repo.date}]}
@@ -92,7 +92,8 @@
                             Repo:
                         </div>
                         <div class="col-xs-11">
-                            <a target="_blank" href="{[{key}]}">{[{key}]}</a>
+                            <a ng-if="!repo.key">NO KEY? :(</a>
+                            <a target="_blank" href="{[{repo.key}]}" ng-if="repo.key">{[{repo.key}]}</a>
                         </div>
                     </div>
                     <div class="row" ng-if="repo.supporturl">
