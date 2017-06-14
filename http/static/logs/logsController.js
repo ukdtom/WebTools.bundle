@@ -30,6 +30,10 @@
             $scope.$broadcast("logs_search_findKeywords");
         }
     }
+    $scope.searchClear = function () {
+        $scope.logsModel.searchKeywordValue = "";
+        $scope.$broadcast("logs_search_findKeywords");
+    }
     $scope.searchPrevious = function () {
         if ($scope.logsModel.searchFoundLines.length > 0) $scope.$broadcast("logs_search_previousLine");
     }

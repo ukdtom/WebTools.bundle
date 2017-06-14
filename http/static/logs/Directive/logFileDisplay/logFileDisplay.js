@@ -49,8 +49,6 @@
             }
 
             scope.$on("logs_search_findKeywords", function () {
-                if (!logsModel.searchKeywordValue) return;
-
                 logsModel.searchCurrentIndex = 0;
                 logsModel.searchFoundLines = [];
                 logsModel.searchKeywordValueLast = logsModel.searchKeywordValue;
@@ -59,6 +57,10 @@
                     var detail = logsModel.selectedLog.details[i - 1].toLowerCase();
                     var lineElement = scope.getLineElement(i);
                     if (!lineElement[0]) continue;
+                    if (!logsModel.searchKeywordValue) {
+                        lineElement.removeClass("lineFound");
+                        continue;
+                    }
 
                     if (detail.indexOf(logsModel.searchKeywordValue.toLowerCase()) !== -1) {
                         logsModel.searchFoundLines.push(i);
