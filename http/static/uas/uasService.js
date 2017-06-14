@@ -181,8 +181,7 @@
             repo.installed = true;
             if (callback) callback(resp.data);
             repo.workingLoading = false;
-            _this.getInstalled();
-            //TODO:: repo.date = resp.data.date;
+            repo.date = resp.data.date;
             //_this.getLastUpdateTime(repo);
         }, function (errorResp) {
             //webtoolsService.log("uasService.installUpdate - " + webtoolsService.formatError(errorResp), "Uas", true, url);

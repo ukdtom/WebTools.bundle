@@ -42,7 +42,7 @@
                     {[{repo.lastUpdated}]}
                 </div>-->
                 <div class="header" ng-click="repo.revealed = !repo.revealed">
-                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && !typeExist('Unknown', repo.type)" ng-click="installUpdate(repo, repo.key);$event.stopPropagation();">
+                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && repo.key" ng-click="installUpdate(repo, repo.key);$event.stopPropagation();">
                         <span ng-if="!repo.installed">Install</span>
                         <span ng-if="repo.installed">Update</span>
                     </div>
@@ -87,7 +87,7 @@
                             <a target="_blank" href="{[{repo.manual}]}">{[{repo.manual}]}</a>
                         </div>
                     </div>
-                    <div class="row" ng-if="!typeExist('Unknown', repo.type)">
+                    <div class="row" ng-if="repo.key">
                         <div class="col-xs-1">
                             Repo:
                         </div>
