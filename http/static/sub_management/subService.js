@@ -95,6 +95,22 @@
         });
     }
 
+    this.uploadFile = function (detail, file) {
+        var url = webtoolsModel.apiV3Url + "/pms/uploadFile/key/" + detail.key;
+        $http({
+            method: "POST",
+            data: {
+                localFile: file
+            },
+            url: url,
+        }).then(function (resp) {
+            if (callback) callback(resp.data);
+        }, function (errorResp) {
+            webtoolsService.log("subService.uploadFile - " + webtoolsService.formatError(errorResp), "Sub", true, url);
+        });
+        
+    }
+
     this.deleteSubtitle = function (detail, subtitle, callback) {
         detail.loading = true;
         subModel.deleteCountAsyncRunning++;

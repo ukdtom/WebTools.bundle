@@ -10,7 +10,7 @@
                 <div class="fa fa-square-o" ng-if="!detail.subAllChecked" title="Select All"></div>
                 <div class="fa fa-check-square-o" ng-if="detail.subAllChecked" title="Deselect all"></div>
             </div>
-            <div ng-click="upload();">
+            <div ng-click="upload(detail);">
                 <div class="fa fa-upload" title="Upload Subtitle"></div>
             </div>
             <div ng-click="deleteSelected(detail);" ng-if="detail.subtitles.length > 0">
