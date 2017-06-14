@@ -198,10 +198,19 @@
             }
         }).then(function (resp) {
             repo.installed = true;
+            repo.date = resp.data.date;
+
+            for (var i = 0; i < resp.data.type.length; i++) {
+                var type = resp.data.type[i];
+                uasModel.types[type].installed += 1;
+                uasModel.types[type].viewInstalled += 1;
+
+                uasModel.types["All"].installed += 1;
+                uasModel.types["All"].viewInstalled += 1;
+            }
+
             if (callback) callback(resp.data);
             repo.workingLoading = false;
-            repo.date = resp.data.date;
-            //_this.getLastUpdateTime(repo);
         }, function (errorResp) {
             //webtoolsService.log("uasService.installUpdate - " + webtoolsService.formatError(errorResp), "Uas", true, url);
             webtoolsService.log("Could not install or update bundle. Check the following URL<br /> BUNDLE URL: " + repo.url, "Uas", true, url); //CUSTOM ERROR BECAUSE OF MANUAL INSTALL -> Do not want regex check for urls..
@@ -218,9 +227,17 @@
         }).then(function (resp) {
             repo.installed = false;
             repo.date = null;
+            for (var i = 0; i < repo.type.length; i++) {
+                var type = repo.type[i];
+                uasModel.types[type].installed -= 1;
+                uasModel.types[type].viewInstalled -= 1;
+
+                uasModel.types["All"].installed -= 1;
+                uasModel.types["All"].viewInstalled -= 1;
+            }
+
             if (callback) callback(resp.data);
             repo.workingLoading = false;
-            //_this.getLastUpdateTime(repo);
         }, function (errorResp) {
             webtoolsService.log("uasService.installUpdate - " + webtoolsService.formatError(errorResp), "Uas", true, url);
             repo.workingLoading = false;
