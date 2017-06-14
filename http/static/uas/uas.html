@@ -90,7 +90,7 @@
                             <a target="_blank" href="{[{repo.manual}]}">{[{repo.manual}]}</a>
                         </div>
                     </div>
-                    <div class="row" ng-if="repo.key">
+                    <div class="row" ng-if="validUrl(repo.key)">
                         <div class="col-xs-1">
                             Repo:
                         </div>
