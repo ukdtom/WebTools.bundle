@@ -59,6 +59,12 @@
         }
     }
 
+    //Validation helper
+    $scope.validUrl = function (url) {
+        return url.indexOf("http") !== -1;
+    }
+
+    //Init
     if (localStorage.uasUpdated) {
         $scope.init();
     } else {
