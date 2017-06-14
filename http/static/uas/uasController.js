@@ -34,6 +34,7 @@
         else uasService.installUpdate(repo);
     }
 
+
     $scope.delete = function (repo, repoUrl) {
         repo.url = repoUrl;
         uasService.delete(repo);
@@ -43,14 +44,25 @@
         uasService.migrate($scope.init);
     }
 
-    $scope.forceUAScache = function () {
-        uasService.updateUASCache(true, $scope.init);
+    $scope.forceCache = function () {
+        uasService.forceCache(true, $scope.init);
+    }
+
+    $scope.checkBundleUpdates = function () {
+        uasService.getUpdateList();
+    }
+
+    $scope.updateAllBundles = function () {
+        for (var i = 0; i < uasModel.updateList.length; i++) {
+            var item = uasModel.updateList[i];
+            $scope.installUpdate(item, item.key)
+        }
     }
 
     if (localStorage.uasUpdated) {
         $scope.init();
     } else {
-        uasService.updateUASCache(false, function () {
+        uasService.forceCache(false, function () {
             localStorage.uasUpdated = true;
             $scope.init();
         });

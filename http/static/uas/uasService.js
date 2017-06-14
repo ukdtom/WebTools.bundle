@@ -113,6 +113,25 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
+            var arr = [];
+            for (var key in resp.data) {
+                uasModel.list[key].updateAvailable = true;
+                uasModel.list[key].type.push("Updates available")
+                var item = resp.data[key];
+                item.key = key;
+                arr.push(item);
+            }
+            uasModel.updateList = arr;
+            if (uasModel.updateList.length > 0) {
+                uasModel.updateType = {
+                    key: "Updates available",
+                    installed: uasModel.updateList.length,
+                    viewInstalled: uasModel.updateList.length,
+                    total: uasModel.types["All"].installed,
+                    viewTotal: uasModel.types["All"].installed
+                };
+            }
+
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
@@ -121,7 +140,7 @@
         });
     }
 
-    this.updateUASCache = function (force, callback) {
+    this.forceCache = function (force, callback) {
         if (!force) force = ""; else force = "/force";
         webtoolsModel.uasLoading = true;
         var url = webtoolsModel.apiV3Url + "/git/updateUASCache" + force;
@@ -132,7 +151,7 @@
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
-            webtoolsService.log("uasService.updateUASCache - " + webtoolsService.formatError(errorResp), "Uas", true, url);
+            webtoolsService.log("uasService.forceCache - " + webtoolsService.formatError(errorResp), "Uas", true, url);
             webtoolsModel.uasLoading = false;
         });
     }

@@ -8,25 +8,23 @@
                 <inline-loading2 ng-if="manualRepo.workingLoading"></inline-loading2>
             </div>
             <div class="pull-left uasBtn pushLeftMinor" ng-click="migrate()">Migrate</div>
-            <div class="pull-left uasBtn pushLeftMinor" ng-click="forceUAScache()">Force UAS update</div>
+            <div class="pull-left uasBtn pushLeftMinor" ng-click="forceCache()">Force UAS update</div>
+            <div class="pull-left uasBtn pushLeftMinor" ng-click="checkBundleUpdates()">Check for bundle updates</div>
         </div>
     </div>
     <content-loading ng-if="webtoolsModel.uasLoading" class="pushTopMinor"></content-loading>
     <div ng-if="!webtoolsModel.uasLoading">
-        <!--<div class="row pushTopMinor">
-            <div class="col-xs-12">
-                <div class="type"
-                     ng-repeat="(typeName, type) in uasModel.types"
-                     ng-click="setType(typeName, type)">
-                    <div class="pull-left">{[{typeName}]}</div>
-                    <div class="pull-right">{[{type.installed}]}/{[{type.total}]}</div>
-                </div>
-            </div>
-        </div>-->
         <div class="typesMenu">
             <div class="search">
                 <input class="searchInput" ng-model="searchValue" placeholder="Search..." />
                 <button class="btnSearch" ng-click="DEADFUNCTION()" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+            <div class="type update"
+                 ng-if="uasModel.updateType"
+                 ng-click="setType(uasModel.updateType.key, uasModel.updateType)"
+                 ng-class="{'active' : uasModel.selectedType.name === uasModel.updateType.key}">
+                <div class="pull-left">{[{uasModel.updateType.key}]}</div>
+                <!--<div class="pull-right">{[{uasModel.updateType.viewInstalled}]}/{[{uasModel.updateType.viewTotal}]}</div>-->
             </div>
             <div class="type"
                  ng-repeat="(typeName, type) in uasModel.types | orderObjectBy: 'key'"
@@ -36,11 +34,16 @@
                 <div class="pull-right">{[{type.viewInstalled}]}/{[{type.viewTotal}]}</div>
             </div>
         </div>
+
+        <div class="row pushTopMinor" ng-if="uasModel.selectedType.name === 'Updates available'">
+            <div class="col-xs-12 textBold600">
+                <div class="pull-left">You have {[{uasModel.updateType.viewInstalled}]} bundle<span ng-if="uasModel.updateType.viewInstalled > 1">s</span> not up to date.</div>
+                <div class="pull-left uasBtn pushLeftMinor" ng-click="updateAllBundles()">Update all</div>
+            </div>
+        </div>
+        
         <div class="repoContainer" ng-if="uasModel.selectedType">
             <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue | orderObjectBy: 'title'" ng-if="typeExist(uasModel.selectedType.name, repo.type)">
-                <!--<div class="lastUpdated" ng-if="repo.lastUpdated">
-                    {[{repo.lastUpdated}]}
-                </div>-->
                 <div class="header" ng-click="repo.revealed = !repo.revealed">
                     <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && repo.key" ng-click="installUpdate(repo, repo.key);$event.stopPropagation();">
                         <span ng-if="!repo.installed">Install</span>
