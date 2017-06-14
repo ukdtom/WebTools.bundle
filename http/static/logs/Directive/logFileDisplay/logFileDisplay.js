@@ -21,10 +21,13 @@
             }
             scope.isDanger = function (detail) {
                 var detailLower = detail.toLowerCase();
+                
+                var index = detailLower.indexOf(" - "); //All occurrences before this part can we check for...
+                if(index !== -1){
+                    detailLower = detailLower.substring(0, index);
+                }
                 return detailLower.indexOf('critical') !== -1 || detailLower.indexOf('exception') !== -1 || detailLower.indexOf('error') !== -1;
             }
-
-
 
             /* Primary for searching */
             scope.getLineElement = function(id){
