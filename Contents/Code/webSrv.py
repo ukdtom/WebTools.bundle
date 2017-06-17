@@ -23,19 +23,7 @@ import threading
 import os, sys, time
 
 import apiv3
-
-# Migrated to new way
 from plextvhelper import plexTV
-from git import git
-from logs import logs
-from pms import pms
-from settings import settings
-from findMedia import findMedia
-from language import language
-from plex2csv import plex2csv
-from wt import wt
-from scheduler import scheduler
-from jsonExporter import jsonExporter
 
 # Below used to find path of this file
 from inspect import getsourcefile
@@ -325,163 +313,6 @@ class imageHandler(RequestHandler):
 			self.set_status(404)
 			self.finish()
 
-class webTools2Handler(BaseHandler):	
-	# Disable auth when debug
-	def prepare(self):
-		if DEBUGMODE:
-			if not WT_AUTH:
-				self.set_secure_cookie(NAME, Hash.MD5(Dict['SharedSecret']+Dict['password']), expires_days = None)
-
-	#******* GET REQUEST *********
-	@authenticated
-	# Get Request
-	def get(self, **params):
-		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')		
-		module = self.get_argument('module', 'missing')
-		if module == 'missing':
-			self.clear()
-			self.set_status(404)
-			self.finish('Missing function call')
-			return
-		else:
-			Log.Debug('Recieved a get call for module: ' + module)
-			
-	
-#TODO
-			''' Attempt to create a dynamic import, but so far, it sadly breaks access to the PMS API :-(
-			import sys
-			sys.path.append(os.path.join(Core.app_support_path, 'Plug-ins', NAME + '.bundle', 'Contents', 'Code'))
-			mod = import_module(module)
-			modClass = getattr(mod, module)()
-			print 'GED1', dir(modClass)
-			callFunction = getattr(modClass, 'reqprocess')
-			self = modClass().reqprocess(self)
-			'''
-
-			#TODO: Remove/Alter this when done
-			if module.upper() in V3MODULES:
-				if '2.' not in VERSION:
-					Log.Critical('Api V2 is about to be retired....Please update your calls towards Api V3 instead')
-					Log.Critical('Params was: ' + str(params))
-#					self.clear()
-#					self.set_status(403)
-#					self.finish('Oliver!!!!  This has been migrated to api V3 :-)')
-
-
-
-			
-
-			if module == 'git':			
-				self = git().reqprocess(self)
-			elif module == 'logs':
-				self = logs().reqprocess(self)
-			elif module == 'pms':
-				self = pms().reqprocess(self)
-			elif module == 'settings':
-				self = settings().reqprocess(self)
-			elif module == 'findMedia':
-				self = findMedia().reqprocess(self)
-			elif module == 'jsonExporter':
-#				self = jsonExporter.reqprocess(self)
-				try:
-					m = getattr(module)
-
-				except Exception, e:
-					print 'Ged json Exception: ' + str(e)
-
-
-
-
-			elif module == 'language':
-				self = language().reqprocess(self)
-			elif module == 'plex2csv':
-				self = plex2csv().reqprocess(self)
-			elif module == 'wt':
-				self = wt().reqprocess(self)
-			elif module == 'scheduler':
-				print 'Ged WebSrv Scheduler'
-				self = scheduler().reqprocess(self)
-			else:
-				self.clear()
-				self.set_status(412)
-				self.finish('Unknown module call')
-				return
-
-	#******* POST REQUEST *********
-	@authenticated
-	def post(self, **params):
-		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')		
-		module = self.get_argument('module', 'missing')
-		if module == 'missing':
-			self.clear()
-			self.set_status(404)
-			self.finish('Missing function call')
-			return
-		else:
-			Log.Debug('Recieved a post call for module: ' + module)
-			if module == 'logs':			
-				self = logs().reqprocessPost(self)
-			elif module == 'settings':			
-				self = settings().reqprocessPost(self)
-			elif module == 'pms':			
-				self = pms().reqprocessPost(self)
-			elif module == 'findMedia':		
-				self = findMedia().reqprocessPost(self)
-			elif module == 'wt':		
-				self = wt().reqprocessPost(self)
-			elif module == 'scheduler':		
-				self = scheduler().reqprocessPost(self)
-			elif module == 'jsonExporter':	
-				self = jsonExporter.reqprocessPost(self)
-			else:
-				self.clear()
-				self.set_status(412)
-				self.finish('Unknown module call')
-				return
-
-	#******* DELETE REQUEST *********
-	@authenticated
-	def delete(self, **params):
-		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')		
-		module = self.get_argument('module', 'missing')
-		if module == 'missing':
-			self.clear()
-			self.set_status(404)
-			self.finish('Missing function call')
-			return
-		else:
-			Log.Debug('Recieved a delete call for module: ' + module)
-			if module == 'pms':			
-				self = pms().reqprocessDelete(self)
-			else:
-				self.clear()
-				self.set_status(412)
-				self.finish('Unknown module call')
-				return
-
-	#******* PUT REQUEST *********
-	@authenticated
-	def put(self, **params):
-		self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')		
-		module = self.get_argument('module', 'missing')
-		if module == 'missing':
-			self.clear()
-			self.set_status(404)
-			self.finish('Missing function call')
-			return
-		else:
-			Log.Debug('Recieved a PUT call for module: ' + module)
-			if module == 'settings':			
-				self = settings().reqprocessPUT(self)
-			elif module == 'git':			
-				self = git().reqprocessPUT(self)
-			elif module == 'pms':			
-				self = pms().reqprocessPUT(self)
-			else:
-				self.clear()
-				self.set_status(412)
-				self.finish('Unknown module call')
-				return
 
 handlers = [(r"%s/login" %BASEURL, LoginHandler),
 	(r"%s/logout" %BASEURL, LogoutHandler),
@@ -490,8 +321,7 @@ handlers = [(r"%s/login" %BASEURL, LoginHandler),
 	(r'%s/' %BASEURL, idxHandler),																# Index
 	(r'%s' %BASEURL, idxHandler),																# Index
 	(r'%s/index.html' %BASEURL, idxHandler),													# Index
-	(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),													# API V3
-	(r'%s/webtools2*$' %BASEURL, webTools2Handler),												# API V2
+	(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),													# API V3	
 	(r'%s/(.*)' %BASEURL, MyStaticFileHandler, {'path': getActualHTTPPath()})					# Static files
 ]
 
@@ -502,8 +332,7 @@ if Prefs['Force_SSL']:
 		(r'%s/' %BASEURL, ForceTSLHandler),
 		(r'%s/index.html' %BASEURL, ForceTSLHandler),
 		(r"%s/uas/Resources.*$" %BASEURL, imageHandler),										# Grap images from Data framework
-		(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3),
-		(r'%s/webtools2*$' %BASEURL, webTools2Handler)
+		(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3)		
 ]
 else:
 	httpHandlers = handlers
