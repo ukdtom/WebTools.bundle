@@ -753,10 +753,6 @@ class pmsV3(object):
 				title = params[params.index('title')+1].upper()
 			except Exception, e:
 				title = None
-
-			print 'Ged title', title
-
-
 			# Got all the needed params, so lets grap the contents
 			try:
 				if letterKey:
@@ -976,31 +972,24 @@ class pmsV3(object):
 				req.set_status(412)
 				req.finish('Missing upload file parameter named localFile from the payload')			
 			else:
-				localFile = req.request.files['localFile'][0]
-				print 'Ged PMS UploadSub'
+				localFile = req.request.files['localFile'][0]				
 				# Lookup media
 				url = misc.GetLoopBack() + '/library/metadata/' + key + '?excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role'
 				media = XML.ElementFromURL(url)
-				mediaFile = media.xpath('//Part[@id=' + part + ']')[0].get('file')				
-				print 'Ged3', mediaFile
-				remoteFile = os.path.splitext(mediaFile)[0] + '.' + language + '.srt'
-				print 'Ged4', remoteFile
-
-
-				'''								
+				mediaFile = media.xpath('//Part[@id=' + part + ']')[0].get('file')								
+				remoteFile = os.path.splitext(mediaFile)[0] + '.' + language + '.srt'				
 				# Save it
 				output_file = io.open(remoteFile, 'wb')
 				output_file.write(localFile['body'])
-				output_file.close
-				'''
+				output_file.close				
 				req.clear()
 				req.set_status(200)
 				req.finish('Upload ok')
 		except Exception, e:
-			Log.Exception('Fatal error happened in uploadFile: ' + str(e))
+			Log.Exception('Fatal error happened in uploadSub: ' + str(e))
 			req.clear()
 			req.set_status(500)
-			req.finish('Fatal error happened in uploadFile: ' + str(e))			
+			req.finish('Fatal error happened in uploadSub: ' + str(e))			
 
 	''' Search for a title '''
 	@classmethod
