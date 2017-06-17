@@ -14,7 +14,7 @@ from xml.etree import ElementTree
 
 GET = ['SEARCH', 'GETALLBUNDLEINFO', 'GETSECTIONSLIST', 'GETSECTIONSIZE', 'GETSECTIONLETTERLIST', 'GETSECTION', 'GETSUBTITLES', 'GETPARTS', 'SHOWSUBTITLE', 'GETSHOWSIZE', 'GETSHOWSEASONS', 'GETSHOWSEASON', 'GETSHOWCONTENTS', 'DOWNLOADSUBTITLE']
 PUT = ['']
-POST = ['UPLOADFILE']
+POST = ['UPLOADFILE', 'UPLOADSUB']
 DELETE = ['DELBUNDLE', 'DELSUB']
 
 class pmsV3(object):
@@ -942,6 +942,65 @@ class pmsV3(object):
 			req.clear()
 			req.set_status(500)
 			req.finish('Fatal error happened in uploadFile: ' + str(e))
+
+	''' uploadFile Takes remoteFile and localFile (Type file) as params '''
+	@classmethod
+	def UPLOADSUB(self, req, *args):
+		Log.Debug('Got a call for uploadSUB')
+		try:
+			# Get the Language code
+			language = req.get_argument('language', default=None, strip=False)
+			if language == None:
+					req.clear()
+					req.set_status(412)
+					req.finish('Missing language param from the payload')				
+			# Make sure we have a media key
+			if len(args) > 0:
+				# Arguments present
+				if 'key' in args[0]:					
+					try:						
+						key = args[0][args[0].index('key')+1]						
+					except:						
+						req.clear()
+						req.set_status(412)
+						req.finish('Missing media key value parameter')
+					try:						
+						part = args[0][args[0].index('part')+1]						
+					except:						
+						req.clear()
+						req.set_status(412)
+						req.finish('Missing media part value parameter')						
+			# Upload file present?
+			if not 'localFile' in req.request.files:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing upload file parameter named localFile from the payload')			
+			else:
+				localFile = req.request.files['localFile'][0]
+				print 'Ged PMS UploadSub'
+				# Lookup media
+				url = misc.GetLoopBack() + '/library/metadata/' + key + '?excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role'
+				media = XML.ElementFromURL(url)
+				mediaFile = media.xpath('//Part[@id=' + part + ']')[0].get('file')				
+				print 'Ged3', mediaFile
+				remoteFile = os.path.splitext(mediaFile)[0] + '.' + language + '.srt'
+				print 'Ged4', remoteFile
+
+
+				'''								
+				# Save it
+				output_file = io.open(remoteFile, 'wb')
+				output_file.write(localFile['body'])
+				output_file.close
+				'''
+				req.clear()
+				req.set_status(200)
+				req.finish('Upload ok')
+		except Exception, e:
+			Log.Exception('Fatal error happened in uploadFile: ' + str(e))
+			req.clear()
+			req.set_status(500)
+			req.finish('Fatal error happened in uploadFile: ' + str(e))			
 
 	''' Search for a title '''
 	@classmethod
