@@ -63,6 +63,8 @@ webtools.filter('uasSearchBy', ['uasModel', function (uasModel) {
         var filtered = [];
         for (name in items) {
             var item = items[name];
+            if (!Number.isInteger(parseInt(name))) items[name].key = name;
+
             if (item.title.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) {
                 filtered.push(item);
 
@@ -87,7 +89,7 @@ webtools.filter('orderObjectBy', function () {
 
         var array = [];
         for (var objectKey in input) {
-            input[objectKey].key = objectKey;
+            if(!Number.isInteger(parseInt(objectKey))) input[objectKey].key = objectKey;
             array.push(input[objectKey]);
         }
 

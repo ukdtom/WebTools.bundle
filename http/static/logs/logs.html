@@ -4,6 +4,7 @@
             <div ng-class="{'hideFields' : !logsModel.searchVisible}">
                 <input class="searchInput" ng-model="logsModel.searchKeywordValue" placeholder="search..." ng-enter="searchKeyword()" />
                 <button class="btnSearch" ng-click="searchKeyword()" title="Search keyword"><i class="fa fa-search" aria-hidden="true"></i></button>
+                <button class="btnSearch" ng-click="searchClear()" title="Clear search"><i class="fa fa-eraser" aria-hidden="true"></i></button>
                 <button class="btnSearch" ng-click="searchPrevious()" title="Previous" ng-class="{'disabled' : logsModel.searchFoundLines.length === 0}" ng-disabled="logsModel.searchFoundLines.length === 0"><i class="fa fa-backward" aria-hidden="true"></i></button>
                 <button class="btnSearch" ng-click="searchKeyword()" title="Next" ng-class="{'disabled' : logsModel.searchFoundLines.length === 0}" ng-disabled="logsModel.searchFoundLines.length === 0"><i class="fa fa-forward" aria-hidden="true"></i></button>
                 <button class="btnSearch" ng-click="searchJumpToTop()" title="Jump to top"><i class="fa fa-hand-o-up" aria-hidden="true"></i></button>
@@ -32,7 +33,7 @@
         <div class="col-xs-12 textBold600">File empty</div>
     </div>
     <div class="row" ng-if="logsModel.selectedLog.big">
-        <div class="col-xs-12 textBold600 textSize3 warning">It's not recommended to view files this large in the browser (15.000 LINES+). If you want to view the whole file go download it.</div>
+        <div class="col-xs-12 textBold600 textSize3 warning">We recommend you to download large files and view them in your favourite text editor.</div>
     </div>
 
     <content-loading ng-if="webtoolsModel.logsLoading"></content-loading>

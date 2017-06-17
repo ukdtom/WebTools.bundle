@@ -77,8 +77,8 @@
         detail.subAllChecked = !allChecked;
     };
 
-    $scope.upload = function () {
-
+    $scope.upload = function (detail) {
+        subService.uploadFile(detail, "file");
     };
 
     $scope.download = function (subtitle, $event) {
