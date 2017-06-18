@@ -6,12 +6,11 @@
 # 	A WebTools module for handling playlists
 #
 ######################################################################################################################
-import time
-import json
+import time, io, json, datetime, re
 from misc import misc
-import datetime
 from plextvhelper import plexTV
-import re
+from uuid import uuid4
+
 #TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
 import urllib2
 from xml.etree import ElementTree
@@ -21,7 +20,7 @@ from xml.etree import ElementTree
 
 GET = ['LIST', 'DOWNLOAD']
 PUT = []
-POST = ['COPY']
+POST = ['COPY', 'IMPORT']
 DELETE = ['DELETE']
 
 class playlistsV3(object):
@@ -29,6 +28,114 @@ class playlistsV3(object):
 	@classmethod
 	def init(self):
 		self.getListsURL = misc.GetLoopBack() + '/playlists/all'
+
+	''' This metode will copy a playlist. between users '''
+	@classmethod
+	def IMPORT(self, req, *args):
+
+		def genTempFileName():
+			# Generate a tmp file path for the upload		
+			return Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, str(uuid4()))
+
+		# Payload Upload file present?
+		if not 'localFile' in req.request.files:
+			req.clear()
+			req.set_status(412)
+			req.finish('Missing upload file parameter named localFile from the payload')			
+		else:
+			localFile = req.request.files['localFile'][0]
+			remoteFile = ''
+
+		print 'Ged1', localFile
+		
+		tmpFile = genTempFileName()
+
+		print 'Ged2', tmpFile
+
+
+		# Save playlist as a tmp file
+		output_file = io.open(tmpFile, 'wb')
+		output_file.write(localFile['body'])
+		output_file.close				
+
+
+		return				
+
+
+		'''
+			# Now walk the playlist, and do a lookup for the items, in order to grab the librarySectionUUID
+			jsonItems = {}
+			playlistType = playlist.get('playlistType')
+			playlistTitle = playlist.get('title')
+			playlistSmart = (playlist.get('smart') == 1)
+			for item in playlist:
+				itemKey = item.get('ratingKey')
+				xmlUrl = misc.GetLoopBack() + '/library/metadata/' + itemKey
+				UUID = XML.ElementFromURL(misc.GetLoopBack() + '/library/metadata/' + itemKey).get('librarySectionUUID')
+				if UUID in jsonItems:
+					jsonItems[UUID].append(itemKey)
+				else:
+					jsonItems[UUID] = []
+					jsonItems[UUID].append(itemKey)
+			# So we got all the info needed now from the source user, now time for the target user
+			try:
+				#TODO Change to native framework call, when Plex allows token in header
+				urltoPlayLists = misc.GetLoopBack() + '/playlists'
+				opener = urllib2.build_opener(urllib2.HTTPHandler)
+				request = urllib2.Request(urltoPlayLists)
+				request.add_header('X-Plex-Token', users[userto]['accessToken'])
+				response = opener.open(request).read()
+				playlistto = XML.ElementFromString(response)
+			except Ex.HTTPError, e:
+				Log.Exception('HTTP exception when downloading a playlist for the owner was: %s' %(e))
+				req.clear()
+				req.set_status(e.code)			
+				req.finish(str(e))
+			except Exception, e:
+				Log.Exception('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
+				req.clear()
+				req.set_status(500)			
+				req.finish('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
+			# So we got the target users list of playlists, and if the one we need to copy already is there, we delete it
+			for itemto in playlistto:
+				if playlistTitle == itemto.get('title'):
+					keyto = itemto.get('ratingKey')
+					deletePlayLIstforUsr(req, keyto, users[userto]['accessToken'])
+			# Make url for creation of playlist
+			targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + '&title=' + String.Quote(playlistTitle) + '&smart=0&uri=library://'
+			counter = 0
+			for lib in jsonItems:
+				if counter < 1:
+					targetFirstUrl += lib + '/directory//library/metadata/'
+					medias = ','.join(map(str, jsonItems[lib])) 
+					targetFirstUrl += String.Quote(medias)
+					# First url for the post created, so send it, and grab the response
+					try:
+						opener = urllib2.build_opener(urllib2.HTTPHandler)
+						request = urllib2.Request(targetFirstUrl)
+						request.add_header('X-Plex-Token', users[userto]['accessToken'])
+						request.get_method = lambda: 'POST'
+						response = opener.open(request).read()
+						ratingKey = XML.ElementFromString(response).xpath('Playlist/@ratingKey')[0]
+					except Exception, e:
+						Log.Exception('Exception creating first part of playlist was: %s' %(str(e)))
+					counter += 1
+				else:
+					# Remaining as put
+					medias = ','.join(map(str, jsonItems[lib])) 
+					targetSecondUrl = misc.GetLoopBack() + '/playlists/' + ratingKey + '/items?uri=library://' + lib + '/directory//library/metadata/' + String.Quote(medias)
+					opener = urllib2.build_opener(urllib2.HTTPHandler)
+					request = urllib2.Request(targetSecondUrl)
+					request.add_header('X-Plex-Token', users[userto]['accessToken'])
+					request.get_method = lambda: 'PUT'
+					opener.open(request)
+		else:
+			Log.Critical('Missing Arguments')
+			req.clear()
+			req.set_status(412)			
+			req.finish('Missing Arguments')				
+
+		'''	
 
 	''' This metode will copy a playlist. between users '''
 	@classmethod
@@ -380,7 +487,7 @@ class playlistsV3(object):
 				#TODO Change to native framework call, when Plex allows token in header
 				request = urllib2.Request(self.getListsURL, headers=myHeader)
 				playlists = XML.ElementFromString(urllib2.urlopen(request).read())
-#				playlists = XML.ElementFromURL(self.getListsURL, headers=myHeader)
+				#playlists = XML.ElementFromURL(self.getListsURL, headers=myHeader)
 			result = {}
 			for playlist in playlists:
 				id = playlist.get('ratingKey')
