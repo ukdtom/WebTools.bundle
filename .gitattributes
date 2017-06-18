@@ -1,0 +1,5 @@
+.gitattributes export-ignore
+/Wiki export-ignore
+.gitignore export-ignore
+debug export-ignore
+.vscode export-ignore
