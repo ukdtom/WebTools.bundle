@@ -29,34 +29,82 @@ class playlistsV3(object):
 	def init(self):
 		self.getListsURL = misc.GetLoopBack() + '/playlists/all'
 
-	''' This metode will copy a playlist. between users '''
+	''' This metode will import a playlist. '''
 	@classmethod
 	def IMPORT(self, req, *args):
-
-		def genTempFileName():
-			# Generate a tmp file path for the upload		
-			return Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, str(uuid4()))
-
+		# Just init of internal stuff		
+		sName = None
+		sType = None
+		sSrvId = None
+		
 		# Payload Upload file present?
 		if not 'localFile' in req.request.files:
 			req.clear()
 			req.set_status(412)
 			req.finish('Missing upload file parameter named localFile from the payload')			
 		else:
-			localFile = req.request.files['localFile'][0]
-			remoteFile = ''
+			localFile = req.request.files['localFile'][0]['body']
+			
+		try:
+			print 'Ged1', localFile
+			print 'Ged2 ********************'
 
-		print 'Ged1', localFile
+			# Make into seperate lines
+			lines = localFile.split('\n')
+			# Start by checking if we have a valid playlist file
+			if lines[0] != '#EXTM3U':
+				Log.Error('Import file does not start with the line: #EXTM3U')
+				req.clear()
+				req.set_status(406)			
+				req.finish('Seems like we are trying to import a file that is not a playlist!')
+			# Let's check if it's one of ours
+			bOurs = (lines[1] == '#Written by WebTools for Plex')
+			if bOurs:
+				# Placeholder for items to import
+				items = {}
+				Log.Debug('Import file was ours')
+				sName = lines[2].split(':')[1][1:]
+				Log.Debug('Playlist name is %s' %sName)				
+				sType = lines[3].split(':')[1][1:]
+				Log.Debug('Playlist type is %s' %sType)
+				sSrvId = lines[4].split(':')[1][1:]
+				Log.Debug('ServerId this playlist belongs to is %s' %sSrvId)				
+				lineNo = 5				
+				try:
+					for line in lines[5:len(lines):3]:
+						print 'Ged1', lines[lineNo][1:]
+						media = json.loads(lines[lineNo][1:])
+						id = media['Id']
+						item = {}
+						item['ListId'] = media['ListId']
+						lineNo +=1						
+						media = lines[lineNo][8:].split(',', 1)
+						item['time'] = media[0]
+						item['studio'] = media[1].split('-', 1)[0][:-1]
+						item['title'] = media[1].split('-', 1)[1][1:]			
+						lineNo +=1						
+						item['fileName'] = lines[lineNo]						
+						items[id] = item
+						lineNo +=1
+				except IndexError:
+					pass
+
+
+
+
+
+
+			print 'Ged3 ********************'
+			print 'Ged final', json.dumps(items)
+			
+
+
 		
-		tmpFile = genTempFileName()
-
-		print 'Ged2', tmpFile
-
-
-		# Save playlist as a tmp file
-		output_file = io.open(tmpFile, 'wb')
-		output_file.write(localFile['body'])
-		output_file.close				
+		except Exception, e:
+			Log.Exception('Exception happened in Playlist import was: %s' %(str(e)))
+			req.clear()
+			req.set_status(500)
+			req.finish('Exception happened in Playlist import was: %s' %(str(e)))
 
 
 		return				
@@ -218,6 +266,8 @@ class playlistsV3(object):
 				else:
 					jsonItems[UUID] = []
 					jsonItems[UUID].append(itemKey)
+			Log.Debug('Got a playlist that looks like:')
+			Log.Debug(json.dumps(jsonItems))
 			# So we got all the info needed now from the source user, now time for the target user
 			try:
 				#TODO Change to native framework call, when Plex allows token in header
