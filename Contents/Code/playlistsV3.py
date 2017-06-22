@@ -93,7 +93,16 @@ class playlistsV3(object):
 
 
 			print 'Ged3 ********************'
-			print 'Ged final', json.dumps(items)
+			#print 'Ged final', json.dumps(items)
+			for item in items:
+				#print 'Ged77', item, item['fileName']
+				print 'Ged77', item, items[item]['fileName']
+				print 'Ged78'
+				if checkItemIsValid(item, items[item]['fileName']):
+					print 'Ged79 OK', items[item]['fileName']
+				else:
+					print 'Ged80 ERROR', items[item]['fileName']
+					serachForItemKey(items[item]['title'], sType)
 			
 
 
@@ -107,81 +116,6 @@ class playlistsV3(object):
 
 		return				
 
-
-		'''
-			# Now walk the playlist, and do a lookup for the items, in order to grab the librarySectionUUID
-			jsonItems = {}
-			playlistType = playlist.get('playlistType')
-			playlistTitle = playlist.get('title')
-			playlistSmart = (playlist.get('smart') == 1)
-			for item in playlist:
-				itemKey = item.get('ratingKey')
-				xmlUrl = misc.GetLoopBack() + '/library/metadata/' + itemKey
-				UUID = XML.ElementFromURL(misc.GetLoopBack() + '/library/metadata/' + itemKey).get('librarySectionUUID')
-				if UUID in jsonItems:
-					jsonItems[UUID].append(itemKey)
-				else:
-					jsonItems[UUID] = []
-					jsonItems[UUID].append(itemKey)
-			# So we got all the info needed now from the source user, now time for the target user
-			try:
-				#TODO Change to native framework call, when Plex allows token in header
-				urltoPlayLists = misc.GetLoopBack() + '/playlists'
-				opener = urllib2.build_opener(urllib2.HTTPHandler)
-				request = urllib2.Request(urltoPlayLists)
-				request.add_header('X-Plex-Token', users[userto]['accessToken'])
-				response = opener.open(request).read()
-				playlistto = XML.ElementFromString(response)
-			except Ex.HTTPError, e:
-				Log.Exception('HTTP exception when downloading a playlist for the owner was: %s' %(e))
-				req.clear()
-				req.set_status(e.code)			
-				req.finish(str(e))
-			except Exception, e:
-				Log.Exception('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
-				req.clear()
-				req.set_status(500)			
-				req.finish('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
-			# So we got the target users list of playlists, and if the one we need to copy already is there, we delete it
-			for itemto in playlistto:
-				if playlistTitle == itemto.get('title'):
-					keyto = itemto.get('ratingKey')
-					deletePlayLIstforUsr(req, keyto, users[userto]['accessToken'])
-			# Make url for creation of playlist
-			targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + '&title=' + String.Quote(playlistTitle) + '&smart=0&uri=library://'
-			counter = 0
-			for lib in jsonItems:
-				if counter < 1:
-					targetFirstUrl += lib + '/directory//library/metadata/'
-					medias = ','.join(map(str, jsonItems[lib])) 
-					targetFirstUrl += String.Quote(medias)
-					# First url for the post created, so send it, and grab the response
-					try:
-						opener = urllib2.build_opener(urllib2.HTTPHandler)
-						request = urllib2.Request(targetFirstUrl)
-						request.add_header('X-Plex-Token', users[userto]['accessToken'])
-						request.get_method = lambda: 'POST'
-						response = opener.open(request).read()
-						ratingKey = XML.ElementFromString(response).xpath('Playlist/@ratingKey')[0]
-					except Exception, e:
-						Log.Exception('Exception creating first part of playlist was: %s' %(str(e)))
-					counter += 1
-				else:
-					# Remaining as put
-					medias = ','.join(map(str, jsonItems[lib])) 
-					targetSecondUrl = misc.GetLoopBack() + '/playlists/' + ratingKey + '/items?uri=library://' + lib + '/directory//library/metadata/' + String.Quote(medias)
-					opener = urllib2.build_opener(urllib2.HTTPHandler)
-					request = urllib2.Request(targetSecondUrl)
-					request.add_header('X-Plex-Token', users[userto]['accessToken'])
-					request.get_method = lambda: 'PUT'
-					opener.open(request)
-		else:
-			Log.Critical('Missing Arguments')
-			req.clear()
-			req.set_status(412)			
-			req.finish('Missing Arguments')				
-
-		'''	
 
 	''' This metode will copy a playlist. between users '''
 	@classmethod
@@ -636,4 +570,23 @@ def deletePlayLIstforUsr(req, key, token):
 		req.set_status(500)			
 		req.finish('Exception happened when deleting a playlist for the user was: %s' %(str(e)))
 	return req
+
+#******************* Internal functions ***************************
+
+# This function returns true or false, if key/path matches for a media
+def checkItemIsValid(key, path):
+	url = misc.GetLoopBack() + '/library/metadata/' + str(key) + '?excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role'	
+	parts = XML.ElementFromURL(url).xpath('//Part')
+	for part in parts:
+		if part.get('file') == path:
+			return True
+	return False
+
+# This function will search for a a media based on title and type, and return the key
+def serachForItemKey(title, sType):
+	url = misc.GetLoopBack() + '/search?query=' + String.Quote(title)
+	print 'Ged8', title, sType
+	print 'Ged8-1', url
+	found = XML.ElementFromURL(url).xpath('//Part')
+	
 
