@@ -43,12 +43,8 @@ class playlistsV3(object):
 			req.set_status(412)
 			req.finish('Missing upload file parameter named localFile from the payload')			
 		else:
-			localFile = req.request.files['localFile'][0]['body']
-			
-		try:
-			print 'Ged1', localFile
-			print 'Ged2 ********************'
-
+			localFile = req.request.files['localFile'][0]['body']			
+		try:						
 			# Make into seperate lines
 			lines = localFile.split('\n')
 			# Start by checking if we have a valid playlist file
@@ -71,8 +67,7 @@ class playlistsV3(object):
 				Log.Debug('ServerId this playlist belongs to is %s' %sSrvId)				
 				lineNo = 5				
 				try:
-					for line in lines[5:len(lines):3]:
-						print 'Ged1', lines[lineNo][1:]
+					for line in lines[5:len(lines):3]:						
 						media = json.loads(lines[lineNo][1:])
 						id = media['Id']
 						item = {}
@@ -87,6 +82,9 @@ class playlistsV3(object):
 						items[id] = item
 						lineNo +=1
 				except IndexError:
+					pass
+				except Exception, e:
+					print 'Ged exception:' + str(e)
 					pass
 
 
