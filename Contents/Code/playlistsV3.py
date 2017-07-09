@@ -23,6 +23,8 @@ PUT = []
 POST = ['COPY', 'IMPORT']
 DELETE = ['DELETE']
 
+EXCLUDE = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline'
+
 class playlistsV3(object):
 	# Defaults used by the rest of the class
 	@classmethod
@@ -36,6 +38,7 @@ class playlistsV3(object):
 		sName = None
 		sType = None
 		sSrvId = None
+		bSameSrv = False
 		
 		# Payload Upload file present?
 		if not 'localFile' in req.request.files:
@@ -44,7 +47,7 @@ class playlistsV3(object):
 			req.finish('Missing upload file parameter named localFile from the payload')			
 		else:
 			localFile = req.request.files['localFile'][0]['body']			
-		try:						
+		try:									
 			# Make into seperate lines
 			lines = localFile.split('\n')
 			# Start by checking if we have a valid playlist file
@@ -64,7 +67,10 @@ class playlistsV3(object):
 				sType = lines[3].split(':')[1][1:]
 				Log.Debug('Playlist type is %s' %sType)
 				sSrvId = lines[4].split(':')[1][1:]
-				Log.Debug('ServerId this playlist belongs to is %s' %sSrvId)				
+				Log.Debug('ServerId this playlist belongs to is %s' %sSrvId)					
+				thisServerID = XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')
+				Log.Debug('Current Server id is %s' %thisServerID)
+				bSameSrv = (thisServerID == sSrvId)
 				lineNo = 5				
 				try:
 					for line in lines[5:len(lines):3]:						
@@ -72,47 +78,46 @@ class playlistsV3(object):
 						id = media['Id']
 						item = {}
 						item['ListId'] = media['ListId']
+						item['LibraryUUID'] = media['LibraryUUID']
 						lineNo +=1						
-						media = lines[lineNo][8:].split(',', 1)
-						item['time'] = media[0]
-						item['studio'] = media[1].split('-', 1)[0][:-1]
-						item['title'] = media[1].split('-', 1)[1][1:]			
+						media = lines[lineNo][8:].split(',', 1)										
+						item['title'] = media[1].split('-', 1)[1][1:]
 						lineNo +=1						
 						item['fileName'] = lines[lineNo]						
 						items[id] = item
 						lineNo +=1
 				except IndexError:
 					pass
-				except Exception, e:
-					print 'Ged exception:' + str(e)
-					pass
-
-
-
-
-
-
-			print 'Ged3 ********************'
-			#print 'Ged final', json.dumps(items)
+				except Exception, e:										
+					Log.Exception('Exception happened in IMPORT was %s' %(str(e)))
+					pass			
+			finalItems = {}
 			for item in items:
-				#print 'Ged77', item, item['fileName']
-				print 'Ged77', item, items[item]['fileName']
-				print 'Ged78'
-				if checkItemIsValid(item, items[item]['fileName']):
-					print 'Ged79 OK', items[item]['fileName']
-				else:
-					print 'Ged80 ERROR', items[item]['fileName']
-					serachForItemKey(items[item]['title'], sType)
+				if checkItemIsValid(item, items[item]['title'], sType):
+					finalItem = {}
+					finalItem['id'] = id
+					finalItem['LibraryUUID'] = str(items[item]['LibraryUUID'])
+					finalItem['title'] = items[item]['title']						
+					finalItems[items[item]['ListId']] = finalItem
+				else:					
+					Log.Debug('Could not item with a title of %s' %items[item]['title'])
+					result = searchForItemKey(items[item]['title'], sType)
+					if result != None:					
+						finalItem = {}
+						finalItem['id'] = result[0]
+						finalItem['LibraryUUID'] = result[1]								
+						finalItem['title'] = items[item]['title']						
+						finalItems[items[item]['ListId']] = finalItem
+					else:
+						Log.Error('Item %s was not found' %items[item]['title'])
+									
+			print finalItems
 			
-
-
-		
 		except Exception, e:
 			Log.Exception('Exception happened in Playlist import was: %s' %(str(e)))
 			req.clear()
 			req.set_status(500)
 			req.finish('Exception happened in Playlist import was: %s' %(str(e)))
-
 
 		return				
 
@@ -191,7 +196,7 @@ class playlistsV3(object):
 			playlistSmart = (playlist.get('smart') == 1)
 			for item in playlist:
 				itemKey = item.get('ratingKey')
-				xmlUrl = misc.GetLoopBack() + '/library/metadata/' + itemKey
+				xmlUrl = misc.GetLoopBack() + '/library/metadata/' + itemKey + '?' + EXCLUDE				
 				UUID = XML.ElementFromURL(misc.GetLoopBack() + '/library/metadata/' + itemKey).get('librarySectionUUID')
 				if UUID in jsonItems:
 					jsonItems[UUID].append(itemKey)
@@ -276,7 +281,7 @@ class playlistsV3(object):
 				if 'key' in arguments:
 					# Get key of the user
 					key = arguments[arguments.index('key') +1]
-					url = misc.GetLoopBack() + '/playlists/' + key + '/items'
+					url = misc.GetLoopBack() + '/playlists/' + key + '/items' + '?' + EXCLUDE
 				else:
 					Log.Error('Missing key of playlist')
 					req.clear()
@@ -299,14 +304,14 @@ class playlistsV3(object):
 							response = opener.open(request).read()
 							playlist = XML.ElementFromString(response)
 						except Ex.HTTPError, e:
-							Log.Exception('HTTP exception  when downloading a playlist for the owner was: %s' %(e))
+							Log.Exception('HTTP exception when downloading a playlist for the owner was: %s' %(e))
 							req.clear()
 							req.set_status(e.code)			
 							req.finish(str(e))
 						except Exception, e:
 							Log.Exception('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
 							req.clear()
-							req.set_status(500)			
+							req.set_status(e.code)			
 							req.finish('Exception happened when downloading a playlist for the user was: %s' %(str(e)))
 					# Get title of playlist
 					title = playlist.get('title')
@@ -323,9 +328,13 @@ class playlistsV3(object):
 					req.write(unicode('#Written by WebTools for Plex') + '\n')
 					req.write(unicode('#Playlist name: ' + title) + '\n')
 					req.write(unicode('#Playlist type: ' + playListType) + '\n')
+					req.write(unicode('#Server Id: ' + XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')) + '\n')
 					# Lets grap the individual items
 					for item in playlist:
-						req.write(unicode('#{"Id":' + item.get('ratingKey') + ', "ListId":' + item.get('playlistItemID') + '}\n'))
+						# Get the Library UUID
+						url = misc.GetLoopBack() + '/library/metadata/' + item.get('ratingKey') + '?' + EXCLUDE											
+						libraryUUID = XML.ElementFromURL(url).get('librarySectionUUID')							
+						req.write(unicode('#{"Id":' + item.get('ratingKey') + ', "ListId":' + item.get('playlistItemID') + ', "LibraryUUID":"' + libraryUUID + '"}\n'))
 						row = '#EXTINF:'
 						# Get duration
 						try:
@@ -340,8 +349,7 @@ class playlistsV3(object):
 								if item.get('originalTitle') == None:
 									row = row + item.get('grandparentTitle').replace(' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
 								else:
-									row = row + item.get('originalTitle').replace(' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
-								
+									row = row + item.get('originalTitle').replace(' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')								
 							except Exception, e:
 								Log.Exception('Exception digesting an audio entry was %s' %(str(e)))
 								pass
@@ -351,10 +359,10 @@ class playlistsV3(object):
 								entryType =  item.get('type')
 								if entryType == 'movie':
 									# Movie
-									row = row + item.get('studio') + ' - ' + item.get('title')
+									row = row + 'movie' + ' - ' + item.get('title')
 								else:
 									# Show
-									row = row + item.get('grandparentTitle') + ' - ' + item.get('title')
+									row = row + 'show' + ' - ' + item.get('title')
 							except Exception, e:
 								Log.Exception('Exception happened when digesting the line for Playlist was %s' %(str(e)))
 								pass
@@ -374,12 +382,12 @@ class playlistsV3(object):
 				except Exception, e:
 					Log.Exception('Exception happened when downloading a playlist for the owner was: %s' %(str(e)))
 					req.clear()
-					req.set_status(500)			
+					req.set_status(e.code)			
 					req.finish('Exception happened when downloading a playlist for the owner was: %s' %(str(e)))
 		except Exception, e:
 			Log.Exception('Fatal error happened in playlists.download: ' + str(e))
 			req.clear()
-			req.set_status(500)			
+			req.set_status(e.code)			
 			req.finish('Fatal error happened in playlists.download: %s' %(str(e)))
 	
 
@@ -550,6 +558,7 @@ class playlistsV3(object):
 
 
 #************************ Internal functions ************************
+
 def deletePlayLIstforUsr(req, key, token):
 	url = misc.GetLoopBack() + '/playlists/' + key
 	try:
@@ -574,19 +583,31 @@ def deletePlayLIstforUsr(req, key, token):
 #******************* Internal functions ***************************
 
 # This function returns true or false, if key/path matches for a media
-def checkItemIsValid(key, path):
-	url = misc.GetLoopBack() + '/library/metadata/' + str(key) + '?excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role'	
-	parts = XML.ElementFromURL(url).xpath('//Part')
-	for part in parts:
-		if part.get('file') == path:
-			return True
-	return False
-
-# This function will search for a a media based on title and type, and return the key
-def serachForItemKey(title, sType):
-	url = misc.GetLoopBack() + '/search?query=' + String.Quote(title)
-	print 'Ged8', title, sType
-	print 'Ged8-1', url
-	found = XML.ElementFromURL(url).xpath('//Part')
+def checkItemIsValid(key, title, sType):
+	url = misc.GetLoopBack() + '/library/metadata/' + str(key) + '?' + EXCLUDE	
+	#TODO: Fix for other types
+	if sType == 'video':
+		mediaTitle = XML.ElementFromURL(url).xpath('//Video')[0].get('title')		
 	
+	return (title == mediaTitle)
+	
+# This function will search for a a media based on title and type, and return the key
+def searchForItemKey(title, sType):
+	url = misc.GetLoopBack() + '/search?query=' + String.Quote(title) + '&' + EXCLUDE		
+	try:
+		result = []
+		found = XML.ElementFromURL(url)
+		#TODO: Fix for other types
+		# Are we talking about a video here?
+		if sType == 'video':				
+			itemType = found.xpath('//Video/@type')[0]
+			if itemType in ['movie', 'episode', 'show']:				
+				ratingKey = found.xpath('//Video/@ratingKey')[0]
+				result.append(ratingKey)
+				librarySectionUUID = found.xpath('//Video/@librarySectionUUID')[0]
+				result.append(librarySectionUUID)
+				Log.Info('Item named %s was located as item with key %s' %(title, ratingKey))
+				return result
+	except Exception, e:		
+		pass
 
