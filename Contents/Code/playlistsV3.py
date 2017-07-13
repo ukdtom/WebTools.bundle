@@ -586,6 +586,7 @@ def deletePlayLIstforUsr(req, key, token):
 def checkItemIsValid(key, title, sType):
 	url = misc.GetLoopBack() + '/library/metadata/' + str(key) + '?' + EXCLUDE	
 	#TODO: Fix for other types
+	print 'GED TODO Here'
 	if sType == 'video':
 		mediaTitle = XML.ElementFromURL(url).xpath('//Video')[0].get('title')		
 	
