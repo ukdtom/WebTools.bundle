@@ -36,36 +36,44 @@ from os.path import abspath
 
 # Path to http folder within the bundle
 def getActualHTTPPath():
-	HTTPPath = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http')
-	if not os.path.isdir(HTTPPath):
-		Log.Critical('Could not find my http path in: ' + HTTPPath)
-		return ''
-	else:
-		return HTTPPath
+	try:
+		HTTPPath = os.path.normpath(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http'))
+		if not os.path.isdir(HTTPPath):
+			Log.Critical('Could not find my http path in: ' + HTTPPath)
+			return ''
+		else:
+			return HTTPPath
+	except Exception, e:
+		Log.Exception('Exception in getActualHTTPPath was %s' %(str(e)))
 
 # Path to bundle folder within the bundle
 def isCorrectPath(req):	
-	installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split(str(NAME).upper() + '.BUNDLE',1)
-	targetPath = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name).upper()
-	if installedPlugInPath[:-1] != targetPath:
-		Log.Debug('************************************************')
-		Log.Debug('Wrong installation path detected!!!!')
-		Log.Debug('')
-		Log.Debug('Correct path is:')
-		Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle'))
-		Log.Debug('************************************************')
-		installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).split('/Contents',1)
-		msg = '<h1>Wrong installation path detected</h1>'
-		msg = msg + '<p>It seems like you installed ' + NAME + ' into the wrong folder</p>'
-		msg = msg + '<p>You installed ' + NAME + ' here:<p>'
-		msg = msg + installedPlugInPath
-		msg = msg + '<p>but the correct folder is:<p>'
-		msg = msg + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
-		req.clear()
-		req.set_status(404)
-		req.finish(msg)
-	else:
-		Log.Info('Verified a correct install path as: ' + targetPath)
+	try:
+		installedPlugInPath = os.path.normpath(abspath(getsourcefile(lambda:0)).split(str(NAME) + '.bundle',1)[0])
+		targetPath = os.path.normpath(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name))
+		if installedPlugInPath != targetPath:
+			Log.Debug('************************************************')
+			Log.Debug('Wrong installation path detected!!!!')
+			Log.Debug('')
+			Log.Debug('Currently installed in:')
+			Log.Debug(installedPlugInPath)
+			Log.Debug('Correct path is:')
+			Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle'))
+			Log.Debug('************************************************')
+			installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).split('/Contents',1)
+			msg = '<h1>Wrong installation path detected</h1>'
+			msg = msg + '<p>It seems like you installed ' + NAME + ' into the wrong folder</p>'
+			msg = msg + '<p>You installed ' + NAME + ' here:<p>'
+			msg = msg + installedPlugInPath
+			msg = msg + '<p>but the correct folder is:<p>'
+			msg = msg + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
+			req.clear()
+			req.set_status(404)
+			req.finish(msg)
+		else:
+			Log.Info('Verified a correct install path as: ' + targetPath)
+	except Exception, e:
+		Log.Exception('Exception in isCorrectPath was %s' %(str(e)))
 
 #************** webTools functions ******************************
 ''' Here we have the supported functions '''
