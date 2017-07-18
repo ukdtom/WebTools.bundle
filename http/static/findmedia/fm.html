@@ -3,6 +3,13 @@
     <div class="pushTopTrivial">This tool is a combination of FindUnmatched and FindMissing.</div>
     <div>Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive.</div>
 
-    <br /><br /><br />
-    All the above text will get a rework when the tool has been implemented and the new functions will play<br />
+    <div class="pushTopMinor settings">
+        {[{fmModel.settings}]}
+    </div>
+
+    <div class="pushTopMinor sections">
+        <div class="row section" ng-repeat="section in fmModel.sections">
+            <div class="col-xs-12">{[{section.title}]}</div>
+        </div>
+    </div>
 </div>

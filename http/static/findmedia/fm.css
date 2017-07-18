@@ -1,2 +1,22 @@
 ﻿.fm{
 }
+
+.fm .settings{
+
+}
+
+.fm .sections{
+}
+
+.fm .sections .section{
+    width:100%;
+    margin-top:7px;
+    border-bottom:1px solid black;
+    padding:2px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius:5px;
+    cursor:pointer;
+}
+.fm .sections .section:hover{
+    background: rgba(0, 30, 30, 0.15);
+}

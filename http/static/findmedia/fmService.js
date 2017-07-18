@@ -7,7 +7,7 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            fmModel.sections = resp.data;
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
         }, function (errorResp) {
@@ -23,7 +23,7 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            fmModel.settings = resp.data;
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
         }, function (errorResp) {
