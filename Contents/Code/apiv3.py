@@ -46,7 +46,7 @@ class apiv3(BaseHandler):
 	# Make the call
 	# TODO: Make this more dynamic if possible
 	def makeCall(self):
-		Log.Debug('Recieved an apiV3 GET call for module: ' + self.module + ' for method: ' + self.request.method)		
+		Log.Debug('Recieved an apiV3 call for module: ' + self.module + ' for method: ' + self.request.method)		
 		# Generate a handle to the class
 		try:	myClass = getattr(pmsV3, V3MODULES[self.module])
 		except:	
