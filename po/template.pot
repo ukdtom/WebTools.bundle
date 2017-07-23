@@ -4,28 +4,132 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: ../http/static/sub_management/subHelp.html:6
+msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
+msgstr ""
+
+#: ../http/static/theme/theme.html:2
+msgid "Change Theme"
+msgstr ""
+
+#: ../http/static/menu/menu.html:15
+msgid "Changelog"
+msgstr ""
+
+#: ../http/static/changelog/cl.html:2
+msgid "Changelog viewer"
+msgstr ""
+
+#: ../http/static/sub_management/subHelp.html:12
+msgid "Delete selected sidecar from the harddrive."
+msgstr ""
+
+#: ../http/static/logs/logs.html:33
+msgid "File empty"
+msgstr ""
+
 #: ../http/static/menu/menu.html:7
 msgid "FindMedia"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:2
+msgid "FindMedia Tool"
+msgstr ""
+
+#: ../http/static/menu/menu.html:19
+msgid "Help"
 msgstr ""
 
 #: ../http/static/menu/menu.html:3
 msgid "Home"
 msgstr ""
 
+#: ../http/static/sub_management/subHelp.html:5
+msgid "List all subtitles for a movie/tv show in your library."
+msgstr ""
+
+#: ../http/static/logs/logs.html:17
+msgid "LogViewer Tool"
+msgstr ""
+
+#: ../http/static/menu/menu.html:12
+msgid "Logout"
+msgstr ""
+
 #: ../http/static/menu/menu.html:5
 msgid "Logs"
+msgstr ""
+
+#: ../http/static/menu/menu.html:10
+msgid "Options"
+msgstr ""
+
+#: ../http/static/sub_management/subHelp.html:15
+msgid "Options for output."
+msgstr ""
+
+#: ../http/static/sub_management/subHelp.html:18
+msgid "Search for for movies and series inside categories"
+msgstr ""
+
+#: ../http/static/theme/theme.html:5
+msgid "Select one of the available themes to use it:"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:4
+msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr ""
 
 #: ../http/static/menu/menu.html:4
 msgid "Sub Management"
 msgstr ""
 
+#: ../http/static/menu/menu.html:14
+msgid "Theme"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:3
+msgid "This tool is a combination of FindUnmatched and FindMissing."
+msgstr ""
+
+#: ../http/static/menu/menu.html:1
+msgid "Tools"
+msgstr ""
+
 #: ../http/static/menu/menu.html:6
 msgid "UAS"
 msgstr ""
 
+#: ../http/static/menu/menu.html:13
+msgid "Update WT"
+msgstr ""
+
 #: ../http/static/home/home.html:3
 msgid "Use the menu on the left side to navigate in WebTools."
+msgstr ""
+
+#: ../http/static/sub_management/subHelp.html:9
+msgid "View the subtitle and see it's contents to determine what to delete."
+msgstr ""
+
+#: ../http/static/menu/menu.html:21
+msgid "WT Forum Thread"
+msgstr ""
+
+#: ../http/static/menu/menu.html:22
+msgid "WT GitHub"
+msgstr ""
+
+#: ../http/static/menu/menu.html:23
+msgid "WT Manual(PDF)"
+msgstr ""
+
+#: ../http/static/404/404.html:1
+msgid "We could not find the page :("
+msgstr ""
+
+#: ../http/static/logs/logs.html:36
+msgid "We recommend you to download large files and view them in your favourite text editor."
 msgstr ""
 
 #: ../http/static/home/home.html:2
