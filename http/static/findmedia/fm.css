@@ -1,7 +1,32 @@
 ﻿.fm{
 }
 
+.fm button{
+    margin: 5px 0;
+    padding: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+    width:27px;
+    height:27px;
+    background-color: #286090;
+}
+
 .fm .settings{
+    background-color: #353535;
+    position: fixed;
+    top: 55px;
+    right: 30px;
+    border-radius: 10px;
+    z-index: 5;
+    padding: 10px;
+}
+.fm .settings .row label{
+    cursor:pointer;
+}
+.fm .settings.hideFields .row:not(.toggleSettings) {
+    display:none;
+}
+.fm .settings .save{
 
 }
 

@@ -3,4 +3,8 @@
 
     fmService.getSettings();
     fmService.getSectionsList();
+
+    $scope.saveSettings = function () {
+        fmService.setSettings();
+    }
 }]);

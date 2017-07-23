@@ -24,8 +24,8 @@
                         ng-change="loadLog(logsModel.selectedLog)">
                 </select>
             </div>
-            <div class="download textBold600 pushLeftMinor" ng-if="logsModel.selectedLog.value" ng-click="downloadLog()"><i class="fa fa-download" aria-hidden="true"></i> {{Download selected logfile|translate}}</div>
-            <div class="download textBold600 pushLeftMinor" ng-click="downloadLogs()"><i class="fa fa-download" aria-hidden="true"></i> {{Download all logfiles as zip|translate}}</div>
+            <div class="download textBold600 pushLeftMinor" ng-if="logsModel.selectedLog.value" ng-click="downloadLog()" translate><i class="fa fa-download" aria-hidden="true"></i> Download selected logfile</div>
+            <div class="download textBold600 pushLeftMinor" ng-click="downloadLogs()" translate><i class="fa fa-download" aria-hidden="true"></i> Download all logfiles as zip</div>
         </div>
     </div>
 
