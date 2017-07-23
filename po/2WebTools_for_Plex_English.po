@@ -1,0 +1,146 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: WebTools for Plex\n"
+"Language: en\n"
+
+#: ../http/static/menu/menu.html:7
+msgid "FindMedia"
+msgstr "FindMedia"
+
+#: ../http/static/menu/menu.html:3
+msgid "Home"
+msgstr "Home"
+
+#: ../http/static/menu/menu.html:5
+msgid "Logs"
+msgstr "Logs"
+
+#: ../http/static/menu/menu.html:4
+msgid "Sub Management"
+msgstr "Subtitle Management"
+
+#: ../http/static/menu/menu.html:6
+msgid "UAS"
+msgstr "UAS"
+
+#: ../http/static/home/home.html:3
+msgid "Use the menu on the left side to navigate in WebTools."
+msgstr "Use the menu on the left to navigate in WebTools."
+
+#: ../http/static/home/home.html:2
+msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
+msgstr "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
+
+#: ../http/static/home/home.html:1
+msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
+msgstr "Welcome to {[{webtoolsModel.versionFormated}]}"
+
+#: ../http/static/sub_management/subHelp.html:6
+msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
+msgstr "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
+
+#: ../http/static/theme/theme.html:2
+msgid "Change Theme"
+msgstr "Change Theme"
+
+#: ../http/static/menu/menu.html:15
+msgid "Changelog"
+msgstr "Change log"
+
+#: ../http/static/changelog/cl.html:2
+msgid "Changelog viewer"
+msgstr "Change log viewer"
+
+#. A sidecar subtitle is a subtitle, that is located next to it's media
+#: ../http/static/sub_management/subHelp.html:12
+msgid "Delete selected sidecar from the harddrive."
+msgstr "Delete selected sidecar from the harddrive."
+
+#: ../http/static/logs/logs.html:33
+msgid "File empty"
+msgstr "File empty"
+
+#: ../http/static/findmedia/fm.html:2
+msgid "FindMedia Tool"
+msgstr "FindMedia Tool"
+
+#: ../http/static/menu/menu.html:19
+msgid "Help"
+msgstr "Help"
+
+#: ../http/static/sub_management/subHelp.html:5
+msgid "List all subtitles for a movie/tv show in your library."
+msgstr "List all subtitles for a Movie/TV Show in your library"
+
+#: ../http/static/logs/logs.html:17
+msgid "LogViewer Tool"
+msgstr "LogViewer Tool"
+
+#: ../http/static/menu/menu.html:12
+msgid "Logout"
+msgstr "Logout"
+
+#: ../http/static/menu/menu.html:10
+msgid "Options"
+msgstr "Options"
+
+#: ../http/static/sub_management/subHelp.html:15
+msgid "Options for output."
+msgstr "Output Options."
+
+#: ../http/static/sub_management/subHelp.html:18
+msgid "Search for for movies and series inside categories"
+msgstr "Search for Movies and TV Shows inside categories."
+
+#: ../http/static/theme/theme.html:5
+msgid "Select one of the available themes to use it:"
+msgstr "Select one of the available themes to use:"
+
+#: ../http/static/findmedia/fm.html:4
+msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
+msgstr "Select one of the libraries below to scan for Movies/TV Shows that are not in the Plex database or are not on your Hard Drive."
+
+#: ../http/static/menu/menu.html:14
+msgid "Theme"
+msgstr "Theme"
+
+#: ../http/static/findmedia/fm.html:3
+msgid "This tool is a combination of FindUnmatched and FindMissing."
+msgstr "This tool is a combination of 'FindUnmatched' and 'FindMissing'."
+
+#: ../http/static/menu/menu.html:1
+msgid "Tools"
+msgstr "Tools"
+
+#: ../http/static/menu/menu.html:13
+msgid "Update WT"
+msgstr "Update WT"
+
+#: ../http/static/sub_management/subHelp.html:9
+msgid "View the subtitle and see it's contents to determine what to delete."
+msgstr "View the subtitle content to determine what to delete."
+
+#: ../http/static/menu/menu.html:21
+msgid "WT Forum Thread"
+msgstr "WT Forum Thread"
+
+#: ../http/static/menu/menu.html:22
+msgid "WT GitHub"
+msgstr "WT GitHub"
+
+#: ../http/static/menu/menu.html:23
+msgid "WT Manual(PDF)"
+msgstr "WT Manual(PDF)"
+
+#: ../http/static/404/404.html:1
+msgid "We could not find the page :("
+msgstr "We could not find the page :("
+
+#: ../http/static/logs/logs.html:36
+msgid "We recommend you to download large files and view them in your favourite text editor."
+msgstr "We recommend you download large files and view them in your favourite text editor."
+

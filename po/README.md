@@ -1,0 +1,1 @@
+To generate translation files, visit translations directory

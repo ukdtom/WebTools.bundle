@@ -1,26 +1,26 @@
-<div class="textBold600 textSize3 pushTopMajor pushLeftTrivial">Tools</div>
+<div class="textBold600 textSize3 pushTopMajor pushLeftTrivial" translate>Tools</div>
 <div>
-    <div class="item" ng-click="navigateTo('/')">Home</div>
-    <div class="item" ng-click="navigateTo('sub')">Sub Management</div>
-    <div class="item" ng-click="navigateTo('logs')">Logs</div>
-    <div class="item" ng-click="navigateTo('uas')">UAS</div>
-    <div class="item" ng-click="navigateTo('fm')">FindMedia</div>
+    <div class="item" ng-click="navigateTo('/')" translate>Home</div>
+    <div class="item" ng-click="navigateTo('sub')" translate>Sub Management</div>
+    <div class="item" ng-click="navigateTo('logs')" translate>Logs</div>
+    <div class="item" ng-click="navigateTo('uas')" translate>UAS</div>
+    <div class="item" ng-click="navigateTo('fm')" translate>FindMedia</div>
 </div>
 <div class="line pushTopTrivial"></div>
-<div class="textBold600 textSize3 pushTopTrivial pushLeftTrivial">Options</div>
+<div class="textBold600 textSize3 pushTopTrivial pushLeftTrivial" translate>Options</div>
 <div>
-    <div class="item" ng-click="redirectTo('logout')">Logout</div> 
-    <div class="item textBold900" ng-if="webtoolsModel.isNewVersionAvailable">Update WT</div> 
-    <div class="item" ng-click="navigateTo('theme')">Theme</div>
-    <div class="item" ng-click="navigateTo('cl')">Changelog</div>
+    <div class="item" ng-click="redirectTo('logout')" translate>Logout</div> 
+    <div class="item textBold900" ng-if="webtoolsModel.isNewVersionAvailable" translate>Update WT</div> 
+    <div class="item" ng-click="navigateTo('theme')" translate>Theme</div>
+    <div class="item" ng-click="navigateTo('cl')" translate>Changelog</div>
     <div class="item">Factory Reset</div>
 </div>
 <div class="line pushTopTrivial"></div>
-<div class="textBold600 textSize3 pushTopTrivial pushLeftTrivial">Help</div>
+<div class="textBold600 textSize3 pushTopTrivial pushLeftTrivial" translate>Help</div>
 <div>
-    <div class="item" ng-click="redirectTo(webtoolsModel.threadUrl, true)">WT Forum Thread</div>
-    <div class="item" ng-click="redirectTo(webtoolsModel.repoUrl, true)">WT GitHub</div>
-    <div class="item" ng-click="redirectTo('docs/WebTools-User-Manual.pdf', true)">WT Manual(PDF)</div>
+    <div class="item" ng-click="redirectTo(webtoolsModel.threadUrl, true)" translate>WT Forum Thread</div>
+    <div class="item" ng-click="redirectTo(webtoolsModel.repoUrl, true)" translate>WT GitHub</div>
+    <div class="item" ng-click="redirectTo('docs/WebTools-User-Manual.pdf', true)" translate>WT Manual(PDF)</div>
 </div>
 
 <div class="toggle glyphicon" ng-click="menuModel.visible = !menuModel.visible" ng-class="{'glyphicon-arrow-left' : menuModel.visible, 'animation glyphicon-arrow-right' : !menuModel.visible}"></div>

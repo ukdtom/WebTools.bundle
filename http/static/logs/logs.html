@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <div class="textSize4 textBold600 pushBottomMinor">LogViewer Tool</div>
+    <div class="textSize4 textBold600 pushBottomMinor" translate>LogViewer Tool</div>
     <div class="row">
         <div class="col-xs-12">
             <div class="form-group selectLog">
@@ -24,16 +24,16 @@
                         ng-change="loadLog(logsModel.selectedLog)">
                 </select>
             </div>
-            <div class="download textBold600 pushLeftMinor" ng-if="logsModel.selectedLog.value" ng-click="downloadLog()"><i class="fa fa-download" aria-hidden="true"></i> Download selected logfile</div>
-            <div class="download textBold600 pushLeftMinor" ng-click="downloadLogs()"><i class="fa fa-download" aria-hidden="true"></i> Download all logfiles as zip</div>
+            <div class="download textBold600 pushLeftMinor" ng-if="logsModel.selectedLog.value" ng-click="downloadLog()"><i class="fa fa-download" aria-hidden="true"></i> {{Download selected logfile|translate}}</div>
+            <div class="download textBold600 pushLeftMinor" ng-click="downloadLogs()"><i class="fa fa-download" aria-hidden="true"></i> {{Download all logfiles as zip|translate}}</div>
         </div>
     </div>
 
     <div class="row" ng-if="logsModel.selectedLog.details.length === 0">
-        <div class="col-xs-12 textBold600">File empty</div>
+        <div class="col-xs-12 textBold600" translate>File empty</div>
     </div>
     <div class="row" ng-if="logsModel.selectedLog.big">
-        <div class="col-xs-12 textBold600 textSize3 warning">We recommend you to download large files and view them in your favourite text editor.</div>
+        <div class="col-xs-12 textBold600 textSize3 warning" translate>We recommend you to download large files and view them in your favourite text editor.</div>
     </div>
 
     <content-loading ng-if="webtoolsModel.logsLoading"></content-loading>

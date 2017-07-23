@@ -45,7 +45,7 @@ Icon
 *~
  
 *.pyc
-debug
+
 
 #****************
 # Ignore Linux copy
@@ -54,3 +54,10 @@ debug
 
 # VS Code
 .vscode
+
+#****************
+# WebTools specific
+#****************
+translations/
+debug
+

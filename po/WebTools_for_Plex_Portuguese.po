@@ -1,0 +1,145 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: WebTools for Plex\n"
+"Language: pt\n"
+
+#: ../http/static/menu/menu.html:7
+msgid "FindMedia"
+msgstr "FindMedia"
+
+#: ../http/static/menu/menu.html:3
+msgid "Home"
+msgstr "Top"
+
+#: ../http/static/menu/menu.html:5
+msgid "Logs"
+msgstr "Logs"
+
+#: ../http/static/menu/menu.html:4
+msgid "Sub Management"
+msgstr "Gerir legendas"
+
+#: ../http/static/menu/menu.html:6
+msgid "UAS"
+msgstr "UAS"
+
+#: ../http/static/home/home.html:3
+msgid "Use the menu on the left side to navigate in WebTools."
+msgstr "Use o menu à esquerda para navegar em WebTools"
+
+#: ../http/static/home/home.html:2
+msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
+msgstr "Webtools é uma ferramenta para o auxiliar a gerir o servidor de Plex"
+
+#: ../http/static/home/home.html:1
+msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
+msgstr "Bem vindo a  {[{webtoolsModel.versionFormated}]}"
+
+#: ../http/static/sub_management/subHelp.html:6
+msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
+msgstr "Locais (na mesma pasta ou subpasta do filme) ou na pasta do agente."
+
+#: ../http/static/theme/theme.html:2
+msgid "Change Theme"
+msgstr "Mudar o tema"
+
+#: ../http/static/menu/menu.html:15
+msgid "Changelog"
+msgstr "Changelog"
+
+#: ../http/static/changelog/cl.html:2
+msgid "Changelog viewer"
+msgstr "Ver o Changelog"
+
+#: ../http/static/sub_management/subHelp.html:12
+msgid "Delete selected sidecar from the harddrive."
+msgstr "Apagar legenda associada"
+
+#: ../http/static/logs/logs.html:33
+msgid "File empty"
+msgstr "Ficheiro vazio"
+
+#: ../http/static/findmedia/fm.html:2
+msgid "FindMedia Tool"
+msgstr "FindMedia"
+
+#: ../http/static/menu/menu.html:19
+msgid "Help"
+msgstr "Ajuda"
+
+#: ../http/static/sub_management/subHelp.html:5
+msgid "List all subtitles for a movie/tv show in your library."
+msgstr "Lista legendas disponíveis para um filme ou série"
+
+#: ../http/static/logs/logs.html:17
+msgid "LogViewer Tool"
+msgstr "LogViewer"
+
+#: ../http/static/menu/menu.html:12
+msgid "Logout"
+msgstr "Sair"
+
+#: ../http/static/menu/menu.html:10
+msgid "Options"
+msgstr "Opções"
+
+#: ../http/static/sub_management/subHelp.html:15
+msgid "Options for output."
+msgstr "Opções de \"output\""
+
+#: ../http/static/sub_management/subHelp.html:18
+msgid "Search for for movies and series inside categories"
+msgstr "Procurar filmes e séries por categoria"
+
+#: ../http/static/theme/theme.html:5
+msgid "Select one of the available themes to use it:"
+msgstr "Seleccione um dos temas disponíveis:"
+
+#: ../http/static/findmedia/fm.html:4
+msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
+msgstr "Seleccione uma das bibliotecas abaixo para procurar filmes ou séries que não estejam nem na biblioteca de Plex nem no seu disco local"
+
+#: ../http/static/menu/menu.html:14
+msgid "Theme"
+msgstr "Tema"
+
+#: ../http/static/findmedia/fm.html:3
+msgid "This tool is a combination of FindUnmatched and FindMissing."
+msgstr "Esta ferramenta inclui funcionalidades de FindUnmatched e FindMissing."
+
+#: ../http/static/menu/menu.html:1
+msgid "Tools"
+msgstr "Ferramentas"
+
+#: ../http/static/menu/menu.html:13
+msgid "Update WT"
+msgstr "Actualizar WebTools"
+
+#: ../http/static/sub_management/subHelp.html:9
+msgid "View the subtitle and see it's contents to determine what to delete."
+msgstr "Inspeccionar a legenda para identificar o que apagar"
+
+#: ../http/static/menu/menu.html:21
+msgid "WT Forum Thread"
+msgstr "Suporte a WebTools"
+
+#: ../http/static/menu/menu.html:22
+msgid "WT GitHub"
+msgstr "GitHub"
+
+#: ../http/static/menu/menu.html:23
+msgid "WT Manual(PDF)"
+msgstr "Documentação WebTools (pdf)"
+
+#: ../http/static/404/404.html:1
+msgid "We could not find the page :("
+msgstr "Não foi possível encontrar a página :("
+
+#: ../http/static/logs/logs.html:36
+msgid "We recommend you to download large files and view them in your favourite text editor."
+msgstr "Recomenda-se fazer o \"download\" de ficheiros grandes e vê-los com o seu editor de texto favorito"
+
