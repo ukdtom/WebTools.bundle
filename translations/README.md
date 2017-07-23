@@ -1,6 +1,6 @@
-#How to work with translations
+# How to work with translations
 
-##Initial setup
+## Initial setup
 
 * Install npm
 * Install grunt-cli globally
@@ -9,7 +9,7 @@ Make translations directory the current one, and run:
 npm install grunt
 npm install grunt-angular-gettext
 
-##Extraction
+## Extraction
 
 To update the translation template, when ever the website has been updated, do:
 
@@ -18,7 +18,7 @@ To update the translation template, when ever the website has been updated, do:
 
 Template file in PO directory should then be updated
 
-##Compiling
+## Compiling
 To update the file named /http/static/_shared/translations.js with the translations in the po files, do the following:
 
 * Make translations directory the current directory, and run:
