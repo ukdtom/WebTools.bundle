@@ -1,5 +1,5 @@
 ﻿'use strict'
-var webtools = angular.module('webtools', ['ngRoute', 'ngDialog']);
+var webtools = angular.module('webtools', ['ngRoute', 'ngDialog', 'gettext']);
 
 webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', function ($interpolateProvider, $routeProvider, $locationProvider) {
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
@@ -40,9 +40,11 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
     });
 }]);
 
-webtools.run(['webtoolsService', 'themeService', function (webtoolsService, themeService) {
+webtools.run(['webtoolsService', 'themeService', 'gettextCatalog', function (webtoolsService, themeService, gettextCatalog) {
     webtoolsService.loadWebToolsVersion();
     themeService.loadActiveTheme();
+    gettextCatalog.currentLanguage = 'da';
+    gettextCatalog.debug = true;
 }]);
 
 webtools.filter('uasSearchBy', ['uasModel', function (uasModel) {
