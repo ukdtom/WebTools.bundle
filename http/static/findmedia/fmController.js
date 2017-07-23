@@ -20,17 +20,16 @@
     $scope.scanStart = function (section) {
         fmModel.selectedSection = section;
         fmService.scanSection(fmModel.selectedSection.key);
-
-        intervalScanner = $interval(function () {
-            fmService.getStatus();
-            if (!fmModel.scanning) {
-                $interval.cancel(intervalScanner);
-            }
-        }, 100);
     }
 
     $scope.scanStatus = function () {
-        fmService.getStatus();
+        intervalScanner = $interval(function () {
+            fmService.getStatus(function () {
+                if (!fmModel.scanning) {
+                    $interval.cancel(intervalScanner);
+                }
+            });
+        }, 100);
     }
 
     $scope.scanResult = function () {

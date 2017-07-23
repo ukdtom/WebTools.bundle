@@ -130,6 +130,7 @@
             url: url,
         }).then(function (resp) {
             fmModel.scanning = false;
+            _this.getStatus();
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
         }, function (errorResp) {
