@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: WebTools for Plex\n"
+"Language: da\n"
+
+#: ../http/static/menu/menu.html:7
+msgid "FindMedia"
+msgstr "Find Media"
+
+#: ../http/static/menu/menu.html:3
+msgid "Home"
+msgstr "Hjem"
+
+#: ../http/static/menu/menu.html:5
+msgid "Logs"
+msgstr "Logs"
+
+#: ../http/static/menu/menu.html:4
+msgid "Sub Management"
+msgstr "Undertext managment"
+
+#: ../http/static/menu/menu.html:6
+msgid "UAS"
+msgstr "UAS"
+
+#: ../http/static/home/home.html:3
+msgid "Use the menu on the left side to navigate in WebTools."
+msgstr "Brug menuen til venstre til at navigere med"
+
+#: ../http/static/home/home.html:2
+msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
+msgstr ""
+
+#: ../http/static/home/home.html:1
+msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
+msgstr "Velkommen til {[{webtoolsModel.versionFormated}]}"
+
