@@ -20,6 +20,8 @@
     $scope.scanStart = function (section) {
         fmModel.selectedSection = section;
         fmService.scanSection(fmModel.selectedSection.key);
+
+        $scope.scanStatus();
     }
 
     $scope.scanStatus = function () {
