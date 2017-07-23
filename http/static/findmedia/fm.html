@@ -3,8 +3,31 @@
     <div class="pushTopTrivial">This tool is a combination of FindUnmatched and FindMissing.</div>
     <div>Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive.</div>
 
+    {[{fmModel.settings}]}
+
     <div class="pushTopMinor settings">
-        {[{fmModel.settings}]}
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="ignoreHidden">Ignore Hidden</label>
+                <input id="ignoreHidden" class="ignoreHidden" type="checkbox" ng-checked="fmModel.settings.IGNORE_HIDDEN" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="ignoreExtras">Ignore Extras</label>
+                <input id="ignoreExtras" class="ignoreExtras" type="checkbox" ng-checked="fmModel.settings.IGNORE_EXTRAS" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <span class="textBold600">Ignore folders</span>
+            </div>
+        </div>
+        <div class="row" ng-repeat="IGNORED_DIR in fmModel.settings.IGNORED_DIRS">
+            <div class="col-xs-12">
+                {[{$index + 1}]}: <input type="text" class="ignoreDir" ng-model="IGNORED_DIR" />
+            </div>
+        </div>
     </div>
 
     <div class="pushTopMinor sections">
