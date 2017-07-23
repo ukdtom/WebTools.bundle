@@ -5,15 +5,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
 "Project-Id-Version: WebTools for Plex\n"
-"Language: da\n"
+"Language: pt\n"
 
 #: ../http/static/menu/menu.html:7
 msgid "FindMedia"
-msgstr "Find Media"
+msgstr "FindMedia"
 
 #: ../http/static/menu/menu.html:3
 msgid "Home"
-msgstr "Hjem"
+msgstr "Top"
 
 #: ../http/static/menu/menu.html:5
 msgid "Logs"
@@ -21,7 +21,7 @@ msgstr "Logs"
 
 #: ../http/static/menu/menu.html:4
 msgid "Sub Management"
-msgstr "Undertext managment"
+msgstr "Gerir legendas"
 
 #: ../http/static/menu/menu.html:6
 msgid "UAS"
@@ -29,80 +29,79 @@ msgstr "UAS"
 
 #: ../http/static/home/home.html:3
 msgid "Use the menu on the left side to navigate in WebTools."
-msgstr "Brug menuen til venstre til at navigere med"
+msgstr "Use o menu à esquerda para navegar em WebTools"
 
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
-msgstr "WebTools er et værktøj, som ved hjælp af moduler hjælper dig med at håndtere din Plex Media Server"
+msgstr "Webtools é uma ferramenta para o auxiliar a gerir o servidor de Plex"
 
 #: ../http/static/home/home.html:1
 msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
-msgstr "Velkommen til {[{webtoolsModel.versionFormated}]}"
+msgstr "Bem vindo a  {[{webtoolsModel.versionFormated}]}"
 
-#. This means, that we both handle sidecars (Subs located next to the media) as well as subtitles downloaded by an agent, and located inside Plex internal Library directory
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
-msgstr ""
+msgstr "Locais (na mesma pasta ou subpasta do filme) ou na pasta do agente."
 
 #: ../http/static/theme/theme.html:2
 msgid "Change Theme"
-msgstr "Skift tema"
+msgstr "Mudar o tema"
 
 #: ../http/static/menu/menu.html:15
 msgid "Changelog"
-msgstr ""
+msgstr "Changelog"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
-msgstr ""
+msgstr "Ver o Changelog"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
-msgstr "Slet valgte \"sidecar\" undertekst fra harddisken"
+msgstr "Apagar legenda associada"
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
-msgstr "Filen er tom"
+msgstr "Ficheiro vazio"
 
 #: ../http/static/findmedia/fm.html:2
 msgid "FindMedia Tool"
-msgstr ""
+msgstr "FindMedia"
 
 #: ../http/static/menu/menu.html:19
 msgid "Help"
-msgstr "Hjælp"
+msgstr "Ajuda"
 
 #: ../http/static/sub_management/subHelp.html:5
 msgid "List all subtitles for a movie/tv show in your library."
-msgstr "Vis en liste over alle undertekster for et Film/TV bibliotek"
+msgstr "Lista legendas disponíveis para um filme ou série"
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
-msgstr ""
+msgstr "LogViewer"
 
 #: ../http/static/menu/menu.html:12
 msgid "Logout"
-msgstr "Log af"
+msgstr "Sair"
 
 #: ../http/static/menu/menu.html:10
 msgid "Options"
-msgstr "Indstillinger"
+msgstr "Opções"
 
 #: ../http/static/sub_management/subHelp.html:15
 msgid "Options for output."
-msgstr ""
+msgstr "Opções de \"output\""
 
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
-msgstr ""
+msgstr "Procurar filmes e séries por categoria"
 
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
-msgstr "Vælg en af de mulige temaer"
+msgstr "Seleccione um dos temas disponíveis:"
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
-msgstr ""
+msgstr "Seleccione uma das bibliotecas abaixo para procurar filmes ou séries que não estejam nem na biblioteca de Plex nem no seu disco local"
 
 #: ../http/static/menu/menu.html:14
 msgid "Theme"
@@ -110,37 +109,37 @@ msgstr "Tema"
 
 #: ../http/static/findmedia/fm.html:3
 msgid "This tool is a combination of FindUnmatched and FindMissing."
-msgstr "Dette værktøj er en kombination af \"FindUnmatched\" og \"FindMissing\""
+msgstr "Esta ferramenta inclui funcionalidades de FindUnmatched e FindMissing."
 
 #: ../http/static/menu/menu.html:1
 msgid "Tools"
-msgstr "Værktøjer"
+msgstr "Ferramentas"
 
 #: ../http/static/menu/menu.html:13
 msgid "Update WT"
-msgstr "Opdater WebTools"
+msgstr "Actualizar WebTools"
 
 #: ../http/static/sub_management/subHelp.html:9
 msgid "View the subtitle and see it's contents to determine what to delete."
-msgstr ""
+msgstr "Inspeccionar a legenda para identificar o que apagar"
 
 #: ../http/static/menu/menu.html:21
 msgid "WT Forum Thread"
-msgstr "WebTools Forum tråd"
+msgstr "Suporte a WebTools"
 
 #: ../http/static/menu/menu.html:22
 msgid "WT GitHub"
-msgstr "WebTools Github"
+msgstr "GitHub"
 
 #: ../http/static/menu/menu.html:23
 msgid "WT Manual(PDF)"
-msgstr "WebTools Manual (PDF)"
+msgstr "Documentação WebTools (pdf)"
 
 #: ../http/static/404/404.html:1
 msgid "We could not find the page :("
-msgstr "Vi kunne ikke finde den side :("
+msgstr "Não foi possível encontrar a página :("
 
 #: ../http/static/logs/logs.html:36
 msgid "We recommend you to download large files and view them in your favourite text editor."
-msgstr "Vi anbefaler, at du downloader store filer, og viser dem i din lokale editor"
+msgstr "Recomenda-se fazer o \"download\" de ficheiros grandes e vê-los com o seu editor de texto favorito"
 
