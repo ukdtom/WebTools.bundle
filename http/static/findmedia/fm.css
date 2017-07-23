@@ -19,6 +19,9 @@
     border-radius: 10px;
     z-index: 5;
     padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 500px;
 }
 .fm .settings .row label{
     cursor:pointer;
