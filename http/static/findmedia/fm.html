@@ -61,8 +61,16 @@
     </div>
 
     <div class="pushTopMinor sections">
-        <div class="row section" ng-repeat="section in fmModel.sections">
-            <div class="col-xs-12">{[{section.title}]}</div>
+        <div ng-if="fmModel.scanning">
+            {[{fmModel.statusText}]}
+        </div>
+        <div ng-if="!fmModel.scanning">
+            <div class="row section" ng-repeat="section in fmModel.sections">
+                <div class="col-xs-12" ng-click="scanStart(section)">
+                    {[{section.title}]}
+                    <div ng-if="section.result">{[{section.result}]}</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

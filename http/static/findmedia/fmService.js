@@ -84,7 +84,11 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            if (resp.data === "Idle" && fmModel.scanning) {
+                _this.getResult();
+            }
+            fmModel.statusText = resp.data;
+            fmModel.scanning = resp.data !== "Idle"; //Meeeh not good to check for Idle..
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
         }, function (errorResp) {
@@ -100,7 +104,16 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            fmModel.selectedSection.result = resp.data;
+            if (fmModel.selectedSection) {
+                for (var i = 0; i < fmModel.sections.length; i++) {
+                    var section = fmModel.sections[i];
+                    if (section.key === fmModel.selectedSection.key) {
+                        section.result = resp.data;
+                    }
+                }
+            }
+            fmModel.scanning = false;
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
         }, function (errorResp) {
@@ -116,7 +129,7 @@
             method: "PUT",
             url: url,
         }).then(function (resp) {
-            debugger;
+            fmModel.scanning = false;
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
         }, function (errorResp) {
@@ -128,16 +141,19 @@
     this.scanSection = function (sectionNr, callback) {
         webtoolsModel.fmLoading = true;
         var url = webtoolsModel.apiV3Url + "/findMedia/scanSection/" + sectionNr;
+
+        fmModel.scanning = true;
         $http({
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            _this.getStatus();
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
         }, function (errorResp) {
             webtoolsService.log("fmService.scanSection - " + webtoolsService.formatError(errorResp), "Fm", true, url);
             webtoolsModel.fmLoading = false;
+            fmModel.scanning = false;
         });
     }
 }]);
