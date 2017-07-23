@@ -3,3 +3,5 @@
 .gitignore export-ignore
 debug export-ignore
 .vscode export-ignore
+/po export-ignore
+/translations export-ignore
