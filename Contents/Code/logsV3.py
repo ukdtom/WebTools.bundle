@@ -1,9 +1,8 @@
 ######################################################################################################################
-#	log files helper unit				
+# log files helper unit				
 # A WebTools bundle plugin	
 #
-#	Author: dane22, a Plex Community member
-#
+# Author: dane22, a Plex Community member
 #
 ######################################################################################################################
 import shutil
