@@ -1,4 +1,5 @@
 ﻿angular.module('webtools').service('fmService', ['$http', 'fmModel', 'webtoolsModel', 'webtoolsService', function ($http, fmModel, webtoolsModel, webtoolsService) {
+    _this = this;
 
     this.getSectionsList = function (callback) {
         webtoolsModel.fmLoading = true;
@@ -18,6 +19,7 @@
     
     this.getSettings = function (callback) {
         webtoolsModel.fmLoading = true;
+        fmModel.settingsLoading = true;
         var url = webtoolsModel.apiV3Url + "/findMedia/getSettings";
         $http({
             method: "GET",
@@ -26,9 +28,11 @@
             fmModel.settings = resp.data;
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
+            fmModel.settingsLoading = false;
         }, function (errorResp) {
             webtoolsService.log("fmService.getSettings - " + webtoolsService.formatError(errorResp), "Fm", true, url);
             webtoolsModel.fmLoading = false;
+            fmModel.settingsLoading = false;
         });
     }
     
@@ -58,18 +62,18 @@
     }
     
     this.resetSettings = function (callback) {
-        webtoolsModel.fmLoading = true;
+        fmModel.settingsLoading = true;
         var url = webtoolsModel.apiV3Url + "/findMedia/resetSettings";
         $http({
             method: "PUT",
             url: url,
         }).then(function (resp) {
-            debugger;
+            _this.getSettings();
             if (callback) callback(resp.data);
-            webtoolsModel.fmLoading = false;
+            fmModel.settingsLoading = false;
         }, function (errorResp) {
             webtoolsService.log("fmService.resetSettings - " + webtoolsService.formatError(errorResp), "Fm", true, url);
-            webtoolsModel.fmLoading = false;
+            fmModel.settingsLoading = false;
         });
     }
     

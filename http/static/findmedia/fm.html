@@ -4,10 +4,12 @@
     <div translate>Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive.</div>
 
     <div class="pushTopMinor settings" ng-class="{'hideFields' : !fmModel.settingsVisible}">
-        <div class="row toggleSettings pull-right">
+        <div class="row toggleSettings">
             <div class="col-xs-12">
-                <label for="showSettings">Show settings</label>
-                <button id="showSettings" ng-click="fmModel.settingsVisible = !fmModel.settingsVisible" title="Hide/Show settings menu"><i class="fa" ng-class="{'fa-eye-slash' : !fmModel.settingsVisible, 'fa-eye' : fmModel.settingsVisible}" aria-hidden="true"></i></button>
+                <div class="pull-right">
+                    <label for="showSettings">Show settings</label>
+                    <button id="showSettings" ng-click="fmModel.settingsVisible = !fmModel.settingsVisible" title="Hide/Show settings menu"><i class="fa" ng-class="{'fa-eye-slash' : !fmModel.settingsVisible, 'fa-eye' : fmModel.settingsVisible}" aria-hidden="true"></i></button>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -39,10 +41,20 @@
                 <label for="addIgnoredFolder">Add ignored folder</label> 
             </div>
         </div>
-        <div class="row pull-right">
+        <div class="row">
             <div class="col-xs-12">
-                <label for="saveSettings">Save settings</label>
-                <button id="saveSettings" ng-click="saveSettings()" title="Save settings"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-floppy-o' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
+                <div class="pull-right">
+                    <label for="resetSettings">Reset settings</label>
+                    <button id="resetSettings" ng-click="resetSettings()" title="Reset settings"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-undo' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="pull-right">
+                    <label for="saveSettings">Save settings</label>
+                    <button id="saveSettings" ng-click="saveSettings()" title="Save settings"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-floppy-o' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
+                </div>
             </div>
         </div>
         
