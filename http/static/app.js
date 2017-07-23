@@ -43,7 +43,7 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
 webtools.run(['webtoolsService', 'themeService', 'gettextCatalog', function (webtoolsService, themeService, gettextCatalog) {
     webtoolsService.loadWebToolsVersion();
     themeService.loadActiveTheme();
-    gettextCatalog.currentLanguage = 'da';
+    gettextCatalog.currentLanguage = 'ak';
     gettextCatalog.debug = true;
 }]);
 
