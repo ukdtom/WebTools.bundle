@@ -11,7 +11,7 @@ from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES, BASEURL, UILANG
 
 import sys
 # Add modules dir to search path
-modules = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'Contents', 'Code', 'modules')
+modules = Core.storage.join_path(Core.bundle_path, 'Contents', 'Code', 'modules')
 sys.path.append(modules)
 
 from tornado.web import *
