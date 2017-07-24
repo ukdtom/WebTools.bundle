@@ -19,6 +19,10 @@ To update the translation template, when ever the website has been updated, do:
 
 Template file in PO directory should then be updated
 
+After that is done, we can import it to the translation site, and notify contributers
+https://poeditor.com/join/project/8uRxEmAE4M
+
+
 ## Compiling
 To update the file named /http/static/_shared/translations.js with the translations in the po files, do the following:
 
