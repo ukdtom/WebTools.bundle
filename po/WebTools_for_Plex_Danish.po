@@ -7,26 +7,6 @@ msgstr ""
 "Project-Id-Version: WebTools for Plex\n"
 "Language: da\n"
 
-#: ../http/static/menu/menu.html:7
-msgid "FindMedia"
-msgstr "Find Media"
-
-#: ../http/static/menu/menu.html:3
-msgid "Home"
-msgstr "Hjem"
-
-#: ../http/static/menu/menu.html:5
-msgid "Logs"
-msgstr "Logs"
-
-#: ../http/static/menu/menu.html:4
-msgid "Sub Management"
-msgstr "Undertext managment"
-
-#: ../http/static/menu/menu.html:6
-msgid "UAS"
-msgstr "UAS"
-
 #: ../http/static/home/home.html:3
 msgid "Use the menu on the left side to navigate in WebTools."
 msgstr "Brug menuen til venstre til at navigere med"
@@ -42,7 +22,7 @@ msgstr "Velkommen til {[{webtoolsModel.versionFormated}]}"
 #. This means, that we both handle sidecars (Subs located next to the media) as well as subtitles downloaded by an agent, and located inside Plex internal Library directory
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
-msgstr ""
+msgstr "Både lokalt (Undertext i samme bibliotek som filmen, eller i en underfolder) og i Plex interne bibliotek (Agent)"
 
 #: ../http/static/theme/theme.html:2
 msgid "Change Theme"
@@ -50,11 +30,11 @@ msgstr "Skift tema"
 
 #: ../http/static/menu/menu.html:15
 msgid "Changelog"
-msgstr ""
+msgstr "Change Log"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
-msgstr ""
+msgstr "Vis Change Log"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
@@ -66,7 +46,7 @@ msgstr "Filen er tom"
 
 #: ../http/static/findmedia/fm.html:2
 msgid "FindMedia Tool"
-msgstr ""
+msgstr "FindMedia Tool"
 
 #: ../http/static/menu/menu.html:19
 msgid "Help"
@@ -78,7 +58,7 @@ msgstr "Vis en liste over alle undertekster for et Film/TV bibliotek"
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
-msgstr ""
+msgstr "LogViewer Tool"
 
 #: ../http/static/menu/menu.html:12
 msgid "Logout"
@@ -112,10 +92,6 @@ msgstr "Tema"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "Dette værktøj er en kombination af \"FindUnmatched\" og \"FindMissing\""
 
-#: ../http/static/menu/menu.html:1
-msgid "Tools"
-msgstr "Værktøjer"
-
 #: ../http/static/menu/menu.html:13
 msgid "Update WT"
 msgstr "Opdater WebTools"
@@ -143,4 +119,16 @@ msgstr "Vi kunne ikke finde den side :("
 #: ../http/static/logs/logs.html:36
 msgid "We recommend you to download large files and view them in your favourite text editor."
 msgstr "Vi anbefaler, at du downloader store filer, og viser dem i din lokale editor"
+
+#: ../http/static/logs/logsService.js:40
+msgid "---------- MORE LINES AVAILABLE IN THE ORIGINAL FILE! If you want to view the rest of the file go download it ----------"
+msgstr "---------- FLERE LINIER ER TILGÆNGELIGE I DEN ORGINALE FIL! Hvis du vil se dem så skal du downloade den ----------"
+
+#: ../http/static/logs/logs.html:28
+msgid "Download all logfiles as zip"
+msgstr "Download alle logfiler som en zip fil"
+
+#: ../http/static/logs/logs.html:27
+msgid "Download selected logfile"
+msgstr "Download valgte logfil"
 

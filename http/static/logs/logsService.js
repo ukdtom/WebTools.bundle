@@ -37,7 +37,7 @@
             var cutLength = 14998;
             if (logLength > cutLength) {
                 selectedLog.details.splice(cutLength, logLength - cutLength);
-                var warningMsg = " ---------- MORE LINES AVAILABLE IN THE ORIGINAL FILE! If you want to view the rest of the file go download it ---------- ";
+                var warningMsg = gettextCatalog.getString(" ---------- MORE LINES AVAILABLE IN THE ORIGINAL FILE! If you want to view the rest of the file go download it ---------- ");
                 selectedLog.details.push(warningMsg);
                 selectedLog.details.push(warningMsg);
                 selectedLog.details.push(warningMsg);

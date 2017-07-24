@@ -4,6 +4,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: ../http/static/logs/logsService.js:40
+msgid "---------- MORE LINES AVAILABLE IN THE ORIGINAL FILE! If you want to view the rest of the file go download it ----------"
+msgstr ""
+
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
 msgstr ""
@@ -24,12 +28,16 @@ msgstr ""
 msgid "Delete selected sidecar from the harddrive."
 msgstr ""
 
-#: ../http/static/logs/logs.html:33
-msgid "File empty"
+#: ../http/static/logs/logs.html:28
+msgid "Download all logfiles as zip"
 msgstr ""
 
-#: ../http/static/menu/menu.html:7
-msgid "FindMedia"
+#: ../http/static/logs/logs.html:27
+msgid "Download selected logfile"
+msgstr ""
+
+#: ../http/static/logs/logs.html:33
+msgid "File empty"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:2
@@ -38,10 +46,6 @@ msgstr ""
 
 #: ../http/static/menu/menu.html:19
 msgid "Help"
-msgstr ""
-
-#: ../http/static/menu/menu.html:3
-msgid "Home"
 msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:5
@@ -54,10 +58,6 @@ msgstr ""
 
 #: ../http/static/menu/menu.html:12
 msgid "Logout"
-msgstr ""
-
-#: ../http/static/menu/menu.html:5
-msgid "Logs"
 msgstr ""
 
 #: ../http/static/menu/menu.html:10
@@ -80,24 +80,12 @@ msgstr ""
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr ""
 
-#: ../http/static/menu/menu.html:4
-msgid "Sub Management"
-msgstr ""
-
 #: ../http/static/menu/menu.html:14
 msgid "Theme"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:3
 msgid "This tool is a combination of FindUnmatched and FindMissing."
-msgstr ""
-
-#: ../http/static/menu/menu.html:1
-msgid "Tools"
-msgstr ""
-
-#: ../http/static/menu/menu.html:6
-msgid "UAS"
 msgstr ""
 
 #: ../http/static/menu/menu.html:13
