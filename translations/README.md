@@ -6,8 +6,9 @@
 * Install grunt-cli globally
 
 Make translations directory the current one, and run:
-npm install grunt
-npm install grunt-angular-gettext
+
+* npm install grunt
+* npm install grunt-angular-gettext
 
 ## Extraction
 
