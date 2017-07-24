@@ -1,13 +1,23 @@
-﻿angular.module('webtools').controller('fmController', ['$scope', 'fmModel', 'fmService', '$interval', function ($scope, fmModel, fmService, $interval) {
+﻿angular.module('webtools').controller('fmController', ['$scope', 'fmModel', 'fmService', '$interval', 'gettextCatalog', function ($scope, fmModel, fmService, $interval, translate) {
     $scope.fmModel = fmModel;
 
     var intervalScanner;
 
+    $scope.translate = function () {
+        $scope.lang = {
+            deleteIgnoredFolder: translate.getString("Delete ignored folder"),
+            addIgnoredFolder: translate.getString("Add ignored folder"),
+            resetSettings: translate.getString("Reset settings"),
+            saveSettings: translate.getString("Save settings"),
+            abortScan: translate.getString("Abort scan")
+        };
+    }
     
     $scope.init = function () {
         fmService.getSettings();
         fmService.getSectionsList();
 
+        $scope.translate();
         $scope.scanStatus();
     }
 
@@ -19,6 +29,11 @@
     }
 
     $scope.scanStart = function (section) {
+        if (section.result) {
+            section.result = null;
+            return;
+        }
+
         fmModel.selectedSection = section;
         fmService.scanSection(fmModel.selectedSection.key);
 

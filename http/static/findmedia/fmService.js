@@ -26,6 +26,18 @@
             url: url,
         }).then(function (resp) {
             fmModel.settings = resp.data;
+
+            fmModel.settings.VALID_EXTENSIONS_TEMP = "";
+            if(fmModel.settings.VALID_EXTENSIONS){
+                for (var i = 0; i < fmModel.settings.VALID_EXTENSIONS.length; i++) {
+                    var validExtension = fmModel.settings.VALID_EXTENSIONS[i];
+                    fmModel.settings.VALID_EXTENSIONS_TEMP += validExtension;
+                    if (i + 1 !== fmModel.settings.VALID_EXTENSIONS.length) {
+                        fmModel.settings.VALID_EXTENSIONS_TEMP += ",";
+                    }
+                }
+            }
+
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
             fmModel.settingsLoading = false;
@@ -42,6 +54,15 @@
             return;
         }
         fmModel.settingsLoading = true;
+
+        if (!fmModel.settings.VALID_EXTENSIONS_TEMP) {
+            fmModel.settings.VALID_EXTENSIONS = [];
+        }
+        else {
+            fmModel.settings.VALID_EXTENSIONS_TEMP = fmModel.settings.VALID_EXTENSIONS_TEMP.replace(/\s/g, '');
+            fmModel.settings.VALID_EXTENSIONS = fmModel.settings.VALID_EXTENSIONS_TEMP.split(',');
+        }
+
         var url = webtoolsModel.apiV3Url + "/findMedia/setSettings";
         $http({
             method: "POST",
@@ -50,6 +71,7 @@
                 IGNORE_HIDDEN: fmModel.settings.IGNORE_HIDDEN,
                 IGNORE_EXTRAS: fmModel.settings.IGNORE_EXTRAS,
                 IGNORED_DIRS: fmModel.settings.IGNORED_DIRS,
+                VALID_EXTENSIONS: fmModel.settings.VALID_EXTENSIONS,
             }
         }).then(function (resp) {
             //fmModel.settings = resp.data;

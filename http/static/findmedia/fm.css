@@ -1,5 +1,8 @@
 ﻿.fm{
 }
+.fm label{
+    cursor:pointer;
+}
 
 .fm button{
     margin: 5px 0;
@@ -21,18 +24,16 @@
     padding: 10px;
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 500px;
+    max-height: 560px;
 }
-.fm .settings .row label{
-    cursor:pointer;
+.fm .settings .validExtensions{
+    color:black;
+    width:320px;
+    height:110px;
 }
 .fm .settings.hideFields .row:not(.toggleSettings) {
     display:none;
 }
-.fm .settings .save{
-
-}
-
 .fm .settings .ignoreDir{
     color:black;
 }
@@ -42,13 +43,16 @@
 
 .fm .sections .section{
     width:100%;
+    min-height:40px;
     margin-top:7px;
     border-bottom:1px solid black;
-    padding:2px;
+    padding:10px;
     background: rgba(0, 0, 0, 0.15);
     border-radius:5px;
-    cursor:pointer;
 }
 .fm .sections .section:hover{
-    background: rgba(0, 30, 30, 0.15);
+    background: rgba(0, 30, 30, 0.35);
+}
+.fm .sections .section .header{
+    cursor:pointer;
 }

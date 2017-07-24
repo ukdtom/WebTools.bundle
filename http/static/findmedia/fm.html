@@ -31,21 +31,31 @@
         </div>
         <div class="row" ng-repeat="IGNORED_DIR in fmModel.settings.IGNORED_DIRS track by $index">
             <div class="col-xs-12">
-                <button ng-click="fmModel.settings.IGNORED_DIRS.splice(fmModel.settings.IGNORED_DIRS.indexOf(IGNORED_DIR), 1)" title="{{Delete ignored folder|translate}}"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                <button ng-click="fmModel.settings.IGNORED_DIRS.splice(fmModel.settings.IGNORED_DIRS.indexOf(IGNORED_DIR), 1)" ng-title="lang.deleteIgnoredFolder"><i class="fa fa-minus" aria-hidden="true"></i></button>
                 <input type="text" class="ignoreDir" ng-model="IGNORED_DIR" ng-change="fmModel.settings.IGNORED_DIRS[$index] = IGNORED_DIR" />
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <button id="addIgnoredFolder" ng-click="fmModel.settings.IGNORED_DIRS.push('')" title="{{Add ignored folder|translate}}"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                <button id="addIgnoredFolder" ng-click="fmModel.settings.IGNORED_DIRS.push('')" ng-title="lang.addIgnoredFolder"><i class="fa fa-plus" aria-hidden="true"></i></button>
                 <label for="addIgnoredFolder" translate>Add ignored folder</label> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <span class="textBold600" translate>Valid extentions</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <textarea class="validExtensions" ng-model="fmModel.settings.VALID_EXTENSIONS_TEMP"></textarea>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
                 <div class="pull-right">
                     <label for="resetSettings" translate>Reset settings</label>
-                    <button id="resetSettings" ng-click="resetSettings()" title="{{Reset settings|translate}}"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-undo' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
+                    <button id="resetSettings" ng-click="resetSettings()" ng-title="lang.resetSettings"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-undo' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
                 </div>
             </div>
         </div>
@@ -53,7 +63,7 @@
             <div class="col-xs-12">
                 <div class="pull-right">
                     <label for="saveSettings" translate>Save settings</label>
-                    <button id="saveSettings" ng-click="saveSettings()" title="{{Save settings|translate}}"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-floppy-o' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
+                    <button id="saveSettings" ng-click="saveSettings()" ng-title="lang.saveSettings"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-floppy-o' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
                 </div>
             </div>
         </div>
@@ -62,13 +72,44 @@
 
     <div class="pushTopMinor sections">
         <div ng-if="fmModel.scanning">
-            {[{fmModel.statusText}]}
+            <br />
+            <label for="scanStop" translate>Abort scan</label> <button id="scanStop" ng-click="scanStop()" ng-title="lang.abortScan"><i class="fa fa-undo" aria-hidden="true"></i></button><br />
+            <i>{[{fmModel.statusText}]}</i> 
+            
         </div>
         <div ng-if="!fmModel.scanning">
-            <div class="row section" ng-repeat="section in fmModel.sections">
-                <div class="col-xs-12" ng-click="scanStart(section)">
-                    {[{section.title}]}
-                    <div ng-if="section.result">{[{section.result}]}</div>
+            <div class="section" ng-repeat="section in fmModel.sections">
+                <div class="row header" ng-click="scanStart(section)">
+                    <div class="col-xs-12">{[{section.title}]}</div>
+                </div>
+                <div class="row" ng-if="section.result">
+                    <div class="col-xs-12">
+                        <div class="row"><div class="col-xs-12"><hr /></div></div>
+                        <div class="row" ng-if="section.result.MissingFromDB.length === 0">
+                            <div class="col-xs-12 textBold600" translate>No records missing from Plex database</div>
+                        </div>
+                        <div class="row" ng-if="section.result.MissingFromDB.length > 0">
+                            <div class="col-xs-12 textBold600" translate>Records missing from Plex database</div>
+                        </div>
+                        <div class="row" ng-repeat="missingFromDb in section.result.MissingFromDB track by $index">
+                            <div class="col-xs-12">
+                                {[{missingFromDb}]}
+                            </div>
+                        </div>
+                        <div class="row"><div class="col-xs-12"><hr /></div></div>
+                        <div class="row" ng-if="section.result.MissingFromFS.length === 0">
+                            <div class="col-xs-12 textBold600" translate>No records missing from harddrive</div>
+                        </div>
+                        <div class="row" ng-if="section.result.MissingFromFS.length > 0">
+                            <div class="col-xs-12 textBold600" translate>Records missing from harddrive</div>
+                        </div>
+                        <div class="row" ng-repeat="missingFromFS in section.result.MissingFromFS track by $index">
+                            <div class="col-xs-12">
+                                {[{missingFromFS}]}
+                            </div>
+                        </div>
+                        <div class="row"><div class="col-xs-12"><hr /></div></div>
+                    </div>
                 </div>
             </div>
         </div>
