@@ -11,7 +11,7 @@ from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES, BASEURL, UILANG
 
 import sys
 # Add modules dir to search path
-modules = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'Contents', 'Code', 'modules')
+modules = Core.storage.join_path(Core.bundle_path, 'Contents', 'Code', 'modules')
 sys.path.append(modules)
 
 from tornado.web import *
@@ -38,7 +38,7 @@ from os.path import abspath
 # Path to http folder within the bundle
 def getActualHTTPPath():
 	try:
-		HTTPPath = os.path.normpath(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http'))
+		HTTPPath = os.path.normpath(Core.storage.join_path(Core.bundle_path, 'http'))
 		if not os.path.isdir(HTTPPath):
 			Log.Critical('Could not find my http path in: ' + HTTPPath)
 			return ''
@@ -51,7 +51,8 @@ def getActualHTTPPath():
 def isCorrectPath(req):	
 	try:
 		installedPlugInPath = os.path.normpath(abspath(getsourcefile(lambda:0)).split(str(NAME) + '.bundle',1)[0])
-		targetPath = os.path.normpath(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name))
+		installedPlugInPath = Core.storage.join_path(installedPlugInPath,NAME+'.bundle')
+		targetPath = os.path.normpath(Core.storage.join_path(Core.bundle_path))
 		if installedPlugInPath != targetPath:
 			Log.Debug('************************************************')
 			Log.Debug('Wrong installation path detected!!!!')
@@ -59,7 +60,7 @@ def isCorrectPath(req):
 			Log.Debug('Currently installed in:')
 			Log.Debug(installedPlugInPath)
 			Log.Debug('Correct path is:')
-			Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle'))
+			Log.Debug(Core.storage.join_path(Core.bundle_path, NAME + '.bundle'))
 			Log.Debug('************************************************')
 			installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).split('/Contents',1)
 			msg = '<h1>Wrong installation path detected</h1>'
