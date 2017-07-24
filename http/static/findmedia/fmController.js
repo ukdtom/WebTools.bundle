@@ -3,6 +3,7 @@
 
     var intervalScanner;
 
+    
     $scope.init = function () {
         fmService.getSettings();
         fmService.getSectionsList();
