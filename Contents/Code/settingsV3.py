@@ -136,7 +136,7 @@ class settingsV3(object):
 				if len(data) > 0:
 					for key in data:
 						Log.Debug('Saving: ' + str(key) + ' with a value of: ' + str(data[key]))
-						Dict[key] = data[key]
+						Dict[key] = data[key]						
 					Dict.Save()
 					req.set_status(200)
 					req.finish("Setting saved")			
@@ -165,6 +165,9 @@ class settingsV3(object):
 					try:	mySetting['wt_csstheme'] = Dict['wt_csstheme']
 					except:	
 							mySetting['wt_csstheme'] = ''
+					try:	mySetting['UILanguage'] = Dict['UILanguage']
+					except:	
+							mySetting['UILanguage'] = 'en'
 					Log.Debug('Returning settings as %s' %(mySetting))
 					req.clear()
 					req.set_status(200)

@@ -24,6 +24,8 @@ JSONTIMESTAMP = 0																																		# timestamp for json export
 WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'				# URL to latest WebTools
 BUNDLEDIRNAME = ''																																	# Name of the bundle dir
 V3MODULES = {'WT' : 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3', 'LANGUAGE': 'languageV3', 'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3'}
+UILANGUAGE = 'en'
+UILANGUAGEDEBUG = False
 
 class consts(object):	
 	init_already = False							# Make sure part of init only run once
@@ -39,6 +41,8 @@ class consts(object):
 		global NAME
 		global PREFIX
 		global BASEURL
+		global UILANGUAGE
+		global UILANGUAGEDEBUG
 
 		self.makeDefaultSettings()
 
@@ -73,7 +77,7 @@ class consts(object):
 				json_file = io.open(debugFile, "rb")
 				debug = json_file.read()
 				json_file.close()
-				debugParams = JSON.ObjectFromString(str(debug))
+				debugParams = JSON.ObjectFromString(str(debug))				
 				Log.Debug('Override debug params are %s' %str(debugParams))
 				if 'UAS_Repo' in debugParams:
 					UAS_URL = debugParams['UAS_Repo']
@@ -83,7 +87,19 @@ class consts(object):
 					WT_AUTH = debugParams['WT_AUTH']
 				if 'JSONTIMESTAMP' in debugParams:
 					JSONTIMESTAMP = debugParams['JSONTIMESTAMP']
-			except:
+				# Try and fetch a user language, if set
+				try:
+					UILANGUAGE = Dict['UILanguage']
+				except:
+					pass
+				# Running localization in debug mode?
+				if 'UI' in debugParams:					
+					if 'Language' in debugParams['UI']:
+						UILANGUAGE = debugParams['UI']['Language']						
+					if 'debug' in debugParams['UI']:
+						UILANGUAGEDEBUG = (debugParams['UI']['debug'] == True)											
+			except Exception, e:				
+				Log.Exception('Exception in const was %s' %(str(e)))
 				pass
 			Log.Debug('******** Using the following debug params ***********')
 			Log.Debug('DEBUGMODE: ' + str(DEBUGMODE))
@@ -91,6 +107,8 @@ class consts(object):
 			Log.Debug('UAS_RepoBranch: ' + UAS_BRANCH)
 			Log.Debug('Authenticate: ' + str(WT_AUTH))
 			Log.Debug('JSON timestamp: ' + str(JSONTIMESTAMP))
+			Log.Debug('UI Language: ' + str(UILANGUAGE))
+			Log.Debug('UI Language Debug: ' + str(UILANGUAGEDEBUG))
 			Log.Debug('*****************************************************')
 		else:
 			DEBUGMODE = False

@@ -6,7 +6,8 @@
 #
 ######################################################################################################################
 
-from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES, BASEURL
+from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES, BASEURL, UILANGUAGE, UILANGUAGEDEBUG
+
 
 import sys
 # Add modules dir to search path
@@ -88,11 +89,13 @@ class webTools(object):
 		try:
 			scheme = Dict['wt_csstheme']
 			if scheme == None:
-				scheme = ''
+				scheme = ''						
 			retVal = {'version': VERSION, 
 							'PasswordSet': Dict['pwdset'],
 							'PlexTVOnline': plexTV().auth2myPlex(),
-							'wt_csstheme': scheme}
+							'wt_csstheme': scheme,
+							'UILanguageDebug': UILANGUAGEDEBUG,
+							'UILanguage': UILANGUAGE}
 			Log.Info('Version requested, returning ' + str(retVal))
 			return retVal
 		except Exception, e:
