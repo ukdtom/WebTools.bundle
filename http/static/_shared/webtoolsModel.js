@@ -9,6 +9,7 @@
     this.themeLoading = false;
     this.uasLoading = false;
     this.fmLoading = false;
+    this.playlistLoading = false;
 
     this.basePath = "/";
     try {

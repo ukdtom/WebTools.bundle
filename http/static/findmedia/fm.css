@@ -56,3 +56,10 @@
 .fm .sections .section .header{
     cursor:pointer;
 }
+.fm .sections .section .download{
+    margin:8px 3px;
+    cursor:pointer;
+}
+.fm .sections .section .download > div{
+    font-size:1.2em;
+}

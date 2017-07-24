@@ -25,6 +25,10 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
         templateUrl: "static/findmedia/fm.html",
         controller: "fmController"
     })
+    .when("/playlist", {
+        templateUrl: "static/playlist/playlist.html",
+        controller: "playlistController"
+    })
     //Options
     .when("/theme", {
         templateUrl: "static/theme/theme.html",
