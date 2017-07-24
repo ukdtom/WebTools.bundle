@@ -60,14 +60,14 @@ class consts(object):
 			BASEURL = BASEURL[:-1]
 		# Grap version number from the version file
 		try:
-			versionFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'VERSION')
+			versionFile = Core.storage.join_path(Core.bundle_path, 'VERSION')
 			with io.open(versionFile, "rb") as version_file:
 				VERSION = version_file.read().splitlines()[0]								
 		except:
 			if not self.isCorrectPath():
 				VERSION = '*** WRONG INSTALL PATH!!!!....Correct path is: ' + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME) + '***'
 		# Switch to debug mode if needed
-		debugFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'debug')
+		debugFile = Core.storage.join_path(Core.bundle_path, 'debug')
 		# Do we have a debug file ?
 		if os.path.isfile(debugFile):
 			DEBUGMODE = True
