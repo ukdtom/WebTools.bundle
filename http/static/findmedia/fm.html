@@ -3,13 +3,74 @@
     <div class="pushTopTrivial" translate>This tool is a combination of FindUnmatched and FindMissing.</div>
     <div translate>Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive.</div>
 
-    <div class="pushTopMinor settings">
-        {[{fmModel.settings}]}
+    <div class="pushTopMinor settings" ng-class="{'hideFields' : !fmModel.settingsVisible}">
+        <div class="row toggleSettings">
+            <div class="col-xs-12">
+                <div class="pull-right">
+                    <label for="showSettings">Show settings</label>
+                    <button id="showSettings" ng-click="fmModel.settingsVisible = !fmModel.settingsVisible" title="Hide/Show settings menu"><i class="fa" ng-class="{'fa-eye-slash' : !fmModel.settingsVisible, 'fa-eye' : fmModel.settingsVisible}" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <input id="ignoreHidden" class="ignoreHidden" type="checkbox" ng-model="fmModel.settings.IGNORE_HIDDEN" />
+                <label for="ignoreHidden">Ignore Hidden</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <input id="ignoreExtras" class="ignoreExtras" type="checkbox" ng-model="fmModel.settings.IGNORE_EXTRAS" />
+                <label for="ignoreExtras">Ignore Extras</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <span class="textBold600">Ignore folders</span>
+            </div>
+        </div>
+        <div class="row" ng-repeat="IGNORED_DIR in fmModel.settings.IGNORED_DIRS track by $index">
+            <div class="col-xs-12">
+                <button ng-click="fmModel.settings.IGNORED_DIRS.splice(fmModel.settings.IGNORED_DIRS.indexOf(IGNORED_DIR), 1)" title="Delete ignored folder"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                <input type="text" class="ignoreDir" ng-model="IGNORED_DIR" ng-change="fmModel.settings.IGNORED_DIRS[$index] = IGNORED_DIR" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button id="addIgnoredFolder" ng-click="fmModel.settings.IGNORED_DIRS.push('')" title="Add ignored folder"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                <label for="addIgnoredFolder">Add ignored folder</label> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="pull-right">
+                    <label for="resetSettings">Reset settings</label>
+                    <button id="resetSettings" ng-click="resetSettings()" title="Reset settings"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-undo' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="pull-right">
+                    <label for="saveSettings">Save settings</label>
+                    <button id="saveSettings" ng-click="saveSettings()" title="Save settings"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-floppy-o' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+        
     </div>
 
     <div class="pushTopMinor sections">
-        <div class="row section" ng-repeat="section in fmModel.sections">
-            <div class="col-xs-12">{[{section.title}]}</div>
+        <div ng-if="fmModel.scanning">
+            {[{fmModel.statusText}]}
+        </div>
+        <div ng-if="!fmModel.scanning">
+            <div class="row section" ng-repeat="section in fmModel.sections">
+                <div class="col-xs-12" ng-click="scanStart(section)">
+                    {[{section.title}]}
+                    <div ng-if="section.result">{[{section.result}]}</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

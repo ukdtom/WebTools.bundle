@@ -1,4 +1,5 @@
-﻿angular.module('webtools').service('fmService', ['$http', 'fmModel', 'webtoolsModel', function ($http, fmModel, webtoolsModel) {
+﻿angular.module('webtools').service('fmService', ['$http', 'fmModel', 'webtoolsModel', 'webtoolsService', function ($http, fmModel, webtoolsModel, webtoolsService) {
+    _this = this;
 
     this.getSectionsList = function (callback) {
         webtoolsModel.fmLoading = true;
@@ -18,6 +19,7 @@
     
     this.getSettings = function (callback) {
         webtoolsModel.fmLoading = true;
+        fmModel.settingsLoading = true;
         var url = webtoolsModel.apiV3Url + "/findMedia/getSettings";
         $http({
             method: "GET",
@@ -26,47 +28,52 @@
             fmModel.settings = resp.data;
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
+            fmModel.settingsLoading = false;
         }, function (errorResp) {
             webtoolsService.log("fmService.getSettings - " + webtoolsService.formatError(errorResp), "Fm", true, url);
             webtoolsModel.fmLoading = false;
+            fmModel.settingsLoading = false;
         });
     }
     
-    this.setSettings = function (ignoreHidden, ignoreDirs, callback) {
-        if(!ignoreHidden) ignoreHidden = false;
-        if(!ignoreDirs) ignoreDirs = [];
-        webtoolsModel.fmLoading = true;
+    this.setSettings = function (callback) {
+        if (!fmModel.settings) {
+            console.log("No settings!?");
+            return;
+        }
+        fmModel.settingsLoading = true;
         var url = webtoolsModel.apiV3Url + "/findMedia/setSettings";
         $http({
-            method: "GET",
+            method: "POST",
             url: url,
             data: {
-                IGNORE_HIDDEN: ignoreHidden,
-                IGNORE_DIRS: ignoreDirs,
+                IGNORE_HIDDEN: fmModel.settings.IGNORE_HIDDEN,
+                IGNORE_EXTRAS: fmModel.settings.IGNORE_EXTRAS,
+                IGNORE_DIRS: fmModel.settings.IGNORED_DIRS,
             }
         }).then(function (resp) {
-            debugger;
+            //fmModel.settings = resp.data;
             if (callback) callback(resp.data);
-            webtoolsModel.fmLoading = false;
+            fmModel.settingsLoading = false;
         }, function (errorResp) {
             webtoolsService.log("fmService.setSettings - " + webtoolsService.formatError(errorResp), "Fm", true, url);
-            webtoolsModel.fmLoading = false;
+            fmModel.settingsLoading = false;
         });
     }
     
     this.resetSettings = function (callback) {
-        webtoolsModel.fmLoading = true;
+        fmModel.settingsLoading = true;
         var url = webtoolsModel.apiV3Url + "/findMedia/resetSettings";
         $http({
             method: "PUT",
             url: url,
         }).then(function (resp) {
-            debugger;
+            _this.getSettings();
             if (callback) callback(resp.data);
-            webtoolsModel.fmLoading = false;
+            fmModel.settingsLoading = false;
         }, function (errorResp) {
             webtoolsService.log("fmService.resetSettings - " + webtoolsService.formatError(errorResp), "Fm", true, url);
-            webtoolsModel.fmLoading = false;
+            fmModel.settingsLoading = false;
         });
     }
     
@@ -77,7 +84,11 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            if (resp.data === "Idle" && fmModel.scanning) {
+                _this.getResult();
+            }
+            fmModel.statusText = resp.data;
+            fmModel.scanning = resp.data !== "Idle"; //Meeeh not good to check for Idle..
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
         }, function (errorResp) {
@@ -93,7 +104,16 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            fmModel.selectedSection.result = resp.data;
+            if (fmModel.selectedSection) {
+                for (var i = 0; i < fmModel.sections.length; i++) {
+                    var section = fmModel.sections[i];
+                    if (section.key === fmModel.selectedSection.key) {
+                        section.result = resp.data;
+                    }
+                }
+            }
+            fmModel.scanning = false;
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
         }, function (errorResp) {
@@ -109,7 +129,8 @@
             method: "PUT",
             url: url,
         }).then(function (resp) {
-            debugger;
+            fmModel.scanning = false;
+            _this.getStatus();
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
         }, function (errorResp) {
@@ -121,16 +142,19 @@
     this.scanSection = function (sectionNr, callback) {
         webtoolsModel.fmLoading = true;
         var url = webtoolsModel.apiV3Url + "/findMedia/scanSection/" + sectionNr;
+
+        fmModel.scanning = true;
         $http({
             method: "GET",
             url: url,
         }).then(function (resp) {
-            debugger;
+            _this.getStatus();
             if (callback) callback(resp.data);
             webtoolsModel.fmLoading = false;
         }, function (errorResp) {
             webtoolsService.log("fmService.scanSection - " + webtoolsService.formatError(errorResp), "Fm", true, url);
             webtoolsModel.fmLoading = false;
+            fmModel.scanning = false;
         });
     }
 }]);
