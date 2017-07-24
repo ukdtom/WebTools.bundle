@@ -49,7 +49,7 @@
             data: {
                 IGNORE_HIDDEN: fmModel.settings.IGNORE_HIDDEN,
                 IGNORE_EXTRAS: fmModel.settings.IGNORE_EXTRAS,
-                IGNORE_DIRS: fmModel.settings.IGNORED_DIRS,
+                IGNORED_DIRS: fmModel.settings.IGNORED_DIRS,
             }
         }).then(function (resp) {
             //fmModel.settings = resp.data;

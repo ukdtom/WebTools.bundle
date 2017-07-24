@@ -1,4 +1,4 @@
-﻿angular.module('webtools').service('logsService', ['$http', 'logsModel', 'webtoolsService', 'webtoolsModel', function ($http, logsModel, webtoolsService, webtoolsModel) {
+﻿angular.module('webtools').service('logsService', ['$http', 'logsModel', 'webtoolsService', 'webtoolsModel', 'gettextCatalog', function ($http, logsModel, webtoolsService, webtoolsModel, translate) {
     this.getLogs = function (callback) {
 
         var url = webtoolsModel.apiV3Url + "/logs/list/"; //V3
@@ -37,7 +37,7 @@
             var cutLength = 14998;
             if (logLength > cutLength) {
                 selectedLog.details.splice(cutLength, logLength - cutLength);
-                var warningMsg = gettextCatalog.getString(" ---------- MORE LINES AVAILABLE IN THE ORIGINAL FILE! If you want to view the rest of the file go download it ---------- ");
+                var warningMsg = translate.getString(" ---------- MORE LINES AVAILABLE IN THE ORIGINAL FILE! If you want to view the rest of the file go download it ---------- ");
                 selectedLog.details.push(warningMsg);
                 selectedLog.details.push(warningMsg);
                 selectedLog.details.push(warningMsg);
