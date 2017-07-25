@@ -28,7 +28,7 @@ msgstr "Både lokalt (Undertext i samme bibliotek som filmen, eller i en underfo
 msgid "Change Theme"
 msgstr "Skift tema"
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "Changelog"
 msgstr "Change Log"
 
@@ -44,11 +44,7 @@ msgstr "Slet valgte \"sidecar\" undertekst fra harddisken"
 msgid "File empty"
 msgstr "Filen er tom"
 
-#: ../http/static/findmedia/fm.html:2
-msgid "FindMedia Tool"
-msgstr "FindMedia Tool"
-
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:20
 msgid "Help"
 msgstr "Hjælp"
 
@@ -60,11 +56,11 @@ msgstr "Vis en liste over alle undertekster for et Film/TV bibliotek"
 msgid "LogViewer Tool"
 msgstr "LogViewer Tool"
 
-#: ../http/static/menu/menu.html:12
+#: ../http/static/menu/menu.html:13
 msgid "Logout"
 msgstr "Log af"
 
-#: ../http/static/menu/menu.html:10
+#: ../http/static/menu/menu.html:11
 msgid "Options"
 msgstr "Indstillinger"
 
@@ -80,11 +76,12 @@ msgstr ""
 msgid "Select one of the available themes to use it:"
 msgstr "Vælg en af de mulige temaer"
 
+#. Dialog from FindMedia, that is shown above the list of sections
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
-msgstr ""
+msgstr "Vælg et af dine biblioteker for at scanne dem for film/tv-shows som enten mangler i Plex databasen eller på harddisken"
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:15
 msgid "Theme"
 msgstr "Tema"
 
@@ -92,7 +89,7 @@ msgstr "Tema"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "Dette værktøj er en kombination af \"FindUnmatched\" og \"FindMissing\""
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr "Opdater WebTools"
 
@@ -100,15 +97,15 @@ msgstr "Opdater WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr ""
 
-#: ../http/static/menu/menu.html:21
+#: ../http/static/menu/menu.html:22
 msgid "WT Forum Thread"
 msgstr "WebTools Forum tråd"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "WT GitHub"
 msgstr "WebTools Github"
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT Manual(PDF)"
 msgstr "WebTools Manual (PDF)"
 
@@ -120,10 +117,6 @@ msgstr "Vi kunne ikke finde den side :("
 msgid "We recommend you to download large files and view them in your favourite text editor."
 msgstr "Vi anbefaler, at du downloader store filer, og viser dem i din lokale editor"
 
-#: ../http/static/logs/logsService.js:40
-msgid "---------- MORE LINES AVAILABLE IN THE ORIGINAL FILE! If you want to view the rest of the file go download it ----------"
-msgstr "---------- FLERE LINIER ER TILGÆNGELIGE I DEN ORGINALE FIL! Hvis du vil se dem så skal du downloade den ----------"
-
 #: ../http/static/logs/logs.html:28
 msgid "Download all logfiles as zip"
 msgstr "Download alle logfiler som en zip fil"
@@ -131,4 +124,73 @@ msgstr "Download alle logfiler som en zip fil"
 #: ../http/static/logs/logs.html:27
 msgid "Download selected logfile"
 msgstr "Download valgte logfil"
+
+#: ../http/static/findmedia/fm.html:78
+msgid "Abort scan"
+msgstr "Afbryd scanning"
+
+#: ../http/static/findmedia/fm.html:43
+msgid "Add ignored folder"
+msgstr "Tilføj et bibliotek som skal ignoreres"
+
+#. Used in playlists to list the different options avail
+#: ../http/static/playlist/playlistHelp.html:2
+msgid "Current features:"
+msgstr "Tilgængelige muligheder"
+
+#: ../http/static/playlist/playlistHelp.html:5
+msgid "DUMMY TEXT Playlist can help you with lorem ipsum"
+msgstr "Not used"
+
+#: ../http/static/findmedia/fm.html:92
+msgid "Download result"
+msgstr "Download resultatet"
+
+#: ../http/static/findmedia/fm.html:26
+msgid "Ignore Extras"
+msgstr "Ignorer Extras"
+
+#: ../http/static/findmedia/fm.html:20
+msgid "Ignore Hidden"
+msgstr "Ignorer skjulte filer"
+
+#: ../http/static/findmedia/fm.html:31
+msgid "Ignore folders"
+msgstr "Ignorer biblioteker"
+
+#: ../http/static/findmedia/fm.html:98
+msgid "No records missing from Plex database"
+msgstr "Der mangler intet fra Plex databasen"
+
+#: ../http/static/findmedia/fm.html:110
+msgid "No records missing from harddrive"
+msgstr "Ingen filer mangler fra dine harddiske"
+
+#: ../http/static/playlist/playlistHelp.html:1
+msgid "Playlist Help"
+msgstr "Playlist hjælp"
+
+#: ../http/static/findmedia/fm.html:101
+msgid "Records missing from Plex database"
+msgstr "Media der mangler fra Plex databasen"
+
+#: ../http/static/findmedia/fm.html:113
+msgid "Records missing from harddrive"
+msgstr "Filer der mangler fra harddiske"
+
+#: ../http/static/findmedia/fm.html:59
+msgid "Reset settings"
+msgstr "Nulstil indstillinger"
+
+#: ../http/static/findmedia/fm.html:67
+msgid "Save settings"
+msgstr "Gem instillinger"
+
+#: ../http/static/findmedia/fm.html:12
+msgid "Show settings"
+msgstr "Vis indstillinger"
+
+#: ../http/static/findmedia/fm.html:48
+msgid "Valid extentions"
+msgstr "Valide fil endelser"
 

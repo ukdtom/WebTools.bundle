@@ -5,115 +5,115 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
 "Project-Id-Version: WebTools for Plex\n"
-"Language: pt-br\n"
+"Language: fr\n"
 
 #: ../http/static/home/home.html:3
 msgid "Use the menu on the left side to navigate in WebTools."
-msgstr "Use o menu à esquerda para navegar em WebTools"
+msgstr ""
 
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
-msgstr "Webtools é uma ferramenta para o auxiliar a gerir o servidor de Plex"
+msgstr ""
 
 #: ../http/static/home/home.html:1
 msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
-msgstr "Bem vindo a  {[{webtoolsModel.versionFormated}]}"
+msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
-msgstr "Locais (na mesma pasta ou subpasta do filme) ou na pasta do agente."
+msgstr ""
 
 #: ../http/static/theme/theme.html:2
 msgid "Change Theme"
-msgstr "Mudar o tema"
+msgstr ""
 
 #: ../http/static/menu/menu.html:16
 msgid "Changelog"
-msgstr "Changelog"
+msgstr ""
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
-msgstr "Ver o Changelog"
+msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
-msgstr "Apagar legenda associada"
+msgstr ""
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
-msgstr "Ficheiro vazio"
+msgstr ""
 
 #: ../http/static/menu/menu.html:20
 msgid "Help"
-msgstr "Ajuda"
+msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:5
 msgid "List all subtitles for a movie/tv show in your library."
-msgstr "Lista legendas disponíveis para um filme ou série"
+msgstr ""
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
-msgstr "LogViewer"
+msgstr ""
 
 #: ../http/static/menu/menu.html:13
 msgid "Logout"
-msgstr "Sair"
+msgstr ""
 
 #: ../http/static/menu/menu.html:11
 msgid "Options"
-msgstr "Opções"
+msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:15
 msgid "Options for output."
-msgstr "Opções de \"output\""
+msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
-msgstr "Procurar filmes e séries por categoria"
+msgstr ""
 
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
-msgstr "Seleccione um dos temas disponíveis:"
+msgstr ""
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
-msgstr "Seleccione uma das bibliotecas abaixo para procurar filmes ou séries que não estejam nem na biblioteca de Plex nem no seu disco local"
+msgstr ""
 
 #: ../http/static/menu/menu.html:15
 msgid "Theme"
-msgstr "Tema"
+msgstr ""
 
 #: ../http/static/findmedia/fm.html:3
 msgid "This tool is a combination of FindUnmatched and FindMissing."
-msgstr "Esta ferramenta inclui funcionalidades de FindUnmatched e FindMissing."
+msgstr ""
 
 #: ../http/static/menu/menu.html:14
 msgid "Update WT"
-msgstr "Actualizar WebTools"
+msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:9
 msgid "View the subtitle and see it's contents to determine what to delete."
-msgstr "Inspeccionar a legenda para identificar o que apagar"
+msgstr ""
 
 #: ../http/static/menu/menu.html:22
 msgid "WT Forum Thread"
-msgstr "Suporte a WebTools"
+msgstr ""
 
 #: ../http/static/menu/menu.html:23
 msgid "WT GitHub"
-msgstr "GitHub"
+msgstr ""
 
 #: ../http/static/menu/menu.html:24
 msgid "WT Manual(PDF)"
-msgstr "Documentação WebTools (pdf)"
+msgstr ""
 
 #: ../http/static/404/404.html:1
 msgid "We could not find the page :("
-msgstr "Não foi possível encontrar a página :("
+msgstr ""
 
 #: ../http/static/logs/logs.html:36
 msgid "We recommend you to download large files and view them in your favourite text editor."
-msgstr "Recomenda-se fazer o \"download\" de ficheiros grandes e vê-los com o seu editor de texto favorito"
+msgstr ""
 
 #: ../http/static/logs/logs.html:28
 msgid "Download all logfiles as zip"

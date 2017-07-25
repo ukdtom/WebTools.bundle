@@ -7,28 +7,6 @@ msgstr ""
 "Project-Id-Version: WebTools for Plex\n"
 "Language: de\n"
 
-#. Is an 'entity' name.
-#. I'd vote for not translating this. Also because support forum only uses english, so there is atleast some reference frame here.
-#: ../http/static/menu/menu.html:7
-msgid "FindMedia"
-msgstr "FindMedia"
-
-#: ../http/static/menu/menu.html:3
-msgid "Home"
-msgstr "Home"
-
-#: ../http/static/menu/menu.html:5
-msgid "Logs"
-msgstr "Logs"
-
-#: ../http/static/menu/menu.html:4
-msgid "Sub Management"
-msgstr "Untertitel"
-
-#: ../http/static/menu/menu.html:6
-msgid "UAS"
-msgstr "UAS"
-
 #: ../http/static/home/home.html:3
 msgid "Use the menu on the left side to navigate in WebTools."
 msgstr "Mit dem Menü links in WebTools navigieren"
@@ -49,7 +27,7 @@ msgstr "Sowohl 'lokale' (neben der Videodatei im Ordner) als auch im Plex Dateno
 msgid "Change Theme"
 msgstr "Farbschema wechseln"
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "Changelog"
 msgstr "Versionsänderungen"
 
@@ -65,11 +43,7 @@ msgstr "Lösche externe Untertitel-Dateien"
 msgid "File empty"
 msgstr "Leere Datei"
 
-#: ../http/static/findmedia/fm.html:2
-msgid "FindMedia Tool"
-msgstr "FindMedia Modul"
-
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:20
 msgid "Help"
 msgstr "Hilfe"
 
@@ -81,11 +55,11 @@ msgstr "Liste alle Untertitel auf für ein Video in deiner Bibliothek."
 msgid "LogViewer Tool"
 msgstr "Logdatei Betrachter"
 
-#: ../http/static/menu/menu.html:12
+#: ../http/static/menu/menu.html:13
 msgid "Logout"
 msgstr "Abmelden"
 
-#: ../http/static/menu/menu.html:10
+#: ../http/static/menu/menu.html:11
 msgid "Options"
 msgstr "Optionen"
 
@@ -105,7 +79,7 @@ msgstr "Wähle eines der Farbschemen aus:"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Wähle unten eine der Bibliotheken um darin nach 'nicht zugeordneten' oder fehlenden Dateien zu suchen."
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:15
 msgid "Theme"
 msgstr "Farbschema"
 
@@ -113,11 +87,7 @@ msgstr "Farbschema"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "Dieses Modul vereint die altbekannten Plugins 'FindUnmatched' und 'FindMissing'."
 
-#: ../http/static/menu/menu.html:1
-msgid "Tools"
-msgstr "Tools"
-
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr "WebTools aktualisieren"
 
@@ -125,15 +95,15 @@ msgstr "WebTools aktualisieren"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Zeige Inhalt der Untertitel (um zu sehen, welcher gelöscht werden kann)"
 
-#: ../http/static/menu/menu.html:21
+#: ../http/static/menu/menu.html:22
 msgid "WT Forum Thread"
 msgstr "WT Forum-Thread"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "WT GitHub"
 msgstr "WT auf GitHub"
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT Manual(PDF)"
 msgstr "WebTool Hilfe (PDF)"
 
@@ -145,4 +115,83 @@ msgstr "Seite nicht gefunden :("
 #: ../http/static/logs/logs.html:36
 msgid "We recommend you to download large files and view them in your favourite text editor."
 msgstr "Größere Dateien solltest du herunter laden und in einem Texteditor betrachten."
+
+#: ../http/static/logs/logs.html:28
+msgid "Download all logfiles as zip"
+msgstr "Alle Logdateien als ZIP downloaden"
+
+#: ../http/static/logs/logs.html:27
+msgid "Download selected logfile"
+msgstr "ausgewählte Logdatei herunter laden"
+
+#: ../http/static/findmedia/fm.html:78
+msgid "Abort scan"
+msgstr "Scan abbrechen"
+
+#: ../http/static/findmedia/fm.html:43
+msgid "Add ignored folder"
+msgstr "'ignorierten' Ordner hinzufügen"
+
+#: ../http/static/playlist/playlistHelp.html:2
+msgid "Current features:"
+msgstr "derzeitige Features:"
+
+#. where/what for is this used?
+#: ../http/static/playlist/playlistHelp.html:5
+msgid "DUMMY TEXT Playlist can help you with lorem ipsum"
+msgstr "Dummy Text bedeutet nix."
+
+#. context? When does this appear?
+#: ../http/static/findmedia/fm.html:92
+msgid "Download result"
+msgstr "Ergebnisse herunter laden"
+
+#: ../http/static/findmedia/fm.html:26
+msgid "Ignore Extras"
+msgstr "Extras ausschließen"
+
+#. what is hidden? files? which module?
+#: ../http/static/findmedia/fm.html:20
+msgid "Ignore Hidden"
+msgstr "Versteckte ausschließen"
+
+#: ../http/static/findmedia/fm.html:31
+msgid "Ignore folders"
+msgstr "Ordner ausschließen"
+
+#: ../http/static/findmedia/fm.html:98
+msgid "No records missing from Plex database"
+msgstr "Keine unzugeordneten Dateien festgestellt."
+
+#: ../http/static/findmedia/fm.html:110
+msgid "No records missing from harddrive"
+msgstr "Keine fehlenden Dateien erkannt"
+
+#: ../http/static/playlist/playlistHelp.html:1
+msgid "Playlist Help"
+msgstr "Hilfe für Wiedergabelisten"
+
+#: ../http/static/findmedia/fm.html:101
+msgid "Records missing from Plex database"
+msgstr "fehlende Einträge in der Plex Datenbank"
+
+#: ../http/static/findmedia/fm.html:113
+msgid "Records missing from harddrive"
+msgstr "fehlende Dateien im Medienspeicher"
+
+#: ../http/static/findmedia/fm.html:59
+msgid "Reset settings"
+msgstr "Einstellungen zurück setzen"
+
+#: ../http/static/findmedia/fm.html:67
+msgid "Save settings"
+msgstr "Einstellungen sichern"
+
+#: ../http/static/findmedia/fm.html:12
+msgid "Show settings"
+msgstr "Zeige Einstellungen"
+
+#: ../http/static/findmedia/fm.html:48
+msgid "Valid extentions"
+msgstr "gültige Dateinamenserweiterungen"
 
