@@ -301,7 +301,6 @@ class versionHandler(RequestHandler):
 
 ''' Handler to get images from the DATA API '''
 class imageHandler(RequestHandler):
-#	@authenticated
 	def get(self, **params):
 		# Get name of image
 		trash, image = self.request.uri.rsplit('/',1)
@@ -311,7 +310,7 @@ class imageHandler(RequestHandler):
 			# Set content-type in header
 			contenttype = 'image/' + extension[1:]
 			self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-			self.set_header('Content-type',  contenttype)
+			self.set_header('Content-Type',  contenttype)
 			try:
 				# Redirect to unknown icon, in case frontend dev forgets ;-)
 				if image == '':
@@ -324,11 +323,33 @@ class imageHandler(RequestHandler):
 			self.set_status(404)
 			self.finish()
 
+class translateHandler(RequestHandler):
+	def get(self, **params):
+		print 'Ged translate'
+		# Get name of image
+		fileName = 'translations.js'
+		if Data.Exists(fileName):			
+			# Set content-type in header
+			contenttype = 'application/javascript'
+			self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+			self.set_header('Content-Type',  contenttype)
+			try:
+				self.write(Data.Load(fileName))
+				self.finish()
+			except Exception, e:
+				Log.Exception('Exception in translateHandler was: %s' %(str(e)))
+		else:
+			Log.Critical('Could not find translations.js')
+			self.set_status(404)
+			self.write('Missing translation script')
+			self.finish()			
+
 
 handlers = [(r"%s/login" %BASEURL, LoginHandler),
 	(r"%s/logout" %BASEURL, LogoutHandler),
 	(r"%s/version" %BASEURL, versionHandler),
 	(r"%s/uas/Resources.*$" %BASEURL, imageHandler),											# Grap images from Data framework
+	(r"%s/static/_shared/translations.js" %BASEURL, translateHandler),								# Grap translation.js from datastore
 	(r'%s/' %BASEURL, idxHandler),																# Index
 	(r'%s' %BASEURL, idxHandler),																# Index
 	(r'%s/index.html' %BASEURL, idxHandler),													# Index

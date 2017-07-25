@@ -13,6 +13,7 @@ import json
 import shutil, sys, os
 from consts import BUNDLEDIRNAME, NAME, VERSION
 from plextvhelper import plexTV
+from shutil import copyfile
 
 GET = ['GETCSS', 'GETUSERS']
 PUT = ['RESET']
@@ -160,6 +161,8 @@ class wtV3(object):
 
 # This function will do a cleanup of old stuff, if needed
 def upgradeCleanup():
+	# Always check translation file regardless of version
+	updateTranslation()
 	'''
 	We do take precedence here in a max of 3 integer digits in the version number !
 	'''
@@ -190,3 +193,19 @@ def upgradeCleanup():
 			Log.Exception('We encountered an error during cleanup that was %s' %(str(e)))
 			pass
 			
+# This function will update the translation.js file if needed
+def updateTranslation():	
+	bundleStore = Core.storage.join_path(Core.bundle_path, 'http', 'static', '_shared', 'translations.js')
+	dataStore = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', 'com.plexapp.plugins.WebTools', 'DataItems', 'translations.js')	
+	#If translations.js file already present in the store, we need to find out if it's newer or not
+	if Data.Exists('translations.js'):
+		# File exsisted, so let's compare datetime stamps
+		dataStore_modified_time = os.stat(dataStore).st_mtime
+		bundleStore_modified_time = os.stat(bundleStore).st_mtime		
+		if dataStore_modified_time < bundleStore_modified_time:			
+			Log.Info('Updating translation file in storage')
+			copyfile(bundleStore, dataStore)
+	else:
+		Log.Info('Updating translation file in storage')
+		copyfile(bundleStore, dataStore)
+	return
