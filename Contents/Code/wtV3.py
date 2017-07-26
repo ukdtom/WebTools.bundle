@@ -15,10 +15,12 @@ from consts import BUNDLEDIRNAME, NAME, VERSION
 from plextvhelper import plexTV
 from shutil import copyfile
 
-GET = ['GETCSS', 'GETUSERS']
+GET = ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST']
 PUT = ['RESET']
 POST = ['']
 DELETE = ['']
+
+PAYLOAD = 'aWQ9MTE5Mjk1JmFwaV90b2tlbj0wODA2OGU0ZjRkNTI3NDVlOTM0NzAyMWQ2NDU5MGYzOQ__'
 
 
 class wtV3(object):	
@@ -89,6 +91,22 @@ class wtV3(object):
 				Log.Exception('Exception in process of: ' + str(e))
 
 	#********** Functions below ******************
+
+	# Get list of avail languages, as well as their translation status
+	@classmethod
+	def GETLANGUAGELIST(self, req, *args):
+		try:			
+			url = "https://api.poeditor.com/v2/languages/list"
+			headers = {'content-type': 'application/x-www-form-urlencoded'}
+			response = HTTP.Request(method = 'POST', url = url, data=String.Decode(PAYLOAD), headers=headers)
+			respose = JSON.ObjectFromString(str(response))
+			print 'Ged result', str(response)
+			print 'ged 2'
+			print 'Ged3', response['result']
+		except Exception, e:
+			Log.Exception('Exception happened in getLanguageList was: ' + str(e))
+			print 'Exception %s' %str(e)
+
 
 	# Get list of users
 	@classmethod

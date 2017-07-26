@@ -324,9 +324,8 @@ class imageHandler(RequestHandler):
 			self.finish()
 
 class translateHandler(RequestHandler):
-	def get(self, **params):
-		print 'Ged translate'
-		# Get name of image
+	def get(self, **params):		
+		# Name of javascript
 		fileName = 'translations.js'
 		if Data.Exists(fileName):			
 			# Set content-type in header
@@ -349,7 +348,7 @@ handlers = [(r"%s/login" %BASEURL, LoginHandler),
 	(r"%s/logout" %BASEURL, LogoutHandler),
 	(r"%s/version" %BASEURL, versionHandler),
 	(r"%s/uas/Resources.*$" %BASEURL, imageHandler),											# Grap images from Data framework
-	(r"%s/static/_shared/translations.js" %BASEURL, translateHandler),								# Grap translation.js from datastore
+	(r"%s/static/_shared/translations.js" %BASEURL, translateHandler),							# Grap translation.js from datastore
 	(r'%s/' %BASEURL, idxHandler),																# Index
 	(r'%s' %BASEURL, idxHandler),																# Index
 	(r'%s/index.html' %BASEURL, idxHandler),													# Index
@@ -364,6 +363,7 @@ if Prefs['Force_SSL']:
 		(r'%s/' %BASEURL, ForceTSLHandler),
 		(r'%s/index.html' %BASEURL, ForceTSLHandler),
 		(r"%s/uas/Resources.*$" %BASEURL, imageHandler),										# Grap images from Data framework
+		(r"%s/static/_shared/translations.js" %BASEURL, translateHandler),							# Grap translation.js from datastore
 		(r'%s/api/v3.*$' %BASEURL, apiv3.apiv3)		
 ]
 else:
