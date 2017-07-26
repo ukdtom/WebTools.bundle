@@ -63,6 +63,22 @@
             webtoolsModel.globalLoading = false;
         });
     };
+    this.loadUsers = function (callback) {
+        webtoolsModel.globalLoading++;
+
+        var url = webtoolsModel.apiV3Url + "/wt/getUsers";
+        $http({
+            method: "GET",
+            url: url
+        }).then(function (resp) {
+            webtoolsModel.users = resp.data;
+            webtoolsModel.globalLoading--;
+            if (callback) callback(resp.data);
+        }, function (errorResp) {
+            self.log("webtoolsService.loadUsers - " + self.formatError(errorResp), "Core", true, url);
+            webtoolsModel.globalLoading--;
+        });
+    }
     this.log = function (text, location, error, errorUrl) {
         if (!location) location = "Empty";
 
