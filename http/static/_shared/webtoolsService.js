@@ -25,7 +25,7 @@
         //var url = webtoolsModel.apiUrl + "?module=git&function=getReleaseInfo&url=" + webtoolsModel.repoUrl + "&version=latest";
         $http({
             method: "GET",
-            url: url,
+            url: url
         }).then(function (resp) {
             localStorage.wtGITcheck = true;
 
