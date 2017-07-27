@@ -72,6 +72,8 @@
             url: url
         }).then(function (resp) {
             webtoolsModel.users = resp.data;
+            console.log(webtoolsModel.users);
+            debugger;
             webtoolsModel.globalLoading--;
             if (callback) callback(resp.data);
         }, function (errorResp) {
