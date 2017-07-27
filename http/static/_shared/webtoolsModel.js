@@ -4,7 +4,7 @@
     this.users = {};
     this.isNewVersionAvailable = false;
 
-    this.globalLoading = false;
+    this.globalLoading = 0;
     this.subLoading = false;
     this.logsLoading = false;
     this.themeLoading = false;
