@@ -5,6 +5,7 @@
     this.isNewVersionAvailable = false;
 
     this.globalLoading = 0;
+    this.languageLoading = 0;
     this.subLoading = false;
     this.logsLoading = false;
     this.themeLoading = false;

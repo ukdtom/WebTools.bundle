@@ -30,6 +30,10 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
         controller: "playlistController"
     })
     //Options
+    .when("/language", {
+        templateUrl: "static/language/language.html",
+        controller: "languageController"
+    })
     .when("/theme", {
         templateUrl: "static/theme/theme.html",
         controller: "themeController"
@@ -48,8 +52,9 @@ webtools.run(['webtoolsService', 'themeService', 'gettextCatalog', function (web
     webtoolsService.loadWebToolsVersion();
     webtoolsService.loadUsers();
     themeService.loadActiveTheme();
-    gettextCatalog.currentLanguage = 'da';
-    gettextCatalog.debug = true;
+
+    gettextCatalog.currentLanguage = 'en';
+    gettextCatalog.debug = true; //TODO:: remove
 }]);
 
 webtools.filter('uasSearchBy', ['uasModel', function (uasModel) {

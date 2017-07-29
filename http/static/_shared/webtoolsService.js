@@ -1,4 +1,4 @@
-﻿angular.module('webtools').service('webtoolsService', ['$http', '$window', '$log', 'webtoolsModel', 'DialogFactory', function ($http, $window, $log, webtoolsModel, DialogFactory) {
+﻿angular.module('webtools').service('webtoolsService', ['$http', '$window', '$log', 'webtoolsModel', 'DialogFactory', 'gettextCatalog', function ($http, $window, $log, webtoolsModel, DialogFactory, gettextCatalog) {
     var self = this;
     //Private
     var anyNewVersion = function (currentVersion, latestVersion) {
@@ -54,6 +54,7 @@
             url: url,
         }).then(function (resp) {
             webtoolsModel.version = resp.data.version;
+            gettextCatalog.currentLanguage = resp.data.UILanguage;
             webtoolsModel.versionFormated = "WebTools - v" + resp.data.version;
             webtoolsModel.globalLoading--;
             checkIsNewVersionAvailable();
@@ -81,6 +82,24 @@
             webtoolsModel.globalLoading--;
         });
     }
+
+    //this.getLanguage = function (callback) {
+    //    webtoolsModel.globalLoading++;
+
+    //    var url = webtoolsModel.apiV3Url + "/settings/getSettings/UILanguage";
+    //    $http({
+    //        method: "GET",
+    //        url: url
+    //    }).then(function (resp) {
+    //        debugger;
+    //        webtoolsModel.globalLoading--;
+    //        if (callback) callback(resp.data);
+    //    }, function (errorResp) {
+    //        self.log("webtoolsService.getLanguage - " + self.formatError(errorResp), "Core", true, url);
+    //        webtoolsModel.globalLoading--;
+    //    });
+    //}
+
     this.log = function (text, location, error, errorUrl) {
         if (!location) location = "Empty";
 
