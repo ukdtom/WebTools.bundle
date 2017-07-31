@@ -21,6 +21,8 @@ POST = ['']
 DELETE = ['']
 
 PAYLOAD = 'aWQ9MTE5Mjk1JmFwaV90b2tlbj0wODA2OGU0ZjRkNTI3NDVlOTM0NzAyMWQ2NDU5MGYzOQ__'
+TRANSLATESITEBASE = 'https://api.poeditor.com/v2'
+TRANSLATESITEHEADER = {'content-type': 'application/x-www-form-urlencoded'}
 
 
 class wtV3(object):	
@@ -95,18 +97,17 @@ class wtV3(object):
 	# Get list of avail languages, as well as their translation status
 	@classmethod
 	def GETLANGUAGELIST(self, req, *args):
-		try:			
-			url = "https://api.poeditor.com/v2/languages/list"
-			headers = {'content-type': 'application/x-www-form-urlencoded'}
-			response = HTTP.Request(method = 'POST', url = url, data=String.Decode(PAYLOAD), headers=headers)
-			respose = JSON.ObjectFromString(str(response))
-			print 'Ged result', str(response)
-			print 'ged 2'
-			print 'Ged3', response['result']
+		try:				
+			response = HTTP.Request(method = 'POST', url = TRANSLATESITEBASE + '/languages/list', data=String.Decode(PAYLOAD), headers=TRANSLATESITEHEADER)			
+			jsonResponse = JSON.ObjectFromString(str(response))						
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(jsonResponse['result']['languages']))
 		except Exception, e:
 			Log.Exception('Exception happened in getLanguageList was: ' + str(e))
-			print 'Exception %s' %str(e)
-
+			req.clear()
+			req.set_status(500)			
+			req.finish('Fatal error happened in wt.getLanguageList: %s' %(str(e)))
 
 	# Get list of users
 	@classmethod
@@ -180,7 +181,7 @@ class wtV3(object):
 # This function will do a cleanup of old stuff, if needed
 def upgradeCleanup():
 	# Always check translation file regardless of version
-	updateTranslation()
+	updateTranslationStore()
 	'''
 	We do take precedence here in a max of 3 integer digits in the version number !
 	'''
@@ -212,7 +213,7 @@ def upgradeCleanup():
 			pass
 			
 # This function will update the translation.js file if needed
-def updateTranslation():	
+def updateTranslationStore():	
 	bundleStore = Core.storage.join_path(Core.bundle_path, 'http', 'static', '_shared', 'translations.js')
 	dataStore = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', 'com.plexapp.plugins.WebTools', 'DataItems', 'translations.js')	
 	#If translations.js file already present in the store, we need to find out if it's newer or not
