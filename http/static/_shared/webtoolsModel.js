@@ -1,9 +1,12 @@
 ﻿angular.module('webtools').service('webtoolsModel', function () {
     this.version = "";
     this.versionFormated = "";
+    this.UILanguage = "en";
+    this.users = {};
     this.isNewVersionAvailable = false;
 
-    this.globalLoading = false;
+    this.globalLoading = 0;
+    this.languageLoading = 0;
     this.subLoading = false;
     this.logsLoading = false;
     this.themeLoading = false;
@@ -28,6 +31,7 @@
     this.optionHideIntegrated = "options_hide_integrated";
     this.itemsPerPage = "items_per_page";
     this.wtCssTheme = "wt_csstheme";
+    this.UILanguageKey = "UILanguage";
 
     this.repoUrl = "https://github.com/ukdtom/WebTools.bundle";
     this.threadUrl = "https://forums.plex.tv/discussion/126254";

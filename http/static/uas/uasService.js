@@ -177,7 +177,7 @@
         var url = webtoolsModel.apiV3Url + "/git/migrate";
         $http({
             method: "PUT",
-            url: url,
+            url: url
         }).then(function (resp) {
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
@@ -249,7 +249,7 @@
         var url = webtoolsModel.apiV3Url + "/git/upgradeWT";
         $http({
             method: "PUT",
-            url: url,
+            url: url
         }).then(function (resp) {
             debugger;
             if (callback) callback(resp.data);

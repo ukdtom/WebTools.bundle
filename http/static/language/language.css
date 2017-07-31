@@ -1,0 +1,9 @@
+﻿.language{
+}
+.language .languageSelector {
+    color: black;
+    min-width: 200px;
+    height: 40px;
+    border-radius: 5px;
+    padding: 2px;
+}

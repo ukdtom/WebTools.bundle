@@ -30,6 +30,10 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
         controller: "playlistController"
     })
     //Options
+    .when("/language", {
+        templateUrl: "static/language/language.html",
+        controller: "languageController"
+    })
     .when("/theme", {
         templateUrl: "static/theme/theme.html",
         controller: "themeController"
@@ -44,11 +48,17 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
     });
 }]);
 
-webtools.run(['webtoolsService', 'themeService', 'gettextCatalog', function (webtoolsService, themeService, gettextCatalog) {
+webtools.run(['$rootScope', 'webtoolsService', 'themeService', 'languageService', 'gettextCatalog', function ($rootScope, webtoolsService, themeService, languageService, gettextCatalog) {
     webtoolsService.loadWebToolsVersion();
+    webtoolsService.loadUsers();
     themeService.loadActiveTheme();
-    gettextCatalog.currentLanguage = 'da';
-    gettextCatalog.debug = true;
+
+    gettextCatalog.baseLanguage = 'en';
+    gettextCatalog.currentLanguage = 'en';
+    gettextCatalog.debugPrefix = "[!] ";
+    gettextCatalog.debug = true; //TODO:: remove
+
+    languageService.loadLanguage();
 }]);
 
 webtools.filter('uasSearchBy', ['uasModel', function (uasModel) {

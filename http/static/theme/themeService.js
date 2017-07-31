@@ -2,7 +2,7 @@
     this.getThemes = function (callback) {
         webtoolsModel.themeLoading = true;
 
-        var url = webtoolsModel.apiV3Url + "/wt/getCSS"; //V3
+        var url = webtoolsModel.apiV3Url + "/wt/getCSS";
         $http({
             method: "GET",
             url: url,
@@ -18,10 +18,10 @@
 
     this.loadActiveTheme = function (callback) {
         webtoolsModel.themeLoading = true;
-        var url = webtoolsModel.apiV3Url + "/settings/getSettings/" + webtoolsModel.wtCssTheme; //V3
+        var url = webtoolsModel.apiV3Url + "/settings/getSettings/" + webtoolsModel.wtCssTheme;
         $http({
             method: "GET",
-            url: url,
+            url: url
         }).then(function (resp) {
             themeModel.activeTheme = resp.data;
             if (callback) callback(resp.data);
@@ -33,7 +33,7 @@
     }
 
     this.saveTheme = function (theme, callback) {
-        var url = webtoolsModel.apiV3Url + "/settings/setSetting"; //V3
+        var url = webtoolsModel.apiV3Url + "/settings/setSetting";
         var data = {};
         data[webtoolsModel.wtCssTheme] = theme;
         $http({

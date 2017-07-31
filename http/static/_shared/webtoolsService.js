@@ -1,4 +1,4 @@
-﻿angular.module('webtools').service('webtoolsService', ['$http', '$window', '$log', 'webtoolsModel', 'DialogFactory', function ($http, $window, $log, webtoolsModel, DialogFactory) {
+﻿angular.module('webtools').service('webtoolsService', ['$http', '$window', '$log', 'webtoolsModel', 'DialogFactory', 'gettextCatalog', function ($http, $window, $log, webtoolsModel, DialogFactory, gettextCatalog) {
     var self = this;
     //Private
     var anyNewVersion = function (currentVersion, latestVersion) {
@@ -19,13 +19,13 @@
     var checkIsNewVersionAvailable = function (callback) {
         if (localStorage.wtGITcheck) return;
 
-        webtoolsModel.globalLoading = true;
+        webtoolsModel.globalLoading++;
 
         var url = webtoolsModel.apiV3Url + "/git/getReleaseInfo/url/" + encodeURIComponent(webtoolsModel.repoUrl) + "/version/latest";
         //var url = webtoolsModel.apiUrl + "?module=git&function=getReleaseInfo&url=" + webtoolsModel.repoUrl + "&version=latest";
         $http({
             method: "GET",
-            url: url,
+            url: url
         }).then(function (resp) {
             localStorage.wtGITcheck = true;
 
@@ -33,10 +33,10 @@
                 webtoolsModel.isNewVersionAvailable = true;
             }
             if (callback) callback(resp.data);
-            webtoolsModel.globalLoading = false;
+            webtoolsModel.globalLoading--;
         }, function (errorResp) {
             self.log("var checkIsNewVersionAvailable - " + self.formatError(errorResp), "Core", true, url);
-            webtoolsModel.globalLoading = false;
+            webtoolsModel.globalLoading--;
         });
     }
 
@@ -46,7 +46,7 @@
     }
 
     this.loadWebToolsVersion = function (callback) {
-        webtoolsModel.globalLoading = true;
+        webtoolsModel.globalLoading++;
 
         var url = "version";
         $http({
@@ -55,14 +55,49 @@
         }).then(function (resp) {
             webtoolsModel.version = resp.data.version;
             webtoolsModel.versionFormated = "WebTools - v" + resp.data.version;
-            webtoolsModel.globalLoading = false;
+            webtoolsModel.globalLoading--;
             checkIsNewVersionAvailable();
             if (callback) callback(resp.data);
         }, function (errorResp) {
             self.log("webtoolsService.loadWebToolsVersion - " + self.formatError(errorResp), "Core", true, url);
-            webtoolsModel.globalLoading = false;
+            webtoolsModel.globalLoading--;
         });
     };
+    this.loadUsers = function (callback) {
+        webtoolsModel.globalLoading++;
+
+        var url = webtoolsModel.apiV3Url + "/wt/getUsers";
+        $http({
+            method: "GET",
+            url: url
+        }).then(function (resp) {
+            webtoolsModel.users = resp.data;
+            console.log(webtoolsModel.users);
+            webtoolsModel.globalLoading--;
+            if (callback) callback(resp.data);
+        }, function (errorResp) {
+            self.log("webtoolsService.loadUsers - " + self.formatError(errorResp), "Core", true, url);
+            webtoolsModel.globalLoading--;
+        });
+    }
+
+    //this.getLanguage = function (callback) {
+    //    webtoolsModel.globalLoading++;
+
+    //    var url = webtoolsModel.apiV3Url + "/settings/getSettings/UILanguage";
+    //    $http({
+    //        method: "GET",
+    //        url: url
+    //    }).then(function (resp) {
+    //        debugger;
+    //        webtoolsModel.globalLoading--;
+    //        if (callback) callback(resp.data);
+    //    }, function (errorResp) {
+    //        self.log("webtoolsService.getLanguage - " + self.formatError(errorResp), "Core", true, url);
+    //        webtoolsModel.globalLoading--;
+    //    });
+    //}
+
     this.log = function (text, location, error, errorUrl) {
         if (!location) location = "Empty";
 
