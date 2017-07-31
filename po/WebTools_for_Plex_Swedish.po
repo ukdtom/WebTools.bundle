@@ -5,79 +5,79 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
 "Project-Id-Version: WebTools for Plex\n"
-"Language: pt-br\n"
+"Language: sv\n"
 
 #: ../http/static/home/home.html:3
 msgid "Use the menu on the left side to navigate in WebTools."
-msgstr "Use o menu à esquerda para navegar em WebTools"
+msgstr "Använd menyn på vänster sida för att navigera i WebTools."
 
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
-msgstr "Webtools é uma ferramenta para o auxiliar a gerir o servidor de Plex"
+msgstr "WebTools är ett verktyg bestående av moduler som hjälper dig att administrera din Plex server."
 
 #: ../http/static/home/home.html:1
 msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
-msgstr "Bem vindo a  {[{webtoolsModel.versionFormated}]}"
+msgstr "Välkommen till {[{webtoolsModel.versionFormated}]}"
 
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
-msgstr "Locais (na mesma pasta ou subpasta do filme) ou na pasta do agente."
+msgstr "Både lokala (placerade bredvid filmen i sin katalog eller i en tillhörande underkatalog) och i agentens egna katalog."
 
 #: ../http/static/theme/theme.html:2
 msgid "Change Theme"
-msgstr "Mudar o tema"
+msgstr "Ändra Tema"
 
 #: ../http/static/menu/menu.html:16
 msgid "Changelog"
-msgstr "Changelog"
+msgstr "Ändra logg"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
-msgstr "Ver o Changelog"
+msgstr "Ändra loggvisare"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
-msgstr "Apagar legenda associada"
+msgstr "Ta bort vald lokal undertext från hårddisken."
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
-msgstr "Ficheiro vazio"
+msgstr "Filen är tom"
 
 #: ../http/static/menu/menu.html:20
 msgid "Help"
-msgstr "Ajuda"
+msgstr "Hjälp"
 
 #: ../http/static/sub_management/subHelp.html:5
 msgid "List all subtitles for a movie/tv show in your library."
-msgstr "Lista legendas disponíveis para um filme ou série"
+msgstr "Skapa en lista på alla undertexter för en Film / ett TV-program i ditt bibliotek"
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
-msgstr "LogViewer"
+msgstr "LogViewer Verktyget"
 
 #: ../http/static/menu/menu.html:13
 msgid "Logout"
-msgstr "Sair"
+msgstr "Logga ut"
 
 #: ../http/static/menu/menu.html:11
 msgid "Options"
-msgstr "Opções"
+msgstr "Alternativ"
 
 #: ../http/static/sub_management/subHelp.html:15
 msgid "Options for output."
-msgstr "Opções de \"output\""
+msgstr "Resultatalternativ."
 
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
-msgstr "Procurar filmes e séries por categoria"
+msgstr "Sök efter Filmer och TV-program inuti kategorier."
 
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
-msgstr "Seleccione um dos temas disponíveis:"
+msgstr "Välj ett av följande teman för användning:"
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
-msgstr "Seleccione uma das bibliotecas abaixo para procurar filmes ou séries que não estejam nem na biblioteca de Plex nem no seu disco local"
+msgstr "Välj ett av biblioteken nedan för att leta efter Filmer / TV-program som inte existerar i antingen Plex-databasen eller på din hårddisk."
 
 #: ../http/static/menu/menu.html:15
 msgid "Theme"
@@ -85,109 +85,109 @@ msgstr "Tema"
 
 #: ../http/static/findmedia/fm.html:3
 msgid "This tool is a combination of FindUnmatched and FindMissing."
-msgstr "Esta ferramenta inclui funcionalidades de FindUnmatched e FindMissing."
+msgstr "Det här verktyget är en kombination av \"FindUnmatched\" och \"FindMissing\"."
 
 #: ../http/static/menu/menu.html:14
 msgid "Update WT"
-msgstr "Actualizar WebTools"
+msgstr "Uppdatera WebTools"
 
 #: ../http/static/sub_management/subHelp.html:9
 msgid "View the subtitle and see it's contents to determine what to delete."
-msgstr "Inspeccionar a legenda para identificar o que apagar"
+msgstr "Granska innehållet av undertexter för att bedöma vad som ska tas bort."
 
 #: ../http/static/menu/menu.html:22
 msgid "WT Forum Thread"
-msgstr "Suporte a WebTools"
+msgstr "WT Forumtråd"
 
 #: ../http/static/menu/menu.html:23
 msgid "WT GitHub"
-msgstr "GitHub"
+msgstr "WT GitHub"
 
 #: ../http/static/menu/menu.html:24
 msgid "WT Manual(PDF)"
-msgstr "Documentação WebTools (pdf)"
+msgstr "WT Manual(PDF)"
 
 #: ../http/static/404/404.html:1
 msgid "We could not find the page :("
-msgstr "Não foi possível encontrar a página :("
+msgstr "Vi kunde inte hitta sidan :("
 
 #: ../http/static/logs/logs.html:36
 msgid "We recommend you to download large files and view them in your favourite text editor."
-msgstr "Recomenda-se fazer o \"download\" de ficheiros grandes e vê-los com o seu editor de texto favorito"
+msgstr "Vi rekommenderar att du laddar ner större filer och visar dem lokalt i din textredigerare."
 
 #: ../http/static/logs/logs.html:28
 msgid "Download all logfiles as zip"
-msgstr ""
+msgstr "Ladda ned alla loggfiler i en ZIP-fil"
 
 #: ../http/static/logs/logs.html:27
 msgid "Download selected logfile"
-msgstr ""
+msgstr "Ladda ned vald loggfil"
 
 #: ../http/static/findmedia/fm.html:78
 msgid "Abort scan"
-msgstr ""
+msgstr "Avbryt genomsökning"
 
 #: ../http/static/findmedia/fm.html:43
 msgid "Add ignored folder"
-msgstr ""
+msgstr "Lägg till ignorerad katalog"
 
 #: ../http/static/playlist/playlistHelp.html:2
 msgid "Current features:"
-msgstr ""
+msgstr "Aktuella funktioner:"
 
 #: ../http/static/playlist/playlistHelp.html:5
 msgid "DUMMY TEXT Playlist can help you with lorem ipsum"
-msgstr ""
+msgstr "Dummy Text är grekiska för mig :)"
 
 #: ../http/static/findmedia/fm.html:92
 msgid "Download result"
-msgstr ""
+msgstr "Nedladdningsresultat"
 
 #: ../http/static/findmedia/fm.html:26
 msgid "Ignore Extras"
-msgstr ""
+msgstr "Ignorera Extramaterial"
 
 #: ../http/static/findmedia/fm.html:20
 msgid "Ignore Hidden"
-msgstr ""
+msgstr "Ignorera Dolda"
 
 #: ../http/static/findmedia/fm.html:31
 msgid "Ignore folders"
-msgstr ""
+msgstr "Ignorera kataloger"
 
 #: ../http/static/findmedia/fm.html:98
 msgid "No records missing from Plex database"
-msgstr ""
+msgstr "Inga sektorer saknas i Plex-databasen"
 
 #: ../http/static/findmedia/fm.html:110
 msgid "No records missing from harddrive"
-msgstr ""
+msgstr "Inga filer saknas på hårddisken"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
-msgstr ""
+msgstr "Spellista Hjälp"
 
 #: ../http/static/findmedia/fm.html:101
 msgid "Records missing from Plex database"
-msgstr ""
+msgstr "Sektorer saknas i Plex-databasen"
 
 #: ../http/static/findmedia/fm.html:113
 msgid "Records missing from harddrive"
-msgstr ""
+msgstr "Sektorer saknas på hårddisken"
 
 #: ../http/static/findmedia/fm.html:59
 msgid "Reset settings"
-msgstr ""
+msgstr "Återställ Inställningarna"
 
 #: ../http/static/findmedia/fm.html:67
 msgid "Save settings"
-msgstr ""
+msgstr "Spara Inställningarna"
 
 #: ../http/static/findmedia/fm.html:12
 msgid "Show settings"
-msgstr ""
+msgstr "Visa Inställningarna"
 
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
-msgstr ""
+msgstr "Giltig Ändelse"
 
