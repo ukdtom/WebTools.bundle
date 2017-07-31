@@ -54,7 +54,6 @@
             url: url,
         }).then(function (resp) {
             webtoolsModel.version = resp.data.version;
-            webtoolsModel.UILanguage = resp.data.UILanguage;
             webtoolsModel.versionFormated = "WebTools - v" + resp.data.version;
             webtoolsModel.globalLoading--;
             checkIsNewVersionAvailable();

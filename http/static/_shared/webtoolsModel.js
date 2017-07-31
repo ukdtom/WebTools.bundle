@@ -31,6 +31,7 @@
     this.optionHideIntegrated = "options_hide_integrated";
     this.itemsPerPage = "items_per_page";
     this.wtCssTheme = "wt_csstheme";
+    this.UILanguageKey = "UILanguage";
 
     this.repoUrl = "https://github.com/ukdtom/WebTools.bundle";
     this.threadUrl = "https://forums.plex.tv/discussion/126254";

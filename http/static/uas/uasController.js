@@ -55,7 +55,7 @@
     $scope.updateAllBundles = function () {
         for (var i = 0; i < uasModel.updateList.length; i++) {
             var item = uasModel.list[uasModel.updateList[i].key];
-            $scope.installUpdate(item, item.key)
+            $scope.installUpdate(item, item.key);
         }
     }
 

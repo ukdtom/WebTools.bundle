@@ -1,7 +1,9 @@
 <div class="language">
-    <div class="textSize4 textBold600" translate>Change Language</div>
-    <div class="lang" 
-         ng-click="changeLang(langKey)"
-         ng-class="{'active' : langKey === webtoolsModel.UILanguage}" 
-         ng-repeat="(langName, langKey) in languageModel.languages">{[{langName}]}</div>
+    <label for="languageSelector" class="textSize4 textBold600" translate>Change Language</label><br/>
+    <select class="languageSelector" id="languageSelector" ng-model="webtoolsModel.UILanguage" ng-change="changeLang()">
+        <option
+            ng-repeat="(langName, langKey) in languageModel.languages track by langKey"
+            value="{[{langKey}]}"
+            translate>{[{langName}]}</option>
+    </select>
 </div>

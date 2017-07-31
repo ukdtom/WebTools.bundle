@@ -48,7 +48,7 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
     });
 }]);
 
-webtools.run(['$rootScope', 'webtoolsService', 'webtoolsModel', 'themeService', 'gettextCatalog', function ($rootScope, webtoolsService, webtoolsModel, themeService, gettextCatalog) {
+webtools.run(['$rootScope', 'webtoolsService', 'themeService', 'languageService', 'gettextCatalog', function ($rootScope, webtoolsService, themeService, languageService, gettextCatalog) {
     webtoolsService.loadWebToolsVersion();
     webtoolsService.loadUsers();
     themeService.loadActiveTheme();
@@ -58,12 +58,7 @@ webtools.run(['$rootScope', 'webtoolsService', 'webtoolsModel', 'themeService', 
     gettextCatalog.debugPrefix = "[!] ";
     gettextCatalog.debug = true; //TODO:: remove
 
-    $rootScope.webtoolsModel = webtoolsModel;
-    $rootScope.$watch('webtoolsModel.UILanguage', function (newVal, oldVal) {
-        if (newVal === oldVal) return;
-        gettextCatalog.baseLanguage = newVal;
-        gettextCatalog.currentLanguage = newVal;
-    }, true);
+    languageService.loadLanguage();
 }]);
 
 webtools.filter('uasSearchBy', ['uasModel', function (uasModel) {

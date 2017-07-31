@@ -1,4 +1,5 @@
-﻿angular.module('webtools').service('languageService', ['$http', 'languageModel', 'webtoolsModel', 'webtoolsService', function ($http, languageModel, webtoolsModel, webtoolsService) {
+﻿angular.module('webtools').service('languageService', ['$http', 'languageModel', 'webtoolsModel', 'webtoolsService', 'gettextCatalog', function ($http, languageModel, webtoolsModel, webtoolsService, gettextCatalog) {
+    var self = this;
 
     this.getLanguages = function (callback) {
         var url = webtoolsModel.apiV3Url + "/language/getLangCodeList";
@@ -11,15 +12,31 @@
             if (callback) callback(resp.data);
             webtoolsModel.languageLoading--;
         }, function (errorResp) {
-            self.log("languageService.getLanguages - " + self.formatError(errorResp), "Language", true, url);
+            webtoolsService.log("languageService.getLanguages - " + webtoolsService.formatError(errorResp), "Language", true, url);
             webtoolsModel.languageLoading--;
         });
     }
 
+    this.loadLanguage = function (callback) {
+        var url = webtoolsModel.apiV3Url + "/settings/getSettings/" + webtoolsModel.UILanguageKey;
+        $http({
+            method: "GET",
+            url: url
+        }).then(function (resp) {
+            webtoolsModel.UILanguage = resp.data;
+            gettextCatalog.currentLanguage = webtoolsModel.UILanguage;
+            if (callback) callback(resp.data);
+        }, function (errorResp) {
+            webtoolsService.log("languageService.loadLanguage - " + webtoolsService.formatError(errorResp), "Language", true, url);
+        });
+    }
+
     this.saveLanguage = function (lang, callback) {
-        var url = webtoolsModel.apiV3Url + "/settings/setSetting"; //V3
+        gettextCatalog.currentLanguage = lang;
+
+        var url = webtoolsModel.apiV3Url + "/settings/setSetting";
         var data = {};
-        data[webtoolsModel.UILanguage] = lang;
+        data[webtoolsModel.UILanguageKey] = lang;
         $http({
             method: "PUT",
             url: url,
@@ -27,7 +44,7 @@
         }).then(function (resp) {
             if (callback) callback(resp.data);
         }, function (errorResp) {
-            self.log("languageService.saveLang - " + self.formatError(errorResp), "Language", true, url);
+            webtoolsService.log("languageService.saveLang - " + webtoolsService.formatError(errorResp), "Language", true, url);
         });
     }
 }]);

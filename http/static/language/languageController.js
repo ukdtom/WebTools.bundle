@@ -1,4 +1,4 @@
-﻿angular.module('webtools').controller('languageController', ['$scope', 'languageModel', 'languageService', 'webtoolsModel', function ($scope, languageModel, languageService, webtoolsModel) {
+﻿angular.module('webtools').controller('languageController', ['$scope', 'languageModel', 'languageService', 'webtoolsModel', '$window', function ($scope, languageModel, languageService, webtoolsModel, $window) {
     $scope.webtoolsModel = webtoolsModel;
     $scope.languageModel = languageModel;
 
@@ -6,9 +6,10 @@
         languageService.getLanguages();
     }
 
-    $scope.changeLang = function (lang) {
-        $scope.webtoolsModel.UILanguage = lang;
-        languageService.saveLanguage(lang);
+    $scope.changeLang = function () {
+        languageService.saveLanguage($scope.webtoolsModel.UILanguage, function() {
+            $window.location.reload();
+        });
     }
 
     $scope.init();
