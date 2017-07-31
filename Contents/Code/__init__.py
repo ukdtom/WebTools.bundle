@@ -30,8 +30,11 @@ from wtV3 import upgradeCleanup
 def Start():
 	global SECRETKEY
 	runningLocale = locale.getdefaultlocale()
-	if DEBUGMODE:		
-		print("********  Started %s on %s at %s with locale set to %s **********" %(NAME  + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M"), runningLocale))
+	if DEBUGMODE:	
+		try:	
+			print("********  Started %s on %s at %s with locale set to %s **********" %(NAME  + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M"), runningLocale))
+		except:
+			pass
 	Log.Debug("*******  Started %s on %s at %s with locale set to %s ***********" %(NAME + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M"), runningLocale))
 	# Do Upgrade stuff if needed
 	upgradeCleanup()

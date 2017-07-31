@@ -489,6 +489,7 @@ class findMediaV3(object):
 	@classmethod
 	def RESETSETTINGS(self, req, *args):
 		Dict['findMedia'] = None
+		Dict.Save()
 		self.populatePrefs()
 		req.clear()		
 		req.set_status(200)
