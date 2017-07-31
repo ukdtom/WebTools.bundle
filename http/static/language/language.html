@@ -1,3 +1,7 @@
 <div class="language">
     <div class="textSize4 textBold600" translate>Change Language</div>
+    <div class="lang" 
+         ng-click="changeLang(langKey)"
+         ng-class="{'active' : langKey === webtoolsModel.UILanguage}" 
+         ng-repeat="(langName, langKey) in languageModel.languages">{[{langName}]}</div>
 </div>

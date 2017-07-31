@@ -54,7 +54,7 @@
             url: url,
         }).then(function (resp) {
             webtoolsModel.version = resp.data.version;
-            gettextCatalog.currentLanguage = resp.data.UILanguage;
+            webtoolsModel.UILanguage = resp.data.UILanguage;
             webtoolsModel.versionFormated = "WebTools - v" + resp.data.version;
             webtoolsModel.globalLoading--;
             checkIsNewVersionAvailable();
@@ -74,7 +74,6 @@
         }).then(function (resp) {
             webtoolsModel.users = resp.data;
             console.log(webtoolsModel.users);
-            debugger;
             webtoolsModel.globalLoading--;
             if (callback) callback(resp.data);
         }, function (errorResp) {

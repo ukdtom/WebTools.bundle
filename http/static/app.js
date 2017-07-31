@@ -48,13 +48,22 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
     });
 }]);
 
-webtools.run(['webtoolsService', 'themeService', 'gettextCatalog', function (webtoolsService, themeService, gettextCatalog) {
+webtools.run(['$rootScope', 'webtoolsService', 'webtoolsModel', 'themeService', 'gettextCatalog', function ($rootScope, webtoolsService, webtoolsModel, themeService, gettextCatalog) {
     webtoolsService.loadWebToolsVersion();
     webtoolsService.loadUsers();
     themeService.loadActiveTheme();
 
+    gettextCatalog.baseLanguage = 'en';
     gettextCatalog.currentLanguage = 'en';
+    gettextCatalog.debugPrefix = "[!] ";
     gettextCatalog.debug = true; //TODO:: remove
+
+    $rootScope.webtoolsModel = webtoolsModel;
+    $rootScope.$watch('webtoolsModel.UILanguage', function (newVal, oldVal) {
+        if (newVal === oldVal) return;
+        gettextCatalog.baseLanguage = newVal;
+        gettextCatalog.currentLanguage = newVal;
+    }, true);
 }]);
 
 webtools.filter('uasSearchBy', ['uasModel', function (uasModel) {

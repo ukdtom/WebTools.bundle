@@ -6,5 +6,10 @@
         languageService.getLanguages();
     }
 
+    $scope.changeLang = function (lang) {
+        $scope.webtoolsModel.UILanguage = lang;
+        languageService.saveLanguage(lang);
+    }
+
     $scope.init();
 }]);
