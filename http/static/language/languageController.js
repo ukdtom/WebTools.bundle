@@ -8,7 +8,7 @@
 
     $scope.changeLang = function () {
         languageService.saveLanguage($scope.webtoolsModel.UILanguage, function() {
-            $window.location.reload();
+            $window.location.reload(true);
         });
     }
 

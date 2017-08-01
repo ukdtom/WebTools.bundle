@@ -2,7 +2,7 @@
     var self = this;
 
     this.getLanguages = function (callback) {
-        var url = webtoolsModel.apiV3Url + "/language/getLangCodeList";
+        var url = webtoolsModel.apiV3Url + "/wt/getLanguageList";
         webtoolsModel.languageLoading++;
         $http({
             method: "GET",
@@ -25,6 +25,7 @@
         }).then(function (resp) {
             webtoolsModel.UILanguage = resp.data;
             gettextCatalog.currentLanguage = webtoolsModel.UILanguage;
+            gettextCatalog.setCurrentLanguage(webtoolsModel.UILanguage);
             if (callback) callback(resp.data);
         }, function (errorResp) {
             webtoolsService.log("languageService.loadLanguage - " + webtoolsService.formatError(errorResp), "Language", true, url);

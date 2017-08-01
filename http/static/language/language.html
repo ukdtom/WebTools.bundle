@@ -2,8 +2,8 @@
     <label for="languageSelector" class="textSize4 textBold600" translate>Change Language</label><br/>
     <select class="languageSelector" id="languageSelector" ng-model="webtoolsModel.UILanguage" ng-change="changeLang()">
         <option
-            ng-repeat="(langName, langKey) in languageModel.languages track by langKey"
-            value="{[{langKey}]}"
-            translate>{[{langName}]}</option>
+            ng-repeat="lang in languageModel.languages track by lang.code"
+            value="{[{lang.code}]}"
+            translate>{[{lang.name}]}</option>
     </select>
 </div>
