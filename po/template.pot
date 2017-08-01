@@ -197,5 +197,5 @@ msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
 msgstr ""
 
 #: ../http/static/language/language.html:4
-msgid "{[{langName}]}"
+msgid "{[{lang.name}]}"
 msgstr ""
