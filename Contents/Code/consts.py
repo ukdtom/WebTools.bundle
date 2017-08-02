@@ -173,8 +173,10 @@ class consts(object):
 		# Init the scheme used Dict
 		if Dict['wt_csstheme'] == None:
 			Dict['wt_csstheme'] = 'WhiteBlue.css'
+		# Init default language to en, if none is present
+		if Dict['UILanguage'] == None:
+			Dict['UILanguage'] = 'en'
 		return
-
 
 consts = consts()
 
