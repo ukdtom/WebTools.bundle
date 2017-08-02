@@ -12,5 +12,11 @@
         });
     }
 
+    $scope.forceLangUpdate = function(lang) {
+        languageService.forceLangUpdate(lang, function () {
+            $window.location.reload(true);
+        });
+    }
+
     $scope.init();
 }]);

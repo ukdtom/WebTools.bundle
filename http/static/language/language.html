@@ -1,9 +1,14 @@
 <div class="language">
-    <label for="languageSelector" class="textSize4 textBold600" translate>Change Language</label><br/>
-    <select class="languageSelector" id="languageSelector" ng-model="webtoolsModel.UILanguage" ng-change="changeLang()">
-        <option
-            ng-repeat="lang in languageModel.languages track by lang.code"
-            value="{[{lang.code}]}"
-            translate>{[{lang.name}]}</option>
-    </select>
+    <content-loading ng-if="webtoolsModel.languageLoading" class="pushTopMinor"></content-loading>
+    <div ng-if="!webtoolsModel.languageLoading">
+        <label for="languageSelector" class="textSize4 textBold600" translate>Change Language</label><br/>
+        <select class="languageSelector" id="languageSelector" ng-model="webtoolsModel.UILanguage" ng-change="changeLang()">
+            <option ng-repeat="lang in languageModel.languages track by lang.code"
+                    value="{[{lang.code}]}"
+                    translate>
+                {[{lang.name}]}
+            </option>
+        </select>
+        <div class="langBtn" ng-click="forceLangUpdate(webtoolsModel.UILanguage)" translate>Force language translation update</div>
+    </div>
 </div>

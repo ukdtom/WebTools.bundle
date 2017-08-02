@@ -1,9 +1,23 @@
 ﻿.language{
 }
 .language .languageSelector {
+    float: left;
     color: black;
     min-width: 200px;
     height: 40px;
     border-radius: 5px;
     padding: 2px;
+}
+.language .langBtn {
+    float: left;
+    margin-left: 10px;
+    height: 40px;
+    padding: 8px 10px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    cursor: pointer;
+    background: rgba(0, 77, 255, 0.25);
+}
+.language .langBtn:hover {
+    background:rgba(0, 77, 255, 0.55);
 }

@@ -48,4 +48,19 @@
             webtoolsService.log("languageService.saveLang - " + webtoolsService.formatError(errorResp), "Language", true, url);
         });
     }
+
+    this.forceLangUpdate = function(lang, callback) {
+        var url = webtoolsModel.apiV3Url + "/wt/updateLanguage/lang/" + lang;
+        webtoolsModel.languageLoading++;
+        $http({
+            method: "POST",
+            url: url
+        }).then(function (resp) {
+            if (callback) callback(resp.data);
+            webtoolsModel.languageLoading--;
+        }, function (errorResp) {
+            webtoolsService.log("languageService.forceLangUpdate - " + webtoolsService.formatError(errorResp), "Language", true, url);
+            webtoolsModel.languageLoading--;
+        });
+    }
 }]);
