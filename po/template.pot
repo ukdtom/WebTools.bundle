@@ -16,7 +16,7 @@ msgstr ""
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
 msgstr ""
 
-#: ../http/static/language/language.html:2
+#: ../http/static/language/language.html:4
 msgid "Change Language"
 msgstr ""
 
@@ -58,6 +58,10 @@ msgstr ""
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
+msgstr ""
+
+#: ../http/static/language/language.html:12
+msgid "Force language translation update"
 msgstr ""
 
 #: ../http/static/menu/menu.html:21
@@ -196,6 +200,6 @@ msgstr ""
 msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
 msgstr ""
 
-#: ../http/static/language/language.html:4
+#: ../http/static/language/language.html:6
 msgid "{[{lang.name}]}"
 msgstr ""
