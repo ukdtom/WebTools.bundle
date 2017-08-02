@@ -17,7 +17,7 @@ from shutil import copyfile
 
 GET = ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST']
 PUT = ['RESET']
-POST = ['']
+POST = ['UPDATELANGUAGE']
 DELETE = ['']
 
 PAYLOAD = 'aWQ9MTE5Mjk1JmFwaV90b2tlbj0wODA2OGU0ZjRkNTI3NDVlOTM0NzAyMWQ2NDU5MGYzOQ__'
@@ -30,6 +30,157 @@ class wtV3(object):
 	@classmethod
 	def init(self):
 		return
+
+	#********** Functions below ******************
+
+	# Get list of avail languages, as well as their translation status
+	@classmethod
+	def GETLANGUAGELIST(self, req, *args):
+		try:				
+			response = HTTP.Request(method = 'POST', url = TRANSLATESITEBASE + '/languages/list', data=String.Decode(PAYLOAD), headers=TRANSLATESITEHEADER)			
+			jsonResponse = JSON.ObjectFromString(str(response))						
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(jsonResponse['result']['languages']))
+		except Exception, e:
+			Log.Exception('Exception happened in getLanguageList was: ' + str(e))
+			req.clear()
+			req.set_status(e.code)			
+			req.finish('Fatal error happened in wt.getLanguageList: %s' %(str(e)))
+
+	# Download and update a translation from live translation site
+	@classmethod
+	def UPDATELANGUAGE(self, req, *args):		
+		try:
+			# Get params
+			if not args:
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing params')
+			params = args[0]
+			# Get the language param
+			try:
+				lang = params[params.index('lang')+1]				
+				# Get list of valid languages
+				languages = {}
+				jsonLanguages = getTranslationLanguages()['result']['languages']				
+				for item in jsonLanguages:
+					languages[item['code']] = item['name']				
+				# Unsupported language?
+				if lang not in languages:
+					Log.Error('Unsupported language %s' %lang)
+					req.clear()
+					req.set_status(412)
+					req.finish('Unsupported lang')
+				# Get download link
+				try:					
+					payLoad = String.Decode(PAYLOAD) + '&language=' + lang + '&type=key_value_json'
+					response = HTTP.Request(method = 'POST', url = TRANSLATESITEBASE + '/projects/export', data=payLoad, headers=TRANSLATESITEHEADER)								
+					url = JSON.ObjectFromString(str(response))['result']['url']	
+					# Download updated translation file, and minimize it									
+					translated = json.dumps(JSON.ObjectFromURL(url = url), separators=(',',':'))			
+					#Now open existing translations.js file, walk it line by line, and update the relevant translation										
+					translationLines = Data.Load('translations.js').splitlines()								
+					bFound = False
+					translatedStr = ''
+					for line in translationLines:
+						# Got the relevant language?
+						if line.lstrip().startswith("gettextCatalog.setStrings('" + lang + "',"):
+							start = line.split(',', 1)[0]							
+							translatedStr = translatedStr + '\n' + start + ',' + translated + ');'
+							bFound = True
+						else:
+							if translatedStr == '':
+								translatedStr = line
+							else:
+								translatedStr = translatedStr + '\n' + line
+					# New not yet seen language?
+					if not bFound:
+						translatedStr = translatedStr[:-23] + "    gettextCatalog.setStrings('" + lang + "'," + translated + ');\n' + translatedStr[len(translatedStr)-23:]
+					# Save the updated translation file
+					Data.Save('translations.js', translatedStr)
+				except Exception, e:
+					Log.Exception('Exception happened in updateLanguage while fetching download link was: ' + str(e))
+					req.clear()
+					req.set_status(e.code)			
+					req.finish('Fatal error happened in wt.updateLanguage while fetching download link was: %s' %(str(e)))
+			except:
+				Log.Error('Unsupported lang')
+				req.clear()
+				req.set_status(412)
+				req.finish('Missing lang')
+		except Exception, e:			
+			Log.Exception('Exception happened in updateLanguage was: ' + str(e))
+			req.clear()
+			req.set_status(e.code)			
+			req.finish('Fatal error happened in wt.updateLanguage: %s' %(str(e)))
+
+	# Get list of users
+	@classmethod
+	def GETUSERS(self, req, *args):
+		try:
+			users = plexTV().getUserList()
+			req.clear()
+			if users == None:
+				req.set_status(401)
+			else:
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(users))
+		except Exception, e:
+			Log.Exception('Fatal error happened in wt.getUsers: ' + str(e))
+			req.clear()
+			req.set_status(e.code)			
+			req.finish('Fatal error happened in wt.getUsers: %s' %(str(e)))
+
+
+	# Reset WT to factory settings
+	@classmethod
+	def RESET(self, req, *args):
+		try:
+			Log.Info('Factory Reset called')
+			cachePath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', 'com.plexapp.plugins.' + NAME)
+			#dataPath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', 'com.plexapp.plugins.' + NAME) 
+			shutil.rmtree(cachePath)
+			try:
+				Dict.Reset()
+			except:
+				Log.Critical('Fatal error in clearing dict during reset')
+			# Restart system bundle
+			HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.' + NAME + '/restart', cacheTime=0, immediate=True)
+			req.clear()
+			req.set_status(200)
+			req.finish('WebTools has been reset')
+		except Exception, e:
+			Log.Exception('Fatal error happened in wt.reset: ' + str(e))
+			req.clear()
+			req.set_status(e.code)			
+			req.finish('Fatal error happened in wt.reset: %s' %(str(e)))
+
+	# Get a list of all css files in http/custom_themes
+	@classmethod
+	def GETCSS(self,req, *args):			
+		Log.Debug('getCSS requested')
+		try:
+			targetDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'http', 'custom_themes')
+			myList = glob.glob(targetDir + '/*.css')
+			if len(myList) == 0:
+				req.clear()
+				req.set_status(204)
+			else:
+				for n,item in enumerate(myList):
+					myList[n] = item.replace(targetDir,'')
+					myList[n] = myList[n][1:]
+				Log.Debug('Returning %s' %(myList))
+				req.clear()
+				req.set_status(200)
+				req.set_header('Content-Type', 'application/json; charset=utf-8')
+				req.finish(json.dumps(myList))
+		except Exception, e:
+			Log.Exception('Fatal error happened in getCSS: ' + str(e))
+			req.clear()
+			req.set_status(e.code)
+			req.finish('Fatal error happened in getCSS: ' + str(e))
 
 	''' Get the relevant function and call it with optinal params '''
 	@classmethod
@@ -90,91 +241,7 @@ class wtV3(object):
 				else:
 					getattr(self, self.function)(req, params)
 			except Exception, e:
-				Log.Exception('Exception in process of: ' + str(e))
-
-	#********** Functions below ******************
-
-	# Get list of avail languages, as well as their translation status
-	@classmethod
-	def GETLANGUAGELIST(self, req, *args):
-		try:				
-			response = HTTP.Request(method = 'POST', url = TRANSLATESITEBASE + '/languages/list', data=String.Decode(PAYLOAD), headers=TRANSLATESITEHEADER)			
-			jsonResponse = JSON.ObjectFromString(str(response))						
-			req.set_status(200)
-			req.set_header('Content-Type', 'application/json; charset=utf-8')
-			req.finish(json.dumps(jsonResponse['result']['languages']))
-		except Exception, e:
-			Log.Exception('Exception happened in getLanguageList was: ' + str(e))
-			req.clear()
-			req.set_status(500)			
-			req.finish('Fatal error happened in wt.getLanguageList: %s' %(str(e)))
-
-	# Get list of users
-	@classmethod
-	def GETUSERS(self, req, *args):
-		try:
-			users = plexTV().getUserList()
-			req.clear()
-			if users == None:
-				req.set_status(401)
-			else:
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(users))
-		except Exception, e:
-			Log.Exception('Fatal error happened in wt.getUsers: ' + str(e))
-			req.clear()
-			req.set_status(500)			
-			req.finish('Fatal error happened in wt.getUsers: %s' %(str(e)))
-
-
-	# Reset WT to factory settings
-	@classmethod
-	def RESET(self, req, *args):
-		try:
-			Log.Info('Factory Reset called')
-			cachePath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Caches', 'com.plexapp.plugins.' + NAME)
-#			dataPath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', 'com.plexapp.plugins.' + NAME) 
-			shutil.rmtree(cachePath)
-			try:
-				Dict.Reset()
-			except:
-				Log.Critical('Fatal error in clearing dict during reset')
-			# Restart system bundle
-			HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.' + NAME + '/restart', cacheTime=0, immediate=True)
-			req.clear()
-			req.set_status(200)
-			req.finish('WebTools has been reset')
-		except Exception, e:
-			Log.Exception('Fatal error happened in wt.reset: ' + str(e))
-			req.clear()
-			req.set_status(500)			
-			req.finish('Fatal error happened in wt.reset: %s' %(str(e)))
-
-	# Get a list of all css files in http/custom_themes
-	@classmethod
-	def GETCSS(self,req, *args):			
-		Log.Debug('getCSS requested')
-		try:
-			targetDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'http', 'custom_themes')
-			myList = glob.glob(targetDir + '/*.css')
-			if len(myList) == 0:
-				req.clear()
-				req.set_status(204)
-			else:
-				for n,item in enumerate(myList):
-					myList[n] = item.replace(targetDir,'')
-					myList[n] = myList[n][1:]
-				Log.Debug('Returning %s' %(myList))
-				req.clear()
-				req.set_status(200)
-				req.set_header('Content-Type', 'application/json; charset=utf-8')
-				req.finish(json.dumps(myList))
-		except Exception, e:
-			Log.Exception('Fatal error happened in getCSS: ' + str(e))
-			req.clear()
-			req.set_status(500)
-			req.finish('Fatal error happened in getCSS: ' + str(e))
+				Log.Exception('Exception in process of: ' + str(e))			
 
 #********************* Internal functions ***********************************
 
@@ -212,7 +279,7 @@ def upgradeCleanup():
 			Log.Exception('We encountered an error during cleanup that was %s' %(str(e)))
 			pass
 			
-# This function will update the translation.js file if needed
+# This function will update the translation.js file in PMS storage if needed
 def updateTranslationStore():	
 	bundleStore = Core.storage.join_path(Core.bundle_path, 'http', 'static', '_shared', 'translations.js')
 	dataStore = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', 'com.plexapp.plugins.WebTools', 'DataItems', 'translations.js')	
@@ -228,3 +295,13 @@ def updateTranslationStore():
 		Log.Info('Updating translation file in storage')
 		copyfile(bundleStore, dataStore)
 	return
+
+# Get a list of languages avail from translation site
+def getTranslationLanguages():
+	try:
+		response = HTTP.Request(method = 'POST', url = TRANSLATESITEBASE + '/languages/list', data=String.Decode(PAYLOAD), headers=TRANSLATESITEHEADER)
+		jsonResponse = JSON.ObjectFromString(str(response))
+		return jsonResponse
+	except Exception, e:
+		Log.Exception('Exception happened in getTranslationLanguages was: ' + str(e))
+		return None

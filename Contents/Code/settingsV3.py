@@ -116,7 +116,7 @@ class settingsV3(object):
 		except Exception, e:
 			Log.Exception('Error in setPwd: ' + str(e))
 			req.clear()
-			req.set_status(500)
+			req.set_status(e.code)
 			req.finish(str(e))
 			return req
 
