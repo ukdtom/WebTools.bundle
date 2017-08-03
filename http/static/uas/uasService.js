@@ -1,5 +1,10 @@
-﻿angular.module('webtools').service('uasService', ['$http', 'uasModel', 'webtoolsModel', 'webtoolsService', function ($http, uasModel, webtoolsModel, webtoolsService) {
+﻿angular.module('webtools').service('uasService', ['$http', 'uasModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', 'gettextCatalog', function ($http, uasModel, webtoolsModel, webtoolsService, DialogFactory, translate) {
     var _this = this;
+
+    this.lang = {
+        appsMigrated: translate.getString("Apps migrated:"),
+        noAppsMigrated: translate.getString("No apps was migrated:")
+    }
 
     this.getInstalled = function (callback) {
         webtoolsModel.uasLoading = true;
@@ -116,7 +121,7 @@
             var arr = [];
             for (var key in resp.data) {
                 uasModel.list[key].updateAvailable = true;
-                uasModel.list[key].type.push("Updates available")
+                uasModel.list[key].type.push("Updates available");
                 var item = resp.data[key];
                 item.key = key;
                 arr.push(item);
@@ -179,6 +184,21 @@
             method: "PUT",
             url: url
         }).then(function (resp) {
+            var migratedItems = resp.data;
+            var appMigratedText = "<b>" + _this.lang.noAppsMigrated + "</b> <br /><br />";
+            if(migratedItems) {
+                appMigratedText = "<b>" + _this.lang.appsMigrated + "</b> <br /><br />";
+                for (var key in migratedItems) {
+                    var item = migratedItems[key];
+                    appMigratedText += item.title + "<br />";
+                }
+            }
+
+            var dialog = new DialogFactory();
+            dialog.create(appMigratedText);
+            dialog.setPlain();
+            dialog.show();
+
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
@@ -207,6 +227,14 @@
 
                 uasModel.types["All"].installed += 1;
                 uasModel.types["All"].viewInstalled += 1;
+            }
+
+            for (var ui = 0; ui < uasModel.updateList.length; ui++) {
+                var item = uasModel.updateList[ui];
+                if (item.key === repo.key) {
+                    _this.getUpdateList();
+                    break;
+                }
             }
 
             if (callback) callback(resp.data);
