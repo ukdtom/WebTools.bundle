@@ -1,6 +1,10 @@
 ﻿.language{
 }
-.language .languageSelector {
+.language .languageActions {
+    width: 100%;
+    height: 80px;
+}
+.language .languageActions .languageSelector {
     float: left;
     color: black;
     min-width: 200px;
@@ -8,7 +12,7 @@
     border-radius: 5px;
     padding: 2px;
 }
-.language .langBtn {
+.language .languageActions .langBtn {
     float: left;
     margin-left: 10px;
     height: 40px;
@@ -18,6 +22,10 @@
     cursor: pointer;
     background: rgba(0, 77, 255, 0.25);
 }
-.language .langBtn:hover {
+.language .languageActions .langBtn:hover {
     background:rgba(0, 77, 255, 0.55);
+}
+
+.language a {
+    color: #42a0f1;
 }
