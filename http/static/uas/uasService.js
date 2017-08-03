@@ -121,7 +121,7 @@
             var arr = [];
             for (var key in resp.data) {
                 uasModel.list[key].updateAvailable = true;
-                uasModel.list[key].type.push("Updates available")
+                uasModel.list[key].type.push("Updates available");
                 var item = resp.data[key];
                 item.key = key;
                 arr.push(item);
@@ -227,6 +227,14 @@
 
                 uasModel.types["All"].installed += 1;
                 uasModel.types["All"].viewInstalled += 1;
+            }
+
+            for (var ui = 0; ui < uasModel.updateList.length; ui++) {
+                var item = uasModel.updateList[ui];
+                if (item.key === repo.key) {
+                    _this.getUpdateList();
+                    break;
+                }
             }
 
             if (callback) callback(resp.data);
