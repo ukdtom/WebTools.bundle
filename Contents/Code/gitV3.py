@@ -718,12 +718,19 @@ class gitV3(object):
 				bundles = Dict['installed']
 				Log.Debug('Installed channes are: ' + str(bundles))
 				result = {}
+
+				print 'Ged -1'
+
 				# Now walk them one by one
 				for bundle in bundles:
 					if bundle.startswith('https://github'):
+
+						print 'Ged T1', str(bundle)
+
 						# Going the new detection way with the commitId?
 						if 'CommitId' in Dict['installed'][bundle]:	
-							if 'release' in Dict['installed'][bundle]:								
+							if 'release' in Dict['installed'][bundle]:	
+								print 'Ged0'							
 								relUrl = 'https://api.github.com/repos' + bundle[18:] + '/releases/latest'
 								Id = JSON.ObjectFromURL(relUrl)['id']
 								if Dict['installed'][bundle]['CommitId'] != Id:
@@ -731,11 +738,12 @@ class gitV3(object):
 									gitInfo['gitHubTime'] = JSON.ObjectFromURL(relUrl)['published_at']
 									result[bundle] = gitInfo
 							else:
-								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])
+								updateInfo = self.getAtom_UpdateTime_Id(bundle, Dict['installed'][bundle]['branch'])						
 								if Dict['installed'][bundle]['CommitId'] != updateInfo['commitId']:
-									gitInfo = Dict['installed'][bundle]
-									gitInfo['gitHubTime'] = updateInfo['mostRecent']
-									result[bundle] = gitInfo
+									if updateInfo['commitId'] != '0':
+										gitInfo = Dict['installed'][bundle]
+										gitInfo['gitHubTime'] = updateInfo['mostRecent']
+										result[bundle] = gitInfo
 						else:
 							# Sadly has to use timestamps							
 							Log.Info('Using timestamps to detect avail update for ' + bundle)
@@ -1028,7 +1036,6 @@ class gitV3(object):
 		except Exception, e:
 			commitId = '0'
 			mostRecent = 'Not found'
-			pass
 		return {'commitId' : commitId, 'mostRecent' : mostRecent}
 
 	@classmethod
