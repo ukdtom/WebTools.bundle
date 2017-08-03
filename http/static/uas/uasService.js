@@ -1,5 +1,10 @@
-﻿angular.module('webtools').service('uasService', ['$http', 'uasModel', 'webtoolsModel', 'webtoolsService', function ($http, uasModel, webtoolsModel, webtoolsService) {
+﻿angular.module('webtools').service('uasService', ['$http', 'uasModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', 'gettextCatalog', function ($http, uasModel, webtoolsModel, webtoolsService, DialogFactory, translate) {
     var _this = this;
+
+    this.lang = {
+        appsMigrated: translate.getString("Apps migrated:"),
+        noAppsMigrated: translate.getString("No apps was migrated:")
+    }
 
     this.getInstalled = function (callback) {
         webtoolsModel.uasLoading = true;
@@ -179,6 +184,21 @@
             method: "PUT",
             url: url
         }).then(function (resp) {
+            var migratedItems = resp.data;
+            var appMigratedText = "<b>" + _this.lang.noAppsMigrated + "</b> <br /><br />";
+            if(migratedItems) {
+                appMigratedText = "<b>" + _this.lang.appsMigrated + "</b> <br /><br />";
+                for (var key in migratedItems) {
+                    var item = migratedItems[key];
+                    appMigratedText += item.title + "<br />";
+                }
+            }
+
+            var dialog = new DialogFactory();
+            dialog.create(appMigratedText);
+            dialog.setPlain();
+            dialog.show();
+
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
