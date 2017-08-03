@@ -717,20 +717,13 @@ class gitV3(object):
 			if 'installed' in Dict:
 				bundles = Dict['installed']
 				Log.Debug('Installed channes are: ' + str(bundles))
-				result = {}
-
-				print 'Ged -1'
-
+				result = {}			
 				# Now walk them one by one
 				for bundle in bundles:
 					if bundle.startswith('https://github'):
-
-						print 'Ged T1', str(bundle)
-
 						# Going the new detection way with the commitId?
 						if 'CommitId' in Dict['installed'][bundle]:	
-							if 'release' in Dict['installed'][bundle]:	
-								print 'Ged0'							
+							if 'release' in Dict['installed'][bundle]:												
 								relUrl = 'https://api.github.com/repos' + bundle[18:] + '/releases/latest'
 								Id = JSON.ObjectFromURL(relUrl)['id']
 								if Dict['installed'][bundle]['CommitId'] != Id:
