@@ -16,7 +16,7 @@ msgstr ""
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
 msgstr ""
 
-#: ../http/static/language/language.html:4
+#: ../http/static/language/language.html:5
 msgid "Change Language"
 msgstr ""
 
@@ -60,12 +60,16 @@ msgstr ""
 msgid "File empty"
 msgstr ""
 
-#: ../http/static/language/language.html:12
+#: ../http/static/language/language.html:13
 msgid "Force language translation update"
 msgstr ""
 
 #: ../http/static/menu/menu.html:21
 msgid "Help"
+msgstr ""
+
+#: ../http/static/language/language.html:16
+msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:26
@@ -200,6 +204,6 @@ msgstr ""
 msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
 msgstr ""
 
-#: ../http/static/language/language.html:6
+#: ../http/static/language/language.html:7
 msgid "{[{lang.name}]}"
 msgstr ""
