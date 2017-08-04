@@ -30,8 +30,8 @@
             }
 
             /* Primary for searching */
-            scope.getLineElement = function(id){
-                return angular.element(document.querySelector('#row' + id))
+            scope.getLineElement = function(id) {
+                return angular.element(document.querySelector('#row' + id));
             }
             scope.scrollTo = function (position) {
                 logs.stop().animate({ scrollTop: position }, 200);
