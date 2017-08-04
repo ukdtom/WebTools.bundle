@@ -11,12 +11,12 @@
 import glob
 import json
 import shutil, sys, os
-from consts import BUNDLEDIRNAME, NAME, VERSION
+from consts import BUNDLEDIRNAME, NAME, VERSION, WTURL
 from plextvhelper import plexTV
 from shutil import copyfile
 
 GET = ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST']
-PUT = ['RESET']
+PUT = ['RESET', 'UPGRADEWT']
 POST = ['UPDATELANGUAGE']
 DELETE = ['']
 
@@ -32,6 +32,52 @@ class wtV3(object):
 		return
 
 	#********** Functions below ******************
+
+	# Upgrade WebTools from latest release. This is the new call, that replace the one that in V2 was located in the git module
+	@classmethod
+	def UPGRADEWT(self, req, *args):
+		Log.Info('We recieved a call to upgrade WebTools itself')
+		Log.Info('Release URL on Github is %s' %WTURL)
+		print 'Ged Release URL on Github is %s' %WTURL
+
+		try:
+			downloadUrl = None
+			# Digest release info, in order to grab the download url
+			jsonReponse = JSON.ObjectFromURL(WTURL)
+			# Walk assets to find the one named WebTools.bundle.zip
+			for asset in jsonReponse['assets']:
+				if asset['name'] == 'WebTools.bundle.zip':
+					downloadUrl = asset['browser_download_url']
+					break
+
+			print 'Ged2', downloadUrl
+			Log.Info('Downloading %s' %downloadUrl)
+			# Grap file from Github
+			zipfile = Archive.ZipFromURL(downloadUrl)
+
+			for filename in zipfile:
+				print 'Ged3', filename
+
+
+
+		except Exception, e:
+			print 'Ged Exception %s' %str(e)
+			Log.Exception('Exception in UPGRADEWT was %s' %str(e))
+			req.clear()	
+			if e.code == 200:
+				req.set_status(500)
+			else:
+				req.set_status(e.code)
+			req.finish(str(e))
+			return
+
+
+		print 'Ged done'
+		req.clear()
+		req.set_status(200)			
+		req.finish('WebTools finished upgrading')
+
+
 
 	# Get list of avail languages, as well as their translation status
 	@classmethod
