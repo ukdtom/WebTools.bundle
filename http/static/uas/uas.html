@@ -45,24 +45,30 @@
         <div class="repoContainer" ng-if="uasModel.selectedType">
             <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue | orderObjectBy: 'title'" ng-if="typeExist(uasModel.selectedType.name, repo.type)">
                 <div class="header" ng-click="repo.revealed = !repo.revealed">
-                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && repo.key" ng-click="installUpdate(repo, repo.key);$event.stopPropagation();">
-                        <span ng-if="!repo.installed">Install</span>
-                        <span ng-if="repo.installed">Update</span>
-                    </div>
-                    <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="repo.workingLoading">
-                        <inline-loading></inline-loading>
-                    </div>
-                    <div class="uasBtn delete pull-right mainBtn textBold600" ng-if="repo.installed && !repo.workingLoading" ng-click="delete(repo, repo.key);$event.stopPropagation();">
-                        <span>Delete</span>
+                    <div class="right">
+                        <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && repo.key" ng-click="installUpdate(repo, repo.key);$event.stopPropagation();">
+                            <span ng-if="!repo.installed">Install</span>
+                            <span ng-if="repo.installed">Update</span>
+                        </div>
+                        <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="repo.workingLoading">
+                            <inline-loading></inline-loading>
+                        </div>
+                        <div class="uasBtn delete pull-right mainBtn textBold600" ng-if="repo.installed && !repo.workingLoading" ng-click="delete(repo, repo.key);$event.stopPropagation();">
+                            <span>Delete</span>
+                        </div>
+                        <div class="revealedIcon">
+                            <span ng-if="!repo.revealed" title="Toggle details"><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
+                            <span ng-if="repo.revealed" title="Toggle details"><i class="fa fa-arrow-up" aria-hidden="true"></i></span>
+                        </div>
                     </div>
 
-                    <div class="icon" ng-style="{'background': 'url(uas/Resources/{[{repo.icon}]}) center center no-repeat', 'background-size': '90%'}"></div>
-                    <div class="title">
-                        <span ng-if="!repo.revealed" title="Toggle details"><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
-                        <span ng-if="repo.revealed" title="Toggle details"><i class="fa fa-arrow-up" aria-hidden="true"></i></span>
-                        {[{repo.title}]}
+                    <div class="left">
+                        <div class="icon" ng-style="{'background': 'url(uas/Resources/{[{repo.icon}]}) center center no-repeat', 'background-size': '90%'}"></div>
+                        <div class="title">
+                            {[{repo.title}]}
+                        </div>
+                        <div class="description">{[{repo.description}]}</div>
                     </div>
-                    <div class="description">{[{repo.description}]}</div>
                 </div>
 
                 <div ng-if="repo.revealed" class="details">
