@@ -64,6 +64,10 @@ msgstr ""
 msgid "Force language translation update"
 msgstr ""
 
+#: ../http/static/logs/logs.html:11
+msgid "Found"
+msgstr ""
+
 #: ../http/static/menu/menu.html:21
 msgid "Help"
 msgstr ""
@@ -201,7 +205,11 @@ msgid "Webtools is a tool that enables the use of modules to help you with your 
 msgstr ""
 
 #: ../http/static/home/home.html:1
-msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
+msgid "Welcome to"
+msgstr ""
+
+#: ../http/static/logs/logs.html:11
+msgid "rows"
 msgstr ""
 
 #: ../http/static/language/language.html:7
