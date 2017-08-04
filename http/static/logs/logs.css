@@ -106,8 +106,7 @@
     padding:5px;
 }
 .logs .logDetails table tr td.index {
-    width:60px;
-    word-break:break-all;
+    width:80px;
 }
 .logs .logDetails table tr td.detail {
     width:calc(100% - 60px);
