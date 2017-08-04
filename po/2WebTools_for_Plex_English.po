@@ -27,7 +27,7 @@ msgstr "Both local (next to the movie in it's folder or one subfolder) and in th
 msgid "Change Theme"
 msgstr "Change Theme"
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Changelog"
 msgstr "Change log"
 
@@ -44,7 +44,7 @@ msgstr "Delete selected sidecar from the harddrive."
 msgid "File empty"
 msgstr "File empty"
 
-#: ../http/static/menu/menu.html:20
+#: ../http/static/menu/menu.html:21
 msgid "Help"
 msgstr "Help"
 
@@ -80,7 +80,7 @@ msgstr "Select one of the available themes to use:"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Select one of the libraries below to scan for Movies/TV Shows that are not in the Plex database or are not on your Hard Drive."
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "Theme"
 msgstr "Theme"
 
@@ -96,15 +96,15 @@ msgstr "Update WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "View the subtitle content to determine what to delete."
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "WT Forum Thread"
 msgstr "WT Forum Thread"
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT GitHub"
 msgstr "WT GitHub"
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Manual(PDF)"
 msgstr "WT Manual(PDF)"
 
@@ -191,4 +191,24 @@ msgstr "Show Settings"
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
 msgstr "Valid Extensions"
+
+#: ../http/static/language/language.html:5
+msgid "Change Language"
+msgstr "Change Language"
+
+#: ../http/static/menu/menu.html:15
+msgid "Language"
+msgstr "Language"
+
+#: ../http/static/language/language.html:7
+msgid "{[{lang.name}]}"
+msgstr "{[{lang.name}]}"
+
+#: ../http/static/language/language.html:13
+msgid "Force language translation update"
+msgstr "Force update language translation"
+
+#: ../http/static/language/language.html:16
+msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
+msgstr ""
 

@@ -27,13 +27,13 @@ msgstr "Sowohl 'lokale' (neben der Videodatei im Ordner) als auch im Plex Dateno
 msgid "Change Theme"
 msgstr "Farbschema wechseln"
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Changelog"
-msgstr "Versionsänderungen"
+msgstr "Versionsnotizen"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
-msgstr "Zeige Änderungen in dieser Version"
+msgstr "Änderungen in dieser Version"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
@@ -43,7 +43,7 @@ msgstr "Lösche externe Untertitel-Dateien"
 msgid "File empty"
 msgstr "Leere Datei"
 
-#: ../http/static/menu/menu.html:20
+#: ../http/static/menu/menu.html:21
 msgid "Help"
 msgstr "Hilfe"
 
@@ -79,7 +79,7 @@ msgstr "Wähle eines der Farbschemen aus:"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Wähle unten eine der Bibliotheken um darin nach 'nicht zugeordneten' oder fehlenden Dateien zu suchen."
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "Theme"
 msgstr "Farbschema"
 
@@ -95,15 +95,15 @@ msgstr "WebTools aktualisieren"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Zeige Inhalt der Untertitel (um zu sehen, welcher gelöscht werden kann)"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "WT Forum Thread"
 msgstr "WT Forum-Thread"
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT GitHub"
 msgstr "WT auf GitHub"
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Manual(PDF)"
 msgstr "WebTool Hilfe (PDF)"
 
@@ -153,7 +153,7 @@ msgstr "Extras ausschließen"
 #. what is hidden? files? which module?
 #: ../http/static/findmedia/fm.html:20
 msgid "Ignore Hidden"
-msgstr "Versteckte ausschließen"
+msgstr "'Versteckte' Dateien ausschließen"
 
 #: ../http/static/findmedia/fm.html:31
 msgid "Ignore folders"
@@ -194,4 +194,24 @@ msgstr "Zeige Einstellungen"
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
 msgstr "gültige Dateinamenserweiterungen"
+
+#: ../http/static/language/language.html:5
+msgid "Change Language"
+msgstr "Sprache wechseln"
+
+#: ../http/static/menu/menu.html:15
+msgid "Language"
+msgstr "Sprache"
+
+#: ../http/static/language/language.html:7
+msgid "{[{lang.name}]}"
+msgstr "{[{lang.name}]}"
+
+#: ../http/static/language/language.html:13
+msgid "Force language translation update"
+msgstr "Übersetzungen auffrischen"
+
+#: ../http/static/language/language.html:16
+msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
+msgstr ""
 

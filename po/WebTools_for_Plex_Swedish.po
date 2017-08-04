@@ -27,7 +27,7 @@ msgstr "Både lokala (placerade bredvid filmen i sin katalog eller i en tillhör
 msgid "Change Theme"
 msgstr "Ändra Tema"
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Changelog"
 msgstr "Ändra logg"
 
@@ -43,7 +43,7 @@ msgstr "Ta bort vald lokal undertext från hårddisken."
 msgid "File empty"
 msgstr "Filen är tom"
 
-#: ../http/static/menu/menu.html:20
+#: ../http/static/menu/menu.html:21
 msgid "Help"
 msgstr "Hjälp"
 
@@ -79,7 +79,7 @@ msgstr "Välj ett av följande teman för användning:"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Välj ett av biblioteken nedan för att leta efter Filmer / TV-program som inte existerar i antingen Plex-databasen eller på din hårddisk."
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "Theme"
 msgstr "Tema"
 
@@ -95,15 +95,15 @@ msgstr "Uppdatera WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Granska innehållet av undertexter för att bedöma vad som ska tas bort."
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "WT Forum Thread"
 msgstr "WT Forumtråd"
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT GitHub"
 msgstr "WT GitHub"
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Manual(PDF)"
 msgstr "WT Manual(PDF)"
 
@@ -190,4 +190,24 @@ msgstr "Visa Inställningarna"
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
 msgstr "Giltig Ändelse"
+
+#: ../http/static/language/language.html:5
+msgid "Change Language"
+msgstr ""
+
+#: ../http/static/menu/menu.html:15
+msgid "Language"
+msgstr ""
+
+#: ../http/static/language/language.html:7
+msgid "{[{lang.name}]}"
+msgstr ""
+
+#: ../http/static/language/language.html:13
+msgid "Force language translation update"
+msgstr ""
+
+#: ../http/static/language/language.html:16
+msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
+msgstr ""
 

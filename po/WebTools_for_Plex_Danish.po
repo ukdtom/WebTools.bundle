@@ -28,7 +28,7 @@ msgstr "Både lokalt (Undertext i samme bibliotek som filmen, eller i en underfo
 msgid "Change Theme"
 msgstr "Skift tema"
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Changelog"
 msgstr "Change Log"
 
@@ -44,7 +44,7 @@ msgstr "Slet valgte \"sidecar\" undertekst fra harddisken"
 msgid "File empty"
 msgstr "Filen er tom"
 
-#: ../http/static/menu/menu.html:20
+#: ../http/static/menu/menu.html:21
 msgid "Help"
 msgstr "Hjælp"
 
@@ -66,11 +66,11 @@ msgstr "Indstillinger"
 
 #: ../http/static/sub_management/subHelp.html:15
 msgid "Options for output."
-msgstr ""
+msgstr "Output muligheder"
 
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
-msgstr ""
+msgstr "Søg efter film og episoder i de forskellige biblioteker"
 
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
@@ -81,7 +81,7 @@ msgstr "Vælg en af de mulige temaer"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Vælg et af dine biblioteker for at scanne dem for film/tv-shows som enten mangler i Plex databasen eller på harddisken"
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "Theme"
 msgstr "Tema"
 
@@ -95,17 +95,17 @@ msgstr "Opdater WebTools"
 
 #: ../http/static/sub_management/subHelp.html:9
 msgid "View the subtitle and see it's contents to determine what to delete."
-msgstr ""
+msgstr "Se en undertekst for at afgøre, om den skal slettes"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "WT Forum Thread"
 msgstr "WebTools Forum tråd"
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT GitHub"
 msgstr "WebTools Github"
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Manual(PDF)"
 msgstr "WebTools Manual (PDF)"
 
@@ -193,4 +193,26 @@ msgstr "Vis indstillinger"
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
 msgstr "Valide fil endelser"
+
+#: ../http/static/language/language.html:5
+msgid "Change Language"
+msgstr "Skift sprog"
+
+#: ../http/static/menu/menu.html:15
+msgid "Language"
+msgstr "Sprog"
+
+#. Don't translate this, simply copy and paste
+#: ../http/static/language/language.html:7
+msgid "{[{lang.name}]}"
+msgstr "{[{lang.name}]}"
+
+#. This will force a download directly from the translation site of the newest translations for the selected language
+#: ../http/static/language/language.html:13
+msgid "Force language translation update"
+msgstr "Opdater oversættelse"
+
+#: ../http/static/language/language.html:16
+msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
+msgstr "Hvis dit sprog mangler, eller hvis du vil forbedre oversættelsen af det, så venligst benyt dette link:"
 
