@@ -11,18 +11,18 @@
 import io, os, json, inspect
 from random import randint   #Used for Cookie generation
 
-DEBUGMODE = False																																		# default for debug mode
-WT_AUTH = True																																			# validate password
-VERSION = 'ERROR'																																		# version of plugin
-UAS_URL = 'https://github.com/ukdtom/UAS2Res'																				# USA2 Repo branch
-UAS_BRANCH = 'master'																																# UAS2 branch to check
-PREFIX = ''																																					# Prefix
-NAME = ''																																						# Name of plugin
-ICON = 'WebTools.png'
-BASEURL = ''																																				# Base url if behind a proxy
-JSONTIMESTAMP = 0																																		# timestamp for json export
+DEBUGMODE = False																			# default for debug mode
+WT_AUTH = True																				# validate password
+VERSION = 'ERROR'																			# version of plugin
+UAS_URL = 'https://github.com/ukdtom/UAS2Res'												# USA2 Repo branch
+UAS_BRANCH = 'master'																		# UAS2 branch to check
+PREFIX = ''																					# Prefix
+NAME = ''																					# Name of plugin
+ICON = 'WebTools.png'																		# Name of Icon in Resource Dir
+BASEURL = ''																				# Base url if behind a proxy
+JSONTIMESTAMP = 0																			# timestamp for json export
 WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'				# URL to latest WebTools
-BUNDLEDIRNAME = ''																																	# Name of the bundle dir
+BUNDLEDIRNAME = ''																			# Name of the bundle dir
 V3MODULES = {'WT' : 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3', 'LANGUAGE': 'languageV3', 
 			'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3'}
 UILANGUAGE = 'en'
