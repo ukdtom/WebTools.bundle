@@ -37,9 +37,7 @@ class wtV3(object):
 	@classmethod
 	def UPGRADEWT(self, req, *args):
 		Log.Info('We recieved a call to upgrade WebTools itself')
-		Log.Info('Release URL on Github is %s' %WTURL)
-		print 'Ged Release URL on Github is %s' %WTURL
-
+		Log.Info('Release URL on Github is %s' %WTURL)		
 		try:
 			downloadUrl = None
 			# Digest release info, in order to grab the download url
@@ -48,20 +46,32 @@ class wtV3(object):
 			for asset in jsonReponse['assets']:
 				if asset['name'] == 'WebTools.bundle.zip':
 					downloadUrl = asset['browser_download_url']
-					break
-
-			print 'Ged2', downloadUrl
+					break			
 			Log.Info('Downloading %s' %downloadUrl)
 			# Grap file from Github
-			zipfile = Archive.ZipFromURL(downloadUrl)
-
-			for filename in zipfile:
-				print 'Ged3', filename
-
-
-
-		except Exception, e:
-			print 'Ged Exception %s' %str(e)
+			zipfile = Archive.ZipFromURL(downloadUrl)					
+			for filename in zipfile:				
+				realFileName = filename.replace(NAME + '.bundle','')
+				if realFileName.startswith('/'):
+					realFileName = realFileName[1:]
+				saveFileName = Core.storage.join_path(Core.bundle_path + '.upgrade', realFileName)
+				if saveFileName.endswith('/'):
+					continue
+				else:
+					Log.Debug('Extracting file %s' %saveFileName)
+					try:
+						Core.storage.ensure_dirs(os.path.dirname(saveFileName))						
+						Core.storage.save(saveFileName, zipfile[filename])
+					except Exception, e:
+						bError = True
+						Log.Exception('Exception happend in UPGRADEWT: ' + str(e))
+			# All done, so now time to flip directories
+			try:
+				os.rename(Core.bundle_path, Core.storage.join_path(Core.bundle_path.replace(NAME + '.bundle','') , NAME + '.bundle.upgraded'))
+				os.rename(Core.storage.join_path(Core.bundle_path.replace(NAME + '.bundle','') , NAME + '.bundle.upgrade'), Core.bundle_path)
+			except Exception, e:				
+				Log.Exception('Exception in UPGRADEWT during rename was %s' %str(e))
+		except Exception, e:			
 			Log.Exception('Exception in UPGRADEWT was %s' %str(e))
 			req.clear()	
 			if e.code == 200:
@@ -70,7 +80,6 @@ class wtV3(object):
 				req.set_status(e.code)
 			req.finish(str(e))
 			return
-
 
 		print 'Ged done'
 		req.clear()
