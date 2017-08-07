@@ -1,17 +1,18 @@
-﻿angular.module('webtools').controller('logsController', ['$scope', 'logsModel', 'logsService', 'webtoolsModel', '$window', 'gettextCatalog', function ($scope, logsModel, logsService, webtoolsModel, $window, translate) {
+﻿angular.module('webtools').controller('logsController', ['$scope', 'logsModel', 'logsService', 'webtoolsModel', '$window', 'gettext', function ($scope, logsModel, logsService, webtoolsModel, $window, gettext) {
     $scope.webtoolsModel = webtoolsModel;
     $scope.logsModel = logsModel;
 
     $scope.translate = function () {
-        $scope.lang = {
-            searchPlaceholder: translate.getString("search..."),
-            searchKeyword: translate.getString("Search keyword"),
-            clearSearch: translate.getString("Clear search"),
-            previous: translate.getString("Previous"),
-            next: translate.getString("Next"),
-            jumpToTop: translate.getString("Jump to top"),
-            hideShowMenu: translate.getString("Hide/Show search menu")
+        var lang = {
+            searchPlaceholder: gettext("search..."),
+            searchKeyword: gettext("Search keyword"),
+            clearSearch: gettext("Clear search"),
+            previous: gettext("Previous"),
+            next: gettext("Next"),
+            jumpToTop: gettext("Jump to top"),
+            hideShowMenu: gettext("Hide/Show search menu")
         };
+        $scope.lang = lang;
     }
 
     $scope.init = function () {

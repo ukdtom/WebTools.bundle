@@ -76,7 +76,22 @@
             webtoolsModel.globalLoading--;
             if (callback) callback(resp.data);
         }, function (errorResp) {
-            self.log("webtoolsService.loadUsers - " + self.formatError(errorResp), "Core", true, url);
+            webtoolsModel.globalLoading--;
+        });
+    }
+
+    this.upgradeWT = function () {
+        webtoolsModel.globalLoading++;
+        var url = webtoolsModel.apiV3Url + "/wt/upgradeWT";
+        $http({
+            method: "PUT",
+            url: url
+        }).then(function (resp) {
+            $window.location.reload(true);
+            webtoolsModel.globalLoading--;
+        }, function (errorResp) {
+            //self.log("webtoolsService.upgradeWT - " + self.formatError(errorResp), "Core", true, url);
+            $window.location.reload(true);
             webtoolsModel.globalLoading--;
         });
     }

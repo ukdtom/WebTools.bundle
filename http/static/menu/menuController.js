@@ -11,6 +11,9 @@
     $scope.redirectTo = function (url, isTargetBlank) {
         menuService.redirectTo(url, isTargetBlank);
     }
+    $scope.upgradeWT = function() {
+        
+    }
 
     $scope.init();
 }]);

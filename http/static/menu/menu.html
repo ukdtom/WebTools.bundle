@@ -11,7 +11,7 @@
 <div class="textBold600 textSize3 pushTopTrivial pushLeftTrivial" translate>Options</div>
 <div>
     <div class="item" ng-click="redirectTo('logout')" translate>Logout</div> 
-    <div class="item textBold900" ng-if="webtoolsModel.isNewVersionAvailable" translate>Update WT</div> 
+    <div class="item textBold900" ng-click="upgradeWT()" ng-if="webtoolsModel.isNewVersionAvailable" translate>Update WT</div> 
     <div class="item" ng-click="navigateTo('language')"><i class="fa fa-globe" aria-hidden="true"></i> <translate> Language</translate></div>
     <div class="item" ng-click="navigateTo('theme')" translate>Theme</div>
     <div class="item" ng-click="navigateTo('cl')" translate>Changelog</div>

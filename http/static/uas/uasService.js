@@ -1,9 +1,9 @@
-﻿angular.module('webtools').service('uasService', ['$http', 'uasModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', 'gettextCatalog', function ($http, uasModel, webtoolsModel, webtoolsService, DialogFactory, translate) {
+﻿angular.module('webtools').service('uasService', ['$http', 'uasModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', 'gettext', function ($http, uasModel, webtoolsModel, webtoolsService, DialogFactory, gettext) {
     var _this = this;
 
     this.lang = {
-        appsMigrated: translate.getString("Apps migrated:"),
-        noAppsMigrated: translate.getString("No apps was migrated:")
+        appsMigrated: gettext("Apps migrated:"),
+        noAppsMigrated: gettext("No apps was migrated:")
     }
 
     this.getInstalled = function (callback) {
@@ -269,22 +269,6 @@
         }, function (errorResp) {
             webtoolsService.log("uasService.installUpdate - " + webtoolsService.formatError(errorResp), "Uas", true, url);
             repo.workingLoading = false;
-        });
-    }
-
-    this.WTUpgrade = function (callback) {
-        webtoolsModel.uasLoading = true;
-        var url = webtoolsModel.apiV3Url + "/git/upgradeWT";
-        $http({
-            method: "PUT",
-            url: url
-        }).then(function (resp) {
-            debugger;
-            if (callback) callback(resp.data);
-            webtoolsModel.uasLoading = false;
-        }, function (errorResp) {
-            webtoolsService.log("uasService.WTUpgrade - " + webtoolsService.formatError(errorResp), "Uas", true, url);
-            webtoolsModel.uasLoading = false;
         });
     }
 }]);

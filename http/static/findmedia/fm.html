@@ -10,7 +10,7 @@
                 <div class="col-xs-12">
                     <div class="pull-right">
                         <label for="showSettings" translate>Show settings</label>
-                        <button id="showSettings" ng-click="fmModel.settingsVisible = !fmModel.settingsVisible" ng-title="lang.hideShowMenu"><i class="fa" ng-class="{'fa-eye-slash' : !fmModel.settingsVisible, 'fa-eye' : fmModel.settingsVisible}" aria-hidden="true"></i></button>
+                        <button id="showSettings" ng-click="fmModel.settingsVisible = !fmModel.settingsVisible" ng-title="lang.hideShowMenu|translate"><i class="fa" ng-class="{'fa-eye-slash' : !fmModel.settingsVisible, 'fa-eye' : fmModel.settingsVisible}" aria-hidden="true"></i></button>
                     </div>
                 </div>
             </div>
@@ -33,13 +33,13 @@
             </div>
             <div class="row" ng-repeat="IGNORED_DIR in fmModel.settings.IGNORED_DIRS track by $index">
                 <div class="col-xs-12">
-                    <button ng-click="fmModel.settings.IGNORED_DIRS.splice(fmModel.settings.IGNORED_DIRS.indexOf(IGNORED_DIR), 1)" ng-title="lang.deleteIgnoredFolder"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                    <button ng-click="fmModel.settings.IGNORED_DIRS.splice(fmModel.settings.IGNORED_DIRS.indexOf(IGNORED_DIR), 1)" ng-title="lang.deleteIgnoredFolder|translate"><i class="fa fa-minus" aria-hidden="true"></i></button>
                     <input type="text" class="ignoreDir" ng-model="IGNORED_DIR" ng-change="fmModel.settings.IGNORED_DIRS[$index] = IGNORED_DIR" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <button id="addIgnoredFolder" ng-click="fmModel.settings.IGNORED_DIRS.push('')" ng-title="lang.addIgnoredFolder"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button id="addIgnoredFolder" ng-click="fmModel.settings.IGNORED_DIRS.push('')" ng-title="lang.addIgnoredFolder|translate"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     <label for="addIgnoredFolder" translate>Add ignored folder</label>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                 <div class="col-xs-12">
                     <div class="pull-right">
                         <label for="resetSettings" translate>Reset settings</label>
-                        <button id="resetSettings" ng-click="resetSettings()" ng-title="lang.resetSettings"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-undo' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
+                        <button id="resetSettings" ng-click="resetSettings()" ng-title="lang.resetSettings|translate"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-undo' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                 <div class="col-xs-12">
                     <div class="pull-right">
                         <label for="saveSettings" translate>Save settings</label>
-                        <button id="saveSettings" ng-click="saveSettings()" ng-title="lang.saveSettings"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-floppy-o' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
+                        <button id="saveSettings" ng-click="saveSettings()" ng-title="lang.saveSettings|translate"><i class="fa" ng-class="{'fa-spinner' : fmModel.settingsLoading, 'fa-floppy-o' : !fmModel.settingsLoading}" aria-hidden="true"></i></button>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
         <div class="pushTopMinor sections">
             <div ng-if="fmModel.scanning">
                 <br />
-                <label for="scanStop" translate>Abort scan</label> <button id="scanStop" ng-click="scanStop()" ng-title="lang.abortScan"><i class="fa fa-undo" aria-hidden="true"></i></button><br />
+                <label for="scanStop" translate>Abort scan</label> <button id="scanStop" ng-click="scanStop()" ng-title="lang.abortScan|translate"><i class="fa fa-undo" aria-hidden="true"></i></button><br />
                 <i>{[{fmModel.statusText}]}</i>
 
             </div>
@@ -89,7 +89,7 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="download textBold600" ng-click="downloadResult(section);">
-                                        <div class="fa fa-download" ng-title="lang.downloadResult"></div> <translate>Download result</translate>
+                                        <div class="fa fa-download" ng-title="lang.downloadResult|translate"></div> <translate>Download result</translate>
                                     </div>
                                 </div>
                             </div>

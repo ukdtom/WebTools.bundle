@@ -2,14 +2,14 @@
     <div class="row search" ng-if="logsModel.selectedLog.details.length !== 0">
         <div class="col-xs-12">
             <div ng-class="{'hideFields' : !logsModel.searchVisible}">
-                <input class="searchInput" ng-model="logsModel.searchKeywordValue" ng-placeholder="lang.searchPlaceholder" ng-enter="searchKeyword()" />
-                <button class="btnSearch" ng-click="searchKeyword()" ng-title="lang.searchKeyword"><i class="fa fa-search" aria-hidden="true"></i></button>
-                <button class="btnSearch" ng-click="searchClear()" ng-title="lang.clearSearch"><i class="fa fa-eraser" aria-hidden="true"></i></button>
-                <button class="btnSearch" ng-click="searchPrevious()" ng-title="lang.previous" ng-class="{'disabled' : logsModel.searchFoundLines.length === 0}" ng-disabled="logsModel.searchFoundLines.length === 0"><i class="fa fa-backward" aria-hidden="true"></i></button>
-                <button class="btnSearch" ng-click="searchKeyword()" ng-title="lang.next" ng-class="{'disabled' : logsModel.searchFoundLines.length === 0}" ng-disabled="logsModel.searchFoundLines.length === 0"><i class="fa fa-forward" aria-hidden="true"></i></button>
-                <button class="btnSearch" ng-click="searchJumpToTop()" ng-title="lang.jumpToTop"><i class="fa fa-hand-o-up" aria-hidden="true"></i></button>
+                <input class="searchInput" ng-model="logsModel.searchKeywordValue" ng-placeholder="lang.searchPlaceholder|translate" ng-enter="searchKeyword()" />
+                <button class="btnSearch" ng-click="searchKeyword()" ng-title="lang.searchKeyword|translate"><i class="fa fa-search" aria-hidden="true"></i></button>
+                <button class="btnSearch" ng-click="searchClear()" ng-title="lang.clearSearch|translate"><i class="fa fa-eraser" aria-hidden="true"></i></button>
+                <button class="btnSearch" ng-click="searchPrevious()" ng-title="lang.previous|translate" ng-class="{'disabled' : logsModel.searchFoundLines.length === 0}" ng-disabled="logsModel.searchFoundLines.length === 0"><i class="fa fa-backward" aria-hidden="true"></i></button>
+                <button class="btnSearch" ng-click="searchKeyword()" ng-title="lang.next|translate" ng-class="{'disabled' : logsModel.searchFoundLines.length === 0}" ng-disabled="logsModel.searchFoundLines.length === 0"><i class="fa fa-forward" aria-hidden="true"></i></button>
+                <button class="btnSearch" ng-click="searchJumpToTop()" ng-title="lang.jumpToTop|translate"><i class="fa fa-hand-o-up" aria-hidden="true"></i></button>
                 <div class="counter" ng-if="logsModel.searchKeywordValueLast"><translate>Found</translate> {[{logsModel.searchFoundLines.length}]} <translate>rows</translate></div>
-                <button class="btnSearch toggleSearch" ng-click="logsModel.searchVisible = !logsModel.searchVisible" ng-title="lang.hideShowMenu"><i class="fa" ng-class="{'fa-eye-slash' : !logsModel.searchVisible, 'fa-eye' : logsModel.searchVisible}" aria-hidden="true"></i></button>
+                <button class="btnSearch toggleSearch" ng-click="logsModel.searchVisible = !logsModel.searchVisible" ng-title="lang.hideShowMenu|translate"><i class="fa" ng-class="{'fa-eye-slash' : !logsModel.searchVisible, 'fa-eye' : logsModel.searchVisible}" aria-hidden="true"></i></button>
             </div>
         </div>
     </div>

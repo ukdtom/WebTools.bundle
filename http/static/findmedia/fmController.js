@@ -1,18 +1,19 @@
-﻿angular.module('webtools').controller('fmController', ['$scope', 'fmModel', 'fmService', '$interval', 'gettextCatalog', function ($scope, fmModel, fmService, $interval, translate) {
+﻿angular.module('webtools').controller('fmController', ['$scope', 'fmModel', 'fmService', '$interval', 'gettext', function ($scope, fmModel, fmService, $interval, gettext) {
     $scope.fmModel = fmModel;
 
     var intervalScanner;
 
     $scope.translate = function () {
-        $scope.lang = {
-            deleteIgnoredFolder: translate.getString("Delete ignored folder"),
-            addIgnoredFolder: translate.getString("Add ignored folder"),
-            resetSettings: translate.getString("Reset settings"),
-            saveSettings: translate.getString("Save settings"),
-            abortScan: translate.getString("Abort scan"),
-            downloadResult: translate.getString("Download result"),
-            hideShowMenu: translate.getString("Hide/Show settings menu")
+        var lang = {
+            deleteIgnoredFolder: gettext("Delete ignored folder"),
+            addIgnoredFolder: gettext("Add ignored folder"),
+            resetSettings: gettext("Reset settings"),
+            saveSettings: gettext("Save settings"),
+            abortScan: gettext("Abort scan"),
+            downloadResult: gettext("Download result"),
+            hideShowMenu: gettext("Hide/Show settings menu")
         };
+        $scope.lang = lang;
     }
     
     $scope.init = function () {
