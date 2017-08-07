@@ -5,11 +5,17 @@ msgstr ""
 "Project-Id-Version: \n"
 
 #: ../http/static/findmedia/fm.html:78
+#: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:43
+#: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
+msgstr ""
+
+#: ../http/static/uas/uasService.js:5
+msgid "Apps migrated:"
 msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:6
@@ -32,12 +38,20 @@ msgstr ""
 msgid "Changelog viewer"
 msgstr ""
 
+#: ../http/static/logs/logsController.js:9
+msgid "Clear search"
+msgstr ""
+
 #: ../http/static/playlist/playlistHelp.html:2
 msgid "Current features:"
 msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:5
 msgid "DUMMY TEXT Playlist can help you with lorem ipsum"
+msgstr ""
+
+#: ../http/static/findmedia/fmController.js:8
+msgid "Delete ignored folder"
 msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:12
@@ -49,6 +63,7 @@ msgid "Download all logfiles as zip"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:92
+#: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
 msgstr ""
 
@@ -72,6 +87,14 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
+#: ../http/static/logs/logsController.js:13
+msgid "Hide/Show search menu"
+msgstr ""
+
+#: ../http/static/findmedia/fmController.js:14
+msgid "Hide/Show settings menu"
+msgstr ""
+
 #: ../http/static/language/language.html:16
 msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
 msgstr ""
@@ -88,6 +111,10 @@ msgstr ""
 msgid "Ignore folders"
 msgstr ""
 
+#: ../http/static/logs/logsController.js:12
+msgid "Jump to top"
+msgstr ""
+
 #: ../http/static/menu/menu.html:15
 msgid "Language"
 msgstr ""
@@ -102,6 +129,14 @@ msgstr ""
 
 #: ../http/static/menu/menu.html:13
 msgid "Logout"
+msgstr ""
+
+#: ../http/static/logs/logsController.js:11
+msgid "Next"
+msgstr ""
+
+#: ../http/static/uas/uasService.js:6
+msgid "No apps was migrated:"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:98
@@ -124,6 +159,10 @@ msgstr ""
 msgid "Playlist Help"
 msgstr ""
 
+#: ../http/static/logs/logsController.js:10
+msgid "Previous"
+msgstr ""
+
 #: ../http/static/findmedia/fm.html:101
 msgid "Records missing from Plex database"
 msgstr ""
@@ -133,15 +172,21 @@ msgid "Records missing from harddrive"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:59
+#: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:67
+#: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
 msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
+msgstr ""
+
+#: ../http/static/logs/logsController.js:8
+msgid "Search keyword"
 msgstr ""
 
 #: ../http/static/theme/theme.html:5
@@ -210,6 +255,10 @@ msgstr ""
 
 #: ../http/static/logs/logs.html:11
 msgid "rows"
+msgstr ""
+
+#: ../http/static/logs/logsController.js:7
+msgid "search..."
 msgstr ""
 
 #: ../http/static/language/language.html:7
