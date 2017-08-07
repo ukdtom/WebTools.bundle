@@ -11,19 +11,20 @@
 import io, os, json, inspect
 from random import randint   #Used for Cookie generation
 
-DEBUGMODE = False																																		# default for debug mode
-WT_AUTH = True																																			# validate password
-VERSION = 'ERROR'																																		# version of plugin
-UAS_URL = 'https://github.com/ukdtom/UAS2Res'																				# USA2 Repo branch
-UAS_BRANCH = 'master'																																# UAS2 branch to check
-PREFIX = ''																																					# Prefix
-NAME = ''																																						# Name of plugin
-ICON = 'WebTools.png'
-BASEURL = ''																																				# Base url if behind a proxy
-JSONTIMESTAMP = 0																																		# timestamp for json export
+DEBUGMODE = False																			# default for debug mode
+WT_AUTH = True																				# validate password
+VERSION = 'ERROR'																			# version of plugin
+UAS_URL = 'https://github.com/ukdtom/UAS2Res'												# USA2 Repo branch
+UAS_BRANCH = 'master'																		# UAS2 branch to check
+PREFIX = ''																					# Prefix
+NAME = ''																					# Name of plugin
+ICON = 'WebTools.png'																		# Name of Icon in Resource Dir
+BASEURL = ''																				# Base url if behind a proxy
+JSONTIMESTAMP = 0																			# timestamp for json export
 WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'				# URL to latest WebTools
-BUNDLEDIRNAME = ''																																	# Name of the bundle dir
-V3MODULES = {'WT' : 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3', 'LANGUAGE': 'languageV3', 'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3'}
+BUNDLEDIRNAME = ''																			# Name of the bundle dir
+V3MODULES = {'WT' : 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3', 'LANGUAGE': 'languageV3', 
+			'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3'}
 UILANGUAGE = 'en'
 UILANGUAGEDEBUG = False
 
@@ -59,15 +60,15 @@ class consts(object):
 		if BASEURL.endswith('/'):
 			BASEURL = BASEURL[:-1]
 		# Grap version number from the version file
-		try:
-			versionFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'VERSION')
+		try:			
+			versionFile = Core.storage.join_path(Core.bundle_path, 'VERSION')
 			with io.open(versionFile, "rb") as version_file:
 				VERSION = version_file.read().splitlines()[0]								
 		except:
-			if not self.isCorrectPath():
-				VERSION = '*** WRONG INSTALL PATH!!!!....Correct path is: ' + Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME) + '***'
-		# Switch to debug mode if needed
-		debugFile = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME, 'debug')
+			if not self.isCorrectPath():				
+				VERSION = '*** WRONG INSTALL PATH!!!!....Correct path is: ' + Core.storage.join_path(Core.bundle_path, BUNDLEDIRNAME) + '***'
+		# Switch to debug mode if needed		
+		debugFile = Core.storage.join_path(Core.bundle_path, 'debug')
 		# Do we have a debug file ?
 		if os.path.isfile(debugFile):
 			DEBUGMODE = True
@@ -111,24 +112,27 @@ class consts(object):
 			Log.Debug('UI Language Debug: ' + str(UILANGUAGEDEBUG))
 			Log.Debug('*****************************************************')
 		else:
-			DEBUGMODE = False
+			DEBUGMODE = False		
 
 		# Verify install path
-		def isCorrectPath(self):			
-			installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).upper().split(BUNDLEDIRNAME,1)
-			targetPath = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name).upper()
-			if installedPlugInPath[:-1] != targetPath:
-				Log.Debug('************************************************')
-				Log.Debug('Wrong installation path detected!!!!')
-				Log.Debug('')
-				Log.Debug('Correct path is:')
-				Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME))
-				Log.Debug('************************************************')
-				installedPlugInPath, skipStr = abspath(getsourcefile(lambda:0)).split('/Contents',1)
-				return False
-			else:
-				Log.Info('Verified a correct install path as: ' + targetPath)
-				return True
+		def isCorrectPath(self):						
+			try:				
+				installedPlugInPath = abspath(getsourcefile(lambda:0)).upper().split(BUNDLEDIRNAME,1)[0]
+				targetPath = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name).upper()
+				if installedPlugInPath[:-1] != targetPath:
+					Log.Debug('************************************************')
+					Log.Debug('Wrong installation path detected!!!!')
+					Log.Debug('')
+					Log.Debug('Correct path is:')
+					Log.Debug(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME))
+					Log.Debug('************************************************')
+					installedPlugInPath = abspath(getsourcefile(lambda:0)).split('/Contents',1)[0]
+					return False
+				else:
+					Log.Info('Verified a correct install path as: ' + targetPath)
+					return True
+			except Exception, e:
+				Log.Exception('Exception in IsCorrectPath was: %s' %str(e))				
 
 ####################################################################################################
 # Make default Dict
@@ -173,8 +177,10 @@ class consts(object):
 		# Init the scheme used Dict
 		if Dict['wt_csstheme'] == None:
 			Dict['wt_csstheme'] = 'WhiteBlue.css'
+		# Init default language to en, if none is present
+		if Dict['UILanguage'] == None:
+			Dict['UILanguage'] = 'en'
 		return
-
 
 consts = consts()
 

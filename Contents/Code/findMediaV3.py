@@ -29,23 +29,10 @@ excludeElements='Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Rol
 excludeFields='summary,tagline'
 SUPPORTEDSECTIONS = ['movie', 'show']
 
-DEFAULTPREFS = {
-				'IGNORE_HIDDEN' : True,
-				'IGNORED_DIRS' : [".@__thumb",".AppleDouble","lost+found"],
-				'VALID_EXTENSIONS' : ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 
-														'fli', 'flv', 'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 
-														'nuv', 'ogm', 'ogv', 'tp', 'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr', 
-														'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm'],
-				'IGNORE_EXTRAS' : True
-				}
-
-
 GET = ['SCANSECTION', 'GETSECTIONSLIST', 'GETRESULT', 'GETSTATUS', 'GETSETTINGS']
 PUT = ['ABORT', 'RESETSETTINGS']
 POST = ['SETSETTINGS']
 DELETE = []
-
-
 
 class findMediaV3(object):	
 	init_already = False							# Make sure init only run once
@@ -488,9 +475,12 @@ class findMediaV3(object):
 	# Reset settings to default
 	@classmethod
 	def RESETSETTINGS(self, req, *args):
+		print 'Ged1', Dict['findMedia']
 		Dict['findMedia'] = None
 		Dict.Save()
+		print 'Ged2', Dict['findMedia']
 		self.populatePrefs()
+		print 'Ged3', Dict['findMedia']
 		req.clear()		
 		req.set_status(200)
 
@@ -568,15 +558,21 @@ class findMediaV3(object):
 	''' Populate the defaults, if not already there '''
 	@classmethod
 	def populatePrefs(self):
-		if Dict['findMedia'] == None:
-			Dict['findMedia'] = DEFAULTPREFS
-			Dict.Save()
-		# New key from V3.0, so need to handle seperately
-		if 'IGNORE_EXTRAS' not in Dict['findMedia'].keys():
-			Dict['findMedia']['IGNORE_EXTRAS'] = True
-			Dict.Save()
-
-
-
-
-
+		try:
+			if Dict['findMedia'] == None:
+				Dict['findMedia'] = {
+				'IGNORE_HIDDEN' : True,
+				'IGNORED_DIRS' : [".@__thumb",".AppleDouble","lost+found"],
+				'VALID_EXTENSIONS' : ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 
+														'fli', 'flv', 'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 
+														'nuv', 'ogm', 'ogv', 'tp', 'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr', 
+														'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm'],
+				'IGNORE_EXTRAS' : True
+				}
+				Dict.Save()				
+			# New key from V3.0, so need to handle seperately
+			if 'IGNORE_EXTRAS' not in Dict['findMedia'].keys():
+				Dict['findMedia']['IGNORE_EXTRAS'] = True
+				Dict.Save()
+		except Exception, e:
+			Log.Exception('Exception in populatePrefs was %s' %str(e))

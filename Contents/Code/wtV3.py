@@ -11,12 +11,12 @@
 import glob
 import json
 import shutil, sys, os
-from consts import BUNDLEDIRNAME, NAME, VERSION
+from consts import BUNDLEDIRNAME, NAME, VERSION, WTURL
 from plextvhelper import plexTV
 from shutil import copyfile
 
 GET = ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST']
-PUT = ['RESET']
+PUT = ['RESET', 'UPGRADEWT']
 POST = ['UPDATELANGUAGE']
 DELETE = ['']
 
@@ -32,6 +32,57 @@ class wtV3(object):
 		return
 
 	#********** Functions below ******************
+
+	# Upgrade WebTools from latest release. This is the new call, that replace the one that in V2 was located in the git module
+	@classmethod
+	def UPGRADEWT(self, req, *args):
+		Log.Info('We recieved a call to upgrade WebTools itself')
+		Log.Info('Release URL on Github is %s' %WTURL)		
+		try:
+			downloadUrl = None
+			# Digest release info, in order to grab the download url
+			jsonReponse = JSON.ObjectFromURL(WTURL)
+			# Walk assets to find the one named WebTools.bundle.zip
+			for asset in jsonReponse['assets']:
+				if asset['name'] == 'WebTools.bundle.zip':
+					downloadUrl = asset['browser_download_url']
+					break			
+			Log.Info('Downloading %s' %downloadUrl)
+			# Grap file from Github
+			zipfile = Archive.ZipFromURL(downloadUrl)					
+			for filename in zipfile:				
+				realFileName = filename.replace(NAME + '.bundle','')
+				if realFileName.startswith('/'):
+					realFileName = realFileName[1:]
+				saveFileName = Core.storage.join_path(Core.bundle_path + '.upgrade', realFileName)
+				if saveFileName.endswith('/'):
+					continue
+				else:
+					Log.Debug('Extracting file %s' %saveFileName)
+					try:
+						Core.storage.ensure_dirs(os.path.dirname(saveFileName))						
+						Core.storage.save(saveFileName, zipfile[filename])
+					except Exception, e:
+						bError = True
+						Log.Exception('Exception happend in UPGRADEWT: ' + str(e))
+			# All done, so now time to flip directories
+			try:
+				os.rename(Core.bundle_path, Core.storage.join_path(Core.bundle_path.replace(NAME + '.bundle','') , NAME + '.bundle.upgraded'))
+				os.rename(Core.storage.join_path(Core.bundle_path.replace(NAME + '.bundle','') , NAME + '.bundle.upgrade'), Core.bundle_path)
+			except Exception, e:				
+				Log.Exception('Exception in UPGRADEWT during rename was %s' %str(e))
+		except Exception, e:			
+			Log.Exception('Exception in UPGRADEWT was %s' %str(e))
+			req.clear()	
+			if e.code == 200:
+				req.set_status(500)
+			else:
+				req.set_status(e.code)
+			req.finish(str(e))
+			return		
+		req.clear()
+		req.set_status(200)			
+		req.finish('WebTools finished upgrading')
 
 	# Get list of avail languages, as well as their translation status
 	@classmethod
@@ -249,6 +300,8 @@ class wtV3(object):
 def upgradeCleanup():
 	# Always check translation file regardless of version
 	updateTranslationStore()
+	# Remove leftovers from an upgrade
+	removeUpgraded()
 	'''
 	We do take precedence here in a max of 3 integer digits in the version number !
 	'''
@@ -279,6 +332,16 @@ def upgradeCleanup():
 			Log.Exception('We encountered an error during cleanup that was %s' %(str(e)))
 			pass
 			
+# Remove old version that's upgraded, if present
+def removeUpgraded():	
+	try:
+		pluginDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle.upgraded')
+		if os.path.isdir(pluginDir):			
+			shutil.rmtree(pluginDir)
+			Log.Info('Removed old upgraded WT from directory: %s' %pluginDir)
+	except Exception, e:
+		Log.Exception('Exception in removeUpgraded was %s' %str(e))
+
 # This function will update the translation.js file in PMS storage if needed
 def updateTranslationStore():	
 	bundleStore = Core.storage.join_path(Core.bundle_path, 'http', 'static', '_shared', 'translations.js')

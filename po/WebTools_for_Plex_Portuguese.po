@@ -27,13 +27,13 @@ msgstr "Locais (na mesma pasta ou subpasta do filme) ou na pasta do agente."
 msgid "Change Theme"
 msgstr "Mudar o tema"
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Changelog"
-msgstr "Changelog"
+msgstr "Lista de Modificações"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
-msgstr "Ver o Changelog"
+msgstr "Ver a Lista de Modificações"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
@@ -43,13 +43,13 @@ msgstr "Apagar legenda associada"
 msgid "File empty"
 msgstr "Ficheiro vazio"
 
-#: ../http/static/menu/menu.html:20
+#: ../http/static/menu/menu.html:21
 msgid "Help"
 msgstr "Ajuda"
 
 #: ../http/static/sub_management/subHelp.html:5
 msgid "List all subtitles for a movie/tv show in your library."
-msgstr "Lista legendas disponíveis para um filme ou série"
+msgstr "Listar legendas disponíveis para um filme ou série"
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
@@ -65,7 +65,7 @@ msgstr "Opções"
 
 #: ../http/static/sub_management/subHelp.html:15
 msgid "Options for output."
-msgstr "Opções de \"output\""
+msgstr "Opções de saída"
 
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
@@ -79,7 +79,7 @@ msgstr "Seleccione um dos temas disponíveis:"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Seleccione uma das bibliotecas abaixo para procurar filmes ou séries que não estejam nem na biblioteca de Plex nem no seu disco local"
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "Theme"
 msgstr "Tema"
 
@@ -95,15 +95,15 @@ msgstr "Actualizar WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Inspeccionar a legenda para identificar o que apagar"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "WT Forum Thread"
 msgstr "Suporte a WebTools"
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT GitHub"
 msgstr "GitHub"
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Manual(PDF)"
 msgstr "Documentação WebTools (pdf)"
 
@@ -113,81 +113,101 @@ msgstr "Não foi possível encontrar a página :("
 
 #: ../http/static/logs/logs.html:36
 msgid "We recommend you to download large files and view them in your favourite text editor."
-msgstr "Recomenda-se fazer o \"download\" de ficheiros grandes e vê-los com o seu editor de texto favorito"
+msgstr "Recomenda-se descarregar ficheiros grandes e vê-los com o seu editor de texto favorito"
 
 #: ../http/static/logs/logs.html:28
 msgid "Download all logfiles as zip"
-msgstr ""
+msgstr "Descarregar os logs em ficheiro ZIP"
 
 #: ../http/static/logs/logs.html:27
 msgid "Download selected logfile"
-msgstr ""
+msgstr "Descarregar o log seleccionado"
 
 #: ../http/static/findmedia/fm.html:78
 msgid "Abort scan"
-msgstr ""
+msgstr "Abortar pesquisa"
 
 #: ../http/static/findmedia/fm.html:43
 msgid "Add ignored folder"
-msgstr ""
+msgstr "Incluir pasta ignorada"
 
 #: ../http/static/playlist/playlistHelp.html:2
 msgid "Current features:"
-msgstr ""
+msgstr "Características actuais"
 
 #: ../http/static/playlist/playlistHelp.html:5
 msgid "DUMMY TEXT Playlist can help you with lorem ipsum"
-msgstr ""
+msgstr "Isto é só para baralhar..."
 
 #: ../http/static/findmedia/fm.html:92
 msgid "Download result"
-msgstr ""
+msgstr "Descarregar resultado"
 
 #: ../http/static/findmedia/fm.html:26
 msgid "Ignore Extras"
-msgstr ""
+msgstr "Ignorar Extras"
 
 #: ../http/static/findmedia/fm.html:20
 msgid "Ignore Hidden"
-msgstr ""
+msgstr "Ignorar Ocultos"
 
 #: ../http/static/findmedia/fm.html:31
 msgid "Ignore folders"
-msgstr ""
+msgstr "Ignorar Pastas"
 
 #: ../http/static/findmedia/fm.html:98
 msgid "No records missing from Plex database"
-msgstr ""
+msgstr "Não faltam registos na base de dados de Plex"
 
 #: ../http/static/findmedia/fm.html:110
 msgid "No records missing from harddrive"
-msgstr ""
+msgstr "Não faltam ficheiros no disco local"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
-msgstr ""
+msgstr "Ajuda \"playlist\""
 
 #: ../http/static/findmedia/fm.html:101
 msgid "Records missing from Plex database"
-msgstr ""
+msgstr "Registos em falta na base de dados de Plex"
 
 #: ../http/static/findmedia/fm.html:113
 msgid "Records missing from harddrive"
-msgstr ""
+msgstr "Registos em falta no disco duro"
 
 #: ../http/static/findmedia/fm.html:59
 msgid "Reset settings"
-msgstr ""
+msgstr "Restaurar definições"
 
 #: ../http/static/findmedia/fm.html:67
 msgid "Save settings"
-msgstr ""
+msgstr "Guardar definições"
 
 #: ../http/static/findmedia/fm.html:12
 msgid "Show settings"
-msgstr ""
+msgstr "Mostrar definições"
 
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
-msgstr ""
+msgstr "Extensões válidas"
+
+#: ../http/static/language/language.html:5
+msgid "Change Language"
+msgstr "Mudar idioma"
+
+#: ../http/static/menu/menu.html:15
+msgid "Language"
+msgstr "Idioma"
+
+#: ../http/static/language/language.html:7
+msgid "{[{lang.name}]}"
+msgstr "{[{lang.name}]} "
+
+#: ../http/static/language/language.html:13
+msgid "Force language translation update"
+msgstr "Refrescar tradução"
+
+#: ../http/static/language/language.html:16
+msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
+msgstr "Caso queira efectuar ou melhorar a tradução deste idioma vá por favor a:"
 

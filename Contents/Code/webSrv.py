@@ -37,8 +37,8 @@ from os.path import abspath
 
 # Path to http folder within the bundle
 def getActualHTTPPath():
-	try:
-		HTTPPath = os.path.normpath(Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http'))
+	try:		
+		HTTPPath = os.path.normpath(Core.storage.join_path(Core.bundle_path, 'http'))
 		if not os.path.isdir(HTTPPath):
 			Log.Critical('Could not find my http path in: ' + HTTPPath)
 			return ''
