@@ -79,14 +79,10 @@ class wtV3(object):
 			else:
 				req.set_status(e.code)
 			req.finish(str(e))
-			return
-
-		print 'Ged done'
+			return		
 		req.clear()
 		req.set_status(200)			
 		req.finish('WebTools finished upgrading')
-
-
 
 	# Get list of avail languages, as well as their translation status
 	@classmethod
@@ -304,6 +300,8 @@ class wtV3(object):
 def upgradeCleanup():
 	# Always check translation file regardless of version
 	updateTranslationStore()
+	# Remove leftovers from an upgrade
+	removeUpgraded()
 	'''
 	We do take precedence here in a max of 3 integer digits in the version number !
 	'''
@@ -334,6 +332,16 @@ def upgradeCleanup():
 			Log.Exception('We encountered an error during cleanup that was %s' %(str(e)))
 			pass
 			
+# Remove old version that's upgraded, if present
+def removeUpgraded():	
+	try:
+		pluginDir = Core.storage.join_path(Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle.upgraded')
+		if os.path.isdir(pluginDir):			
+			shutil.rmtree(pluginDir)
+			Log.Info('Removed old upgraded WT from directory: %s' %pluginDir)
+	except Exception, e:
+		Log.Exception('Exception in removeUpgraded was %s' %str(e))
+
 # This function will update the translation.js file in PMS storage if needed
 def updateTranslationStore():	
 	bundleStore = Core.storage.join_path(Core.bundle_path, 'http', 'static', '_shared', 'translations.js')
