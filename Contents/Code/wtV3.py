@@ -14,6 +14,7 @@ import shutil, sys, os
 from consts import BUNDLEDIRNAME, NAME, VERSION, WTURL
 from plextvhelper import plexTV
 from shutil import copyfile
+from misc import misc
 
 GET = ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST']
 PUT = ['RESET', 'UPGRADEWT']
@@ -198,7 +199,7 @@ class wtV3(object):
 			except:
 				Log.Critical('Fatal error in clearing dict during reset')
 			# Restart system bundle
-			HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.' + NAME + '/restart', cacheTime=0, immediate=True)
+			HTTP.Request(misc.GetLoopBack() + '/:/plugins/com.plexapp.plugins.' + NAME + '/restart', cacheTime=0, immediate=True)
 			req.clear()
 			req.set_status(200)
 			req.finish('WebTools has been reset')

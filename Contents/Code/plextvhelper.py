@@ -5,6 +5,7 @@
 #
 ######################################################################################################################
 import sys
+from misc import misc
 
 from consts import VERSION, PREFIX, NAME
 
@@ -76,12 +77,12 @@ class plexTV(object):
 			return -1
 
 	''' will return the machineIdentity of this server '''
-	def get_thisPMSIdentity(self):
-		return XML.ElementFromURL('http://127.0.0.1:32400/identity').get('machineIdentifier')
+	def get_thisPMSIdentity(self):				
+		return XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')
 
 	''' Will return true, if PMS is authenticated towards plex.tv '''
-	def auth2myPlex(self):
-		return 'ok' == XML.ElementFromURL('http://127.0.0.1:32400').get('myPlexSigninState')
+	def auth2myPlex(self):		
+		return 'ok' == XML.ElementFromURL(misc.GetLoopBack()).get('myPlexSigninState')
 
 	''' Get list of users 
 	This will return a json of users on the server, incl. their access token
