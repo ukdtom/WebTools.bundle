@@ -15,10 +15,6 @@ msgstr "Brug menuen til venstre til at navigere med"
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
 msgstr "WebTools er et værktøj, som ved hjælp af moduler hjælper dig med at håndtere din Plex Media Server"
 
-#: ../http/static/home/home.html:1
-msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
-msgstr "Velkommen til {[{webtoolsModel.versionFormated}]}"
-
 #. This means, that we both handle sidecars (Subs located next to the media) as well as subtitles downloaded by an agent, and located inside Plex internal Library directory
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
@@ -126,10 +122,12 @@ msgid "Download selected logfile"
 msgstr "Download valgte logfil"
 
 #: ../http/static/findmedia/fm.html:78
+#: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
 msgstr "Afbryd scanning"
 
 #: ../http/static/findmedia/fm.html:43
+#: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
 msgstr "Tilføj et bibliotek som skal ignoreres"
 
@@ -143,6 +141,7 @@ msgid "DUMMY TEXT Playlist can help you with lorem ipsum"
 msgstr "Not used"
 
 #: ../http/static/findmedia/fm.html:92
+#: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
 msgstr "Download resultatet"
 
@@ -179,10 +178,12 @@ msgid "Records missing from harddrive"
 msgstr "Filer der mangler fra harddiske"
 
 #: ../http/static/findmedia/fm.html:59
+#: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
 msgstr "Nulstil indstillinger"
 
 #: ../http/static/findmedia/fm.html:67
+#: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
 msgstr "Gem instillinger"
 
@@ -215,4 +216,63 @@ msgstr "Opdater oversættelse"
 #: ../http/static/language/language.html:16
 msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
 msgstr "Hvis dit sprog mangler, eller hvis du vil forbedre oversættelsen af det, så venligst benyt dette link:"
+
+#: ../http/static/logs/logs.html:11
+msgid "Found"
+msgstr "Fundet"
+
+#: ../http/static/home/home.html:1
+msgid "Welcome to"
+msgstr "Velkommen til"
+
+#: ../http/static/logs/logs.html:11
+msgid "rows"
+msgstr "rækker"
+
+#. What bundles where migrated into UAS during UAS migration
+#: ../http/static/uas/uasService.js:5
+msgid "Apps migrated:"
+msgstr "Apps migreret"
+
+#. Clear the search input field in logs
+#: ../http/static/logs/logsController.js:9
+msgid "Clear search"
+msgstr "Nulstil søgning"
+
+#. FindMedia: Remove an ignored folder during searching the filesystem
+#: ../http/static/findmedia/fmController.js:8
+msgid "Delete ignored folder"
+msgstr "Slet bibliotek som bliver ignoreret"
+
+#: ../http/static/logs/logsController.js:13
+msgid "Hide/Show search menu"
+msgstr "Vis/Skjul søge menu"
+
+#: ../http/static/findmedia/fmController.js:14
+msgid "Hide/Show settings menu"
+msgstr "Vis/Skjul instillinger"
+
+#: ../http/static/logs/logsController.js:12
+msgid "Jump to top"
+msgstr "Hop til toppen"
+
+#: ../http/static/logs/logsController.js:11
+msgid "Next"
+msgstr "Næste"
+
+#: ../http/static/uas/uasService.js:6
+msgid "No apps was migrated:"
+msgstr "Ingen apps blev migreret"
+
+#: ../http/static/logs/logsController.js:10
+msgid "Previous"
+msgstr "Forrige"
+
+#: ../http/static/logs/logsController.js:8
+msgid "Search keyword"
+msgstr "Søg"
+
+#: ../http/static/logs/logsController.js:7
+msgid "search..."
+msgstr "Søg..."
 

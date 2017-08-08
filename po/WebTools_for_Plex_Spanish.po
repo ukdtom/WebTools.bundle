@@ -15,10 +15,6 @@ msgstr "Utilice el menú de la izquierda para navegar en WebTools."
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
 msgstr "WebTools es una herramienta para ayudar a gestionar el servidor de Plex"
 
-#: ../http/static/home/home.html:1
-msgid "Welcome to {[{webtoolsModel.versionFormated}]}"
-msgstr "Bien venido a  {[{webtoolsModel.versionFormated}]}"
-
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
 msgstr "Locales (en la misma carpeta o subcarpeta de la pelicula) o en la carpeta del agente."
@@ -124,10 +120,12 @@ msgid "Download selected logfile"
 msgstr "Descargar el log seleccionado"
 
 #: ../http/static/findmedia/fm.html:78
+#: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
 msgstr "Cancelar escaneo"
 
 #: ../http/static/findmedia/fm.html:43
+#: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
 msgstr "Agregar carpeta ignorada"
 
@@ -140,6 +138,7 @@ msgid "DUMMY TEXT Playlist can help you with lorem ipsum"
 msgstr "Isto é só para baralhar..."
 
 #: ../http/static/findmedia/fm.html:92
+#: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
 msgstr "Descargar resultado"
 
@@ -176,10 +175,12 @@ msgid "Records missing from harddrive"
 msgstr "Registros en falta en disco duro"
 
 #: ../http/static/findmedia/fm.html:59
+#: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
 msgstr "Reiniciar ajustes"
 
 #: ../http/static/findmedia/fm.html:67
+#: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
 msgstr "Guardar ajustes"
 
@@ -210,4 +211,60 @@ msgstr "Actualizar traducción del lenguaje"
 #: ../http/static/language/language.html:16
 msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
 msgstr "Si su idioma falta, o si desea mejorar la traducción, por favor vaya aquí:"
+
+#: ../http/static/logs/logs.html:11
+msgid "Found"
+msgstr "Encontrado"
+
+#: ../http/static/home/home.html:1
+msgid "Welcome to"
+msgstr "Bienvenido a"
+
+#: ../http/static/logs/logs.html:11
+msgid "rows"
+msgstr "filas"
+
+#: ../http/static/uas/uasService.js:5
+msgid "Apps migrated:"
+msgstr "Se migraron Canales/Plugins."
+
+#: ../http/static/logs/logsController.js:9
+msgid "Clear search"
+msgstr "Borrar búsqueda"
+
+#: ../http/static/findmedia/fmController.js:8
+msgid "Delete ignored folder"
+msgstr "Eliminar carpeta ignorada"
+
+#: ../http/static/logs/logsController.js:13
+msgid "Hide/Show search menu"
+msgstr "Ocultar/Mostrar menú de búsqueda"
+
+#: ../http/static/findmedia/fmController.js:14
+msgid "Hide/Show settings menu"
+msgstr "Ocultar/Mostrar Menú de Configuración"
+
+#: ../http/static/logs/logsController.js:12
+msgid "Jump to top"
+msgstr "Saltar a Tope"
+
+#: ../http/static/logs/logsController.js:11
+msgid "Next"
+msgstr "Siguiente"
+
+#: ../http/static/uas/uasService.js:6
+msgid "No apps was migrated:"
+msgstr "No se migraron Canales/Plugins."
+
+#: ../http/static/logs/logsController.js:10
+msgid "Previous"
+msgstr "Anterior"
+
+#: ../http/static/logs/logsController.js:8
+msgid "Search keyword"
+msgstr "Clave de Búsqueda"
+
+#: ../http/static/logs/logsController.js:7
+msgid "search..."
+msgstr "Buscar . . ."
 
