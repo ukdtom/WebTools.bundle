@@ -13,7 +13,7 @@ import io, os, shutil, sys
 import plistlib
 import pmsV3
 import tempfile
-from consts import DEBUGMODE, UAS_URL, UAS_BRANCH, NAME, WTURL
+from consts import DEBUGMODE, UAS_URL, UAS_BRANCH, NAME
 
 GET = ['GETUPDATELIST', 'GETLISTOFBUNDLES', 'UASTYPES', 'GETLASTUPDATETIME', 'LIST', 'GETRELEASEINFO']
 PUT = ['INSTALL', 'MIGRATE']
@@ -789,6 +789,13 @@ class gitV3(object):
 			except Exception, e:
 				version = 'latest'
 				pass
+
+			# TESTING HERE
+			print ('Ged1 url override')
+			url = 'https://github.com/ukdtom/wtupgtst'
+			print ('Ged1 version override')
+			version = 'latest'
+
 			# Switch to https, if not already so
 			url = url.replace('http://', 'https://',1)
 			# Switch to use the api
