@@ -66,6 +66,10 @@ msgstr ""
 msgid "Changelog viewer"
 msgstr ""
 
+#: ../http/static/uas/uas.html:12
+msgid "Check for bundle updates"
+msgstr ""
+
 #: ../http/static/logs/logsController.js:9
 msgid "Clear search"
 msgstr ""
@@ -105,6 +109,10 @@ msgstr ""
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
+msgstr ""
+
+#: ../http/static/uas/uas.html:11
+msgid "Force UAS update"
 msgstr ""
 
 #: ../http/static/language/language.html:13
@@ -169,6 +177,14 @@ msgstr ""
 
 #: ../http/static/home/home.html:10
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
+msgstr ""
+
+#: ../http/static/uas/uas.html:7
+msgid "Manual Install"
+msgstr ""
+
+#: ../http/static/uas/uas.html:10
+msgid "Migrate"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:11
