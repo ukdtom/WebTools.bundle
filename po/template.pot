@@ -14,6 +14,10 @@ msgstr ""
 msgid "Add ignored folder"
 msgstr ""
 
+#: ../http/static/home/home.html:22
+msgid "Allows you to copy playlists between users, as well as import, export and delete them."
+msgstr ""
+
 #: ../http/static/uas/uasService.js:5
 msgid "Apps migrated:"
 msgstr ""
@@ -69,6 +73,10 @@ msgstr ""
 
 #: ../http/static/logs/logs.html:27
 msgid "Download selected logfile"
+msgstr ""
+
+#: ../http/static/home/home.html:13
+msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
 msgstr ""
 
 #: ../http/static/logs/logs.html:33
@@ -129,6 +137,14 @@ msgstr ""
 
 #: ../http/static/menu/menu.html:13
 msgid "Logout"
+msgstr ""
+
+#: ../http/static/home/home.html:19
+msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
+msgstr ""
+
+#: ../http/static/home/home.html:10
+msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
 msgstr ""
 
 #: ../http/static/logs/logsController.js:11
@@ -209,11 +225,19 @@ msgstr ""
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr ""
 
+#: ../http/static/home/home.html:16
+msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
+msgstr ""
+
+#: ../http/static/home/home.html:7
+msgid "Tool Modules currently available are:"
+msgstr ""
+
 #: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr ""
 
-#: ../http/static/home/home.html:3
+#: ../http/static/home/home.html:4
 msgid "Use the menu on the left side to navigate in WebTools."
 msgstr ""
 
