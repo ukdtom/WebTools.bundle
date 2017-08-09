@@ -4,12 +4,12 @@
         <div class="col-xs-12">
             <input class="pull-left manualInstall" placeholder="Manual install url..." ng-model="manualInstallUrl" />
             <div class="pull-left uasBtn manualInstallBtn" ng-click="installUpdate(manualRepo, manualInstallUrl, true)">
-                <span ng-if="!manualRepo.workingLoading">Manual Install</span>
+                <span ng-if="!manualRepo.workingLoading" translate>Manual Install</span>
                 <inline-loading2 ng-if="manualRepo.workingLoading"></inline-loading2>
             </div>
-            <div class="pull-left uasBtn pushLeftMinor" ng-click="migrate()">Migrate</div>
-            <div class="pull-left uasBtn pushLeftMinor" ng-click="forceCache()">Force UAS update</div>
-            <div class="pull-left uasBtn pushLeftMinor" ng-click="checkBundleUpdates()">Check for bundle updates</div>
+            <div class="pull-left uasBtn pushLeftMinor" ng-click="migrate()" translate>Migrate</div>
+            <div class="pull-left uasBtn pushLeftMinor" ng-click="forceCache()" translate>Force UAS update</div>
+            <div class="pull-left uasBtn pushLeftMinor" ng-click="checkBundleUpdates()" translate>Check for bundle updates</div>
         </div>
     </div>
     <content-loading ng-if="webtoolsModel.uasLoading" class="pushTopMinor"></content-loading>
