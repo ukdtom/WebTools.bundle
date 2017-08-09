@@ -4,6 +4,30 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: ../http/static/uas/uasHelp.html:6
+msgid "* Category names contain installed/total available channels."
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:2
+msgid "* Here you can either install a channel by it's Github repository link or by selecting one of the categories below."
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:3
+msgid "* If you have installed channels manually before installing WebTools, you can click on the \"Migrate manually/previously installed channels\" to make WebTools aware of them."
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:4
+msgid "* You can also search for updates for all installed channels managed by WebTools via the \"Check for updates for all installed channels\" button."
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:7
+msgid "* You can expand the items by clicking on them."
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:5
+msgid "* You can select a category on the menu on the right."
+msgstr ""
+
 #: ../http/static/findmedia/fm.html:78
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
@@ -24,10 +48,6 @@ msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
-msgstr ""
-
-#: ../http/static/uas/uasHelp.html:6
-msgid "Category names contain installed/total available channels."
 msgstr ""
 
 #: ../http/static/language/language.html:5
@@ -99,20 +119,12 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: ../http/static/uas/uasHelp.html:2
-msgid "Here you can either install a channel by it's Github repository link or by selecting one of the categories below."
-msgstr ""
-
 #: ../http/static/logs/logsController.js:13
 msgid "Hide/Show search menu"
 msgstr ""
 
 #: ../http/static/findmedia/fmController.js:14
 msgid "Hide/Show settings menu"
-msgstr ""
-
-#: ../http/static/uas/uasHelp.html:3
-msgid "If you have installed channels manually before installing WebTools, you can click on the \"Migrate manually/previously installed channels\" to make WebTools aware of them."
 msgstr ""
 
 #: ../http/static/language/language.html:16
@@ -291,18 +303,6 @@ msgstr ""
 
 #: ../http/static/home/home.html:1
 msgid "Welcome to"
-msgstr ""
-
-#: ../http/static/uas/uasHelp.html:4
-msgid "You can also search for updates for all installed channels managed by WebTools via the \"Check for updates for all installed channels\" button."
-msgstr ""
-
-#: ../http/static/uas/uasHelp.html:7
-msgid "You can expand the items by clicking on them."
-msgstr ""
-
-#: ../http/static/uas/uasHelp.html:5
-msgid "You can select a category on the menu on the right."
 msgstr ""
 
 #: ../http/static/logs/logs.html:11
