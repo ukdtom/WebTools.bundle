@@ -50,6 +50,10 @@ msgstr ""
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
 msgstr ""
 
+#: ../http/static/uas/uas.html:76
+msgid "Categories:"
+msgstr ""
+
 #: ../http/static/language/language.html:5
 msgid "Change Language"
 msgstr ""
@@ -74,12 +78,22 @@ msgstr ""
 msgid "Clear search"
 msgstr ""
 
+#: ../http/static/playlist/playlist.html:26
+msgid "Copy"
+msgstr ""
+
 #: ../http/static/playlist/playlistHelp.html:2
+#: ../http/static/sub_management/subHelp.html:2
 msgid "Current features:"
 msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:5
 msgid "DUMMY TEXT Playlist can help you with lorem ipsum"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:25
+#: ../http/static/uas/uas.html:57
+msgid "Delete"
 msgstr ""
 
 #: ../http/static/findmedia/fmController.js:8
@@ -88,6 +102,10 @@ msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:27
+msgid "Download"
 msgstr ""
 
 #: ../http/static/logs/logs.html:28
@@ -151,12 +169,20 @@ msgstr ""
 msgid "Ignore folders"
 msgstr ""
 
+#: ../http/static/uas/uas.html:50
+msgid "Install"
+msgstr ""
+
 #: ../http/static/logs/logsController.js:12
 msgid "Jump to top"
 msgstr ""
 
 #: ../http/static/menu/menu.html:15
 msgid "Language"
+msgstr ""
+
+#: ../http/static/uas/uas.html:84
+msgid "Last updated:"
 msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:5
@@ -181,6 +207,14 @@ msgstr ""
 
 #: ../http/static/uas/uas.html:7
 msgid "Manual Install"
+msgstr ""
+
+#: ../http/static/uas/uasController.js:9
+msgid "Manual install url..."
+msgstr ""
+
+#: ../http/static/uas/uas.html:92
+msgid "Manual:"
 msgstr ""
 
 #: ../http/static/uas/uas.html:10
@@ -227,6 +261,10 @@ msgstr ""
 msgid "Records missing from harddrive"
 msgstr ""
 
+#: ../http/static/uas/uas.html:100
+msgid "Repo:"
+msgstr ""
+
 #: ../http/static/findmedia/fm.html:59
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
@@ -253,12 +291,32 @@ msgstr ""
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr ""
 
+#: ../http/static/playlist/playlist.html:8
+msgid "Select user"
+msgstr ""
+
+#: ../http/static/_shared/webtoolsService.js:5
+msgid "Self"
+msgstr ""
+
 #: ../http/static/findmedia/fm.html:12
 msgid "Show settings"
 msgstr ""
 
+#: ../http/static/sub_management/subHelp.html:1
+msgid "Subtitle Management Help"
+msgstr ""
+
+#: ../http/static/uas/uas.html:109
+msgid "Support:"
+msgstr ""
+
 #: ../http/static/menu/menu.html:16
 msgid "Theme"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:3
+msgid "This is an unofficial manager for subtitles."
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:3
@@ -269,6 +327,10 @@ msgstr ""
 msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
 msgstr ""
 
+#: ../http/static/sub_management/sub.html:5
+msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
+msgstr ""
+
 #: ../http/static/home/home.html:7
 msgid "Tool Modules currently available are:"
 msgstr ""
@@ -277,8 +339,16 @@ msgstr ""
 msgid "UnsupportedAppStore Help"
 msgstr ""
 
+#: ../http/static/uas/uas.html:51
+msgid "Update"
+msgstr ""
+
 #: ../http/static/menu/menu.html:14
 msgid "Update WT"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:4
+msgid "Usage at your own risk!"
 msgstr ""
 
 #: ../http/static/home/home.html:4
