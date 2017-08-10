@@ -2,7 +2,7 @@
     <div class="textSize4 textBold600 pull-left">UnsupportedAppStore</div><help src="static/uas/uasHelp.html"></help>
     <div class="row">
         <div class="col-xs-12">
-            <input class="pull-left manualInstall" placeholder="Manual install url..." ng-model="manualInstallUrl" />
+            <input class="pull-left manualInstall" ng-placeholder="lang.manualInstall|translate" ng-model="manualInstallUrl" />
             <div class="pull-left uasBtn manualInstallBtn" ng-click="installUpdate(manualRepo, manualInstallUrl, true)">
                 <span ng-if="!manualRepo.workingLoading" translate>Manual Install</span>
                 <inline-loading2 ng-if="manualRepo.workingLoading"></inline-loading2>
@@ -47,14 +47,14 @@
                 <div class="header" ng-click="repo.revealed = !repo.revealed">
                     <div class="right">
                         <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && repo.key" ng-click="installUpdate(repo, repo.key);$event.stopPropagation();">
-                            <span ng-if="!repo.installed">Install</span>
-                            <span ng-if="repo.installed">Update</span>
+                            <span ng-if="!repo.installed" translate>Install</span>
+                            <span ng-if="repo.installed" translate>Update</span>
                         </div>
                         <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="repo.workingLoading">
                             <inline-loading></inline-loading>
                         </div>
                         <div class="uasBtn delete pull-right mainBtn textBold600" ng-if="repo.installed && !repo.workingLoading" ng-click="delete(repo, repo.key);$event.stopPropagation();">
-                            <span>Delete</span>
+                            <span translate>Delete</span>
                         </div>
                         <div class="revealedIcon">
                             <span ng-if="!repo.revealed" title="Toggle details"><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
@@ -73,7 +73,7 @@
 
                 <div ng-if="repo.revealed" class="details">
                     <div class="row">
-                        <div class="col-xs-1">
+                        <div class="col-xs-1" translate>
                             Categories:
                         </div>
                         <div class="col-xs-11">
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     <div class="row" ng-if="repo.date">
-                        <div class="col-xs-1">
+                        <div class="col-xs-1" translate>
                             Last updated:
                         </div>
                         <div class="col-xs-11">
@@ -89,7 +89,7 @@
                         </div>
                     </div>
                     <div class="row" ng-if="repo.manual">
-                        <div class="col-xs-1">
+                        <div class="col-xs-1" translate>
                             Manual:
                         </div>
                         <div class="col-xs-11">
@@ -97,7 +97,7 @@
                         </div>
                     </div>
                     <div class="row" ng-if="validUrl(repo.key)">
-                        <div class="col-xs-1">
+                        <div class="col-xs-1" translate>
                             Repo:
                         </div>
                         <div class="col-xs-11">
@@ -106,7 +106,7 @@
                         </div>
                     </div>
                     <div class="row" ng-if="repo.supporturl">
-                        <div class="col-xs-1">
+                        <div class="col-xs-1" translate>
                             Support:
                         </div>
                         <div class="col-xs-11">

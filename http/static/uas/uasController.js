@@ -1,8 +1,15 @@
-﻿angular.module('webtools').controller('uasController', ['$scope', 'uasModel', 'uasService', 'webtoolsModel', function ($scope, uasModel, uasService, webtoolsModel) {
+﻿angular.module('webtools').controller('uasController', ['$scope', 'uasModel', 'uasService', 'webtoolsModel', 'gettext', function ($scope, uasModel, uasService, webtoolsModel, gettext) {
     $scope.webtoolsModel = webtoolsModel;
     $scope.uasModel = uasModel;
 
     $scope.manualRepo = {};
+
+    $scope.translate = function () {
+        var lang = {
+            manualInstall: gettext("Manual install url...")
+        };
+        $scope.lang = lang;
+    }
 
     $scope.init = function () {
         uasService.getTypes(function (data) {
@@ -10,8 +17,9 @@
 
             uasService.getListBundle(function () {
                 uasService.getInstalled();
-            });
+            });            
         });
+        $scope.translate();
     }
 
     $scope.setType = function (typeName, type) {
