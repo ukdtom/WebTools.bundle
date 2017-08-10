@@ -149,7 +149,7 @@
     }
 
     this.downloadSubtitle = function (subtitleKey) {
-        $window.open(webtoolsModel.apiV3Url + "/pms/downloadSubtitle/" + subtitleKey, "_blank");
+        $window.location(webtoolsModel.apiV3Url + "/pms/downloadSubtitle/" + subtitleKey);
     }
 
     this.viewSubtitle = function (subtitleKey) {

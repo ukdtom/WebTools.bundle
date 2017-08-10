@@ -1,6 +1,10 @@
-﻿angular.module('webtools').service('webtoolsService', ['$http', '$window', '$log', 'webtoolsModel', 'DialogFactory', 'gettextCatalog', function ($http, $window, $log, webtoolsModel, DialogFactory, gettextCatalog) {
+﻿angular.module('webtools').service('webtoolsService', ['$http', '$window', '$log', 'webtoolsModel', 'DialogFactory', 'gettext', function ($http, $window, $log, webtoolsModel, DialogFactory, gettext) {
     var self = this;
     //Private
+    var lang = {
+        self: gettext("Self")
+    };
+
     var anyNewVersion = function (currentVersion, latestVersion) {
         currentVersion = currentVersion.split(" ")[0].toString().split('.');
         latestVersion = latestVersion.split(" ")[0].toString().split('.');
@@ -71,8 +75,18 @@
             method: "GET",
             url: url
         }).then(function (resp) {
-            webtoolsModel.users = resp.data;
-            console.log(webtoolsModel.users);
+            webtoolsModel.users = [];
+            webtoolsModel.users.push({
+                id: null,
+                username: lang.self
+            });
+            for (var key in resp.data) {
+                if (resp.data.hasOwnProperty(key)) {
+                    var item = resp.data[key];
+                    item.id = key;
+                    webtoolsModel.users.push(item);
+                }
+            }
             webtoolsModel.globalLoading--;
             if (callback) callback(resp.data);
         }, function (errorResp) {

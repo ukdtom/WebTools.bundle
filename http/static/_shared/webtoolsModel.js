@@ -2,17 +2,18 @@
     this.version = "";
     this.versionFormated = "";
     this.UILanguage = "en";
-    this.users = {};
+    this.users = [];
+    this.userSelected = null;
     this.isNewVersionAvailable = false;
 
     this.globalLoading = 0;
     this.languageLoading = 0;
+    this.playlistLoading = 0;
     this.subLoading = false;
     this.logsLoading = false;
     this.themeLoading = false;
     this.uasLoading = false;
     this.fmLoading = false;
-    this.playlistLoading = false;
 
     this.basePath = "/";
     try {

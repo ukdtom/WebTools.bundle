@@ -1,9 +1,36 @@
-<div class="sub">
+<div class="playlists">
     <div class="textSize4 textBold600 pull-left">Playlist Management</div><help src="static/playlist/playlistHelp.html"></help>
     <div class="pushTopMinor">To get started, select one of your Libraries or click on the "?" for additional help</div>
 
-    <content-loading ng-if="webtoolsModel.playlistLoading" class="pushTopMinor"></content-loading>
-    <div ng-if="!webtoolsModel.playlistLoading" class="pushTopMinor">
+    <content-loading ng-if="webtoolsModel.playlistsLoading" class="pushTopMinor"></content-loading>
+    <div ng-if="!webtoolsModel.playlistsLoading" class="pushTopMinor">
+        <div class="userContainer">
+            <label for="userSelector" class="textSize4 textBold600" translate>Select user</label><br />
+            <select class="userSelector" id="userSelector" ng-model="webtoolsModel.userSelected" ng-change="changeUser()">
+                <option ng-repeat="user in webtoolsModel.users track by user"
+                        value="{[{user.id}]}">
+                    {[{user.username}]}
+                </option>
+            </select>
+        </div>
+        <div class="playlistContainer" ng-repeat="playlist in playlistModel.playlists track by playlist.key">
+            <div class="icon">
+                <i class="fa fa-film" aria-hidden="true" ng-if="playlist.playlistType !== 'audio'"></i>
+                <i class="fa fa-music" aria-hidden="true" ng-if="playlist.playlistType === 'audio'"></i>
+            </div>
+            <div class="playlistContent">
+                <div class="topPart">
+                    <div class="title pull-left textBold600">{[{playlist.title}]}</div>
+                    <div class="buttons pull-right">
+                        <div class="playlistBtn" ng-click="deletePlaylist(playlist)" translate>Delete</div>
+                        <div class="playlistBtn" ng-click="copyPlaylist(playlist)" translate>Copy</div>
+                        <div class="playlistBtn" ng-click="downloadPlaylist(playlist)" translate>Download</div>
+                        <!--<div class="playlistBtn" ng-click="importPlaylist(playlist)" translate>Import</div>-->
+                    </div>
+                </div>
+                <div class="bottomPart pull-left textSize2">{[{playlist.summary}]}</div>
+            </div>
 
+        </div>
     </div>
 </div>

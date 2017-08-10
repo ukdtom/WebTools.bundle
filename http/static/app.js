@@ -50,10 +50,9 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
 
 webtools.run(['$rootScope', 'webtoolsService', 'themeService', 'languageService', 'gettextCatalog', function ($rootScope, webtoolsService, themeService, languageService, gettextCatalog) {
     webtoolsService.loadWebToolsVersion();
-    webtoolsService.loadUsers();
     themeService.loadActiveTheme();
 
-    gettextCatalog.baseLanguage = 'en';
+    gettextCatalog.baseLanguage = '';
     gettextCatalog.currentLanguage = 'en';
     gettextCatalog.debugPrefix = "[!] ";
     gettextCatalog.debug = true; //TODO:: remove
