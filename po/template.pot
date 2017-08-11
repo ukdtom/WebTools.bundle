@@ -78,8 +78,12 @@ msgstr ""
 msgid "Clear search"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:26
+#: ../http/static/playlist/playlist.html:37
 msgid "Copy"
+msgstr ""
+
+#: ../http/static/playlist/playlistHelp.html:6
+msgid "Copy a playlist between users"
 msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:2
@@ -87,13 +91,13 @@ msgstr ""
 msgid "Current features:"
 msgstr ""
 
-#: ../http/static/playlist/playlistHelp.html:5
-msgid "DUMMY TEXT Playlist can help you with lorem ipsum"
-msgstr ""
-
-#: ../http/static/playlist/playlist.html:25
+#: ../http/static/playlist/playlist.html:36
 #: ../http/static/uas/uas.html:57
 msgid "Delete"
+msgstr ""
+
+#: ../http/static/playlist/playlistHelp.html:5
+msgid "Delete a playlist"
 msgstr ""
 
 #: ../http/static/findmedia/fmController.js:8
@@ -104,8 +108,12 @@ msgstr ""
 msgid "Delete selected sidecar from the harddrive."
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:27
+#: ../http/static/playlist/playlist.html:41
 msgid "Download"
+msgstr ""
+
+#: ../http/static/playlist/playlistHelp.html:4
+msgid "Download a playlist"
 msgstr ""
 
 #: ../http/static/logs/logs.html:28
@@ -167,6 +175,10 @@ msgstr ""
 
 #: ../http/static/findmedia/fm.html:31
 msgid "Ignore folders"
+msgstr ""
+
+#: ../http/static/playlist/playlistHelp.html:7
+msgid "Import a playlist"
 msgstr ""
 
 #: ../http/static/uas/uas.html:50
@@ -291,7 +303,15 @@ msgstr ""
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:8
+#: ../http/static/playlist/playlist.html:18
+msgid "Select target user"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:37
+msgid "Select target user to copy"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:9
 msgid "Select user"
 msgstr ""
 
@@ -329,6 +349,10 @@ msgstr ""
 
 #: ../http/static/sub_management/sub.html:5
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:3
+msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
 msgstr ""
 
 #: ../http/static/home/home.html:7
