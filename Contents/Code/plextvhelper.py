@@ -119,6 +119,8 @@ class plexTV(object):
 							usrList[usr]['restricted'] = user.get('restricted')
 							usrList[usr]['accessToken'] = sharedUsers.xpath('//SharedServer[@userID=' + user.get('id') + ']/@accessToken')[0]
 							usrList[usr]['username'] = sharedUsers.xpath('//SharedServer[@userID=' + user.get('id') + ']/@username')[0]
+							if usrList[usr]['username'] == '':
+								usrList[usr]['username'] = user.get('title')
 							usrList[usr]['email'] = sharedUsers.xpath('//SharedServer[@userID=' + user.get('id') + ']/@email')[0]
 							usrList[usr]['acceptedAt'] = sharedUsers.xpath('//SharedServer[@userID=' + user.get('id') + ']/@acceptedAt')[0]
 							usrList[usr]['invitedAt'] = sharedUsers.xpath('//SharedServer[@userID=' + user.get('id') + ']/@invitedAt')[0]
