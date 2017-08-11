@@ -16,7 +16,7 @@ from plextvhelper import plexTV
 from shutil import copyfile
 from misc import misc
 
-GET = ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST']
+GET = ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST', 'GETTRANSLATORLIST']
 PUT = ['RESET', 'UPGRADEWT']
 POST = ['UPDATELANGUAGE']
 DELETE = ['']
@@ -84,6 +84,29 @@ class wtV3(object):
 		req.clear()
 		req.set_status(200)			
 		req.finish('WebTools finished upgrading')
+
+	# Get list of translators
+	@classmethod
+	def GETTRANSLATORLIST(self, req, *args):
+		try:				
+			response = HTTP.Request(method = 'POST', url = TRANSLATESITEBASE + '/contributors/list', data=String.Decode(PAYLOAD), headers=TRANSLATESITEHEADER)						
+			jsonResponse = JSON.ObjectFromString(str(response))['result']['contributors']			
+			translators = {}
+			for translator in jsonResponse:												
+				try:					
+					translators[translator['name']] = translator['permissions'][0]['languages']
+				except:
+					# Just skip if no lang avail, since it could be an admin
+					pass
+			Log.Info('Returning: %s' %str(translators))
+			req.set_status(200)
+			req.set_header('Content-Type', 'application/json; charset=utf-8')
+			req.finish(json.dumps(translators))
+		except Exception, e:
+			Log.Exception('Exception happened in getTranslatorList was: ' + str(e))
+			req.clear()
+			req.set_status(e.code)			
+			req.finish('Fatal error happened in wt.getTranslatorList: %s' %(str(e)))		
 
 	# Get list of avail languages, as well as their translation status
 	@classmethod
