@@ -78,7 +78,7 @@
             webtoolsModel.users = [];
             webtoolsModel.users.push({
                 id: null,
-                username: lang.self
+                username: " - " + lang.self + " - "
             });
             for (var key in resp.data) {
                 if (resp.data.hasOwnProperty(key)) {

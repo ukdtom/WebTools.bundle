@@ -4,11 +4,12 @@
     this.UILanguage = "en";
     this.users = [];
     this.userSelected = null;
+    this.userToSelected = null;
     this.isNewVersionAvailable = false;
 
     this.globalLoading = 0;
     this.languageLoading = 0;
-    this.playlistLoading = 0;
+    this.playlistsLoading = 0;
     this.subLoading = false;
     this.logsLoading = false;
     this.themeLoading = false;

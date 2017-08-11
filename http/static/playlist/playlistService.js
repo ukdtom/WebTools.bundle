@@ -50,7 +50,6 @@
     }
 
     this.downloadPlaylist = function (playlist, userId, callback) {
-        webtoolsModel.playlistsLoading++;
         var url = webtoolsModel.apiV3Url + "/playlists/download/key/" + playlist.key;
         if (userId) {
             url += "/user/" + userId;

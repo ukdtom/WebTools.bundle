@@ -13,9 +13,15 @@
     background: rgba(0, 77, 255, 0.25);
 }
 
-.playlists .playlistBtn:hover {
+.playlists .playlistBtn:not(.disabled):hover {
     background: #003cc8;
     background: rgba(0, 77, 255, 0.55);
+}
+.playlists .playlistBtn.disabled {
+    background: #004dff;
+    background: rgba(0, 0, 0, 0);
+    border: 1px solid black;
+    cursor: default;
 }
 
 .playlists .userContainer {
@@ -35,7 +41,7 @@
     height: 75px;
     padding: 0 5px;
     margin-top: 10px;
-    background: #004dff;
+    background: #0032a5;
     background: rgba(0, 77, 255, 0.15);
     box-shadow: 3px 3px 10px 1px black;
     border-radius: 5px;

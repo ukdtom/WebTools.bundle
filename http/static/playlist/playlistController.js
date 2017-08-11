@@ -6,6 +6,10 @@
         playlistService.getPlaylist();
     }
 
+    $scope.changeUserSelected = function () {
+        playlistService.getPlaylist(webtoolsModel.userSelected);
+    }
+
     $scope.deletePlaylist = function(playlist) {
         playlistService.deletePlaylist(playlist, webtoolsModel.userSelected);
     }
@@ -15,7 +19,7 @@
     }
 
     $scope.copyPlaylist = function (playlist) {
-        playlistService.copyPlaylist(playlist, null, webtoolsModel.userSelected); //TODO
+        playlistService.copyPlaylist(playlist, webtoolsModel.userToSelected, webtoolsModel.userSelected); //TODO
     }
 
     $scope.importPlaylist = function (file) {
