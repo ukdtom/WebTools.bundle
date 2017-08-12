@@ -141,7 +141,7 @@ msgstr ""
 msgid "Force UAS update"
 msgstr ""
 
-#: ../http/static/language/language.html:13
+#: ../http/static/language/language.html:12
 msgid "Force language translation update"
 msgstr ""
 
@@ -161,8 +161,8 @@ msgstr ""
 msgid "Hide/Show settings menu"
 msgstr ""
 
-#: ../http/static/language/language.html:16
-msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
+#: ../http/static/language/language.html:15
+msgid "If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:26
@@ -247,6 +247,10 @@ msgstr ""
 
 #: ../http/static/findmedia/fm.html:110
 msgid "No records missing from harddrive"
+msgstr ""
+
+#: ../http/static/playlist/playlistHelp.html:9
+msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
 msgstr ""
 
 #: ../http/static/menu/menu.html:11
@@ -421,8 +425,4 @@ msgstr ""
 
 #: ../http/static/logs/logsController.js:7
 msgid "search..."
-msgstr ""
-
-#: ../http/static/language/language.html:7
-msgid "{[{lang.name}]}"
 msgstr ""
