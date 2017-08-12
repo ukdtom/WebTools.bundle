@@ -38,4 +38,5 @@
     this.repoUrl = "https://github.com/ukdtom/WebTools.bundle";
     this.threadUrl = "https://forums.plex.tv/discussion/126254";
     this.manualUrl = "https://github.com/ukdtom/WebTools.bundle/wiki";
+    this.changelogUrl = "https://github.com/ukdtom/WebTools.bundle/wiki/ChangeLog";
 });
