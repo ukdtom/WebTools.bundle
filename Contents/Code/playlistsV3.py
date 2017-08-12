@@ -319,7 +319,7 @@ class playlistsV3(object):
 					# Replace invalid caracters for a filename with underscore
 					fileName = re.sub('[\/[:#*?"<>|]', '_', title).strip() + '.m3u8'
 					# Prep the download http headers
-					req.set_header ('Content-Disposition', 'attachment; filename=' + fileName)
+					req.set_header ('Content-Disposition', 'attachment; filename="' + fileName + '"')
 					req.set_header('Cache-Control', 'no-cache')
 					req.set_header('Pragma', 'no-cache')
 					req.set_header('Content-Type', 'application/text/plain')
