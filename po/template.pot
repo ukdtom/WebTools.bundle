@@ -42,10 +42,6 @@ msgstr ""
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
 msgstr ""
 
-#: ../http/static/uas/uasService.js:5
-msgid "Apps migrated:"
-msgstr ""
-
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
 msgstr ""
@@ -68,6 +64,10 @@ msgstr ""
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
+msgstr ""
+
+#: ../http/static/uas/uasService.js:5
+msgid "Channels/Plug-ins migrated:"
 msgstr ""
 
 #: ../http/static/uas/uas.html:12
@@ -238,7 +238,7 @@ msgid "Next"
 msgstr ""
 
 #: ../http/static/uas/uasService.js:6
-msgid "No apps was migrated:"
+msgid "No Channels/Plug-ins was migrated"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:98
