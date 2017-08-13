@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: WebTools for Plex\n"
 "Language: da\n"
 
-#: ../http/static/home/home.html:3
+#: ../http/static/home/home.html:4
 msgid "Use the menu on the left side to navigate in WebTools."
 msgstr "Brug menuen til venstre til at navigere med"
 
@@ -133,12 +133,9 @@ msgstr "Tilføj et bibliotek som skal ignoreres"
 
 #. Used in playlists to list the different options avail
 #: ../http/static/playlist/playlistHelp.html:2
+#: ../http/static/sub_management/subHelp.html:2
 msgid "Current features:"
 msgstr "Tilgængelige muligheder"
-
-#: ../http/static/playlist/playlistHelp.html:5
-msgid "DUMMY TEXT Playlist can help you with lorem ipsum"
-msgstr "Not used"
 
 #: ../http/static/findmedia/fm.html:92
 #: ../http/static/findmedia/fmController.js:13
@@ -203,19 +200,10 @@ msgstr "Skift sprog"
 msgid "Language"
 msgstr "Sprog"
 
-#. Don't translate this, simply copy and paste
-#: ../http/static/language/language.html:7
-msgid "{[{lang.name}]}"
-msgstr "{[{lang.name}]}"
-
 #. This will force a download directly from the translation site of the newest translations for the selected language
-#: ../http/static/language/language.html:13
+#: ../http/static/language/language.html:12
 msgid "Force language translation update"
 msgstr "Opdater oversættelse"
-
-#: ../http/static/language/language.html:16
-msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
-msgstr "Hvis dit sprog mangler, eller hvis du vil forbedre oversættelsen af det, så venligst benyt dette link:"
 
 #: ../http/static/logs/logs.html:11
 msgid "Found"
@@ -228,11 +216,6 @@ msgstr "Velkommen til"
 #: ../http/static/logs/logs.html:11
 msgid "rows"
 msgstr "rækker"
-
-#. What bundles where migrated into UAS during UAS migration
-#: ../http/static/uas/uasService.js:5
-msgid "Apps migrated:"
-msgstr "Apps migreret"
 
 #. Clear the search input field in logs
 #: ../http/static/logs/logsController.js:9
@@ -260,10 +243,6 @@ msgstr "Hop til toppen"
 msgid "Next"
 msgstr "Næste"
 
-#: ../http/static/uas/uasService.js:6
-msgid "No apps was migrated:"
-msgstr "Ingen apps blev migreret"
-
 #: ../http/static/logs/logsController.js:10
 msgid "Previous"
 msgstr "Forrige"
@@ -275,4 +254,187 @@ msgstr "Søg"
 #: ../http/static/logs/logsController.js:7
 msgid "search..."
 msgstr "Søg..."
+
+#: ../http/static/home/home.html:22
+msgid "Allows you to copy playlists between users, as well as import, export and delete them."
+msgstr "Gør det muligt at kopier playlists imellem brugere, samt også importere, exportere og slette dem"
+
+#: ../http/static/home/home.html:13
+msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
+msgstr "En nem måde at få adgang til Plex Media Server log filer, og gør det også muligt for dig at downloade en enkelt fil eller dem alle sammen i en zip fil"
+
+#: ../http/static/home/home.html:19
+msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
+msgstr "Gør det muligt at finde media, som enten mangler fra Plex databasen, eller som er i databasen, men mangler fra din harddisk"
+
+#: ../http/static/home/home.html:10
+msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
+msgstr "Håndtere undertekster, uanset om de befinder sig ved siden af dine media (SideCars), eller er hentet ved hjælp af et andet plugin, som f.eks. OpenSubTitles.org.\n"
+"Hvad dette modul kan gøre, er at give dig et overblik over dine undertekster, se dem, og slette dem, såfremt de ikke er en del af selve media filmen"
+
+#: ../http/static/home/home.html:16
+msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
+msgstr "Dette modul gør det muligt for dig at installere, opdatere og slette ikke supporterede plug-ins"
+
+#: ../http/static/home/home.html:7
+msgid "Tool Modules currently available are:"
+msgstr "Tools moduler som er tilgængelige:"
+
+#. Do not translate the word "UnsupportedAppStore"
+#: ../http/static/uas/uasHelp.html:1
+msgid "UnsupportedAppStore Help"
+msgstr "UnsupportedAppStore hjælp"
+
+#: ../http/static/uas/uasHelp.html:6
+msgid "* Category names contain installed/total available channels."
+msgstr "* Kategorien viser installerede/tilgængelige plug-ins."
+
+#: ../http/static/uas/uasHelp.html:2
+msgid "* Here you can either install a channel by it's Github repository link or by selecting one of the categories below."
+msgstr "* Her kan du også installere et plug-in ved at indtaste et GitHub url, eller vælge det direkte fra en af kategorierne nedenunder."
+
+#: ../http/static/uas/uasHelp.html:3
+msgid "* If you have installed channels manually before installing WebTools, you can click on the \"Migrate manually/previously installed channels\" to make WebTools aware of them."
+msgstr "* Hvis du har installeret et plug-in manuelt, inden du installerede WebTools, kan du migrere det ind i WebTools, så WebTools bagefter kan håndtere det"
+
+#: ../http/static/uas/uasHelp.html:4
+msgid "* You can also search for updates for all installed channels managed by WebTools via the \"Check for updates for all installed channels\" button."
+msgstr "* Du kan også nemt søge efter opdateringer til de plug-ins du har installeret, ved at klikke på knappen \"Check for opdateringer\""
+
+#: ../http/static/uas/uasHelp.html:7
+msgid "* You can expand the items by clicking on them."
+msgstr "* Du kan se flere detalier om et plugin ved at klikke på det."
+
+#: ../http/static/uas/uasHelp.html:5
+msgid "* You can select a category on the menu on the right."
+msgstr "* Du kan vælge en kategori i menuen til højre."
+
+#: ../http/static/uas/uas.html:12
+msgid "Check for bundle updates"
+msgstr "Kontroller for plug-in opdateringer"
+
+#: ../http/static/uas/uas.html:11
+msgid "Force UAS update"
+msgstr "Gennemtving en opdatering af UAS"
+
+#: ../http/static/uas/uas.html:7
+msgid "Manual Install"
+msgstr "Manuel installation"
+
+#: ../http/static/uas/uas.html:10
+msgid "Migrate"
+msgstr "Migrer"
+
+#: ../http/static/uas/uas.html:76
+msgid "Categories:"
+msgstr "Kategorier:"
+
+#: ../http/static/playlist/playlist.html:37
+msgid "Copy"
+msgstr "Kopier"
+
+#: ../http/static/playlist/playlist.html:36
+#: ../http/static/uas/uas.html:57
+msgid "Delete"
+msgstr "Slet"
+
+#: ../http/static/playlist/playlist.html:41
+msgid "Download"
+msgstr "Download"
+
+#: ../http/static/uas/uas.html:50
+msgid "Install"
+msgstr "Installer"
+
+#: ../http/static/uas/uas.html:84
+msgid "Last updated:"
+msgstr "Seneste Updatering:"
+
+#: ../http/static/uas/uasController.js:9
+msgid "Manual install url..."
+msgstr "Manuelt installations url..."
+
+#: ../http/static/uas/uas.html:92
+msgid "Manual:"
+msgstr "Manuel:"
+
+#: ../http/static/uas/uas.html:100
+msgid "Repo:"
+msgstr "Git Repo:"
+
+#: ../http/static/playlist/playlist.html:9
+msgid "Select user"
+msgstr "Vælg bruger"
+
+#: ../http/static/_shared/webtoolsService.js:5
+msgid "Self"
+msgstr "Selv"
+
+#: ../http/static/sub_management/subHelp.html:1
+msgid "Subtitle Management Help"
+msgstr "Undertekst management hjælp"
+
+#: ../http/static/uas/uas.html:109
+msgid "Support:"
+msgstr "Support:"
+
+#: ../http/static/sub_management/sub.html:3
+msgid "This is an unofficial manager for subtitles."
+msgstr "Dette er en uofficiel manager for undertekster."
+
+#: ../http/static/sub_management/sub.html:5
+msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
+msgstr "For at starte, vælg et af dine biblioteker eller klik på \"?\" for yderligere hjælp"
+
+#: ../http/static/uas/uas.html:51
+msgid "Update"
+msgstr "Opdater"
+
+#: ../http/static/sub_management/sub.html:4
+msgid "Usage at your own risk!"
+msgstr "Brug for egen regning!"
+
+#: ../http/static/playlist/playlistHelp.html:6
+msgid "Copy a playlist between users"
+msgstr "Kopier en playliste imellem brugere"
+
+#: ../http/static/playlist/playlistHelp.html:5
+msgid "Delete a playlist"
+msgstr "Slet en playliste"
+
+#: ../http/static/playlist/playlistHelp.html:4
+msgid "Download a playlist"
+msgstr "Download en playliste"
+
+#: ../http/static/playlist/playlistHelp.html:7
+msgid "Import a playlist"
+msgstr "Importer en playliste"
+
+#: ../http/static/playlist/playlist.html:18
+msgid "Select target user"
+msgstr "Vælg bruger som skal modtage"
+
+#: ../http/static/playlist/playlist.html:37
+msgid "Select target user to copy"
+msgstr "Vælg bruger at kopiere til"
+
+#: ../http/static/playlist/playlist.html:3
+msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
+msgstr "For at starte, vælg en af dine playlister, eller klik på \"?\" for yderligere hjælp"
+
+#: ../http/static/language/language.html:15
+msgid "If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:"
+msgstr "Hvis dit sprog mangler fra listen, ikke er oversat 100%, eller du vil forbedre oversættelsen, så venligst klik her:"
+
+#: ../http/static/playlist/playlistHelp.html:9
+msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
+msgstr "Bemærk: For at benytte Kopier funktionen, skal din Plex Media Server være logged ind til plex.tv, idet vi henter listen over brugere fra denne"
+
+#: ../http/static/uas/uasService.js:5
+msgid "Channels/Plug-ins migrated:"
+msgstr "Channels/Plug-ins migreret:"
+
+#: ../http/static/uas/uasService.js:6
+msgid "No Channels/Plug-ins was migrated"
+msgstr "Ingen Channels/Plug-ins blev migreret"
 

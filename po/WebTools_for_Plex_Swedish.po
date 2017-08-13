@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: WebTools for Plex\n"
 "Language: sv\n"
 
-#: ../http/static/home/home.html:3
+#: ../http/static/home/home.html:4
 msgid "Use the menu on the left side to navigate in WebTools."
 msgstr "Använd menyn på vänster sida för att navigera i WebTools."
 
@@ -130,12 +130,9 @@ msgid "Add ignored folder"
 msgstr "Lägg till ignorerad katalog"
 
 #: ../http/static/playlist/playlistHelp.html:2
+#: ../http/static/sub_management/subHelp.html:2
 msgid "Current features:"
 msgstr "Aktuella funktioner:"
-
-#: ../http/static/playlist/playlistHelp.html:5
-msgid "DUMMY TEXT Playlist can help you with lorem ipsum"
-msgstr "Dummy Text är grekiska för mig :)"
 
 #: ../http/static/findmedia/fm.html:92
 #: ../http/static/findmedia/fmController.js:13
@@ -200,16 +197,8 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: ../http/static/language/language.html:7
-msgid "{[{lang.name}]}"
-msgstr ""
-
-#: ../http/static/language/language.html:13
+#: ../http/static/language/language.html:12
 msgid "Force language translation update"
-msgstr ""
-
-#: ../http/static/language/language.html:16
-msgid "If your language is missing, or you want to improve on the translation of it, then please go here:"
 msgstr ""
 
 #: ../http/static/logs/logs.html:11
@@ -222,10 +211,6 @@ msgstr ""
 
 #: ../http/static/logs/logs.html:11
 msgid "rows"
-msgstr ""
-
-#: ../http/static/uas/uasService.js:5
-msgid "Apps migrated:"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:9
@@ -252,10 +237,6 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: ../http/static/uas/uasService.js:6
-msgid "No apps was migrated:"
-msgstr ""
-
 #: ../http/static/logs/logsController.js:10
 msgid "Previous"
 msgstr ""
@@ -266,5 +247,186 @@ msgstr ""
 
 #: ../http/static/logs/logsController.js:7
 msgid "search..."
+msgstr ""
+
+#: ../http/static/home/home.html:22
+msgid "Allows you to copy playlists between users, as well as import, export and delete them."
+msgstr ""
+
+#: ../http/static/home/home.html:13
+msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
+msgstr ""
+
+#: ../http/static/home/home.html:19
+msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
+msgstr ""
+
+#: ../http/static/home/home.html:10
+msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
+msgstr ""
+
+#: ../http/static/home/home.html:16
+msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
+msgstr ""
+
+#: ../http/static/home/home.html:7
+msgid "Tool Modules currently available are:"
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:1
+msgid "UnsupportedAppStore Help"
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:6
+msgid "* Category names contain installed/total available channels."
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:2
+msgid "* Here you can either install a channel by it's Github repository link or by selecting one of the categories below."
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:3
+msgid "* If you have installed channels manually before installing WebTools, you can click on the \"Migrate manually/previously installed channels\" to make WebTools aware of them."
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:4
+msgid "* You can also search for updates for all installed channels managed by WebTools via the \"Check for updates for all installed channels\" button."
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:7
+msgid "* You can expand the items by clicking on them."
+msgstr ""
+
+#: ../http/static/uas/uasHelp.html:5
+msgid "* You can select a category on the menu on the right."
+msgstr ""
+
+#: ../http/static/uas/uas.html:12
+msgid "Check for bundle updates"
+msgstr ""
+
+#: ../http/static/uas/uas.html:11
+msgid "Force UAS update"
+msgstr ""
+
+#: ../http/static/uas/uas.html:7
+msgid "Manual Install"
+msgstr ""
+
+#: ../http/static/uas/uas.html:10
+msgid "Migrate"
+msgstr ""
+
+#: ../http/static/uas/uas.html:76
+msgid "Categories:"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:37
+msgid "Copy"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:36
+#: ../http/static/uas/uas.html:57
+msgid "Delete"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:41
+msgid "Download"
+msgstr ""
+
+#: ../http/static/uas/uas.html:50
+msgid "Install"
+msgstr ""
+
+#: ../http/static/uas/uas.html:84
+msgid "Last updated:"
+msgstr ""
+
+#: ../http/static/uas/uasController.js:9
+msgid "Manual install url..."
+msgstr ""
+
+#: ../http/static/uas/uas.html:92
+msgid "Manual:"
+msgstr ""
+
+#: ../http/static/uas/uas.html:100
+msgid "Repo:"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:9
+msgid "Select user"
+msgstr ""
+
+#: ../http/static/_shared/webtoolsService.js:5
+msgid "Self"
+msgstr ""
+
+#: ../http/static/sub_management/subHelp.html:1
+msgid "Subtitle Management Help"
+msgstr ""
+
+#: ../http/static/uas/uas.html:109
+msgid "Support:"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:3
+msgid "This is an unofficial manager for subtitles."
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:5
+msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
+msgstr ""
+
+#: ../http/static/uas/uas.html:51
+msgid "Update"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:4
+msgid "Usage at your own risk!"
+msgstr ""
+
+#: ../http/static/playlist/playlistHelp.html:6
+msgid "Copy a playlist between users"
+msgstr ""
+
+#: ../http/static/playlist/playlistHelp.html:5
+msgid "Delete a playlist"
+msgstr ""
+
+#: ../http/static/playlist/playlistHelp.html:4
+msgid "Download a playlist"
+msgstr ""
+
+#: ../http/static/playlist/playlistHelp.html:7
+msgid "Import a playlist"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:18
+msgid "Select target user"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:37
+msgid "Select target user to copy"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:3
+msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
+msgstr ""
+
+#: ../http/static/language/language.html:15
+msgid "If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:"
+msgstr ""
+
+#: ../http/static/playlist/playlistHelp.html:9
+msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
+msgstr ""
+
+#: ../http/static/uas/uasService.js:5
+msgid "Channels/Plug-ins migrated:"
+msgstr ""
+
+#: ../http/static/uas/uasService.js:6
+msgid "No Channels/Plug-ins was migrated"
 msgstr ""
 
