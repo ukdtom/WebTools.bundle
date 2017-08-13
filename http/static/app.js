@@ -42,6 +42,10 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
         templateUrl: "static/changelog/cl.html",
         controller: "clController"
     })
+    .when("/fr", {
+        templateUrl: "static/factoryreset/fr.html",
+        controller: "frController"
+    })
     //Otherwise show page doesnt exist 404
     .otherwise({
         templateUrl: "static/404/404.html"
