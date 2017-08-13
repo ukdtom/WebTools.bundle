@@ -2,8 +2,8 @@
     var _this = this;
 
     this.lang = {
-        appsMigrated: gettext("Apps migrated:"),
-        noAppsMigrated: gettext("No apps was migrated:")
+        appsMigrated: gettext("Channels/Plug-ins migrated:"),
+        noAppsMigrated: gettext("No Channels/Plug-ins was migrated")
     }
 
     this.getInstalled = function (callback) {
@@ -184,9 +184,9 @@
             method: "PUT",
             url: url
         }).then(function (resp) {
-            var migratedItems = resp.data;
-            var appMigratedText = "<b>" + _this.lang.noAppsMigrated + "</b> <br /><br />";
-            if(migratedItems) {
+            var migratedItems = resp.data;            
+            var appMigratedText = "<b>" + _this.lang.noAppsMigrated + "</b> <br /><br />";            
+            if(Object.keys(migratedItems).length > 0) {
                 appMigratedText = "<b>" + _this.lang.appsMigrated + "</b> <br /><br />";
                 for (var key in migratedItems) {
                     var item = migratedItems[key];
