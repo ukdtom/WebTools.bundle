@@ -438,3 +438,21 @@ msgstr "Channels/Plug-ins migreret:"
 msgid "No Channels/Plug-ins was migrated"
 msgstr "Ingen Channels/Plug-ins blev migreret"
 
+#: ../http/static/factoryreset/fr.html:4
+msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
+msgstr "Alle indstillinger vil forsvinde, efter du har nulstillet, og du skal bagefter gå ind i UAS, og lave en migrering."
+
+#: ../http/static/factoryreset/fr.html:10
+#: ../http/static/factoryreset/fr.html:2
+#: ../http/static/menu/menu.html:18
+msgid "Factory Reset"
+msgstr "Nulstil WebTools"
+
+#: ../http/static/factoryreset/fr.html:7
+msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
+msgstr "Hvis du klikker på knappen, vil WebTools ikke svare i ca. 1 minut. Du skal derefter opdaterer din browser"
+
+#: ../http/static/factoryreset/fr.html:3
+msgid "This will reset WebTools to what is was, when first installed"
+msgstr "Dette vil nulstille WebTools, til hvad det var da du først installerede det"
+

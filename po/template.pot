@@ -38,6 +38,10 @@ msgstr ""
 msgid "Add ignored folder"
 msgstr ""
 
+#: ../http/static/factoryreset/fr.html:4
+msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
+msgstr ""
+
 #: ../http/static/home/home.html:22
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
 msgstr ""
@@ -133,6 +137,12 @@ msgstr ""
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
 msgstr ""
 
+#: ../http/static/factoryreset/fr.html:10
+#: ../http/static/factoryreset/fr.html:2
+#: ../http/static/menu/menu.html:18
+msgid "Factory Reset"
+msgstr ""
+
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
 msgstr ""
@@ -159,6 +169,10 @@ msgstr ""
 
 #: ../http/static/findmedia/fmController.js:14
 msgid "Hide/Show settings menu"
+msgstr ""
+
+#: ../http/static/factoryreset/fr.html:7
+msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
 msgstr ""
 
 #: ../http/static/language/language.html:15
@@ -349,6 +363,10 @@ msgstr ""
 
 #: ../http/static/home/home.html:16
 msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
+msgstr ""
+
+#: ../http/static/factoryreset/fr.html:3
+msgid "This will reset WebTools to what is was, when first installed"
 msgstr ""
 
 #: ../http/static/sub_management/sub.html:5
