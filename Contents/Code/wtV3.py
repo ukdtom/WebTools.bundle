@@ -18,7 +18,7 @@ from misc import misc
 
 GET = ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST', 'GETTRANSLATORLIST']
 PUT = ['RESET', 'UPGRADEWT']
-POST = ['UPDATELANGUAGE']
+POST = ['UPDATELANGUAGE', 'GETTRANSLATE']
 DELETE = ['']
 
 PAYLOAD = 'aWQ9MTE5Mjk1JmFwaV90b2tlbj0wODA2OGU0ZjRkNTI3NDVlOTM0NzAyMWQ2NDU5MGYzOQ__'
@@ -122,6 +122,57 @@ class wtV3(object):
 			req.clear()
 			req.set_status(e.code)			
 			req.finish('Fatal error happened in wt.getLanguageList: %s' %(str(e)))
+
+	# Download and update a translation from live translation site
+	@classmethod
+	def GETTRANSLATE(self, req, *args):		
+		try:
+			try:
+				# Get the Payload
+				data = json.loads(req.request.body.decode('utf-8'))
+				if 'language' in data:					
+					lang = data['language']
+				else:
+					req.clear()
+					req.set_status(412)
+					req.finish('Missing language param in body')
+				#Now open existing translations.js file, walk it line by line, and find the correct line
+				translationLines = Data.Load('translations.js').splitlines()
+				transLine = None
+				for line in translationLines:
+					# Got the relevant language?
+					if line.lstrip().startswith("gettextCatalog.setStrings('" + lang + "',"):
+						transLine = line
+						break
+				if transLine:					
+					jsonTransLine = JSON.ObjectFromString(transLine.split(',', 1)[1].lstrip()[:-2])
+					if 'string' in data:
+						req.clear()
+						req.set_status(200)
+						if data['string'] in jsonTransLine:							
+							req.finish(jsonTransLine[data['string']])							
+						else:							
+							req.finish(data['string'])				
+					else:						
+						req.clear()
+						req.set_status(200)
+						req.set_header('Content-Type', 'application/json; charset=utf-8')
+						req.finish(json.dumps(jsonTransLine))
+				else:					
+					Log.Error('We could not find any translations for %s' %lang)
+					req.clear()
+					req.set_status(404)			
+					req.finish('We could not find any translations for %s' %lang)
+			except Exception, e:
+				Log.Exception('Exception happened digesting the body was %s' %str(e))
+				req.clear()
+				req.set_status(e.code)
+				req.finish('Exception happened digesting the body was %s' %str(e))				
+		except Exception, e:			
+			Log.Exception('Exception happened in getTranslate was: ' + str(e))
+			req.clear()
+			req.set_status(e.code)			
+			req.finish('Fatal error happened in wt.getTranslate: %s' %(str(e)))
 
 	# Download and update a translation from live translation site
 	@classmethod
