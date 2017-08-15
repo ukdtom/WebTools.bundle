@@ -89,18 +89,18 @@ class playlistsV3(object):
 				except IndexError:
 					pass
 				except Exception, e:										
-					Log.Exception('Exception happened in IMPORT was %s' %(str(e)))
+					#Log.Exception('Exception happened in IMPORT was %s' %(str(e)))
 					pass			
-			finalItems = {}
+			finalItems = {}			
 			for item in items:
 				if checkItemIsValid(item, items[item]['title'], sType):
-					finalItem = {}
-					finalItem['id'] = id
+					finalItem = {}					
+					finalItem['id'] = item
 					finalItem['LibraryUUID'] = str(items[item]['LibraryUUID'])
 					finalItem['title'] = items[item]['title']						
 					finalItems[items[item]['ListId']] = finalItem
 				else:					
-					Log.Debug('Could not item with a title of %s' %items[item]['title'])
+					Log.Debug('Could not find item with a title of %s' %items[item]['title'])
 					result = searchForItemKey(items[item]['title'], sType)
 					if result != None:					
 						finalItem = {}
@@ -111,7 +111,7 @@ class playlistsV3(object):
 					else:
 						Log.Error('Item %s was not found' %items[item]['title'])
 									
-			print finalItems
+			print 'FinalItems', finalItems
 			
 		except Exception, e:
 			Log.Exception('Exception happened in Playlist import was: %s' %(str(e)))
