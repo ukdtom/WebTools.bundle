@@ -94,20 +94,34 @@ class playlistsV3(object):
 			finalItems = {}			
 			for item in items:
 				if checkItemIsValid(item, items[item]['title'], sType):
-					finalItem = {}					
-					finalItem['id'] = item
-					finalItem['LibraryUUID'] = str(items[item]['LibraryUUID'])
-					finalItem['title'] = items[item]['title']						
-					finalItems[items[item]['ListId']] = finalItem
+					finalItem = {}															
+					finalItem['id'] = item					
+					finalItem['title'] = items[item]['title']
+					finalItem['ListId'] = items[item]['ListId']
+					if items[item]['LibraryUUID'] in finalItems:						
+						finalItems[items[item]['LibraryUUID']].append(finalItem)						
+					else:
+						finalItems[items[item]['LibraryUUID']] = []
+						finalItems[items[item]['LibraryUUID']].append(finalItem)
 				else:					
 					Log.Debug('Could not find item with a title of %s' %items[item]['title'])
 					result = searchForItemKey(items[item]['title'], sType)
+
+
+					print 'Ged Search', result
 					if result != None:					
 						finalItem = {}
 						finalItem['id'] = result[0]
-						finalItem['LibraryUUID'] = result[1]								
-						finalItem['title'] = items[item]['title']						
-						finalItems[items[item]['ListId']] = finalItem
+						#finalItem['LibraryUUID'] = result[1]								
+						finalItem['title'] = items[item]['title']	
+						finalItem['ListId'] = items[item]['ListId']
+						#if items[item]['LibraryUUID'] in finalItems:	
+						print 'Ged lib', result[1]					
+						if result[1] in finalItems:						
+							finalItems[result[1]].append(finalItem)						
+						else:
+							finalItems[result[1]] = []
+							finalItems[result[1]].append(finalItem)											
 					else:
 						Log.Error('Item %s was not found' %items[item]['title'])
 									
@@ -586,10 +600,13 @@ def deletePlayLIstforUsr(req, key, token):
 def checkItemIsValid(key, title, sType):
 	url = misc.GetLoopBack() + '/library/metadata/' + str(key) + '?' + EXCLUDE	
 	#TODO: Fix for other types
-	print 'GED TODO Here'
-	if sType == 'video':
-		mediaTitle = XML.ElementFromURL(url).xpath('//Video')[0].get('title')		
-	
+	print 'GED Playlist TODO Here'
+	mediaTitle = None
+	try:
+		if sType == 'video':
+			mediaTitle = XML.ElementFromURL(url).xpath('//Video')[0].get('title')		
+	except:
+		pass
 	return (title == mediaTitle)
 	
 # This function will search for a a media based on title and type, and return the key
