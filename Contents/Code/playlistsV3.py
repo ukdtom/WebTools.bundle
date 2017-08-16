@@ -616,7 +616,7 @@ def searchForItemKey(title, sType):
 		result = []
 		found = XML.ElementFromURL(url)
 		#TODO: Fix for other types
-		# Are we talking about a video here?
+		# Are we talking about a video here?		
 		if sType == 'video':				
 			itemType = found.xpath('//Video/@type')[0]
 			if itemType in ['movie', 'episode', 'show']:				
