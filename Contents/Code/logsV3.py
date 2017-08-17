@@ -233,12 +233,22 @@ class logsV3(object):
 			file = String.Unquote(file, usePlus=False)
 			retFile = []
 			try:
-				with io.open(file, 'r', errors='ignore') as content_file:
-					content = content_file.readlines()
-					for line in content:
-						line = line.replace('\n', '')
-						line = line.replace('\r', '')
-						retFile.append(line)
+				#with io.open(file, 'r', errors='ignore') as content_file:
+				# Nasty workaround due to Framework issue
+				if Platform.OS == 'MacOSX':
+					with io.open(file, 'rb') as content_file:
+						content = content_file.readlines()
+						for line in content:
+							line = line.replace('\n', '')
+							line = line.replace('\r', '')
+							retFile.append(line)
+				else:
+					with io.open(file, 'r', errors='ignore') as content_file:
+						content = content_file.readlines()
+						for line in content:
+							line = line.replace('\n', '')
+							line = line.replace('\r', '')
+							retFile.append(line)
 				req.clear()
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
