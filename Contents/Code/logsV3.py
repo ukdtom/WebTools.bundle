@@ -219,24 +219,24 @@ class logsV3(object):
 				if len(args) > 0:
 					fileName = list(args)[0][0]
 				else:
-					fileName = ''
-			Log.Debug('About to show log named: %s' %(fileName))
+					fileName = ''			
 			if fileName == '':
 				req.clear()
 				req.set_status(412)
 				req.finish('Missing fileName of log to show')
 				return req
+			fileName = String.Unquote(fileName, usePlus=False)
 			if 'com.plexapp' in fileName:
 				file = os.path.join(self.LOGDIR, 'PMS Plugin Logs', fileName)
 			else:
-				file = os.path.join(self.LOGDIR, fileName)
-			file = String.Unquote(file, usePlus=False)
+				file = os.path.join(self.LOGDIR, fileName)						
 			retFile = []
 			try:
+				Log.Debug('Opening logfile: %s' %file)				
 				#with io.open(file, 'r', errors='ignore') as content_file:
 				# Nasty workaround due to Framework issue
 				if Platform.OS == 'MacOSX':
-					with io.open(file, 'rb') as content_file:
+					with open(file, 'r') as content_file:
 						content = content_file.readlines()
 						for line in content:
 							line = line.replace('\n', '')
