@@ -232,12 +232,14 @@ class logsV3(object):
 			try:
 				Log.Debug('Opening logfile: %s' %file)				
 				#with io.open(file, 'r', errors='ignore') as content_file:
-				# Nasty workaround due to Framework issue
+				# Nasty workaround due to this not working on MacOSx
 				if Platform.OS == 'MacOSX':
-					with open(file, 'r') as content_file:
+					f = os.fdopen(os.open(file, os.O_RDONLY))
+					with f as content_file:
 						content = content_file.readlines()
 						for line in content:
 							retFile.append(line.strip())
+					f.close()
 				else:
 					with io.open(file, 'r', errors='ignore') as content_file:
 						content = content_file.readlines()
