@@ -186,9 +186,7 @@ class logsV3(object):
 					with io.open(file, 'r', errors='ignore') as content_file:
 						content = content_file.readlines()
 						for line in content:
-							line = line.replace('\n', '')
-							line = line.replace('\r', '')
-							retFile.append(line)
+							retFile.append(line.strip())
 					req.set_header ('Content-Disposition', 'attachment; filename="' + fileName + '"')
 					req.set_header('Content-Type', 'application/text/plain')
 					req.set_header('Cache-Control', 'no-cache')
@@ -239,16 +237,12 @@ class logsV3(object):
 					with open(file, 'r') as content_file:
 						content = content_file.readlines()
 						for line in content:
-							line = line.replace('\n', '')
-							line = line.replace('\r', '')
-							retFile.append(line)
+							retFile.append(line.strip())
 				else:
 					with io.open(file, 'r', errors='ignore') as content_file:
 						content = content_file.readlines()
 						for line in content:
-							line = line.replace('\n', '')
-							line = line.replace('\r', '')
-							retFile.append(line)
+							retFile.append(line.strip())
 				req.clear()
 				req.set_status(200)
 				req.set_header('Content-Type', 'application/json; charset=utf-8')
