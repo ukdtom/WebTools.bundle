@@ -138,7 +138,8 @@ class logsV3(object):
 			if not args:
 				fileName = ''
 			else:
-				fileName = list(args)[0][0]			
+				fileName = list(args)[0][0]	
+			fileName = String.Unquote(fileName)		
 			Log.Debug('About to download logs and fileName param is: %s' %(fileName))
 			if fileName == '':
 				# Need to download entire log dir as a zip			
@@ -158,23 +159,47 @@ class logsV3(object):
 				req.set_header('Cache-Control', 'no-cache')
 				req.set_header('Pragma', 'no-cache')
 				req.set_header('Content-Type', 'application/zip')
-				with io.open(zipFileName, 'rb') as f:
-					try:
-						while True:
-							fbuffer = f.read(4096)
-							if fbuffer:
-								req.write(fbuffer)
-							else:
-								f.close()
-								req.finish()
-								# remove temp zip file again
-								os.remove(zipFileName)
-								return req
-					except Exception, e:
-						Log.Exception('Fatal error happened in Logs download: ' + str(e))
-						req.clear()
-						req.set_status(500)
-						req.finish('Fatal error happened in Logs download: ' + str(e))
+				#with io.open(file, 'r', errors='ignore') as content_file:
+				# Nasty workaround due to this not working on MacOSx
+				if Platform.OS == 'MacOSX':
+					Log.Debug("Mac detected")
+					log = os.fdopen(os.open(zipFileName, os.O_RDONLY))
+					with log as f:
+						try:
+							while True:
+								fbuffer = f.read(4096)
+								if fbuffer:
+									req.write(fbuffer)
+								else:
+									f.close()
+									req.finish()
+									# remove temp zip file again
+									os.remove(zipFileName)
+									return req
+						except Exception, e:
+							Log.Exception('Fatal error happened in Logs download: ' + str(e))
+							req.clear()
+							req.set_status(500)
+							req.finish('Fatal error happened in Logs download: ' + str(e))
+					f.close()
+				else:
+					with io.open(zipFileName, 'rb') as f:
+						try:
+							while True:
+								fbuffer = f.read(4096)
+								if fbuffer:
+									req.write(fbuffer)
+								else:
+									f.close()
+									req.finish()
+									# remove temp zip file again
+									os.remove(zipFileName)
+									return req
+						except Exception, e:
+							Log.Exception('Fatal error happened in Logs download: ' + str(e))
+							req.clear()
+							req.set_status(500)
+							req.finish('Fatal error happened in Logs download: ' + str(e))
 			else:
 				try:
 					if 'com.plexapp' in fileName:
@@ -183,18 +208,33 @@ class logsV3(object):
 						file = os.path.join(self.LOGDIR, fileName)
 					file = String.Unquote(file, usePlus=False)
 					retFile = []
-					with io.open(file, 'r', errors='ignore') as content_file:
-						content = content_file.readlines()
-						for line in content:
-							retFile.append(line.strip())
-					req.set_header ('Content-Disposition', 'attachment; filename="' + fileName + '"')
-					req.set_header('Content-Type', 'application/text/plain')
-					req.set_header('Cache-Control', 'no-cache')
-					req.set_header('Pragma', 'no-cache')
-					for line in retFile:
-						req.write(line + '\n')
-					req.finish()
-					return req
+					if Platform.OS == 'MacOSX':
+						f = os.fdopen(os.open(file, os.O_RDONLY))
+						with f as content_file:
+							content = content_file.readlines()
+							for line in content:
+								retFile.append(line.strip())
+						req.set_header ('Content-Disposition', 'attachment; filename="' + fileName + '"')
+						req.set_header('Content-Type', 'application/text/plain')
+						req.set_header('Cache-Control', 'no-cache')
+						req.set_header('Pragma', 'no-cache')
+						for line in retFile:
+							req.write(line + '\n')
+						req.finish()
+						return req
+					else:
+						with io.open(file, 'r', errors='ignore') as content_file:
+							content = content_file.readlines()
+							for line in content:
+								retFile.append(line.strip())
+						req.set_header ('Content-Disposition', 'attachment; filename="' + fileName + '"')
+						req.set_header('Content-Type', 'application/text/plain')
+						req.set_header('Cache-Control', 'no-cache')
+						req.set_header('Pragma', 'no-cache')
+						for line in retFile:
+							req.write(line + '\n')
+						req.finish()
+						return req
 				except Exception, e:
 					Log.Exception('Fatal error happened in Logs download: ' + str(e))
 					req.clear()
@@ -280,6 +320,9 @@ class logsV3(object):
 				dirs[:] = [d for d in dirs if d in ['PMS Plugin Logs']]
 				path = root.split('/')
 				for filename in files:
+					if Platform.OS == 'MacOSX':
+						if filename == ".DS_Store":
+							continue
 					if fileFilter != '':
 						if fileFilter.upper() in filename.upper():
 							retFiles.append(filename)
