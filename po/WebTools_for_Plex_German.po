@@ -219,7 +219,7 @@ msgstr "Zeilen"
 
 #: ../http/static/logs/logsController.js:9
 msgid "Clear search"
-msgstr "C"
+msgstr "Suche leeren"
 
 #: ../http/static/findmedia/fmController.js:8
 msgid "Delete ignored folder"
@@ -247,7 +247,7 @@ msgstr "vorherige"
 
 #: ../http/static/logs/logsController.js:8
 msgid "Search keyword"
-msgstr "Suchbegriff"
+msgstr "Starte Suche"
 
 #: ../http/static/logs/logsController.js:7
 msgid "search..."
@@ -422,35 +422,35 @@ msgstr "Wähle eine der Wiedergabelisten aus oder klicke auf \"?\" für weitere 
 
 #: ../http/static/language/language.html:15
 msgid "If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:"
-msgstr ""
+msgstr "Wenn deine Sprache fehlt oder unvollständig oder fehlerhaft übersetzt ist, dann beteilige dich hier:"
 
 #: ../http/static/playlist/playlistHelp.html:9
 msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
-msgstr ""
+msgstr "Damit die Kopierfunktion arbeiten kann, muss dein Server in ein plex.tv Konto eingeloggt sein. Wir rufen die Benutzerliste von plex.tv ab."
 
 #: ../http/static/uas/uasService.js:5
 msgid "Channels/Plug-ins migrated:"
-msgstr ""
+msgstr "Migrierte PlugIns:"
 
 #: ../http/static/uas/uasService.js:6
 msgid "No Channels/Plug-ins was migrated"
-msgstr ""
+msgstr "Keine PlugIns wurden migriert."
 
 #: ../http/static/factoryreset/fr.html:4
 msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
-msgstr ""
+msgstr "Alle Einstellungen werdne gelöscht. Anschließend solltest du ins UAS Modul gehen und auf 'Migrieren' klicken um alle installierten PlugIns wieder hier verfügbar zu haben."
 
 #: ../http/static/factoryreset/fr.html:10
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/menu/menu.html:18
 msgid "Factory Reset"
-msgstr ""
+msgstr "Reset"
 
 #: ../http/static/factoryreset/fr.html:7
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
-msgstr ""
+msgstr "Nach dem Klicken wird WebTools für ca. 1 Minute nicht reagieren. Anschließend einfach diese Seite im Web Browser 'Neu Laden'."
 
 #: ../http/static/factoryreset/fr.html:3
 msgid "This will reset WebTools to what is was, when first installed"
-msgstr ""
+msgstr "Damit wird WebTools in einen Zustand wie frisch nach der Installation zurückversetzt."
 

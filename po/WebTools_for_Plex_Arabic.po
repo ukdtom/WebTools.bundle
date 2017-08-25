@@ -5,446 +5,451 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
 "Project-Id-Version: WebTools for Plex\n"
-"Language: hi\n"
+"Language: ar\n"
 
 #: ../http/static/home/home.html:4
 msgid "Use the menu on the left side to navigate in WebTools."
-msgstr "WebTools में नेविगेट करने के लिए बाईं ओर मेनू का उपयोग करें"
+msgstr "استخدم القائمة في اليسار للتنقل في WebTools"
 
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
-msgstr "WebTools एक टूल है जो टूल मॉड्यूल के उपयोग को सक्षम करने के लिए आपको अपने Plex Server प्रबंधन के साथ सक्षम बनाता है"
+msgstr "\"ويب تولز\" هي أداة تمكنك وتساعدك في إدارة سيرفر بلكس الخاص بك."
 
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
-msgstr "दोनों सह-स्थित (मूवी फ़ोल्डर के बगल में या सबफ़ोल्डर में) और एजेंट फ़ोल्डर में"
+msgstr "سواءً ملفات الترجمة المرافقة ( ملفات الترجمة المرافقة للفلم ) أو ملفات الوكيل."
 
 #: ../http/static/theme/theme.html:2
 msgid "Change Theme"
-msgstr "थीम बदलें"
+msgstr "تغيير المظهر"
 
 #: ../http/static/menu/menu.html:17
 msgid "Changelog"
-msgstr "बदलाव की सूची"
+msgstr "سجل التغييرات"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
-msgstr "बदलाव की सूची का व्यूअर"
+msgstr "تغيير مظهر السجلات"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
-msgstr "हार्ड ड्राइव से चयनित साइडकार हटाना। ध्यान दें: हटाए जाने के बाद आप इसे वापस नहीं प्राप्त कर सकते।"
+msgstr "حذف الترجمة المرافقة من القرص الصلب.\n"
+"ملحوظة: لا يمكنك الحصول عليها بعد الحذف."
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
-msgstr "खाली फ़ाइल"
+msgstr "الملف فارغ"
 
 #: ../http/static/menu/menu.html:21
 msgid "Help"
-msgstr "सहायता"
+msgstr "المساعدة"
 
 #: ../http/static/sub_management/subHelp.html:5
 msgid "List all subtitles for a movie/tv show in your library."
-msgstr "एक फिल्म / टीवी शो के लिए सभी उपशीर्षक सूची अपने पुस्तकालय में"
+msgstr "قائمة لكل الترجمات للأفلام/المسلسلات الموجودة في مكتبتك"
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
-msgstr ""
+msgstr "مستعرض السجلات"
 
 #: ../http/static/menu/menu.html:13
 msgid "Logout"
-msgstr ""
+msgstr "تسجيل الخروج"
 
 #: ../http/static/menu/menu.html:11
 msgid "Options"
-msgstr ""
+msgstr "الخيارات"
 
 #: ../http/static/sub_management/subHelp.html:15
 msgid "Options for output."
-msgstr ""
+msgstr "خيارات الإخراج."
 
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
-msgstr ""
+msgstr "بحث عن الأفلام والمسلسلات في داخل الأقسام."
 
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
-msgstr ""
+msgstr "أختر ما بين المظاهر الموجود:"
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
-msgstr ""
+msgstr "أختر واحدة من المكتبات في الأسفل للمسح عن الأفلام/المسلسلات الغير موجودة في قاعدة بيانات بلكس أو غير موجودة في قرصك الصلب."
 
 #: ../http/static/menu/menu.html:16
 msgid "Theme"
-msgstr ""
+msgstr "المظهر"
 
 #: ../http/static/findmedia/fm.html:3
 msgid "This tool is a combination of FindUnmatched and FindMissing."
-msgstr ""
+msgstr "هذه الأداة هي خليط ما بين ( إيجاد الغير متطابق ) و ( إيجاد المفقود )."
 
 #: ../http/static/menu/menu.html:14
 msgid "Update WT"
-msgstr ""
+msgstr "تحديث WebTools"
 
 #: ../http/static/sub_management/subHelp.html:9
 msgid "View the subtitle and see it's contents to determine what to delete."
-msgstr ""
+msgstr "أظهر محتوى الترجمة ، لتحديد الترجمة المراد حذفها."
 
 #: ../http/static/menu/menu.html:23
 msgid "WT Forum Thread"
-msgstr ""
+msgstr "منتدى WT"
 
+#. No translation for this one.
 #: ../http/static/menu/menu.html:24
 msgid "WT GitHub"
-msgstr ""
+msgstr "WT GitHub"
 
 #: ../http/static/menu/menu.html:25
 msgid "WT Manual(PDF)"
-msgstr ""
+msgstr "للمساعدة (PDF)"
 
 #: ../http/static/404/404.html:1
 msgid "We could not find the page :("
-msgstr ""
+msgstr "لم نستطع إيجاد هذة الصفحة :("
 
 #: ../http/static/logs/logs.html:36
 msgid "We recommend you to download large files and view them in your favourite text editor."
-msgstr ""
+msgstr "ننصح بتحميل الملفات الكبيرة وعرضهم في محرر النصوص المفضل لديك."
 
 #: ../http/static/logs/logs.html:28
 msgid "Download all logfiles as zip"
-msgstr ""
+msgstr "تحميل جميع السجلات"
 
 #: ../http/static/logs/logs.html:27
 msgid "Download selected logfile"
-msgstr ""
+msgstr "تحميل المحدد"
 
+#. Where does it appear? need context..
 #: ../http/static/findmedia/fm.html:78
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
-msgstr ""
+msgstr "إلغاء الفحص"
 
 #: ../http/static/findmedia/fm.html:43
 #: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
-msgstr ""
+msgstr "إضافة مجلدات لإهمالها"
 
 #: ../http/static/playlist/playlistHelp.html:2
 #: ../http/static/sub_management/subHelp.html:2
 msgid "Current features:"
-msgstr ""
+msgstr "المميزات الحالية:"
 
 #: ../http/static/findmedia/fm.html:92
 #: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
-msgstr ""
+msgstr "تحميل النتائج"
 
 #: ../http/static/findmedia/fm.html:26
 msgid "Ignore Extras"
-msgstr ""
+msgstr "تجاهل الإضافات"
 
 #: ../http/static/findmedia/fm.html:20
 msgid "Ignore Hidden"
-msgstr ""
+msgstr "تجاهل المخفي"
 
 #: ../http/static/findmedia/fm.html:31
 msgid "Ignore folders"
-msgstr ""
+msgstr "تجاهل المجلدات"
 
 #: ../http/static/findmedia/fm.html:98
 msgid "No records missing from Plex database"
-msgstr ""
+msgstr "لا يوجد سجلات مفقودة من قاعدة بيانات بلكس"
 
 #: ../http/static/findmedia/fm.html:110
 msgid "No records missing from harddrive"
-msgstr ""
+msgstr "لا يوجد سجلات مفقودة من القرص الصلب"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
-msgstr ""
+msgstr "المساعدة في قوائم التشغيل"
 
 #: ../http/static/findmedia/fm.html:101
 msgid "Records missing from Plex database"
-msgstr ""
+msgstr "السجلات المفقودة من قاعدة بيانات بلكس"
 
 #: ../http/static/findmedia/fm.html:113
 msgid "Records missing from harddrive"
-msgstr ""
+msgstr "السجلات المفقودة من القرص الصلب"
 
 #: ../http/static/findmedia/fm.html:59
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
-msgstr ""
+msgstr "إعادة ضبط التغييرات"
 
 #: ../http/static/findmedia/fm.html:67
 #: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
-msgstr ""
+msgstr "حفظ التغييرات"
 
 #: ../http/static/findmedia/fm.html:12
 msgid "Show settings"
-msgstr ""
+msgstr "إظهار الإعدادات"
 
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
-msgstr ""
+msgstr "الامتدادات المسموحة"
 
 #: ../http/static/language/language.html:5
 msgid "Change Language"
-msgstr ""
+msgstr "تغيير اللغة"
 
 #: ../http/static/menu/menu.html:15
 msgid "Language"
-msgstr ""
+msgstr "اللغة"
 
 #: ../http/static/language/language.html:12
 msgid "Force language translation update"
-msgstr ""
+msgstr "إجبار التحديث لملف اللغة"
 
 #: ../http/static/logs/logs.html:11
 msgid "Found"
-msgstr ""
+msgstr "وجد"
 
 #: ../http/static/home/home.html:1
 msgid "Welcome to"
-msgstr ""
+msgstr "مرحباً بك في"
 
 #: ../http/static/logs/logs.html:11
 msgid "rows"
-msgstr ""
+msgstr "الصفوف"
 
 #: ../http/static/logs/logsController.js:9
 msgid "Clear search"
-msgstr ""
+msgstr "إلغاء البحث"
 
 #: ../http/static/findmedia/fmController.js:8
 msgid "Delete ignored folder"
-msgstr ""
+msgstr "إيقاف المجلد المجهول"
 
 #: ../http/static/logs/logsController.js:13
 msgid "Hide/Show search menu"
-msgstr ""
+msgstr "إظهار/إخفاء قائمة البحث"
 
 #: ../http/static/findmedia/fmController.js:14
 msgid "Hide/Show settings menu"
-msgstr ""
+msgstr "إظهار/إخفاء قائمة الإعدادات"
 
 #: ../http/static/logs/logsController.js:12
 msgid "Jump to top"
-msgstr ""
+msgstr "أذهب إلى الأعلى"
 
 #: ../http/static/logs/logsController.js:11
 msgid "Next"
-msgstr ""
+msgstr "التالي"
 
 #: ../http/static/logs/logsController.js:10
 msgid "Previous"
-msgstr ""
+msgstr "السابق"
 
 #: ../http/static/logs/logsController.js:8
 msgid "Search keyword"
-msgstr ""
+msgstr "بحث بحرف معين"
 
 #: ../http/static/logs/logsController.js:7
 msgid "search..."
-msgstr ""
+msgstr "بحث..."
 
 #: ../http/static/home/home.html:22
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
-msgstr ""
+msgstr "يسمح لك بنسخ قوائم التشغيل ما بين المستخدمين أو استيراد أو تصدير أو مسحها."
 
 #: ../http/static/home/home.html:13
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
-msgstr ""
+msgstr "هذه الأداة ستسمح بسهولة التمكن من جميع السجلات الموجودة في سيرفر بلكس الخاص بك وستسمح أيضاً بسهولة تحميل السجلات على حده ، أو تحميل جميع السجلات بملف مضغوط (ZIP)."
 
 #: ../http/static/home/home.html:19
 msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
-msgstr ""
+msgstr "هذه الأداة ستجعله من الممكن أن تحدد الوسائط المفقودة سواءً من قاعدة البيانات أو من ملفات النظام الخاص بك."
 
 #: ../http/static/home/home.html:10
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
-msgstr ""
+msgstr "هذة الأداة ستسمح لك بإدارة الترجمات سواءً كانت ترجمات مرفقة مع ملف الوسائط أو التي تمَ تحميلها عن طريق إضافات/وكلاء آخرين ، مثل الوكيل OpenSubtitle.org.  \n"
+"أداة إدارة الترجمات ستسمح لك باستعراض الترجمات للوسائط الخاصة بك وعرضهم وحذفهم إذا أردت ماعدا إذا كانت مضمنة أو في نفس الوسائط."
 
 #: ../http/static/home/home.html:16
 msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
-msgstr ""
+msgstr "هذه الأداة ستسمح لك بتثبيت أو تحديث أو حذف الوكلاء الغير موجودين أو غير مدعومين من نفس خدمة بلكس."
 
 #: ../http/static/home/home.html:7
 msgid "Tool Modules currently available are:"
-msgstr ""
+msgstr "الأدوات المتواجدة حالياً هي:"
 
 #: ../http/static/uas/uasHelp.html:1
 msgid "UnsupportedAppStore Help"
-msgstr ""
+msgstr "مساعدة في Unsupported AppStore"
 
 #: ../http/static/uas/uasHelp.html:6
 msgid "* Category names contain installed/total available channels."
-msgstr ""
+msgstr "أسماء الفئات تظهر الوكلاء المثبتين أو الكل ، للقنوات الموجودة."
 
 #: ../http/static/uas/uasHelp.html:2
 msgid "* Here you can either install a channel by it's Github repository link or by selecting one of the categories below."
-msgstr ""
+msgstr "هنا تستطيع أن تثبت إحدى الإضافات/الوكلاء عن طريق رابط حزمة الـGithub أو اختيار إحدى الفئات في الأسفل."
 
 #: ../http/static/uas/uasHelp.html:3
 msgid "* If you have installed channels manually before installing WebTools, you can click on the \"Migrate manually/previously installed channels\" to make WebTools aware of them."
-msgstr ""
+msgstr "إذا كنت مثبتاً إحدى الوكلاء/الإضافات يدوياً قبل أن تثبت \"ويب تولز\" ، تستطيع أن تضغط على \"ترحيل/دمج يدوياًَ - تثبت الإضافات/الوكلاء السابقة\" لتجعل \"ويب تولز\" على علم بهم."
 
 #: ../http/static/uas/uasHelp.html:4
 msgid "* You can also search for updates for all installed channels managed by WebTools via the \"Check for updates for all installed channels\" button."
-msgstr ""
+msgstr "أيضاً تستطيع أن تبحث عن تحديثات لكل الإضافات الوكلاء المثبتة عن طريق الزر \"تحقق من وجود تحديثات للإضافات\"."
 
 #: ../http/static/uas/uasHelp.html:7
 msgid "* You can expand the items by clicking on them."
-msgstr ""
+msgstr "يمكنك توسيع إحدى العناصر بالضغط عليه."
 
 #: ../http/static/uas/uasHelp.html:5
 msgid "* You can select a category on the menu on the right."
-msgstr ""
+msgstr "يمكنك أختيار من إحدى الفئات من القائمة على اليمين."
 
 #: ../http/static/uas/uas.html:12
 msgid "Check for bundle updates"
-msgstr ""
+msgstr "تحقق من وجود تحديثات للإضافات"
 
 #: ../http/static/uas/uas.html:11
 msgid "Force UAS update"
-msgstr ""
+msgstr "إجبار تحديث لـUAS"
 
 #: ../http/static/uas/uas.html:7
 msgid "Manual Install"
-msgstr ""
+msgstr "تثبيت الكتيب"
 
+#. explain please ? context..
 #: ../http/static/uas/uas.html:10
 msgid "Migrate"
-msgstr ""
+msgstr "ترحيل/دمج"
 
 #: ../http/static/uas/uas.html:76
 msgid "Categories:"
-msgstr ""
+msgstr "الفئات"
 
 #: ../http/static/playlist/playlist.html:37
 msgid "Copy"
-msgstr ""
+msgstr "نسخ"
 
 #: ../http/static/playlist/playlist.html:36
 #: ../http/static/uas/uas.html:57
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #: ../http/static/playlist/playlist.html:41
 msgid "Download"
-msgstr ""
+msgstr "تحميل"
 
 #: ../http/static/uas/uas.html:50
 msgid "Install"
-msgstr ""
+msgstr "تثبيت"
 
 #: ../http/static/uas/uas.html:84
 msgid "Last updated:"
-msgstr ""
+msgstr "آخر تحديث:"
 
 #: ../http/static/uas/uasController.js:9
 msgid "Manual install url..."
-msgstr ""
+msgstr "رابط تثبيت الكتيب..."
 
 #: ../http/static/uas/uas.html:92
 msgid "Manual:"
-msgstr ""
+msgstr "الكتيب:"
 
 #: ../http/static/uas/uas.html:100
 msgid "Repo:"
-msgstr ""
+msgstr "المصدر:"
 
 #: ../http/static/playlist/playlist.html:9
 msgid "Select user"
-msgstr ""
+msgstr "أختر مستخدم"
 
 #: ../http/static/_shared/webtoolsService.js:5
 msgid "Self"
-msgstr ""
+msgstr "أنت"
 
 #: ../http/static/sub_management/subHelp.html:1
 msgid "Subtitle Management Help"
-msgstr ""
+msgstr "المساعدة في إدارة الترجمات"
 
 #: ../http/static/uas/uas.html:109
 msgid "Support:"
-msgstr ""
+msgstr "الدعم:"
 
 #: ../http/static/sub_management/sub.html:3
 msgid "This is an unofficial manager for subtitles."
-msgstr ""
+msgstr "هذه الأداة هي أداة غير رسمية لإدارة الترجمات."
 
 #: ../http/static/sub_management/sub.html:5
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
-msgstr ""
+msgstr "للشروع بالبدء ، أختر أحدى مكتباتك أو اضغط على \"؟\" للمساعدة"
 
 #: ../http/static/uas/uas.html:51
 msgid "Update"
-msgstr ""
+msgstr "تحديث"
 
 #: ../http/static/sub_management/sub.html:4
 msgid "Usage at your own risk!"
-msgstr ""
+msgstr "استخدمه على مسؤوليتك الخاصة!"
 
 #: ../http/static/playlist/playlistHelp.html:6
 msgid "Copy a playlist between users"
-msgstr ""
+msgstr "نسخ قائمة تشغيل ما بين المستخدمين"
 
 #: ../http/static/playlist/playlistHelp.html:5
 msgid "Delete a playlist"
-msgstr ""
+msgstr "مسح قائمة تشغيل"
 
 #: ../http/static/playlist/playlistHelp.html:4
 msgid "Download a playlist"
-msgstr ""
+msgstr "تحميل قائمة تشغيل"
 
 #: ../http/static/playlist/playlistHelp.html:7
 msgid "Import a playlist"
-msgstr ""
+msgstr "استيراد قائمة تشغيل"
 
 #: ../http/static/playlist/playlist.html:18
 msgid "Select target user"
-msgstr ""
+msgstr "أختر المستخدم المستهدف"
 
 #: ../http/static/playlist/playlist.html:37
 msgid "Select target user to copy"
-msgstr ""
+msgstr "أختر المستخدم المستهدف للنسخ إليه"
 
 #: ../http/static/playlist/playlist.html:3
 msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
-msgstr ""
+msgstr "للشروع بالبدء ، أختر أحدى قوائم التشغيل لديك أو اضغط على \"؟\" للمساعدة"
 
 #: ../http/static/language/language.html:15
 msgid "If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:"
-msgstr ""
+msgstr "إذا كانت لغتك غير مدعومة أو ليست مكتملة 100% وتريد أن تحسنها فضلاً أذهب هنا:"
 
 #: ../http/static/playlist/playlistHelp.html:9
 msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
-msgstr ""
+msgstr "ملاحظة: لتستطع أن تستخدم ميزة النسخ يشترط أن تكون مسجل دخولك في سيرفر بلكس الخاص بك ، علماً بأننا نقوم بجلب اسم المستخدم من قوائم المستخدمين لدى plex.tv"
 
 #: ../http/static/uas/uasService.js:5
 msgid "Channels/Plug-ins migrated:"
-msgstr ""
+msgstr "ترحيل القنوات/الوكلاء:"
 
 #: ../http/static/uas/uasService.js:6
 msgid "No Channels/Plug-ins was migrated"
-msgstr ""
+msgstr "لم يتم ترحيل أي قناة/وكيل."
 
 #: ../http/static/factoryreset/fr.html:4
 msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
-msgstr ""
+msgstr "جميع الإعدادات ستُزال ، وبعد أكتمال إعادة الضبط ستحتاج إلى أن تذهب إلى \" يو أي أس\" وقم بالضغط على ترحيل/دمج ليقوم باستيراد جميع الإضافات الإضافات/الوكلاء."
 
 #: ../http/static/factoryreset/fr.html:10
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/menu/menu.html:18
 msgid "Factory Reset"
-msgstr ""
+msgstr "إعادة ضبط المصنع"
 
 #: ../http/static/factoryreset/fr.html:7
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
-msgstr ""
+msgstr "إذا ضغطت الزر في الأسفل ، سوف يكون \" ويب تولز\" غير مستجيب لمدة 1 دقيقة تقريباً ، بعد ذالك بكل بساطة قم بتحديث الصفحة."
 
 #: ../http/static/factoryreset/fr.html:3
 msgid "This will reset WebTools to what is was, when first installed"
-msgstr ""
+msgstr "هذا سوف يقوم بإعادة \"ويب تولز\" إلى حالته الأصلية كما كانت عندما قمت بتثبيت \"ويب تولز\" لأول مرة."
 

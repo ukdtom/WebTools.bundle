@@ -13,11 +13,11 @@ msgstr "Use the menu on the left to navigate in WebTools."
 
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
-msgstr "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
+msgstr "Webtools is a tool that enables the use of tool modules to help you with your Plex Server management."
 
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
-msgstr "Both co-located (next to the movie in it's folder or one subfolder) and in the agents folder."
+msgstr "Both co-located (next to the movie in it's folder or subfolder) and in the agents folder."
 
 #: ../http/static/theme/theme.html:2
 msgid "Change Theme"
@@ -34,7 +34,7 @@ msgstr "Change log viewer"
 #. A sidecar subtitle is a subtitle, that is located next to it's media
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
-msgstr "Delete selected sidecar from the harddrive."
+msgstr "Delete selected sidecar from the harddrive. Note: you cannot get it back once deleted."
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
@@ -50,7 +50,7 @@ msgstr "List all subtitles for a Movie/TV Show in your library"
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
-msgstr "LogViewer Tool"
+msgstr "Log Viewer"
 
 #: ../http/static/menu/menu.html:13
 msgid "Logout"
@@ -90,11 +90,11 @@ msgstr "Update WebTools"
 
 #: ../http/static/sub_management/subHelp.html:9
 msgid "View the subtitle and see it's contents to determine what to delete."
-msgstr "View the subtitle content to determine what to delete."
+msgstr "View the subtitle content to determine which subtitle to delete."
 
 #: ../http/static/menu/menu.html:23
 msgid "WT Forum Thread"
-msgstr "WT Forum Thread"
+msgstr "WT Forum"
 
 #: ../http/static/menu/menu.html:24
 msgid "WT GitHub"
@@ -102,7 +102,7 @@ msgstr "WT GitHub"
 
 #: ../http/static/menu/menu.html:25
 msgid "WT Manual(PDF)"
-msgstr "WT Manual(PDF)"
+msgstr "WT Help"
 
 #: ../http/static/404/404.html:1
 msgid "We could not find the page :("
@@ -110,15 +110,15 @@ msgstr "We could not find the page :("
 
 #: ../http/static/logs/logs.html:36
 msgid "We recommend you to download large files and view them in your favourite text editor."
-msgstr "We recommend you download large files then view them in your favourite text editor."
+msgstr "We recommend you download large files and view them in your favourite text editor."
 
 #: ../http/static/logs/logs.html:28
 msgid "Download all logfiles as zip"
-msgstr "Download all log files in a ZIP file"
+msgstr "Download All Logs"
 
 #: ../http/static/logs/logs.html:27
 msgid "Download selected logfile"
-msgstr "Download the selected log file"
+msgstr "Download Selected"
 
 #: ../http/static/findmedia/fm.html:78
 #: ../http/static/findmedia/fmController.js:12
@@ -154,11 +154,11 @@ msgstr "Ignore folders"
 
 #: ../http/static/findmedia/fm.html:98
 msgid "No records missing from Plex database"
-msgstr "No records missing from Plex database"
+msgstr "No records missing from the Plex database"
 
 #: ../http/static/findmedia/fm.html:110
 msgid "No records missing from harddrive"
-msgstr "No files missing from Hard Drive"
+msgstr "No files missing from the Hard Drive"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
@@ -166,11 +166,11 @@ msgstr "Playlist Help"
 
 #: ../http/static/findmedia/fm.html:101
 msgid "Records missing from Plex database"
-msgstr "Records missing from Plex database"
+msgstr "Records missing from the Plex database"
 
 #: ../http/static/findmedia/fm.html:113
 msgid "Records missing from harddrive"
-msgstr "Records missing from Hard Drive"
+msgstr "Records missing from the Hard Drive"
 
 #: ../http/static/findmedia/fm.html:59
 #: ../http/static/findmedia/fmController.js:10
@@ -200,7 +200,7 @@ msgstr "Language"
 
 #: ../http/static/language/language.html:12
 msgid "Force language translation update"
-msgstr "Force update language translation"
+msgstr "Force language translation update"
 
 #: ../http/static/logs/logs.html:11
 msgid "Found"
@@ -256,19 +256,19 @@ msgstr "Allows you to copy playlists between users, as well as import, export an
 
 #: ../http/static/home/home.html:13
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
-msgstr "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
+msgstr "This tool module allows easy access to all of the Plex Media Server logs and it will also allow an easy way to download individual logs or all log files in a convenient ZIP archive."
 
 #: ../http/static/home/home.html:19
 msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
-msgstr "Makes it possible to locate your media, that are either missing from the database or from the filesystem."
+msgstr "This tool module makes it possible to locate your media, that are either missing from the database or from the filesystem."
 
 #: ../http/static/home/home.html:10
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
-msgstr "Manage subtitle files, regardless of whether or not they are sidecars (Located next to the media file) or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them and delete them, unless they are embedded within the media itself."
+msgstr "This tool module will allow you to manage your subtitles, regardless of whether or not they are sidecars (located next to the media file) or downloaded via another plugin, like the OpenSubtitles.org agent. Sub Management will allow you to have an overview of the subtitles for your media and view them and delete them unless they are embedded or burned into the media itself."
 
 #: ../http/static/home/home.html:16
 msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
-msgstr "This will allow you to install, update and delete unsupported Plex Media Server plug-ins."
+msgstr "This tool module will allow you to install, update and delete unsupported Plex Media Server plug-ins."
 
 #: ../http/static/home/home.html:7
 msgid "Tool Modules currently available are:"
@@ -280,7 +280,7 @@ msgstr "Unsupported AppStore Help"
 
 #: ../http/static/uas/uasHelp.html:6
 msgid "* Category names contain installed/total available channels."
-msgstr "* Category names contain installed/total available plug-ins."
+msgstr "* Category names show installed/total available plug-ins."
 
 #: ../http/static/uas/uasHelp.html:2
 msgid "* Here you can either install a channel by it's Github repository link or by selecting one of the categories below."
@@ -300,7 +300,7 @@ msgstr "* You can expand the items by clicking on them."
 
 #: ../http/static/uas/uasHelp.html:5
 msgid "* You can select a category on the menu on the right."
-msgstr "* You can select a category on the menu on the right."
+msgstr "* You can select a category from the menu on the right."
 
 #: ../http/static/uas/uas.html:12
 msgid "Check for bundle updates"
@@ -365,7 +365,7 @@ msgstr "Self"
 
 #: ../http/static/sub_management/subHelp.html:1
 msgid "Subtitle Management Help"
-msgstr "Subtitle Management Help"
+msgstr "Manage Subtitles Help"
 
 #: ../http/static/uas/uas.html:109
 msgid "Support:"
@@ -373,7 +373,7 @@ msgstr "Support:"
 
 #: ../http/static/sub_management/sub.html:3
 msgid "This is an unofficial manager for subtitles."
-msgstr "This is an unofficial manager for subtitles."
+msgstr "This tool module is an unofficial manager for subtitles."
 
 #: ../http/static/sub_management/sub.html:5
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
@@ -409,7 +409,7 @@ msgstr "Select target user"
 
 #: ../http/static/playlist/playlist.html:37
 msgid "Select target user to copy"
-msgstr "Select user to copy to"
+msgstr "Select target user to copy to"
 
 #: ../http/static/playlist/playlist.html:3
 msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
@@ -417,11 +417,11 @@ msgstr "To get started, select one of your Playlists or click on the \"?\" for a
 
 #: ../http/static/language/language.html:15
 msgid "If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:"
-msgstr "If your language is missing, is not translated 100 %, or you want to improve on the translation, then please go here:"
+msgstr "If your language is missing, is not 100% translated, or you want to improve on the translation, then please go here:"
 
 #: ../http/static/playlist/playlistHelp.html:9
 msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
-msgstr "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
+msgstr "Note: In order to use the copy function, your Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
 
 #: ../http/static/uas/uasService.js:5
 msgid "Channels/Plug-ins migrated:"
@@ -433,19 +433,19 @@ msgstr "No Channels/Plug-ins were migrated"
 
 #: ../http/static/factoryreset/fr.html:4
 msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
-msgstr ""
+msgstr "All settings will be removed and after the reset has taken place you might need to go into UAS and click on migrate to re-import your plug-ins."
 
 #: ../http/static/factoryreset/fr.html:10
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/menu/menu.html:18
 msgid "Factory Reset"
-msgstr ""
+msgstr "Factory Reset"
 
 #: ../http/static/factoryreset/fr.html:7
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
-msgstr ""
+msgstr "If you click below, then WebTools will be unresponsive for about 1 minute, after that simply reload the page in your browser."
 
 #: ../http/static/factoryreset/fr.html:3
 msgid "This will reset WebTools to what is was, when first installed"
-msgstr ""
+msgstr "This will reset WebTools to it's original state when you first installed WebTools."
 
