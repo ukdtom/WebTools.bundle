@@ -1,6 +1,3 @@
-# Info needed:
-Please fill out below
-
 ## Environment
 - **PMS Platform(s) OS**: 
 - **PMS Version**: 
