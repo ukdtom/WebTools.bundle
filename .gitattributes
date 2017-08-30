@@ -5,3 +5,4 @@ debug export-ignore
 .vscode export-ignore
 /po export-ignore
 /translations export-ignore
+.github export-ignore
