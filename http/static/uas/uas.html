@@ -1,16 +1,14 @@
 <div class="uas">
     <div class="textSize4 textBold600 pull-left">UnsupportedAppStore</div><help src="static/uas/uasHelp.html"></help>
-    <div class="row">
-        <div class="col-xs-12">
-            <input class="pull-left manualInstall" ng-placeholder="lang.manualInstall|translate" ng-model="manualInstallUrl" />
-            <div class="pull-left uasBtn manualInstallBtn" ng-click="installUpdate(manualRepo, manualInstallUrl, true)">
-                <span ng-if="!manualRepo.workingLoading" translate>Manual Install</span>
-                <inline-loading2 ng-if="manualRepo.workingLoading"></inline-loading2>
-            </div>
-            <div class="pull-left uasBtn pushLeftMinor" ng-click="migrate()" translate>Migrate</div>
-            <div class="pull-left uasBtn pushLeftMinor" ng-click="forceCache()" translate>Force UAS update</div>
-            <div class="pull-left uasBtn pushLeftMinor" ng-click="checkBundleUpdates()" translate>Check for bundle updates</div>
+    <div class="topcontainer">
+        <input class="pull-left manualInstall" ng-placeholder="lang.manualInstall|translate" ng-model="manualInstallUrl" />
+        <div class="pull-left uasBtn manualInstallBtn" ng-click="installUpdate(manualRepo, manualInstallUrl, true)">
+            <span ng-if="!manualRepo.workingLoading" translate>Manual Install</span>
+            <inline-loading2 ng-if="manualRepo.workingLoading"></inline-loading2>
         </div>
+        <div class="pull-left uasBtn pushLeftMinor" ng-click="migrate()" translate>Migrate</div>
+        <div class="pull-left uasBtn pushLeftMinor" ng-click="forceCache()" translate>Force UAS update</div>
+        <div class="pull-left uasBtn pushLeftMinor" ng-click="checkBundleUpdates()" translate>Check for bundle updates</div>
     </div>
     <content-loading ng-if="webtoolsModel.uasLoading" class="pushTopMinor"></content-loading>
     <div ng-if="!webtoolsModel.uasLoading">
@@ -73,43 +71,43 @@
 
                 <div ng-if="repo.revealed" class="details">
                     <div class="row">
-                        <div class="col-xs-1" translate>
+                        <div class="col-xs-6 col-sm-5 col-md-3 col-lg-2" translate>
                             Categories:
                         </div>
-                        <div class="col-xs-11">
+                        <div class="col-xs-6 col-sm-7 col-md-9 col-lg-10">
                             <span ng-repeat="type in repo.type">{[{type}]}<span ng-if="!$last">, </span></span>
                         </div>
                     </div>
                     <div class="row" ng-if="repo.date">
-                        <div class="col-xs-1" translate>
+                        <div class="col-xs-6 col-sm-5 col-md-3 col-lg-2" translate>
                             Last updated:
                         </div>
-                        <div class="col-xs-11">
+                        <div class="col-xs-6 col-sm-7 col-md-9 col-lg-10">
                             {[{repo.date}]}
                         </div>
                     </div>
                     <div class="row" ng-if="repo.manual">
-                        <div class="col-xs-1" translate>
+                        <div class="col-xs-6 col-sm-5 col-md-3 col-lg-2" translate>
                             Manual:
                         </div>
-                        <div class="col-xs-11">
+                        <div class="col-xs-6 col-sm-7 col-md-9 col-lg-10">
                             <a target="_blank" href="{[{repo.manual}]}">{[{repo.manual}]}</a>
                         </div>
                     </div>
                     <div class="row" ng-if="validUrl(repo.key)">
-                        <div class="col-xs-1" translate>
+                        <div class="col-xs-6 col-sm-5 col-md-3 col-lg-2" translate>
                             Repo:
                         </div>
-                        <div class="col-xs-11">
+                        <div class="col-xs-6 col-sm-7 col-md-9 col-lg-10">
                             <a ng-if="!repo.key">NO KEY? :(</a>
                             <a target="_blank" href="{[{repo.key}]}" ng-if="repo.key">{[{repo.key}]}</a>
                         </div>
                     </div>
                     <div class="row" ng-if="repo.supporturl">
-                        <div class="col-xs-1" translate>
+                        <div class="col-xs-6 col-sm-5 col-md-3 col-lg-2" translate>
                             Support:
                         </div>
-                        <div class="col-xs-11">
+                        <div class="col-xs-6 col-sm-7 col-md-9 col-lg-10">
                             <a target="_blank" href="{[{repo.supporturl}]}">{[{repo.supporturl}]}</a>
                         </div>
                     </div>

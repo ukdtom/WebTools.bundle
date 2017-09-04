@@ -1,6 +1,11 @@
 ﻿.uas{
 
 }
+.uas .topcontainer{
+    width:calc(100% - 190px);
+    float:left;
+    margin-bottom:10px;
+}
 .uas .uasBtn{
     padding:2px 8px;
     border: 1px solid grey;
@@ -139,7 +144,7 @@
 
 /* Repo Left header */
 .uas .repoContainer .repo .header .left {
-    width: calc(100% - 260px); /*Minus install & delete & icon*/
+    width: calc(100% - 160px); /*Minus install & delete & icon*/
     float:left;
 }
 .uas .repoContainer .repo .header .icon{
@@ -152,17 +157,21 @@
     width: calc(100% - 100px); /*Minus install & delete & icon*/
     float:left;
     font-size:1.4em;
+    max-height:30px;
+    white-space: nowrap; 
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 .uas .repoContainer .repo .header .description{
     height: 40px;
-    overflow: hidden;
     width: calc(100% - 100px); /*Minus install & delete & icon*/
     float: left;
+    overflow:hidden;
 }
 
 /* Repo Right header */
 .uas .repoContainer .repo .header .right {
-    width: 260px;
+    width: 160px;
     height: calc(100% - 10px);
     float: right;
 }
@@ -192,6 +201,91 @@
 .uas .repoContainer .repo .details{
     padding: 5px;
     padding-top:1px;
-    padding-left:75px;
+    padding-left:10px;
     height:130px;
+}
+.uas .repoContainer .repo .details .row{
+    background: rgb(30, 41, 68);
+}
+.uas .repoContainer .repo .details .row:nth-child(2n){
+    background: rgb(33, 48, 72);
+}
+
+.uas .repoContainer .repo.installed .details .row{
+    background:rgb(38, 72, 41);
+}
+.uas .repoContainer .repo.installed .details .row:nth-child(2n){
+    background:rgb(50, 93, 54);
+}
+
+/* Responsive */
+@media screen and (max-width: 1210px) {
+    .uas .topcontainer .uasBtn {
+        margin-bottom: 7px;
+    }
+
+    .uas .repoContainer .repo .header .title {
+        font-size: 1.2em;
+    }
+}
+@media screen and (max-width: 950px) {
+    .uas .repoContainer .repo .header .icon{
+        width: 35px;
+        height: 40px;
+    }
+    .uas .repoContainer .repo .header .title{
+        font-size:1.1em;
+        width:calc(100% - 50px);
+    }
+    .uas .repoContainer .repo .header .description{
+        font-size:0.9em;
+        height:50px;
+        width:calc(100% - 50px);
+    }
+}
+@media screen and (max-width: 790px) {
+    .uas .repoContainer .repo .header .icon{
+        display:none;
+    }
+    .uas .repoContainer .repo .header .title{
+        width:100%;
+    }
+    .uas .repoContainer .repo .header .description{
+        width:100%;
+    }
+    .uas .manualInstall{
+        width:160px;
+    }
+    .uas .manualInstallBtn{
+    }
+}
+@media screen and (max-width: 750px) {
+    .uas .repoContainer .repo .header .left {
+        width: calc(100% - 100px);
+        float: left;
+    }
+    .uas .repoContainer .repo .header .right{
+        width:85px;
+    }
+    .uas .right .uasBtn{
+        height:23px;
+    }
+    .uas .repoContainer .repo .header .right .delete{
+        margin-right:0;
+        margin: 5px 0;
+    }
+    .uas .repoContainer .repo .header .right .revealedIcon{
+        display:none;
+    }
+}
+@media screen and (max-width: 645px) {
+    .uas .manualInstall{
+        border-bottom-right-radius:5px;
+        border-top-right-radius:5px;
+    }
+    .uas .manualInstallBtn{
+        margin-left:15px;
+        border-bottom-left-radius:5px;
+        border-top-left-radius:5px;
+    }
 }
