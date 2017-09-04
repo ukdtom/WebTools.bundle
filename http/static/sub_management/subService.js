@@ -150,11 +150,11 @@
 
     this.downloadSubtitle = function (subtitleKey) {
       // $window.location(webtoolsModel.apiV3Url + "/pms/downloadSubtitle/" + subtitleKey);       
-      $window.open(webtoolsModel.apiV3Url + "/pms/downloadSubtitle/" + subtitleKey);       
+        $window.location.href = webtoolsModel.apiV3Url + "/pms/downloadSubtitle/" + subtitleKey;
     }
 
     this.viewSubtitle = function (subtitleKey) {
-        $window.open(webtoolsModel.apiV3Url + "/pms/showSubtitle/" + subtitleKey, "_blank");
+        $window.location.href = webtoolsModel.apiV3Url + "/pms/showSubtitle/" + subtitleKey;
     }
 
 
