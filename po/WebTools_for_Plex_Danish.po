@@ -101,10 +101,6 @@ msgstr "WebTools Forum tråd"
 msgid "WT GitHub"
 msgstr "WebTools Github"
 
-#: ../http/static/menu/menu.html:25
-msgid "WT Manual(PDF)"
-msgstr "WebTools Manual (PDF)"
-
 #: ../http/static/404/404.html:1
 msgid "We could not find the page :("
 msgstr "Vi kunne ikke finde den side :("
@@ -309,23 +305,23 @@ msgstr "* Du kan se flere detalier om et plugin ved at klikke på det."
 msgid "* You can select a category on the menu on the right."
 msgstr "* Du kan vælge en kategori i menuen til højre."
 
-#: ../http/static/uas/uas.html:12
+#: ../http/static/uas/uas.html:11
 msgid "Check for bundle updates"
 msgstr "Kontroller for plug-in opdateringer"
 
-#: ../http/static/uas/uas.html:11
+#: ../http/static/uas/uas.html:10
 msgid "Force UAS update"
 msgstr "Gennemtving en opdatering af UAS"
 
-#: ../http/static/uas/uas.html:7
+#: ../http/static/uas/uas.html:6
 msgid "Manual Install"
 msgstr "Manuel installation"
 
-#: ../http/static/uas/uas.html:10
+#: ../http/static/uas/uas.html:9
 msgid "Migrate"
 msgstr "Migrer"
 
-#: ../http/static/uas/uas.html:76
+#: ../http/static/uas/uas.html:74
 msgid "Categories:"
 msgstr "Kategorier:"
 
@@ -334,7 +330,7 @@ msgid "Copy"
 msgstr "Kopier"
 
 #: ../http/static/playlist/playlist.html:36
-#: ../http/static/uas/uas.html:57
+#: ../http/static/uas/uas.html:55
 msgid "Delete"
 msgstr "Slet"
 
@@ -342,11 +338,11 @@ msgstr "Slet"
 msgid "Download"
 msgstr "Download"
 
-#: ../http/static/uas/uas.html:50
+#: ../http/static/uas/uas.html:48
 msgid "Install"
 msgstr "Installer"
 
-#: ../http/static/uas/uas.html:84
+#: ../http/static/uas/uas.html:82
 msgid "Last updated:"
 msgstr "Seneste Updatering:"
 
@@ -354,11 +350,11 @@ msgstr "Seneste Updatering:"
 msgid "Manual install url..."
 msgstr "Manuelt installations url..."
 
-#: ../http/static/uas/uas.html:92
+#: ../http/static/uas/uas.html:90
 msgid "Manual:"
 msgstr "Manuel:"
 
-#: ../http/static/uas/uas.html:100
+#: ../http/static/uas/uas.html:98
 msgid "Repo:"
 msgstr "Git Repo:"
 
@@ -374,7 +370,7 @@ msgstr "Selv"
 msgid "Subtitle Management Help"
 msgstr "Undertekst management hjælp"
 
-#: ../http/static/uas/uas.html:109
+#: ../http/static/uas/uas.html:107
 msgid "Support:"
 msgstr "Support:"
 
@@ -386,7 +382,7 @@ msgstr "Dette er en uofficiel manager for undertekster."
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "For at starte, vælg et af dine biblioteker eller klik på \"?\" for yderligere hjælp"
 
-#: ../http/static/uas/uas.html:51
+#: ../http/static/uas/uas.html:49
 msgid "Update"
 msgstr "Opdater"
 
@@ -455,4 +451,16 @@ msgstr "Hvis du klikker på knappen, vil WebTools ikke svare i ca. 1 minut. Du s
 #: ../http/static/factoryreset/fr.html:3
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "Dette vil nulstille WebTools, til hvad det var da du først installerede det"
+
+#: ../http/static/playlist/playlist.html:48
+msgid "No playlists available"
+msgstr "Ingen playliste tilgængelig"
+
+#: ../http/static/uas/uasService.js:7
+msgid "Updates available"
+msgstr "Opdateringer tilgængelige"
+
+#: ../http/static/menu/menu.html:25
+msgid "WT Manual Online"
+msgstr "WT Manual Online"
 
