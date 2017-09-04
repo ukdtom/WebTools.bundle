@@ -3,7 +3,8 @@
 
     this.lang = {
         appsMigrated: gettext("Channels/Plug-ins migrated:"),
-        noAppsMigrated: gettext("No Channels/Plug-ins was migrated")
+        noAppsMigrated: gettext("No Channels/Plug-ins was migrated"),
+        updatesAvailable: gettext("Updates available")
     }
 
     this.getInstalled = function (callback) {
@@ -121,7 +122,7 @@
             var arr = [];
             for (var key in resp.data) {
                 uasModel.list[key].updateAvailable = true;
-                uasModel.list[key].type.push("Updates available");
+                uasModel.list[key].type.push(_this.lang.updatesAvailable);
                 var item = resp.data[key];
                 item.key = key;
                 arr.push(item);

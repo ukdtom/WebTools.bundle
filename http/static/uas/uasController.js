@@ -6,7 +6,8 @@
 
     $scope.translate = function () {
         var lang = {
-            manualInstall: gettext("Manual install url...")
+            manualInstall: gettext("Manual install url..."),
+            updatesAvailable: uasService.lang.updatesAvailable
         };
         $scope.lang = lang;
     }

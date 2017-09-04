@@ -44,7 +44,7 @@
                 </div>
                 <div class="bottomPart pull-left textSize2">{[{playlist.summary}]}</div>
             </div>
-
         </div>
+        <div ng-if="!playlistModel.playlists || playlistModel.playlists.length === 0" translate class="textBold600 pushTopMinor">No playlists available</div>
     </div>
 </div>
