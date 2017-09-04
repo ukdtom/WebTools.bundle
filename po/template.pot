@@ -50,7 +50,7 @@ msgstr ""
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
 msgstr ""
 
-#: ../http/static/uas/uas.html:76
+#: ../http/static/uas/uas.html:74
 msgid "Categories:"
 msgstr ""
 
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Channels/Plug-ins migrated:"
 msgstr ""
 
-#: ../http/static/uas/uas.html:12
+#: ../http/static/uas/uas.html:11
 msgid "Check for bundle updates"
 msgstr ""
 
@@ -96,7 +96,7 @@ msgid "Current features:"
 msgstr ""
 
 #: ../http/static/playlist/playlist.html:36
-#: ../http/static/uas/uas.html:57
+#: ../http/static/uas/uas.html:55
 msgid "Delete"
 msgstr ""
 
@@ -147,7 +147,7 @@ msgstr ""
 msgid "File empty"
 msgstr ""
 
-#: ../http/static/uas/uas.html:11
+#: ../http/static/uas/uas.html:10
 msgid "Force UAS update"
 msgstr ""
 
@@ -195,7 +195,7 @@ msgstr ""
 msgid "Import a playlist"
 msgstr ""
 
-#: ../http/static/uas/uas.html:50
+#: ../http/static/uas/uas.html:48
 msgid "Install"
 msgstr ""
 
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: ../http/static/uas/uas.html:84
+#: ../http/static/uas/uas.html:82
 msgid "Last updated:"
 msgstr ""
 
@@ -231,7 +231,7 @@ msgstr ""
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
 msgstr ""
 
-#: ../http/static/uas/uas.html:7
+#: ../http/static/uas/uas.html:6
 msgid "Manual Install"
 msgstr ""
 
@@ -239,11 +239,11 @@ msgstr ""
 msgid "Manual install url..."
 msgstr ""
 
-#: ../http/static/uas/uas.html:92
+#: ../http/static/uas/uas.html:90
 msgid "Manual:"
 msgstr ""
 
-#: ../http/static/uas/uas.html:10
+#: ../http/static/uas/uas.html:9
 msgid "Migrate"
 msgstr ""
 
@@ -253,6 +253,10 @@ msgstr ""
 
 #: ../http/static/uas/uasService.js:6
 msgid "No Channels/Plug-ins was migrated"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:48
+msgid "No playlists available"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:98
@@ -291,7 +295,7 @@ msgstr ""
 msgid "Records missing from harddrive"
 msgstr ""
 
-#: ../http/static/uas/uas.html:100
+#: ../http/static/uas/uas.html:98
 msgid "Repo:"
 msgstr ""
 
@@ -345,7 +349,7 @@ msgstr ""
 msgid "Subtitle Management Help"
 msgstr ""
 
-#: ../http/static/uas/uas.html:109
+#: ../http/static/uas/uas.html:107
 msgid "Support:"
 msgstr ""
 
@@ -385,12 +389,16 @@ msgstr ""
 msgid "UnsupportedAppStore Help"
 msgstr ""
 
-#: ../http/static/uas/uas.html:51
+#: ../http/static/uas/uas.html:49
 msgid "Update"
 msgstr ""
 
 #: ../http/static/menu/menu.html:14
 msgid "Update WT"
+msgstr ""
+
+#: ../http/static/uas/uasService.js:7
+msgid "Updates available"
 msgstr ""
 
 #: ../http/static/sub_management/sub.html:4
@@ -418,7 +426,7 @@ msgid "WT GitHub"
 msgstr ""
 
 #: ../http/static/menu/menu.html:25
-msgid "WT Manual(PDF)"
+msgid "WT Manual Online"
 msgstr ""
 
 #: ../http/static/404/404.html:1
