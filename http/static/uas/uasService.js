@@ -130,7 +130,7 @@
             uasModel.updateList = arr;
             if (uasModel.updateList.length > 0) {
                 uasModel.updateType = {
-                    key: "Updates available",
+                    key: _this.lang.updatesAvailable,
                     installed: uasModel.updateList.length,
                     viewInstalled: uasModel.updateList.length,
                     total: uasModel.types["All"].installed,
