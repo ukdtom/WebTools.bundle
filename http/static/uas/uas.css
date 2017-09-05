@@ -104,6 +104,8 @@
     -webkit-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
     -moz-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
     box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    font-weight: 600;
+    font-size: 1.1em;
 }
 
 
