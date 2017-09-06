@@ -7,7 +7,7 @@ WebTools.bundle
 [![master](https://img.shields.io/badge/master-stable-green.svg?maxAge=2592000)]()
 [![Maintenance](https://img.shields.io/maintenance/yes/2017.svg)]()
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
-
+[![Gem](https://img.shields.io/gem/dtv/rails.svg)](https://github.com/ukdtom/WebTools.bundle)
 
 
 Please see the wiki for futher information
