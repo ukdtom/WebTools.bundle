@@ -5,10 +5,19 @@
 $(function () {
     localStorage.clear();
 
-    var version = 0;
+    var apiV3Url = "api/v3";
     var downloadUrl = "";
-    var wtCssTheme = "wt_csstheme";
     var basePath = "/";
+
+    var lang = {};
+
+    var currentLanguage = "en";
+    var currentLanguageDebug = "en";
+    var passwordSet = false;
+    var plexTvOnline = false;
+    var version = 0;
+    var wtCssTheme = "wt_csstheme";
+
     try {
         var locations = $(location).prop('pathname').split('/');
         if(locations[2]) basePath = "/" + locations[1] + "/";
@@ -17,36 +26,44 @@ $(function () {
         basePath = "/";
     }
 
-    var init = function () {
+    var getTranslation = function (string) {
         $.ajax({
             cache: false,
             global: false,
-            type: 'GET',
-            dataType: 'JSON',
-            url: 'version',
+            type: 'POST',
+            url: apiV3Url + '/wt/getTranslate',
+            data: {
+                language: currentLanguage,
+                string: string
+            },
             success: function (data) {
-                version = data.version;
-                $("#webtoolsVersion").html('WebTools - v' + version);
-
-                if (data[wtCssTheme]) {
-                    $("#themeCSS").attr("href", "custom_themes/" + data[wtCssTheme]);
-                }
+                debugger;
+                return data.string;
             },
             error: function (data) {
-                $("#webtoolsVersion").html("WebTools not available... Please contact Devs!");
-                console.log("WEBTOOLS NOT AVAILABLE!");
+                console.log("Could not translate!! \r\n" + data);
+                return string;
             }
         });
+    }
 
-        $("#info_Download").click(downloadLatest);
-        $("#login").click(login);
+    var translate = function () {
+        lang = {
+            loading: getTranslation("Loading..."),
+            signInTowardsPlex: getTranslation("Signing in towards plex.tv"),
+            useRegularPlex: getTranslation("Use your regular Plex credentials"),
+            username: getTranslation("Username"),
+            password: getTranslation("Password"),
+            signin: getTranslation("Sign in"),
+            wrongUsernamePassword: getTranslation("Wrong username and/or password"),
+            newVersionAvailable: getTranslation("New Version available"),
+            newVersion: getTranslation("New Version:"),
+            releaseNotes: getTranslation("Release Notes:"),
+            continue: getTranslation("Continue"),
+            downloadLatest: getTranslation("Download Latest"),
+            webtoolsNotAvailable: getTranslation("WebTools not available... Please contact Devs!")
+        }
 
-        $('input[name="user"]').focus();
-        $(document).keypress(function (e) {
-            if (e.which == 13) {
-                login();
-            }
-        });
     }
 
     var downloadLatest = function () {
@@ -88,15 +105,6 @@ $(function () {
                 var url = "api/v3/git/getReleaseInfo/url/" + encodeURIComponent("https://github.com/ukdtom/WebTools.bundle") + "/version/latest";
                 $.ajax({
                     cache: false,
-                    //data: {
-                    //    'module': 'git',
-                    //    'function': 'getReleaseInfo',
-                    //    'url': 'https://github.com/ukdtom/WebTools.bundle',
-                    //    'version': 'latest'
-                    //},
-                    //type: 'GET',
-                    //datatype: 'JSON',
-                    //url: 'webtools2',
                     type: 'GET',
                     url: url,
                     success: function (data) {
@@ -139,6 +147,45 @@ $(function () {
             }
         });
     };
+    
+    var init = function () {
+        $.ajax({
+            cache: false,
+            global: false,
+            type: 'GET',
+            dataType: 'JSON',
+            url: 'version',
+            success: function (data) {
+                currentLanguage = data.UILanguage;
+                currentLanguageDebug = data.UILanguageDebug;
+                passwordSet = data.PasswordSet;
+                plexTvOnline = data.PlexTVOnline;
+                version = data.version;
+                wtCssTheme = data.wt_csstheme;
 
+                $("#webtoolsVersion").html('WebTools - v' + version);
+
+                if (data[wtCssTheme]) {
+                    $("#themeCSS").attr("href", "custom_themes/" + data[wtCssTheme]);
+                }
+
+                translate();
+            },
+            error: function (data) {
+                $("#webtoolsVersion").html(lang.webtoolsNotAvailable);
+                console.log("WEBTOOLS NOT AVAILABLE!");
+            }
+        });
+
+        $("#info_Download").click(downloadLatest);
+        $("#login").click(login);
+
+        $('input[name="user"]').focus();
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                login();
+            }
+        });
+    }
     init();
 });
