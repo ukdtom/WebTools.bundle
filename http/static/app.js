@@ -30,6 +30,10 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
         controller: "playlistController"
     })
     //Options
+    .when("/aboutus", {
+        templateUrl: "static/aboutus/aboutus.html",
+        controller: "aboutusController"
+    })
     .when("/language", {
         templateUrl: "static/language/language.html",
         controller: "languageController"
