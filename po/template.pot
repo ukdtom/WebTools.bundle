@@ -452,3 +452,7 @@ msgstr ""
 #: ../http/static/logs/logsController.js:7
 msgid "search..."
 msgstr ""
+
+#: ../http/static/uas/uas.html:24
+msgid "{[{uasModel.updateType.key}]}"
+msgstr ""
