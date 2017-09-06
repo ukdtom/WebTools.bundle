@@ -28,9 +28,21 @@ msgstr ""
 msgid "* You can select a category on the menu on the right."
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:13
+msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
+msgstr ""
+
 #: ../http/static/findmedia/fm.html:78
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
+msgstr ""
+
+#: ../http/static/menu/menu.html:15
+msgid "About us"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:3
+msgid "About us and Credits"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:43
@@ -44,6 +56,14 @@ msgstr ""
 
 #: ../http/static/home/home.html:22
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:22
+msgid "And Many Thanks To"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:25
+msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
 msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:6
@@ -62,7 +82,7 @@ msgstr ""
 msgid "Change Theme"
 msgstr ""
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr ""
 
@@ -93,6 +113,10 @@ msgstr ""
 #: ../http/static/playlist/playlistHelp.html:2
 #: ../http/static/sub_management/subHelp.html:2
 msgid "Current features:"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:9
+msgid "Custom Themes and Wiki"
 msgstr ""
 
 #: ../http/static/playlist/playlist.html:36
@@ -137,9 +161,9 @@ msgstr ""
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
 msgstr ""
 
-#: ../http/static/factoryreset/fr.html:10
 #: ../http/static/factoryreset/fr.html:2
-#: ../http/static/menu/menu.html:18
+#: ../http/static/factoryreset/fr.html:7
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr ""
 
@@ -159,7 +183,7 @@ msgstr ""
 msgid "Found"
 msgstr ""
 
-#: ../http/static/menu/menu.html:21
+#: ../http/static/menu/menu.html:22
 msgid "Help"
 msgstr ""
 
@@ -171,8 +195,14 @@ msgstr ""
 msgid "Hide/Show settings menu"
 msgstr ""
 
-#: ../http/static/factoryreset/fr.html:7
+#: ../http/static/factoryreset/fr.html:6
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:28
+msgid ""
+"If you use WebTools and you are willing to support the developers with a beer or two, then please click on the 'Donate'\n"
+"        button below."
 msgstr ""
 
 #: ../http/static/language/language.html:15
@@ -203,7 +233,7 @@ msgstr ""
 msgid "Jump to top"
 msgstr ""
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "Language"
 msgstr ""
 
@@ -221,6 +251,10 @@ msgstr ""
 
 #: ../http/static/menu/menu.html:13
 msgid "Logout"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:5
+msgid "Main Developers"
 msgstr ""
 
 #: ../http/static/home/home.html:19
@@ -247,6 +281,10 @@ msgstr ""
 msgid "Migrate"
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:18
+msgid "Never Forget"
+msgstr ""
+
 #: ../http/static/logs/logsController.js:11
 msgid "Next"
 msgstr ""
@@ -269,6 +307,10 @@ msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:9
 msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:6
+msgid "Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),"
 msgstr ""
 
 #: ../http/static/menu/menu.html:11
@@ -353,7 +395,21 @@ msgstr ""
 msgid "Support:"
 msgstr ""
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/aboutus/aboutus.html:30
+msgid "Thank you for your support!!"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:19
+msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:23
+msgid ""
+"The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and\n"
+"        hard work."
+msgstr ""
+
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr ""
 
@@ -381,8 +437,16 @@ msgstr ""
 msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:7
+msgid "Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)"
+msgstr ""
+
 #: ../http/static/home/home.html:7
 msgid "Tool Modules currently available are:"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:12
+msgid "Translations and Beta testers"
 msgstr ""
 
 #: ../http/static/uas/uasHelp.html:1
@@ -409,6 +473,10 @@ msgstr ""
 msgid "Use the menu on the left side to navigate in WebTools."
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:20
+msgid "V2 frontend was made by dagalufh"
+msgstr ""
+
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
 msgstr ""
@@ -417,15 +485,15 @@ msgstr ""
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr ""
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT Forum Thread"
 msgstr ""
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT GitHub"
 msgstr ""
 
-#: ../http/static/menu/menu.html:25
+#: ../http/static/menu/menu.html:26
 msgid "WT Manual Online"
 msgstr ""
 
@@ -445,12 +513,20 @@ msgstr ""
 msgid "Welcome to"
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:27
+msgid "Your Support"
+msgstr ""
+
 #: ../http/static/logs/logs.html:11
 msgid "rows"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:7
 msgid "search..."
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:10
+msgid "trumpy81"
 msgstr ""
 
 #: ../http/static/uas/uas.html:24

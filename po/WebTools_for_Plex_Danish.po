@@ -24,7 +24,7 @@ msgstr "Både lokalt (Undertext i samme bibliotek som filmen, eller i en underfo
 msgid "Change Theme"
 msgstr "Skift tema"
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr "Change Log"
 
@@ -40,7 +40,7 @@ msgstr "Slet valgte \"sidecar\" undertekst fra harddisken"
 msgid "File empty"
 msgstr "Filen er tom"
 
-#: ../http/static/menu/menu.html:21
+#: ../http/static/menu/menu.html:22
 msgid "Help"
 msgstr "Hjælp"
 
@@ -77,7 +77,7 @@ msgstr "Vælg en af de mulige temaer"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Vælg et af dine biblioteker for at scanne dem for film/tv-shows som enten mangler i Plex databasen eller på harddisken"
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr "Tema"
 
@@ -93,11 +93,11 @@ msgstr "Opdater WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Se en undertekst for at afgøre, om den skal slettes"
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT Forum Thread"
 msgstr "WebTools Forum tråd"
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT GitHub"
 msgstr "WebTools Github"
 
@@ -192,7 +192,7 @@ msgstr "Valide fil endelser"
 msgid "Change Language"
 msgstr "Skift sprog"
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "Language"
 msgstr "Sprog"
 
@@ -438,13 +438,13 @@ msgstr "Ingen Channels/Plug-ins blev migreret"
 msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
 msgstr "Alle indstillinger vil forsvinde, efter du har nulstillet, og du skal bagefter gå ind i UAS, og lave en migrering."
 
-#: ../http/static/factoryreset/fr.html:10
 #: ../http/static/factoryreset/fr.html:2
-#: ../http/static/menu/menu.html:18
+#: ../http/static/factoryreset/fr.html:7
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr "Nulstil WebTools"
 
-#: ../http/static/factoryreset/fr.html:7
+#: ../http/static/factoryreset/fr.html:6
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
 msgstr "Hvis du klikker på knappen, vil WebTools ikke svare i ca. 1 minut. Du skal derefter opdaterer din browser"
 
@@ -460,7 +460,82 @@ msgstr "Ingen playliste tilgængelig"
 msgid "Updates available"
 msgstr "Opdateringer tilgængelige"
 
-#: ../http/static/menu/menu.html:25
+#: ../http/static/menu/menu.html:26
 msgid "WT Manual Online"
 msgstr "WT Manual Online"
+
+#: ../http/static/aboutus/aboutus.html:13
+msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
+msgstr "En stor tak går til alle de folk, som har hjulpet med at oversætte og teste WebTools"
+
+#: ../http/static/menu/menu.html:15
+msgid "About us"
+msgstr "Om os"
+
+#: ../http/static/aboutus/aboutus.html:22
+msgid "And Many Thanks To"
+msgstr "Og mange tak går til"
+
+#: ../http/static/aboutus/aboutus.html:25
+msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
+msgstr "Og vores venner POEditor.com, og idet vi er et Open-Source projekt, har de leveret et oversættelses website gratis."
+
+#: ../http/static/aboutus/aboutus.html:5
+msgid "Main Developers"
+msgstr "Hoved udviklere"
+
+#: ../http/static/aboutus/aboutus.html:18
+msgid "Never Forget"
+msgstr "Glem aldrig"
+
+#: ../http/static/aboutus/aboutus.html:6
+msgid "Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),"
+msgstr "Oliver aka omc1000, en Plex forum medlem (creoludifico på GitHub) (Web del),"
+
+#: ../http/static/aboutus/aboutus.html:30
+msgid "Thank you for your support!!"
+msgstr "Tak for din støtte!"
+
+#: ../http/static/aboutus/aboutus.html:19
+msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
+msgstr "Den orginale \"Unsupported AppStore\" blev lavet af mikedm139."
+
+#: ../http/static/aboutus/aboutus.html:7
+msgid "Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)"
+msgstr "Tommy aka dane22, en Plex forum medlem (ukdtom på GitHub) (Bagudlæggende kode)"
+
+#: ../http/static/aboutus/aboutus.html:20
+msgid "V2 frontend was made by dagalufh"
+msgstr "V2 WebSite var lavet af dagalufh"
+
+#: ../http/static/aboutus/aboutus.html:27
+msgid "Your Support"
+msgstr "Din støtte"
+
+#. Translate as is, meaning it's a name
+#: ../http/static/aboutus/aboutus.html:10
+msgid "trumpy81"
+msgstr "trumpy81"
+
+#: ../http/static/aboutus/aboutus.html:3
+msgid "About us and Credits"
+msgstr "Om os"
+
+#: ../http/static/aboutus/aboutus.html:9
+msgid "Custom Themes and Wiki"
+msgstr "Temaer og Wiki"
+
+#: ../http/static/aboutus/aboutus.html:28
+msgid "If you use WebTools and you are willing to support the developers with a beer or two, then please click on the 'Donate'\n"
+"        button below."
+msgstr "Hvis du benytter WebTools, og ønsker at støtte udviklerne med en øl eller to, så klik venligst på knappen \"Donate\""
+
+#: ../http/static/aboutus/aboutus.html:23
+msgid "The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and\n"
+"        hard work."
+msgstr "De talentfulle og hårdt arbejdende folk hos Plex. Vi er evigt taknemmelige for jeres arbejde."
+
+#: ../http/static/aboutus/aboutus.html:12
+msgid "Translations and Beta testers"
+msgstr "Oversættere og Beta testere"
 
