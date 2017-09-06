@@ -7,6 +7,7 @@ WebTools.bundle
 [![master](https://img.shields.io/badge/master-stable-green.svg?maxAge=2592000)]()
 [![Maintenance](https://img.shields.io/maintenance/yes/2017.svg)]()
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+[![Plex Forums](https://img.shields.io/badge/Plex%20Forums-WebTools-E5A00D.svg?style=flat-square)](https://forums.plex.tv/discussion/126254)
 
 
 
