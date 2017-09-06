@@ -28,6 +28,7 @@ import time
 
 import apiv3
 from plextvhelper import plexTV
+from wtV3 import wtV3
 
 # Below used to find path of this file
 from inspect import getsourcefile
@@ -35,7 +36,7 @@ from os.path import abspath
 
 
 # TODO
-#from importlib import import_module
+# from importlib import import_module
 # SNIFF....Tornado is V1.0.0, meaning no WebSocket :-(
 
 # Path to http folder within the bundle
@@ -389,30 +390,18 @@ class translateHandler(RequestHandler):
             self.finish()
 
 
+''' getTranslationHandler '''
+
+
 class getTranslationHandler(RequestHandler):
-    def get(self, **params):
-        print 'Ged Hello World'
-        # Name of javascript
-        fileName = 'translations.js'
-        if Data.Exists(fileName):
-            # Set content-type in header
-            contenttype = 'application/javascript'
-            self.set_header('Cache-Control',
-                            'no-store, no-cache, must-revalidate, max-age=0')
-            self.set_header('Content-Type',  contenttype)
-            try:
-                self.write(Data.Load(fileName))
-                self.finish()
-            except Exception, e:
-                Log.Exception(
-                    'Exception in translateHandler was: %s' % (str(e)))
-        else:
-            Log.Critical('Could not find translations.js')
-            self.set_status(404)
-            self.write('Missing translation script')
-            self.finish()
+    def post(self, **params):
+        self.set_header('Content-Type', 'application/json; charset=utf-8')
+        self.set_header('Cache-Control',
+                        'no-store, no-cache, must-revalidate, max-age=0')
+        self.write(wtV3().GETTRANSLATE(self, **params))
 
 
+''' handlers '''
 handlers = [(r"%s/login" % BASEURL, LoginHandler),
             (r"%s/logout" % BASEURL, LogoutHandler),
             (r"%s/version" % BASEURL, versionHandler),
@@ -424,6 +413,8 @@ handlers = [(r"%s/login" % BASEURL, LoginHandler),
             (r'%s' % BASEURL, idxHandler),																# Index
             (r'%s/index.html' % BASEURL, idxHandler),													# Index
             (r'%s/api/v3.*$' % BASEURL, apiv3.apiv3),													# API V3
+            (r'%s/getTranslate.*$' %
+             BASEURL, getTranslationHandler),													        # getTranslation
             (r'%s/(.*)' % BASEURL, MyStaticFileHandler,
              {'path': getActualHTTPPath()})					# Static files
             ]
@@ -436,6 +427,8 @@ if Prefs['Force_SSL']:
                     (r'%s/index.html' % BASEURL, ForceTSLHandler),
                     # Grap images from Data framework
                     (r"%s/uas/Resources.*$" % BASEURL, imageHandler),
+                    (r'%s/getTranslate.*$' %
+                     BASEURL, getTranslationHandler),													 # getTranslation
                     # Grap translation.js from datastore
                     (r"%s/static/_shared/translations.js" %
                      BASEURL, translateHandler),
