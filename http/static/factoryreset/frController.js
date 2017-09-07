@@ -1,12 +1,7 @@
-﻿angular.module('webtools').controller('frController', ['$scope', 'frModel', 'frService', '$interval', function ($scope, frModel, frService, $interval) {
+﻿angular.module('webtools').controller('frController', ['$scope', 'frModel', 'frService', function ($scope, frModel, frService) {
     $scope.frModel = frModel;
     
-    $scope.init = function () {        
-    }
-
     $scope.factoryReset = function () {
         frService.factoryReset();
     }
-
-    $scope.init();
 }]);
