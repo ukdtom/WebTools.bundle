@@ -33,10 +33,10 @@
             </div>
         </div>
 
-        <div class="row pushTopNormal" ng-if="uasModel.selectedType.name === lang.updatesAvailable">
+        <div class="row" ng-if="uasModel.selectedType.name === lang.updatesAvailable">
             <div class="col-xs-12 textBold600">
-                <div class="pull-left" style="margin-top:2px;">You have {[{uasModel.updateType.viewInstalled}]} bundle<span ng-if="uasModel.updateType.viewInstalled > 1">s</span> not up to date.</div>
-                <div class="pull-left uasBtn pushLeftMinor" ng-click="updateAllBundles()">Update all</div>
+                <div class="pull-left" style="margin-top:2px;"><translate>You have</translate> {[{uasModel.updateType.viewInstalled}]} <span ng-if="uasModel.updateType.viewInstalled === 1" translate>bundle</span><span ng-if="uasModel.updateType.viewInstalled > 1" translate>bundles</span> <translate>not up to date.</translate></div>
+                <div class="pull-left uasBtn pushLeftMinor" ng-click="updateAllBundles()" translate>Update all</div>
             </div>
         </div>
 

@@ -136,6 +136,12 @@
                     total: uasModel.types["All"].installed,
                     viewTotal: uasModel.types["All"].installed
                 };
+            } else {
+                uasModel.updateType = null;
+                if (uasModel.selectedType.name === _this.lang.updatesAvailable) {
+                    uasModel.selectedType = uasModel.types["All"];
+                    uasModel.selectedType.name = uasModel.types["All"].key;
+                }
             }
 
             if (callback) callback(resp.data);
@@ -218,7 +224,7 @@
                 url: repo.url
             }
         }).then(function (resp) {
-            if(!repo.installed) {
+            if (!repo.installed) {
                 for (var i = 0; i < resp.data.type.length; i++) {
                     var type = resp.data.type[i];
                     uasModel.types[type].installed += 1;
@@ -230,6 +236,7 @@
             }
             repo.installed = true;
             repo.date = resp.data.date;
+            repo.type = resp.data.type;
 
             for (var ui = 0; ui < uasModel.updateList.length; ui++) {
                 var item = uasModel.updateList[ui];
