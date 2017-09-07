@@ -4,12 +4,12 @@
 
 $(function () {
     localStorage.clear();
-
-    var apiV3Url = "api/v3";
+    
     var downloadUrl = "";
     var basePath = "/";
 
-    var lang = {};
+    var lang;
+    var translationsTodo = 1;
 
     var currentLanguage = "en";
     var currentLanguageDebug = "en";
@@ -26,44 +26,72 @@ $(function () {
         basePath = "/";
     }
 
-    var getTranslation = function (string) {
+    var processTranslation = function() {
+        if (translationsTodo === 0) {
+            $("#signInTowardsPlex").html(lang.signInTowardsPlex);
+            $("#useRegularPlex").html(lang.useRegularPlex);
+            $("#username").html(lang.username);
+            $("input[name=user]").attr("placeholder", lang.username);
+            $("#password").html(lang.password);
+            $("input[name=pwd]").attr("placeholder", lang.password);
+            $("#login").val(lang.signin); 
+            $("#wrong").html(lang.wrongUsernamePassword);
+            $("#newVersionAvailable").html(lang.newVersionAvailable);
+            $("#newVersion").html(lang.newVersion);
+            $("#releaseNotes").html(lang.releaseNotes);
+            $("#info_Continue").html(lang.continue);
+            $("#info_Download").html(lang.downloadLatest);
+        }
+    }
+
+    var getTranslation = function (key, string) {
         $.ajax({
             cache: false,
             global: false,
             type: 'POST',
-            url: apiV3Url + '/wt/getTranslate',
+            url: 'getTranslate',
             data: {
                 language: currentLanguage,
                 string: string
             },
             success: function (data) {
                 debugger;
-                return data.string;
+                lang[key] = data.string;
             },
             error: function (data) {
                 console.log("Could not translate!! \r\n" + data);
-                return string;
+            },
+            complete: function(data) {
+                translationsTodo--;
+                processTranslation();
             }
         });
     }
 
     var translate = function () {
         lang = {
-            loading: getTranslation("Loading..."),
-            signInTowardsPlex: getTranslation("Signing in towards plex.tv"),
-            useRegularPlex: getTranslation("Use your regular Plex credentials"),
-            username: getTranslation("Username"),
-            password: getTranslation("Password"),
-            signin: getTranslation("Sign in"),
-            wrongUsernamePassword: getTranslation("Wrong username and/or password"),
-            newVersionAvailable: getTranslation("New Version available"),
-            newVersion: getTranslation("New Version:"),
-            releaseNotes: getTranslation("Release Notes:"),
-            continue: getTranslation("Continue"),
-            downloadLatest: getTranslation("Download Latest"),
-            webtoolsNotAvailable: getTranslation("WebTools not available... Please contact Devs!")
+            //loading: "Loading...", //Can't implement for now (Need to change to loading spinner because the translation will be picked up by an async call)
+            signInTowardsPlex: "Signing in towards plex.tv",
+            useRegularPlex: "Use your regular Plex credentials",
+            username: "Username",
+            password: "Password",
+            signin: "Sign in",
+            wrongUsernamePassword: "Wrong username and/or password",
+            newVersionAvailable: "New Version available",
+            newVersion: "New Version:",
+            releaseNotes: "Release Notes:",
+            continue: "Continue",
+            downloadLatest: "Download Latest",
+            webtoolsNotAvailable: "WebTools not available... Please contact Devs!"
         }
 
+        translationsTodo = Object.keys(lang).length;
+        for (var key in lang) {
+            if (!lang.hasOwnProperty(key)) return;
+            var item = lang[key];
+
+            getTranslation(key, item);
+        }
     }
 
     var downloadLatest = function () {
@@ -182,7 +210,7 @@ $(function () {
 
         $('input[name="user"]').focus();
         $(document).keypress(function (e) {
-            if (e.which == 13) {
+            if (e.which === 13) {
                 login();
             }
         });

@@ -39,18 +39,18 @@
             <div class="mainContainer">
                 <div class="row">
                     <div class="col-sm-12 textCenter textBold600">
-                        Signing in towards plex.tv<br />
-                        Use your regular Plex credentials
+                        <span id="signInTowardsPlex"><!--Signing in towards plex.tv--></span><br />
+                        <span id="useRegularPlex"><!--Use your regular Plex credentials--></span>
                     </div>
                 </div>
                 <div class="row pushTopMinor">
-                    <div class="col-sm-12">Username</div>
+                    <div class="col-sm-12" id="username"><!--Username--></div>
                 </div>
                 <div class="row pushTopTrivial">
                     <div class="col-sm-12"><input type="text" placeholder="Username" name="user" class="form-control" /></div>
                 </div>
                 <div class="row pushTopTrivial">
-                    <div class="col-sm-12">Password</div>
+                    <div class="col-sm-12" id="password"><!--Password--></div>
                 </div>
                 <div class="row pushTopTrivial">
                     <div class="col-sm-12"><input type="password" placeholder="Password" name="pwd" class="form-control" /></div>
@@ -58,7 +58,7 @@
                 <div class="row pushTopMinor">
                     <div class="col-sm-12"><input type="submit" value="Sign in" id="login" class="btn btn-primary pull-right mainBtn textBold600" /></div>
                 </div>
-                <div class="warning" id="wrong">Wrong username and/or password</div>
+                <div class="warning" id="wrong"><!--Wrong username and/or password--></div>
                 <div class="warning" id="error"></div>
             </div>
         </div>
@@ -66,12 +66,12 @@
             <div class="newReleaseContainer textBold600 pushLeftMinor">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="textBold900 pushTopMinor">New Version available</div>
-                        New Version: <span id="info_Name"></span><br /><br />
-                        Release Notes:<br />
+                        <div class="textBold900 pushTopMinor" id="newVersionAvailable"><!--New Version available--></div>
+                        <span id="newVersion"><!--New Version:--></span> <span id="info_Name"></span><br /><br />
+                        <span id="releaseNotes"><!--Release Notes:--></span><br />
                         <div id="info_Notes"></div><br />
-                        <button type="button" id="info_Continue" class="btn btn-default mainBtn textBold600 pull-left" onclick="document.location.href = basePath">Continue</button>
-                        <button type="button" id="info_Download" class="btn btn-primary mainBtn textBold600 pull-left pushLeftMinor">Download Latest</button>
+                        <button type="button" id="info_Continue" class="btn btn-default mainBtn textBold600 pull-left" onclick="document.location.href = basePath"><!--Continue--></button>
+                        <button type="button" id="info_Download" class="btn btn-primary mainBtn textBold600 pull-left pushLeftMinor"><!--Download Latest--></button>
                     </div>
                 </div>
             </div>
