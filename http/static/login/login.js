@@ -17,6 +17,18 @@ $(function () {
     var plexTvOnline = false;
     var version = 0;
     var wtCssTheme = "wt_csstheme";
+    
+    var plexOnlineEle = $("#plexOnlineContainer");
+    var plexOfflineEle = $("#plexOfflineContainer");
+    var signInLocalPasswordEle = $("#signInLocalPassword");
+    var createLocalPasswordEle = $("#createLocalPassword");
+    var usernameEle = $("#usernameContainer");
+    var passwordEle = $("#passwordContainer");
+    var rePasswordEle = $("#repasswordContainer");
+
+    var wrongUsernamePassword = $("#wrongUsernamePassword");
+    var wrongPassword = $("#wrongPassword");
+    var passwordDoesntMatch = $("#passwordDoesntMatch");
 
     try {
         var locations = $(location).prop('pathname').split('/');
@@ -30,12 +42,20 @@ $(function () {
         if (translationsTodo === 0) {
             $("#signInTowardsPlex").html(lang.signInTowardsPlex);
             $("#useRegularPlex").html(lang.useRegularPlex);
+            $("#plexIsOffline").html(lang.plexIsOffline);
+            $("#signInLocalPassword").html(lang.signInLocalPassword);
+            $("#createLocalPassword").html(lang.createLocalPassword);
             $("#username").html(lang.username);
             $("input[name=user]").attr("placeholder", lang.username);
             $("#password").html(lang.password);
             $("input[name=pwd]").attr("placeholder", lang.password);
-            $("#login").val(lang.signin); 
-            $("#wrong").html(lang.wrongUsernamePassword);
+            $("#passwordagain").html(lang.passwordagain);
+            $("input[name=repwd]").attr("placeholder", lang.passwordagain);
+            $("#login").val(lang.signin);
+            if (!plexTvOnline && !passwordSet) $("#login").val(lang.createPassword); 
+            $("#wrongUsernamePassword").html(lang.wrongUsernamePassword);
+            $("#wrongPassword").html(lang.wrongPassword);
+            $("#passwordDoesntMatch").html(lang.passwordDoesntMatch);
             $("#newVersionAvailable").html(lang.newVersionAvailable);
             $("#newVersion").html(lang.newVersion);
             $("#releaseNotes").html(lang.releaseNotes);
@@ -50,13 +70,12 @@ $(function () {
             global: false,
             type: 'POST',
             url: 'getTranslate',
-            data: {
-                language: currentLanguage,
-                string: string
-            },
-            success: function (data) {
-                debugger;
-                lang[key] = data.string;
+            data: JSON.stringify({
+                "language": currentLanguage,
+                "string": string
+            }),
+            success: function (translatedString) {
+                lang[key] = translatedString;
             },
             error: function (data) {
                 console.log("Could not translate!! \r\n" + data);
@@ -73,10 +92,17 @@ $(function () {
             //loading: "Loading...", //Can't implement for now (Need to change to loading spinner because the translation will be picked up by an async call)
             signInTowardsPlex: "Signing in towards plex.tv",
             useRegularPlex: "Use your regular Plex credentials",
+            plexIsOffline: "Plex.tv is not connected to PMS",
+            signInLocalPassword: "Sign in with your local password",
+            createLocalPassword: "Create a local password",
             username: "Username",
             password: "Password",
+            passwordagain: "Password again",
             signin: "Sign in",
+            createPassword: "Create password",
             wrongUsernamePassword: "Wrong username and/or password",
+            wrongPassword: "Wrong password",
+            passwordDoesntMatch: "The passwords does not match",
             newVersionAvailable: "New Version available",
             newVersion: "New Version:",
             releaseNotes: "Release Notes:",
@@ -92,6 +118,12 @@ $(function () {
 
             getTranslation(key, item);
         }
+    }
+
+    var hideWarning = function () {
+        wrongUsernamePassword.hide();
+        wrongPassword.hide();
+        passwordDoesntMatch.hide();
     }
 
     var downloadLatest = function () {
@@ -117,6 +149,17 @@ $(function () {
     var login = function () {
         var user = $('input[name="user"]').val();
         var pwd = $('input[name="pwd"]').val();
+
+        if (!plexTvOnline && !passwordSet) {
+            var repwd = $('input[name="repwd"]').val();
+
+            if (pwd !== repwd) {
+                hideWarning();
+                passwordDoesntMatch.show();
+                return;
+            }
+        }
+
         var webToolsLoadingEle = $("webtools-loading");
         webToolsLoadingEle.show();
 
@@ -162,11 +205,11 @@ $(function () {
             error: function (errorResp) {
                 webToolsLoadingEle.hide();
                 var error = $("#error");
-                var wrong = $("#wrong");
                 error.hide();
-                wrong.hide();
+                hideWarning();
                 if (errorResp.status === 401 || errorResp.status === 412) {
-                    wrong.show();
+                    if (plexTvOnline) wrongUsernamePassword.show();
+                    else wrongPassword.show();
                 } else {
                     error.html("Error occurred! " + (errorResp.responseText ? errorResp.responseText : "No error msg!"));
                     error.show();
@@ -190,6 +233,28 @@ $(function () {
                 plexTvOnline = data.PlexTVOnline;
                 version = data.version;
                 wtCssTheme = data.wt_csstheme;
+                if (plexTvOnline) {
+                    plexOnlineEle.show();
+                    plexOfflineEle.hide();
+                    usernameEle.show();
+                    passwordEle.show();
+                    rePasswordEle.hide();
+                } else {
+                    plexOnlineEle.hide();
+                    plexOfflineEle.show();
+                    usernameEle.hide();
+                    passwordEle.show();
+                    
+                    if (passwordSet) {
+                        rePasswordEle.hide();
+                        signInLocalPasswordEle.show();
+                        createLocalPasswordEle.hide();
+                    } else {
+                        rePasswordEle.show();
+                        signInLocalPasswordEle.hide();
+                        createLocalPasswordEle.show();
+                    }
+                }
 
                 $("#webtoolsVersion").html('WebTools - v' + version);
 

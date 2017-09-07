@@ -1,17 +1,17 @@
 <div class="uas">
     <div class="textSize4 textBold600 pull-left">UnsupportedAppStore</div><help src="static/uas/uasHelp.html"></help>
-    <div class="topcontainer">
-        <input class="pull-left manualInstall" ng-placeholder="lang.manualInstall|translate" ng-model="manualInstallUrl" />
-        <div class="pull-left uasBtn manualInstallBtn" ng-click="installUpdate(manualRepo, manualInstallUrl, true)">
-            <span ng-if="!manualRepo.workingLoading" translate>Manual Install</span>
-            <inline-loading2 ng-if="manualRepo.workingLoading"></inline-loading2>
-        </div>
-        <div class="pull-left uasBtn pushLeftMinor" ng-click="migrate()" translate>Migrate</div>
-        <div class="pull-left uasBtn pushLeftMinor" ng-click="forceCache()" translate>Force UAS update</div>
-        <div class="pull-left uasBtn pushLeftMinor" ng-click="checkBundleUpdates()" translate>Check for bundle updates</div>
-    </div>
     <content-loading ng-if="webtoolsModel.uasLoading" class="pushTopMinor"></content-loading>
     <div ng-if="!webtoolsModel.uasLoading">
+        <div class="topcontainer">
+            <input class="pull-left manualInstall" ng-placeholder="lang.manualInstall|translate" ng-model="manualInstallUrl" />
+            <div class="pull-left uasBtn manualInstallBtn" ng-click="installUpdate(manualRepo, manualInstallUrl, true)">
+                <span ng-if="!manualRepo.workingLoading" translate>Manual Install</span>
+                <inline-loading2 ng-if="manualRepo.workingLoading"></inline-loading2>
+            </div>
+            <div class="pull-left uasBtn pushLeftMinor" ng-click="migrate()" translate>Migrate</div>
+            <div class="pull-left uasBtn pushLeftMinor" ng-click="forceCache()" translate>Force UAS update</div>
+            <div class="pull-left uasBtn pushLeftMinor" ng-click="checkBundleUpdates()" translate>Check for bundle updates</div>
+        </div>
         <div class="typesMenu">
             <div class="search">
                 <input class="searchInput" ng-model="searchValue" placeholder="Search..." />
@@ -39,12 +39,12 @@
                 <div class="pull-left uasBtn pushLeftMinor" ng-click="updateAllBundles()">Update all</div>
             </div>
         </div>
-        
+
         <div class="repoContainer" ng-if="uasModel.selectedType">
             <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue | orderObjectBy: 'title'" ng-if="typeExist(uasModel.selectedType.name, repo.type)">
                 <div class="header" ng-click="repo.revealed = !repo.revealed">
                     <div class="right">
-                        <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && repo.key" ng-click="installUpdate(repo, repo.key);$event.stopPropagation();">
+                        <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && repo.key && validUrl(repo.key)" ng-click="installUpdate(repo, repo.key);$event.stopPropagation();">
                             <span ng-if="!repo.installed" translate>Install</span>
                             <span ng-if="repo.installed" translate>Update</span>
                         </div>

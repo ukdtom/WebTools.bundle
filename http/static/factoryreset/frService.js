@@ -4,12 +4,10 @@
         var url = webtoolsModel.apiV3Url + "/wt/reset";
         $http({
             method: "PUT",
-            url: url,
+            url: url
         }).then(function (resp) {
             if (callback) callback(resp.data);
         }, function (errorResp) {
-            webtoolsModel.globalLoading--;
-            webtoolsService.log("frService.factoryReset - " + (errorResp.data ? errorResp.data : (errorResp ? errorResp : "NO ERROR MSG!")), "FactoryReset", true, url);
         });
 
         $interval(function () {

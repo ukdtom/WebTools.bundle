@@ -218,17 +218,18 @@
                 url: repo.url
             }
         }).then(function (resp) {
+            if(!repo.installed) {
+                for (var i = 0; i < resp.data.type.length; i++) {
+                    var type = resp.data.type[i];
+                    uasModel.types[type].installed += 1;
+                    uasModel.types[type].viewInstalled += 1;
+
+                    uasModel.types["All"].installed += 1;
+                    uasModel.types["All"].viewInstalled += 1;
+                }
+            }
             repo.installed = true;
             repo.date = resp.data.date;
-
-            for (var i = 0; i < resp.data.type.length; i++) {
-                var type = resp.data.type[i];
-                uasModel.types[type].installed += 1;
-                uasModel.types[type].viewInstalled += 1;
-
-                uasModel.types["All"].installed += 1;
-                uasModel.types["All"].viewInstalled += 1;
-            }
 
             for (var ui = 0; ui < uasModel.updateList.length; ui++) {
                 var item = uasModel.updateList[ui];

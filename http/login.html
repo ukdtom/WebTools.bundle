@@ -39,26 +39,47 @@
             <div class="mainContainer">
                 <div class="row">
                     <div class="col-sm-12 textCenter textBold600">
-                        <span id="signInTowardsPlex"><!--Signing in towards plex.tv--></span><br />
-                        <span id="useRegularPlex"><!--Use your regular Plex credentials--></span>
+                        <div id="plexOnlineContainer" style="display: none;">
+                            <div id="signInTowardsPlex"><!--Signing in towards plex.tv--></div>
+                            <div id="useRegularPlex"><!--Use your regular Plex credentials--></div>
+                        </div>
+                        <div id="plexOfflineContainer">
+                            <div id="plexIsOffline"><!--Plex.tv is offline--></div>
+                            <div id="signInLocalPassword" style="display: none;"><!--Sign in with your local password--></div>
+                            <div id="createLocalPassword"><!--Create a local password--></div>
+                        </div>
                     </div>
                 </div>
-                <div class="row pushTopMinor">
-                    <div class="col-sm-12" id="username"><!--Username--></div>
+                <div id="usernameContainer" style="display: none;">
+                    <div class="row pushTopMinor">
+                        <div class="col-sm-12" id="username"><!--Username--></div>
+                    </div>
+                    <div class="row pushTopTrivial">
+                        <div class="col-sm-12"><input type="text" placeholder="Username" name="user" class="form-control" /></div>
+                    </div>
                 </div>
-                <div class="row pushTopTrivial">
-                    <div class="col-sm-12"><input type="text" placeholder="Username" name="user" class="form-control" /></div>
+                <div id="passwordContainer">
+                    <div class="row pushTopTrivial">
+                        <div class="col-sm-12" id="password"><!--Password--></div>
+                    </div>
+                    <div class="row pushTopTrivial">
+                        <div class="col-sm-12"><input type="password" placeholder="Password" name="pwd" class="form-control" /></div>
+                    </div>
                 </div>
-                <div class="row pushTopTrivial">
-                    <div class="col-sm-12" id="password"><!--Password--></div>
-                </div>
-                <div class="row pushTopTrivial">
-                    <div class="col-sm-12"><input type="password" placeholder="Password" name="pwd" class="form-control" /></div>
+                <div id="repasswordContainer">
+                    <div class="row pushTopTrivial">
+                        <div class="col-sm-12" id="passwordagain"><!--Password again--></div>
+                    </div>
+                    <div class="row pushTopTrivial">
+                        <div class="col-sm-12"><input type="password" placeholder="Password again" name="repwd" class="form-control" /></div>
+                    </div>
                 </div>
                 <div class="row pushTopMinor">
                     <div class="col-sm-12"><input type="submit" value="Sign in" id="login" class="btn btn-primary pull-right mainBtn textBold600" /></div>
                 </div>
-                <div class="warning" id="wrong"><!--Wrong username and/or password--></div>
+                <div class="warning" id="wrongUsernamePassword"><!--Wrong username and/or password--></div>
+                <div class="warning" id="wrongPassword"><!--Wrong password--></div>
+                <div class="warning" id="passwordDoesntMatch"><!--The passwords does not match--></div>
                 <div class="warning" id="error"></div>
             </div>
         </div>
