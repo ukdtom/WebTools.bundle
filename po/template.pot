@@ -28,9 +28,21 @@ msgstr ""
 msgid "* You can select a category on the menu on the right."
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:13
+msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
+msgstr ""
+
 #: ../http/static/findmedia/fm.html:78
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
+msgstr ""
+
+#: ../http/static/menu/menu.html:15
+msgid "About us"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:3
+msgid "About us and Credits"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:43
@@ -46,11 +58,19 @@ msgstr ""
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:22
+msgid "And Many Thanks To"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:25
+msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
+msgstr ""
+
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
 msgstr ""
 
-#: ../http/static/uas/uas.html:76
+#: ../http/static/uas/uas.html:74
 msgid "Categories:"
 msgstr ""
 
@@ -62,7 +82,7 @@ msgstr ""
 msgid "Change Theme"
 msgstr ""
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr ""
 
@@ -74,7 +94,7 @@ msgstr ""
 msgid "Channels/Plug-ins migrated:"
 msgstr ""
 
-#: ../http/static/uas/uas.html:12
+#: ../http/static/uas/uas.html:11
 msgid "Check for bundle updates"
 msgstr ""
 
@@ -95,8 +115,12 @@ msgstr ""
 msgid "Current features:"
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:9
+msgid "Custom Themes and Wiki"
+msgstr ""
+
 #: ../http/static/playlist/playlist.html:36
-#: ../http/static/uas/uas.html:57
+#: ../http/static/uas/uas.html:55
 msgid "Delete"
 msgstr ""
 
@@ -137,9 +161,9 @@ msgstr ""
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
 msgstr ""
 
-#: ../http/static/factoryreset/fr.html:10
 #: ../http/static/factoryreset/fr.html:2
-#: ../http/static/menu/menu.html:18
+#: ../http/static/factoryreset/fr.html:7
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr ""
 
@@ -147,7 +171,7 @@ msgstr ""
 msgid "File empty"
 msgstr ""
 
-#: ../http/static/uas/uas.html:11
+#: ../http/static/uas/uas.html:10
 msgid "Force UAS update"
 msgstr ""
 
@@ -159,7 +183,7 @@ msgstr ""
 msgid "Found"
 msgstr ""
 
-#: ../http/static/menu/menu.html:21
+#: ../http/static/menu/menu.html:22
 msgid "Help"
 msgstr ""
 
@@ -171,8 +195,14 @@ msgstr ""
 msgid "Hide/Show settings menu"
 msgstr ""
 
-#: ../http/static/factoryreset/fr.html:7
+#: ../http/static/factoryreset/fr.html:6
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:28
+msgid ""
+"If you use WebTools and you are willing to support the developers with a beer or two, then please click on the 'Donate'\n"
+"        button below."
 msgstr ""
 
 #: ../http/static/language/language.html:15
@@ -195,7 +225,7 @@ msgstr ""
 msgid "Import a playlist"
 msgstr ""
 
-#: ../http/static/uas/uas.html:50
+#: ../http/static/uas/uas.html:48
 msgid "Install"
 msgstr ""
 
@@ -203,11 +233,11 @@ msgstr ""
 msgid "Jump to top"
 msgstr ""
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "Language"
 msgstr ""
 
-#: ../http/static/uas/uas.html:84
+#: ../http/static/uas/uas.html:82
 msgid "Last updated:"
 msgstr ""
 
@@ -223,6 +253,10 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:5
+msgid "Main Developers"
+msgstr ""
+
 #: ../http/static/home/home.html:19
 msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
 msgstr ""
@@ -231,7 +265,7 @@ msgstr ""
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
 msgstr ""
 
-#: ../http/static/uas/uas.html:7
+#: ../http/static/uas/uas.html:6
 msgid "Manual Install"
 msgstr ""
 
@@ -239,12 +273,16 @@ msgstr ""
 msgid "Manual install url..."
 msgstr ""
 
-#: ../http/static/uas/uas.html:92
+#: ../http/static/uas/uas.html:90
 msgid "Manual:"
 msgstr ""
 
-#: ../http/static/uas/uas.html:10
+#: ../http/static/uas/uas.html:9
 msgid "Migrate"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:18
+msgid "Never Forget"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:11
@@ -253,6 +291,10 @@ msgstr ""
 
 #: ../http/static/uas/uasService.js:6
 msgid "No Channels/Plug-ins was migrated"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:48
+msgid "No playlists available"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:98
@@ -265,6 +307,10 @@ msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:9
 msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:6
+msgid "Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),"
 msgstr ""
 
 #: ../http/static/menu/menu.html:11
@@ -291,7 +337,7 @@ msgstr ""
 msgid "Records missing from harddrive"
 msgstr ""
 
-#: ../http/static/uas/uas.html:100
+#: ../http/static/uas/uas.html:98
 msgid "Repo:"
 msgstr ""
 
@@ -345,11 +391,25 @@ msgstr ""
 msgid "Subtitle Management Help"
 msgstr ""
 
-#: ../http/static/uas/uas.html:109
+#: ../http/static/uas/uas.html:107
 msgid "Support:"
 msgstr ""
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/aboutus/aboutus.html:30
+msgid "Thank you for your support!!"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:19
+msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:23
+msgid ""
+"The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and\n"
+"        hard work."
+msgstr ""
+
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr ""
 
@@ -377,20 +437,32 @@ msgstr ""
 msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:7
+msgid "Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)"
+msgstr ""
+
 #: ../http/static/home/home.html:7
 msgid "Tool Modules currently available are:"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:12
+msgid "Translations and Beta testers"
 msgstr ""
 
 #: ../http/static/uas/uasHelp.html:1
 msgid "UnsupportedAppStore Help"
 msgstr ""
 
-#: ../http/static/uas/uas.html:51
+#: ../http/static/uas/uas.html:49
 msgid "Update"
 msgstr ""
 
 #: ../http/static/menu/menu.html:14
 msgid "Update WT"
+msgstr ""
+
+#: ../http/static/uas/uasService.js:7
+msgid "Updates available"
 msgstr ""
 
 #: ../http/static/sub_management/sub.html:4
@@ -401,6 +473,10 @@ msgstr ""
 msgid "Use the menu on the left side to navigate in WebTools."
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:20
+msgid "V2 frontend was made by dagalufh"
+msgstr ""
+
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
 msgstr ""
@@ -409,16 +485,16 @@ msgstr ""
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr ""
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT Forum Thread"
 msgstr ""
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT GitHub"
 msgstr ""
 
-#: ../http/static/menu/menu.html:25
-msgid "WT Manual(PDF)"
+#: ../http/static/menu/menu.html:26
+msgid "WT Manual Online"
 msgstr ""
 
 #: ../http/static/404/404.html:1
@@ -437,10 +513,22 @@ msgstr ""
 msgid "Welcome to"
 msgstr ""
 
+#: ../http/static/aboutus/aboutus.html:27
+msgid "Your Support"
+msgstr ""
+
 #: ../http/static/logs/logs.html:11
 msgid "rows"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:7
 msgid "search..."
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:10
+msgid "trumpy81"
+msgstr ""
+
+#: ../http/static/uas/uas.html:24
+msgid "{[{uasModel.updateType.key}]}"
 msgstr ""
