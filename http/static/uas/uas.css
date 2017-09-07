@@ -192,7 +192,7 @@
     font-size: 1.3em;
     bottom: 6px;
     border-radius: 90px;
-    border: 1px white solid;
+    border: 1px rgba(247, 247, 247, 0.55) groove;
     padding: 3px 5px 0px 5px;
 }
 .uas .repoContainer .repo .header .right .revealedIcon:hover {
