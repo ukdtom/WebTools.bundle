@@ -102,12 +102,24 @@ msgstr ""
 msgid "Clear search"
 msgstr ""
 
+#: ../http/login.html:53
+msgid "Continue"
+msgstr ""
+
 #: ../http/static/playlist/playlist.html:37
 msgid "Copy"
 msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:6
 msgid "Copy a playlist between users"
+msgstr ""
+
+#: ../http/login.html:40
+msgid "Create a local password"
+msgstr ""
+
+#: ../http/login.html:45
+msgid "Create password"
 msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:2
@@ -138,6 +150,10 @@ msgstr ""
 
 #: ../http/static/playlist/playlist.html:41
 msgid "Download"
+msgstr ""
+
+#: ../http/login.html:54
+msgid "Download Latest"
 msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:4
@@ -285,6 +301,14 @@ msgstr ""
 msgid "Never Forget"
 msgstr ""
 
+#: ../http/login.html:50
+msgid "New Version available"
+msgstr ""
+
+#: ../http/login.html:51
+msgid "New Version:"
+msgstr ""
+
 #: ../http/static/logs/logsController.js:11
 msgid "Next"
 msgstr ""
@@ -321,8 +345,20 @@ msgstr ""
 msgid "Options for output."
 msgstr ""
 
+#: ../http/login.html:42
+msgid "Password"
+msgstr ""
+
+#: ../http/login.html:43
+msgid "Password again"
+msgstr ""
+
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
+msgstr ""
+
+#: ../http/login.html:38
+msgid "Plex.tv is not connected to PMS"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:10
@@ -335,6 +371,10 @@ msgstr ""
 
 #: ../http/static/findmedia/fm.html:113
 msgid "Records missing from harddrive"
+msgstr ""
+
+#: ../http/login.html:52
+msgid "Release Notes:"
 msgstr ""
 
 #: ../http/static/uas/uas.html:98
@@ -387,6 +427,19 @@ msgstr ""
 msgid "Show settings"
 msgstr ""
 
+#: ../http/login.html:44
+msgid "Sign in"
+msgstr ""
+
+#: ../http/login.html:39
+msgid "Sign in with your local password"
+msgstr ""
+
+#: ../http/login.html:36
+#: ../http/login.html:47
+msgid "Signing in towards plex.tv"
+msgstr ""
+
 #: ../http/static/sub_management/subHelp.html:1
 msgid "Subtitle Management Help"
 msgstr ""
@@ -401,6 +454,10 @@ msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:19
 msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
+msgstr ""
+
+#: ../http/login.html:49
+msgid "The passwords does not match"
 msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:23
@@ -477,6 +534,14 @@ msgstr ""
 msgid "Use the menu on the left side to navigate in WebTools."
 msgstr ""
 
+#: ../http/login.html:37
+msgid "Use your regular Plex credentials"
+msgstr ""
+
+#: ../http/login.html:41
+msgid "Username"
+msgstr ""
+
 #: ../http/static/aboutus/aboutus.html:20
 msgid "V2 frontend was made by dagalufh"
 msgstr ""
@@ -509,12 +574,24 @@ msgstr ""
 msgid "We recommend you to download large files and view them in your favourite text editor."
 msgstr ""
 
+#: ../http/login.html:55
+msgid "WebTools not available... Please contact Devs!"
+msgstr ""
+
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
 msgstr ""
 
 #: ../http/static/home/home.html:1
 msgid "Welcome to"
+msgstr ""
+
+#: ../http/login.html:48
+msgid "Wrong password"
+msgstr ""
+
+#: ../http/login.html:46
+msgid "Wrong username and/or password"
 msgstr ""
 
 #: ../http/static/uas/uas.html:38
