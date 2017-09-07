@@ -82,7 +82,7 @@ msgstr ""
 msgid "Change Theme"
 msgstr ""
 
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:17
 msgid "Changelog"
 msgstr ""
 
@@ -94,7 +94,7 @@ msgstr ""
 msgid "Channels/Plug-ins migrated:"
 msgstr ""
 
-#: ../http/static/uas/uas.html:11
+#: ../http/static/uas/uas.html:13
 msgid "Check for bundle updates"
 msgstr ""
 
@@ -163,7 +163,7 @@ msgstr ""
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:18
 msgid "Factory Reset"
 msgstr ""
 
@@ -171,7 +171,7 @@ msgstr ""
 msgid "File empty"
 msgstr ""
 
-#: ../http/static/uas/uas.html:10
+#: ../http/static/uas/uas.html:12
 msgid "Force UAS update"
 msgstr ""
 
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Jump to top"
 msgstr ""
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:14
 msgid "Language"
 msgstr ""
 
@@ -249,7 +249,7 @@ msgstr ""
 msgid "LogViewer Tool"
 msgstr ""
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:19
 msgid "Logout"
 msgstr ""
 
@@ -265,7 +265,7 @@ msgstr ""
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
 msgstr ""
 
-#: ../http/static/uas/uas.html:6
+#: ../http/static/uas/uas.html:8
 msgid "Manual Install"
 msgstr ""
 
@@ -277,7 +277,7 @@ msgstr ""
 msgid "Manual:"
 msgstr ""
 
-#: ../http/static/uas/uas.html:9
+#: ../http/static/uas/uas.html:11
 msgid "Migrate"
 msgstr ""
 
@@ -409,7 +409,7 @@ msgid ""
 "        hard work."
 msgstr ""
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:16
 msgid "Theme"
 msgstr ""
 
@@ -457,8 +457,12 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:13
 msgid "Update WT"
+msgstr ""
+
+#: ../http/static/uas/uas.html:39
+msgid "Update all"
 msgstr ""
 
 #: ../http/static/uas/uasService.js:7
@@ -513,8 +517,24 @@ msgstr ""
 msgid "Welcome to"
 msgstr ""
 
+#: ../http/static/uas/uas.html:38
+msgid "You have"
+msgstr ""
+
 #: ../http/static/aboutus/aboutus.html:27
 msgid "Your Support"
+msgstr ""
+
+#: ../http/static/uas/uas.html:38
+msgid "bundle"
+msgstr ""
+
+#: ../http/static/uas/uas.html:38
+msgid "bundles"
+msgstr ""
+
+#: ../http/static/uas/uas.html:38
+msgid "not up to date."
 msgstr ""
 
 #: ../http/static/logs/logs.html:11
@@ -527,8 +547,4 @@ msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:10
 msgid "trumpy81"
-msgstr ""
-
-#: ../http/static/uas/uas.html:24
-msgid "{[{uasModel.updateType.key}]}"
 msgstr ""
