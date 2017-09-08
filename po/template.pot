@@ -70,7 +70,7 @@ msgstr ""
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
 msgstr ""
 
-#: ../http/static/uas/uas.html:74
+#: ../http/static/uas/uas.html:80
 msgid "Categories:"
 msgstr ""
 
@@ -132,7 +132,7 @@ msgid "Custom Themes and Wiki"
 msgstr ""
 
 #: ../http/static/playlist/playlist.html:36
-#: ../http/static/uas/uas.html:55
+#: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr ""
 
@@ -241,7 +241,7 @@ msgstr ""
 msgid "Import a playlist"
 msgstr ""
 
-#: ../http/static/uas/uas.html:48
+#: ../http/static/uas/uas.html:54
 msgid "Install"
 msgstr ""
 
@@ -253,7 +253,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: ../http/static/uas/uas.html:82
+#: ../http/static/uas/uas.html:88
 msgid "Last updated:"
 msgstr ""
 
@@ -289,7 +289,7 @@ msgstr ""
 msgid "Manual install url..."
 msgstr ""
 
-#: ../http/static/uas/uas.html:90
+#: ../http/static/uas/uas.html:96
 msgid "Manual:"
 msgstr ""
 
@@ -345,6 +345,10 @@ msgstr ""
 msgid "Options for output."
 msgstr ""
 
+#: ../http/login.html:38
+msgid "PMS is not connected to plex.tv"
+msgstr ""
+
 #: ../http/login.html:42
 msgid "Password"
 msgstr ""
@@ -355,10 +359,6 @@ msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
-msgstr ""
-
-#: ../http/login.html:38
-msgid "Plex.tv is not connected to PMS"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:10
@@ -377,7 +377,7 @@ msgstr ""
 msgid "Release Notes:"
 msgstr ""
 
-#: ../http/static/uas/uas.html:98
+#: ../http/static/uas/uas.html:104
 msgid "Repo:"
 msgstr ""
 
@@ -444,7 +444,7 @@ msgstr ""
 msgid "Subtitle Management Help"
 msgstr ""
 
-#: ../http/static/uas/uas.html:107
+#: ../http/static/uas/uas.html:113
 msgid "Support:"
 msgstr ""
 
@@ -510,7 +510,7 @@ msgstr ""
 msgid "UnsupportedAppStore Help"
 msgstr ""
 
-#: ../http/static/uas/uas.html:49
+#: ../http/static/uas/uas.html:55
 msgid "Update"
 msgstr ""
 
@@ -518,7 +518,7 @@ msgstr ""
 msgid "Update WT"
 msgstr ""
 
-#: ../http/static/uas/uas.html:39
+#: ../http/static/uas/uas.html:45
 msgid "Update all"
 msgstr ""
 
@@ -594,7 +594,7 @@ msgstr ""
 msgid "Wrong username and/or password"
 msgstr ""
 
-#: ../http/static/uas/uas.html:38
+#: ../http/static/uas/uas.html:39
 msgid "You have"
 msgstr ""
 
@@ -602,15 +602,15 @@ msgstr ""
 msgid "Your Support"
 msgstr ""
 
-#: ../http/static/uas/uas.html:38
+#: ../http/static/uas/uas.html:41
 msgid "bundle"
 msgstr ""
 
-#: ../http/static/uas/uas.html:38
+#: ../http/static/uas/uas.html:42
 msgid "bundles"
 msgstr ""
 
-#: ../http/static/uas/uas.html:38
+#: ../http/static/uas/uas.html:43
 msgid "not up to date."
 msgstr ""
 
