@@ -7,6 +7,7 @@
 
 import json
 import sys
+import consts
 
 GET = ['GETSETTINGS']
 PUT = ['SETSETTING']
@@ -85,7 +86,7 @@ class settingsV3(object):
 
     #********** Functions below ******************
 
-    # Change the local auth password
+    ''' Change the local auth password '''
     @classmethod
     def SETPWD(self, req, *args):
         Log.Debug('Recieved a call for setPwd')
@@ -124,7 +125,7 @@ class settingsV3(object):
             req.finish(str(e))
             return req
 
-    # Return the value of a specific setting
+    ''' Set the value of a specific setting '''
     @classmethod
     def SETSETTING(self, req, *args):
         Log.Debug('Recieved a call for putSetting')
@@ -143,6 +144,8 @@ class settingsV3(object):
                                   ' with a value of: ' + str(data[key]))
                         Dict[key] = data[key]
                     Dict.Save()
+                    print 'Ged call setConst'
+                    consts.consts.setConsts()
                     req.set_status(200)
                     req.finish("Setting saved")
                 else:

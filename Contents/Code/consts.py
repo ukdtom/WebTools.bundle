@@ -35,9 +35,10 @@ UILANGUAGEDEBUG = False
 
 class consts(object):
     init_already = False							# Make sure part of init only run once
-    # Init of the class
 
-    def __init__(self):
+    def setConsts(self):
+        print 'Ged hello setConsts'
+
         global DEBUGMODE
         global WT_AUTH
         global UAS_URL
@@ -50,8 +51,6 @@ class consts(object):
         global BASEURL
         global UILANGUAGE
         global UILANGUAGEDEBUG
-
-        self.makeDefaultSettings()
 
         # Lets find the name of the bundle directory
         BUNDLEDIRNAME = os.path.split(os.path.split(os.path.split(
@@ -100,6 +99,7 @@ class consts(object):
                 # Try and fetch a user language, if set
                 try:
                     UILANGUAGE = Dict['UILanguage']
+                    print 'Ged UILang', UILANGUAGE
                 except:
                     pass
                 # Running localization in debug mode?
@@ -123,7 +123,13 @@ class consts(object):
         else:
             DEBUGMODE = False
 
+    ''' Init of the Class'''
+
+    def __init__(self):
+        self.makeDefaultSettings()
+        self.setConsts()
         # Verify install path
+
         def isCorrectPath(self):
             try:
                 installedPlugInPath = abspath(getsourcefile(

@@ -108,7 +108,7 @@ class webTools(object):
             if scheme == None:
                 scheme = ''
             retVal = {'version': VERSION, 'PasswordSet': Dict['pwdset'], 'PlexTVOnline': plexTV().auth2myPlex(
-            ), 'wt_csstheme': scheme, 'UILanguageDebug': UILANGUAGEDEBUG, 'UILanguage': UILANGUAGE}
+            ), 'wt_csstheme': scheme, 'UILanguageDebug': UILANGUAGEDEBUG, 'UILanguage': Dict['UILanguage']}
             Log.Info('Version requested, returning ' + str(retVal))
             return retVal
         except Exception, e:
