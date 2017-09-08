@@ -24,7 +24,7 @@ msgstr "Både lokalt (Undertext i samme bibliotek som filmen, eller i en underfo
 msgid "Change Theme"
 msgstr "Skift tema"
 
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:17
 msgid "Changelog"
 msgstr "Change Log"
 
@@ -52,7 +52,7 @@ msgstr "Vis en liste over alle undertekster for et Film/TV bibliotek"
 msgid "LogViewer Tool"
 msgstr "LogViewer Tool"
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:19
 msgid "Logout"
 msgstr "Log af"
 
@@ -77,7 +77,7 @@ msgstr "Vælg en af de mulige temaer"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Vælg et af dine biblioteker for at scanne dem for film/tv-shows som enten mangler i Plex databasen eller på harddisken"
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:16
 msgid "Theme"
 msgstr "Tema"
 
@@ -85,7 +85,7 @@ msgstr "Tema"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "Dette værktøj er en kombination af \"FindUnmatched\" og \"FindMissing\""
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:13
 msgid "Update WT"
 msgstr "Opdater WebTools"
 
@@ -192,7 +192,7 @@ msgstr "Valide fil endelser"
 msgid "Change Language"
 msgstr "Skift sprog"
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:14
 msgid "Language"
 msgstr "Sprog"
 
@@ -305,19 +305,19 @@ msgstr "* Du kan se flere detalier om et plugin ved at klikke på det."
 msgid "* You can select a category on the menu on the right."
 msgstr "* Du kan vælge en kategori i menuen til højre."
 
-#: ../http/static/uas/uas.html:11
+#: ../http/static/uas/uas.html:13
 msgid "Check for bundle updates"
 msgstr "Kontroller for plug-in opdateringer"
 
-#: ../http/static/uas/uas.html:10
+#: ../http/static/uas/uas.html:12
 msgid "Force UAS update"
 msgstr "Gennemtving en opdatering af UAS"
 
-#: ../http/static/uas/uas.html:6
+#: ../http/static/uas/uas.html:8
 msgid "Manual Install"
 msgstr "Manuel installation"
 
-#: ../http/static/uas/uas.html:9
+#: ../http/static/uas/uas.html:11
 msgid "Migrate"
 msgstr "Migrer"
 
@@ -440,7 +440,7 @@ msgstr "Alle indstillinger vil forsvinde, efter du har nulstillet, og du skal ba
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:18
 msgid "Factory Reset"
 msgstr "Nulstil WebTools"
 
@@ -490,7 +490,7 @@ msgstr "Glem aldrig"
 
 #: ../http/static/aboutus/aboutus.html:6
 msgid "Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),"
-msgstr "Oliver aka omc1000, en Plex forum medlem (creoludifico på GitHub) (Web del),"
+msgstr "Oliver aka omc1000, et Plex forum medlem (creoludifico på GitHub) (Web del),"
 
 #: ../http/static/aboutus/aboutus.html:30
 msgid "Thank you for your support!!"
@@ -502,7 +502,7 @@ msgstr "Den orginale \"Unsupported AppStore\" blev lavet af mikedm139."
 
 #: ../http/static/aboutus/aboutus.html:7
 msgid "Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)"
-msgstr "Tommy aka dane22, en Plex forum medlem (ukdtom på GitHub) (Bagudlæggende kode)"
+msgstr "Tommy aka dane22, et Plex forum medlem (ukdtom på GitHub) (Bagudlæggende kode)"
 
 #: ../http/static/aboutus/aboutus.html:20
 msgid "V2 frontend was made by dagalufh"
@@ -533,9 +533,106 @@ msgstr "Hvis du benytter WebTools, og ønsker at støtte udviklerne med en øl e
 #: ../http/static/aboutus/aboutus.html:23
 msgid "The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and\n"
 "        hard work."
-msgstr "De talentfulle og hårdt arbejdende folk hos Plex. Vi er evigt taknemmelige for jeres arbejde."
+msgstr "De talentfulde og hårdt arbejdende folk hos Plex. Vi er evigt taknemmelige for jeres arbejde."
 
 #: ../http/static/aboutus/aboutus.html:12
 msgid "Translations and Beta testers"
 msgstr "Oversættere og Beta testere"
+
+#: ../http/static/uas/uas.html:39
+msgid "Update all"
+msgstr "Opdater alle"
+
+#: ../http/static/uas/uas.html:38
+msgid "You have"
+msgstr "Du har"
+
+#: ../http/static/uas/uas.html:38
+msgid "bundle"
+msgstr "bundle"
+
+#: ../http/static/uas/uas.html:38
+msgid "bundles"
+msgstr "bundles"
+
+#: ../http/static/uas/uas.html:38
+msgid "not up to date."
+msgstr "som ikke er opdateret"
+
+#: ../http/login.html:53
+msgid "Continue"
+msgstr "Fortsæt"
+
+#: ../http/login.html:40
+msgid "Create a local password"
+msgstr "Lav et lokalt kodeord"
+
+#: ../http/login.html:45
+msgid "Create password"
+msgstr "Lav kodeord"
+
+#: ../http/login.html:54
+msgid "Download Latest"
+msgstr "Hent seneste"
+
+#: ../http/login.html:50
+msgid "New Version available"
+msgstr "Ny version tilgøngelig"
+
+#: ../http/login.html:51
+msgid "New Version:"
+msgstr "Ny version:"
+
+#: ../http/login.html:42
+msgid "Password"
+msgstr "Kodeord"
+
+#: ../http/login.html:43
+msgid "Password again"
+msgstr "Kodeord igen"
+
+#: ../http/login.html:38
+msgid "Plex.tv is not connected to PMS"
+msgstr "Plex.tv er ikke forbundet til din PMS"
+
+#: ../http/login.html:52
+msgid "Release Notes:"
+msgstr "Release Notes:"
+
+#: ../http/login.html:44
+msgid "Sign in"
+msgstr "Login"
+
+#: ../http/login.html:39
+msgid "Sign in with your local password"
+msgstr "Login med dit lokale kodeord"
+
+#: ../http/login.html:36
+#: ../http/login.html:47
+msgid "Signing in towards plex.tv"
+msgstr "Login til plex.tv"
+
+#: ../http/login.html:49
+msgid "The passwords does not match"
+msgstr "Dine kodeord er ikke ens"
+
+#: ../http/login.html:37
+msgid "Use your regular Plex credentials"
+msgstr "Brug dit normale Plex login"
+
+#: ../http/login.html:41
+msgid "Username"
+msgstr "Brugernavn"
+
+#: ../http/login.html:55
+msgid "WebTools not available... Please contact Devs!"
+msgstr "WebTools er ikke tilgængelig... Venligst kontakt Udviklerne!"
+
+#: ../http/login.html:48
+msgid "Wrong password"
+msgstr "Forkert kodeord"
+
+#: ../http/login.html:46
+msgid "Wrong username and/or password"
+msgstr "Forkert brugernavn og/eller kodeord "
 
