@@ -23,8 +23,12 @@
                 var detailLower = detail.toLowerCase();
                 
                 var index = detailLower.indexOf(" - "); //All occurrences before this part can we check for...
+                var index2 = detailLower.indexOf(" | "); //All occurrences before this part can we check for...
                 if(index !== -1){
                     detailLower = detailLower.substring(0, index);
+                }
+                if (index2 !== -1) {
+                    detailLower = detailLower.substring(0, index2);
                 }
                 return detailLower.indexOf('critical') !== -1 || detailLower.indexOf('exception') !== -1 || detailLower.indexOf('error') !== -1;
             }

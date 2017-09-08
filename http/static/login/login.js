@@ -92,7 +92,7 @@ $(function () {
             //loading: "Loading...", //Can't implement for now (Need to change to loading spinner because the translation will be picked up by an async call)
             signInTowardsPlex: "Signing in towards plex.tv",
             useRegularPlex: "Use your regular Plex credentials",
-            plexIsOffline: "Plex.tv is not connected to PMS",
+            plexIsOffline: "PMS is not connected to plex.tv",
             signInLocalPassword: "Sign in with your local password",
             createLocalPassword: "Create a local password",
             username: "Username",
