@@ -37,8 +37,6 @@ class consts(object):
     init_already = False							# Make sure part of init only run once
 
     def setConsts(self):
-        print 'Ged hello setConsts'
-
         global DEBUGMODE
         global WT_AUTH
         global UAS_URL
@@ -99,7 +97,6 @@ class consts(object):
                 # Try and fetch a user language, if set
                 try:
                     UILANGUAGE = Dict['UILanguage']
-                    print 'Ged UILang', UILANGUAGE
                 except:
                     pass
                 # Running localization in debug mode?

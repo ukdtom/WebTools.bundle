@@ -144,7 +144,6 @@ class settingsV3(object):
                                   ' with a value of: ' + str(data[key]))
                         Dict[key] = data[key]
                     Dict.Save()
-                    print 'Ged call setConst'
                     consts.consts.setConsts()
                     req.set_status(200)
                     req.finish("Setting saved")
