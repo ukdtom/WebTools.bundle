@@ -280,6 +280,7 @@ class wtV3(object):
             users = plexTV().getUserList()
             req.clear()
             if users == None:
+                Log.Error('Access denied towards plex.tv')
                 req.set_status(401)
             else:
                 req.set_status(200)
