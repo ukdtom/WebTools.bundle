@@ -31,7 +31,7 @@ EXCLUDE = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Pr
 
 
 class playlistsV3(object):
-    # Defaults used by the rest of the class
+    ''' Defaults used by the rest of the class '''
     @classmethod
     def init(self):
         self.getListsURL = misc.GetLoopBack() + '/playlists/all'
@@ -44,6 +44,107 @@ class playlistsV3(object):
         sType = None
         sSrvId = None
         bSameSrv = False
+
+        # Import a playlist
+        def doImport(jsonItems, playlistType, playlistTitle, token):
+           # jsonItems = {}
+            playlistSmart = (jsonItems.get('smart') == 1)
+
+            print 'Ged1', str(playlistType)
+            print 'Ged2', str(playlistTitle)
+            print 'Ged3', str(playlistSmart)
+
+            # Make url for creation of playlist
+            targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + \
+                '&title=' + String.Quote(playlistTitle) + \
+                '&smart=0&uri=library://'
+            counter = 0
+#            for lib in jsonItems:
+
+            print 'Ged77', jsonItems
+
+            for lib in jsonItems:
+
+                print 'Ged 776655', lib
+
+                if counter < 1:
+                    targetFirstUrl += lib + '/directory//library/metadata/'
+                    medias = ','.join(map(str, jsonItems[lib]))
+                    targetFirstUrl += String.Quote(medias)
+
+                    print 'Ged 1 firsturl', targetFirstUrl
+
+                    # First url for the post created, so send it, and grab the response
+                    try:
+                        opener = urllib2.build_opener(urllib2.HTTPHandler)
+                        request = urllib2.Request(targetFirstUrl)
+
+                        request.add_header(
+                            'X-Plex-Token', token)
+                        request.get_method = lambda: 'POST'
+                        response = opener.open(request).read()
+                        ratingKey = XML.ElementFromString(
+                            response).xpath('Playlist/@ratingKey')[0]
+
+                        print 'Ged 2 rating', ratingKey
+
+                    except Exception, e:
+                        Log.Exception(
+                            'Exception creating first part of playlist was: %s' % (str(e)))
+                    counter += 1
+                else:
+                    # Remaining as put
+                    medias = ','.join(map(str, jsonItems[lib]))
+                    targetSecondUrl = misc.GetLoopBack() + '/playlists/' + ratingKey + '/items?uri=library://' + \
+                        lib + '/directory//library/metadata/' + \
+                        String.Quote(medias)
+                    opener = urllib2.build_opener(urllib2.HTTPHandler)
+                    request = urllib2.Request(targetSecondUrl)
+                    request.add_header(
+                        'X-Plex-Token', token)
+                    request.get_method = lambda: 'PUT'
+                    opener.open(request)
+
+        # Phrase our own playlist
+        def phraseOurs(lines):
+            # Placeholder for items to import
+            items = {}
+            Log.Debug('Import file was ours')
+            sName = lines[2].split(':')[1][1:]
+            Log.Debug('Playlist name is %s' % sName)
+            sType = lines[3].split(':')[1][1:]
+            Log.Debug('Playlist type is %s' % sType)
+            sSrvId = lines[4].split(':')[1][1:]
+            Log.Debug('ServerId this playlist belongs to is %s' % sSrvId)
+            thisServerID = XML.ElementFromURL(
+                misc.GetLoopBack() + '/identity').get('machineIdentifier')
+            Log.Debug('Current Server id is %s' % thisServerID)
+            bSameSrv = (thisServerID == sSrvId)
+            lineNo = 5
+            try:
+                for line in lines[5:len(lines):3]:
+                    media = json.loads(lines[lineNo][1:])
+                    id = media['Id']
+                    item = {}
+                    item['ListId'] = media['ListId']
+                    item['LibraryUUID'] = media['LibraryUUID']
+                    lineNo += 1
+                    media = lines[lineNo][8:].split(',', 1)
+                    item['title'] = media[1].split('-', 1)[1][1:]
+                    lineNo += 1
+                    item['fileName'] = lines[lineNo]
+                    items[id] = item
+                    lineNo += 1
+                return items
+            except IndexError:
+                pass
+            except Exception, e:
+                #Log.Exception('Exception happened in IMPORT was %s' %(str(e)))
+                pass
+            finally:
+                return items
+
+        # *************** Main stuff here ***********************
 
         # Payload Upload file present?
         if not 'localFile' in req.request.files:
@@ -66,39 +167,11 @@ class playlistsV3(object):
             # Let's check if it's one of ours
             bOurs = (lines[1] == '#Written by WebTools for Plex')
             if bOurs:
-                # Placeholder for items to import
-                items = {}
-                Log.Debug('Import file was ours')
-                sName = lines[2].split(':')[1][1:]
-                Log.Debug('Playlist name is %s' % sName)
+                playlistTitle = lines[2].split(':')[1][1:]
+                #playlistType = lines[3].split(':')[1][1:]
                 sType = lines[3].split(':')[1][1:]
-                Log.Debug('Playlist type is %s' % sType)
-                sSrvId = lines[4].split(':')[1][1:]
-                Log.Debug('ServerId this playlist belongs to is %s' % sSrvId)
-                thisServerID = XML.ElementFromURL(
-                    misc.GetLoopBack() + '/identity').get('machineIdentifier')
-                Log.Debug('Current Server id is %s' % thisServerID)
-                bSameSrv = (thisServerID == sSrvId)
-                lineNo = 5
-                try:
-                    for line in lines[5:len(lines):3]:
-                        media = json.loads(lines[lineNo][1:])
-                        id = media['Id']
-                        item = {}
-                        item['ListId'] = media['ListId']
-                        item['LibraryUUID'] = media['LibraryUUID']
-                        lineNo += 1
-                        media = lines[lineNo][8:].split(',', 1)
-                        item['title'] = media[1].split('-', 1)[1][1:]
-                        lineNo += 1
-                        item['fileName'] = lines[lineNo]
-                        items[id] = item
-                        lineNo += 1
-                except IndexError:
-                    pass
-                except Exception, e:
-                    #Log.Exception('Exception happened in IMPORT was %s' %(str(e)))
-                    pass
+                items = phraseOurs(lines)
+            # Now validate the entries
             finalItems = {}
             for item in items:
                 if checkItemIsValid(item, items[item]['title'], sType):
@@ -117,16 +190,11 @@ class playlistsV3(object):
                     Log.Debug('Could not find item with a title of %s' %
                               items[item]['title'])
                     result = searchForItemKey(items[item]['title'], sType)
-
-                    print 'Ged Search', result
                     if result != None:
                         finalItem = {}
                         finalItem['id'] = result[0]
-                        #finalItem['LibraryUUID'] = result[1]
                         finalItem['title'] = items[item]['title']
                         finalItem['ListId'] = items[item]['ListId']
-                        # if items[item]['LibraryUUID'] in finalItems:
-                        print 'Ged lib', result[1]
                         if result[1] in finalItems:
                             finalItems[result[1]].append(finalItem)
                         else:
@@ -136,8 +204,12 @@ class playlistsV3(object):
                         Log.Error('Item %s was not found' %
                                   items[item]['title'])
 
-            print 'FinalItems', finalItems
+            print 'Ged FinalItems', finalItems
+            print 'Ged TODO import this'
 
+            token = 'iivTGCBFApwy5pqkEtL7'
+
+            doImport(finalItems, sType, playlistTitle, token)
         except Exception, e:
             Log.Exception(
                 'Exception happened in Playlist import was: %s' % (str(e)))
@@ -145,7 +217,6 @@ class playlistsV3(object):
             req.set_status(500)
             req.finish(
                 'Exception happened in Playlist import was: %s' % (str(e)))
-
         return
 
     ''' This metode will copy a playlist. between users '''
@@ -667,7 +738,7 @@ def deletePlayLIstforUsr(req, key, token):
 def checkItemIsValid(key, title, sType):
     url = misc.GetLoopBack() + '/library/metadata/' + str(key) + '?' + EXCLUDE
     # TODO: Fix for other types
-    print 'GED Playlist TODO Here'
+    print 'GED Playlist TODO Here', key, title, sType
     mediaTitle = None
     try:
         if sType == 'video':
