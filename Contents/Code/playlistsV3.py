@@ -18,7 +18,7 @@ from uuid import uuid4
 # TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
 import urllib2
 from xml.etree import ElementTree
-#import requests
+# import requests
 # TODO End
 
 
@@ -45,67 +45,53 @@ class playlistsV3(object):
         sSrvId = None
         bSameSrv = False
 
-        # Import a playlist
-        def doImport(jsonItems, playlistType, playlistTitle, token):
+        ''' PlayList already exists ? 
+            Return true/false '''
+        def alreadyPresent(title):
+            # Get a list of PlayLists
+            playlists = XML.ElementFromURL(self.getListsURL)
+            # Grap the titles
+            playlists = ','.join(
+                        map(str, (playlist.get('title') for playlist in playlists)))
+            return title in playlists
+
+        ''' Import a playlist '''
+        def doImport(jsonItems, playlistType, playlistTitle):
            # jsonItems = {}
             playlistSmart = (jsonItems.get('smart') == 1)
-
-            print 'Ged1', str(playlistType)
-            print 'Ged2', str(playlistTitle)
-            print 'Ged3', str(playlistSmart)
-
             # Make url for creation of playlist
             targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + \
                 '&title=' + String.Quote(playlistTitle) + \
                 '&smart=0&uri=library://'
             counter = 0
-#            for lib in jsonItems:
-
-            print 'Ged77', jsonItems
-
             for lib in jsonItems:
-
-                print 'Ged 776655', lib
-
                 if counter < 1:
                     targetFirstUrl += lib + '/directory//library/metadata/'
-                    medias = ','.join(map(str, jsonItems[lib]))
+                    medias = ','.join(
+                        map(str, (item['id'] for item in jsonItems[lib])))
                     targetFirstUrl += String.Quote(medias)
-
-                    print 'Ged 1 firsturl', targetFirstUrl
-
                     # First url for the post created, so send it, and grab the response
                     try:
-                        opener = urllib2.build_opener(urllib2.HTTPHandler)
-                        request = urllib2.Request(targetFirstUrl)
+                        response = HTTP.Request(
+                            targetFirstUrl, cacheTime=0, immediate=True, method="POST")
 
-                        request.add_header(
-                            'X-Plex-Token', token)
-                        request.get_method = lambda: 'POST'
-                        response = opener.open(request).read()
                         ratingKey = XML.ElementFromString(
                             response).xpath('Playlist/@ratingKey')[0]
-
-                        print 'Ged 2 rating', ratingKey
-
                     except Exception, e:
                         Log.Exception(
                             'Exception creating first part of playlist was: %s' % (str(e)))
                     counter += 1
                 else:
                     # Remaining as put
-                    medias = ','.join(map(str, jsonItems[lib]))
+                    medias = ','.join(
+                        map(str, (item['id'] for item in jsonItems[lib])))
                     targetSecondUrl = misc.GetLoopBack() + '/playlists/' + ratingKey + '/items?uri=library://' + \
                         lib + '/directory//library/metadata/' + \
                         String.Quote(medias)
-                    opener = urllib2.build_opener(urllib2.HTTPHandler)
-                    request = urllib2.Request(targetSecondUrl)
-                    request.add_header(
-                        'X-Plex-Token', token)
-                    request.get_method = lambda: 'PUT'
-                    opener.open(request)
+                    HTTP.Request(targetSecondUrl, cacheTime=0,
+                                 immediate=True, method="PUT")
 
-        # Phrase our own playlist
+        ''' Phrase our own playlist '''
         def phraseOurs(lines):
             # Placeholder for items to import
             items = {}
@@ -139,12 +125,12 @@ class playlistsV3(object):
             except IndexError:
                 pass
             except Exception, e:
-                #Log.Exception('Exception happened in IMPORT was %s' %(str(e)))
+                # Log.Exception('Exception happened in IMPORT was %s' %(str(e)))
                 pass
             finally:
                 return items
 
-        # *************** Main stuff here ***********************
+        ''' *************** Main stuff here *********************** '''
 
         # Payload Upload file present?
         if not 'localFile' in req.request.files:
@@ -168,9 +154,16 @@ class playlistsV3(object):
             bOurs = (lines[1] == '#Written by WebTools for Plex')
             if bOurs:
                 playlistTitle = lines[2].split(':')[1][1:]
-                #playlistType = lines[3].split(':')[1][1:]
+                if alreadyPresent(playlistTitle):
+                    Log.Error('Playlist %s already exists' % playlistTitle)
+                    req.clear()
+                    req.set_status(406)
+                    req.finish(
+                        'Aborted, since playlist "%s" already existed' % playlistTitle)
+                    return
                 sType = lines[3].split(':')[1][1:]
                 items = phraseOurs(lines)
+
             # Now validate the entries
             finalItems = {}
             for item in items:
@@ -207,9 +200,7 @@ class playlistsV3(object):
             print 'Ged FinalItems', finalItems
             print 'Ged TODO import this'
 
-            token = 'iivTGCBFApwy5pqkEtL7'
-
-            doImport(finalItems, sType, playlistTitle, token)
+            doImport(finalItems, sType, playlistTitle)
         except Exception, e:
             Log.Exception(
                 'Exception happened in Playlist import was: %s' % (str(e)))
@@ -622,7 +613,7 @@ class playlistsV3(object):
                 request = urllib2.Request(self.getListsURL, headers=myHeader)
                 playlists = XML.ElementFromString(
                     urllib2.urlopen(request).read())
-                #playlists = XML.ElementFromURL(self.getListsURL, headers=myHeader)
+                # playlists = XML.ElementFromURL(self.getListsURL, headers=myHeader)
             result = {}
             for playlist in playlists:
                 id = playlist.get('ratingKey')
@@ -732,7 +723,8 @@ def deletePlayLIstforUsr(req, key, token):
 
 #******************* Internal functions ***************************
 
-# This function returns true or false, if key/path matches for a media
+
+''' This function returns true or false, if key/path matches for a media '''
 
 
 def checkItemIsValid(key, title, sType):
@@ -748,7 +740,8 @@ def checkItemIsValid(key, title, sType):
         pass
     return (title == mediaTitle)
 
-# This function will search for a a media based on title and type, and return the key
+
+''' This function will search for a a media based on title and type, and return the key '''
 
 
 def searchForItemKey(title, sType):
