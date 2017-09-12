@@ -82,7 +82,7 @@ msgstr ""
 msgid "Change Theme"
 msgstr ""
 
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:17
 msgid "Changelog"
 msgstr ""
 
@@ -94,12 +94,16 @@ msgstr ""
 msgid "Channels/Plug-ins migrated:"
 msgstr ""
 
-#: ../http/static/uas/uas.html:11
+#: ../http/static/uas/uas.html:13
 msgid "Check for bundle updates"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:9
 msgid "Clear search"
+msgstr ""
+
+#: ../http/login.html:53
+msgid "Continue"
 msgstr ""
 
 #: ../http/static/playlist/playlist.html:37
@@ -108,6 +112,14 @@ msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:6
 msgid "Copy a playlist between users"
+msgstr ""
+
+#: ../http/login.html:40
+msgid "Create a local password"
+msgstr ""
+
+#: ../http/login.html:45
+msgid "Create password"
 msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:2
@@ -140,6 +152,10 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
+#: ../http/login.html:54
+msgid "Download Latest"
+msgstr ""
+
 #: ../http/static/playlist/playlistHelp.html:4
 msgid "Download a playlist"
 msgstr ""
@@ -163,7 +179,7 @@ msgstr ""
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:18
 msgid "Factory Reset"
 msgstr ""
 
@@ -171,7 +187,7 @@ msgstr ""
 msgid "File empty"
 msgstr ""
 
-#: ../http/static/uas/uas.html:10
+#: ../http/static/uas/uas.html:12
 msgid "Force UAS update"
 msgstr ""
 
@@ -233,7 +249,7 @@ msgstr ""
 msgid "Jump to top"
 msgstr ""
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:14
 msgid "Language"
 msgstr ""
 
@@ -249,7 +265,7 @@ msgstr ""
 msgid "LogViewer Tool"
 msgstr ""
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:19
 msgid "Logout"
 msgstr ""
 
@@ -265,7 +281,7 @@ msgstr ""
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
 msgstr ""
 
-#: ../http/static/uas/uas.html:6
+#: ../http/static/uas/uas.html:8
 msgid "Manual Install"
 msgstr ""
 
@@ -277,12 +293,20 @@ msgstr ""
 msgid "Manual:"
 msgstr ""
 
-#: ../http/static/uas/uas.html:9
+#: ../http/static/uas/uas.html:11
 msgid "Migrate"
 msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:18
 msgid "Never Forget"
+msgstr ""
+
+#: ../http/login.html:50
+msgid "New Version available"
+msgstr ""
+
+#: ../http/login.html:51
+msgid "New Version:"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:11
@@ -321,8 +345,20 @@ msgstr ""
 msgid "Options for output."
 msgstr ""
 
+#: ../http/login.html:42
+msgid "Password"
+msgstr ""
+
+#: ../http/login.html:43
+msgid "Password again"
+msgstr ""
+
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
+msgstr ""
+
+#: ../http/login.html:38
+msgid "Plex.tv is not connected to PMS"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:10
@@ -335,6 +371,10 @@ msgstr ""
 
 #: ../http/static/findmedia/fm.html:113
 msgid "Records missing from harddrive"
+msgstr ""
+
+#: ../http/login.html:52
+msgid "Release Notes:"
 msgstr ""
 
 #: ../http/static/uas/uas.html:98
@@ -387,6 +427,19 @@ msgstr ""
 msgid "Show settings"
 msgstr ""
 
+#: ../http/login.html:44
+msgid "Sign in"
+msgstr ""
+
+#: ../http/login.html:39
+msgid "Sign in with your local password"
+msgstr ""
+
+#: ../http/login.html:36
+#: ../http/login.html:47
+msgid "Signing in towards plex.tv"
+msgstr ""
+
 #: ../http/static/sub_management/subHelp.html:1
 msgid "Subtitle Management Help"
 msgstr ""
@@ -403,13 +456,17 @@ msgstr ""
 msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
 msgstr ""
 
+#: ../http/login.html:49
+msgid "The passwords does not match"
+msgstr ""
+
 #: ../http/static/aboutus/aboutus.html:23
 msgid ""
 "The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and\n"
 "        hard work."
 msgstr ""
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:16
 msgid "Theme"
 msgstr ""
 
@@ -457,8 +514,12 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:13
 msgid "Update WT"
+msgstr ""
+
+#: ../http/static/uas/uas.html:39
+msgid "Update all"
 msgstr ""
 
 #: ../http/static/uas/uasService.js:7
@@ -471,6 +532,14 @@ msgstr ""
 
 #: ../http/static/home/home.html:4
 msgid "Use the menu on the left side to navigate in WebTools."
+msgstr ""
+
+#: ../http/login.html:37
+msgid "Use your regular Plex credentials"
+msgstr ""
+
+#: ../http/login.html:41
+msgid "Username"
 msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:20
@@ -505,6 +574,10 @@ msgstr ""
 msgid "We recommend you to download large files and view them in your favourite text editor."
 msgstr ""
 
+#: ../http/login.html:55
+msgid "WebTools not available... Please contact Devs!"
+msgstr ""
+
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
 msgstr ""
@@ -513,8 +586,32 @@ msgstr ""
 msgid "Welcome to"
 msgstr ""
 
+#: ../http/login.html:48
+msgid "Wrong password"
+msgstr ""
+
+#: ../http/login.html:46
+msgid "Wrong username and/or password"
+msgstr ""
+
+#: ../http/static/uas/uas.html:38
+msgid "You have"
+msgstr ""
+
 #: ../http/static/aboutus/aboutus.html:27
 msgid "Your Support"
+msgstr ""
+
+#: ../http/static/uas/uas.html:38
+msgid "bundle"
+msgstr ""
+
+#: ../http/static/uas/uas.html:38
+msgid "bundles"
+msgstr ""
+
+#: ../http/static/uas/uas.html:38
+msgid "not up to date."
 msgstr ""
 
 #: ../http/static/logs/logs.html:11
@@ -527,8 +624,4 @@ msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:10
 msgid "trumpy81"
-msgstr ""
-
-#: ../http/static/uas/uas.html:24
-msgid "{[{uasModel.updateType.key}]}"
 msgstr ""
