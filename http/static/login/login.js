@@ -273,7 +273,9 @@ $(function () {
         $("#info_Download").click(downloadLatest);
         $("#login").click(login);
 
-        $('input[name="user"]').focus();
+        setTimeout(function () {
+            $('input[name="user"]').focus();
+        }, 500)
         $(document).keypress(function (e) {
             if (e.which === 13) {
                 login();
