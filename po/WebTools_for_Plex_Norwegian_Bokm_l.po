@@ -39,7 +39,7 @@ msgstr "Slett eksterne undertekster fra disken."
 msgid "File empty"
 msgstr "Fila er tom"
 
-#: ../http/static/menu/menu.html:21
+#: ../http/static/menu/menu.html:22
 msgid "Help"
 msgstr "Hjelp"
 
@@ -51,7 +51,7 @@ msgstr "Vis alle undertekster for en film eller TV serie i ditt bibliotek."
 msgid "LogViewer Tool"
 msgstr "Loggvisningsvertøy"
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:19
 msgid "Logout"
 msgstr "Logg ut"
 
@@ -60,7 +60,6 @@ msgid "Options"
 msgstr "Innstillinger"
 
 #: ../http/static/sub_management/subHelp.html:15
-#, fuzzy
 msgid "Options for output."
 msgstr "Eksportinnstillinger"
 
@@ -84,7 +83,7 @@ msgstr "Tema"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "Dette verktøyet er en kombinasjon av 'FindUnmatched' og 'FindMissing'."
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:13
 msgid "Update WT"
 msgstr "Oppdater WebTools"
 
@@ -92,17 +91,13 @@ msgstr "Oppdater WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Se undertekstinnholdet for å finne ut hva du vil slette."
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT Forum Thread"
 msgstr "WT forumtråd"
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT GitHub"
 msgstr "WT GitHub"
-
-#: ../http/static/menu/menu.html:25
-msgid "WT Manual(PDF)"
-msgstr "WT manual (PDF)"
 
 #: ../http/static/404/404.html:1
 msgid "We could not find the page :("
@@ -194,7 +189,7 @@ msgstr "Gyldige filetternavn"
 msgid "Change Language"
 msgstr "Bytt språk"
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:14
 msgid "Language"
 msgstr "Språk"
 
@@ -202,7 +197,8 @@ msgstr "Språk"
 msgid "Force language translation update"
 msgstr "Tving oppdatering av språkoversettelser"
 
-#: ../http/static/logs/logs.html:11
+#: ../http/static/logs/logs.html:5
+#: ../http/static/sub_management/sub.html:75
 msgid "Found"
 msgstr "Funnet"
 
@@ -210,11 +206,13 @@ msgstr "Funnet"
 msgid "Welcome to"
 msgstr "Velkommen til"
 
-#: ../http/static/logs/logs.html:11
+#: ../http/static/logs/logs.html:5
+#: ../http/static/sub_management/sub.html:75
 msgid "rows"
 msgstr "rader"
 
 #: ../http/static/logs/logsController.js:9
+#: ../http/static/sub_management/subController.js:10
 msgid "Clear search"
 msgstr "Tøm søk"
 
@@ -223,6 +221,7 @@ msgid "Delete ignored folder"
 msgstr "Slutt å ignorere mappe"
 
 #: ../http/static/logs/logsController.js:13
+#: ../http/static/sub_management/subController.js:14
 msgid "Hide/Show search menu"
 msgstr "Skjul/Vis søkemeny"
 
@@ -231,22 +230,27 @@ msgid "Hide/Show settings menu"
 msgstr "Skjul/Vis innstillingsmeny"
 
 #: ../http/static/logs/logsController.js:12
+#: ../http/static/sub_management/subController.js:13
 msgid "Jump to top"
 msgstr "Gå til toppen"
 
 #: ../http/static/logs/logsController.js:11
+#: ../http/static/sub_management/subController.js:12
 msgid "Next"
 msgstr "Neste"
 
 #: ../http/static/logs/logsController.js:10
+#: ../http/static/sub_management/subController.js:11
 msgid "Previous"
 msgstr "Forrige"
 
 #: ../http/static/logs/logsController.js:8
+#: ../http/static/sub_management/subController.js:9
 msgid "Search keyword"
 msgstr "Søkeord"
 
 #: ../http/static/logs/logsController.js:7
+#: ../http/static/sub_management/subController.js:8
 msgid "search..."
 msgstr "Søk..."
 
@@ -302,23 +306,23 @@ msgstr "* Du kan utvide elementene ved å klikke på dem."
 msgid "* You can select a category on the menu on the right."
 msgstr "* Du kan velge en kategori i menyen til høyre."
 
-#: ../http/static/uas/uas.html:12
+#: ../http/static/uas/uas.html:13
 msgid "Check for bundle updates"
 msgstr "Søk etter plugin oppdateringer"
 
-#: ../http/static/uas/uas.html:11
+#: ../http/static/uas/uas.html:12
 msgid "Force UAS update"
 msgstr "Tving UAS oppdatering"
 
-#: ../http/static/uas/uas.html:7
+#: ../http/static/uas/uas.html:8
 msgid "Manual Install"
 msgstr "Installer manual"
 
-#: ../http/static/uas/uas.html:10
+#: ../http/static/uas/uas.html:11
 msgid "Migrate"
 msgstr "Migrer"
 
-#: ../http/static/uas/uas.html:76
+#: ../http/static/uas/uas.html:80
 msgid "Categories:"
 msgstr "Kategorier:"
 
@@ -327,7 +331,7 @@ msgid "Copy"
 msgstr "Kopier"
 
 #: ../http/static/playlist/playlist.html:36
-#: ../http/static/uas/uas.html:57
+#: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "Slett"
 
@@ -335,11 +339,11 @@ msgstr "Slett"
 msgid "Download"
 msgstr "Last ned"
 
-#: ../http/static/uas/uas.html:50
+#: ../http/static/uas/uas.html:54
 msgid "Install"
 msgstr "Installer"
 
-#: ../http/static/uas/uas.html:84
+#: ../http/static/uas/uas.html:88
 msgid "Last updated:"
 msgstr "Sist oppdatert:"
 
@@ -347,11 +351,11 @@ msgstr "Sist oppdatert:"
 msgid "Manual install url..."
 msgstr "Manual installasjons URL..."
 
-#: ../http/static/uas/uas.html:92
+#: ../http/static/uas/uas.html:96
 msgid "Manual:"
 msgstr "Manual:"
 
-#: ../http/static/uas/uas.html:100
+#: ../http/static/uas/uas.html:104
 msgid "Repo:"
 msgstr "Oppbevaringssted:"
 
@@ -367,7 +371,7 @@ msgstr "Selv"
 msgid "Subtitle Management Help"
 msgstr "Hjelp til undertekstbehandling"
 
-#: ../http/static/uas/uas.html:109
+#: ../http/static/uas/uas.html:113
 msgid "Support:"
 msgstr "Støtte:"
 
@@ -379,7 +383,7 @@ msgstr "Dette er en uoffisiell behandler for undertekster."
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "For å komme i gang, velg en av dine biblioteker eller klikk på \"?\" for ytterligere hjelp"
 
-#: ../http/static/uas/uas.html:51
+#: ../http/static/uas/uas.html:55
 msgid "Update"
 msgstr "Oppdater"
 
@@ -435,17 +439,216 @@ msgstr "Ingen Kanaler/Plugins ble migrert"
 msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
 msgstr "Alle innstillinger vil bli fjernet, og etter at tilbakestillingen har funnet sted, må du kanskje gå inn i UAS og klikke på migrere for å importere plugin-modulene dine på nytt."
 
-#: ../http/static/factoryreset/fr.html:10
 #: ../http/static/factoryreset/fr.html:2
+#: ../http/static/factoryreset/fr.html:7
 #: ../http/static/menu/menu.html:18
 msgid "Factory Reset"
 msgstr "Fabrikkinnstilling"
 
-#: ../http/static/factoryreset/fr.html:7
+#: ../http/static/factoryreset/fr.html:6
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
 msgstr "Hvis du klikker under, vil WebTools ikke reagere i omtrent 1 minutt, etterpå kan du laste siden på nytt i nettleseren din."
 
 #: ../http/static/factoryreset/fr.html:3
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "Dette vil nullstille WebTools til den opprinnelige tilstanden når du installerte WebTools."
+
+#: ../http/static/playlist/playlist.html:48
+msgid "No playlists available"
+msgstr "Ingen spilleliste tilgjengelig"
+
+#: ../http/static/uas/uasService.js:7
+msgid "Updates available"
+msgstr "Oppdateringer er tilgjengelig"
+
+#: ../http/static/menu/menu.html:26
+msgid "WT Manual Online"
+msgstr "WT Online hjelp"
+
+#: ../http/static/aboutus/aboutus.html:13
+msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
+msgstr "En stor takk til alle de som har hjulpet til med oversettelser og testing av WebTools."
+
+#: ../http/static/menu/menu.html:15
+msgid "About us"
+msgstr "Om oss"
+
+#: ../http/static/aboutus/aboutus.html:22
+msgid "And Many Thanks To"
+msgstr "Og mange takk til"
+
+#: ../http/static/aboutus/aboutus.html:25
+msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
+msgstr "Og våre venner ved POEditor.com, og siden vi er et Open-Source-prosjekt, ga de oss en gratis oversettelsesside."
+
+#: ../http/static/aboutus/aboutus.html:5
+msgid "Main Developers"
+msgstr "Hovedutviklere"
+
+#: ../http/static/aboutus/aboutus.html:18
+msgid "Never Forget"
+msgstr "For ikke å glemme"
+
+#: ../http/static/aboutus/aboutus.html:6
+msgid "Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),"
+msgstr "Oliver aka omc1000, et Plex-fellesskapsmedlem (creoludifico på GitHub) (Grensesnitt),"
+
+#: ../http/static/aboutus/aboutus.html:30
+msgid "Thank you for your support!!"
+msgstr "Tusen takk for din støtte!!"
+
+#: ../http/static/aboutus/aboutus.html:19
+msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
+msgstr "Ideen om en Unsupported AppStore ble unnfanget av mikedm139, den opprinnelige forfatteren av Unsupported AppStore."
+
+#: ../http/static/aboutus/aboutus.html:7
+msgid "Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)"
+msgstr "Tommy aka dane22, et Plex-fellesskapsmedlem (ukdtom på GitHub) (baksiden)"
+
+#: ../http/static/aboutus/aboutus.html:20
+msgid "V2 frontend was made by dagalufh"
+msgstr "V2 grensesnittet ble laget av dagalufh"
+
+#: ../http/static/aboutus/aboutus.html:27
+msgid "Your Support"
+msgstr "Din støtte"
+
+#: ../http/static/aboutus/aboutus.html:10
+msgid "trumpy81"
+msgstr "trumpy81"
+
+#: ../http/static/aboutus/aboutus.html:3
+msgid "About us and Credits"
+msgstr "Om oss og kreditering"
+
+#: ../http/static/aboutus/aboutus.html:9
+msgid "Custom Themes and Wiki"
+msgstr "Tilpassede temaer og Wiki"
+
+#: ../http/static/aboutus/aboutus.html:28
+msgid "If you use WebTools and you are willing to support the developers with a beer or two, then please click on the 'Donate'\n"
+"        button below."
+msgstr "Hvis du bruker WebTools og du er villig til å støtte utviklerne med en øl eller to, kan du klikke på \"Donate\" -knappen nedenfor."
+
+#: ../http/static/aboutus/aboutus.html:23
+msgid "The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and\n"
+"        hard work."
+msgstr "De talentfulle og hardt arbeidende utviklerne og ansatte ved Plex. Vi er evig takknemlig for deres engasjement og hardt arbeid."
+
+#: ../http/static/aboutus/aboutus.html:12
+msgid "Translations and Beta testers"
+msgstr "Oversettelser og betatestere"
+
+#: ../http/static/uas/uas.html:45
+msgid "Update all"
+msgstr "Oppdater alle"
+
+#: ../http/static/uas/uas.html:39
+msgid "You have"
+msgstr "Du har"
+
+#: ../http/static/uas/uas.html:41
+msgid "bundle"
+msgstr "pakke"
+
+#: ../http/static/uas/uas.html:42
+msgid "bundles"
+msgstr "pakker"
+
+#: ../http/static/uas/uas.html:43
+msgid "not up to date."
+msgstr "ikke oppdatert"
+
+#: ../http/login.html:53
+msgid "Continue"
+msgstr "Frotsett"
+
+#: ../http/login.html:40
+msgid "Create a local password"
+msgstr "Lag et lokalt passord"
+
+#: ../http/login.html:45
+msgid "Create password"
+msgstr "Lag passord"
+
+#: ../http/login.html:54
+msgid "Download Latest"
+msgstr "Last ned siste"
+
+#: ../http/login.html:50
+msgid "New Version available"
+msgstr "Ny versjon tilgjengelig"
+
+#: ../http/login.html:51
+msgid "New Version:"
+msgstr "Ny versjon:"
+
+#: ../http/login.html:42
+msgid "Password"
+msgstr "Passord"
+
+#: ../http/login.html:43
+msgid "Password again"
+msgstr "Gjenta passord:"
+
+#: ../http/login.html:52
+msgid "Release Notes:"
+msgstr "Utgivelsesnotater"
+
+#: ../http/login.html:44
+msgid "Sign in"
+msgstr "Logg inn"
+
+#: ../http/login.html:39
+msgid "Sign in with your local password"
+msgstr "Logg inn med ditt lokale passord"
+
+#: ../http/login.html:36
+#: ../http/login.html:47
+msgid "Signing in towards plex.tv"
+msgstr "Logg inn mot plex.tv"
+
+#: ../http/login.html:49
+msgid "The passwords does not match"
+msgstr "Passordene er ikke like"
+
+#: ../http/login.html:37
+msgid "Use your regular Plex credentials"
+msgstr "Bruk din vanlige Plex-legitimasjon"
+
+#: ../http/login.html:41
+msgid "Username"
+msgstr "Brukernavn"
+
+#: ../http/login.html:55
+msgid "WebTools not available... Please contact Devs!"
+msgstr "WebTools er ikke tilgjengelig... Kontakt utviklerne!"
+
+#: ../http/login.html:48
+msgid "Wrong password"
+msgstr "Feil passord"
+
+#: ../http/login.html:46
+msgid "Wrong username and/or password"
+msgstr "Feil brukernavn og/eller passord"
+
+#: ../http/login.html:38
+msgid "PMS is not connected to plex.tv"
+msgstr "PMS er ikke tilkoblet til plex.tv"
+
+#: ../http/static/sub_management/sub.html:90
+msgid "Back"
+msgstr ""
+
+#: ../http/static/logs/logs.html:46
+msgid "Next file"
+msgstr ""
+
+#: ../http/static/logs/logs.html:44
+msgid "Previous file"
+msgstr ""
+
+#: ../http/static/logs/logs.html:45
+msgid "Reload file"
+msgstr ""
 
