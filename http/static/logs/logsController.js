@@ -55,8 +55,46 @@
         $scope.$broadcast("logs_search_jumpToTop");
     }
 
+    $scope.previousFile = function () {
+        if (!logsModel.selectedLog) {
+            console.log("No selected log?");
+            return;
+        }
+        var available = false;
+        for (var i = logsModel.logs.length - 1; i > 0; i--) {
+            var log = logsModel.logs[i];
+            if (log.id === logsModel.selectedLog.id) {
+                logsModel.selectedLog = logsModel.logs[i - 1];
+                available = true;
+                break;
+            }
+        }
+        if (!available) logsModel.selectedLog = logsModel.logs[logsModel.logs.length - 1];
+        $scope.loadLog(logsModel.selectedLog);
+    }
+    $scope.reloadFile = function () {
+        $scope.loadLog(logsModel.selectedLog);
+    }
+    $scope.nextFile = function () {
+        if (!logsModel.selectedLog) {
+            console.log("No selected log?");
+            return;
+        }
+        var available = false;
+        for (var i = 0; i < logsModel.logs.length - 1; i++) {
+            var log = logsModel.logs[i];
+            if (log.id === logsModel.selectedLog.id) {
+                logsModel.selectedLog = logsModel.logs[i + 1];
+                available = true;
+                break;
+            }
+        }
+        if(!available) logsModel.selectedLog = logsModel.logs[0];
+        $scope.loadLog(logsModel.selectedLog);
+    }
+
     $scope.$on("$destroy", function () {
-        $scope.logsModel.selectedLog = null;
+        logsModel.selectedLog = null;
     });
 
     $scope.init();

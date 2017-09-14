@@ -112,13 +112,17 @@ webtools.filter('orderObjectBy', function () {
 
         var array = [];
         for (var objectKey in input) {
-            if(!Number.isInteger(parseInt(objectKey))) input[objectKey].key = objectKey;
-            array.push(input[objectKey]);
+            if (input.hasOwnProperty(objectKey)) {
+                if (!Number.isInteger(parseInt(objectKey))) input[objectKey].key = objectKey;
+                array.push(input[objectKey]);
+            } else {
+                console.warn("No own property? " + objectKey);
+            }
         }
 
         array.sort(function (a, b) {
-            if (a[attribute] < b[attribute]) return -1;
-            if (a[attribute] > b[attribute]) return 1;
+            if (a[attribute].toLowerCase() < b[attribute].toLowerCase()) return -1;
+            if (a[attribute].toLowerCase() > b[attribute].toLowerCase()) return 1;
             return 0;
         });
         return array;

@@ -107,55 +107,55 @@ help:hover {
 
 /* Push Tops */
 .pushTopTrivial{
-    margin-top:5px;
+    margin-top:5px !important;
 }
-.pushTopMinor{
-    margin-top:15px;
+.pushTopMinor {
+    margin-top: 15px !important;
 }
-.pushTopNormal{
-    margin-top:25px;
+.pushTopNormal {
+    margin-top: 25px !important;
 }
-.pushTopMajor{
-    margin-top:35px;
+.pushTopMajor {
+    margin-top: 35px !important;
 }
 /* Push Bóooottoms */
-.pushBottomTrivial{
-    margin-bottom:5px;
+.pushBottomTrivial {
+    margin-bottom: 5px !important;
 }
-.pushBottomMinor{
-    margin-bottom:15px;
+.pushBottomMinor {
+    margin-bottom: 15px !important;
 }
-.pushBottomNormal{
-    margin-bottom:25px;
+.pushBottomNormal {
+    margin-bottom: 25px !important;
 }
-.pushBottomMajor{
-    margin-bottom:35px;
+.pushBottomMajor {
+    margin-bottom: 35px !important;
 }
 /* Push Lefts */
-.pushLeftTrivial{
-    margin-left:5px;
+.pushLeftTrivial {
+    margin-left: 5px !important;
 }
-.pushLeftMinor{
-    margin-left:15px;
+.pushLeftMinor {
+    margin-left: 15px !important;
 }
-.pushLeftNormal{
-    margin-left:25px;
+.pushLeftNormal {
+    margin-left: 25px !important;
 }
-.pushLeftMajor{
-    margin-left:35px;
+.pushLeftMajor {
+    margin-left: 35px !important;
 }
 /* Push Rights */
-.pushRightTrivial{
-    margin-right:5px;
+.pushRightTrivial {
+    margin-right: 5px !important;
 }
-.pushRightMinor{
-    margin-right:15px;
+.pushRightMinor {
+    margin-right: 15px !important;
 }
-.pushRightNormal{
-    margin-right:25px;
+.pushRightNormal {
+    margin-right: 25px !important;
 }
-.pushRightMajor{
-    margin-right:35px;
+.pushRightMajor {
+    margin-right: 35px !important;
 }
 
 /* Size */

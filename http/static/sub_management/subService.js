@@ -153,8 +153,22 @@
         $window.location.href = webtoolsModel.apiV3Url + "/pms/downloadSubtitle/" + subtitleKey;
     }
 
-    this.viewSubtitle = function (subtitleKey) {
-        $window.location.href = webtoolsModel.apiV3Url + "/pms/showSubtitle/" + subtitleKey;
+    this.viewSubtitle = function (subtitleKey, callback) {
+        //$window.location.href = webtoolsModel.apiV3Url + "/pms/showSubtitle/" + subtitleKey;
+        var url = webtoolsModel.apiV3Url + "/pms/showSubtitle/" + subtitleKey;
+
+        webtoolsModel.subLoading = true;
+        $http({
+            method: "GET",
+            url: url
+        }).then(function (resp) {
+            subModel.selectedSub = resp.data;
+            if (callback) callback(resp.data);
+            webtoolsModel.subLoading = false;
+        }, function (errorResp) {
+            webtoolsService.log("subService.viewSubtitle - " + webtoolsService.formatError(errorResp), "Sub", true, url);
+            webtoolsModel.subLoading = false;
+        });
     }
 
 

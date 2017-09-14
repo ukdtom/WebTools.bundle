@@ -1,9 +1,25 @@
-﻿angular.module('webtools').controller('subController', ['$scope', 'subModel', 'subService', function ($scope, subModel, subService) {
+﻿angular.module('webtools').controller('subController', ['$scope', 'subModel', 'subService', 'gettext', function ($scope, subModel, subService, gettext) {
     $scope.subModel = subModel;
 
-    subService.getShows();
-
     $scope.searchPlaceholder = "Search...";
+
+    $scope.translate = function () {
+        var lang = {
+            searchPlaceholder: gettext("search..."),
+            searchKeyword: gettext("Search keyword"),
+            clearSearch: gettext("Clear search"),
+            previous: gettext("Previous"),
+            next: gettext("Next"),
+            jumpToTop: gettext("Jump to top"),
+            hideShowMenu: gettext("Hide/Show search menu")
+        };
+        $scope.lang = lang;
+    }
+
+    $scope.init = function () {
+        subService.getShows();
+        $scope.translate();
+    }
 
     $scope.searchSub = function () {
         for (var i = 0; i < subModel.shows.length; i++) {
@@ -99,4 +115,30 @@
             if (detail.subtitles[i].checked) $scope.delete(detail, detail.subtitles[i]);
         }
     };
+
+
+    $scope.searchKeyword = function () {
+        if ($scope.subModel.searchKeywordValue && $scope.subModel.searchKeywordValue === $scope.subModel.searchKeywordValueLast) {
+            if ($scope.subModel.searchFoundLines.length > 0) $scope.$broadcast("sub_search_nextLine");
+        }
+        else {
+            $scope.$broadcast("sub_search_findKeywords");
+        }
+    }
+    $scope.searchClear = function () {
+        $scope.subModel.searchKeywordValue = "";
+        $scope.$broadcast("sub_search_findKeywords");
+    }
+    $scope.searchPrevious = function () {
+        if ($scope.subModel.searchFoundLines.length > 0) $scope.$broadcast("sub_search_previousLine");
+    }
+    $scope.searchJumpToTop = function () {
+        $scope.$broadcast("sub_search_jumpToTop");
+    }
+
+    $scope.$on("$destroy", function () {
+        subModel.selectedSub = null;
+    });
+
+    $scope.init();
 }]);

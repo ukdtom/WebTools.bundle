@@ -8,7 +8,7 @@
     width:400px;
     margin:5px;
 }
-.logs .download{
+.logs .logButton{
     float:left;
     padding: 5px;
     height:30px;
@@ -20,7 +20,7 @@
     white-space: nowrap;
     overflow:hidden;
 }
-.logs .download:hover{
+.logs .logButton:hover {
     background-color: rgba(40, 96, 144, 0.8);
 }
 

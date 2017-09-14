@@ -13,6 +13,7 @@
                 struture += "<table>";
                 for (var i = 1; i <= scope.data.length; i++) {
                     var line = scope.data[i - 1];
+                    line = scope.escapeHTML(line);
                     var tr = "<tr id='row" + i + "' class='" + (scope.isDanger(line) ? "danger" : "") + "'>";
                     struture += tr + "<td class='index'>#" + i + "</td><td class='detail'>" + line + "</td></tr>";
                 }
@@ -52,6 +53,12 @@
                 scope.scrollTo(scrollTo - 80); //Minus header
             }
 
+            /* Custom for removing html */
+            scope.escapeHTML = function(html) {
+                return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            /* Broadcast on listeners */
             scope.$on("logs_search_findKeywords", function () {
                 logsModel.searchCurrentIndex = 0;
                 logsModel.searchFoundLines = [];
