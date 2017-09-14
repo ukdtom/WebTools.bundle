@@ -56,7 +56,7 @@ class playlistsV3(object):
             newList = {}
             # Grap the original one, and sort by ListId
             for lib in orgPlaylist:
-                #items = orgPlaylist[lib]
+                # items = orgPlaylist[lib]
                 for item in orgPlaylist[lib]:
                     print 'Ged333', item
                     print 'Ged444', item['ListId']
@@ -67,7 +67,7 @@ class playlistsV3(object):
 
             print 'Ged3', newList
 
-        ''' PlayList already exists ? 
+        ''' PlayList already exists ?
             Return true/false '''
         def alreadyPresent(title):
             # Get a list of PlayLists
@@ -155,6 +155,9 @@ class playlistsV3(object):
 
         ''' *************** Main stuff here *********************** '''
 
+        returnResult = {}
+        success = []
+        failed = []
         # Payload Upload file present?
         if not 'localFile' in req.request.files:
             req.clear()
@@ -202,6 +205,7 @@ class playlistsV3(object):
                         finalItems[items[item]['LibraryUUID']] = []
                         finalItems[items[item]['LibraryUUID']].append(
                             finalItem)
+                    success.append(items[item]['title'])
                 else:
                     Log.Debug('Could not find item with a title of %s' %
                               items[item]['title'])
@@ -216,16 +220,21 @@ class playlistsV3(object):
                         else:
                             finalItems[result[1]] = []
                             finalItems[result[1]].append(finalItem)
+                        success.append(items[item]['title'])
                     else:
+                        failed.append(items[item]['title'])
                         Log.Error('Item %s was not found' %
                                   items[item]['title'])
-
-            print 'Ged FinalItems', finalItems
-            print 'Ged TODO import this'
-
             ratingKey = doImport(finalItems, sType, playlistTitle)
             # Now order the playlist
             # orderPlaylist(ratingKey, finalItems)
+
+            returnResult['success'] = success
+            returnResult['failed'] = failed
+            Log.Info('Import returned %s' % (json.dumps(returnResult)))
+            req.clear()
+            req.set_status(200)
+            req.finish(json.dumps(returnResult))
 
         except Exception, e:
             Log.Exception(
