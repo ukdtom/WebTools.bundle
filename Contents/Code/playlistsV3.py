@@ -45,6 +45,28 @@ class playlistsV3(object):
         sSrvId = None
         bSameSrv = False
 
+        ''' Order the playlist '''
+        def orderPlaylist(playlistId, orgPlaylist):
+            print 'Ged Order Playlist'
+            print 'Ged1', playlistId
+            print 'Ged2', orgPlaylist
+
+            print 'Ged3'
+
+            newList = {}
+            # Grap the original one, and sort by ListId
+            for lib in orgPlaylist:
+                #items = orgPlaylist[lib]
+                for item in orgPlaylist[lib]:
+                    print 'Ged333', item
+                    print 'Ged444', item['ListId']
+                    newList[item['ListId']] = item['title']
+
+            print 'Ged3-0', newList
+            newList = sorted(newList, key=lambda x: x['ListId'])
+
+            print 'Ged3', newList
+
         ''' PlayList already exists ? 
             Return true/false '''
         def alreadyPresent(title):
@@ -90,6 +112,7 @@ class playlistsV3(object):
                         String.Quote(medias)
                     HTTP.Request(targetSecondUrl, cacheTime=0,
                                  immediate=True, method="PUT")
+            return ratingKey
 
         ''' Phrase our own playlist '''
         def phraseOurs(lines):
@@ -200,7 +223,10 @@ class playlistsV3(object):
             print 'Ged FinalItems', finalItems
             print 'Ged TODO import this'
 
-            doImport(finalItems, sType, playlistTitle)
+            ratingKey = doImport(finalItems, sType, playlistTitle)
+            # Now order the playlist
+            # orderPlaylist(ratingKey, finalItems)
+
         except Exception, e:
             Log.Exception(
                 'Exception happened in Playlist import was: %s' % (str(e)))
