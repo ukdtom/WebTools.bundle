@@ -66,6 +66,10 @@ msgstr ""
 msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
 msgstr ""
 
+#: ../http/static/sub_management/sub.html:90
+msgid "Back"
+msgstr ""
+
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
 msgstr ""
@@ -99,6 +103,7 @@ msgid "Check for bundle updates"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:9
+#: ../http/static/sub_management/subController.js:10
 msgid "Clear search"
 msgstr ""
 
@@ -195,7 +200,8 @@ msgstr ""
 msgid "Force language translation update"
 msgstr ""
 
-#: ../http/static/logs/logs.html:11
+#: ../http/static/logs/logs.html:5
+#: ../http/static/sub_management/sub.html:75
 msgid "Found"
 msgstr ""
 
@@ -204,6 +210,7 @@ msgid "Help"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:13
+#: ../http/static/sub_management/subController.js:14
 msgid "Hide/Show search menu"
 msgstr ""
 
@@ -246,6 +253,7 @@ msgid "Install"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:12
+#: ../http/static/sub_management/subController.js:13
 msgid "Jump to top"
 msgstr ""
 
@@ -310,7 +318,12 @@ msgid "New Version:"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:11
+#: ../http/static/sub_management/subController.js:12
 msgid "Next"
+msgstr ""
+
+#: ../http/static/logs/logs.html:46
+msgid "Next file"
 msgstr ""
 
 #: ../http/static/uas/uasService.js:6
@@ -362,7 +375,12 @@ msgid "Playlist Help"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:10
+#: ../http/static/sub_management/subController.js:11
 msgid "Previous"
+msgstr ""
+
+#: ../http/static/logs/logs.html:44
+msgid "Previous file"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:101
@@ -375,6 +393,10 @@ msgstr ""
 
 #: ../http/login.html:52
 msgid "Release Notes:"
+msgstr ""
+
+#: ../http/static/logs/logs.html:45
+msgid "Reload file"
 msgstr ""
 
 #: ../http/static/uas/uas.html:104
@@ -396,6 +418,7 @@ msgid "Search for for movies and series inside categories"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:8
+#: ../http/static/sub_management/subController.js:9
 msgid "Search keyword"
 msgstr ""
 
@@ -614,11 +637,13 @@ msgstr ""
 msgid "not up to date."
 msgstr ""
 
-#: ../http/static/logs/logs.html:11
+#: ../http/static/logs/logs.html:5
+#: ../http/static/sub_management/sub.html:75
 msgid "rows"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:7
+#: ../http/static/sub_management/subController.js:8
 msgid "search..."
 msgstr ""
 

@@ -201,7 +201,8 @@ msgstr "Sprog"
 msgid "Force language translation update"
 msgstr "Opdater oversættelse"
 
-#: ../http/static/logs/logs.html:11
+#: ../http/static/logs/logs.html:5
+#: ../http/static/sub_management/sub.html:75
 msgid "Found"
 msgstr "Fundet"
 
@@ -209,12 +210,14 @@ msgstr "Fundet"
 msgid "Welcome to"
 msgstr "Velkommen til"
 
-#: ../http/static/logs/logs.html:11
+#: ../http/static/logs/logs.html:5
+#: ../http/static/sub_management/sub.html:75
 msgid "rows"
 msgstr "rækker"
 
 #. Clear the search input field in logs
 #: ../http/static/logs/logsController.js:9
+#: ../http/static/sub_management/subController.js:10
 msgid "Clear search"
 msgstr "Nulstil søgning"
 
@@ -224,6 +227,7 @@ msgid "Delete ignored folder"
 msgstr "Slet bibliotek som bliver ignoreret"
 
 #: ../http/static/logs/logsController.js:13
+#: ../http/static/sub_management/subController.js:14
 msgid "Hide/Show search menu"
 msgstr "Vis/Skjul søge menu"
 
@@ -232,22 +236,27 @@ msgid "Hide/Show settings menu"
 msgstr "Vis/Skjul instillinger"
 
 #: ../http/static/logs/logsController.js:12
+#: ../http/static/sub_management/subController.js:13
 msgid "Jump to top"
 msgstr "Hop til toppen"
 
 #: ../http/static/logs/logsController.js:11
+#: ../http/static/sub_management/subController.js:12
 msgid "Next"
 msgstr "Næste"
 
 #: ../http/static/logs/logsController.js:10
+#: ../http/static/sub_management/subController.js:11
 msgid "Previous"
 msgstr "Forrige"
 
 #: ../http/static/logs/logsController.js:8
+#: ../http/static/sub_management/subController.js:9
 msgid "Search keyword"
 msgstr "Søg"
 
 #: ../http/static/logs/logsController.js:7
+#: ../http/static/sub_management/subController.js:8
 msgid "search..."
 msgstr "Søg..."
 
@@ -321,7 +330,7 @@ msgstr "Manuel installation"
 msgid "Migrate"
 msgstr "Migrer"
 
-#: ../http/static/uas/uas.html:74
+#: ../http/static/uas/uas.html:80
 msgid "Categories:"
 msgstr "Kategorier:"
 
@@ -330,7 +339,7 @@ msgid "Copy"
 msgstr "Kopier"
 
 #: ../http/static/playlist/playlist.html:36
-#: ../http/static/uas/uas.html:55
+#: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "Slet"
 
@@ -338,11 +347,11 @@ msgstr "Slet"
 msgid "Download"
 msgstr "Download"
 
-#: ../http/static/uas/uas.html:48
+#: ../http/static/uas/uas.html:54
 msgid "Install"
 msgstr "Installer"
 
-#: ../http/static/uas/uas.html:82
+#: ../http/static/uas/uas.html:88
 msgid "Last updated:"
 msgstr "Seneste Updatering:"
 
@@ -350,11 +359,11 @@ msgstr "Seneste Updatering:"
 msgid "Manual install url..."
 msgstr "Manuelt installations url..."
 
-#: ../http/static/uas/uas.html:90
+#: ../http/static/uas/uas.html:96
 msgid "Manual:"
 msgstr "Manuel:"
 
-#: ../http/static/uas/uas.html:98
+#: ../http/static/uas/uas.html:104
 msgid "Repo:"
 msgstr "Git Repo:"
 
@@ -370,7 +379,7 @@ msgstr "Selv"
 msgid "Subtitle Management Help"
 msgstr "Undertekst management hjælp"
 
-#: ../http/static/uas/uas.html:107
+#: ../http/static/uas/uas.html:113
 msgid "Support:"
 msgstr "Support:"
 
@@ -382,7 +391,7 @@ msgstr "Dette er en uofficiel manager for undertekster."
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "For at starte, vælg et af dine biblioteker eller klik på \"?\" for yderligere hjælp"
 
-#: ../http/static/uas/uas.html:49
+#: ../http/static/uas/uas.html:55
 msgid "Update"
 msgstr "Opdater"
 
@@ -539,23 +548,23 @@ msgstr "De talentfulde og hårdt arbejdende folk hos Plex. Vi er evigt taknemmel
 msgid "Translations and Beta testers"
 msgstr "Oversættere og Beta testere"
 
-#: ../http/static/uas/uas.html:39
+#: ../http/static/uas/uas.html:45
 msgid "Update all"
 msgstr "Opdater alle"
 
-#: ../http/static/uas/uas.html:38
+#: ../http/static/uas/uas.html:39
 msgid "You have"
 msgstr "Du har"
 
-#: ../http/static/uas/uas.html:38
+#: ../http/static/uas/uas.html:41
 msgid "bundle"
 msgstr "bundle"
 
-#: ../http/static/uas/uas.html:38
+#: ../http/static/uas/uas.html:42
 msgid "bundles"
 msgstr "bundles"
 
-#: ../http/static/uas/uas.html:38
+#: ../http/static/uas/uas.html:43
 msgid "not up to date."
 msgstr "som ikke er opdateret"
 
@@ -590,10 +599,6 @@ msgstr "Kodeord"
 #: ../http/login.html:43
 msgid "Password again"
 msgstr "Kodeord igen"
-
-#: ../http/login.html:38
-msgid "Plex.tv is not connected to PMS"
-msgstr "Plex.tv er ikke forbundet til din PMS"
 
 #: ../http/login.html:52
 msgid "Release Notes:"
@@ -635,4 +640,24 @@ msgstr "Forkert kodeord"
 #: ../http/login.html:46
 msgid "Wrong username and/or password"
 msgstr "Forkert brugernavn og/eller kodeord "
+
+#: ../http/login.html:38
+msgid "PMS is not connected to plex.tv"
+msgstr "PMS er ikke logget ind til plex.tv"
+
+#: ../http/static/sub_management/sub.html:90
+msgid "Back"
+msgstr "Tilbage"
+
+#: ../http/static/logs/logs.html:46
+msgid "Next file"
+msgstr "Næste fil"
+
+#: ../http/static/logs/logs.html:44
+msgid "Previous file"
+msgstr "Forrige fil"
+
+#: ../http/static/logs/logs.html:45
+msgid "Reload file"
+msgstr "Genindlæs"
 

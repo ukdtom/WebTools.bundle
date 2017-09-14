@@ -39,7 +39,7 @@ msgstr "Apagar legenda associada"
 msgid "File empty"
 msgstr "Arquivo vazio"
 
-#: ../http/static/menu/menu.html:21
+#: ../http/static/menu/menu.html:22
 msgid "Help"
 msgstr "Ajuda"
 
@@ -51,7 +51,7 @@ msgstr "Listar todas as legendas para um filme ou série em sua biblioteca"
 msgid "LogViewer Tool"
 msgstr "Ferramenta de Visualização de Logs"
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:19
 msgid "Logout"
 msgstr "Sair"
 
@@ -83,7 +83,7 @@ msgstr "Tema"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "Esta ferramenta inclui funcionalidades de FindUnmatched e FindMissing."
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:13
 msgid "Update WT"
 msgstr "Actualizar WebTools"
 
@@ -91,17 +91,13 @@ msgstr "Actualizar WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Inspeccionar a legenda para identificar o que apagar"
 
-#: ../http/static/menu/menu.html:23
+#: ../http/static/menu/menu.html:24
 msgid "WT Forum Thread"
 msgstr "Suporte a WebTools"
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT GitHub"
 msgstr "GitHub"
-
-#: ../http/static/menu/menu.html:25
-msgid "WT Manual(PDF)"
-msgstr "Documentação WebTools (pdf)"
 
 #: ../http/static/404/404.html:1
 msgid "We could not find the page :("
@@ -193,7 +189,7 @@ msgstr "Extensões válidas"
 msgid "Change Language"
 msgstr "Mudar idioma"
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:14
 msgid "Language"
 msgstr "Idioma"
 
@@ -201,7 +197,8 @@ msgstr "Idioma"
 msgid "Force language translation update"
 msgstr "Refrescar tradução"
 
-#: ../http/static/logs/logs.html:11
+#: ../http/static/logs/logs.html:5
+#: ../http/static/sub_management/sub.html:75
 msgid "Found"
 msgstr "Encontrado"
 
@@ -209,11 +206,13 @@ msgstr "Encontrado"
 msgid "Welcome to"
 msgstr "Bem vindo a"
 
-#: ../http/static/logs/logs.html:11
+#: ../http/static/logs/logs.html:5
+#: ../http/static/sub_management/sub.html:75
 msgid "rows"
 msgstr "linhas"
 
 #: ../http/static/logs/logsController.js:9
+#: ../http/static/sub_management/subController.js:10
 msgid "Clear search"
 msgstr "Limpar Pesquisa"
 
@@ -222,6 +221,7 @@ msgid "Delete ignored folder"
 msgstr "Apagar pasta Ignorada"
 
 #: ../http/static/logs/logsController.js:13
+#: ../http/static/sub_management/subController.js:14
 msgid "Hide/Show search menu"
 msgstr "Esconder/Mostrar Menu de Pesquisa"
 
@@ -230,22 +230,27 @@ msgid "Hide/Show settings menu"
 msgstr "Esconder/Mostrar Menu de Configuração"
 
 #: ../http/static/logs/logsController.js:12
+#: ../http/static/sub_management/subController.js:13
 msgid "Jump to top"
 msgstr "Ir para o cimo"
 
 #: ../http/static/logs/logsController.js:11
+#: ../http/static/sub_management/subController.js:12
 msgid "Next"
 msgstr "Próximo"
 
 #: ../http/static/logs/logsController.js:10
+#: ../http/static/sub_management/subController.js:11
 msgid "Previous"
 msgstr "Anterior"
 
 #: ../http/static/logs/logsController.js:8
+#: ../http/static/sub_management/subController.js:9
 msgid "Search keyword"
 msgstr "Palavra de Pesquisa"
 
 #: ../http/static/logs/logsController.js:7
+#: ../http/static/sub_management/subController.js:8
 msgid "search..."
 msgstr "Pesquisa . . ."
 
@@ -301,23 +306,23 @@ msgstr ""
 msgid "* You can select a category on the menu on the right."
 msgstr ""
 
-#: ../http/static/uas/uas.html:12
+#: ../http/static/uas/uas.html:13
 msgid "Check for bundle updates"
 msgstr ""
 
-#: ../http/static/uas/uas.html:11
+#: ../http/static/uas/uas.html:12
 msgid "Force UAS update"
 msgstr ""
 
-#: ../http/static/uas/uas.html:7
+#: ../http/static/uas/uas.html:8
 msgid "Manual Install"
 msgstr ""
 
-#: ../http/static/uas/uas.html:10
+#: ../http/static/uas/uas.html:11
 msgid "Migrate"
 msgstr ""
 
-#: ../http/static/uas/uas.html:76
+#: ../http/static/uas/uas.html:80
 msgid "Categories:"
 msgstr ""
 
@@ -326,7 +331,7 @@ msgid "Copy"
 msgstr ""
 
 #: ../http/static/playlist/playlist.html:36
-#: ../http/static/uas/uas.html:57
+#: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr ""
 
@@ -334,11 +339,11 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-#: ../http/static/uas/uas.html:50
+#: ../http/static/uas/uas.html:54
 msgid "Install"
 msgstr ""
 
-#: ../http/static/uas/uas.html:84
+#: ../http/static/uas/uas.html:88
 msgid "Last updated:"
 msgstr ""
 
@@ -346,11 +351,11 @@ msgstr ""
 msgid "Manual install url..."
 msgstr ""
 
-#: ../http/static/uas/uas.html:92
+#: ../http/static/uas/uas.html:96
 msgid "Manual:"
 msgstr ""
 
-#: ../http/static/uas/uas.html:100
+#: ../http/static/uas/uas.html:104
 msgid "Repo:"
 msgstr ""
 
@@ -366,7 +371,7 @@ msgstr ""
 msgid "Subtitle Management Help"
 msgstr ""
 
-#: ../http/static/uas/uas.html:109
+#: ../http/static/uas/uas.html:113
 msgid "Support:"
 msgstr ""
 
@@ -378,7 +383,7 @@ msgstr ""
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr ""
 
-#: ../http/static/uas/uas.html:51
+#: ../http/static/uas/uas.html:55
 msgid "Update"
 msgstr ""
 
@@ -434,17 +439,216 @@ msgstr ""
 msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
 msgstr ""
 
-#: ../http/static/factoryreset/fr.html:10
 #: ../http/static/factoryreset/fr.html:2
+#: ../http/static/factoryreset/fr.html:7
 #: ../http/static/menu/menu.html:18
 msgid "Factory Reset"
 msgstr ""
 
-#: ../http/static/factoryreset/fr.html:7
+#: ../http/static/factoryreset/fr.html:6
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
 msgstr ""
 
 #: ../http/static/factoryreset/fr.html:3
 msgid "This will reset WebTools to what is was, when first installed"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:48
+msgid "No playlists available"
+msgstr ""
+
+#: ../http/static/uas/uasService.js:7
+msgid "Updates available"
+msgstr ""
+
+#: ../http/static/menu/menu.html:26
+msgid "WT Manual Online"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:13
+msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
+msgstr ""
+
+#: ../http/static/menu/menu.html:15
+msgid "About us"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:22
+msgid "And Many Thanks To"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:25
+msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:5
+msgid "Main Developers"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:18
+msgid "Never Forget"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:6
+msgid "Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:30
+msgid "Thank you for your support!!"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:19
+msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:7
+msgid "Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:20
+msgid "V2 frontend was made by dagalufh"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:27
+msgid "Your Support"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:10
+msgid "trumpy81"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:3
+msgid "About us and Credits"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:9
+msgid "Custom Themes and Wiki"
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:28
+msgid "If you use WebTools and you are willing to support the developers with a beer or two, then please click on the 'Donate'\n"
+"        button below."
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:23
+msgid "The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and\n"
+"        hard work."
+msgstr ""
+
+#: ../http/static/aboutus/aboutus.html:12
+msgid "Translations and Beta testers"
+msgstr ""
+
+#: ../http/static/uas/uas.html:45
+msgid "Update all"
+msgstr ""
+
+#: ../http/static/uas/uas.html:39
+msgid "You have"
+msgstr ""
+
+#: ../http/static/uas/uas.html:41
+msgid "bundle"
+msgstr ""
+
+#: ../http/static/uas/uas.html:42
+msgid "bundles"
+msgstr ""
+
+#: ../http/static/uas/uas.html:43
+msgid "not up to date."
+msgstr ""
+
+#: ../http/login.html:53
+msgid "Continue"
+msgstr ""
+
+#: ../http/login.html:40
+msgid "Create a local password"
+msgstr ""
+
+#: ../http/login.html:45
+msgid "Create password"
+msgstr ""
+
+#: ../http/login.html:54
+msgid "Download Latest"
+msgstr ""
+
+#: ../http/login.html:50
+msgid "New Version available"
+msgstr ""
+
+#: ../http/login.html:51
+msgid "New Version:"
+msgstr ""
+
+#: ../http/login.html:42
+msgid "Password"
+msgstr ""
+
+#: ../http/login.html:43
+msgid "Password again"
+msgstr ""
+
+#: ../http/login.html:52
+msgid "Release Notes:"
+msgstr ""
+
+#: ../http/login.html:44
+msgid "Sign in"
+msgstr ""
+
+#: ../http/login.html:39
+msgid "Sign in with your local password"
+msgstr ""
+
+#: ../http/login.html:36
+#: ../http/login.html:47
+msgid "Signing in towards plex.tv"
+msgstr ""
+
+#: ../http/login.html:49
+msgid "The passwords does not match"
+msgstr ""
+
+#: ../http/login.html:37
+msgid "Use your regular Plex credentials"
+msgstr ""
+
+#: ../http/login.html:41
+msgid "Username"
+msgstr ""
+
+#: ../http/login.html:55
+msgid "WebTools not available... Please contact Devs!"
+msgstr ""
+
+#: ../http/login.html:48
+msgid "Wrong password"
+msgstr ""
+
+#: ../http/login.html:46
+msgid "Wrong username and/or password"
+msgstr ""
+
+#: ../http/login.html:38
+msgid "PMS is not connected to plex.tv"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:90
+msgid "Back"
+msgstr ""
+
+#: ../http/static/logs/logs.html:46
+msgid "Next file"
+msgstr ""
+
+#: ../http/static/logs/logs.html:44
+msgid "Previous file"
+msgstr ""
+
+#: ../http/static/logs/logs.html:45
+msgid "Reload file"
 msgstr ""
 
