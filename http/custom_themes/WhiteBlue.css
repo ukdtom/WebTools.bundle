@@ -108,6 +108,13 @@ help {
 .sub .rowShow .lineShow .contentShow .tvshowheader div:hover{
     background: rgba(0, 0, 0, 0.33);
 }
+.sub .rowShow .lineShow .contentShow .loadmore{
+    background: rgba(64,139,255,0.5);
+    border: solid 6px rgba(34,46,74,1);    
+}
+.sub .rowShow .lineShow .contentShow .loadmore:hover{
+    background: rgba(64,139,255,0.23);
+}
 .sub .rowShow .lineShow .contentShow .detail{
     background: rgba(255, 255, 255, 0.03);
 }
@@ -163,6 +170,23 @@ help {
 .logs .logDetails table tr.lineFound.focused{
     background-color: rgba(0, 77, 255, 1);
     box-shadow: 0px 0px 2px 0px yellow;
+}
+/* UAS */
+.uas .type.active{
+    color:white;
+    border-radius:3px;
+    background: #2370ca;
+    background: rgba(33,98,173,1);
+    background: -moz-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -webkit-gradient(left top,right top,color-stop(0%,rgba(33,98,173,1)),color-stop(25%,rgba(40,125,222,1)),color-stop(75%,rgba(40,125,222,1)),color-stop(100%,rgba(33,98,173,1)));
+    background: -webkit-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -o-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -ms-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%)!important;
+    background: linear-gradient(to right,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%)!important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2162ad',endColorstr='#2162ad',GradientType=1)!important;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    -moz-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
 }
 
 /* Theme */
