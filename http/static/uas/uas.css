@@ -189,6 +189,7 @@
     border-radius: 90px;
     border: 1px rgba(247, 247, 247, 0.55) groove;
     padding: 3px 5px 0px 5px;
+    z-index:2;
 }
 .uas .repoContainer .repo .header .right .revealedIcon:hover {
     background: rgba(255, 255, 255, 0.1);
