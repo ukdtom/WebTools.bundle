@@ -96,6 +96,24 @@
     padding:12px;
     width:100%;
 }
+.sub .rowShow .lineShow .contentShow .letterChooserContainer{
+    float:left;
+    width:100%;
+    margin-bottom: 20px;
+}
+.sub .rowShow .lineShow .contentShow .letterChooserContainer .letterChooserLabel {
+    float: left;
+    margin-right:10px;
+}
+.sub .rowShow .lineShow .contentShow .letterChooserContainer .letterChooser {
+    float: left;
+    color: black;
+    min-width: 100px;
+    height: 22px;
+    border-radius: 5px;
+    padding: 2px;
+}
+
 .sub .rowShow .lineShow .contentShow .loadmore{
     height: 40px;
     padding-top: 8px;
