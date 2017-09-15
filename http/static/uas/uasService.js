@@ -289,6 +289,7 @@
                             uasModel.selectedType = uasModel.types["All"];
                             uasModel.selectedType.name = uasModel.types["All"].key;
                         }
+                        _this.getTypes();
                     }
                 }
                 
