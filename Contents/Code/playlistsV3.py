@@ -47,25 +47,49 @@ class playlistsV3(object):
 
         ''' Order the playlist '''
         def orderPlaylist(playlistId, orgPlaylist):
-            print 'Ged Order Playlist'
-            print 'Ged1', playlistId
-            print 'Ged2', orgPlaylist
+            try:
+                newList = {}
+                # Grap the original one, and sort by ListId
+                for lib in orgPlaylist:
+                    # items = orgPlaylist[lib]
+                    for item in orgPlaylist[lib]:
+                        newList[item['ListId']] = item['title']
+                # Sort it
+                # print sorted(newList)
 
-            print 'Ged3'
+                # Now get the import list as it is now
+                url = misc.GetLoopBack() + '/playlists/' + playlistId + '/items' + '?' + EXCLUDE
+                print 'Ged url', url
+                playListXML = XML.ElementFromURL(url)
+                playListJson = {}
+                for video in playListXML:
+                    # print 'Ged1', video.get('title'), video.get('playlistItemID')
 
-            newList = {}
-            # Grap the original one, and sort by ListId
-            for lib in orgPlaylist:
-                # items = orgPlaylist[lib]
-                for item in orgPlaylist[lib]:
-                    print 'Ged333', item
-                    print 'Ged444', item['ListId']
-                    newList[item['ListId']] = item['title']
+                    playListJson[video.get('title')] = video.get(
+                        'playlistItemID')
 
-            print 'Ged3-0', newList
-            newList = sorted(newList, key=lambda x: x['ListId'])
+                counter = 0
+                for item in sorted(newList):
+                    print 'Ged item', item
+                    # get title of item
+                    print 'Ged title', newList[item]
 
-            print 'Ged3', newList
+                    itemToMove = playListJson[newList[item]]
+                    print 'Ged ItemToMove', itemToMove
+                    if counter == 0:
+                        url = misc.GetLoopBack() + '/playlists/' + playlistId + \
+                            '/items/' + str(itemToMove) + '/move'
+                        print 'Ged first url', url
+
+                print 'Ged current', playListJson
+
+                for item in sorted(newList):
+                    moveUrl = misc.GetLoopBack() + '/playlists/' + playlistId + \
+                        '/items/' + item + '/move'
+                    print 'Ged move', moveUrl
+
+            except Exception, e:
+                print str(e)
 
         ''' PlayList already exists ?
             Return true/false '''
@@ -227,7 +251,7 @@ class playlistsV3(object):
                                   items[item]['title'])
             ratingKey = doImport(finalItems, sType, playlistTitle)
             # Now order the playlist
-            # orderPlaylist(ratingKey, finalItems)
+            #orderPlaylist(ratingKey, finalItems)
 
             returnResult['success'] = success
             returnResult['failed'] = failed
