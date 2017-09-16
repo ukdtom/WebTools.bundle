@@ -3,7 +3,7 @@
 .fm label{
     cursor:pointer;
 }
-
+/* Exposed in Custom Style sheets
 .fm button{
     margin: 5px 0;
     padding: 2px;
@@ -13,7 +13,7 @@
     height:27px;
     background-color: #286090;
 }
-
+ */
 .fm .settings{
     background-color: #353535;
     position: fixed;
