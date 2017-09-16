@@ -66,7 +66,7 @@ msgstr ""
 msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:90
+#: ../http/static/sub_management/sub.html:103
 msgid "Back"
 msgstr ""
 
@@ -103,8 +103,12 @@ msgid "Check for bundle updates"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:9
-#: ../http/static/sub_management/subController.js:10
+#: ../http/static/sub_management/subController.js:8
 msgid "Clear search"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subDetails.html:22
+msgid "Codec"
 msgstr ""
 
 #: ../http/login.html:53
@@ -141,6 +145,10 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+#: ../http/static/sub_management/subController.js:21
+msgid "Delete Selected"
+msgstr ""
+
 #: ../http/static/playlist/playlistHelp.html:5
 msgid "Delete a playlist"
 msgstr ""
@@ -153,12 +161,20 @@ msgstr ""
 msgid "Delete selected sidecar from the harddrive."
 msgstr ""
 
+#: ../http/static/sub_management/subController.js:19
+msgid "Deselect All"
+msgstr ""
+
 #: ../http/static/playlist/playlist.html:41
 msgid "Download"
 msgstr ""
 
 #: ../http/login.html:54
 msgid "Download Latest"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:23
+msgid "Download Subtitle"
 msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:4
@@ -182,6 +198,10 @@ msgstr ""
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
 msgstr ""
 
+#: ../http/static/sub_management/subController.js:15
+msgid "Expand a library to search"
+msgstr ""
+
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
 #: ../http/static/menu/menu.html:18
@@ -190,6 +210,10 @@ msgstr ""
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:23
+msgid "Filter by letter"
 msgstr ""
 
 #: ../http/static/uas/uas.html:12
@@ -201,7 +225,7 @@ msgid "Force language translation update"
 msgstr ""
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:88
 msgid "Found"
 msgstr ""
 
@@ -210,7 +234,7 @@ msgid "Help"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:13
-#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:12
 msgid "Hide/Show search menu"
 msgstr ""
 
@@ -253,8 +277,12 @@ msgid "Install"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:12
-#: ../http/static/sub_management/subController.js:13
+#: ../http/static/sub_management/subController.js:11
 msgid "Jump to top"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subDetails.html:20
+msgid "Lang"
 msgstr ""
 
 #: ../http/static/menu/menu.html:14
@@ -267,6 +295,14 @@ msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:5
 msgid "List all subtitles for a movie/tv show in your library."
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:41
+msgid "Load more"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subDetails.html:21
+msgid "Location"
 msgstr ""
 
 #: ../http/static/logs/logs.html:17
@@ -318,7 +354,7 @@ msgid "New Version:"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:11
-#: ../http/static/sub_management/subController.js:12
+#: ../http/static/sub_management/subController.js:10
 msgid "Next"
 msgstr ""
 
@@ -328,6 +364,10 @@ msgstr ""
 
 #: ../http/static/uas/uasService.js:6
 msgid "No Channels/Plug-ins was migrated"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:39
+msgid "No movies found in"
 msgstr ""
 
 #: ../http/static/playlist/playlist.html:48
@@ -340,6 +380,14 @@ msgstr ""
 
 #: ../http/static/findmedia/fm.html:110
 msgid "No records missing from harddrive"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:51
+msgid "No series found in"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subDetails.html:37
+msgid "None"
 msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:9
@@ -375,7 +423,7 @@ msgid "Playlist Help"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:10
-#: ../http/static/sub_management/subController.js:11
+#: ../http/static/sub_management/subController.js:9
 msgid "Previous"
 msgstr ""
 
@@ -418,8 +466,17 @@ msgid "Search for for movies and series inside categories"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:8
-#: ../http/static/sub_management/subController.js:9
+#: ../http/static/sub_management/subController.js:7
 msgid "Search keyword"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:6
+msgid "Search..."
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:18
+msgid "Select All"
 msgstr ""
 
 #: ../http/static/theme/theme.html:5
@@ -549,6 +606,10 @@ msgstr ""
 msgid "Updates available"
 msgstr ""
 
+#: ../http/static/sub_management/subController.js:20
+msgid "Upload Subtitle"
+msgstr ""
+
 #: ../http/static/sub_management/sub.html:4
 msgid "Usage at your own risk!"
 msgstr ""
@@ -571,6 +632,10 @@ msgstr ""
 
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:22
+msgid "View Subtitle"
 msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:9
@@ -638,15 +703,19 @@ msgid "not up to date."
 msgstr ""
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:88
 msgid "rows"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:7
-#: ../http/static/sub_management/subController.js:8
 msgid "search..."
 msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:10
 msgid "trumpy81"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:39
+#: ../http/static/sub_management/sub.html:51
+msgid "with current search filter"
 msgstr ""

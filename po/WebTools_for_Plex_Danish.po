@@ -202,7 +202,7 @@ msgid "Force language translation update"
 msgstr "Opdater oversættelse"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:88
 msgid "Found"
 msgstr "Fundet"
 
@@ -211,13 +211,13 @@ msgid "Welcome to"
 msgstr "Velkommen til"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:88
 msgid "rows"
 msgstr "rækker"
 
 #. Clear the search input field in logs
 #: ../http/static/logs/logsController.js:9
-#: ../http/static/sub_management/subController.js:10
+#: ../http/static/sub_management/subController.js:8
 msgid "Clear search"
 msgstr "Nulstil søgning"
 
@@ -227,7 +227,7 @@ msgid "Delete ignored folder"
 msgstr "Slet bibliotek som bliver ignoreret"
 
 #: ../http/static/logs/logsController.js:13
-#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:12
 msgid "Hide/Show search menu"
 msgstr "Vis/Skjul søge menu"
 
@@ -236,27 +236,26 @@ msgid "Hide/Show settings menu"
 msgstr "Vis/Skjul instillinger"
 
 #: ../http/static/logs/logsController.js:12
-#: ../http/static/sub_management/subController.js:13
+#: ../http/static/sub_management/subController.js:11
 msgid "Jump to top"
 msgstr "Hop til toppen"
 
 #: ../http/static/logs/logsController.js:11
-#: ../http/static/sub_management/subController.js:12
+#: ../http/static/sub_management/subController.js:10
 msgid "Next"
 msgstr "Næste"
 
 #: ../http/static/logs/logsController.js:10
-#: ../http/static/sub_management/subController.js:11
+#: ../http/static/sub_management/subController.js:9
 msgid "Previous"
 msgstr "Forrige"
 
 #: ../http/static/logs/logsController.js:8
-#: ../http/static/sub_management/subController.js:9
+#: ../http/static/sub_management/subController.js:7
 msgid "Search keyword"
 msgstr "Søg"
 
 #: ../http/static/logs/logsController.js:7
-#: ../http/static/sub_management/subController.js:8
 msgid "search..."
 msgstr "Søg..."
 
@@ -645,7 +644,7 @@ msgstr "Forkert brugernavn og/eller kodeord "
 msgid "PMS is not connected to plex.tv"
 msgstr "PMS er ikke logget ind til plex.tv"
 
-#: ../http/static/sub_management/sub.html:90
+#: ../http/static/sub_management/sub.html:103
 msgid "Back"
 msgstr "Tilbage"
 
@@ -660,4 +659,74 @@ msgstr "Forrige fil"
 #: ../http/static/logs/logs.html:45
 msgid "Reload file"
 msgstr "Genindlæs"
+
+#: ../http/static/sub_management/Directive/subDetails.html:22
+msgid "Codec"
+msgstr "Codec"
+
+#: ../http/static/sub_management/subController.js:21
+msgid "Delete Selected"
+msgstr "Slet valgte"
+
+#: ../http/static/sub_management/subController.js:19
+msgid "Deselect All"
+msgstr "Fravælg alle"
+
+#: ../http/static/sub_management/subController.js:23
+msgid "Download Subtitle"
+msgstr "Hent undertekst"
+
+#: ../http/static/sub_management/sub.html:23
+msgid "Filter by letter"
+msgstr "Filtrer på bogstav"
+
+#: ../http/static/sub_management/Directive/subDetails.html:20
+msgid "Lang"
+msgstr "Sprog"
+
+#: ../http/static/sub_management/sub.html:41
+msgid "Load more"
+msgstr "Hent flere"
+
+#: ../http/static/sub_management/Directive/subDetails.html:21
+msgid "Location"
+msgstr "Placering"
+
+#: ../http/static/sub_management/sub.html:39
+msgid "No movies found in"
+msgstr "Ingen film fundet i"
+
+#: ../http/static/sub_management/sub.html:51
+msgid "No series found in"
+msgstr "Ingen serier fundet i"
+
+#: ../http/static/sub_management/Directive/subDetails.html:37
+msgid "None"
+msgstr "Ingen"
+
+#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:6
+msgid "Search..."
+msgstr "Søg..."
+
+#: ../http/static/sub_management/subController.js:18
+msgid "Select All"
+msgstr "Vælg alle"
+
+#: ../http/static/sub_management/subController.js:20
+msgid "Upload Subtitle"
+msgstr "Upload undertekst"
+
+#: ../http/static/sub_management/subController.js:22
+msgid "View Subtitle"
+msgstr "Vis undertekst"
+
+#: ../http/static/sub_management/sub.html:39
+#: ../http/static/sub_management/sub.html:51
+msgid "with current search filter"
+msgstr "med valgte søge filter"
+
+#: ../http/static/sub_management/subController.js:15
+msgid "Expand a library to search"
+msgstr "Udvid et bibliotek for at søge"
 
