@@ -53,43 +53,36 @@ class playlistsV3(object):
                 for lib in orgPlaylist:
                     # items = orgPlaylist[lib]
                     for item in orgPlaylist[lib]:
-                        newList[item['ListId']] = item['title']
-                # Sort it
-                # print sorted(newList)
-
+                        newList[item['ListId']] = item['title']                                
                 # Now get the import list as it is now
-                url = misc.GetLoopBack() + '/playlists/' + playlistId + '/items' + '?' + EXCLUDE
-                print 'Ged url', url
+                url = misc.GetLoopBack() + '/playlists/' + playlistId + '/items' + '?' + EXCLUDE                
                 playListXML = XML.ElementFromURL(url)
                 playListJson = {}
-                for video in playListXML:
-                    # print 'Ged1', video.get('title'), video.get('playlistItemID')
-
+                for video in playListXML:                    
                     playListJson[video.get('title')] = video.get(
                         'playlistItemID')
-
                 counter = 0
-                for item in sorted(newList):
-                    print 'Ged item', item
-                    # get title of item
-                    print 'Ged title', newList[item]
-
-                    itemToMove = playListJson[newList[item]]
-                    print 'Ged ItemToMove', itemToMove
+                for item in sorted(newList):                    
+                    # get title of item                    
+                    itemToMove = playListJson[newList[item]]                    
+                    #after = 0
                     if counter == 0:
                         url = misc.GetLoopBack() + '/playlists/' + playlistId + \
                             '/items/' + str(itemToMove) + '/move'
                         print 'Ged first url', url
-
-                print 'Ged current', playListJson
-
-                for item in sorted(newList):
-                    moveUrl = misc.GetLoopBack() + '/playlists/' + playlistId + \
-                        '/items/' + item + '/move'
-                    print 'Ged move', moveUrl
-
+                        counter += 1
+                        after = itemToMove
+                    else:
+                        url = misc.GetLoopBack() + '/playlists/' + playlistId + \
+                            '/items/' + str(itemToMove) + \
+                            '/move?after=' + str(after)
+                        print 'Ged Following url', url
+                        after = itemToMove
+                    # Now move the darn thing
+                    HTTP.Request(url, cacheTime=0,
+                                 immediate=True, method="PUT")
             except Exception, e:
-                print str(e)
+                Log.Exception('Exception in PlayList orderList was %s' %(str(e)))                
 
         ''' PlayList already exists ?
             Return true/false '''
@@ -251,7 +244,7 @@ class playlistsV3(object):
                                   items[item]['title'])
             ratingKey = doImport(finalItems, sType, playlistTitle)
             # Now order the playlist
-            #orderPlaylist(ratingKey, finalItems)
+            orderPlaylist(ratingKey, finalItems)
 
             returnResult['success'] = success
             returnResult['failed'] = failed
@@ -779,8 +772,6 @@ def deletePlayLIstforUsr(req, key, token):
         req.finish(
             'Exception happened when deleting a playlist for the user was: %s' % (str(e)))
     return req
-
-#******************* Internal functions ***************************
 
 
 ''' This function returns true or false, if key/path matches for a media '''
