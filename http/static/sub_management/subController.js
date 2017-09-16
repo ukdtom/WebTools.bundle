@@ -12,7 +12,7 @@
             hideShowMenu: gettext("Hide/Show search menu"),
 
             search: gettext("Search..."),
-            expandShowToSearch: gettext("Expand a show to search"),
+            expandShowToSearch: gettext("Expand a library to search"),
 
             /* subDetails.html */
             selectAll: gettext("Select All"),
