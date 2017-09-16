@@ -1,39 +1,34 @@
 ﻿angular.module('webtools').controller('subController', ['$scope', 'subModel', 'subService', 'gettext', function ($scope, subModel, subService, gettext) {
     $scope.subModel = subModel;
 
-    $scope.searchPlaceholder = "Search...";
-
     $scope.translate = function () {
         var lang = {
-            searchPlaceholder: gettext("search..."),
+            searchPlaceholder: gettext("Search..."),
             searchKeyword: gettext("Search keyword"),
             clearSearch: gettext("Clear search"),
             previous: gettext("Previous"),
             next: gettext("Next"),
             jumpToTop: gettext("Jump to top"),
-            hideShowMenu: gettext("Hide/Show search menu")
+            hideShowMenu: gettext("Hide/Show search menu"),
+
+            search: gettext("Search..."),
+            expandShowToSearch: gettext("Expand a show to search"),
+
+            /* subDetails.html */
+            selectAll: gettext("Select All"),
+            deselectAll: gettext("Deselect All"),
+            uploadSubtitle: gettext("Upload Subtitle"),
+            deleteSelected: gettext("Delete Selected"),
+            viewSubtitle: gettext("View Subtitle"),
+            downloadSubtitle: gettext("Download Subtitle")
         };
         $scope.lang = lang;
+        $scope.searchPlaceholder = $scope.lang.search;
     }
 
     $scope.init = function () {
-        subService.getShows();
         $scope.translate();
-    }
-
-    $scope.searchSub = function () {
-        for (var i = 0; i < subModel.shows.length; i++) {
-            var show = subModel.shows[i];
-            if (show.details && show.type === "movie") {
-                show.skip = 0;
-                show.full = false;
-                show.details = [];
-                subService.getMovieDetails(show);
-            } else if (show.tvshows && show.type === "show") {
-                show.tvshows = [];
-                subService.getTvShowDetails(show);
-            }
-        }
+        subService.getShows();
     }
 
     $scope.isAnyShowExpanded = function () {
@@ -43,13 +38,37 @@
             if (show.expanded) isExpanded = true;
         }
 
-        if (isExpanded) $scope.searchPlaceholder = "Search...";
-        else $scope.searchPlaceholder = "Expand a show to search";
+        if (isExpanded) $scope.searchPlaceholder = $scope.lang.search;
+        else $scope.searchPlaceholder = $scope.lang.expandShowToSearch;
         return isExpanded;
+    }
+
+    $scope.searchSub = function () {
+        for (var i = 0; i < subModel.shows.length; i++) {
+            var show = subModel.shows[i];
+            $scope.reloadShow(show);
+        }
+    }
+
+    $scope.reloadShow = function (show) {
+        if (show.details && show.type === "movie") {
+            show.skip = 0;
+            show.full = false;
+            show.details = [];
+            subService.getMovieDetails(show);
+        } else if (show.tvshows && show.type === "show") {
+            show.tvshows = [];
+            subService.getTvShowDetails(show);
+        }
     }
 
     $scope.expandShow = function (show) {
         show.expanded = !show.expanded;
+
+        if (!show.letterOptions) { //letterOptions & letter
+            subService.getSectionLetterList(show);
+        }
+
         if (!show.details && show.type === "movie") {
             show.details = [];
             subService.getMovieDetails(show);

@@ -18,6 +18,17 @@
                     <div class="type" ng-click="expandShow(show)"><img ng-src="icons/{[{show.type}]}.png" /></div>
                     <div class="title textSize3 textBold600" ng-click="expandShow(show)">{[{show.title}]}</div>
                     <div class="contentShow" ng-if="show.expanded">
+
+                        <div class="letterChooserContainer">
+                            <div class="letterChooserLabel textBold600 textSize2" translate>Filter by letter</div>
+                            <select class="letterChooser" ng-model="show.letter" ng-change="reloadShow(show)">
+                                <option ng-repeat="letter in show.letterOptions track by letter.key"
+                                        value="{[{letter.key}]}">
+                                    {[{letter.name}]} {[{letter.size}]}
+                                </option>
+                            </select>
+                        </div>
+
                         <div ng-if="show.type === 'movie'">
                             <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.details | orderBy : 'title' track by detail.key" ng-init="detail.subAllChecked = false;detail.loading = false;">
                                 <div class="col-sm-12 detail">
@@ -25,10 +36,11 @@
                                     <div ng-if="!detail.loading" sub-details></div>
                                 </div>
                             </div>
-                            <div class="row" ng-if="!show.loading && show.details.length === 0"> <span class="textSize3">No movies found in '{[{show.title}]}' with current search filter</span></div>
+                            <div class="row" ng-if="!show.loading && show.details.length === 0"> <span class="textSize3"><translate>No movies found in</translate> '{[{show.title}]}' <translate>with current search filter</translate></span></div>
                             <content-loading ng-if="show.loading"></content-loading>
-                            <div ng-if="!show.full && !show.loading" ng-click="loadmore(show)" class="loadmore textSize3"><span class="fa fa-tasks"></span> Load more</div>
+                            <div ng-if="!show.full && !show.loading" ng-click="loadmore(show)" class="loadmore textSize3"><span class="fa fa-tasks"></span> <translate>Load more</translate></div>
                         </div>
+
                         <div ng-if="!show.loading && show.type === 'show'">
                             <div class="tvshow" 
                                  ng-if="!show.selectedTvShow" 
@@ -36,7 +48,7 @@
                                  ng-repeat="tvshow in show.tvshows track by tvshow.key | orderBy : 'title'">
                                 {[{tvshow.title}]}
                             </div>
-                            <div class="row" ng-if="!show.loading && show.tvshows.length === 0"> <span class="textSize3">No series found in '{[{show.title}]}' with current search filter</span></div>
+                            <div class="row" ng-if="!show.loading && show.tvshows.length === 0"> <span class="textSize3"><translate>No series found in</translate> '{[{show.title}]}' <translate>with current search filter</translate></span></div>
                             <content-loading ng-if="(show.selectedTvShow && show.selectedTvShow.loading) || (show.selectedSeason && show.selectedSeason.loading)"></content-loading>
                             <div class="tvshowheader textSize3 textBold600">
                                 <div ng-if="show.selectedTvShow && !show.selectedTvShow.loading && !show.selectedSeason">
@@ -63,6 +75,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

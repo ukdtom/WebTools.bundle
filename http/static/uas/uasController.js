@@ -37,6 +37,10 @@
     }
 
     $scope.installUpdate = function (repo, repoUrl, reinit) {
+        if (!repoUrl) {
+            console.log("No repo url");
+            return;
+        }
         repo.url = repoUrl;
 
         if (reinit) uasService.installUpdate(repo, $scope.init);

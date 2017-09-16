@@ -264,19 +264,41 @@
         }).then(function (resp) {
             repo.installed = false;
             repo.date = null;
+
+            uasModel.types["All"].installed -= 1;
+            uasModel.types["All"].viewInstalled -= 1;
+
             for (var i = 0; i < repo.type.length; i++) {
                 var type = repo.type[i];
-                uasModel.types[type].installed -= 1;
-                uasModel.types[type].viewInstalled -= 1;
 
-                uasModel.types["All"].installed -= 1;
-                uasModel.types["All"].viewInstalled -= 1;
+                if (type === _this.lang.updatesAvailable) {
+                    for (var ui = 0; ui < uasModel.updateList.length; ui++) {
+                        var item = uasModel.updateList[ui];
+                        if (item.key === repo.key) {
+                            _this.getUpdateList();
+                            break;
+                        }
+                    }
+                }
+                else {
+                    uasModel.types[type].installed -= 1;
+                    uasModel.types[type].viewInstalled -= 1;
+                    if (type === "Unknown") {
+                        delete uasModel.list[repo.key];
+                        if (uasModel.types[type].installed === 0 && uasModel.selectedType.key === "Unknown") {
+                            uasModel.selectedType = uasModel.types["All"];
+                            uasModel.selectedType.name = uasModel.types["All"].key;
+                        }
+                        _this.getTypes();
+                    }
+                }
+                
             }
 
             if (callback) callback(resp.data);
             repo.workingLoading = false;
         }, function (errorResp) {
-            webtoolsService.log("uasService.installUpdate - " + webtoolsService.formatError(errorResp), "Uas", true, url);
+            webtoolsService.log("uasService.delete - " + webtoolsService.formatError(errorResp), "Uas", true, url);
             repo.workingLoading = false;
         });
     }

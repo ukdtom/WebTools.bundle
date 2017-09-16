@@ -1,4 +1,10 @@
-﻿angular.module('webtools').service('subService', ['$http', 'subModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', '$window', function ($http, subModel, webtoolsModel, webtoolsService, DialogFactory, $window) {
+﻿angular.module('webtools').service('subService', ['$http', 'subModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', '$window', 'gettext', function ($http, subModel, webtoolsModel, webtoolsService, DialogFactory, $window, gettext) {
+    //var _this = this;
+
+    //this.lang = {
+    //    all: gettext("")
+    //}
+
     this.getShows = function (callback) {
         webtoolsModel.subLoading = true;
         var url = webtoolsModel.apiV3Url + "/pms/getSectionsList";
@@ -10,7 +16,7 @@
             angular.forEach(resp.data, function (media) {
                 if (media.type === "movie" || media.type === "show") {
                     media.expanded = false;
-                    media.loading = false;
+                    media.loading = 0;
                     subModel.shows.push(media);
                 }
             });
@@ -22,12 +28,43 @@
         });
     }
 
+    this.getSectionLetterList = function (show, callback) {
+        show.loading++;
+        var url = webtoolsModel.apiV3Url + "/pms/getSectionLetterList/" + show.key;
+
+        $http({
+            method: "GET",
+            url: url,
+        }).then(function (resp) {
+            show.letterOptions = [{
+                name: " ",
+                key: null,
+                size: ""
+            }];
+            show.letter = show.letterOptions[0].key;
+            for (var key in resp.data) {
+                if (resp.data.hasOwnProperty(key)) {
+                    var item = resp.data[key];
+                    item.name = key;
+                    show.letterOptions.push(item);
+                }
+            }
+            if (callback) callback(resp.data);
+            show.loading--;
+        }, function (errorResp) {
+            webtoolsService.log("subService.getSectionLetterList - " + webtoolsService.formatError(errorResp), "Sub", true, url);
+            show.loading--;
+        });
+    }
+
     this.getMovieDetails = function (show, callback) {
         var skip = (show.skip ? show.skip : 0);
         var take = 20;
 
-        show.loading = true;
+        show.loading++;
         var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/" + skip + "/size/" + take + "/getSubs/title/" + subModel.searchValue;
+        if (show.letter) url += "/letterKey/" + show.letter;
+
         $http({
             method: "GET",
             url: url,
@@ -40,31 +77,34 @@
             show.skip = show.details.length;
 
             if (callback) callback(resp.data);
-            show.loading = false;
+            show.loading--;
         }, function (errorResp) {
             webtoolsService.log("subService.getMovieDetails - " + webtoolsService.formatError(errorResp), "Sub", true, url);
-            show.loading = false;
+            show.loading--;
         });
     }
 
     this.getTvShowDetails = function (show, callback) {
-        show.loading = true;
+
+        show.loading++;
         var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/0/size/9999/title/" + subModel.searchValue;
+        if (show.letter) url += "/letterKey/" + show.letter;
+
         $http({
             method: "GET",
             url: url,
         }).then(function (resp) {
             show.tvshows = resp.data;
             if (callback) callback(resp.data);
-            show.loading = false;
+            show.loading--;
         }, function (errorResp) {
             webtoolsService.log("subService.getTvShowDetails - " + webtoolsService.formatError(errorResp), "Sub", true, url);
-            show.loading = false;
+            show.loading--;
         });
     }
 
     this.getTvShowSeasons = function (tvshow, callback) {
-        tvshow.loading = true;
+        tvshow.loading++;
         var url = webtoolsModel.apiV3Url + "/pms/getShowSeasons/" + tvshow.key;
         $http({
             method: "GET",
@@ -72,10 +112,10 @@
         }).then(function (resp) {
             tvshow.seasons = resp.data;
             if (callback) callback(resp.data);
-            tvshow.loading = false;
+            tvshow.loading--;
         }, function (errorResp) {
             webtoolsService.log("subService.getTvShowSeasons - " + webtoolsService.formatError(errorResp), "Sub", true, url);
-            tvshow.loading = false;
+            tvshow.loading--;
         });
     }
 
