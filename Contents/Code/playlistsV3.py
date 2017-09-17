@@ -8,6 +8,7 @@
 ######################################################################################################################
 import time
 import io
+import os
 import json
 import datetime
 import re
@@ -53,36 +54,35 @@ class playlistsV3(object):
                 for lib in orgPlaylist:
                     # items = orgPlaylist[lib]
                     for item in orgPlaylist[lib]:
-                        newList[item['ListId']] = item['title']                                
+                        newList[item['ListId']] = item['title']
                 # Now get the import list as it is now
-                url = misc.GetLoopBack() + '/playlists/' + playlistId + '/items' + '?' + EXCLUDE                
+                url = misc.GetLoopBack() + '/playlists/' + playlistId + '/items' + '?' + EXCLUDE
                 playListXML = XML.ElementFromURL(url)
                 playListJson = {}
-                for video in playListXML:                    
+                for video in playListXML:
                     playListJson[video.get('title')] = video.get(
                         'playlistItemID')
                 counter = 0
-                for item in sorted(newList):                    
-                    # get title of item                    
-                    itemToMove = playListJson[newList[item]]                    
-                    #after = 0
+                for item in sorted(newList):
+                    # get title of item
+                    itemToMove = playListJson[newList[item]]
+                    # after = 0
                     if counter == 0:
                         url = misc.GetLoopBack() + '/playlists/' + playlistId + \
                             '/items/' + str(itemToMove) + '/move'
-                        print 'Ged first url', url
                         counter += 1
                         after = itemToMove
                     else:
                         url = misc.GetLoopBack() + '/playlists/' + playlistId + \
                             '/items/' + str(itemToMove) + \
                             '/move?after=' + str(after)
-                        print 'Ged Following url', url
                         after = itemToMove
                     # Now move the darn thing
                     HTTP.Request(url, cacheTime=0,
                                  immediate=True, method="PUT")
             except Exception, e:
-                Log.Exception('Exception in PlayList orderList was %s' %(str(e)))                
+                Log.Exception(
+                    'Exception in PlayList orderList was %s' % (str(e)))
 
         ''' PlayList already exists ?
             Return true/false '''
@@ -92,7 +92,10 @@ class playlistsV3(object):
             # Grap the titles
             playlists = ','.join(
                         map(str, (playlist.get('title') for playlist in playlists)))
-            return title in playlists
+            for titleInPlayList in playlists.split(','):
+                if title == titleInPlayList:
+                    return True
+            return False
 
         ''' Import a playlist '''
         def doImport(jsonItems, playlistType, playlistTitle):
@@ -184,6 +187,8 @@ class playlistsV3(object):
         else:
             localFile = req.request.files['localFile'][0]['body']
         try:
+            playlistTitle = req.request.files['localFile'][0]['filename'].rsplit('.')[
+                0]
             # Make into seperate lines
             lines = localFile.split('\n')
             # Start by checking if we have a valid playlist file
@@ -196,7 +201,6 @@ class playlistsV3(object):
             # Let's check if it's one of ours
             bOurs = (lines[1] == '#Written by WebTools for Plex')
             if bOurs:
-                playlistTitle = lines[2].split(':')[1][1:]
                 if alreadyPresent(playlistTitle):
                     Log.Error('Playlist %s already exists' % playlistTitle)
                     req.clear()
