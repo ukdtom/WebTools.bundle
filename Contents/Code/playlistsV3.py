@@ -30,6 +30,8 @@ DELETE = ['DELETE']
 
 EXCLUDE = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline'
 
+ROOTNODES = {'audio': 'Track', 'video': 'Video'}
+
 
 class playlistsV3(object):
     ''' Defaults used by the rest of the class '''
@@ -47,35 +49,33 @@ class playlistsV3(object):
         bSameSrv = False
 
         ''' Order the playlist '''
-        def orderPlaylist(playlistId, orgPlaylist):
+        def orderPlaylist(playlistId, orgPlaylist, sType):
             try:
-                newList = {}
-                # Grap the original one, and sort by ListId
-                for lib in orgPlaylist:
-                    # items = orgPlaylist[lib]
-                    for item in orgPlaylist[lib]:
-                        newList[item['ListId']] = item['title']
+                rootNode = ROOTNODES[sType]
                 # Now get the import list as it is now
                 url = misc.GetLoopBack() + '/playlists/' + playlistId + '/items' + '?' + EXCLUDE
                 playListXML = XML.ElementFromURL(url)
-                playListJson = {}
-                for video in playListXML:
-                    playListJson[video.get('title')] = video.get(
-                        'playlistItemID')
+                newList = {}
+                # Grap the original one, and sort by ListId
+                for lib in orgPlaylist:
+                    for item in orgPlaylist[lib]:
+                        newList[item['ListId']] = item['title']
+                # Need a counter here, since HTTP url differs from first to last ones
                 counter = 0
                 for item in sorted(newList):
-                    # get title of item
-                    itemToMove = playListJson[newList[item]]
-                    # after = 0
+                    # get playListItemId of item
+                    xPathStr = "//" + rootNode + \
+                        "[@title='" + newList[item] + "']/@playlistItemID"
+                    itemToMove = str(playListXML.xpath(unicode(xPathStr))[0])
                     if counter == 0:
                         url = misc.GetLoopBack() + '/playlists/' + playlistId + \
-                            '/items/' + str(itemToMove) + '/move'
+                            '/items/' + itemToMove + '/move'
                         counter += 1
                         after = itemToMove
                     else:
                         url = misc.GetLoopBack() + '/playlists/' + playlistId + \
-                            '/items/' + str(itemToMove) + \
-                            '/move?after=' + str(after)
+                            '/items/' + itemToMove + \
+                            '/move?after=' + after
                         after = itemToMove
                     # Now move the darn thing
                     HTTP.Request(url, cacheTime=0,
@@ -140,7 +140,7 @@ class playlistsV3(object):
             items = {}
             Log.Debug('Import file was ours')
             sName = lines[2].split(':')[1][1:]
-            Log.Debug('Playlist name is %s' % sName)
+            Log.Debug('Playlist name internally is %s' % sName)
             sType = lines[3].split(':')[1][1:]
             Log.Debug('Playlist type is %s' % sType)
             sSrvId = lines[4].split(':')[1][1:]
@@ -159,7 +159,7 @@ class playlistsV3(object):
                     item['LibraryUUID'] = media['LibraryUUID']
                     lineNo += 1
                     media = lines[lineNo][8:].split(',', 1)
-                    item['title'] = media[1].split('-', 1)[1][1:]
+                    item['title'] = media[1].split(' - ', 1)[1]
                     lineNo += 1
                     item['fileName'] = lines[lineNo]
                     items[id] = item
@@ -241,21 +241,21 @@ class playlistsV3(object):
                         else:
                             finalItems[result[1]] = []
                             finalItems[result[1]].append(finalItem)
-                        success.append(items[item]['title'])
+                        success.append(unicode(items[item]['title']))
                     else:
                         failed.append(items[item]['title'])
                         Log.Error('Item %s was not found' %
                                   items[item]['title'])
             ratingKey = doImport(finalItems, sType, playlistTitle)
             # Now order the playlist
-            orderPlaylist(ratingKey, finalItems)
-
+            orderPlaylist(ratingKey, finalItems, sType)
             returnResult['success'] = success
             returnResult['failed'] = failed
-            Log.Info('Import returned %s' % (json.dumps(returnResult)))
+            Log.Info('Import returned %s' %
+                     (json.dumps(returnResult, ensure_ascii=False)))
             req.clear()
             req.set_status(200)
-            req.finish(json.dumps(returnResult))
+            req.finish(json.dumps(returnResult, ensure_ascii=False))
 
         except Exception, e:
             Log.Exception(
@@ -799,13 +799,13 @@ def checkItemIsValid(key, title, sType):
 
 
 def searchForItemKey(title, sType):
-    url = misc.GetLoopBack() + '/search?query=' + String.Quote(title) + '&' + EXCLUDE
     try:
         result = []
-        found = XML.ElementFromURL(url)
         # TODO: Fix for other types
         # Are we talking about a video here?
         if sType == 'video':
+            url = misc.GetLoopBack() + '/search?query=' + String.Quote(title) + '&' + EXCLUDE
+            found = XML.ElementFromURL(url)
             itemType = found.xpath('//Video/@type')[0]
             if itemType in ['movie', 'episode', 'show']:
                 ratingKey = found.xpath('//Video/@ratingKey')[0]
@@ -816,5 +816,17 @@ def searchForItemKey(title, sType):
                 Log.Info('Item named %s was located as item with key %s' %
                          (title, ratingKey))
                 return result
+        elif sType == 'audio':
+            url = misc.GetLoopBack() + '/search?type=10&query=' + \
+                String.Quote(title) + '&' + EXCLUDE
+            found = XML.ElementFromURL(url)
+            ratingKey = found.xpath('//Track/@ratingKey')[0]
+            result.append(ratingKey)
+            librarySectionUUID = found.xpath(
+                '//Track/@librarySectionUUID')[0]
+            result.append(librarySectionUUID)
+            Log.Info('Item named %s was located as item with key %s' %
+                     (title, ratingKey))
+            return result
     except Exception, e:
         pass
