@@ -1,11 +1,13 @@
-######################################################################################################################
+'''
+##############################################################################################
 #	WebTools module unit
 #
 #	Author: dane22, a Plex Community member
 #
 # 	Handles calles to the API V3
 #
-######################################################################################################################
+##############################################################################################
+'''
 
 from tornado.web import *
 from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES
@@ -95,7 +97,7 @@ class apiv3(BaseHandler):
                                                 playlistsV3, V3MODULES[self.module])
                                         except Exception, e:
                                             Log.Exception(
-                                                'Exception getting the class in apiV3: ' + str(e))
+                                                'Exception getting the class in apiV3: %s' % str(e))
                                             self.clear()
                                             self.set_status(501)
                                             self.finish('Bad module?')
@@ -108,23 +110,22 @@ class apiv3(BaseHandler):
             self.set_status(501)
             self.finish('Bad reqprocess call?')
 
-    #******* GET REQUEST *********
+    '''******* GET REQUEST *********'''
     @authenticated
-    # Get Request
     def get(self, **params):
         self.makeCall()
 
-    #******* POST REQUEST *********
+    '''******* POST REQUEST *********'''
     @authenticated
     def post(self, **params):
         self.makeCall()
 
-    #******* PUT REQUEST *********
+    '''******* PUT REQUEST *********'''
     @authenticated
     def put(self, **params):
         self.makeCall()
 
-    #******* DELETE REQUEST *********
+    '''******* DELETE REQUEST *********'''
     @authenticated
     def delete(self, **params):
         self.makeCall()
