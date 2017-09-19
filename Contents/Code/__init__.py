@@ -8,7 +8,7 @@
 #					Author:			dagaluf, a Plex Community member
 #					Author:			dane22, a Plex Community member
 #
-#					Support thread:	https://forums.plex.tv/discussion/126254
+#					Support thread:	https://forums.plex.tv/discussion/288191
 #
 ######################################################################################################################
 
