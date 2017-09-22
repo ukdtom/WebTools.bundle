@@ -5,10 +5,9 @@
 #
 #					Allows you to manipulate subtitles on Plex Media Server
 #
-#					Author:			dagaluf, a Plex Community member
 #					Author:			dane22, a Plex Community member
 #
-#					Support thread:	https://forums.plex.tv/discussion/288191
+#					Support thread:	http://forums.plex.tv/discussion/288191
 #
 ######################################################################################################################
 

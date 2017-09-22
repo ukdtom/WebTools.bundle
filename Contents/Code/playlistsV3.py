@@ -19,7 +19,6 @@ from uuid import uuid4
 # TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
 import urllib2
 from xml.etree import ElementTree
-# import requests
 # TODO End
 
 
@@ -30,7 +29,7 @@ DELETE = ['DELETE']
 
 EXCLUDE = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline'
 
-ROOTNODES = {'audio': 'Track', 'video': 'Video'}
+ROOTNODES = {'audio': 'Track', 'video': 'Video', 'photo': 'Photo'}
 
 
 class playlistsV3(object):
@@ -210,7 +209,6 @@ class playlistsV3(object):
                     return
                 sType = lines[3].split(':')[1][1:]
                 items = phraseOurs(lines)
-
             # Now validate the entries
             finalItems = {}
             for item in items:
@@ -546,7 +544,8 @@ class playlistsV3(object):
                                 pass
                         # Pictures
                         else:
-                            row = row + item.get('title').replace(' - ', ' ')
+                            row = row + 'Picture - ' + \
+                                item.get('title').replace(' - ', ' ')
                         # Add file path
                         row = row + '\n' + item.xpath('Media/Part/@file')[0]
                         req.write(unicode(row) + '\n')
@@ -783,13 +782,10 @@ def deletePlayLIstforUsr(req, key, token):
 
 def checkItemIsValid(key, title, sType):
     url = misc.GetLoopBack() + '/library/metadata/' + str(key) + '?' + EXCLUDE
-    # TODO: Fix for other types
-    print 'GED Playlist TODO Here', key, title, sType
     mediaTitle = None
     try:
-        if sType == 'video':
-            mediaTitle = XML.ElementFromURL(
-                url).xpath('//Video')[0].get('title')
+        mediaTitle = XML.ElementFromURL(url).xpath(
+            '//' + ROOTNODES[sType])[0].get('title')
     except:
         pass
     return (title == mediaTitle)
@@ -803,6 +799,19 @@ def searchForItemKey(title, sType):
         result = []
         # TODO: Fix for other types
         # Are we talking about a video here?
+        url = misc.GetLoopBack() + '/search?type=10&query=' + \
+            String.Quote(title) + '&' + EXCLUDE
+        found = XML.ElementFromURL(url)
+        ratingKey = found.xpath('//' + ROOTNODES[sType] + '/@ratingKey')[0]
+        result.append(ratingKey)
+        librarySectionUUID = found.xpath(
+            '//' + ROOTNODES[sType] + '/@librarySectionUUID')[0]
+        result.append(librarySectionUUID)
+        Log.Info('Item named %s was located as item with key %s' %
+                 (title, ratingKey))
+        return result
+
+        '''
         if sType == 'video':
             url = misc.GetLoopBack() + '/search?query=' + String.Quote(title) + '&' + EXCLUDE
             found = XML.ElementFromURL(url)
@@ -828,5 +837,11 @@ def searchForItemKey(title, sType):
             Log.Info('Item named %s was located as item with key %s' %
                      (title, ratingKey))
             return result
+
+
+
+            photo
+        '''
+
     except Exception, e:
         pass
