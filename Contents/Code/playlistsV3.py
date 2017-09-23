@@ -31,6 +31,14 @@ EXCLUDE = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Pr
 
 ROOTNODES = {'audio': 'Track', 'video': 'Video', 'photo': 'Photo'}
 
+VALIDEXT = {'video': ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 'fli', 'flv',
+              'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 'nuv', 'ogm', 'ogv', 'tp',
+              'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr', 'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm'],
+              'photo': ['png','jpg','jpeg','bmp','gif','ico','tif','tiff','tga','pcx','dng','nef','cr2','crw','orf','arw','erf','3fr','dcr','x3f','mef','raf','mrw','pef','sr2', 'mpo', 'jps', 'rw2', 'jp2', 'j2k'],
+              'audio': ['mp3', 'm4a', 'm4b', 'flac', 'aac', 'rm', 'rma', 'mpa', 'wav', 'wma', 'ogg', 'mp2', 'mka',
+              'ac3', 'dts', 'ape', 'mpc', 'mp+', 'mpp', 'shn', 'oga', 'aiff', 'aif', 'wv', 'dsf', 'dsd', 'opus']
+}
+
 
 class playlistsV3(object):
     ''' Defaults used by the rest of the class '''
@@ -810,38 +818,19 @@ def searchForItemKey(title, sType):
         Log.Info('Item named %s was located as item with key %s' %
                  (title, ratingKey))
         return result
-
-        '''
-        if sType == 'video':
-            url = misc.GetLoopBack() + '/search?query=' + String.Quote(title) + '&' + EXCLUDE
-            found = XML.ElementFromURL(url)
-            itemType = found.xpath('//Video/@type')[0]
-            if itemType in ['movie', 'episode', 'show']:
-                ratingKey = found.xpath('//Video/@ratingKey')[0]
-                result.append(ratingKey)
-                librarySectionUUID = found.xpath(
-                    '//Video/@librarySectionUUID')[0]
-                result.append(librarySectionUUID)
-                Log.Info('Item named %s was located as item with key %s' %
-                         (title, ratingKey))
-                return result
-        elif sType == 'audio':
-            url = misc.GetLoopBack() + '/search?type=10&query=' + \
-                String.Quote(title) + '&' + EXCLUDE
-            found = XML.ElementFromURL(url)
-            ratingKey = found.xpath('//Track/@ratingKey')[0]
-            result.append(ratingKey)
-            librarySectionUUID = found.xpath(
-                '//Track/@librarySectionUUID')[0]
-            result.append(librarySectionUUID)
-            Log.Info('Item named %s was located as item with key %s' %
-                     (title, ratingKey))
-            return result
-
-
-
-            photo
-        '''
-
     except Exception, e:
         pass
+
+
+''' Here we detect the Plex type of a media file '''
+
+def guessMediaType(fileName):
+    sType = None
+    # Get ext of the file
+    ext = os.path.splitext(fileName)[1]
+    print 'Ged 1 ext', ext
+    
+    
+
+
+    return sType
