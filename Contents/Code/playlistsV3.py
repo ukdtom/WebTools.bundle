@@ -141,6 +141,64 @@ class playlistsV3(object):
                                  immediate=True, method="PUT")
             return ratingKey
 
+        ''' Phrase phrase3Party playlist '''
+        def phrase3Party(lines):
+            # Placeholder for items to import
+            items = {}
+            Log.Info('Import file was 3Party')            
+            # We need to find out, if this is a regular m3u file, or an extended one            
+            if '#EXTM3U' in lines[0].upper():                
+                extended = True
+                Log.Info('Playlist was an extended one')
+            elif '#M3U' in lines[0].upper():                
+                extended = False
+                Log.Info('Playlist was an non-extended one')
+            else:                
+                Log.Error('Import file does not start with the line: #EXTM3U or #M3U')
+                req.clear()
+                req.set_status(406)
+                req.finish(
+                    'Seems like we are trying to import a file that is not a playlist!')
+                return            
+            if extended:
+                print 'Ged extended'
+                try:                
+                    for line in lines[5:len(lines):3]:
+                        media = json.loads(lines[lineNo][1:])
+                        id = media['Id']
+                        item = {}
+                        item['ListId'] = media['ListId']
+                        item['LibraryUUID'] = media['LibraryUUID']
+                        lineNo += 1
+                        media = lines[lineNo][8:].split(',', 1)
+                        item['title'] = media[1].split(' - ', 1)[1]
+                        lineNo += 1
+                        item['fileName'] = lines[lineNo]
+                        items[id] = item
+                        lineNo += 1
+                    return items            
+                except IndexError:
+                    pass
+                except Exception, e:
+                    Log.Exception('Exception happened in phrase3Party was %s' %(str(e)))
+                    pass
+                finally:
+                    return items
+            else:
+                print 'Ged not extended'
+                try:                
+                    for line in lines[2:len(lines):3]:
+                        items[line] = []                        
+                        print 'Ged', line
+                except IndexError:
+                    pass
+                except Exception, e:
+                    Log.Exception('Exception happened in phrase3Party was %s' %(str(e)))
+                    pass
+                finally:
+                    return items
+                
+
         ''' Phrase our own playlist '''
         def phraseOurs(lines):
             # Placeholder for items to import
@@ -175,7 +233,7 @@ class playlistsV3(object):
             except IndexError:
                 pass
             except Exception, e:
-                # Log.Exception('Exception happened in IMPORT was %s' %(str(e)))
+                # Log.Exception('Exception happened in phraseOurs was %s' %(str(e)))
                 pass
             finally:
                 return items
@@ -198,25 +256,29 @@ class playlistsV3(object):
                 0]
             # Make into seperate lines
             lines = localFile.split('\n')
-            # Start by checking if we have a valid playlist file
-            if lines[0] != '#EXTM3U':
-                Log.Error('Import file does not start with the line: #EXTM3U')
+            # Start by checking if we have a valid playlist file            
+            if 'M3U' not in lines[0].upper():            
+                Log.Error('Import file does not start with the line: #EXTM3U or #M3U')
                 req.clear()
                 req.set_status(406)
                 req.finish(
                     'Seems like we are trying to import a file that is not a playlist!')
+                return
+            if alreadyPresent(playlistTitle):
+                Log.Error('Playlist %s already exists' % playlistTitle)
+                req.clear()
+                req.set_status(406)
+                req.finish('Aborted, since playlist "%s" already existed' % playlistTitle)
+                return
             # Let's check if it's one of ours
             bOurs = (lines[1] == '#Written by WebTools for Plex')
             if bOurs:
-                if alreadyPresent(playlistTitle):
-                    Log.Error('Playlist %s already exists' % playlistTitle)
-                    req.clear()
-                    req.set_status(406)
-                    req.finish(
-                        'Aborted, since playlist "%s" already existed' % playlistTitle)
-                    return
                 sType = lines[3].split(':')[1][1:]
                 items = phraseOurs(lines)
+            else:
+                items = phrase3Party(lines)
+                print 'Ged Items', items
+                sType = guessMediaType(items)
             # Now validate the entries
             finalItems = {}
             for item in items:
