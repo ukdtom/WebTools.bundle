@@ -27,9 +27,13 @@ PUT = []
 POST = ['COPY', 'IMPORT']
 DELETE = ['DELETE']
 
+MEDIASTEPS = 25 # Amount of medias we ask for at a time
+
 EXCLUDE = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline'
 
 ROOTNODES = {'audio': 'Track', 'video': 'Video', 'photo': 'Photo'}
+
+MEDIATYPES = {'Track' : 10}
 
 VALIDEXT = {'video': ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 'fli', 'flv',
               'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 'nuv', 'ogm', 'ogv', 'tp',
@@ -186,16 +190,27 @@ class playlistsV3(object):
                     return items
             else:
                 print 'Ged not extended'
-                try:                
+                try:
+                    # Guess the media type
+                    sType = guessMediaType(lines[2].replace('\r', '').replace('\n', ''))                    
+                    # Get possibel libraries to scan
+                    libs = getLibsOfType(sType)
+                    # Get a key,value list of potential medias
+                    print 'Ged searchPath', libs
+                    mediaList = getFilesFromLib(libs, sType)
+                    print 'Ged MediaList', mediaList
+                    basic = []                
                     for line in lines[2:len(lines):3]:
-                        items[line] = []                        
+                        basic.append(line.replace('\r', '').replace('\n', ''))                        
                         print 'Ged', line
+                    items['basic'] = basic
                 except IndexError:
                     pass
                 except Exception, e:
                     Log.Exception('Exception happened in phrase3Party was %s' %(str(e)))
                     pass
                 finally:
+
                     return items
                 
 
@@ -236,6 +251,7 @@ class playlistsV3(object):
                 # Log.Exception('Exception happened in phraseOurs was %s' %(str(e)))
                 pass
             finally:
+                print 'Ged own', items
                 return items
 
         ''' *************** Main stuff here *********************** '''
@@ -889,10 +905,73 @@ def searchForItemKey(title, sType):
 def guessMediaType(fileName):
     sType = None
     # Get ext of the file
-    ext = os.path.splitext(fileName)[1]
-    print 'Ged 1 ext', ext
-    
-    
-
-
+    ext = os.path.splitext(fileName)[1][1:]    
+    for mediaType in VALIDEXT:        
+        if ext in VALIDEXT[mediaType]:
+            sType = mediaType
     return sType
+
+
+''' Get libraries of a certain type '''
+
+def getLibsOfType(sType):   
+    libsToSearch = []
+    if sType == 'audio':
+        sType = 'artist'    
+    # Getting a list of all libraries
+    try:
+        url = misc.GetLoopBack() + '/library/sections/all'
+        xPathStr = 'Directory[@type="' + sType + '"]'        
+        libs = XML.ElementFromURL(url).xpath(xPathStr)        
+        for lib in libs:  
+            libsToSearch.append(lib.get('key'))        
+        Log.Info('Need to serch the following libraries: %s' %str(libsToSearch))        
+        return libsToSearch
+    except Exception, e:        
+        Log.Exception('Exception in playList getLibsOfType was %s' %str(e))
+    return
+
+''' Get media files from filePath '''
+def getFilesFromLib(libs, sType):
+    print 'Ged getFilesFromLib start'
+    print 'Ged sType', sType
+    print 'Ged path array', libs
+    mediaList = {}
+    # Add from one library at a time
+    for lib in libs:        
+        start = 0 # Start point of items
+        print 'Ged filter 2', MEDIATYPES[ROOTNODES[sType]]
+        baseUrl = misc.GetLoopBack() + '/library/sections/' + lib + '/all?type=' + str(MEDIATYPES[ROOTNODES[sType]]) + '&' + EXCLUDE + '&X-Plex-Container-Start='
+        # Now get the amount of items we need to add
+        url = baseUrl + '0' + '&X-Plex-Container-Size=0'
+        #totalSize = XML.ElementFromURL(url).get('totalSize')
+        libInfo = XML.ElementFromURL(url)
+        totalSize = libInfo.get('totalSize')
+        librarySectionUUID = libInfo.get('librarySectionUUID')
+        print 'Ged totalSize', totalSize
+        try:
+            while int(start) < int(totalSize):
+                url = baseUrl + str(start) + '&X-Plex-Container-Size=' + str(MEDIASTEPS)
+                medias = XML.ElementFromURL(url)
+                for media in medias:
+                    parts = media.xpath('//Media/Part')
+                    for part in parts:                                                
+                        mediaList[os.path.basename(part.get('file'))] = {'fullFileName' : part.get('file'), 'key' : media.get('ratingKey'), 'librarySectionUUID' : librarySectionUUID}
+                start += MEDIASTEPS                            
+        except Exception, e:
+            print 'Ged exception', str(e)
+            Log.Exception('Ged exception: ' + str(e))
+
+
+
+
+        print 'Ged url', url
+    print 'Ged return', mediaList
+        
+# /library/sections/23/all?type=10
+
+
+#ROOTNODES = {'audio': 'Track', 'video': 'Video', 'photo': 'Photo'}
+
+#MEDIATYPES = {'track' : 10}
+    
