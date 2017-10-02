@@ -14,7 +14,7 @@ import json
 import time
 import sys
 import os
-from consts import DEBUGMODE
+from consts import DEBUGMODE, VALIDEXT
 from misc import misc
 
 # Consts used here
@@ -613,10 +613,7 @@ class findMediaV3(object):
                 Dict['findMedia'] = {
                     'IGNORE_HIDDEN': True,
                     'IGNORED_DIRS': [".@__thumb", ".AppleDouble", "lost+found"],
-                    'VALID_EXTENSIONS': ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo',
-                                         'fli', 'flv', 'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv',
-                                         'nuv', 'ogm', 'ogv', 'tp', 'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr',
-                                         'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm'],
+                    'VALID_EXTENSIONS': VALIDEXT['video'],
                     'IGNORE_EXTRAS': True
                 }
                 Dict.Save()
