@@ -15,6 +15,8 @@ import re
 from misc import misc
 from plextvhelper import plexTV
 from uuid import uuid4
+from consts import MEDIATYPE, VALIDEXT
+
 
 # TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
 import urllib2
@@ -34,14 +36,6 @@ EXCLUDE = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Pr
 ROOTNODES = {'audio': 'Track', 'video': 'Video', 'photo': 'Photo'}
 
 MEDIATYPES = {'Track' : 10}
-
-VALIDEXT = {'video': ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 'fli', 'flv',
-              'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 'nuv', 'ogm', 'ogv', 'tp',
-              'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr', 'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm'],
-              'photo': ['png','jpg','jpeg','bmp','gif','ico','tif','tiff','tga','pcx','dng','nef','cr2','crw','orf','arw','erf','3fr','dcr','x3f','mef','raf','mrw','pef','sr2', 'mpo', 'jps', 'rw2', 'jp2', 'j2k'],
-              'audio': ['mp3', 'm4a', 'm4b', 'flac', 'aac', 'rm', 'rma', 'mpa', 'wav', 'wma', 'ogg', 'mp2', 'mka',
-              'ac3', 'dts', 'ape', 'mpc', 'mp+', 'mpp', 'shn', 'oga', 'aiff', 'aif', 'wv', 'dsf', 'dsd', 'opus']
-}
 
 
 class playlistsV3(object):
@@ -195,23 +189,43 @@ class playlistsV3(object):
                     sType = guessMediaType(lines[2].replace('\r', '').replace('\n', ''))                    
                     # Get possibel libraries to scan
                     libs = getLibsOfType(sType)
-                    # Get a key,value list of potential medias
-                    print 'Ged searchPath', libs
+                    # Get a key,value list of potential medias   
+
+                    
                     mediaList = getFilesFromLib(libs, sType)
-                    print 'Ged MediaList', mediaList
-                    basic = []                
+                    #print 'Ged MediaList', mediaList
+                    #Log.Debug('************** PMS contains *****************')
+                    #Log.Debug(mediaList)
+                    
+
+
+
+                    basic = {}
+                    counter = 1
                     for line in lines[2:len(lines):3]:
-                        basic.append(line.replace('\r', '').replace('\n', ''))                        
-                        print 'Ged', line
+                        basic[str(counter)] = line.replace('\r', '').replace('\n', '')
+                        #basic.append(line.replace('\r', '').replace('\n', ''))
+                        counter += 1
                     items['basic'] = basic
+                    #print 'Ged Basic', basic
+
+                    final = {}
+
+                    for item in basic:
+                        #print 'Ged ********', item, basic[item]
+                        if basic[item] in mediaList:
+                            print 'Ged fundet'
+                        else:
+                            print 'Ged missed'
+
                 except IndexError:
                     pass
                 except Exception, e:
                     Log.Exception('Exception happened in phrase3Party was %s' %(str(e)))
                     pass
                 finally:
-
-                    return items
+                    return
+                    #return items
                 
 
         ''' Phrase our own playlist '''
@@ -885,6 +899,9 @@ def searchForItemKey(title, sType):
         result = []
         # TODO: Fix for other types
         # Are we talking about a video here?
+
+        print 'GED STYPE *****************', sType
+
         url = misc.GetLoopBack() + '/search?type=10&query=' + \
             String.Quote(title) + '&' + EXCLUDE
         found = XML.ElementFromURL(url)
@@ -941,37 +958,33 @@ def getFilesFromLib(libs, sType):
     for lib in libs:        
         start = 0 # Start point of items
         print 'Ged filter 2', MEDIATYPES[ROOTNODES[sType]]
-        baseUrl = misc.GetLoopBack() + '/library/sections/' + lib + '/all?type=' + str(MEDIATYPES[ROOTNODES[sType]]) + '&' + EXCLUDE + '&X-Plex-Container-Start='
-        # Now get the amount of items we need to add
-        url = baseUrl + '0' + '&X-Plex-Container-Size=0'
-        #totalSize = XML.ElementFromURL(url).get('totalSize')
+        print 'Ged filter 3', MEDIATYPE[ROOTNODES[sType]]
+        baseUrl = misc.GetLoopBack() + '/library/sections/' + lib + '/all?type=' + str(MEDIATYPES[ROOTNODES[sType]]) + '&' + EXCLUDE + '&X-Plex-Container-Start='        
+        url = baseUrl + '0' + '&X-Plex-Container-Size=0'        
         libInfo = XML.ElementFromURL(url)
+        # Now get the amount of items we need to add
         totalSize = libInfo.get('totalSize')
-        librarySectionUUID = libInfo.get('librarySectionUUID')
-        print 'Ged totalSize', totalSize
+        # Now get the UUID of the library
+        librarySectionUUID = libInfo.get('librarySectionUUID')        
         try:
             while int(start) < int(totalSize):
                 url = baseUrl + str(start) + '&X-Plex-Container-Size=' + str(MEDIASTEPS)
                 medias = XML.ElementFromURL(url)
                 for media in medias:
                     parts = media.xpath('//Media/Part')
-                    for part in parts:                                                
-                        mediaList[os.path.basename(part.get('file'))] = {'fullFileName' : part.get('file'), 'key' : media.get('ratingKey'), 'librarySectionUUID' : librarySectionUUID}
+                    for part in parts: 
+                        mediaInfo = []
+                        if os.path.basename(part.get('file')) in mediaList:
+                            # media already present, so need to append here
+                            mediaInfo = mediaList[os.path.basename(part.get('file'))] 
+                            mediaInfo.append({'fullFileName' : part.get('file'), 'key' : media.get('ratingKey'), 'librarySectionUUID' : librarySectionUUID})                                                                                                  
+                        else:                            
+                            mediaInfo = [{'fullFileName' : part.get('file'), 'key' : media.get('ratingKey'), 'librarySectionUUID' : librarySectionUUID}]
+                        mediaList[os.path.basename(part.get('file'))] = mediaInfo
+                        print 'GED *********', os.path.basename(part.get('file')), '******************'
+                        print 'GED2 *********', mediaInfo, '******************'
+                        print 'GED3 *********', mediaList[os.path.basename(part.get('file'))], '******************'
                 start += MEDIASTEPS                            
-        except Exception, e:
-            print 'Ged exception', str(e)
-            Log.Exception('Ged exception: ' + str(e))
-
-
-
-
-        print 'Ged url', url
-    print 'Ged return', mediaList
-        
-# /library/sections/23/all?type=10
-
-
-#ROOTNODES = {'audio': 'Track', 'video': 'Video', 'photo': 'Photo'}
-
-#MEDIATYPES = {'track' : 10}
-    
+        except Exception, e:            
+            Log.Exception('exception in getFilesFromLib was: %s' %str(e))
+    return mediaList

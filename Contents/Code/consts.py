@@ -24,15 +24,25 @@ NAME = ''																					# Name of plugin
 ICON = 'WebTools.png'																		# Name of Icon in Resource Dir
 BASEURL = ''																				# Base url if behind a proxy
 JSONTIMESTAMP = 0																			# timestamp for json export
-# URL to latest WebTools
-WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'
+WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'               # URL to latest WebTools
 BUNDLEDIRNAME = ''																			# Name of the bundle dir
+
+# Modules used in WebTools
 V3MODULES = {'WT': 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3', 'LANGUAGE': 'languageV3',
              'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3'}
 UILANGUAGE = 'en'
 UILANGUAGEDEBUG = False
 
+MEDIATYPE = {'Movie' : 1, 'Show' : 2, 'Season' : 3, 'Episode' : 4, 'Trailer' : 5, 'Comic' : 6, 'Person' : 7, 'Artist' : 8, 
+            'Album' : 9, 'Track' : 10, 'Clip' : 12, 'Photo' : 13, 'Photo_Album' : 14, 'Playlist' : 15, 'Playlist_Folder' : 16, 'Podcast' : 17}
 
+VALIDEXT = {'video': ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 'fli', 'flv',
+              'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 'nuv', 'ogm', 'ogv', 'tp',
+              'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr', 'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm'],
+              'photo': ['png','jpg','jpeg','bmp','gif','ico','tif','tiff','tga','pcx','dng','nef','cr2','crw','orf','arw','erf','3fr','dcr','x3f','mef','raf','mrw','pef','sr2', 'mpo', 'jps', 'rw2', 'jp2', 'j2k'],
+              'audio': ['mp3', 'm4a', 'm4b', 'flac', 'aac', 'rm', 'rma', 'mpa', 'wav', 'wma', 'ogg', 'mp2', 'mka',
+              'ac3', 'dts', 'ape', 'mpc', 'mp+', 'mpp', 'shn', 'oga', 'aiff', 'aif', 'wv', 'dsf', 'dsd', 'opus']        
+            
 class consts(object):
     init_already = False							# Make sure part of init only run once
 
@@ -152,11 +162,8 @@ class consts(object):
             except Exception, e:
                 Log.Exception('Exception in IsCorrectPath was: %s' % str(e))
 
-####################################################################################################
-# Make default Dict
-####################################################################################################
-    ''' This will generate the default settings in the Dict if missing '''
 
+    ''' This will generate the default settings in the Dict if missing '''
     def makeDefaultSettings(self):
         # Used for Cookie generation
         Dict['SharedSecret'] = VERSION + '.' + str(randint(0, 9999))
