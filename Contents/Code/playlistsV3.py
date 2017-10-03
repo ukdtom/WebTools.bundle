@@ -193,6 +193,15 @@ class playlistsV3(object):
 
                     
                     mediaList = getFilesFromLib(libs, sType)
+
+
+                    print 'GED RETUNER1'
+                    return
+
+
+
+
+
                     #print 'Ged MediaList', mediaList
                     #Log.Debug('************** PMS contains *****************')
                     #Log.Debug(mediaList)
@@ -224,7 +233,8 @@ class playlistsV3(object):
                     Log.Exception('Exception happened in phrase3Party was %s' %(str(e)))
                     pass
                 finally:
-                    return
+                    #print 'Ged own', items
+                    return 
                     #return items
                 
 
@@ -309,6 +319,16 @@ class playlistsV3(object):
                 items = phrase3Party(lines)
                 print 'Ged Items', items
                 sType = guessMediaType(items)
+
+
+
+            return
+
+
+
+
+
+
             # Now validate the entries
             finalItems = {}
             for item in items:
@@ -954,6 +974,7 @@ def getFilesFromLib(libs, sType):
     print 'Ged sType', sType
     print 'Ged path array', libs
     mediaList = {}
+    itemList = {}
     # Add from one library at a time
     for lib in libs:        
         start = 0 # Start point of items
@@ -974,17 +995,32 @@ def getFilesFromLib(libs, sType):
                     parts = media.xpath('//Media/Part')
                     for part in parts: 
                         mediaInfo = []
-                        if os.path.basename(part.get('file')) in mediaList:
+                        #print 'GED 17 File', os.path.basename(part.get('file'))
+                        
+                        if os.path.basename(part.get('file')) in itemList:
                             # media already present, so need to append here
-                            mediaInfo = mediaList[os.path.basename(part.get('file'))] 
+                            print 'GED APPENDING'
+                            mediaInfo = itemList[os.path.basename(part.get('file'))] 
                             mediaInfo.append({'fullFileName' : part.get('file'), 'key' : media.get('ratingKey'), 'librarySectionUUID' : librarySectionUUID})                                                                                                  
                         else:                            
                             mediaInfo = [{'fullFileName' : part.get('file'), 'key' : media.get('ratingKey'), 'librarySectionUUID' : librarySectionUUID}]
-                        mediaList[os.path.basename(part.get('file'))] = mediaInfo
-                        print 'GED *********', os.path.basename(part.get('file')), '******************'
-                        print 'GED2 *********', mediaInfo, '******************'
-                        print 'GED3 *********', mediaList[os.path.basename(part.get('file'))], '******************'
+
+                        #print 'Ged 18 mediaInfo', mediaInfo
+
+
+                        itemList[os.path.basename(part.get('file'))] = mediaInfo
+                        #print 'GED *********', os.path.basename(part.get('file')), '******************'
+                        #print 'GED2 *********', mediaInfo, '******************'
+                       # print 'GED3 *********', mediaList[os.path.basename(part.get('file'))], '******************'
+                       
                 start += MEDIASTEPS                            
         except Exception, e:            
             Log.Exception('exception in getFilesFromLib was: %s' %str(e))
+
+    
+    print 'GED RETURN getFilesFromLib' 
+    print itemList
+    Log.Debug('Ged output')
+    Log.Debug(itemList)
+    return           
     return mediaList
