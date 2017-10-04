@@ -158,15 +158,30 @@ class wtV3(object):
 
     # Download and update a translation from live translation site
     @classmethod
-    def GETTRANSLATE(self, req, *args):
+    def GETTRANSLATE(self, req, *args, **kwargs):
         try:
-            try:
+            Internal = False
+            if kwargs:
+                if kwargs['Internal']:
+                    Internal = True
+                    if kwargs['String']:
+                        String = kwargs['String']
+                        lang = self.GETCURRENTLANG(self, None, Internal=True)
+                    else:
+                        Log.Error(
+                            'WT.getTranslate was called internally, but missed the string to translate')
+                else:
+                    Log.Error(
+                        'WT.getTranslate was called with kwargs, but no internal was set')
+            else:
                 # Get the Payload
                 data = json.loads(req.request.body.decode('utf-8'))
                 if 'language' in data:
                     lang = data['language']
                 else:
                     lang = self.GETCURRENTLANG(self, None, Internal=True)
+                String = data['string']
+            try:
                 # Now open existing translations.js file, walk it line by line, and find the correct line
                 translationLines = Data.Load('translations.js').splitlines()
                 transLine = None
@@ -178,26 +193,30 @@ class wtV3(object):
                 if transLine:
                     jsonTransLine = JSON.ObjectFromString(
                         transLine.split(',', 1)[1].lstrip()[:-2])
-                    if 'string' in data:
-                        req.clear()
-                        req.set_status(200)
-                        if data['string'] in jsonTransLine:
-                            req.finish(jsonTransLine[data['string']])
+                    if String in jsonTransLine:
+                        if Internal:
+                            return jsonTransLine[String]
                         else:
-                            req.finish(data['string'])
+                            req.clear()
+                            req.set_status(200)
+                            req.finish(jsonTransLine[String])
+                    else:
+                        if Internal:
+                            return String
+                        else:
+                            req.clear()
+                            req.set_status(200)
+                            req.finish(String)
+                else:
+                    if Internal:
+                        return json.dumps(jsonTransLine)
                     else:
                         req.clear()
                         req.set_status(200)
                         req.set_header(
                             'Content-Type', 'application/json; charset=utf-8')
                         req.finish(json.dumps(jsonTransLine))
-                else:
-                    Log.Error(
-                        'We could not find any translations for %s' % lang)
-                    req.clear()
-                    req.set_status(404)
-                    req.finish(
-                        'We could not find any translations for %s' % lang)
+
             except Exception, e:
                 Log.Exception(
                     'Exception happened digesting the body was %s' % str(e))
