@@ -18,7 +18,8 @@ from plextvhelper import plexTV
 from shutil import copyfile
 from misc import misc
 
-GET = ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST', 'GETTRANSLATORLIST']
+GET = ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST',
+       'GETTRANSLATORLIST', 'GETCURRENTLANG']
 PUT = ['RESET', 'UPGRADEWT']
 POST = ['UPDATELANGUAGE', 'GETTRANSLATE']
 DELETE = ['']
@@ -35,6 +36,16 @@ class wtV3(object):
         return
 
     #********** Functions below ******************
+
+    ''' Get the language code for the UI '''
+    @classmethod
+    def GETCURRENTLANG(self, req, *args):
+        req.clear()
+        req.set_status(200)
+        req.set_header('Content-Type', 'application/json; charset=utf-8')
+        lang = {}
+        lang['Language'] = Dict['UILanguage']
+        req.finish(json.dumps(lang))
 
     # Upgrade WebTools from latest release. This is the new call, that replace the one that in V2 was located in the git module
     @classmethod

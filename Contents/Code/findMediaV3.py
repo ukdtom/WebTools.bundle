@@ -400,6 +400,7 @@ class findMediaV3(object):
                     raise ValueError('Aborted')
                 retMsg = {}
                 statusMsg = 'Get missing from File System'
+                print 'Ged translate above and below'
                 retMsg["MissingFromFS"] = findMissingFromFS()
                 if bAbort:
                     raise ValueError('Aborted')
