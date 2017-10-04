@@ -39,13 +39,20 @@ class wtV3(object):
 
     ''' Get the language code for the UI '''
     @classmethod
-    def GETCURRENTLANG(self, req, *args):
-        req.clear()
-        req.set_status(200)
-        req.set_header('Content-Type', 'application/json; charset=utf-8')
-        lang = {}
-        lang['Language'] = Dict['UILanguage']
-        req.finish(json.dumps(lang))
+    def GETCURRENTLANG(self, req, *args, **kwargs):
+        if kwargs:
+            if kwargs['Internal']:
+                return Dict['UILanguage']
+            else:
+                Log.Error(
+                    'WT.getCurrentLang was called with kwargs, but no internal was set')
+        else:
+            req.clear()
+            req.set_status(200)
+            req.set_header('Content-Type', 'application/json; charset=utf-8')
+            lang = {}
+            lang['Language'] = Dict['UILanguage']
+            req.finish(json.dumps(lang))
 
     # Upgrade WebTools from latest release. This is the new call, that replace the one that in V2 was located in the git module
     @classmethod
@@ -159,9 +166,7 @@ class wtV3(object):
                 if 'language' in data:
                     lang = data['language']
                 else:
-                    req.clear()
-                    req.set_status(412)
-                    req.finish('Missing language param in body')
+                    lang = self.GETCURRENTLANG(self, None, Internal=True)
                 # Now open existing translations.js file, walk it line by line, and find the correct line
                 translationLines = Data.Load('translations.js').splitlines()
                 transLine = None
