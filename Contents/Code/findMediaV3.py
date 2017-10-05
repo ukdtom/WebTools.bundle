@@ -16,6 +16,7 @@ import sys
 import os
 from consts import DEBUGMODE, VALIDEXT
 from misc import misc
+from wtV3 import wtV3
 
 # Consts used here
 # Int of amount of medias in a database section
@@ -25,7 +26,7 @@ mediasFromDB = []
 # Files from the file system
 mediasFromFileSystem = []
 # Response to getStatus
-statusMsg = 'idle'
+statusMsg = wtV3().GETTRANSLATE(None, None, Internal=True, String='idle')
 # Internal tracker of where we are
 runningState = 0
 # Flag to set if user wants to cancel
@@ -121,8 +122,7 @@ class findMediaV3(object):
                 Log.Debug('Starting scanShowDB for section %s' %
                           (sectionNumber))
                 runningState = -1
-                statusMsg = 'Starting to scan database for section %s' % (
-                    sectionNumber)
+                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Starting to scan database for section %s') %(sectionNumber)
                 # Start by getting the totals of this section
                 totalSize = XML.ElementFromURL(
                     self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=1&X-Plex-Container-Size=0').get('totalSize')
@@ -130,8 +130,7 @@ class findMediaV3(object):
                 Log.Debug('Total size of medias are %s' % (totalSize))
                 iShow = 0
                 iCShow = 0
-                statusShows = 'Scanning database show %s of %s : ' % (
-                    iShow, totalSize)
+                statusShows = wtV3().GETTRANSLATE(self, None, Internal=True, String='Scanning database show %s of %s : ') %(iShow, totalSize)
                 statusMsg = statusShows
                 # So let's walk the library
                 while True:
@@ -179,8 +178,7 @@ class findMediaV3(object):
                             if len(seasons) == 0:
                                 break
                         iShow += 1
-                        statusShows = 'Scanning database show %s of %s : ' % (
-                            iShow, totalSize)
+                        statusShows = wtV3().GETTRANSLATE(self, None, Internal=True, String='Scanning database show %s of %s : ') %(iShow, totalSize)
                     # Inc. Shows counter
                     iCShow += self.MediaChuncks
                     if len(shows) == 0:
@@ -193,7 +191,7 @@ class findMediaV3(object):
                         break
                 return
             except ValueError:
-                statusMsg = 'Idle'
+                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Idle')
                 runningState = 99
                 Log.Info('Aborted in ScanShowDB')
             except Exception, e:
@@ -308,7 +306,7 @@ class findMediaV3(object):
                                         Log.Debug('Scanning file: ' + file)
                                         Log.Debug(
                                             'appending file: ' + composed_file)
-                                    statusMsg = 'Scanning file: ' + file
+                                    statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Scanning file: %s') %file
                     except Exception, e:
                         Log.Exception(
                             'Exception happened in FM scanning filesystem: ' + str(e))
@@ -318,7 +316,7 @@ class findMediaV3(object):
                         Log.Debug(mediasFromFileSystem)
                     runningState = 2
             except ValueError:
-                statusMsg = 'Idle'
+                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Idle')
                 runningState = 0
                 Log.Info('Aborted in getFiles')
             except Exception, e:
@@ -335,8 +333,7 @@ class findMediaV3(object):
                 Log.Debug('Starting scanMovieDb for section %s' %
                           (sectionNumber))
                 runningState = -1
-                statusMsg = 'Starting to scan database for section %s' % (
-                    sectionNumber)
+                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Starting to scan database for section %s') %sectionNumber
                 # Start by getting the totals of this section
                 totalSize = XML.ElementFromURL(
                     self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=1&X-Plex-Container-Size=0').get('totalSize')
@@ -344,8 +341,7 @@ class findMediaV3(object):
                 Log.Debug('Total size of medias are %s' % (totalSize))
                 iStart = 0
                 iCount = 0
-                statusMsg = 'Scanning database item %s of %s : Working' % (
-                    iCount, totalSize)
+                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Scanning database: item %s of %s : Working') % (iCount, totalSize)
                 # So let's walk the library
                 while True:
                     # Grap a chunk from the server
@@ -362,8 +358,7 @@ class findMediaV3(object):
                         filename = unicode(misc.Unicodize(
                             part.get('file')).encode('utf8', 'ignore'))
                         mediasFromDB.append(filename)
-                        statusMsg = 'Scanning database: item %s of %s : Working' % (
-                            iCount, totalSize)
+                        statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Scanning database: item %s of %s : Working') % (iCount, totalSize)                        
                     iStart += self.MediaChuncks
                     if len(medias) == 0:
                         statusMsg = 'Scanning database: %s : Done' % (
@@ -399,20 +394,19 @@ class findMediaV3(object):
                 if bAbort:
                     raise ValueError('Aborted')
                 retMsg = {}
-                statusMsg = 'Get missing from File System'
-                print 'Ged translate above and below'
+                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Get missing from File System')
                 retMsg["MissingFromFS"] = findMissingFromFS()
                 if bAbort:
                     raise ValueError('Aborted')
-                statusMsg = 'Get missing from database'
+                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Get missing from database')                
                 retMsg["MissingFromDB"] = findMissingFromDB()
                 runningState = 0
-                statusMsg = 'done'
+                statusMsg = 'done'                
             except ValueError:
                 Log.Info('Aborted in ScanMedias')
             except Exception, e:
                 Log.Exception('Exception happend in scanMedias: ' + str(e))
-                statusMsg = 'Idle'
+                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Idle')                
 
         # ************ Main function ************
         Log.Debug('scanSection started')
