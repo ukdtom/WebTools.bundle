@@ -198,7 +198,7 @@ msgid "Force language translation update"
 msgstr "फोर्स द्वारा भाषा अनुवाद अपडेट"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:88
 msgid "Found"
 msgstr "मिलना"
 
@@ -207,12 +207,12 @@ msgid "Welcome to"
 msgstr "आपका स्वागत है"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:89
 msgid "rows"
 msgstr "पंक्तियां"
 
 #: ../http/static/logs/logsController.js:9
-#: ../http/static/sub_management/subController.js:10
+#: ../http/static/sub_management/subController.js:8
 msgid "Clear search"
 msgstr "खोज साफ़ करें"
 
@@ -221,7 +221,7 @@ msgid "Delete ignored folder"
 msgstr "फ़ोल्डर अनदेखी बंद करो"
 
 #: ../http/static/logs/logsController.js:13
-#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:12
 msgid "Hide/Show search menu"
 msgstr "छुपाएं/दिखाएं खोज मेनू"
 
@@ -230,27 +230,26 @@ msgid "Hide/Show settings menu"
 msgstr "छुपाएं/दिखाएं सेटिंग मेनू"
 
 #: ../http/static/logs/logsController.js:12
-#: ../http/static/sub_management/subController.js:13
+#: ../http/static/sub_management/subController.js:11
 msgid "Jump to top"
 msgstr "शीर्ष पर जाएं"
 
 #: ../http/static/logs/logsController.js:11
-#: ../http/static/sub_management/subController.js:12
+#: ../http/static/sub_management/subController.js:10
 msgid "Next"
 msgstr "अगला"
 
 #: ../http/static/logs/logsController.js:10
-#: ../http/static/sub_management/subController.js:11
+#: ../http/static/sub_management/subController.js:9
 msgid "Previous"
 msgstr "पिछला"
 
 #: ../http/static/logs/logsController.js:8
-#: ../http/static/sub_management/subController.js:9
+#: ../http/static/sub_management/subController.js:7
 msgid "Search keyword"
 msgstr "खोजें कीवर्ड"
 
 #: ../http/static/logs/logsController.js:7
-#: ../http/static/sub_management/subController.js:8
 msgid "search..."
 msgstr "खोजें..."
 
@@ -375,11 +374,11 @@ msgstr "प्रबंधित उपशीर्षक की सहायत
 msgid "Support:"
 msgstr "सहायता:"
 
-#: ../http/static/sub_management/sub.html:3
+#: ../http/static/sub_management/sub.html:4
 msgid "This is an unofficial manager for subtitles."
 msgstr "यह टूल मॉड्यूल उप-शीर्षक के लिए एक अनौपचारिक प्रबंधक है."
 
-#: ../http/static/sub_management/sub.html:5
+#: ../http/static/sub_management/sub.html:6
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "आरंभ करने के लिए, अपनी एक पुस्तकालय चुनें या \"?\" पर क्लिक करें अतिरिक्त सहायता के लिए"
 
@@ -387,7 +386,7 @@ msgstr "आरंभ करने के लिए, अपनी एक पु�
 msgid "Update"
 msgstr "अद्यतन"
 
-#: ../http/static/sub_management/sub.html:4
+#: ../http/static/sub_management/sub.html:5
 msgid "Usage at your own risk!"
 msgstr "अपने जोखिम पर उपयोग करें!"
 
@@ -638,19 +637,122 @@ msgstr "गलत यूज़रनेम और / या पासवर्ड
 msgid "PMS is not connected to plex.tv"
 msgstr "PMS plex.tv से कनेक्ट नहीं है"
 
-#: ../http/static/sub_management/sub.html:90
+#: ../http/static/sub_management/sub.html:108
 msgid "Back"
-msgstr ""
+msgstr "वापस"
 
 #: ../http/static/logs/logs.html:46
 msgid "Next file"
-msgstr ""
+msgstr "अगली फ़ाइल"
 
 #: ../http/static/logs/logs.html:44
 msgid "Previous file"
-msgstr ""
+msgstr "पिछला फ़ाइल"
 
 #: ../http/static/logs/logs.html:45
 msgid "Reload file"
+msgstr "फ़ाइल पुनः लोड करें"
+
+#: ../http/static/sub_management/Directive/subDetails.html:22
+msgid "Codec"
+msgstr "कोडेक"
+
+#: ../http/static/sub_management/subController.js:21
+msgid "Delete Selected"
+msgstr "चयनित मिटाएं"
+
+#: ../http/static/sub_management/subController.js:19
+msgid "Deselect All"
+msgstr "सबको अचयनित करें"
+
+#: ../http/static/sub_management/subController.js:23
+msgid "Download Subtitle"
+msgstr "उपशीर्षक डाउनलोड करें"
+
+#: ../http/static/sub_management/sub.html:25
+msgid "Filter by letter"
+msgstr "वर्णमाला द्वारा फ़िल्टर करें"
+
+#: ../http/static/sub_management/Directive/subDetails.html:20
+msgid "Lang"
+msgstr "भाषा"
+
+#: ../http/static/sub_management/sub.html:45
+msgid "Load more"
+msgstr "और लोड करें"
+
+#: ../http/static/sub_management/Directive/subDetails.html:21
+msgid "Location"
+msgstr "स्थान"
+
+#: ../http/static/sub_management/sub.html:42
+msgid "No movies found in"
+msgstr "कोई फिल्म नहीं मिली"
+
+#: ../http/static/sub_management/Directive/subDetails.html:37
+msgid "None"
+msgstr "कोई भी नहीं"
+
+#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:6
+msgid "Search..."
+msgstr "खोजें..."
+
+#: ../http/static/sub_management/subController.js:18
+msgid "Select All"
+msgstr "सभी का चयन करे"
+
+#: ../http/static/sub_management/subController.js:20
+msgid "Upload Subtitle"
+msgstr "उपशीर्षक अपलोड करें"
+
+#: ../http/static/sub_management/subController.js:22
+msgid "View Subtitle"
+msgstr "उपशीर्षक देखें"
+
+#: ../http/static/sub_management/sub.html:42
+#: ../http/static/sub_management/sub.html:53
+msgid "with current search filter"
+msgstr "वर्तमान खोज फ़िल्टर के साथ"
+
+#: ../http/static/sub_management/subController.js:15
+msgid "Expand a library to search"
+msgstr "खोज करने के लिए पुस्तकालय का विस्तार करें"
+
+#: ../Contents/Resources/language_template.html:19
+msgid "Get missing from File System"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:27
+msgid "Get missing from database"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:23
+msgid "Idle"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:53
+msgid "No TV-Shows found in"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:22
+msgid "Scanning database show %s of %s :"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:26
+msgid "Scanning database: item %s of %s : Working"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:24
+msgid "Scanning file: %s"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:21
+#: ../Contents/Resources/language_template.html:25
+msgid "Starting to scan database for section %s"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:20
+msgid "idle"
 msgstr ""
 

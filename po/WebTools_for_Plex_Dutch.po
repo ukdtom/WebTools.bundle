@@ -13,11 +13,11 @@ msgstr "Gebruik het menu aan de linkerkant om te navigeren binnen WebTools."
 
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
-msgstr ""
+msgstr "Webtools is een tool die je toelaat om tool modules te gebruiken die je kunnen helpen met je Plex Server beheer"
 
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
-msgstr ""
+msgstr "Beide co-located (naast de film in de map of subfolder) en in de agent map."
 
 #: ../http/static/theme/theme.html:2
 msgid "Change Theme"
@@ -29,7 +29,7 @@ msgstr "Changelog"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
-msgstr ""
+msgstr "Wijzigingslog viewer"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
@@ -37,7 +37,7 @@ msgstr "Verwijder geselecteerde sidecar van disk"
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
-msgstr ""
+msgstr "Bestand Leeg"
 
 #: ../http/static/menu/menu.html:22
 msgid "Help"
@@ -45,11 +45,11 @@ msgstr "Help"
 
 #: ../http/static/sub_management/subHelp.html:5
 msgid "List all subtitles for a movie/tv show in your library."
-msgstr ""
+msgstr "Geeft alle ondertites voor een Film/TV Programma in je bibliotheek"
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
-msgstr ""
+msgstr "Log Viewer"
 
 #: ../http/static/menu/menu.html:19
 msgid "Logout"
@@ -57,23 +57,23 @@ msgstr "Uitloggen"
 
 #: ../http/static/menu/menu.html:11
 msgid "Options"
-msgstr ""
+msgstr "Opties"
 
 #: ../http/static/sub_management/subHelp.html:15
 msgid "Options for output."
-msgstr ""
+msgstr "Uitvoer Opties"
 
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
-msgstr ""
+msgstr "Zoek Films end TV Shows binnen categorieën"
 
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
-msgstr ""
+msgstr "Kies een van de beschikbare thema's om te gebruiken"
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
-msgstr ""
+msgstr "Selecteer een van de onderstaande bibliotheken om te zoeken naar films / tv-programma's die niet in de Plex-database aanwezig zijn of niet op uw harde schijf staan."
 
 #: ../http/static/menu/menu.html:16
 msgid "Theme"
@@ -81,7 +81,7 @@ msgstr "Thema"
 
 #: ../http/static/findmedia/fm.html:3
 msgid "This tool is a combination of FindUnmatched and FindMissing."
-msgstr ""
+msgstr "Deze tool is een combinatie van 'FindUnmatched' en 'FindMissing'."
 
 #: ../http/static/menu/menu.html:13
 msgid "Update WT"
@@ -89,11 +89,11 @@ msgstr "Update WebTools"
 
 #: ../http/static/sub_management/subHelp.html:9
 msgid "View the subtitle and see it's contents to determine what to delete."
-msgstr ""
+msgstr "Bekijk de ondertiteling inhoud om te bepalen welke ondertitel je wil verwijderen."
 
 #: ../http/static/menu/menu.html:24
 msgid "WT Forum Thread"
-msgstr ""
+msgstr "WT Forum"
 
 #: ../http/static/menu/menu.html:25
 msgid "WT GitHub"
@@ -105,7 +105,7 @@ msgstr "Pagina niet gevonden :("
 
 #: ../http/static/logs/logs.html:36
 msgid "We recommend you to download large files and view them in your favourite text editor."
-msgstr ""
+msgstr "We raden je aan om grote bestanden te downloaden en ze te bekijken in je favoriete tekstverwerker."
 
 #: ../http/static/logs/logs.html:28
 msgid "Download all logfiles as zip"
@@ -123,17 +123,17 @@ msgstr "Scan onderbreken"
 #: ../http/static/findmedia/fm.html:43
 #: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
-msgstr ""
+msgstr "Voeg te negeren map toe"
 
 #: ../http/static/playlist/playlistHelp.html:2
 #: ../http/static/sub_management/subHelp.html:2
 msgid "Current features:"
-msgstr ""
+msgstr "Huidige features:"
 
 #: ../http/static/findmedia/fm.html:92
 #: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
-msgstr ""
+msgstr "Resultaat Downloaden"
 
 #: ../http/static/findmedia/fm.html:26
 msgid "Ignore Extras"
@@ -149,45 +149,45 @@ msgstr "Mappen negeren"
 
 #: ../http/static/findmedia/fm.html:98
 msgid "No records missing from Plex database"
-msgstr ""
+msgstr "Er ontbreken geen records in de Plex database"
 
 #: ../http/static/findmedia/fm.html:110
 msgid "No records missing from harddrive"
-msgstr ""
+msgstr "Er ontbreken geen bestanden op de Harde Schijf"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
-msgstr ""
+msgstr "Playlist Help"
 
 #: ../http/static/findmedia/fm.html:101
 msgid "Records missing from Plex database"
-msgstr ""
+msgstr "Ontbrekende records in de Plex database"
 
 #: ../http/static/findmedia/fm.html:113
 msgid "Records missing from harddrive"
-msgstr ""
+msgstr "Ontbrekende records p de Harde Schijf"
 
 #: ../http/static/findmedia/fm.html:59
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
-msgstr ""
+msgstr "Reset Instellingen"
 
 #: ../http/static/findmedia/fm.html:67
 #: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
-msgstr ""
+msgstr "Bewaar Instellingen"
 
 #: ../http/static/findmedia/fm.html:12
 msgid "Show settings"
-msgstr ""
+msgstr "Toon Instellingen"
 
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
-msgstr ""
+msgstr "Geldige Extensies"
 
 #: ../http/static/language/language.html:5
 msgid "Change Language"
-msgstr ""
+msgstr "Verander Taal"
 
 #: ../http/static/menu/menu.html:14
 msgid "Language"
@@ -195,72 +195,72 @@ msgstr "Taal"
 
 #: ../http/static/language/language.html:12
 msgid "Force language translation update"
-msgstr ""
+msgstr "Dwing taal vertaal update"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:88
 msgid "Found"
-msgstr ""
+msgstr "Gevonden"
 
 #: ../http/static/home/home.html:1
 msgid "Welcome to"
-msgstr ""
+msgstr "Welkom Bij"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:89
 msgid "rows"
 msgstr "rijen"
 
 #: ../http/static/logs/logsController.js:9
-#: ../http/static/sub_management/subController.js:10
+#: ../http/static/sub_management/subController.js:8
 msgid "Clear search"
-msgstr ""
+msgstr "Wis zoekopdracht"
 
 #: ../http/static/findmedia/fmController.js:8
 msgid "Delete ignored folder"
-msgstr ""
+msgstr "Stop folder negeren"
 
 #: ../http/static/logs/logsController.js:13
-#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:12
 msgid "Hide/Show search menu"
 msgstr "Verberg/toon zoek menu"
 
 #: ../http/static/findmedia/fmController.js:14
 msgid "Hide/Show settings menu"
-msgstr ""
+msgstr "Verberg/Toon Instellingen menu"
 
 #: ../http/static/logs/logsController.js:12
-#: ../http/static/sub_management/subController.js:13
+#: ../http/static/sub_management/subController.js:11
 msgid "Jump to top"
-msgstr ""
+msgstr "Spring naar Top"
 
 #: ../http/static/logs/logsController.js:11
-#: ../http/static/sub_management/subController.js:12
+#: ../http/static/sub_management/subController.js:10
 msgid "Next"
 msgstr "Volgende"
 
 #: ../http/static/logs/logsController.js:10
-#: ../http/static/sub_management/subController.js:11
+#: ../http/static/sub_management/subController.js:9
 msgid "Previous"
 msgstr "Vorige"
 
 #: ../http/static/logs/logsController.js:8
-#: ../http/static/sub_management/subController.js:9
+#: ../http/static/sub_management/subController.js:7
 msgid "Search keyword"
 msgstr "Zoek trefwoord"
 
 #: ../http/static/logs/logsController.js:7
-#: ../http/static/sub_management/subController.js:8
 msgid "search..."
 msgstr "Zoeken . . ."
 
 #: ../http/static/home/home.html:22
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
-msgstr ""
+msgstr "Laat je toe om playlists te kopiëren, importeren of exporteren tussen gebruikers"
 
 #: ../http/static/home/home.html:13
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
-msgstr ""
+msgstr "Via deze tool krijg je eenvoudige toegang tot alle Plex Media Server logs, en je kan ze ook gemakkelijke downloaden als individuele logs of alle log files samen in een handig ZIP bestand.\n"
+""
 
 #: ../http/static/home/home.html:19
 msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
@@ -375,11 +375,11 @@ msgstr ""
 msgid "Support:"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:3
+#: ../http/static/sub_management/sub.html:4
 msgid "This is an unofficial manager for subtitles."
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:5
+#: ../http/static/sub_management/sub.html:6
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr ""
 
@@ -387,7 +387,7 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:4
+#: ../http/static/sub_management/sub.html:5
 msgid "Usage at your own risk!"
 msgstr ""
 
@@ -636,7 +636,7 @@ msgstr ""
 msgid "PMS is not connected to plex.tv"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:90
+#: ../http/static/sub_management/sub.html:108
 msgid "Back"
 msgstr ""
 
@@ -650,5 +650,108 @@ msgstr ""
 
 #: ../http/static/logs/logs.html:45
 msgid "Reload file"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subDetails.html:22
+msgid "Codec"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:21
+msgid "Delete Selected"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:19
+msgid "Deselect All"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:23
+msgid "Download Subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:25
+msgid "Filter by letter"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subDetails.html:20
+msgid "Lang"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:45
+msgid "Load more"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subDetails.html:21
+msgid "Location"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:42
+msgid "No movies found in"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subDetails.html:37
+msgid "None"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:6
+msgid "Search..."
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:18
+msgid "Select All"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:20
+msgid "Upload Subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:22
+msgid "View Subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:42
+#: ../http/static/sub_management/sub.html:53
+msgid "with current search filter"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:15
+msgid "Expand a library to search"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:19
+msgid "Get missing from File System"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:27
+msgid "Get missing from database"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:23
+msgid "Idle"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:53
+msgid "No TV-Shows found in"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:22
+msgid "Scanning database show %s of %s :"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:26
+msgid "Scanning database: item %s of %s : Working"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:24
+msgid "Scanning file: %s"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:21
+#: ../Contents/Resources/language_template.html:25
+msgid "Starting to scan database for section %s"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:20
+msgid "idle"
 msgstr ""
 

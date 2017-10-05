@@ -33,7 +33,7 @@ msgstr "Änderungen in dieser Version"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
-msgstr "Lösche externe Untertitel-Dateien"
+msgstr "Lösche externe Untertitel-Dateien. Achtung: dies kann nicht rückgängig gemacht werden!"
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
@@ -66,7 +66,7 @@ msgstr "Ausgabe-Einstellungen"
 
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
-msgstr "Suche nach VIdeos in den Bibliotheken"
+msgstr "Suche nach Videos in den Bibliotheken"
 
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
@@ -202,7 +202,7 @@ msgid "Force language translation update"
 msgstr "Übersetzungen auffrischen"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:88
 msgid "Found"
 msgstr "gefunden"
 
@@ -211,12 +211,12 @@ msgid "Welcome to"
 msgstr "Willkommen bei"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:89
 msgid "rows"
 msgstr "Zeilen"
 
 #: ../http/static/logs/logsController.js:9
-#: ../http/static/sub_management/subController.js:10
+#: ../http/static/sub_management/subController.js:8
 msgid "Clear search"
 msgstr "Suche leeren"
 
@@ -225,7 +225,7 @@ msgid "Delete ignored folder"
 msgstr "'ignorierten' Ordner entfernen"
 
 #: ../http/static/logs/logsController.js:13
-#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:12
 msgid "Hide/Show search menu"
 msgstr "'Suche' zeigen/verstecken"
 
@@ -234,27 +234,26 @@ msgid "Hide/Show settings menu"
 msgstr "'Einstellungen' zeigen/verstecken"
 
 #: ../http/static/logs/logsController.js:12
-#: ../http/static/sub_management/subController.js:13
+#: ../http/static/sub_management/subController.js:11
 msgid "Jump to top"
 msgstr "nach oben"
 
 #: ../http/static/logs/logsController.js:11
-#: ../http/static/sub_management/subController.js:12
+#: ../http/static/sub_management/subController.js:10
 msgid "Next"
 msgstr "nächstes"
 
 #: ../http/static/logs/logsController.js:10
-#: ../http/static/sub_management/subController.js:11
+#: ../http/static/sub_management/subController.js:9
 msgid "Previous"
 msgstr "vorherige"
 
 #: ../http/static/logs/logsController.js:8
-#: ../http/static/sub_management/subController.js:9
+#: ../http/static/sub_management/subController.js:7
 msgid "Search keyword"
 msgstr "Starte Suche"
 
 #: ../http/static/logs/logsController.js:7
-#: ../http/static/sub_management/subController.js:8
 msgid "search..."
 msgstr "Suche..."
 
@@ -381,11 +380,11 @@ msgstr "Hilfe für Untertitelverwaltung"
 msgid "Support:"
 msgstr "Unterstützung:"
 
-#: ../http/static/sub_management/sub.html:3
+#: ../http/static/sub_management/sub.html:4
 msgid "This is an unofficial manager for subtitles."
 msgstr "Eine inoffizielle Untertitel-Verwaltung"
 
-#: ../http/static/sub_management/sub.html:5
+#: ../http/static/sub_management/sub.html:6
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "Wähle eine deiner Bibliotheken aus oder klicke auf \"?\" für weitere Tips"
 
@@ -393,7 +392,7 @@ msgstr "Wähle eine deiner Bibliotheken aus oder klicke auf \"?\" für weitere T
 msgid "Update"
 msgstr "Update"
 
-#: ../http/static/sub_management/sub.html:4
+#: ../http/static/sub_management/sub.html:5
 msgid "Usage at your own risk!"
 msgstr "Benutzung auf eigenes Risiko!"
 
@@ -643,19 +642,122 @@ msgstr "Falscher Benutzername und/oder Passwort"
 msgid "PMS is not connected to plex.tv"
 msgstr "Server ist nicht bei plex.tv eingeloggt."
 
-#: ../http/static/sub_management/sub.html:90
+#: ../http/static/sub_management/sub.html:108
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 #: ../http/static/logs/logs.html:46
 msgid "Next file"
-msgstr ""
+msgstr "Nächste Datei"
 
 #: ../http/static/logs/logs.html:44
 msgid "Previous file"
-msgstr ""
+msgstr "Vorige Datei"
 
 #: ../http/static/logs/logs.html:45
 msgid "Reload file"
+msgstr "Datei neu laden"
+
+#: ../http/static/sub_management/Directive/subDetails.html:22
+msgid "Codec"
+msgstr "Typ"
+
+#: ../http/static/sub_management/subController.js:21
+msgid "Delete Selected"
+msgstr "Lösche ausgewählte"
+
+#: ../http/static/sub_management/subController.js:19
+msgid "Deselect All"
+msgstr "Auswahl aufheben"
+
+#: ../http/static/sub_management/subController.js:23
+msgid "Download Subtitle"
+msgstr "Untertitel herunterladen"
+
+#: ../http/static/sub_management/sub.html:25
+msgid "Filter by letter"
+msgstr "Filter nach Anfangsbuchstaben"
+
+#: ../http/static/sub_management/Directive/subDetails.html:20
+msgid "Lang"
+msgstr "Sprache"
+
+#: ../http/static/sub_management/sub.html:45
+msgid "Load more"
+msgstr "Mehr laden"
+
+#: ../http/static/sub_management/Directive/subDetails.html:21
+msgid "Location"
+msgstr "Speicherort"
+
+#: ../http/static/sub_management/sub.html:42
+msgid "No movies found in"
+msgstr "Keine Filme gefunden in"
+
+#: ../http/static/sub_management/Directive/subDetails.html:37
+msgid "None"
+msgstr "Keine(s)"
+
+#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:6
+msgid "Search..."
+msgstr "Suche..."
+
+#: ../http/static/sub_management/subController.js:18
+msgid "Select All"
+msgstr "Alles auswählen"
+
+#: ../http/static/sub_management/subController.js:20
+msgid "Upload Subtitle"
+msgstr "Untertitel hochladen"
+
+#: ../http/static/sub_management/subController.js:22
+msgid "View Subtitle"
+msgstr "Untertitel anzeigen"
+
+#: ../http/static/sub_management/sub.html:42
+#: ../http/static/sub_management/sub.html:53
+msgid "with current search filter"
+msgstr "mit aktuellem Suchkriterium"
+
+#: ../http/static/sub_management/subController.js:15
+msgid "Expand a library to search"
+msgstr "Eine Bibliothek unten auswählen"
+
+#: ../Contents/Resources/language_template.html:19
+msgid "Get missing from File System"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:27
+msgid "Get missing from database"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:23
+msgid "Idle"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:53
+msgid "No TV-Shows found in"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:22
+msgid "Scanning database show %s of %s :"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:26
+msgid "Scanning database: item %s of %s : Working"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:24
+msgid "Scanning file: %s"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:21
+#: ../Contents/Resources/language_template.html:25
+msgid "Starting to scan database for section %s"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:20
+msgid "idle"
 msgstr ""
 

@@ -5,350 +5,351 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
 "Project-Id-Version: WebTools for Plex\n"
-"Language: nb\n"
+"Language: ro\n"
 
 #: ../http/static/home/home.html:4
 msgid "Use the menu on the left side to navigate in WebTools."
-msgstr "Bruk menyen til venstre for å navigere i WebTools."
+msgstr "Folosește meniul din stânga pentru a naviga în WebTools."
 
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
-msgstr "WebTools er et verktøy som ved bruk av moduler hjelper deg med å administrere din Plex server."
+msgstr "WebTools este un instrument care permite utilizarea modulelor pentru a vă ajuta cu managementul Plex Server."
 
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
-msgstr "Både samlokalisert (ved siden av filmen eller en undermappe) og i agentmappen."
+msgstr "Ambele se află în co-locație (lângă filmul din dosarul sau subfolderul acestuia) și în dosarul agenți."
 
 #: ../http/static/theme/theme.html:2
 msgid "Change Theme"
-msgstr "Endre tema."
+msgstr "Schimbare Tema"
 
 #: ../http/static/menu/menu.html:17
 msgid "Changelog"
-msgstr "Endringslogg"
+msgstr "Schimbare istoric"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
-msgstr "Endringsloggviser"
+msgstr "Modificați vizualizatorul jurnalelor"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
-msgstr "Slett eksterne undertekster fra disken."
+msgstr "Ștergeți atas selectate din harddrive. Notă: nu se poate obține din nou o dată șters."
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
-msgstr "Fila er tom"
+msgstr "Fișierul este gol"
 
 #: ../http/static/menu/menu.html:22
 msgid "Help"
-msgstr "Hjelp"
+msgstr "Ajutor"
 
 #: ../http/static/sub_management/subHelp.html:5
 msgid "List all subtitles for a movie/tv show in your library."
-msgstr "Vis alle undertekster for en film eller TV serie i ditt bibliotek."
+msgstr "Afișează toate subtitrările pentru un film / TV Show în biblioteca ta"
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
-msgstr "Loggvisningsvertøy"
+msgstr "Vizualizator de jurnal"
 
 #: ../http/static/menu/menu.html:19
 msgid "Logout"
-msgstr "Logg ut"
+msgstr "Deconectare"
 
 #: ../http/static/menu/menu.html:11
 msgid "Options"
-msgstr "Innstillinger"
+msgstr "Opțiuni"
 
 #: ../http/static/sub_management/subHelp.html:15
 msgid "Options for output."
-msgstr "Eksportinnstillinger"
+msgstr "Opțiuni ieșire"
 
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
-msgstr "Søk etter filmer og TV-serier innenfor kategorier."
+msgstr "Căutați filme și emisiuni TV în interiorul categoriilor."
 
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
-msgstr "Velg en av de tilgjengelige temaene som skal brukes:"
+msgstr "Selectați una dintre temele disponibile pentru utilizare:"
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
-msgstr "Velg ett av bibliotekene under for å søke etter filmer/TV-serier som ikke er i Plex-databasen eller ikke er på harddisken."
+msgstr "Selectați una din bibliotecile de mai jos pentru a scana filme / emisiuni TV care nu se află în baza de date Plex sau nu se află pe hard disk."
 
 #: ../http/static/menu/menu.html:16
 msgid "Theme"
-msgstr "Tema"
+msgstr "Teme"
 
 #: ../http/static/findmedia/fm.html:3
 msgid "This tool is a combination of FindUnmatched and FindMissing."
-msgstr "Dette verktøyet er en kombinasjon av 'FindUnmatched' og 'FindMissing'."
+msgstr "Acest instrument este o combinație de \"FindUnmatched\" și \"FindMissing\"."
 
 #: ../http/static/menu/menu.html:13
 msgid "Update WT"
-msgstr "Oppdater WebTools"
+msgstr "Actualizare WebTools"
 
 #: ../http/static/sub_management/subHelp.html:9
 msgid "View the subtitle and see it's contents to determine what to delete."
-msgstr "Se undertekstinnholdet for å finne ut hva du vil slette."
+msgstr "Vizualizați conținutul subtitrării pentru a determina ce subtitrare să fie ștearsă.\n"
+""
 
 #: ../http/static/menu/menu.html:24
 msgid "WT Forum Thread"
-msgstr "WT forumtråd"
+msgstr "Forum WT"
 
 #: ../http/static/menu/menu.html:25
 msgid "WT GitHub"
-msgstr "WT GitHub"
+msgstr "GitHub WT"
 
 #: ../http/static/404/404.html:1
 msgid "We could not find the page :("
-msgstr "Vi kunne ikke finne siden :("
+msgstr "Nu am gasit pagina :("
 
 #: ../http/static/logs/logs.html:36
 msgid "We recommend you to download large files and view them in your favourite text editor."
-msgstr "Vi anbefaler at du laster ned store filer og åpner dem i din favoritteksteditor."
+msgstr "Vă recomandăm să descărcați fișiere mari și să le vizualizați în editorul dvs. de text preferat."
 
 #: ../http/static/logs/logs.html:28
 msgid "Download all logfiles as zip"
-msgstr "Last ned alle loggene i en ZIP-fil"
+msgstr "Descărcați toate jurnalele"
 
 #: ../http/static/logs/logs.html:27
 msgid "Download selected logfile"
-msgstr "Last ned den valgte loggfila"
+msgstr "Descărcați selectat"
 
 #: ../http/static/findmedia/fm.html:78
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
-msgstr "Avbryt skanning"
+msgstr "Anulați scanarea"
 
 #: ../http/static/findmedia/fm.html:43
 #: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
-msgstr "Legg til ignorert mappe"
+msgstr "Adăugați folderul ignorat"
 
 #: ../http/static/playlist/playlistHelp.html:2
 #: ../http/static/sub_management/subHelp.html:2
 msgid "Current features:"
-msgstr "Nåværende funksjoner:"
+msgstr "Caracteristici actuale:"
 
 #: ../http/static/findmedia/fm.html:92
 #: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
-msgstr "Nedlastingsresultat"
+msgstr "Descărcați rezultatul"
 
 #: ../http/static/findmedia/fm.html:26
 msgid "Ignore Extras"
-msgstr "Ignorer ekstramateriale"
+msgstr "Ignorați Extras"
 
 #: ../http/static/findmedia/fm.html:20
 msgid "Ignore Hidden"
-msgstr "Ignorer skjulte"
+msgstr "Ignorați ascuns"
 
 #: ../http/static/findmedia/fm.html:31
 msgid "Ignore folders"
-msgstr "Ignorer mapper"
+msgstr "Ignorați dosarele"
 
 #: ../http/static/findmedia/fm.html:98
 msgid "No records missing from Plex database"
-msgstr "Ingen poster mangler i Plex-databasen"
+msgstr "Nu lipsesc înregistrări din baza de date Plex"
 
 #: ../http/static/findmedia/fm.html:110
 msgid "No records missing from harddrive"
-msgstr "Ingen filer mangler på harddisken"
+msgstr "Nu există fișiere care lipsesc de pe hard disk"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
-msgstr "Spillelistehjelp"
+msgstr "Ajutor Playlist"
 
 #: ../http/static/findmedia/fm.html:101
 msgid "Records missing from Plex database"
-msgstr "Poster som mangler i Plex-databasen"
+msgstr "Înregistrările lipsesc din baza de date Plex"
 
 #: ../http/static/findmedia/fm.html:113
 msgid "Records missing from harddrive"
-msgstr "Filer som mangler på harddisken"
+msgstr "Înregistrările care lipsesc de pe hard disk"
 
 #: ../http/static/findmedia/fm.html:59
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
-msgstr "Tilbakestill innstillinger"
+msgstr "Reseteaza setarile"
 
 #: ../http/static/findmedia/fm.html:67
 #: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
-msgstr "Lagre innstillinger"
+msgstr "Salvează setările"
 
 #: ../http/static/findmedia/fm.html:12
 msgid "Show settings"
-msgstr "Vis innstillinger"
+msgstr "Afișați setările"
 
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
-msgstr "Gyldige filetternavn"
+msgstr "Extensii valide"
 
 #: ../http/static/language/language.html:5
 msgid "Change Language"
-msgstr "Bytt språk"
+msgstr "Schimbați limba"
 
 #: ../http/static/menu/menu.html:14
 msgid "Language"
-msgstr "Språk"
+msgstr "Limbă"
 
 #: ../http/static/language/language.html:12
 msgid "Force language translation update"
-msgstr "Tving oppdatering av språkoversettelser"
+msgstr "Actualizarea forțata a traducerii limbii"
 
 #: ../http/static/logs/logs.html:5
 #: ../http/static/sub_management/sub.html:88
 msgid "Found"
-msgstr "Funnet"
+msgstr "Găsit"
 
 #: ../http/static/home/home.html:1
 msgid "Welcome to"
-msgstr "Velkommen til"
+msgstr "Bun venit la"
 
 #: ../http/static/logs/logs.html:5
 #: ../http/static/sub_management/sub.html:89
 msgid "rows"
-msgstr "rader"
+msgstr "rând"
 
 #: ../http/static/logs/logsController.js:9
 #: ../http/static/sub_management/subController.js:8
 msgid "Clear search"
-msgstr "Tøm søk"
+msgstr "Ștergeți căutarea"
 
 #: ../http/static/findmedia/fmController.js:8
 msgid "Delete ignored folder"
-msgstr "Slutt å ignorere mappe"
+msgstr "Opriți ignorarea dosarului"
 
 #: ../http/static/logs/logsController.js:13
 #: ../http/static/sub_management/subController.js:12
 msgid "Hide/Show search menu"
-msgstr "Skjul/Vis søkemeny"
+msgstr "Ascunde / Afișează meniul de căutare"
 
 #: ../http/static/findmedia/fmController.js:14
 msgid "Hide/Show settings menu"
-msgstr "Skjul/Vis innstillingsmeny"
+msgstr "Ascunde / Afișați meniul Setări"
 
 #: ../http/static/logs/logsController.js:12
 #: ../http/static/sub_management/subController.js:11
 msgid "Jump to top"
-msgstr "Gå til toppen"
+msgstr "Salt la început"
 
 #: ../http/static/logs/logsController.js:11
 #: ../http/static/sub_management/subController.js:10
 msgid "Next"
-msgstr "Neste"
+msgstr "Următor"
 
 #: ../http/static/logs/logsController.js:10
 #: ../http/static/sub_management/subController.js:9
 msgid "Previous"
-msgstr "Forrige"
+msgstr "Anterior"
 
 #: ../http/static/logs/logsController.js:8
 #: ../http/static/sub_management/subController.js:7
 msgid "Search keyword"
-msgstr "Søkeord"
+msgstr "Căutați cuvinte cheie"
 
 #: ../http/static/logs/logsController.js:7
 msgid "search..."
-msgstr "Søk..."
+msgstr "Căutare . . ."
 
 #: ../http/static/home/home.html:22
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
-msgstr "Lar deg kopiere spillelister mellom brukere, samt importere, eksportere og slette dem."
+msgstr "Vă permite să copiați listele de redare între utilizatori, precum și să importați, să le exportați și să le ștergeți."
 
 #: ../http/static/home/home.html:13
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
-msgstr "Enkel tilgang til alle Plex Media Server loggene samt enkel nedlasting av en eller alle loggene."
+msgstr "Acest modul permite accesul ușor la toate jurnalele serverului Plex Media Server și va permite de asemenea o modalitate ușoară de a descărca jurnalele individuale sau toate fișierele de jurnal într-o arhivă ZIP convenabilă."
 
 #: ../http/static/home/home.html:19
 msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
-msgstr "Gjør det mulig å finne mediefiler som enten ikke finnes i databasen eller i filsystemet."
+msgstr "Acest modul de instrument face posibilă localizarea suportului media care lipsește fie din baza de date, fie din sistemul de fișiere."
 
 #: ../http/static/home/home.html:10
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
-msgstr "Behandle undertekstfiler, uansett om de ligger ved siden av mediefila eller lastet ned via et annet modul, som OpenSubtitle.org-pakken. Denne modulen gir deg en samlet oversikt over undertekster for mediene dine, vise dem og slette dem, med mindre de er innebygd i mediefila selv."
+msgstr "Acest modul vă va permite să gestionați subtitrările, indiferent dacă sunt sau nu sunt atas (situat lângă fișierul media) sau descărcate prin intermediul unui alt plugin, cum ar fi agentul OpenSubtitles.org. Subtitrările vă vor permite să aveți o imagine de ansamblu a subtitrărilor pentru suportul media și să le vizualizați și să le ștergeți dacă nu sunt încorporate în fișierul aferent."
 
 #: ../http/static/home/home.html:16
 msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
-msgstr "Lar deg installere, oppdatere og slette ikkestøttede Plex Media Server moduler."
+msgstr "Acest modul vă va permite să instalați, să actualizați și să ștergeți pluginurile Plex Media Server neacceptate."
 
 #: ../http/static/home/home.html:7
 msgid "Tool Modules currently available are:"
-msgstr "Verktøymoduler tilgjengelig er:"
+msgstr "Modulele disponibile în prezent sunt:"
 
 #: ../http/static/uas/uasHelp.html:1
 msgid "UnsupportedAppStore Help"
-msgstr "Unsupported AppStore hjelp"
+msgstr "Ajutor Unsupported AppStore"
 
 #: ../http/static/uas/uasHelp.html:6
 msgid "* Category names contain installed/total available channels."
-msgstr "* Kategorinavn inneholder antall installerte/totalt tilgjengelige plugins."
+msgstr "* Numele categoriilor arată instalat / totalul de plug-in-uri disponibile."
 
 #: ../http/static/uas/uasHelp.html:2
 msgid "* Here you can either install a channel by it's Github repository link or by selecting one of the categories below."
-msgstr "* Her kan du enten installere en plugin med dens Github-link eller ved å velge en av kategoriene nedenfor."
+msgstr "* Aici poți să instalezi un plug-in din link-ul de depozit Github sau selectând una dintre categoriile de mai jos."
 
 #: ../http/static/uas/uasHelp.html:3
 msgid "* If you have installed channels manually before installing WebTools, you can click on the \"Migrate manually/previously installed channels\" to make WebTools aware of them."
-msgstr "* Hvis du har installert plugins manuelt før du installerte WebTools kan du klikke på \"Migrere manuelt/tidligere installerte plugins\" for å gjøre WebTools oppmerksom på dem."
+msgstr "* Dacă ați instalat manual pluginuri înainte de a instala WebTools, puteți face clic pe fișierele \"Migrate manual / plug-inuri instalate anterior\" pentru a face WebTools conștient de acestea."
 
 #: ../http/static/uas/uasHelp.html:4
 msgid "* You can also search for updates for all installed channels managed by WebTools via the \"Check for updates for all installed channels\" button."
-msgstr "* Du kan også søke etter oppdateringer for alle installerte plugins som håndteres av WebTools via \"Søk etter oppdateringer for alle installerte plugins\" knappen."
+msgstr "* De asemenea, puteți căuta actualizări pentru toate pluginurile instalate gestionate de WebTools prin intermediul butonului \"Verificați actualizările pentru toate modulele instalate\"."
 
 #: ../http/static/uas/uasHelp.html:7
 msgid "* You can expand the items by clicking on them."
-msgstr "* Du kan utvide elementene ved å klikke på dem."
+msgstr "* Puteți extinde elementele făcând clic pe ele."
 
 #: ../http/static/uas/uasHelp.html:5
 msgid "* You can select a category on the menu on the right."
-msgstr "* Du kan velge en kategori i menyen til høyre."
+msgstr "* Puteți selecta o categorie din meniul din dreapta."
 
 #: ../http/static/uas/uas.html:13
 msgid "Check for bundle updates"
-msgstr "Søk etter plugin oppdateringer"
+msgstr "Verificați actualizările plug-in-urilor"
 
 #: ../http/static/uas/uas.html:12
 msgid "Force UAS update"
-msgstr "Tving UAS oppdatering"
+msgstr "Actualizați UAS-ul forțat"
 
 #: ../http/static/uas/uas.html:8
 msgid "Manual Install"
-msgstr "Installer manuelt"
+msgstr "Instalare manuală"
 
 #: ../http/static/uas/uas.html:11
 msgid "Migrate"
-msgstr "Migrer"
+msgstr "Migrare"
 
 #: ../http/static/uas/uas.html:80
 msgid "Categories:"
-msgstr "Kategorier:"
+msgstr "Categori"
 
 #: ../http/static/playlist/playlist.html:37
 msgid "Copy"
-msgstr "Kopier"
+msgstr "Copiere"
 
 #: ../http/static/playlist/playlist.html:36
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
-msgstr "Slett"
+msgstr "Ștergere"
 
 #: ../http/static/playlist/playlist.html:41
 msgid "Download"
-msgstr "Last ned"
+msgstr "Descărcare"
 
 #: ../http/static/uas/uas.html:54
 msgid "Install"
-msgstr "Installer"
+msgstr "Instalare"
 
 #: ../http/static/uas/uas.html:88
 msgid "Last updated:"
-msgstr "Sist oppdatert:"
+msgstr "Ultima actualizare"
 
 #: ../http/static/uas/uasController.js:9
 msgid "Manual install url..."
-msgstr "Manuell installasjons URL..."
+msgstr "Adresă URL de instalare manuală ..."
 
 #: ../http/static/uas/uas.html:96
 msgid "Manual:"
@@ -356,161 +357,161 @@ msgstr "Manual:"
 
 #: ../http/static/uas/uas.html:104
 msgid "Repo:"
-msgstr "Oppbevaringssted:"
+msgstr "Repo:"
 
 #: ../http/static/playlist/playlist.html:9
 msgid "Select user"
-msgstr "Velg bruker:"
+msgstr "Selectați utilizatorul"
 
 #: ../http/static/_shared/webtoolsService.js:5
 msgid "Self"
-msgstr "Selv"
+msgstr "Auto"
 
 #: ../http/static/sub_management/subHelp.html:1
 msgid "Subtitle Management Help"
-msgstr "Hjelp til undertekstbehandling"
+msgstr "Gestionați ajutorul pentru subtitrări"
 
 #: ../http/static/uas/uas.html:113
 msgid "Support:"
-msgstr "Støtte:"
+msgstr "Suport:"
 
 #: ../http/static/sub_management/sub.html:4
 msgid "This is an unofficial manager for subtitles."
-msgstr "Dette er en uoffisiell behandler for undertekster."
+msgstr "Acest modul de instrument este un manager neoficial pentru subtitrări."
 
 #: ../http/static/sub_management/sub.html:6
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
-msgstr "For å komme i gang, velg en av dine biblioteker eller klikk på \"?\" for ytterligere hjelp"
+msgstr "Pentru a începe, selectați una din Biblioteci sau faceți clic pe \"?\" pentru ajutor suplimentar"
 
 #: ../http/static/uas/uas.html:55
 msgid "Update"
-msgstr "Oppdater"
+msgstr "Actualizare"
 
 #: ../http/static/sub_management/sub.html:5
 msgid "Usage at your own risk!"
-msgstr "Bruk på egen risiko!"
+msgstr "Folosiți pe propria răspundere!"
 
 #: ../http/static/playlist/playlistHelp.html:6
 msgid "Copy a playlist between users"
-msgstr "Kopier en spilleliste mellom brukere"
+msgstr "Copiați o listă de redare între utilizatori"
 
 #: ../http/static/playlist/playlistHelp.html:5
 msgid "Delete a playlist"
-msgstr "Slett en spilleliste"
+msgstr "Ștergeți o listă de redare"
 
 #: ../http/static/playlist/playlistHelp.html:4
 msgid "Download a playlist"
-msgstr "Last ned en spilleliste"
+msgstr "Descărcați o listă de redare"
 
 #: ../http/static/playlist/playlistHelp.html:7
 msgid "Import a playlist"
-msgstr "Importer en spilleliste"
+msgstr "Importați o listă de redare"
 
 #: ../http/static/playlist/playlist.html:18
 msgid "Select target user"
-msgstr "Velg målbruker"
+msgstr "Selectați utilizatorul țintă"
 
 #: ../http/static/playlist/playlist.html:37
 msgid "Select target user to copy"
-msgstr "Velg bruker det skal kopieres til"
+msgstr "Selectați utilizatorul vizat pentru a copia"
 
 #: ../http/static/playlist/playlist.html:3
 msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
-msgstr "For å komme i gang, velg en av spillelistene dine eller klikk på \"?\" for ytterligere hjelp"
+msgstr "Pentru a începe, selectați unul din listele dvs. de redare sau faceți clic pe butonul \"?\" pentru ajutor suplimentar"
 
 #: ../http/static/language/language.html:15
 msgid "If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:"
-msgstr "Hvis ditt språk mangler, ikke er 100% oversatt, eller du ønsker å forbedre oversettelsen, gå her:"
+msgstr "Dacă limba dvs. lipsește, nu este tradusă 100% sau doriți să îmbunătățiți traducerea, atunci vă rugăm să mergeți aici:"
 
 #: ../http/static/playlist/playlistHelp.html:9
 msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
-msgstr "Merk: For å kunne bruke kopifunksjonen må Plex Media Server være logget inn på plex.tv siden vi henter brukerlista derfra"
+msgstr "Notă: Pentru a utiliza funcția de copiere, serverul Plex Media Server trebuie să fie conectat la plex.tv, deoarece preluăm listele de utilizatori de la plex.tv"
 
 #: ../http/static/uas/uasService.js:5
 msgid "Channels/Plug-ins migrated:"
-msgstr "Kanaler/Plugins migrert:"
+msgstr "Canale / Plug-uri migrate:"
 
 #: ../http/static/uas/uasService.js:6
 msgid "No Channels/Plug-ins was migrated"
-msgstr "Ingen Kanaler/Plugins ble migrert"
+msgstr "Nu au fost migrate canale / pluginuri"
 
 #: ../http/static/factoryreset/fr.html:4
 msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
-msgstr "Alle innstillinger vil bli fjernet, og etter at tilbakestillingen har funnet sted, må du kanskje gå inn i UAS og klikke på migrere for å importere plugin-modulene dine på nytt."
+msgstr "Toate setările vor fi eliminate și după efectuarea resetării ar putea fi necesar să intrați în UAS și faceți clic pe migrație pentru a reimporta plug-in-urile."
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
 #: ../http/static/menu/menu.html:18
 msgid "Factory Reset"
-msgstr "Fabrikkinnstilling"
+msgstr "Resetare fabrică"
 
 #: ../http/static/factoryreset/fr.html:6
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
-msgstr "Hvis du klikker under, vil WebTools ikke reagere i omtrent 1 minutt, etterpå kan du laste siden på nytt i nettleseren din."
+msgstr "Dacă dați clic mai jos, WebTools nu va răspunde pentru aproximativ 1 minut, după care reîncărcați pagina în browser."
 
 #: ../http/static/factoryreset/fr.html:3
 msgid "This will reset WebTools to what is was, when first installed"
-msgstr "Dette vil nullstille WebTools til den opprinnelige tilstanden når du installerte WebTools."
+msgstr "Acest lucru va reseta WebTools în starea inițială când ați instalat pentru prima dată WebTools."
 
 #: ../http/static/playlist/playlist.html:48
 msgid "No playlists available"
-msgstr "Ingen spilleliste tilgjengelig"
+msgstr "Nu sunt disponibile liste de redare"
 
 #: ../http/static/uas/uasService.js:7
 msgid "Updates available"
-msgstr "Oppdateringer er tilgjengelig"
+msgstr "Actualizări disponibile"
 
 #: ../http/static/menu/menu.html:26
 msgid "WT Manual Online"
-msgstr "WT Online hjelp"
+msgstr "Ajutor WT Online"
 
 #: ../http/static/aboutus/aboutus.html:13
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
-msgstr "En stor takk til alle de som har hjulpet til med oversettelser og testing av WebTools."
+msgstr "Multe mulțumiri îi aparțin tuturor celor care au ajutat la traducerea și testarea WebTools."
 
 #: ../http/static/menu/menu.html:15
 msgid "About us"
-msgstr "Om oss"
+msgstr "Despre noi"
 
 #: ../http/static/aboutus/aboutus.html:22
 msgid "And Many Thanks To"
-msgstr "Og mange takk til"
+msgstr "Și multe mulțumiri la"
 
 #: ../http/static/aboutus/aboutus.html:25
 msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
-msgstr "Og våre venner ved POEditor.com, og siden vi er et Open-Source-prosjekt, ga de oss en gratis oversettelsesside."
+msgstr "Și prietenii noștri de la POEditor.com, și din moment ce suntem un proiect open-source, ne-au oferit un site gratuit de traducere"
 
 #: ../http/static/aboutus/aboutus.html:5
 msgid "Main Developers"
-msgstr "Hovedutviklere"
+msgstr "Dezvoltatori principali"
 
 #: ../http/static/aboutus/aboutus.html:18
 msgid "Never Forget"
-msgstr "For ikke å glemme"
+msgstr "Nu uitați niciodată"
 
 #: ../http/static/aboutus/aboutus.html:6
 msgid "Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),"
-msgstr "Oliver aka omc1000, et Plex-fellesskapsmedlem (creoludifico på GitHub) (Grensesnitt),"
+msgstr "Oliver aka omc1000, membru al comunității Plex (creoludifico pe GitHub) (front end),"
 
 #: ../http/static/aboutus/aboutus.html:30
 msgid "Thank you for your support!!"
-msgstr "Tusen takk for din støtte!!"
+msgstr "Mulțumim pentru suport!!"
 
 #: ../http/static/aboutus/aboutus.html:19
 msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
-msgstr "Ideen om en Unsupported AppStore ble unnfanget av mikedm139, den opprinnelige forfatteren av Unsupported AppStore."
+msgstr "Ideea unui Unsupported AppStore a fost concepută de mikedm139, autorul original al Unsupported AppStore."
 
 #: ../http/static/aboutus/aboutus.html:7
 msgid "Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)"
-msgstr "Tommy aka dane22, et Plex-fellesskapsmedlem (ukdtom på GitHub) (baksiden)"
+msgstr "Tommy aka dane22, membru al comunității Plex (ukdtom pe GitHub) (Back end)"
 
 #: ../http/static/aboutus/aboutus.html:20
 msgid "V2 frontend was made by dagalufh"
-msgstr "V2 grensesnittet ble laget av dagalufh"
+msgstr "V2 frontend a fost făcut de dagalufh"
 
 #: ../http/static/aboutus/aboutus.html:27
 msgid "Your Support"
-msgstr "Din støtte"
+msgstr "Sprijinul tău"
 
 #: ../http/static/aboutus/aboutus.html:10
 msgid "trumpy81"
@@ -518,138 +519,138 @@ msgstr "trumpy81"
 
 #: ../http/static/aboutus/aboutus.html:3
 msgid "About us and Credits"
-msgstr "Om oss og kreditering"
+msgstr "Despre noi și Credite"
 
 #: ../http/static/aboutus/aboutus.html:9
 msgid "Custom Themes and Wiki"
-msgstr "Tilpassede temaer og Wiki"
+msgstr "Teme personalizate și Wiki"
 
 #: ../http/static/aboutus/aboutus.html:28
 msgid "If you use WebTools and you are willing to support the developers with a beer or two, then please click on the 'Donate'\n"
 "        button below."
-msgstr "Hvis du bruker WebTools og du er villig til å støtte utviklerne med en øl eller to, kan du klikke på \"Donate\" -knappen nedenfor."
+msgstr "Dacă utilizați WebTools și sunteți dispus să sprijiniți dezvoltatorii cu o bere sau două, vă rugăm să faceți clic pe \"Donate\" butonul de mai jos."
 
 #: ../http/static/aboutus/aboutus.html:23
 msgid "The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and\n"
 "        hard work."
-msgstr "De talentfulle og hardt arbeidende utviklerne og ansatte ved Plex. Vi er evig takknemlig for deres engasjement og hardt arbeid."
+msgstr "Autorii / dezvoltatorii talentați și cei care lucrează din greu și personalul de la Plex. Suntem recunoscători veșnic pentru dedicarea voastră și munca grea."
 
 #: ../http/static/aboutus/aboutus.html:12
 msgid "Translations and Beta testers"
-msgstr "Oversettelser og betatestere"
+msgstr "Traduceri și testeri Beta"
 
 #: ../http/static/uas/uas.html:45
 msgid "Update all"
-msgstr "Oppdater alle"
+msgstr "Actualizați-le pe toate"
 
 #: ../http/static/uas/uas.html:39
 msgid "You have"
-msgstr "Du har"
+msgstr "Tu ai"
 
 #: ../http/static/uas/uas.html:41
 msgid "bundle"
-msgstr "pakke"
+msgstr "pachet"
 
 #: ../http/static/uas/uas.html:42
 msgid "bundles"
-msgstr "pakker"
+msgstr "pachete"
 
 #: ../http/static/uas/uas.html:43
 msgid "not up to date."
-msgstr "ikke oppdatert"
+msgstr "nu sunt actualizate."
 
 #: ../http/login.html:53
 msgid "Continue"
-msgstr "Frotsett"
+msgstr "Continuă"
 
 #: ../http/login.html:40
 msgid "Create a local password"
-msgstr "Lag et lokalt passord"
+msgstr "Creați o parolă locală"
 
 #: ../http/login.html:45
 msgid "Create password"
-msgstr "Lag passord"
+msgstr "Creaza parola"
 
 #: ../http/login.html:54
 msgid "Download Latest"
-msgstr "Last ned siste"
+msgstr "Descărcați ultima versiune"
 
 #: ../http/login.html:50
 msgid "New Version available"
-msgstr "Ny versjon tilgjengelig"
+msgstr "Versiune nouă disponibilă"
 
 #: ../http/login.html:51
 msgid "New Version:"
-msgstr "Ny versjon:"
+msgstr "Versiune nouă:"
 
 #: ../http/login.html:42
 msgid "Password"
-msgstr "Passord"
+msgstr "Parola"
 
 #: ../http/login.html:43
 msgid "Password again"
-msgstr "Gjenta passord:"
+msgstr "Parola din nou"
 
 #: ../http/login.html:52
 msgid "Release Notes:"
-msgstr "Utgivelsesnotater"
+msgstr "Note de lansare:"
 
 #: ../http/login.html:44
 msgid "Sign in"
-msgstr "Logg inn"
+msgstr "Conectare"
 
 #: ../http/login.html:39
 msgid "Sign in with your local password"
-msgstr "Logg inn med ditt lokale passord"
+msgstr "Conectați-vă cu parola locală"
 
 #: ../http/login.html:36
 #: ../http/login.html:47
 msgid "Signing in towards plex.tv"
-msgstr "Logg inn mot plex.tv"
+msgstr "Conectarea la plex.tv"
 
 #: ../http/login.html:49
 msgid "The passwords does not match"
-msgstr "Passordene er ikke like"
+msgstr "Parolele nu se potrivesc"
 
 #: ../http/login.html:37
 msgid "Use your regular Plex credentials"
-msgstr "Bruk din vanlige Plex-legitimasjon"
+msgstr "Utilizați acreditările Plex obișnuite"
 
 #: ../http/login.html:41
 msgid "Username"
-msgstr "Brukernavn"
+msgstr "Utilizator"
 
 #: ../http/login.html:55
 msgid "WebTools not available... Please contact Devs!"
-msgstr "WebTools er ikke tilgjengelig... Kontakt utviklerne!"
+msgstr "WebTools nu este disponibil ... Vă rugăm să contactați Devs!"
 
 #: ../http/login.html:48
 msgid "Wrong password"
-msgstr "Feil passord"
+msgstr "Parola greșită"
 
 #: ../http/login.html:46
 msgid "Wrong username and/or password"
-msgstr "Feil brukernavn og/eller passord"
+msgstr "Numele de utilizator și / sau parola greșite"
 
 #: ../http/login.html:38
 msgid "PMS is not connected to plex.tv"
-msgstr "PMS er ikke tilkoblet til plex.tv"
+msgstr "PMS nu este conectat la plex.tv"
 
 #: ../http/static/sub_management/sub.html:108
 msgid "Back"
-msgstr "Tilbake"
+msgstr "Înapoi"
 
 #: ../http/static/logs/logs.html:46
 msgid "Next file"
-msgstr "Neste fil"
+msgstr "Următorul fișier"
 
 #: ../http/static/logs/logs.html:44
 msgid "Previous file"
-msgstr "Forrige fil"
+msgstr "Fișierul anterior"
 
 #: ../http/static/logs/logs.html:45
 msgid "Reload file"
-msgstr "Last inn fila"
+msgstr "Reîncărcați fișierul"
 
 #: ../http/static/sub_management/Directive/subDetails.html:22
 msgid "Codec"
@@ -657,65 +658,65 @@ msgstr "Codec"
 
 #: ../http/static/sub_management/subController.js:21
 msgid "Delete Selected"
-msgstr "Slett valgte"
+msgstr "Sterge selectia"
 
 #: ../http/static/sub_management/subController.js:19
 msgid "Deselect All"
-msgstr "Opphev alle"
+msgstr "Deselectați-le pe toate"
 
 #: ../http/static/sub_management/subController.js:23
 msgid "Download Subtitle"
-msgstr "Last ned undertekst"
+msgstr "Descărcați subtitrări"
 
 #: ../http/static/sub_management/sub.html:25
 msgid "Filter by letter"
-msgstr "Filtrer etter bokstav"
+msgstr "Filtrați după litera"
 
 #: ../http/static/sub_management/Directive/subDetails.html:20
 msgid "Lang"
-msgstr "Språk"
+msgstr "Lang"
 
 #: ../http/static/sub_management/sub.html:45
 msgid "Load more"
-msgstr "Last flere"
+msgstr "Incarcă mai mult"
 
 #: ../http/static/sub_management/Directive/subDetails.html:21
 msgid "Location"
-msgstr "Lokasjon"
+msgstr "Locație"
 
 #: ../http/static/sub_management/sub.html:42
 msgid "No movies found in"
-msgstr "Ingen filmer funnet i"
+msgstr "Nu au fost găsite filme în"
 
 #: ../http/static/sub_management/Directive/subDetails.html:37
 msgid "None"
-msgstr "Ingen"
+msgstr "Nici unul"
 
 #: ../http/static/sub_management/subController.js:14
 #: ../http/static/sub_management/subController.js:6
 msgid "Search..."
-msgstr "Søk..."
+msgstr "Căutare..."
 
 #: ../http/static/sub_management/subController.js:18
 msgid "Select All"
-msgstr "Velg alle"
+msgstr "Selectează tot"
 
 #: ../http/static/sub_management/subController.js:20
 msgid "Upload Subtitle"
-msgstr "Last opp undertekst"
+msgstr "Încărcați subtitrări"
 
 #: ../http/static/sub_management/subController.js:22
 msgid "View Subtitle"
-msgstr "Vis undertekst"
+msgstr "Vizualizați subtitrarea"
 
 #: ../http/static/sub_management/sub.html:42
 #: ../http/static/sub_management/sub.html:53
 msgid "with current search filter"
-msgstr "med gjeldende søkefilter"
+msgstr "cu filtrul curent de căutare"
 
 #: ../http/static/sub_management/subController.js:15
 msgid "Expand a library to search"
-msgstr "Utvid et bibliotek for å søke"
+msgstr "Extindeți o bibliotecă pentru a căuta"
 
 #: ../Contents/Resources/language_template.html:19
 msgid "Get missing from File System"

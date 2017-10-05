@@ -211,7 +211,7 @@ msgid "Welcome to"
 msgstr "Velkommen til"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:88
+#: ../http/static/sub_management/sub.html:89
 msgid "rows"
 msgstr "rækker"
 
@@ -382,11 +382,11 @@ msgstr "Undertekst management hjælp"
 msgid "Support:"
 msgstr "Support:"
 
-#: ../http/static/sub_management/sub.html:3
+#: ../http/static/sub_management/sub.html:4
 msgid "This is an unofficial manager for subtitles."
 msgstr "Dette er en uofficiel manager for undertekster."
 
-#: ../http/static/sub_management/sub.html:5
+#: ../http/static/sub_management/sub.html:6
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "For at starte, vælg et af dine biblioteker eller klik på \"?\" for yderligere hjælp"
 
@@ -394,9 +394,9 @@ msgstr "For at starte, vælg et af dine biblioteker eller klik på \"?\" for yde
 msgid "Update"
 msgstr "Opdater"
 
-#: ../http/static/sub_management/sub.html:4
+#: ../http/static/sub_management/sub.html:5
 msgid "Usage at your own risk!"
-msgstr "Brug for egen regning!"
+msgstr "Brug for egen risiko!"
 
 #: ../http/static/playlist/playlistHelp.html:6
 msgid "Copy a playlist between users"
@@ -644,7 +644,7 @@ msgstr "Forkert brugernavn og/eller kodeord "
 msgid "PMS is not connected to plex.tv"
 msgstr "PMS er ikke logget ind til plex.tv"
 
-#: ../http/static/sub_management/sub.html:103
+#: ../http/static/sub_management/sub.html:108
 msgid "Back"
 msgstr "Tilbage"
 
@@ -676,7 +676,7 @@ msgstr "Fravælg alle"
 msgid "Download Subtitle"
 msgstr "Hent undertekst"
 
-#: ../http/static/sub_management/sub.html:23
+#: ../http/static/sub_management/sub.html:25
 msgid "Filter by letter"
 msgstr "Filtrer på bogstav"
 
@@ -684,7 +684,7 @@ msgstr "Filtrer på bogstav"
 msgid "Lang"
 msgstr "Sprog"
 
-#: ../http/static/sub_management/sub.html:41
+#: ../http/static/sub_management/sub.html:45
 msgid "Load more"
 msgstr "Hent flere"
 
@@ -692,13 +692,9 @@ msgstr "Hent flere"
 msgid "Location"
 msgstr "Placering"
 
-#: ../http/static/sub_management/sub.html:39
+#: ../http/static/sub_management/sub.html:42
 msgid "No movies found in"
 msgstr "Ingen film fundet i"
-
-#: ../http/static/sub_management/sub.html:51
-msgid "No series found in"
-msgstr "Ingen serier fundet i"
 
 #: ../http/static/sub_management/Directive/subDetails.html:37
 msgid "None"
@@ -721,12 +717,49 @@ msgstr "Upload undertekst"
 msgid "View Subtitle"
 msgstr "Vis undertekst"
 
-#: ../http/static/sub_management/sub.html:39
-#: ../http/static/sub_management/sub.html:51
+#: ../http/static/sub_management/sub.html:42
+#: ../http/static/sub_management/sub.html:53
 msgid "with current search filter"
 msgstr "med valgte søge filter"
 
 #: ../http/static/sub_management/subController.js:15
 msgid "Expand a library to search"
 msgstr "Udvid et bibliotek for at søge"
+
+#: ../Contents/Resources/language_template.html:19
+msgid "Get missing from File System"
+msgstr "Hent manglende filer fra fil systemet"
+
+#: ../Contents/Resources/language_template.html:27
+msgid "Get missing from database"
+msgstr "Hent manglende fra databasen"
+
+#: ../Contents/Resources/language_template.html:23
+msgid "Idle"
+msgstr "Venter"
+
+#: ../http/static/sub_management/sub.html:53
+msgid "No TV-Shows found in"
+msgstr "Ingen TV-Shows fundet i"
+
+#: ../Contents/Resources/language_template.html:22
+msgid "Scanning database show %s of %s :"
+msgstr "Skanner database show %s af %s :"
+
+#: ../Contents/Resources/language_template.html:26
+msgid "Scanning database: item %s of %s : Working"
+msgstr "Skanner database: media %s af %s : Arbejder"
+
+#: ../Contents/Resources/language_template.html:24
+msgid "Scanning file: %s"
+msgstr "Skanner fil: %s"
+
+#: ../Contents/Resources/language_template.html:21
+#: ../Contents/Resources/language_template.html:25
+msgid "Starting to scan database for section %s"
+msgstr "Starter skanning af databasen for bibliotek %s"
+
+#: ../Contents/Resources/language_template.html:20
+msgid "idle"
+msgstr "venter"
 

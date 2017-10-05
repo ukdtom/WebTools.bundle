@@ -9,7 +9,7 @@ msgstr ""
 
 #: ../http/static/home/home.html:4
 msgid "Use the menu on the left side to navigate in WebTools."
-msgstr "Utilice el menú de la izquierda para navegar en WebTools."
+msgstr "Usa el menú a la izquierda para navegar en WebTools."
 
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
@@ -33,7 +33,7 @@ msgstr "Cambiar visualizador de registro"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
-msgstr "Eliminar el sidecar seleccionado del disco duro"
+msgstr "Eliminar sidecar seleccionado del disco duro."
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
@@ -69,7 +69,7 @@ msgstr "Buscar películas en categorías"
 
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
-msgstr "Seleccione uno de los temas disponibles para usar:"
+msgstr "Seleccione uno de los temas disponibles:"
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
@@ -170,16 +170,16 @@ msgstr "Registros en falta en disco duro"
 #: ../http/static/findmedia/fm.html:59
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
-msgstr "Reiniciar ajustes"
+msgstr "Reiniciar parametraje"
 
 #: ../http/static/findmedia/fm.html:67
 #: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
-msgstr "Guardar ajustes"
+msgstr "Guardar parametraje"
 
 #: ../http/static/findmedia/fm.html:12
 msgid "Show settings"
-msgstr "Presentar ajustes"
+msgstr "Presentar parametraje"
 
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
@@ -195,24 +195,24 @@ msgstr "Idioma"
 
 #: ../http/static/language/language.html:12
 msgid "Force language translation update"
-msgstr "Actualizar traducción del lenguaje"
+msgstr "Actualizar traducción"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:88
 msgid "Found"
-msgstr "Encontrado"
+msgstr "Encontró"
 
 #: ../http/static/home/home.html:1
 msgid "Welcome to"
 msgstr "Bienvenido a"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:89
 msgid "rows"
-msgstr "filas"
+msgstr "lineas"
 
 #: ../http/static/logs/logsController.js:9
-#: ../http/static/sub_management/subController.js:10
+#: ../http/static/sub_management/subController.js:8
 msgid "Clear search"
 msgstr "Borrar búsqueda"
 
@@ -221,7 +221,7 @@ msgid "Delete ignored folder"
 msgstr "Eliminar carpeta ignorada"
 
 #: ../http/static/logs/logsController.js:13
-#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:12
 msgid "Hide/Show search menu"
 msgstr "Ocultar/Mostrar menú de búsqueda"
 
@@ -230,73 +230,72 @@ msgid "Hide/Show settings menu"
 msgstr "Ocultar/Mostrar Menú de Configuración"
 
 #: ../http/static/logs/logsController.js:12
-#: ../http/static/sub_management/subController.js:13
+#: ../http/static/sub_management/subController.js:11
 msgid "Jump to top"
 msgstr "Saltar a Tope"
 
 #: ../http/static/logs/logsController.js:11
-#: ../http/static/sub_management/subController.js:12
+#: ../http/static/sub_management/subController.js:10
 msgid "Next"
-msgstr "Siguiente"
+msgstr "Seguiente"
 
 #: ../http/static/logs/logsController.js:10
-#: ../http/static/sub_management/subController.js:11
+#: ../http/static/sub_management/subController.js:9
 msgid "Previous"
 msgstr "Anterior"
 
 #: ../http/static/logs/logsController.js:8
-#: ../http/static/sub_management/subController.js:9
+#: ../http/static/sub_management/subController.js:7
 msgid "Search keyword"
 msgstr "Clave de Búsqueda"
 
 #: ../http/static/logs/logsController.js:7
-#: ../http/static/sub_management/subController.js:8
 msgid "search..."
-msgstr "Buscar . . ."
+msgstr "Buscar…"
 
 #: ../http/static/home/home.html:22
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
-msgstr ""
+msgstr "Permite copiar listas de reproducción entre usuarios, así como importar, exportar y eliminarlos."
 
 #: ../http/static/home/home.html:13
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
-msgstr ""
+msgstr "Fácil acceso a todos los registros de Plex Media Server, y también permitirá una manera fácil de descargar registros individuales o todos los registros. "
 
 #: ../http/static/home/home.html:19
 msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
-msgstr ""
+msgstr "Permite localizar los medios, que faltan en la base de datos o en el sistema de archivos. "
 
 #: ../http/static/home/home.html:10
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
-msgstr ""
+msgstr "Administrar archivos de subtítulos, independientemente de que sean sidecars (ubicados junto al archivo multimedia) o descargados a través de otro complemento, como el paquete OpenSubtitle.org. Lo que este plugin puede hacer, es permitirle reunir una visión general de los subtítulos para sus medios de comunicación, verlos y eliminarlos, a menos que estén incrustados dentro de los propios medios. "
 
 #: ../http/static/home/home.html:16
 msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
-msgstr ""
+msgstr "Esto le permitirá instalar, actualizar y eliminar los plugins no soportados de Plex Media Server. "
 
 #: ../http/static/home/home.html:7
 msgid "Tool Modules currently available are:"
-msgstr ""
+msgstr "Los módulos actualmente disponibles son: "
 
 #: ../http/static/uas/uasHelp.html:1
 msgid "UnsupportedAppStore Help"
-msgstr "Ayuda de Unsupported AppStore"
+msgstr "Ayuda para \"Unsupported AppStore\""
 
 #: ../http/static/uas/uasHelp.html:6
 msgid "* Category names contain installed/total available channels."
-msgstr ""
+msgstr "* Incluso nombres de plug-ins y canales"
 
 #: ../http/static/uas/uasHelp.html:2
 msgid "* Here you can either install a channel by it's Github repository link or by selecting one of the categories below."
-msgstr ""
+msgstr "* Aquí puede instalar un canal por su enlace de repositorio Github o seleccionando una de las categorías a continuación. "
 
 #: ../http/static/uas/uasHelp.html:3
 msgid "* If you have installed channels manually before installing WebTools, you can click on the \"Migrate manually/previously installed channels\" to make WebTools aware of them."
-msgstr ""
+msgstr "* Si ha instalado los canales manualmente antes de instalar WebTools, puede hacer clic en el botón \"Migrar canales manualmente / previamente instalados\" para que WebTools los conozca. "
 
 #: ../http/static/uas/uasHelp.html:4
 msgid "* You can also search for updates for all installed channels managed by WebTools via the \"Check for updates for all installed channels\" button."
-msgstr ""
+msgstr "* También puede buscar actualizaciones para todos los canales instalados gestionados por WebTools a través del botón \"Buscar actualizaciones para todos los canales instalados\". "
 
 #: ../http/static/uas/uasHelp.html:7
 msgid "* You can expand the items by clicking on them."
@@ -304,11 +303,11 @@ msgstr "* Puedes expandir los items haciendo clic en ellos"
 
 #: ../http/static/uas/uasHelp.html:5
 msgid "* You can select a category on the menu on the right."
-msgstr "* Puedes seleccionar una categoria en el menu del lado izquierdo"
+msgstr "* Puedes seleccionar una categoria en el menu a la izquierda"
 
 #: ../http/static/uas/uas.html:13
 msgid "Check for bundle updates"
-msgstr "Buscar actualizaciones del plug-in"
+msgstr "Buscar actualizaciones de plug-in"
 
 #: ../http/static/uas/uas.html:12
 msgid "Force UAS update"
@@ -316,15 +315,15 @@ msgstr "Forzar actualización del UAS"
 
 #: ../http/static/uas/uas.html:8
 msgid "Manual Install"
-msgstr "Instalación Manual"
+msgstr "Instalacción Manual"
 
 #: ../http/static/uas/uas.html:11
 msgid "Migrate"
-msgstr "Migrar"
+msgstr "Emigrar"
 
 #: ../http/static/uas/uas.html:80
 msgid "Categories:"
-msgstr "Categorias:"
+msgstr "Categorías: "
 
 #: ../http/static/playlist/playlist.html:37
 msgid "Copy"
@@ -337,318 +336,421 @@ msgstr "Borrar"
 
 #: ../http/static/playlist/playlist.html:41
 msgid "Download"
-msgstr ""
+msgstr "Descargar"
 
 #: ../http/static/uas/uas.html:54
 msgid "Install"
-msgstr ""
+msgstr "Instalar"
 
 #: ../http/static/uas/uas.html:88
 msgid "Last updated:"
-msgstr ""
+msgstr "Última actualización: "
 
 #: ../http/static/uas/uasController.js:9
 msgid "Manual install url..."
-msgstr ""
+msgstr "Direccion URL para instalacción manual"
 
 #: ../http/static/uas/uas.html:96
 msgid "Manual:"
-msgstr ""
+msgstr "Manual:"
 
 #: ../http/static/uas/uas.html:104
 msgid "Repo:"
-msgstr ""
+msgstr "Repo:"
 
 #: ../http/static/playlist/playlist.html:9
 msgid "Select user"
-msgstr ""
+msgstr "Seleccionar usuario "
 
 #: ../http/static/_shared/webtoolsService.js:5
 msgid "Self"
-msgstr ""
+msgstr "Self"
 
 #: ../http/static/sub_management/subHelp.html:1
 msgid "Subtitle Management Help"
-msgstr ""
+msgstr "Ayuda de administración de subtítulos "
 
 #: ../http/static/uas/uas.html:113
 msgid "Support:"
-msgstr ""
+msgstr "Soporte:"
 
-#: ../http/static/sub_management/sub.html:3
+#: ../http/static/sub_management/sub.html:4
 msgid "This is an unofficial manager for subtitles."
-msgstr ""
+msgstr "Este es un gestor no oficial de subtítulos. "
 
-#: ../http/static/sub_management/sub.html:5
+#: ../http/static/sub_management/sub.html:6
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
-msgstr ""
+msgstr "Para empezar, seleccione una de sus Bibliotecas o haga clic en el botón \"?\" para ayuda adicional "
 
 #: ../http/static/uas/uas.html:55
 msgid "Update"
-msgstr ""
+msgstr "Actualizar "
 
-#: ../http/static/sub_management/sub.html:4
+#: ../http/static/sub_management/sub.html:5
 msgid "Usage at your own risk!"
-msgstr ""
+msgstr "Uso a su propio riesgo! "
 
 #: ../http/static/playlist/playlistHelp.html:6
 msgid "Copy a playlist between users"
-msgstr ""
+msgstr "Copia una playlist entre usuarios "
 
 #: ../http/static/playlist/playlistHelp.html:5
 msgid "Delete a playlist"
-msgstr ""
+msgstr "Borrar playlist"
 
 #: ../http/static/playlist/playlistHelp.html:4
 msgid "Download a playlist"
-msgstr ""
+msgstr "Descargar playlist"
 
 #: ../http/static/playlist/playlistHelp.html:7
 msgid "Import a playlist"
-msgstr ""
+msgstr "Importar playlist"
 
 #: ../http/static/playlist/playlist.html:18
 msgid "Select target user"
-msgstr ""
+msgstr "Seleccionar usuario de destino "
 
 #: ../http/static/playlist/playlist.html:37
 msgid "Select target user to copy"
-msgstr ""
+msgstr "Seleccionar usuario de destino para copiar "
 
 #: ../http/static/playlist/playlist.html:3
 msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
-msgstr ""
+msgstr "Para empezar, seleccione una de sus Listas de reproducción o haga clic en el botón \"?\" para ayuda adicional "
 
 #: ../http/static/language/language.html:15
 msgid "If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:"
-msgstr ""
+msgstr "Si su idioma está faltando, no se traduce al 100%, o si desea mejorar la traducción de la misma, haga clic aquí: "
 
 #: ../http/static/playlist/playlistHelp.html:9
 msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
-msgstr ""
+msgstr "Nota: Para utilizar la función de copia, el Plex Media Server debe estar registrado en plex.tv, ya que estamos recopilando las listas de usuarios de plex.tv "
 
 #: ../http/static/uas/uasService.js:5
 msgid "Channels/Plug-ins migrated:"
-msgstr ""
+msgstr "Canales/Plug-ins migrados:"
 
 #: ../http/static/uas/uasService.js:6
 msgid "No Channels/Plug-ins was migrated"
-msgstr ""
+msgstr "No se ha migrado ningún canal / plug-in"
 
 #: ../http/static/factoryreset/fr.html:4
 msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
-msgstr ""
+msgstr "Todos los ajustes desaparecerán y, una vez que se haya realizado el restablecimiento, es posible que deba ir a su UAS y seleccionar migrar. "
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
 #: ../http/static/menu/menu.html:18
 msgid "Factory Reset"
-msgstr ""
+msgstr "Reset total"
 
 #: ../http/static/factoryreset/fr.html:6
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
-msgstr ""
+msgstr "Si hace clic a continuación, los WebTools no responderán durante aproximadamente 1 min. y después de eso, simplemente vuelva a cargar la página en su navegador "
 
 #: ../http/static/factoryreset/fr.html:3
 msgid "This will reset WebTools to what is was, when first installed"
-msgstr ""
+msgstr "Esto restablecerá WebTools a lo que era, cuando se instaló por primera vez "
 
 #: ../http/static/playlist/playlist.html:48
 msgid "No playlists available"
-msgstr ""
+msgstr "No hay playlists disponibles"
 
 #: ../http/static/uas/uasService.js:7
 msgid "Updates available"
-msgstr ""
+msgstr "Actualizaciones disponibles "
 
 #: ../http/static/menu/menu.html:26
 msgid "WT Manual Online"
-msgstr ""
+msgstr "Ayuda en linea"
 
 #: ../http/static/aboutus/aboutus.html:13
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
-msgstr ""
+msgstr "Muchas gracias a todas las personas que ayudaron a traducir y probar WebTools. "
 
 #: ../http/static/menu/menu.html:15
 msgid "About us"
-msgstr ""
+msgstr "Sobre nosotros "
 
 #: ../http/static/aboutus/aboutus.html:22
 msgid "And Many Thanks To"
-msgstr ""
+msgstr "Y muchas gracias a"
 
 #: ../http/static/aboutus/aboutus.html:25
 msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
-msgstr ""
+msgstr "Y nuestros amigos en POEditor.com, como somos un proyecto Open-Source, nos proporcionaron un sitio de traducción libre. "
 
 #: ../http/static/aboutus/aboutus.html:5
 msgid "Main Developers"
-msgstr ""
+msgstr "Equipo de desarollo"
 
 #: ../http/static/aboutus/aboutus.html:18
 msgid "Never Forget"
-msgstr ""
+msgstr "Nunca olvide"
 
 #: ../http/static/aboutus/aboutus.html:6
 msgid "Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),"
-msgstr ""
+msgstr "Oliver aka omc1000, miembro da la comunidad Plex (creoludifico on GitHub) (Front end),"
 
 #: ../http/static/aboutus/aboutus.html:30
 msgid "Thank you for your support!!"
-msgstr ""
+msgstr "¡¡Gracias por tu apoyo!! "
 
 #: ../http/static/aboutus/aboutus.html:19
 msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
-msgstr ""
+msgstr "La idea de una AppStore no soportada fue concebida por mikedm139, el autor original de la AppStore UAS."
 
 #: ../http/static/aboutus/aboutus.html:7
 msgid "Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)"
-msgstr ""
+msgstr "Tommy aka dane22, miembro de la comunidade Plex (ukdtom on GitHub) (Back end)"
 
 #: ../http/static/aboutus/aboutus.html:20
 msgid "V2 frontend was made by dagalufh"
-msgstr ""
+msgstr "V2 frontend hecho por dagalufh "
 
 #: ../http/static/aboutus/aboutus.html:27
 msgid "Your Support"
-msgstr ""
+msgstr "Tu apoyo"
 
 #: ../http/static/aboutus/aboutus.html:10
 msgid "trumpy81"
-msgstr ""
+msgstr "trumpy81"
 
 #: ../http/static/aboutus/aboutus.html:3
 msgid "About us and Credits"
-msgstr ""
+msgstr "Acerca de nosotros y Créditos "
 
 #: ../http/static/aboutus/aboutus.html:9
 msgid "Custom Themes and Wiki"
-msgstr ""
+msgstr "Temas personalizados y Wiki "
 
 #: ../http/static/aboutus/aboutus.html:28
 msgid "If you use WebTools and you are willing to support the developers with a beer or two, then please click on the 'Donate'\n"
 "        button below."
-msgstr ""
+msgstr "Si utiliza WebTools y está dispuesto a apoyar a los desarrolladores con una cerveza o dos, haga clic en el botón \"Donar\" a continuación. "
 
 #: ../http/static/aboutus/aboutus.html:23
 msgid "The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and\n"
 "        hard work."
-msgstr ""
+msgstr "Los talentosos y trabajadores autores / desarrolladores y personal de Plex. Estamos eternamente agradecidos por su dedicación y trabajo duro. "
 
 #: ../http/static/aboutus/aboutus.html:12
 msgid "Translations and Beta testers"
-msgstr ""
+msgstr "Traductores y probadores beta "
 
 #: ../http/static/uas/uas.html:45
 msgid "Update all"
-msgstr ""
+msgstr "Actualizar todo "
 
 #: ../http/static/uas/uas.html:39
 msgid "You have"
-msgstr ""
+msgstr "Tienes"
 
 #: ../http/static/uas/uas.html:41
 msgid "bundle"
-msgstr ""
+msgstr "bundle"
 
 #: ../http/static/uas/uas.html:42
 msgid "bundles"
-msgstr ""
+msgstr "bundles"
 
 #: ../http/static/uas/uas.html:43
 msgid "not up to date."
-msgstr ""
+msgstr "no actualizado. "
 
 #: ../http/login.html:53
 msgid "Continue"
-msgstr ""
+msgstr "Continue"
 
 #: ../http/login.html:40
 msgid "Create a local password"
-msgstr ""
+msgstr "Crear una contraseña local"
 
 #: ../http/login.html:45
 msgid "Create password"
-msgstr ""
+msgstr "Crear una contraseña"
 
 #: ../http/login.html:54
 msgid "Download Latest"
-msgstr ""
+msgstr "Descargar la última "
 
 #: ../http/login.html:50
 msgid "New Version available"
-msgstr ""
+msgstr "Nueva version disponible"
 
 #: ../http/login.html:51
 msgid "New Version:"
-msgstr ""
+msgstr "Nueva version:"
 
 #: ../http/login.html:42
 msgid "Password"
-msgstr ""
+msgstr "Contraseña"
 
 #: ../http/login.html:43
 msgid "Password again"
-msgstr ""
+msgstr "Contraseña de nuevo "
 
 #: ../http/login.html:52
 msgid "Release Notes:"
-msgstr ""
+msgstr "Notas de la versión: "
 
 #: ../http/login.html:44
 msgid "Sign in"
-msgstr ""
+msgstr "Registrarse "
 
 #: ../http/login.html:39
 msgid "Sign in with your local password"
-msgstr ""
+msgstr "Inicie sesión con su contraseña local "
 
 #: ../http/login.html:36
 #: ../http/login.html:47
 msgid "Signing in towards plex.tv"
-msgstr ""
+msgstr "Inicio de sesión en plex.tv "
 
 #: ../http/login.html:49
 msgid "The passwords does not match"
-msgstr ""
+msgstr "Las contraseñas no coinciden "
 
 #: ../http/login.html:37
 msgid "Use your regular Plex credentials"
-msgstr ""
+msgstr "Utilice sus credenciales Plex habituales "
 
 #: ../http/login.html:41
 msgid "Username"
-msgstr ""
+msgstr "Nombre de usuario "
 
 #: ../http/login.html:55
 msgid "WebTools not available... Please contact Devs!"
-msgstr ""
+msgstr "WebTools no disponible ... ¡Póngase en contacto con Devs! "
 
 #: ../http/login.html:48
 msgid "Wrong password"
-msgstr ""
+msgstr "Contraseña incorrecta "
 
 #: ../http/login.html:46
 msgid "Wrong username and/or password"
-msgstr ""
+msgstr "Nombre de usuario y/o contraseña incorrectos "
 
 #: ../http/login.html:38
 msgid "PMS is not connected to plex.tv"
-msgstr ""
+msgstr "PMS no está conectado a plex.tv "
 
-#: ../http/static/sub_management/sub.html:90
+#: ../http/static/sub_management/sub.html:108
 msgid "Back"
-msgstr ""
+msgstr "Anterior"
 
 #: ../http/static/logs/logs.html:46
 msgid "Next file"
-msgstr ""
+msgstr "Archivo siguiente"
 
 #: ../http/static/logs/logs.html:44
 msgid "Previous file"
-msgstr ""
+msgstr "Archivo anterior"
 
 #: ../http/static/logs/logs.html:45
 msgid "Reload file"
+msgstr "Actualizar archivo "
+
+#: ../http/static/sub_management/Directive/subDetails.html:22
+msgid "Codec"
+msgstr "Codec"
+
+#: ../http/static/sub_management/subController.js:21
+msgid "Delete Selected"
+msgstr "Eliminar seleccionados"
+
+#: ../http/static/sub_management/subController.js:19
+msgid "Deselect All"
+msgstr "Deseleccionar todo "
+
+#: ../http/static/sub_management/subController.js:23
+msgid "Download Subtitle"
+msgstr "Descargar el subtítulo"
+
+#: ../http/static/sub_management/sub.html:25
+msgid "Filter by letter"
+msgstr "Filtrar por letra "
+
+#: ../http/static/sub_management/Directive/subDetails.html:20
+msgid "Lang"
+msgstr "Lang"
+
+#: ../http/static/sub_management/sub.html:45
+msgid "Load more"
+msgstr "Cargar más "
+
+#: ../http/static/sub_management/Directive/subDetails.html:21
+msgid "Location"
+msgstr "Ubicación "
+
+#: ../http/static/sub_management/sub.html:42
+msgid "No movies found in"
+msgstr "No se encontraron películas en "
+
+#: ../http/static/sub_management/Directive/subDetails.html:37
+msgid "None"
+msgstr "Ninguno"
+
+#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:6
+msgid "Search..."
+msgstr "Buscar…"
+
+#: ../http/static/sub_management/subController.js:18
+msgid "Select All"
+msgstr "Seleccionar todo "
+
+#: ../http/static/sub_management/subController.js:20
+msgid "Upload Subtitle"
+msgstr "Subir subtítulos "
+
+#: ../http/static/sub_management/subController.js:22
+msgid "View Subtitle"
+msgstr "Ver subtítulos "
+
+#: ../http/static/sub_management/sub.html:42
+#: ../http/static/sub_management/sub.html:53
+msgid "with current search filter"
+msgstr "con filtro de búsqueda actual "
+
+#: ../http/static/sub_management/subController.js:15
+msgid "Expand a library to search"
+msgstr "Ampliar una biblioteca para buscar "
+
+#: ../Contents/Resources/language_template.html:19
+msgid "Get missing from File System"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:27
+msgid "Get missing from database"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:23
+msgid "Idle"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:53
+msgid "No TV-Shows found in"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:22
+msgid "Scanning database show %s of %s :"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:26
+msgid "Scanning database: item %s of %s : Working"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:24
+msgid "Scanning file: %s"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:21
+#: ../Contents/Resources/language_template.html:25
+msgid "Starting to scan database for section %s"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:20
+msgid "idle"
 msgstr ""
 

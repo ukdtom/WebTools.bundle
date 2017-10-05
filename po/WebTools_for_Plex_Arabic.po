@@ -201,7 +201,7 @@ msgid "Force language translation update"
 msgstr "إجبار التحديث لملف اللغة"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:88
 msgid "Found"
 msgstr "وجد"
 
@@ -210,12 +210,12 @@ msgid "Welcome to"
 msgstr "مرحباً بك في"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:75
+#: ../http/static/sub_management/sub.html:89
 msgid "rows"
 msgstr "الصفوف"
 
 #: ../http/static/logs/logsController.js:9
-#: ../http/static/sub_management/subController.js:10
+#: ../http/static/sub_management/subController.js:8
 msgid "Clear search"
 msgstr "إلغاء البحث"
 
@@ -224,7 +224,7 @@ msgid "Delete ignored folder"
 msgstr "إيقاف المجلد المجهول"
 
 #: ../http/static/logs/logsController.js:13
-#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:12
 msgid "Hide/Show search menu"
 msgstr "إظهار/إخفاء قائمة البحث"
 
@@ -233,27 +233,26 @@ msgid "Hide/Show settings menu"
 msgstr "إظهار/إخفاء قائمة الإعدادات"
 
 #: ../http/static/logs/logsController.js:12
-#: ../http/static/sub_management/subController.js:13
+#: ../http/static/sub_management/subController.js:11
 msgid "Jump to top"
 msgstr "أذهب إلى الأعلى"
 
 #: ../http/static/logs/logsController.js:11
-#: ../http/static/sub_management/subController.js:12
+#: ../http/static/sub_management/subController.js:10
 msgid "Next"
 msgstr "التالي"
 
 #: ../http/static/logs/logsController.js:10
-#: ../http/static/sub_management/subController.js:11
+#: ../http/static/sub_management/subController.js:9
 msgid "Previous"
 msgstr "السابق"
 
 #: ../http/static/logs/logsController.js:8
-#: ../http/static/sub_management/subController.js:9
+#: ../http/static/sub_management/subController.js:7
 msgid "Search keyword"
 msgstr "بحث بحرف معين"
 
 #: ../http/static/logs/logsController.js:7
-#: ../http/static/sub_management/subController.js:8
 msgid "search..."
 msgstr "بحث..."
 
@@ -380,11 +379,11 @@ msgstr "المساعدة في إدارة الترجمات"
 msgid "Support:"
 msgstr "الدعم:"
 
-#: ../http/static/sub_management/sub.html:3
+#: ../http/static/sub_management/sub.html:4
 msgid "This is an unofficial manager for subtitles."
 msgstr "هذه الأداة هي أداة غير رسمية لإدارة الترجمات."
 
-#: ../http/static/sub_management/sub.html:5
+#: ../http/static/sub_management/sub.html:6
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "للشروع بالبدء ، أختر أحدى مكتباتك أو اضغط على \"؟\" للمساعدة"
 
@@ -392,7 +391,7 @@ msgstr "للشروع بالبدء ، أختر أحدى مكتباتك أو اض�
 msgid "Update"
 msgstr "تحديث"
 
-#: ../http/static/sub_management/sub.html:4
+#: ../http/static/sub_management/sub.html:5
 msgid "Usage at your own risk!"
 msgstr "استخدمه على مسؤوليتك الخاصة!"
 
@@ -468,7 +467,7 @@ msgstr "تحديثات متوفرة"
 
 #: ../http/static/menu/menu.html:26
 msgid "WT Manual Online"
-msgstr ""
+msgstr "مساعدة مباشرة"
 
 #: ../http/static/aboutus/aboutus.html:13
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
@@ -639,21 +638,125 @@ msgstr "اسم المستخدم او/و كلمة السر غير صحيحة"
 
 #: ../http/login.html:38
 msgid "PMS is not connected to plex.tv"
-msgstr ""
+msgstr "سيرفر بلكس الخاص بك غير متصل بـplex.tv"
 
-#: ../http/static/sub_management/sub.html:90
+#: ../http/static/sub_management/sub.html:108
 msgid "Back"
-msgstr ""
+msgstr "الخلف"
 
 #: ../http/static/logs/logs.html:46
 msgid "Next file"
-msgstr ""
+msgstr "الملف التالي"
 
 #: ../http/static/logs/logs.html:44
 msgid "Previous file"
-msgstr ""
+msgstr "الملف السابق"
 
 #: ../http/static/logs/logs.html:45
 msgid "Reload file"
+msgstr "إعادة تحميل الملف"
+
+#: ../http/static/sub_management/Directive/subDetails.html:22
+msgid "Codec"
+msgstr "الكوديك"
+
+#: ../http/static/sub_management/subController.js:21
+msgid "Delete Selected"
+msgstr "حذف المحدد"
+
+#: ../http/static/sub_management/subController.js:19
+msgid "Deselect All"
+msgstr "عدم تحدد الكل"
+
+#: ../http/static/sub_management/subController.js:23
+msgid "Download Subtitle"
+msgstr "تحميل الترجمة"
+
+#: ../http/static/sub_management/sub.html:25
+msgid "Filter by letter"
+msgstr "فهرسة بالأبجدية"
+
+#. language ?
+#: ../http/static/sub_management/Directive/subDetails.html:20
+msgid "Lang"
+msgstr "اللغة"
+
+#: ../http/static/sub_management/sub.html:45
+msgid "Load more"
+msgstr "عرض المزيد"
+
+#: ../http/static/sub_management/Directive/subDetails.html:21
+msgid "Location"
+msgstr "الموقع"
+
+#: ../http/static/sub_management/sub.html:42
+msgid "No movies found in"
+msgstr "لا وجود لأفلام هنا"
+
+#: ../http/static/sub_management/Directive/subDetails.html:37
+msgid "None"
+msgstr "لا يوجد"
+
+#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:6
+msgid "Search..."
+msgstr "يبحث..."
+
+#: ../http/static/sub_management/subController.js:18
+msgid "Select All"
+msgstr "تحديد الكل"
+
+#: ../http/static/sub_management/subController.js:20
+msgid "Upload Subtitle"
+msgstr "تحديث الترجمة"
+
+#: ../http/static/sub_management/subController.js:22
+msgid "View Subtitle"
+msgstr "عرض الترجمة"
+
+#: ../http/static/sub_management/sub.html:42
+#: ../http/static/sub_management/sub.html:53
+msgid "with current search filter"
+msgstr "البحث مع طريقة الفهرسة الحالية"
+
+#: ../http/static/sub_management/subController.js:15
+msgid "Expand a library to search"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:19
+msgid "Get missing from File System"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:27
+msgid "Get missing from database"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:23
+msgid "Idle"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:53
+msgid "No TV-Shows found in"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:22
+msgid "Scanning database show %s of %s :"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:26
+msgid "Scanning database: item %s of %s : Working"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:24
+msgid "Scanning file: %s"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:21
+#: ../Contents/Resources/language_template.html:25
+msgid "Starting to scan database for section %s"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:20
+msgid "idle"
 msgstr ""
 
