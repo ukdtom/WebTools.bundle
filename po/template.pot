@@ -66,7 +66,7 @@ msgstr ""
 msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:103
+#: ../http/static/sub_management/sub.html:108
 msgid "Back"
 msgstr ""
 
@@ -212,7 +212,7 @@ msgstr ""
 msgid "File empty"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:23
+#: ../http/static/sub_management/sub.html:25
 msgid "Filter by letter"
 msgstr ""
 
@@ -229,6 +229,14 @@ msgstr ""
 msgid "Found"
 msgstr ""
 
+#: ../Contents/Resources/language_template.html:19
+msgid "Get missing from File System"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:27
+msgid "Get missing from database"
+msgstr ""
+
 #: ../http/static/menu/menu.html:22
 msgid "Help"
 msgstr ""
@@ -240,6 +248,10 @@ msgstr ""
 
 #: ../http/static/findmedia/fmController.js:14
 msgid "Hide/Show settings menu"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:23
+msgid "Idle"
 msgstr ""
 
 #: ../http/static/factoryreset/fr.html:6
@@ -297,7 +309,7 @@ msgstr ""
 msgid "List all subtitles for a movie/tv show in your library."
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:41
+#: ../http/static/sub_management/sub.html:45
 msgid "Load more"
 msgstr ""
 
@@ -366,7 +378,11 @@ msgstr ""
 msgid "No Channels/Plug-ins was migrated"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:39
+#: ../http/static/sub_management/sub.html:53
+msgid "No TV-Shows found in"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:42
 msgid "No movies found in"
 msgstr ""
 
@@ -380,10 +396,6 @@ msgstr ""
 
 #: ../http/static/findmedia/fm.html:110
 msgid "No records missing from harddrive"
-msgstr ""
-
-#: ../http/static/sub_management/sub.html:51
-msgid "No series found in"
 msgstr ""
 
 #: ../http/static/sub_management/Directive/subDetails.html:37
@@ -461,6 +473,18 @@ msgstr ""
 msgid "Save settings"
 msgstr ""
 
+#: ../Contents/Resources/language_template.html:22
+msgid "Scanning database show %s of %s :"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:26
+msgid "Scanning database: item %s of %s : Working"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:24
+msgid "Scanning file: %s"
+msgstr ""
+
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
 msgstr ""
@@ -520,6 +544,11 @@ msgstr ""
 msgid "Signing in towards plex.tv"
 msgstr ""
 
+#: ../Contents/Resources/language_template.html:21
+#: ../Contents/Resources/language_template.html:25
+msgid "Starting to scan database for section %s"
+msgstr ""
+
 #: ../http/static/sub_management/subHelp.html:1
 msgid "Subtitle Management Help"
 msgstr ""
@@ -550,7 +579,7 @@ msgstr ""
 msgid "Theme"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:3
+#: ../http/static/sub_management/sub.html:4
 msgid "This is an unofficial manager for subtitles."
 msgstr ""
 
@@ -566,7 +595,7 @@ msgstr ""
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:5
+#: ../http/static/sub_management/sub.html:6
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr ""
 
@@ -610,7 +639,7 @@ msgstr ""
 msgid "Upload Subtitle"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:4
+#: ../http/static/sub_management/sub.html:5
 msgid "Usage at your own risk!"
 msgstr ""
 
@@ -698,12 +727,16 @@ msgstr ""
 msgid "bundles"
 msgstr ""
 
+#: ../Contents/Resources/language_template.html:20
+msgid "idle"
+msgstr ""
+
 #: ../http/static/uas/uas.html:43
 msgid "not up to date."
 msgstr ""
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:88
+#: ../http/static/sub_management/sub.html:89
 msgid "rows"
 msgstr ""
 
@@ -715,7 +748,7 @@ msgstr ""
 msgid "trumpy81"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:39
-#: ../http/static/sub_management/sub.html:51
+#: ../http/static/sub_management/sub.html:42
+#: ../http/static/sub_management/sub.html:53
 msgid "with current search filter"
 msgstr ""
