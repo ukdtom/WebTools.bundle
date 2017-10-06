@@ -130,7 +130,7 @@ class findMediaV3(object):
                 Log.Debug('Total size of medias are %s' % (totalSize))
                 iShow = 0
                 iCShow = 0
-                statusShows = wtV3().GETTRANSLATE(self, None, Internal=True, String='Scanning database show %s of %s : ') %(iShow, totalSize)
+                statusShows = wtV3().GETTRANSLATE(self, None, Internal=True, String='Scanning database show %s of %s :') %(iShow, totalSize)
                 statusMsg = statusShows
                 # So let's walk the library
                 while True:
@@ -178,12 +178,11 @@ class findMediaV3(object):
                             if len(seasons) == 0:
                                 break
                         iShow += 1
-                        statusShows = wtV3().GETTRANSLATE(self, None, Internal=True, String='Scanning database show %s of %s : ') %(iShow, totalSize)
+                        statusShows = wtV3().GETTRANSLATE(self, None, Internal=True, String='Scanning database show %s of %s :') %(iShow, totalSize)
                     # Inc. Shows counter
                     iCShow += self.MediaChuncks
                     if len(shows) == 0:
-                        statusMsg = 'Scanning database: %s : Done' % (
-                            totalSize)
+                        statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Scanning database: %s : Done') %(totalSize)
                         Log.Debug('***** Done scanning the database *****')
                         if DEBUGMODE:
                             Log.Debug(mediasFromDB)
