@@ -89,8 +89,7 @@ class playlistsV3(object):
                 Log.Exception(
                     'Exception in PlayList orderList was %s' % (str(e)))
 
-        ''' PlayList already exists ?
-            Return true/false '''
+        ''' PlayList already exists ? Return true/false '''
         def alreadyPresent(title):
             # Get a list of PlayLists
             playlists = XML.ElementFromURL(self.getListsURL)
@@ -316,18 +315,17 @@ class playlistsV3(object):
                 sType = lines[3].split(':')[1][1:]
                 items = phraseOurs(lines)
             else:
+                # Abort, since not ours
+                Log.Error('Playlist is not ours')
+                req.clear()
+                req.set_status(415)
+                req.finish('Aborted, since not our playlist')
+                return
+                
+                # TODO: Code below for 3.Party import
                 items = phrase3Party(lines)
-                print 'Ged Items', items
                 sType = guessMediaType(items)
-
-
-
             return
-
-
-
-
-
 
             # Now validate the entries
             finalItems = {}
@@ -969,17 +967,11 @@ def getLibsOfType(sType):
     return
 
 ''' Get media files from filePath '''
-def getFilesFromLib(libs, sType):
-    print 'Ged getFilesFromLib start'
-    print 'Ged sType', sType
-    print 'Ged path array', libs
-    mediaList = {}
+def getFilesFromLib(libs, sType):                
     itemList = {}
     # Add from one library at a time
     for lib in libs:        
-        start = 0 # Start point of items
-        print 'Ged filter 2', MEDIATYPES[ROOTNODES[sType]]
-        print 'Ged filter 3', MEDIATYPE[ROOTNODES[sType]]
+        start = 0 # Start point of items                
         baseUrl = misc.GetLoopBack() + '/library/sections/' + lib + '/all?type=' + str(MEDIATYPES[ROOTNODES[sType]]) + '&' + EXCLUDE + '&X-Plex-Container-Start='        
         url = baseUrl + '0' + '&X-Plex-Container-Size=0'        
         libInfo = XML.ElementFromURL(url)
@@ -988,39 +980,22 @@ def getFilesFromLib(libs, sType):
         # Now get the UUID of the library
         librarySectionUUID = libInfo.get('librarySectionUUID')        
         try:
-            while int(start) < int(totalSize):
+            while int(start) < int(totalSize):                
                 url = baseUrl + str(start) + '&X-Plex-Container-Size=' + str(MEDIASTEPS)
                 medias = XML.ElementFromURL(url)
                 for media in medias:
                     parts = media.xpath('//Media/Part')
                     for part in parts: 
-                        mediaInfo = []
-                        #print 'GED 17 File', os.path.basename(part.get('file'))
-                        
-                        if os.path.basename(part.get('file')) in itemList:
-                            # media already present, so need to append here
-                            print 'GED APPENDING'
-                            mediaInfo = itemList[os.path.basename(part.get('file'))] 
-                            mediaInfo.append({'fullFileName' : part.get('file'), 'key' : media.get('ratingKey'), 'librarySectionUUID' : librarySectionUUID})                                                                                                  
-                        else:                            
-                            mediaInfo = [{'fullFileName' : part.get('file'), 'key' : media.get('ratingKey'), 'librarySectionUUID' : librarySectionUUID}]
-
-                        #print 'Ged 18 mediaInfo', mediaInfo
-
-
-                        itemList[os.path.basename(part.get('file'))] = mediaInfo
-                        #print 'GED *********', os.path.basename(part.get('file')), '******************'
-                        #print 'GED2 *********', mediaInfo, '******************'
-                       # print 'GED3 *********', mediaList[os.path.basename(part.get('file'))], '******************'
-                       
+                        mediaInfo = {}                        
+                        item = {}
+                        mediaInfo = {'fullFileName' : part.get('file'), 'librarySectionUUID' : librarySectionUUID}
+                        key = media.get('ratingKey')
+                        item[key] = [mediaInfo]
+                        itemList[os.path.basename(part.get('file'))] = item                       
                 start += MEDIASTEPS                            
         except Exception, e:            
             Log.Exception('exception in getFilesFromLib was: %s' %str(e))
-
     
-    print 'GED RETURN getFilesFromLib' 
-    print itemList
-    Log.Debug('Ged output')
-    Log.Debug(itemList)
-    return           
-    return mediaList
+    Log.Debug('******** getFilesFromLib **********')
+    Log.Debug(itemList)    
+    return itemList
