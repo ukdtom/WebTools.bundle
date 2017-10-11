@@ -505,10 +505,13 @@ def removeUpgraded():
 
 
 def updateTranslationStore():
+    Log.Debug('updateTranslationStore started')
     bundleStore = Core.storage.join_path(
         Core.bundle_path, 'http', 'static', '_shared', 'translations.js')
+    Log.Debug('bundleStore: %s' % bundleStore)
     dataStore = Core.storage.join_path(Core.app_support_path, 'Plug-in Support',
                                        'Data', 'com.plexapp.plugins.WebTools', 'DataItems', 'translations.js')
+    Log.Debug('dataStore: %s' % dataStore)
     # If translations.js file already present in the store, we need to find out if it's newer or not
     if Data.Exists('translations.js'):
         # File exsisted, so let's compare datetime stamps
