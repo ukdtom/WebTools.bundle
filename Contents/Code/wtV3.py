@@ -514,12 +514,16 @@ def updateTranslationStore():
     Log.Debug('dataStore: %s' % dataStore)
     # If translations.js file already present in the store, we need to find out if it's newer or not
     if Data.Exists('translations.js'):
-        # File exsisted, so let's compare datetime stamps
-        dataStore_modified_time = os.stat(dataStore).st_mtime
-        bundleStore_modified_time = os.stat(bundleStore).st_mtime
-        if dataStore_modified_time < bundleStore_modified_time:
-            Log.Info('Updating translation file in storage')
-            copyfile(bundleStore, dataStore)
+        try:
+            # File exsisted, so let's compare datetime stamps
+            dataStore_modified_time = os.stat(dataStore).st_mtime
+            bundleStore_modified_time = os.stat(bundleStore).st_mtime
+            if dataStore_modified_time < bundleStore_modified_time:
+                Log.Info('Updating translation file in storage')
+                copyfile(bundleStore, dataStore)
+        except Exception, e:
+            Log.Exception(
+                'Exception in updateTranslationStore was %s' % str(e))
     else:
         Log.Info('Updating translation file in storage')
         copyfile(bundleStore, dataStore)
