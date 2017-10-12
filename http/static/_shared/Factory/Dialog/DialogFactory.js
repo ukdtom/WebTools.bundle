@@ -1,9 +1,10 @@
 ﻿angular.module('webtools').factory('DialogFactory', ['ngDialog', function (ngDialog) {
     var DialogFactory = function () {
-        var src = "", plain = false, closeCallback;
+        var src = "", scope, plain = false, closeCallback;
 
-        function create(_src) {
+        function create(_src, _scope) {
             src = _src;
+            if (_scope) scope = _scope;
         }
         function setPlain() {
             plain = true;
@@ -13,11 +14,22 @@
         }
 
         function show() {
-            var dialog = ngDialog.open({
-                template: src,
-                width: "600px",
-                plain: plain
-            });
+            var dialog;
+
+            if (scope) {
+                dialog = ngDialog.open({
+                    template: src,
+                    width: "600px",
+                    plain: plain,
+                    scope: scope
+                });
+            } else {
+                dialog = ngDialog.open({
+                    template: src,
+                    width: "600px",
+                    plain: plain
+                });
+            }
 
             if(closeCallback){
                 dialog.closePromise.then(function (data) {

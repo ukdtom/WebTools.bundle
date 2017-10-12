@@ -206,6 +206,63 @@
     padding-top:0 !important;
 }
 
+/* subUpload */
+.subUpload .subUploadTitle {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.subUpload .partsContainer {
+    height: 60px;
+}
+.subUpload .partsContainer .partChooserLabel {
+}
+.subUpload .partsContainer .partChooser {
+    float: left;
+    color: black;
+    min-width: 100px;
+    max-width:550px;
+    height: 24px;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.subUpload .languageContainer {
+    height: 60px;
+}
+.subUpload .languageContainer .languageChooserLabel {
+}
+.subUpload .languageContainer .languageChooser {
+    float: left;
+    color: black;
+    min-width: 200px;
+    height: 24px;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.subUpload .fileContainer {
+    height: 30px;
+}
+
+.subUpload .btnContainer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 30px;
+}
+.subUpload .btnContainer .warning {
+    float: left;
+    color: #e60700;
+}
+.subUpload .btnContainer .success {
+    float: left;
+    color: #009300;
+}
+.subUpload .btnContainer .btnUpload {
+    float: right;
+    padding: 0 10px;
+}
+
 /* Responsive */
 @media screen and (max-width: 480px) {
     .sub .rowShow .lineShow .type{

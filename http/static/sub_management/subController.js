@@ -112,8 +112,12 @@
         detail.subAllChecked = !allChecked;
     };
 
+    $scope.getParts = function(detail) {
+        subService.getParts(detail);
+    }
+
     $scope.upload = function (detail) {
-        subService.uploadFile(detail, "file");
+        subService.uploadSub(detail, "file");
     };
 
     $scope.download = function (subtitle, $event) {
