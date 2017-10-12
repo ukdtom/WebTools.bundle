@@ -13,4 +13,15 @@
     this.searchKeywordValueLast = "";
     this.searchCurrentIndex = 0;
     this.searchFoundLines = [];
+
+
+    /* SubUpload */
+    this.subUploadLoading = false;
+    this.showParts = false;
+    this.parts = [];
+    this.selectedPart = null;
+    this.selectedFile = null;
+    this.selectedLanguage = "NO_LANG";
+    this.missingPart = false;
+    this.missingFile = false;
 });

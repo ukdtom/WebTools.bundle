@@ -1,5 +1,5 @@
 ﻿angular.module('webtools').service('subService', ['$http', 'subModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', '$window', 'gettext', function ($http, subModel, webtoolsModel, webtoolsService, DialogFactory, $window, gettext) {
-    //var _this = this;
+    var _this = this;
 
     //this.lang = {
     //    all: gettext("")
@@ -135,18 +135,44 @@
         });
     }
 
-    this.uploadFile = function (detail, file) {
-        var url = webtoolsModel.apiV3Url + "/pms/uploadFile/key/" + detail.key;
+    this.getParts = function (detail, callback) {
+        var url = webtoolsModel.apiV3Url + "/pms/getParts/" + detail.key;
+        $http({
+            method: "GET",
+            url: url
+        }).then(function (resp) {
+            var list = [];
+            for (var key in resp.data) {
+                if (resp.data.hasOwnProperty(key)) {
+                    var value = resp.data[key];
+                    list.push({
+                        id: key,
+                        value: value
+                    });
+                }
+            }
+            if (callback) callback(list, resp.data);
+        }, function (errorResp) {
+            webtoolsService.log("subService.getParts - " + webtoolsService.formatError(errorResp), "Sub", true, url);
+        });
+    }
+
+    this.uploadSub = function (detail, part, file, lang, callback) {
+        var data = new FormData();
+        data.append("language", lang);
+        data.append("localFile", file);
+
+        var url = webtoolsModel.apiV3Url + "/pms/uploadSub/key/" + detail.key + "/part/" + part;
         $http({
             method: "POST",
-            data: {
-                localFile: file
-            },
-            url: url,
+            data: data,
+            headers: { 'Content-Type': undefined },
+            transformRequest: angular.identity,
+            url: url
         }).then(function (resp) {
             if (callback) callback(resp.data);
         }, function (errorResp) {
-            webtoolsService.log("subService.uploadFile - " + webtoolsService.formatError(errorResp), "Sub", true, url);
+            webtoolsService.log("subService.uploadSub - " + webtoolsService.formatError(errorResp), "Sub", true, url);
         });
         
     }

@@ -1,0 +1,41 @@
+<div class="subUpload">
+    <div class="textBold600 textSize3 subUploadTitle" translate>Subtitle Management Upload Subtitle</div>
+    
+    <content-loading ng-show="subModel.subUploadLoading" class="pushTopMinor"></content-loading>
+    <div ng-show="!subModel.subUploadLoading">
+        <div class="textSize2 text-center pushBottomMinor"><translate>Upload subtitle for</translate> {[{detail.title}]}</div>
+
+        <div class="partsContainer" ng-if="!subModel.showParts" ngCloak>
+            <div class="partChooserLabel textSize2" translate>Choose part</div>
+            <select class="partChooser" ng-model="subModel.selectedPart">
+                <option ng-repeat="part in subModel.parts track by part.id"
+                        value="{[{part.id}]}">
+                    {[{part.value}]}
+                </option>
+            </select>
+        </div>
+        <div class="languageContainer">
+            <div class="languageChooserLabel textSize2" translate>Choose language for the subtitle</div>
+            <select class="languageChooser" ng-model="subModel.selectedLanguage">
+                <option value="NO_LANG" translate>No language</option>
+                <option ng-repeat="lang in languageModel.languages track by lang.code"
+                        value="{[{lang.code}]}">
+                    {[{lang.name}]}
+                </option>
+            </select>
+        </div>
+        <div class="fileContainer">
+            <input type="file" fileread="subModel.selectedFile" />
+        </div>
+        <div class="btnContainer">
+            <div class="warning">
+                <div ng-if="subModel.missingPart" translate>Missing part</div>
+                <div ng-if="subModel.missingFile" translate>Missing file</div>
+            </div>
+            <div class="success">
+                <div ng-if="subModel.success" translate>File successfully uploaded</div>
+            </div>
+            <button class="btnUpload" ng-click="upload()">Upload</button>
+        </div>
+    </div>
+</div>

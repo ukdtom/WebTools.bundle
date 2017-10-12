@@ -10,8 +10,9 @@
                 <div class="fa fa-square-o" ng-if="!detail.subAllChecked" ng-title="lang.selectAll|translate"></div>
                 <div class="fa fa-check-square-o" ng-if="detail.subAllChecked" ng-title="lang.deselectAll|translate"></div>
             </div>
-            <div ng-click="upload(detail);">
-                <div class="fa fa-upload" ng-title="lang.uploadSubtitle|translate"></div>
+            <div> <!--ng-click="upload(detail);"-->
+                <!--<div class="fa fa-upload" ng-title="lang.uploadSubtitle|translate"></div>-->
+                <sub-upload detail="detail" show="show"></sub-upload>
             </div>
             <div ng-click="deleteSelected(detail);" ng-if="detail.subtitles.length > 0">
                 <div class="fa fa-trash-o" ng-title="lang.deleteSelected|translate"></div>
