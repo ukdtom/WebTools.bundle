@@ -1,10 +1,9 @@
 ﻿angular.module('webtools').factory('DialogFactory', ['ngDialog', function (ngDialog) {
     var DialogFactory = function () {
-        var src = "", controller, scope, plain = false, closeCallback;
+        var src = "", scope, plain = false, closeCallback;
 
-        function create(_src, _controller, _scope) {
+        function create(_src, _scope) {
             src = _src;
-            if (_controller) controller = _controller;
             if (_scope) scope = _scope;
         }
         function setPlain() {
@@ -17,12 +16,11 @@
         function show() {
             var dialog;
 
-            if (controller && scope) {
+            if (scope) {
                 dialog = ngDialog.open({
                     template: src,
                     width: "600px",
                     plain: plain,
-                    controller: controller,
                     scope: scope
                 });
             } else {

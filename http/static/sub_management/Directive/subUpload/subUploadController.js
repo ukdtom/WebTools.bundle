@@ -1,4 +1,6 @@
-﻿angular.module('webtools').controller('subUploadController', ['$scope', 'subModel', 'subService', 'languageModel', 'languageService', 'gettext', function ($scope, subModel, subService, languageModel, languageService, gettext) {
+﻿angular.module('webtools').controller('subUploadController', ['$scope', 'subModel', 'subService', 'languageModel', 'languageService', 'gettext', '$timeout', function ($scope, subModel, subService, languageModel, languageService, gettext, $timeout) {
+    $scope.dialog = $scope.$parent;
+
     $scope.show = $scope.$parent.show;
     $scope.detail = $scope.$parent.detail;
 
@@ -6,22 +8,19 @@
     $scope.languageModel = languageModel;
     
     $scope.init = function () {
+        subModel.selectedFile = null;
+        subModel.selectedPart = null;
         subModel.subUploadLoading = true;
+
         subService.getParts($scope.detail, function (data) {
             subModel.parts = data;
-            if (subModel.parts && subModel.parts.length > 1) {
-                subModel.showParts = true;
-                subModel.selectedPart = subModel.parts[0].id;
-            } else if (subModel.parts.length === 1) {
-                subModel.selectedPart = subModel.parts[0].id;
-            }
+            subModel.selectedPart = subModel.parts[0].id;
             subModel.subUploadLoading = false;
         });
         languageService.getLanguages();
     }
 
     $scope.upload = function () {
-        subModel.success = false;
         if (!subModel.selectedPart) {
             subModel.missingPart = true;
             return;
@@ -45,10 +44,8 @@
                 show.tvshows = [];
                 subService.getTvShowDetails(show);
             }
-            subModel.missingPart = false;
-            subModel.missingFile = false;
-            subModel.subUploadLoading = false;
-            subModel.success = true;
+            subModel.subUploadLoading = false; //Not working properly
+            $scope.dialog.closeThisDialog();
         });
     }
 

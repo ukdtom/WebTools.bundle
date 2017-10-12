@@ -221,6 +221,7 @@
     float: left;
     color: black;
     min-width: 100px;
+    max-width:550px;
     height: 24px;
     border-radius: 5px;
     padding: 2px;

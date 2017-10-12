@@ -1,4 +1,4 @@
-﻿angular.module('webtools').directive('subUpload', ['webtoolsService', 'DialogFactory', 'subService', function (webtoolsService, DialogFactory, subService) {
+﻿angular.module('webtools').directive('subUpload', ['webtoolsService', 'DialogFactory', function (webtoolsService, DialogFactory) {
     return {
         restrict: 'E',
         scope: { detail: '=', show: '='},
@@ -6,7 +6,7 @@
         link: function (scope, element, attr) {
             var src = "static/sub_management/Directive/subUpload/subUpload.html";
             var dialog = new DialogFactory();
-            dialog.create(src, "subUploadController", scope);
+            dialog.create(src, scope);
 
             element.on('click', function (event) {
                 event.preventDefault();
