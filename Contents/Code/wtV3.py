@@ -181,6 +181,9 @@ class wtV3(object):
                 else:
                     lang = self.GETCURRENTLANG(self, None, Internal=True)
                 String = data['string']
+            # If not having translations copied to DATA already, do so now
+            if not Data.Exists('translations.js'):
+                upgradeCleanup()
             try:
                 # Now open existing translations.js file, walk it line by line, and find the correct line
                 translationLines = Data.Load('translations.js').splitlines()
@@ -335,8 +338,10 @@ class wtV3(object):
             Log.Info('Factory Reset called')
             cachePath = Core.storage.join_path(
                 Core.app_support_path, 'Plug-in Support', 'Caches', 'com.plexapp.plugins.' + NAME)
-            #dataPath = Core.storage.join_path(Core.app_support_path, 'Plug-in Support', 'Data', 'com.plexapp.plugins.' + NAME)
+            dataPath = Core.storage.join_path(
+                Core.app_support_path, 'Plug-in Support', 'Data', 'com.plexapp.plugins.' + NAME)
             shutil.rmtree(cachePath)
+            shutil.rmtree(dataPath)
             try:
                 Dict.Reset()
             except:
