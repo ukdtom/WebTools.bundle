@@ -17,6 +17,30 @@
         });
     }
 
+    this.getCodeLanguages = function (callback) {
+        var url = webtoolsModel.apiV3Url + "/language/getLangCodeList";
+        webtoolsModel.languageLoading++;
+        $http({
+            method: "GET",
+            url: url
+        }).then(function (resp) {
+            var list = [];
+            for (var key in resp.data) {
+                var item = resp.data[key];
+                list.push({
+                    code: item,
+                    name: key
+                });
+            }
+            languageModel.codeLanguages = list;
+            if (callback) callback(resp.data);
+            webtoolsModel.languageLoading--;
+        }, function (errorResp) {
+            webtoolsService.log("languageService.getCodeLanguages - " + webtoolsService.formatError(errorResp), "Language", true, url);
+            webtoolsModel.languageLoading--;
+        });
+    }
+
     this.loadLanguage = function (callback) {
         var url = webtoolsModel.apiV3Url + "/settings/getSettings/" + webtoolsModel.UILanguageKey;
         $http({

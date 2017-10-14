@@ -18,7 +18,7 @@
             <div class="languageChooserLabel textSize2" translate>Choose language for the subtitle</div>
             <select class="languageChooser" ng-model="subModel.selectedLanguage">
                 <option value="NO_LANG" translate>No language</option>
-                <option ng-repeat="lang in languageModel.languages track by lang.code"
+                <option ng-repeat="lang in languageModel.codeLanguages track by lang.code"
                         value="{[{lang.code}]}">
                     {[{lang.name}]}
                 </option>
