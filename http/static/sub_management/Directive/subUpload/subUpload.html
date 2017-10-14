@@ -18,7 +18,7 @@
             <div class="languageChooserLabel textSize2" translate>Choose language for the subtitle</div>
             <select class="languageChooser" ng-model="subModel.selectedLanguage">
                 <option value="NO_LANG" translate>No language</option>
-                <option ng-repeat="lang in languageModel.languages track by lang.code"
+                <option ng-repeat="lang in languageModel.codeLanguages track by lang.code"
                         value="{[{lang.code}]}">
                     {[{lang.name}]}
                 </option>
@@ -35,7 +35,7 @@
             <!--<div class="success">
                 <div ng-if="subModel.success" translate>File successfully uploaded</div>
             </div>-->
-            <button class="btnUpload" ng-click="upload()">Upload</button>
+            <button class="btnUpload" ng-click="upload()" translate>Upload</button>
         </div>
     </div>
 </div>

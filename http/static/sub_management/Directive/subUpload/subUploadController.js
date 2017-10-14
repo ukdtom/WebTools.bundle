@@ -17,7 +17,7 @@
             subModel.selectedPart = subModel.parts[0].id;
             subModel.subUploadLoading = false;
         });
-        languageService.getLanguages();
+        languageService.getCodeLanguages();
     }
 
     $scope.upload = function () {
