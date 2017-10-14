@@ -187,7 +187,7 @@
         }).then(function (resp) {
             for (var i = 0; i < detail.subtitles.length; i++) {
                 if (detail.subtitles[i].key === subtitle.key)
-                    detail.subtitles.splice(detail.subtitles[i].indexOf, 1);
+                    detail.subtitles.splice(i, 1);
             }
             if (detail.subtitles.length === 0) detail.subAllChecked = false;
 
