@@ -471,7 +471,7 @@ msgstr "مساعدة مباشرة"
 
 #: ../http/static/aboutus/aboutus.html:13
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
-msgstr ""
+msgstr "كل الشكر للأشخاص الذين ساعدوا في ترجمة واختبار \"ويب تولز\""
 
 #: ../http/static/menu/menu.html:15
 msgid "About us"
@@ -656,7 +656,7 @@ msgstr "الملف السابق"
 msgid "Reload file"
 msgstr "إعادة تحميل الملف"
 
-#: ../http/static/sub_management/Directive/subDetails.html:22
+#: ../http/static/sub_management/Directive/subDetails.html:23
 msgid "Codec"
 msgstr "الكوديك"
 
@@ -677,7 +677,7 @@ msgid "Filter by letter"
 msgstr "فهرسة بالأبجدية"
 
 #. language ?
-#: ../http/static/sub_management/Directive/subDetails.html:20
+#: ../http/static/sub_management/Directive/subDetails.html:21
 msgid "Lang"
 msgstr "اللغة"
 
@@ -685,7 +685,7 @@ msgstr "اللغة"
 msgid "Load more"
 msgstr "عرض المزيد"
 
-#: ../http/static/sub_management/Directive/subDetails.html:21
+#: ../http/static/sub_management/Directive/subDetails.html:22
 msgid "Location"
 msgstr "الموقع"
 
@@ -693,7 +693,7 @@ msgstr "الموقع"
 msgid "No movies found in"
 msgstr "لا وجود لأفلام هنا"
 
-#: ../http/static/sub_management/Directive/subDetails.html:37
+#: ../http/static/sub_management/Directive/subDetails.html:38
 msgid "None"
 msgstr "لا يوجد"
 
@@ -733,23 +733,24 @@ msgstr ""
 
 #: ../Contents/Resources/language_template.html:23
 msgid "Idle"
-msgstr ""
+msgstr "خامل"
 
 #: ../http/static/sub_management/sub.html:53
 msgid "No TV-Shows found in"
-msgstr ""
+msgstr "لم يتم وجود أي مسلسل تلفزيوني"
 
 #: ../Contents/Resources/language_template.html:22
 msgid "Scanning database show %s of %s :"
 msgstr ""
 
+#. "%s" is a variable?
 #: ../Contents/Resources/language_template.html:26
 msgid "Scanning database: item %s of %s : Working"
 msgstr ""
 
 #: ../Contents/Resources/language_template.html:24
 msgid "Scanning file: %s"
-msgstr ""
+msgstr "مسح للملف: %s"
 
 #: ../Contents/Resources/language_template.html:21
 #: ../Contents/Resources/language_template.html:25
@@ -758,5 +759,41 @@ msgstr ""
 
 #: ../Contents/Resources/language_template.html:20
 msgid "idle"
+msgstr "خامل"
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
+msgid "Choose language for the subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
+msgid "Choose part"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
+msgid "Missing file"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
+msgid "Missing part"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
+msgid "No language"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:28
+msgid "Scanning database: %s : Done"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
+msgid "Subtitle Management Upload Subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
+msgid "Upload"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
+msgid "Upload subtitle for"
 msgstr ""
 

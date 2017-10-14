@@ -653,7 +653,7 @@ msgstr "पिछला फ़ाइल"
 msgid "Reload file"
 msgstr "फ़ाइल पुनः लोड करें"
 
-#: ../http/static/sub_management/Directive/subDetails.html:22
+#: ../http/static/sub_management/Directive/subDetails.html:23
 msgid "Codec"
 msgstr "कोडेक"
 
@@ -673,7 +673,7 @@ msgstr "उपशीर्षक डाउनलोड करें"
 msgid "Filter by letter"
 msgstr "वर्णमाला द्वारा फ़िल्टर करें"
 
-#: ../http/static/sub_management/Directive/subDetails.html:20
+#: ../http/static/sub_management/Directive/subDetails.html:21
 msgid "Lang"
 msgstr "भाषा"
 
@@ -681,7 +681,7 @@ msgstr "भाषा"
 msgid "Load more"
 msgstr "और लोड करें"
 
-#: ../http/static/sub_management/Directive/subDetails.html:21
+#: ../http/static/sub_management/Directive/subDetails.html:22
 msgid "Location"
 msgstr "स्थान"
 
@@ -689,7 +689,7 @@ msgstr "स्थान"
 msgid "No movies found in"
 msgstr "कोई फिल्म नहीं मिली"
 
-#: ../http/static/sub_management/Directive/subDetails.html:37
+#: ../http/static/sub_management/Directive/subDetails.html:38
 msgid "None"
 msgstr "कोई भी नहीं"
 
@@ -754,5 +754,41 @@ msgstr ""
 
 #: ../Contents/Resources/language_template.html:20
 msgid "idle"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
+msgid "Choose language for the subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
+msgid "Choose part"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
+msgid "Missing file"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
+msgid "Missing part"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
+msgid "No language"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:28
+msgid "Scanning database: %s : Done"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
+msgid "Subtitle Management Upload Subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
+msgid "Upload"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
+msgid "Upload subtitle for"
 msgstr ""
 

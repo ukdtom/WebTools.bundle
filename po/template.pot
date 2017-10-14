@@ -102,12 +102,20 @@ msgstr ""
 msgid "Check for bundle updates"
 msgstr ""
 
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
+msgid "Choose language for the subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
+msgid "Choose part"
+msgstr ""
+
 #: ../http/static/logs/logsController.js:9
 #: ../http/static/sub_management/subController.js:8
 msgid "Clear search"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:22
+#: ../http/static/sub_management/Directive/subDetails.html:23
 msgid "Codec"
 msgstr ""
 
@@ -293,7 +301,7 @@ msgstr ""
 msgid "Jump to top"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:20
+#: ../http/static/sub_management/Directive/subDetails.html:21
 msgid "Lang"
 msgstr ""
 
@@ -313,7 +321,7 @@ msgstr ""
 msgid "Load more"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:21
+#: ../http/static/sub_management/Directive/subDetails.html:22
 msgid "Location"
 msgstr ""
 
@@ -353,6 +361,14 @@ msgstr ""
 msgid "Migrate"
 msgstr ""
 
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
+msgid "Missing file"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
+msgid "Missing part"
+msgstr ""
+
 #: ../http/static/aboutus/aboutus.html:18
 msgid "Never Forget"
 msgstr ""
@@ -382,6 +398,10 @@ msgstr ""
 msgid "No TV-Shows found in"
 msgstr ""
 
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
+msgid "No language"
+msgstr ""
+
 #: ../http/static/sub_management/sub.html:42
 msgid "No movies found in"
 msgstr ""
@@ -398,7 +418,7 @@ msgstr ""
 msgid "No records missing from harddrive"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:37
+#: ../http/static/sub_management/Directive/subDetails.html:38
 msgid "None"
 msgstr ""
 
@@ -477,6 +497,10 @@ msgstr ""
 msgid "Scanning database show %s of %s :"
 msgstr ""
 
+#: ../Contents/Resources/language_template.html:28
+msgid "Scanning database: %s : Done"
+msgstr ""
+
 #: ../Contents/Resources/language_template.html:26
 msgid "Scanning database: item %s of %s : Working"
 msgstr ""
@@ -551,6 +575,10 @@ msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:1
 msgid "Subtitle Management Help"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
+msgid "Subtitle Management Upload Subtitle"
 msgstr ""
 
 #: ../http/static/uas/uas.html:113
@@ -635,8 +663,16 @@ msgstr ""
 msgid "Updates available"
 msgstr ""
 
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
+msgid "Upload"
+msgstr ""
+
 #: ../http/static/sub_management/subController.js:20
 msgid "Upload Subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
+msgid "Upload subtitle for"
 msgstr ""
 
 #: ../http/static/sub_management/sub.html:5

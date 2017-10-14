@@ -45,7 +45,7 @@ msgstr "Hilfe"
 
 #: ../http/static/sub_management/subHelp.html:5
 msgid "List all subtitles for a movie/tv show in your library."
-msgstr "Liste alle Untertitel auf für ein Video in deiner Bibliothek."
+msgstr "Zeige alle Untertitel für ein Video in deiner Bibliothek."
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
@@ -74,7 +74,7 @@ msgstr "Wähle eines der Farbschemen aus:"
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
-msgstr "Wähle unten eine der Bibliotheken, um darin nach 'nicht zugeordneten' oder fehlenden Dateien zu suchen."
+msgstr "Wähle unten eine deiner Bibliotheken, um darin nach 'nicht zugeordneten' oder fehlenden Dateien zu suchen."
 
 #: ../http/static/menu/menu.html:16
 msgid "Theme"
@@ -612,7 +612,7 @@ msgstr "Mit lokalem Passwort anmelden"
 #: ../http/login.html:36
 #: ../http/login.html:47
 msgid "Signing in towards plex.tv"
-msgstr "Logge bei plex.tv ein"
+msgstr "Im Plex Konto anmelden"
 
 #: ../http/login.html:49
 msgid "The passwords does not match"
@@ -658,7 +658,7 @@ msgstr "Vorige Datei"
 msgid "Reload file"
 msgstr "Datei neu laden"
 
-#: ../http/static/sub_management/Directive/subDetails.html:22
+#: ../http/static/sub_management/Directive/subDetails.html:23
 msgid "Codec"
 msgstr "Typ"
 
@@ -678,7 +678,7 @@ msgstr "Untertitel herunterladen"
 msgid "Filter by letter"
 msgstr "Filter nach Anfangsbuchstaben"
 
-#: ../http/static/sub_management/Directive/subDetails.html:20
+#: ../http/static/sub_management/Directive/subDetails.html:21
 msgid "Lang"
 msgstr "Sprache"
 
@@ -686,7 +686,7 @@ msgstr "Sprache"
 msgid "Load more"
 msgstr "Mehr laden"
 
-#: ../http/static/sub_management/Directive/subDetails.html:21
+#: ../http/static/sub_management/Directive/subDetails.html:22
 msgid "Location"
 msgstr "Speicherort"
 
@@ -694,7 +694,7 @@ msgstr "Speicherort"
 msgid "No movies found in"
 msgstr "Keine Filme gefunden in"
 
-#: ../http/static/sub_management/Directive/subDetails.html:37
+#: ../http/static/sub_management/Directive/subDetails.html:38
 msgid "None"
 msgstr "Keine(s)"
 
@@ -726,38 +726,75 @@ msgstr "Eine Bibliothek unten auswählen"
 
 #: ../Contents/Resources/language_template.html:19
 msgid "Get missing from File System"
-msgstr ""
+msgstr "Suche nach fehlenden Dateien"
 
 #: ../Contents/Resources/language_template.html:27
 msgid "Get missing from database"
-msgstr ""
+msgstr "Suche nach nicht zugeordneten Dateien"
 
 #: ../Contents/Resources/language_template.html:23
 msgid "Idle"
-msgstr ""
+msgstr "Im Leerlauf"
 
+#. What's this strange character at the end? a space?
 #: ../http/static/sub_management/sub.html:53
 msgid "No TV-Shows found in"
-msgstr ""
+msgstr "Keine Serien gefunden"
 
 #: ../Contents/Resources/language_template.html:22
 msgid "Scanning database show %s of %s :"
-msgstr ""
+msgstr "Prüfe Datenbank: Serie %s von %s:"
 
 #: ../Contents/Resources/language_template.html:26
 msgid "Scanning database: item %s of %s : Working"
-msgstr ""
+msgstr "Prüfe Datenbank: Element %s von %s in Bearbeitung"
 
 #: ../Contents/Resources/language_template.html:24
 msgid "Scanning file: %s"
-msgstr ""
+msgstr "Prüfe Datei: %s"
 
 #: ../Contents/Resources/language_template.html:21
 #: ../Contents/Resources/language_template.html:25
 msgid "Starting to scan database for section %s"
-msgstr ""
+msgstr "Beginne Datenbank-Überprüfung für Bibliothek: %s"
 
 #: ../Contents/Resources/language_template.html:20
 msgid "idle"
+msgstr "Leerlauf"
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
+msgid "Choose language for the subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
+msgid "Choose part"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
+msgid "Missing file"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
+msgid "Missing part"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
+msgid "No language"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:28
+msgid "Scanning database: %s : Done"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
+msgid "Subtitle Management Upload Subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
+msgid "Upload"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
+msgid "Upload subtitle for"
 msgstr ""
 

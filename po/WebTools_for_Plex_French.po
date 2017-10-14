@@ -50,7 +50,7 @@ msgstr "Lister tous les sous-titres pour un film ou une série de votre biblioth
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
-msgstr "Visionneuse de journaux"
+msgstr "Visionneur de journaux"
 
 #: ../http/static/menu/menu.html:19
 msgid "Logout"
@@ -70,7 +70,7 @@ msgstr "Recherchez des films et des émissions de télévision dans les catégor
 
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
-msgstr "Sélectionnez l'un des thèmes disponibles à utiliser:"
+msgstr "Sélectionnez l'un des thèmes ci-dessous:"
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
@@ -78,7 +78,7 @@ msgstr "Sélectionnez une des bibliothèques ci-dessous pour y rechercher les Fi
 
 #: ../http/static/menu/menu.html:16
 msgid "Theme"
-msgstr "Thème"
+msgstr "Thèmes"
 
 #. Must I translate the words under quotes?
 #: ../http/static/findmedia/fm.html:3
@@ -95,7 +95,7 @@ msgstr "Afficher le contenu des sous-titres pour déterminer lequel supprimer."
 
 #: ../http/static/menu/menu.html:24
 msgid "WT Forum Thread"
-msgstr "Support WebTools"
+msgstr "Support"
 
 #: ../http/static/menu/menu.html:25
 msgid "WT GitHub"
@@ -383,7 +383,7 @@ msgstr "Ce module d'outil est un gestionnaire non officiel pour les sous-titres.
 
 #: ../http/static/sub_management/sub.html:6
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
-msgstr "Pour commencer, sélectionnez l'une de vos bibliothèques ou cliquez sur \"?\" pour une aide supplémentaire"
+msgstr "Pour commencer, sélectionnez l'une de vos bibliothèques ou cliquez sur \"?\" pour une aide supplémentaire."
 
 #: ../http/static/uas/uas.html:55
 msgid "Update"
@@ -419,11 +419,11 @@ msgstr "Sélectionnez l'utilisateur cible pour la copie"
 
 #: ../http/static/playlist/playlist.html:3
 msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
-msgstr "Pour commencer, sélectionnez une de vos listes de lecture ou cliquez sur \"?\" pour une aide supplémentaire"
+msgstr "Pour commencer, sélectionnez une de vos listes de lecture ou cliquez sur \"?\" pour une aide supplémentaire."
 
 #: ../http/static/language/language.html:15
 msgid "If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:"
-msgstr "Si votre langue est manquante, n'est pas traduite à 100%, ou si vous voulez améliorer la traduction, allez ici:"
+msgstr "Si votre langue est manquante, n'est pas traduite à 100%, ou si vous voulez améliorer la traduction, cliquez ici:"
 
 #: ../http/static/playlist/playlistHelp.html:9
 msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
@@ -439,7 +439,7 @@ msgstr "Aucune Chaînes/Plug-ins n'a été migré"
 
 #: ../http/static/factoryreset/fr.html:4
 msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
-msgstr "Tous les paramètres seront supprimés et après la réinitialisation, vous devrez peut-être accéder au Unsupported AppStore et cliquer sur le bouton de migration pour réimporter vos plug-ins."
+msgstr "Tous les paramètres seront supprimés et après la réinitialisation, vous devrez peut-être accéder au Unsupported AppStore (UAP) et cliquer sur le bouton de migration pour réimporter vos plug-ins."
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
@@ -449,7 +449,7 @@ msgstr "Paramètres d'usine"
 
 #: ../http/static/factoryreset/fr.html:6
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
-msgstr "Si vous cliquez ci-dessous, alors WebTools ne répondra pas pendant environ 1 minute, après cela, il suffit de recharger la page dans votre navigateur."
+msgstr "Si vous cliquez sur le bouton ci-dessous, WebTools ne répondra pas pendant environ 1 minute, après cela, il vous suffit de recharger la page dans votre navigateur."
 
 #: ../http/static/factoryreset/fr.html:3
 msgid "This will reset WebTools to what is was, when first installed"
@@ -655,7 +655,7 @@ msgstr "Fichier précédent"
 msgid "Reload file"
 msgstr "Recharger le fichier"
 
-#: ../http/static/sub_management/Directive/subDetails.html:22
+#: ../http/static/sub_management/Directive/subDetails.html:23
 msgid "Codec"
 msgstr "Codec"
 
@@ -675,7 +675,7 @@ msgstr "Télécharger le sous-titre"
 msgid "Filter by letter"
 msgstr "Filtrer par lettre"
 
-#: ../http/static/sub_management/Directive/subDetails.html:20
+#: ../http/static/sub_management/Directive/subDetails.html:21
 msgid "Lang"
 msgstr "Langue"
 
@@ -683,7 +683,7 @@ msgstr "Langue"
 msgid "Load more"
 msgstr "Charger plus"
 
-#: ../http/static/sub_management/Directive/subDetails.html:21
+#: ../http/static/sub_management/Directive/subDetails.html:22
 msgid "Location"
 msgstr "Emplacement"
 
@@ -691,7 +691,7 @@ msgstr "Emplacement"
 msgid "No movies found in"
 msgstr "Aucun Film trouvé dans"
 
-#: ../http/static/sub_management/Directive/subDetails.html:37
+#: ../http/static/sub_management/Directive/subDetails.html:38
 msgid "None"
 msgstr "Aucun"
 
@@ -723,38 +723,74 @@ msgstr "Développer une bibliothèque à rechercher"
 
 #: ../Contents/Resources/language_template.html:19
 msgid "Get missing from File System"
-msgstr ""
+msgstr "Manquant dans le système de fichiers"
 
 #: ../Contents/Resources/language_template.html:27
 msgid "Get missing from database"
-msgstr ""
+msgstr "Manquant dans la base de données"
 
 #: ../Contents/Resources/language_template.html:23
 msgid "Idle"
-msgstr ""
+msgstr "En attente"
 
 #: ../http/static/sub_management/sub.html:53
 msgid "No TV-Shows found in"
-msgstr ""
+msgstr "Aucune série télévisée trouvé dans"
 
 #: ../Contents/Resources/language_template.html:22
 msgid "Scanning database show %s of %s :"
-msgstr ""
+msgstr "Balayage de la base de données de balayage affiche %s de %s :"
 
 #: ../Contents/Resources/language_template.html:26
 msgid "Scanning database: item %s of %s : Working"
-msgstr ""
+msgstr "Balayage de la base de données: élément %s de %s : Fonctionnel"
 
 #: ../Contents/Resources/language_template.html:24
 msgid "Scanning file: %s"
-msgstr ""
+msgstr "Balayage de fichier: %s"
 
 #: ../Contents/Resources/language_template.html:21
 #: ../Contents/Resources/language_template.html:25
 msgid "Starting to scan database for section %s"
-msgstr ""
+msgstr "Débuter l'analyse la base de données pour la section %s"
 
 #: ../Contents/Resources/language_template.html:20
 msgid "idle"
+msgstr "en attente"
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
+msgid "Choose language for the subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
+msgid "Choose part"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
+msgid "Missing file"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
+msgid "Missing part"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
+msgid "No language"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:28
+msgid "Scanning database: %s : Done"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
+msgid "Subtitle Management Upload Subtitle"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
+msgid "Upload"
+msgstr ""
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
+msgid "Upload subtitle for"
 msgstr ""
 
