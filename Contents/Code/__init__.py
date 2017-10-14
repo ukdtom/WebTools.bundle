@@ -67,16 +67,23 @@ def Start():
 def MainMenu():
     Log.Debug("**********  Starting MainMenu  **********")
     oc = ObjectContainer()
+
+    Log.Debug('Network Address: ' + str(Network.Address))
+    Log.Debug('WebPort http: ' + str(Prefs['WEB_Port_http']))
+    Log.Debug('WebPort https: ' + str(Prefs['WEB_Port_https']))
+    Log.Debug('BaseURL: ' + str(BASEURL))
+    url = str(Network.Address) + ':' + \
+        str(Prefs['WEB_Port_https']) + str(BASEURL)
     oc.add(DirectoryObject(key=Callback(MainMenu),
                            title="To access this channel, type the url's below to a new browser tab"))
     if Prefs['Force_SSL']:
         oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' +
-                               Network.Address + ':' + Prefs['WEB_Port_https'] + BASEURL))
+                               url))
     else:
         oc.add(DirectoryObject(key=Callback(MainMenu), title='http://' +
-                               Network.Address + ':' + Prefs['WEB_Port_http'] + BASEURL))
+                               url))
         oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' +
-                               Network.Address + ':' + Prefs['WEB_Port_https'] + BASEURL))
+                               url))
     oc.add(PrefsObject(title='Preferences', thumb=R('icon-prefs.png')))
     Log.Debug("**********  Ending MainMenu  **********")
     return oc
