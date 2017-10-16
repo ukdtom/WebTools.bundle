@@ -516,13 +516,10 @@ class findMediaV3(object):
 
     # Reset settings to default
     @classmethod
-    def RESETSETTINGS(self, req, *args):
-        print 'Ged1', Dict['findMedia']
+    def RESETSETTINGS(self, req, *args):        
         Dict['findMedia'] = None
-        Dict.Save()
-        print 'Ged2', Dict['findMedia']
-        self.populatePrefs()
-        print 'Ged3', Dict['findMedia']
+        Dict.Save()        
+        self.populatePrefs()        
         req.clear()
         req.set_status(200)
 

@@ -225,11 +225,12 @@ class logsV3(object):
                     file = String.Unquote(file, usePlus=False)
                     retFile = []
                     if Platform.OS == 'MacOSX':
-                        f = os.fdopen(os.open(file, os.O_RDONLY))
+                        f = os.fdopen(os.open(file, os.O_RDONLY))                        
                         with f as content_file:
                             content = content_file.readlines()
                             for line in content:
                                 retFile.append(line.strip())
+                        f.close()
                         req.set_header('Content-Disposition',
                                        'attachment; filename="' + fileName + '"')
                         req.set_header(
