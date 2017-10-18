@@ -29,7 +29,7 @@ BUNDLEDIRNAME = ''																			# Name of the bundle dir
 
 # Modules used in WebTools
 V3MODULES = {'WT': 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3', 'LANGUAGE': 'languageV3',
-             'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3'}
+             'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3', 'TECHINFO': 'techinfo'}
 UILANGUAGE = 'en'
 UILANGUAGEDEBUG = False
 

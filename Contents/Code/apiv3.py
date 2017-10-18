@@ -22,6 +22,7 @@ import gitV3
 import findMediaV3
 import jsonExporterV3
 import playlistsV3
+import techinfo
 
 
 class BaseHandler(RequestHandler):
@@ -95,12 +96,17 @@ class apiv3(BaseHandler):
                                         try:
                                             myClass = getattr(
                                                 playlistsV3, V3MODULES[self.module])
-                                        except Exception, e:
-                                            Log.Exception(
-                                                'Exception getting the class in apiV3: %s' % str(e))
-                                            self.clear()
-                                            self.set_status(501)
-                                            self.finish('Bad module?')
+                                        except:
+                                            try:
+                                                myClass = getattr(
+                                                    techinfo, V3MODULES[self.module])
+
+                                            except Exception, e:
+                                                Log.Exception(
+                                                    'Exception getting the class in apiV3: %s' % str(e))
+                                                self.clear()
+                                                self.set_status(501)
+                                                self.finish('Bad module?')
         try:
             # Make the call
             getattr(myClass, 'getFunction')(self.request.method.lower(), self)
