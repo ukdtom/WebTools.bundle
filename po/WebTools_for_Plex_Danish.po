@@ -799,3 +799,30 @@ msgstr "Upload"
 msgid "Upload subtitle for"
 msgstr "Upload undertekst for"
 
+#: ../Contents/Resources/language_template.html:47
+msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
+msgstr "<plugin>Base url hvis bag en proxy server. Hvis ikke, så bare blank. (Base URL kan f.eks være: /WebTools)</plugin>"
+
+#: ../Contents/Resources/language_template.html:36
+msgid "<plugin>Enter the port that this plugin should use for http. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413,\n"
+"        32414, 32469]</plugin>"
+msgstr "<plugin>Indtast den port som dette plugin skal bruge for http. Brug IKKE [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413,\n"
+"        32414, 32469]</plugin>"
+
+#: ../Contents/Resources/language_template.html:40
+msgid "<plugin>Enter the port that this plugin should use for https. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413,\n"
+"        32414, 32469]</plugin>"
+msgstr "<plugin>Indtast den port der skal benyttes til https. Brug IKKE [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+
+#: ../Contents/Resources/language_template.html:33
+msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Navn på Certifikat key fil i Contents/Code/Certificate directory</plugin>"
+
+#: ../Contents/Resources/language_template.html:44
+msgid "<plugin>Select to force https</plugin>"
+msgstr "<plugin>Vælg for kun at bruge https</plugin>"
+
+#: ../Contents/Resources/language_template.html:50
+msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
+msgstr "<plugin>For at benytte dette plugin, skal du skrive en af nedenstående urls i en NY browser tab</plugin>"
+

@@ -756,37 +756,63 @@ msgstr "inaktiv"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
 msgid "Choose language for the subtitle"
-msgstr ""
+msgstr "Velg språk"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
 msgid "Choose part"
-msgstr ""
+msgstr "Velg del"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
 msgid "Missing file"
-msgstr ""
+msgstr "Manglende fil"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
 msgid "Missing part"
-msgstr ""
+msgstr "Manglende del"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
 msgid "No language"
-msgstr ""
+msgstr "Intet språk"
 
 #: ../Contents/Resources/language_template.html:28
 msgid "Scanning database: %s : Done"
-msgstr ""
+msgstr "Skanner database: %s ferdig"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
 msgid "Subtitle Management Upload Subtitle"
-msgstr ""
+msgstr "Undertekstbehandling: Last opp undertekst"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
 msgid "Upload"
-msgstr ""
+msgstr "Last opp"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
 msgid "Upload subtitle for"
+msgstr "Last opp undertekst for"
+
+#: ../Contents/Resources/language_template.html:47
+msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:36
+msgid "<plugin>Enter the port that this plugin should use for http. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413,\n"
+"        32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:40
+msgid "<plugin>Enter the port that this plugin should use for https. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413,\n"
+"        32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:33
+msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:44
+msgid "<plugin>Select to force https</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:50
+msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
 msgstr ""
 

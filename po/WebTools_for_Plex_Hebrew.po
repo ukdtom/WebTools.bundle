@@ -25,7 +25,7 @@ msgstr "לשנות נושא"
 
 #: ../http/static/menu/menu.html:17
 msgid "Changelog"
-msgstr ""
+msgstr "שינוי יומן"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
@@ -49,7 +49,7 @@ msgstr "רשום את כל הכתוביות עבור סרט / תכנית טלו�
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
-msgstr ""
+msgstr "מציג יומן הרישום"
 
 #: ../http/static/menu/menu.html:19
 msgid "Logout"
@@ -137,7 +137,7 @@ msgstr "הורד את התוצאה"
 
 #: ../http/static/findmedia/fm.html:26
 msgid "Ignore Extras"
-msgstr ""
+msgstr "להתעלם ניצבים"
 
 #: ../http/static/findmedia/fm.html:20
 msgid "Ignore Hidden"
@@ -183,7 +183,7 @@ msgstr "הצג הגדרות"
 
 #: ../http/static/findmedia/fm.html:48
 msgid "Valid extentions"
-msgstr ""
+msgstr "סיומת חוקית"
 
 #: ../http/static/language/language.html:5
 msgid "Change Language"
@@ -195,7 +195,7 @@ msgstr "שפה"
 
 #: ../http/static/language/language.html:12
 msgid "Force language translation update"
-msgstr ""
+msgstr "כופות לתרגום שפות עדכון"
 
 #: ../http/static/logs/logs.html:5
 #: ../http/static/sub_management/sub.html:88
@@ -271,15 +271,15 @@ msgstr "מודול זה מאפשר לך לנהל את הכתוביות, ללא �
 
 #: ../http/static/home/home.html:16
 msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
-msgstr ""
+msgstr "מודול זה מאפשר לך להתקין, לעדכן ולמחוק unsupported Plex Media Server תוספות"
 
 #: ../http/static/home/home.html:7
 msgid "Tool Modules currently available are:"
-msgstr ""
+msgstr "מודולי כלים זמינים כעת"
 
 #: ../http/static/uas/uasHelp.html:1
 msgid "UnsupportedAppStore Help"
-msgstr ""
+msgstr "עֶזרָה ל- Unsupported App Store"
 
 #: ../http/static/uas/uasHelp.html:6
 msgid "* Category names contain installed/total available channels."
@@ -303,7 +303,7 @@ msgstr "ניתן להרחיב את הפריטים על ידי לחיצה עלי�
 
 #: ../http/static/uas/uasHelp.html:5
 msgid "* You can select a category on the menu on the right."
-msgstr "You can select a category from the menu on the right."
+msgstr "ניתן לבחור קטגוריה מתוך התפריט מימין."
 
 #: ../http/static/uas/uas.html:13
 msgid "Check for bundle updates"
@@ -311,7 +311,7 @@ msgstr "בדוק אם קיימים עדכוני Plug-in"
 
 #: ../http/static/uas/uas.html:12
 msgid "Force UAS update"
-msgstr ""
+msgstr "כופות Unsupported App Store עדכון"
 
 #: ../http/static/uas/uas.html:8
 msgid "Manual Install"
@@ -352,7 +352,7 @@ msgstr "כתובת אתר להתקנה ידנית"
 
 #: ../http/static/uas/uas.html:96
 msgid "Manual:"
-msgstr ""
+msgstr "מדריך"
 
 #: ../http/static/uas/uas.html:104
 msgid "Repo:"
@@ -384,7 +384,7 @@ msgstr "כדי להתחיל, בחר אחת הספריות שלך או לחץ ע�
 
 #: ../http/static/uas/uas.html:55
 msgid "Update"
-msgstr ""
+msgstr "עדכון"
 
 #: ../http/static/sub_management/sub.html:5
 msgid "Usage at your own risk!"
@@ -404,7 +404,7 @@ msgstr "להוריד רשימת השמעה"
 
 #: ../http/static/playlist/playlistHelp.html:7
 msgid "Import a playlist"
-msgstr "ייבא פלייליסט"
+msgstr "ייבא רשימת השמעה"
 
 #: ../http/static/playlist/playlist.html:18
 msgid "Select target user"
@@ -470,11 +470,11 @@ msgstr "תודה ענקית יוצאת לכל האנשים שעזרו בתרגו
 
 #: ../http/static/menu/menu.html:15
 msgid "About us"
-msgstr "עלינו"
+msgstr "אודות"
 
 #: ../http/static/aboutus/aboutus.html:22
 msgid "And Many Thanks To"
-msgstr "ותודה רבים ל-"
+msgstr "הרבה תודות ל-"
 
 #: ../http/static/aboutus/aboutus.html:25
 msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
@@ -498,7 +498,7 @@ msgstr "תודה על תמיכתך!!"
 
 #: ../http/static/aboutus/aboutus.html:19
 msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
-msgstr ""
+msgstr "הרעיון של Unsupported App Store נולד על ידי mikedm139, המחבר המקורי של Unsupported App Store"
 
 #: ../http/static/aboutus/aboutus.html:7
 msgid "Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)"
@@ -522,7 +522,7 @@ msgstr "אודותנו ועל זיכויים"
 
 #: ../http/static/aboutus/aboutus.html:9
 msgid "Custom Themes and Wiki"
-msgstr ""
+msgstr "ערכות נושא המותאמת אישית וויקי"
 
 #: ../http/static/aboutus/aboutus.html:28
 msgid "If you use WebTools and you are willing to support the developers with a beer or two, then please click on the 'Donate'\n"
@@ -548,11 +548,11 @@ msgstr "יש לך"
 
 #: ../http/static/uas/uas.html:41
 msgid "bundle"
-msgstr ""
+msgstr "חבילה"
 
 #: ../http/static/uas/uas.html:42
 msgid "bundles"
-msgstr ""
+msgstr "חבילות"
 
 #: ../http/static/uas/uas.html:43
 msgid "not up to date."
@@ -592,7 +592,7 @@ msgstr "סיסמה (שוב)"
 
 #: ../http/login.html:52
 msgid "Release Notes:"
-msgstr ""
+msgstr "הערות מוצר"
 
 #: ../http/login.html:44
 msgid "Sign in"
@@ -649,11 +649,11 @@ msgstr "קובץ הקודם"
 
 #: ../http/static/logs/logs.html:45
 msgid "Reload file"
-msgstr ""
+msgstr "טען מחדש את הקובץ"
 
 #: ../http/static/sub_management/Directive/subDetails.html:23
 msgid "Codec"
-msgstr ""
+msgstr "קודק"
 
 #: ../http/static/sub_management/subController.js:21
 msgid "Delete Selected"
@@ -665,7 +665,7 @@ msgstr "אל תבחר הכל"
 
 #: ../http/static/sub_management/subController.js:23
 msgid "Download Subtitle"
-msgstr ""
+msgstr "להוריד כתובית"
 
 #: ../http/static/sub_management/sub.html:25
 msgid "Filter by letter"
@@ -689,7 +689,7 @@ msgstr "לא נמצאו סרטים ב-"
 
 #: ../http/static/sub_management/Directive/subDetails.html:38
 msgid "None"
-msgstr ""
+msgstr "אף אחד"
 
 #: ../http/static/sub_management/subController.js:14
 #: ../http/static/sub_management/subController.js:6
@@ -719,7 +719,7 @@ msgstr "הרחב ספרייה לחיפוש"
 
 #: ../Contents/Resources/language_template.html:19
 msgid "Get missing from File System"
-msgstr ""
+msgstr "קבל חסרים ממערכת הקבצים"
 
 #: ../Contents/Resources/language_template.html:27
 msgid "Get missing from database"
@@ -727,7 +727,7 @@ msgstr "קבל חסר במסד הנתונים"
 
 #: ../Contents/Resources/language_template.html:23
 msgid "Idle"
-msgstr ""
+msgstr "במצב לא פעיל"
 
 #: ../http/static/sub_management/sub.html:53
 msgid "No TV-Shows found in"
@@ -739,7 +739,7 @@ msgstr "סריקת מסד נתונים: תוכנית טלוויזיה %s מתו�
 
 #: ../Contents/Resources/language_template.html:26
 msgid "Scanning database: item %s of %s : Working"
-msgstr ""
+msgstr "סורק המאגר: פריט %s מתוך %s: עובד"
 
 #: ../Contents/Resources/language_template.html:24
 msgid "Scanning file: %s"
@@ -748,45 +748,71 @@ msgstr "קובץ סורק: %s"
 #: ../Contents/Resources/language_template.html:21
 #: ../Contents/Resources/language_template.html:25
 msgid "Starting to scan database for section %s"
-msgstr ""
+msgstr "הפעלת סריקת מסד נתונים עבור סעיף: %s"
 
 #: ../Contents/Resources/language_template.html:20
 msgid "idle"
-msgstr ""
+msgstr "במצב לא פעיל"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
 msgid "Choose language for the subtitle"
-msgstr ""
+msgstr "בחר את השפה"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
 msgid "Choose part"
-msgstr ""
+msgstr "בחר חלק"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
 msgid "Missing file"
-msgstr ""
+msgstr "הקובץ החסר"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
 msgid "Missing part"
-msgstr ""
+msgstr "חלק חסר"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
 msgid "No language"
-msgstr ""
+msgstr "אין שפה"
 
 #: ../Contents/Resources/language_template.html:28
 msgid "Scanning database: %s : Done"
-msgstr ""
+msgstr "סורק המאגר:- והשלימה %s"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
 msgid "Subtitle Management Upload Subtitle"
-msgstr ""
+msgstr "ניהול כתוביות - להעלות כתוביות"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
 msgid "Upload"
-msgstr ""
+msgstr "להעלות"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
 msgid "Upload subtitle for"
+msgstr "להעלות כתוביות בשביל"
+
+#: ../Contents/Resources/language_template.html:47
+msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:36
+msgid "<plugin>Enter the port that this plugin should use for http. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413,\n"
+"        32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:40
+msgid "<plugin>Enter the port that this plugin should use for https. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413,\n"
+"        32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:33
+msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:44
+msgid "<plugin>Select to force https</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:50
+msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
 msgstr ""
 
