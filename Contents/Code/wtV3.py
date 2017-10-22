@@ -13,6 +13,7 @@ import json
 import shutil
 import sys
 import os
+import io
 from consts import BUNDLEDIRNAME, NAME, VERSION, WTURL
 from plextvhelper import plexTV
 from shutil import copyfile
@@ -291,6 +292,8 @@ class wtV3(object):
                             translatedStr) - 23:]
                     # Save the updated translation file
                     Data.Save('translations.js', translatedStr)
+                    # Update Plugin translation files as well
+                    createPluginStringTranslations()
                 except Exception, e:
                     Log.Exception(
                         'Exception happened in updateLanguage while fetching download link was: ' + str(e))
@@ -450,7 +453,8 @@ class wtV3(object):
 
 #********************* Internal functions ***********************************
 
-# This function will do a cleanup of old stuff, if needed
+
+''' This function will do a cleanup of old stuff, if needed '''
 
 
 def upgradeCleanup():
@@ -493,7 +497,8 @@ def upgradeCleanup():
                 'We encountered an error during cleanup that was %s' % (str(e)))
             pass
 
-# Remove old version that's upgraded, if present
+
+''' Remove old version that's upgraded, if present '''
 
 
 def removeUpgraded():
@@ -506,7 +511,8 @@ def removeUpgraded():
     except Exception, e:
         Log.Exception('Exception in removeUpgraded was %s' % str(e))
 
-# This function will update the translation.js file in PMS storage if needed
+
+''' This function will update the translation.js file in PMS storage if needed '''
 
 
 def updateTranslationStore():
@@ -526,15 +532,18 @@ def updateTranslationStore():
             if dataStore_modified_time < bundleStore_modified_time:
                 Log.Info('Updating translation file in storage')
                 copyfile(bundleStore, dataStore)
+                createPluginStringTranslations()
         except Exception, e:
             Log.Exception(
                 'Exception in updateTranslationStore was %s' % str(e))
     else:
         Log.Info('Updating translation file in storage')
         copyfile(bundleStore, dataStore)
+        createPluginStringTranslations()
     return
 
-# Get a list of languages avail from translation site
+
+''' Get a list of languages avail from translation site '''
 
 
 def getTranslationLanguages():
@@ -547,3 +556,42 @@ def getTranslationLanguages():
         Log.Exception(
             'Exception happened in getTranslationLanguages was: ' + str(e))
         return None
+
+
+''' Extraxt channel plugin translations from the translations.js file '''
+
+
+def createPluginStringTranslations():
+    try:
+        # Get Strings directory
+        STRINGSDIR = Core.storage.join_path(
+            Core.bundle_path, 'Contents', 'Strings')
+        # Now open existing translations.js file, walk it line by line, and update the relevant translation
+        translationLines = Data.Load(
+            'translations.js').splitlines()
+        for line in translationLines:
+            # Start of a language?
+            if line.lstrip().startswith("gettextCatalog.setStrings('"):
+                lang, translation = line.split("', ", 1)
+                # Grap language in Spe
+                lang = lang.split("'")[1]
+                # Temp store for translation file
+                jsonTranslation = {}
+                translation = translation[:-2]
+                translationJson = JSON.ObjectFromString(translation)
+                # Walk the translation for keys, looking for <PLUGIN>
+                for key in translationJson:
+                    if key.startswith('<PLUGIN>'):
+                        jsonTranslation[unicode(
+                            key[8:-9])] = unicode(translationJson[key][8:-9])
+                if len(jsonTranslation) > 0:
+                    fileName = unicode(Core.storage.join_path(
+                        STRINGSDIR, lang + '.json'))
+                    Core.storage.ensure_dirs(os.path.dirname(fileName))
+                    with io.open(fileName, 'w', encoding="utf-8") as outfile:
+                        outfile.write(
+                            unicode(json.dumps(jsonTranslation, ensure_ascii=False)))
+    except Exception, e:
+        Log.Exception(
+            'Exception in createPluginStringTranslations was: %s' % str(e))
+    return
