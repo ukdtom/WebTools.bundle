@@ -572,7 +572,7 @@ def createPluginStringTranslations():
         for line in translationLines:
             # Start of a language?
             if line.lstrip().startswith("gettextCatalog.setStrings('"):
-                lang, translation = line.split("', ", 1)
+                lang, translation = line.split("',", 1)
                 # Grap language in Spe
                 lang = lang.split("'")[1]
                 # Temp store for translation file
@@ -581,12 +581,11 @@ def createPluginStringTranslations():
                 translationJson = JSON.ObjectFromString(translation)
                 # Walk the translation for keys, looking for <PLUGIN>
                 for key in translationJson:
-                    if key.startswith('<PLUGIN>'):
-                        jsonTranslation[unicode(
-                            key[8:-9])] = unicode(translationJson[key][8:-9])
+                    if key.startswith('<plugin>'):
+                        jsonTranslation[key[8:-9]] = translationJson[key][8:-9]
                 if len(jsonTranslation) > 0:
-                    fileName = unicode(Core.storage.join_path(
-                        STRINGSDIR, lang + '.json'))
+                    fileName = Core.storage.join_path(
+                        STRINGSDIR, lang + '.json')
                     Core.storage.ensure_dirs(os.path.dirname(fileName))
                     with io.open(fileName, 'w', encoding="utf-8") as outfile:
                         outfile.write(
