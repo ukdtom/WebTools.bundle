@@ -582,14 +582,15 @@ def createPluginStringTranslations():
                 # Walk the translation for keys, looking for <PLUGIN>
                 for key in translationJson:
                     if key.startswith('<plugin>'):
-                        jsonTranslation[key[8:-9]] = translationJson[key][8:-9]
+                        jsonTranslation[key[8:-9].replace('\n        ', ' ')] = translationJson[key][8:-
+                                                                                                     9].replace('\n        ', ' ')
                 if len(jsonTranslation) > 0:
                     fileName = Core.storage.join_path(
                         STRINGSDIR, lang + '.json')
                     Core.storage.ensure_dirs(os.path.dirname(fileName))
                     with io.open(fileName, 'w', encoding="utf-8") as outfile:
                         outfile.write(
-                            unicode(json.dumps(jsonTranslation, ensure_ascii=False)))
+                            unicode(json.dumps(jsonTranslation, indent=4, ensure_ascii=False)))
     except Exception, e:
         Log.Exception(
             'Exception in createPluginStringTranslations was: %s' % str(e))
