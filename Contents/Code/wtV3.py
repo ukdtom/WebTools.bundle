@@ -55,7 +55,7 @@ class wtV3(object):
             lang['Language'] = Dict['UILanguage']
             req.finish(json.dumps(lang))
 
-    # Upgrade WebTools from latest release. This is the new call, that replace the one that in V2 was located in the git module
+    ''' Upgrade WebTools from latest release. This is the new call, that replace the one that in V2 was located in the git module '''
     @classmethod
     def UPGRADEWT(self, req, *args):
         Log.Info('We recieved a call to upgrade WebTools itself')
@@ -111,7 +111,7 @@ class wtV3(object):
         req.set_status(200)
         req.finish('WebTools finished upgrading')
 
-    # Get list of translators
+    ''' Get list of translators '''
     @classmethod
     def GETTRANSLATORLIST(self, req, *args):
         try:
@@ -139,7 +139,7 @@ class wtV3(object):
             req.finish(
                 'Fatal error happened in wt.getTranslatorList: %s' % (str(e)))
 
-    # Get list of avail languages, as well as their translation status
+    ''' Get list of avail languages, as well as their translation status '''
     @classmethod
     def GETLANGUAGELIST(self, req, *args):
         try:
@@ -157,7 +157,7 @@ class wtV3(object):
             req.finish(
                 'Fatal error happened in wt.getLanguageList: %s' % (str(e)))
 
-    # Download and update a translation from live translation site
+    ''' Download and update a translation from live translation site '''
     @classmethod
     def GETTRANSLATE(self, req, *args, **kwargs):
         try:
@@ -235,7 +235,7 @@ class wtV3(object):
             req.finish('Fatal error happened in wt.getTranslate: %s' %
                        (str(e)))
 
-    # Download and update a translation from live translation site
+    ''' Download and update a translation from live translation site '''
     @classmethod
     def UPDATELANGUAGE(self, req, *args):
         try:
@@ -314,7 +314,7 @@ class wtV3(object):
             req.finish(
                 'Fatal error happened in wt.updateLanguage: %s' % (str(e)))
 
-    # Get list of users
+    ''' Get list of users '''
     @classmethod
     def GETUSERS(self, req, *args):
         try:
@@ -334,7 +334,7 @@ class wtV3(object):
             req.set_status(e.code)
             req.finish('Fatal error happened in wt.getUsers: %s' % (str(e)))
 
-    # Reset WT to factory settings
+    '''  Reset WT to factory settings '''
     @classmethod
     def RESET(self, req, *args):
         try:
@@ -361,7 +361,7 @@ class wtV3(object):
             req.set_status(e.code)
             req.finish('Fatal error happened in wt.reset: %s' % (str(e)))
 
-    # Get a list of all css files in http/custom_themes
+    ''' Get a list of all css files in http/custom_themes '''
     @classmethod
     def GETCSS(self, req, *args):
         Log.Debug('getCSS requested')
@@ -451,16 +451,17 @@ class wtV3(object):
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
-#********************* Internal functions ***********************************
+
+''' ********************* Internal functions *********************************** '''
 
 
 ''' This function will do a cleanup of old stuff, if needed '''
 
 
 def upgradeCleanup():
-    # Always check translation file regardless of version
+    ''' Always check translation file regardless of version '''
     updateTranslationStore()
-    # Remove leftovers from an upgrade
+    ''' Remove leftovers from an upgrade '''
     removeUpgraded()
     '''
 	We do take precedence here in a max of 3 integer digits in the version number !
@@ -478,14 +479,14 @@ def upgradeCleanup():
         Log.Exception(
             'Exception happened digesting the minor number of the Version was %s' % (str(e)))
     try:
-        # When getting rev number, we need to filter out stuff like dev version
+        ''' When getting rev number, we need to filter out stuff like dev version '''
         rev = int(versionArray[2].split(' ')[0])
     except Exception, e:
         Log.Exception(
             'Exception happened digesting the rev number of the Version was %s' % (str(e)))
-    # Older than V3 ?
+    ''' Older than V3 ? '''
     if major > 2:
-        # We need to delete the old uas dir, if present
+        ''' We need to delete the old uas dir, if present '''
         dirUAS = Core.storage.join_path(
             Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http', 'uas')
         try:
