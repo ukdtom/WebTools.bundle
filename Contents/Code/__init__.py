@@ -24,6 +24,21 @@ import socket
 from consts import DEBUGMODE, VERSION, NAME, ICON, PREFIX, BASEURL
 from wtV3 import upgradeCleanup
 
+''' Translate function override to avoid unicode decoding bug.
+    Code shamelessly stolen from:
+    https://bitbucket.org/czukowski/plex-locale-patch
+    '''
+
+
+def L(string):
+    try:
+        # initialize_locale()
+        local_string = Locale.LocalString(string)
+        return str(local_string).decode()
+    except Exception, e:
+        Log.Critical('Exception in L was %s' % str(e))
+        pass
+
 ####################################################################################################
 # Initialize
 ####################################################################################################
@@ -75,6 +90,8 @@ def MainMenu():
         str(Prefs['WEB_Port_http']) + str(BASEURL)
     urlhttps = 'https://' + str(Network.Address) + ':' + \
         str(Prefs['WEB_Port_https']) + str(BASEURL)
+    # The missing link, that makes translations possible
+    Request.Headers['X-Plex-Language'] = Request.Headers['Accept-Language']
     oc.add(DirectoryObject(key=Callback(MainMenu),
                            title=L("To access this channel, type the url's below to a new browser tab")))
     if Prefs['Force_SSL']:
