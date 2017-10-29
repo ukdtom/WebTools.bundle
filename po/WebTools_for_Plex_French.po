@@ -54,7 +54,7 @@ msgstr "Visionneur de journaux"
 
 #: ../http/static/menu/menu.html:19
 msgid "Logout"
-msgstr "Déconnecter"
+msgstr "Sortir"
 
 #: ../http/static/menu/menu.html:11
 msgid "Options"
@@ -197,7 +197,7 @@ msgstr "Langue"
 
 #: ../http/static/language/language.html:12
 msgid "Force language translation update"
-msgstr "Forcer la mise à jour de la traduction"
+msgstr "Mise à jour de la traduction"
 
 #: ../http/static/logs/logs.html:5
 #: ../http/static/sub_management/sub.html:88
@@ -600,7 +600,7 @@ msgstr "Notes de version:"
 
 #: ../http/login.html:44
 msgid "Sign in"
-msgstr "Se connecter"
+msgstr "Connecter"
 
 #: ../http/login.html:39
 msgid "Sign in with your local password"
@@ -609,7 +609,7 @@ msgstr "Se connecter avec son mot de passe local"
 #: ../http/login.html:36
 #: ../http/login.html:47
 msgid "Signing in towards plex.tv"
-msgstr "S'enregistrer vers plex.tv"
+msgstr "Enregistrement vers plex.tv"
 
 #: ../http/login.html:49
 msgid "The passwords does not match"
@@ -621,7 +621,7 @@ msgstr "Utilisez vos informations d'identification Plex"
 
 #: ../http/login.html:41
 msgid "Username"
-msgstr "Nom d'usager"
+msgstr "Nom d'utilizateur"
 
 #: ../http/login.html:55
 msgid "WebTools not available... Please contact Devs!"
@@ -794,29 +794,32 @@ msgstr "Charger"
 msgid "Upload subtitle for"
 msgstr "Charger sous-titre pour"
 
-#: ../Contents/Resources/language_template.html:47
+#: ../Contents/Resources/language_template.html:48
 msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
-msgstr ""
-
-#: ../Contents/Resources/language_template.html:36
-msgid "<plugin>Enter the port that this plugin should use for http. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413,\n"
-"        32414, 32469]</plugin>"
-msgstr ""
-
-#: ../Contents/Resources/language_template.html:40
-msgid "<plugin>Enter the port that this plugin should use for https. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413,\n"
-"        32414, 32469]</plugin>"
-msgstr ""
+msgstr "<plugin>URL (pour le cas des \"proxy\", si non doit être blanc).\n"
+"EX: /WebTools)</plugin>"
 
 #: ../Contents/Resources/language_template.html:33
 msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
-msgstr ""
+msgstr "<plugin>Nombre du fichier contenant le certificat (dans dossier Contents/Code/Certificate)</plugin>"
 
-#: ../Contents/Resources/language_template.html:44
+#: ../Contents/Resources/language_template.html:45
 msgid "<plugin>Select to force https</plugin>"
+msgstr "<plugin>Seleccioner pour forcer HTTPS</plugin>"
+
+#: ../Contents/Resources/language_template.html:51
+msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
+msgstr "<plugin>Pour accèder a ce canal vous pouvez ouvrir un des URLs indiqués dans une nouvelle fenêtre </plugin>"
+
+#: ../Contents/Resources/language_template.html:39
+msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
 msgstr ""
 
-#: ../Contents/Resources/language_template.html:50
-msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
+#: ../Contents/Resources/language_template.html:42
+msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:36
+msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
 msgstr ""
 
