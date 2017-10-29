@@ -24,16 +24,21 @@ import socket
 from consts import DEBUGMODE, VERSION, NAME, ICON, PREFIX, BASEURL
 from wtV3 import upgradeCleanup
 
-''' Translate function override to avoid unicode decoding bug.
+''' Translate function override to avoid unicode decoding bug, as well as make it work in the WebClient.
     Code shamelessly stolen from:
     https://bitbucket.org/czukowski/plex-locale-patch
+    and altered a bit to make it work for WebTools
     '''
 
 
 def L(string):
     try:
-        # initialize_locale()
+        # Missing X-Plex-Language?
+        if 'X-Plex-Language' not in Request.Headers:
+            Request.Headers['X-Plex-Language'] = Request.Headers['Accept-Language']
+        # Grap string to return
         local_string = Locale.LocalString(string)
+        # Decode it, since we need it to be XML compliant
         return str(local_string).decode()
     except Exception, e:
         Log.Critical('Exception in L was %s' % str(e))
@@ -90,8 +95,6 @@ def MainMenu():
         str(Prefs['WEB_Port_http']) + str(BASEURL)
     urlhttps = 'https://' + str(Network.Address) + ':' + \
         str(Prefs['WEB_Port_https']) + str(BASEURL)
-    # The missing link, that makes translations possible
-    Request.Headers['X-Plex-Language'] = Request.Headers['Accept-Language']
     oc.add(DirectoryObject(key=Callback(MainMenu),
                            title=L("To access this channel, type the url's below to a new browser tab")))
     if Prefs['Force_SSL']:
