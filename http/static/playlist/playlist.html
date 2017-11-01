@@ -5,7 +5,7 @@
     <content-loading ng-if="webtoolsModel.playlistsLoading" class="pushTopMinor"></content-loading>
     <div ng-if="!webtoolsModel.playlistsLoading" class="pushTopMinor">
         <div class="userContainer">
-            <div class="pull-left pushLeftMajor">
+            <div class="pull-left">
                 <label for="userSelector" class="textSize4 textBold600" translate>Select user</label><br/>
                 <select class="userSelector" id="userSelector" ng-model="webtoolsModel.userSelected" ng-change="changeUserSelected()">
                     <option ng-repeat="user in webtoolsModel.users track by user.id"
@@ -39,7 +39,7 @@
                              ng-class="{'disabled' : !webtoolsModel.userToSelected}"
                              ng-title="'Select target user to copy'|translate" translate>Copy</div>
                         <div class="playlistBtn" ng-click="downloadPlaylist(playlist)" translate>Download</div>
-                        <!--<div class="playlistBtn" ng-click="importPlaylist(playlist)" translate>Import</div>-->
+                        <div class="playlistBtn" ng-click="importPlaylist(playlist)" translate>Import</div>
                     </div>
                 </div>
                 <div class="bottomPart pull-left textSize2">{[{playlist.summary}]}</div>
