@@ -29,6 +29,10 @@ webtools.config(['$interpolateProvider', '$routeProvider', '$locationProvider', 
         templateUrl: "static/playlist/playlist.html",
         controller: "playlistController"
     })
+    .when("/info", {
+        templateUrl: "static/info/info.html",
+        controller: "infoController"
+    })
     //Options
     .when("/aboutus", {
         templateUrl: "static/aboutus/aboutus.html",
