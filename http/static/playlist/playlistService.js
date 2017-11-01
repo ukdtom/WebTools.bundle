@@ -88,16 +88,18 @@
     }
 
     this.importPlaylist = function (file, callback) {
+        var data = new FormData();
+        data.append("localFile", file);
+
         webtoolsModel.playlistsLoading++;
         var url = webtoolsModel.apiV3Url + "/playlists/Import";
         $http({
             method: "POST",
-            data: {
-                localFile: file
-            },
+            data: data,
+            headers: { 'Content-Type': undefined },
+            transformRequest: angular.identity,
             url: url
         }).then(function (resp) {
-            debugger;
             if (callback) callback(resp.data);
             webtoolsModel.playlistsLoading--;
         }, function (errorResp) {

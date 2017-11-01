@@ -35,6 +35,23 @@
     border-radius: 5px;
     padding: 2px;
 }
+.playlists .userContainer .fileContainer{
+    padding:15px;
+    padding-bottom:10px;
+    border-radius:5px;
+    background: #0032a5;
+    background: rgba(0, 77, 255, 0.15);
+    box-shadow: 3px 3px 10px 1px black;
+    border-radius: 5px;
+    border: 1px solid #4c4c4c;
+}
+.playlists .userContainer .fileContainer .label{
+    margin-top:13px;
+}
+.playlists .userContainer .fileContainer .playlistBtn{
+    margin-top:5px;
+    margin-left:5px;
+}
 
 .playlists .playlistContainer {
     width: 100%;

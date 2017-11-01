@@ -23,6 +23,11 @@
                     </option>
                 </select>
             </div>
+            <div class="pull-left pushLeftMajor fileContainer">
+                <input type="file" fileread="playlistModel.selectedFile" />
+                <div class="label pull-left">Choose a file to import a playlist</div>
+                <div class="playlistBtn pull-right" ng-click="importPlaylist(playlistModel.selectedFile)" ng-class="{'disabled' : !playlistModel.selectedFile}" translate>Import</div>
+            </div>
         </div>
         <div class="playlistContainer" ng-repeat="playlist in playlistModel.playlists track by playlist.key">
             <div class="icon">
@@ -39,7 +44,6 @@
                              ng-class="{'disabled' : !webtoolsModel.userToSelected}"
                              ng-title="'Select target user to copy'|translate" translate>Copy</div>
                         <div class="playlistBtn" ng-click="downloadPlaylist(playlist)" translate>Download</div>
-                        <div class="playlistBtn" ng-click="importPlaylist(playlist)" translate>Import</div>
                     </div>
                 </div>
                 <div class="bottomPart pull-left textSize2">{[{playlist.summary}]}</div>

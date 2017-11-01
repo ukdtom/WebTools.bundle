@@ -19,11 +19,13 @@
     }
 
     $scope.copyPlaylist = function (playlist) {
-        playlistService.copyPlaylist(playlist, webtoolsModel.userToSelected, webtoolsModel.userSelected); //TODO
+        playlistService.copyPlaylist(playlist, webtoolsModel.userToSelected, webtoolsModel.userSelected);
     }
 
     $scope.importPlaylist = function (file) {
-        playlistService.importPlaylist(file); //TODO
+        playlistService.importPlaylist(file, function () {
+            $scope.init();
+        });
     }
 
     $scope.init();
