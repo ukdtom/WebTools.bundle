@@ -1,38 +1,38 @@
 [
-	{
-		"id":"WEB_Port_http",
-		"label":"Enter the port that this plugin should use for http. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]",
-		"type":"text",
-		"default":"33400"
-	},
-	{
-		"id":"WEB_Port_https",
-		"label":"Enter the port that this plugin should use for https. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]",
-		"type":"text",
-		"default":"33443"
-	},
-	{
-		"id":"Force_SSL",
-		"label":"Select to force https",
-		"type":"bool",
-		"default":"false"
-	},	
-	{
-		"id":"Base_URL",
-		"label":"Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)",
-		"type":"text",
-		"default":""
-	},
-	{
-		"id":"Cert_CRT",
-		"label":"Name of Certificate crt file in Contents/Code/Certificate directory",
-		"type":"text",
-		"default":"WebTools.crt"
-	},
-	{
-		"id":"Cert_KEY",
-		"label":"Name of Certificate key file in Contents/Code/Certificate directory",
-		"type":"text",
-		"default":"WebTools.key"
-	}
+    {
+        "id": "WEB_Port_http",
+        "label": "Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]",
+        "type": "text",
+        "default": "33400"
+    },
+    {
+        "id": "WEB_Port_https",
+        "label": "Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]",
+        "type": "text",
+        "default": "33443"
+    },
+    {
+        "id": "Force_SSL",
+        "label": "Select to force https",
+        "type": "bool",
+        "default": "false"
+    },
+    {
+        "id": "Base_URL",
+        "label": "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)",
+        "type": "text",
+        "default": ""
+    },
+    {
+        "id": "Cert_CRT",
+        "label": "Name of Certificate crt file in Contents/Code/Certificate directory",
+        "type": "text",
+        "default": "WebTools.crt"
+    },
+    {
+        "id": "Cert_KEY",
+        "label": "Name of Certificate key file in Contents/Code/Certificate directory",
+        "type": "text",
+        "default": "WebTools.key"
+    }
 ]

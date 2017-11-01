@@ -759,37 +759,66 @@ msgstr "idle"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
 msgid "Choose language for the subtitle"
-msgstr ""
+msgstr "Choose language"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
 msgid "Choose part"
-msgstr ""
+msgstr "Choose part"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
 msgid "Missing file"
-msgstr ""
+msgstr "Missing file"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
 msgid "Missing part"
-msgstr ""
+msgstr "Missing part"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
 msgid "No language"
-msgstr ""
+msgstr "No language"
 
 #: ../Contents/Resources/language_template.html:28
 msgid "Scanning database: %s : Done"
-msgstr ""
+msgstr "Scanning database: %s complete"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
 msgid "Subtitle Management Upload Subtitle"
-msgstr ""
+msgstr "Subtitle Management : Upload Subtitle"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
 msgid "Upload"
-msgstr ""
+msgstr "Upload"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
 msgid "Upload subtitle for"
+msgstr "Upload subtitle for"
+
+#: ../Contents/Resources/language_template.html:48
+msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
+msgstr "<plugin>Base URL (if behind a proxy – if not, leave blank).\n"
+"EX: /WebTools)</plugin>"
+
+#: ../Contents/Resources/language_template.html:33
+msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Name of certificate key file in Contents/Code/Certificate directory</plugin>"
+
+#: ../Contents/Resources/language_template.html:45
+msgid "<plugin>Select to force https</plugin>"
+msgstr "<plugin>Select to force HTTPS</plugin>"
+
+#: ../Contents/Resources/language_template.html:51
+msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
+msgstr "<plugin>To access this channel, open one of the URLs below in a new browser tab or window.</plugin>"
+
+#: ../Contents/Resources/language_template.html:39
+msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:42
+msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:36
+msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
 msgstr ""
 

@@ -25,7 +25,7 @@ msgstr "Mudar o tema"
 
 #: ../http/static/menu/menu.html:17
 msgid "Changelog"
-msgstr "Lista de Alterações"
+msgstr "Atualizações"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
@@ -73,7 +73,7 @@ msgstr "Seleccione um dos temas disponíveis:"
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
-msgstr "Seleccione uma das bibliotecas abaixo para procurar filmes ou séries que não estejam nem na biblioteca de Plex nem no seu disco local"
+msgstr "Seleccione uma das bibliotecas abaixo para identificar discrepâncias entre metadados e ficheiros (metadados em falta para ficheiros existentes, ou a apontar para ficheiros inexistentes)"
 
 #: ../http/static/menu/menu.html:16
 msgid "Theme"
@@ -93,7 +93,7 @@ msgstr "Inspeccionar a legenda para identificar o que apagar."
 
 #: ../http/static/menu/menu.html:24
 msgid "WT Forum Thread"
-msgstr "Suporte de WebTools"
+msgstr "Forum"
 
 #: ../http/static/menu/menu.html:25
 msgid "WT GitHub"
@@ -195,7 +195,7 @@ msgstr "Idioma"
 
 #: ../http/static/language/language.html:12
 msgid "Force language translation update"
-msgstr "Refrescar tradução"
+msgstr "Obter tradução atualizada"
 
 #: ../http/static/logs/logs.html:5
 #: ../http/static/sub_management/sub.html:88
@@ -255,11 +255,11 @@ msgstr "pesquisa…"
 
 #: ../http/static/home/home.html:22
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
-msgstr "Permite copiar playlists entre usuários, bem como importar, exportar e apagá-las"
+msgstr "Permite copiar playlists entre usuários, bem como importar, exportar e apagar playlists"
 
 #: ../http/static/home/home.html:13
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
-msgstr "Este módulo permite aceder aos logs do Plex Media Media Server, bem como descarregar e zipá-los"
+msgstr "Este módulo permite aceder aos logs do Plex Media Media Server, bem como descarregá-los e zipá-los"
 
 #: ../http/static/home/home.html:19
 msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
@@ -376,7 +376,7 @@ msgstr "Suporte:"
 
 #: ../http/static/sub_management/sub.html:4
 msgid "This is an unofficial manager for subtitles."
-msgstr "Este módulo é um gestor de legendas não-oficial."
+msgstr "Este módulo é um gestor não-oficial de legendas."
 
 #: ../http/static/sub_management/sub.html:6
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
@@ -462,7 +462,7 @@ msgstr "Atualizações disponíveis"
 
 #: ../http/static/menu/menu.html:26
 msgid "WT Manual Online"
-msgstr "Ajuda online"
+msgstr "WiKi"
 
 #: ../http/static/aboutus/aboutus.html:13
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
@@ -596,7 +596,7 @@ msgstr "Notas da versão:"
 
 #: ../http/login.html:44
 msgid "Sign in"
-msgstr "Logar"
+msgstr "Entrar"
 
 #: ../http/login.html:39
 msgid "Sign in with your local password"
@@ -605,7 +605,7 @@ msgstr "Logar com a senha local"
 #: ../http/login.html:36
 #: ../http/login.html:47
 msgid "Signing in towards plex.tv"
-msgstr "Logando a plex.tv"
+msgstr "Ligando a plex.tv"
 
 #: ../http/login.html:49
 msgid "The passwords does not match"
@@ -756,37 +756,66 @@ msgstr "Pausa"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
 msgid "Choose language for the subtitle"
-msgstr ""
+msgstr "Escolher idioma da legenda"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
 msgid "Choose part"
-msgstr ""
+msgstr "Escolher parte"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
 msgid "Missing file"
-msgstr ""
+msgstr "Arquivo em falta"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
 msgid "Missing part"
-msgstr ""
+msgstr "Parte em falta"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
 msgid "No language"
-msgstr ""
+msgstr "Idioma não encontrado"
 
 #: ../Contents/Resources/language_template.html:28
 msgid "Scanning database: %s : Done"
-msgstr ""
+msgstr "Pesquisando base de dados: %s : Completo"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
 msgid "Subtitle Management Upload Subtitle"
-msgstr ""
+msgstr "Gestão de Legendas Carregar Legenda"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
 msgid "Upload"
-msgstr ""
+msgstr "Carregar"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
 msgid "Upload subtitle for"
+msgstr "Carregar legenda para"
+
+#: ../Contents/Resources/language_template.html:48
+msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
+msgstr "<plugin>URL (caso esteja a usar proxy, caso contrário deixe em branco).\n"
+"EX: /WebTools)</plugin>"
+
+#: ../Contents/Resources/language_template.html:33
+msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Nome do ficheiro que contém o certificado (na pasta Contents/Code/Certificate)</plugin>"
+
+#: ../Contents/Resources/language_template.html:45
+msgid "<plugin>Select to force https</plugin>"
+msgstr "<plugin>Selecionar para forçar HTTPS</plugin>"
+
+#: ../Contents/Resources/language_template.html:51
+msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
+msgstr "<plugin>Para aceder a este canal pode abrir um dos URLs abaixo indicados numa nova janela ou pestana.</plugin>"
+
+#: ../Contents/Resources/language_template.html:39
+msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:42
+msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:36
+msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
 msgstr ""
 

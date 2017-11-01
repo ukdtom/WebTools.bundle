@@ -37,7 +37,7 @@ msgstr "Verwijder geselecteerde sidecar van disk"
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
-msgstr "Bestand Leeg"
+msgstr "Leeg bestand"
 
 #: ../http/static/menu/menu.html:22
 msgid "Help"
@@ -255,11 +255,11 @@ msgstr "Zoeken . . ."
 
 #: ../http/static/home/home.html:22
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
-msgstr "Laat je toe om playlists te kopiëren, importeren of exporteren tussen gebruikers"
+msgstr "Sta toe om playlists te kopiëren, importeren of exporteren tussen gebruikers"
 
 #: ../http/static/home/home.html:13
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
-msgstr "Via deze tool krijg je eenvoudige toegang tot alle Plex Media Server logs, en je kan ze ook gemakkelijke downloaden als individuele logs of alle log files samen in een handig ZIP bestand.\n"
+msgstr "Via deze tool krijg je eenvoudige toegang tot alle Plex Media Server logs en je kan ze ook gemakkelijk downloaden als individuele logs of alle log files tezamen in een handig ZIP bestand.\n"
 ""
 
 #: ../http/static/home/home.html:19
@@ -321,7 +321,7 @@ msgstr "Handmatige installatie"
 
 #: ../http/static/uas/uas.html:11
 msgid "Migrate"
-msgstr "Migratie"
+msgstr "Migreer"
 
 #: ../http/static/uas/uas.html:80
 msgid "Categories:"
@@ -562,7 +562,7 @@ msgstr "bundels"
 
 #: ../http/static/uas/uas.html:43
 msgid "not up to date."
-msgstr "Niet te updaten"
+msgstr "Niet nieuwste versie"
 
 #: ../http/login.html:53
 msgid "Continue"
@@ -676,7 +676,7 @@ msgstr "Download ondertiteling"
 
 #: ../http/static/sub_management/sub.html:25
 msgid "Filter by letter"
-msgstr "Filter per letter"
+msgstr "Filter op letter"
 
 #: ../http/static/sub_management/Directive/subDetails.html:21
 msgid "Lang"
@@ -763,37 +763,65 @@ msgstr "idle"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
 msgid "Choose language for the subtitle"
-msgstr ""
+msgstr "Kies taal"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
 msgid "Choose part"
-msgstr ""
+msgstr "Kies deel"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
 msgid "Missing file"
-msgstr ""
+msgstr "Missend bestand"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
 msgid "Missing part"
-msgstr ""
+msgstr "MIssend deel"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
 msgid "No language"
-msgstr ""
+msgstr "Geen taal"
 
 #: ../Contents/Resources/language_template.html:28
 msgid "Scanning database: %s : Done"
-msgstr ""
+msgstr "Database scannen: %s voltooid"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
 msgid "Subtitle Management Upload Subtitle"
-msgstr ""
+msgstr "Ondertitel beheer: upload ondertitel"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
 msgid "Upload"
-msgstr ""
+msgstr "Upload"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
 msgid "Upload subtitle for"
+msgstr "Upload ondertitel voor"
+
+#: ../Contents/Resources/language_template.html:48
+msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
+msgstr "<plugin> Basis URL (indien achter een proxy, bijvoorbeeld, zo niet, kun je deze leeg laten. Voorbeeld:/WebTools)</plugin>"
+
+#: ../Contents/Resources/language_template.html:33
+msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Bestandsnaam van het certificaat in Contents/Code/Certificaat-map</plugin>"
+
+#: ../Contents/Resources/language_template.html:45
+msgid "<plugin>Select to force https</plugin>"
+msgstr "<plugin>Selecteer om HTTPS-verbindingen te forceren</plugin>"
+
+#: ../Contents/Resources/language_template.html:51
+msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
+msgstr "<plugin>Om dit kanaal te openen, open dan een van de volgende links in een nieuwe tab of venster van jouw browser</plugin>"
+
+#: ../Contents/Resources/language_template.html:39
+msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:42
+msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:36
+msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
 msgstr ""
 

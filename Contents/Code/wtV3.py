@@ -13,6 +13,7 @@ import json
 import shutil
 import sys
 import os
+import io
 from consts import BUNDLEDIRNAME, NAME, VERSION, WTURL
 from plextvhelper import plexTV
 from shutil import copyfile
@@ -54,7 +55,7 @@ class wtV3(object):
             lang['Language'] = Dict['UILanguage']
             req.finish(json.dumps(lang))
 
-    # Upgrade WebTools from latest release. This is the new call, that replace the one that in V2 was located in the git module
+    ''' Upgrade WebTools from latest release. This is the new call, that replace the one that in V2 was located in the git module '''
     @classmethod
     def UPGRADEWT(self, req, *args):
         Log.Info('We recieved a call to upgrade WebTools itself')
@@ -110,7 +111,7 @@ class wtV3(object):
         req.set_status(200)
         req.finish('WebTools finished upgrading')
 
-    # Get list of translators
+    ''' Get list of translators '''
     @classmethod
     def GETTRANSLATORLIST(self, req, *args):
         try:
@@ -138,7 +139,7 @@ class wtV3(object):
             req.finish(
                 'Fatal error happened in wt.getTranslatorList: %s' % (str(e)))
 
-    # Get list of avail languages, as well as their translation status
+    ''' Get list of avail languages, as well as their translation status '''
     @classmethod
     def GETLANGUAGELIST(self, req, *args):
         try:
@@ -156,7 +157,7 @@ class wtV3(object):
             req.finish(
                 'Fatal error happened in wt.getLanguageList: %s' % (str(e)))
 
-    # Download and update a translation from live translation site
+    ''' Download and update a translation from live translation site '''
     @classmethod
     def GETTRANSLATE(self, req, *args, **kwargs):
         try:
@@ -234,7 +235,7 @@ class wtV3(object):
             req.finish('Fatal error happened in wt.getTranslate: %s' %
                        (str(e)))
 
-    # Download and update a translation from live translation site
+    ''' Download and update a translation from live translation site '''
     @classmethod
     def UPDATELANGUAGE(self, req, *args):
         try:
@@ -291,6 +292,8 @@ class wtV3(object):
                             translatedStr) - 23:]
                     # Save the updated translation file
                     Data.Save('translations.js', translatedStr)
+                    # Update Plugin translation files as well
+                    createPluginStringTranslations()
                 except Exception, e:
                     Log.Exception(
                         'Exception happened in updateLanguage while fetching download link was: ' + str(e))
@@ -311,7 +314,7 @@ class wtV3(object):
             req.finish(
                 'Fatal error happened in wt.updateLanguage: %s' % (str(e)))
 
-    # Get list of users
+    ''' Get list of users '''
     @classmethod
     def GETUSERS(self, req, *args):
         try:
@@ -331,7 +334,7 @@ class wtV3(object):
             req.set_status(e.code)
             req.finish('Fatal error happened in wt.getUsers: %s' % (str(e)))
 
-    # Reset WT to factory settings
+    '''  Reset WT to factory settings '''
     @classmethod
     def RESET(self, req, *args):
         try:
@@ -358,7 +361,7 @@ class wtV3(object):
             req.set_status(e.code)
             req.finish('Fatal error happened in wt.reset: %s' % (str(e)))
 
-    # Get a list of all css files in http/custom_themes
+    ''' Get a list of all css files in http/custom_themes '''
     @classmethod
     def GETCSS(self, req, *args):
         Log.Debug('getCSS requested')
@@ -448,15 +451,17 @@ class wtV3(object):
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
-#********************* Internal functions ***********************************
 
-# This function will do a cleanup of old stuff, if needed
+''' ********************* Internal functions *********************************** '''
+
+
+''' This function will do a cleanup of old stuff, if needed '''
 
 
 def upgradeCleanup():
-    # Always check translation file regardless of version
+    ''' Always check translation file regardless of version '''
     updateTranslationStore()
-    # Remove leftovers from an upgrade
+    ''' Remove leftovers from an upgrade '''
     removeUpgraded()
     '''
 	We do take precedence here in a max of 3 integer digits in the version number !
@@ -474,14 +479,14 @@ def upgradeCleanup():
         Log.Exception(
             'Exception happened digesting the minor number of the Version was %s' % (str(e)))
     try:
-        # When getting rev number, we need to filter out stuff like dev version
+        ''' When getting rev number, we need to filter out stuff like dev version '''
         rev = int(versionArray[2].split(' ')[0])
     except Exception, e:
         Log.Exception(
             'Exception happened digesting the rev number of the Version was %s' % (str(e)))
-    # Older than V3 ?
+    ''' Older than V3 ? '''
     if major > 2:
-        # We need to delete the old uas dir, if present
+        ''' We need to delete the old uas dir, if present '''
         dirUAS = Core.storage.join_path(
             Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'http', 'uas')
         try:
@@ -493,7 +498,8 @@ def upgradeCleanup():
                 'We encountered an error during cleanup that was %s' % (str(e)))
             pass
 
-# Remove old version that's upgraded, if present
+
+''' Remove old version that's upgraded, if present '''
 
 
 def removeUpgraded():
@@ -506,7 +512,8 @@ def removeUpgraded():
     except Exception, e:
         Log.Exception('Exception in removeUpgraded was %s' % str(e))
 
-# This function will update the translation.js file in PMS storage if needed
+
+''' This function will update the translation.js file in PMS storage if needed '''
 
 
 def updateTranslationStore():
@@ -526,15 +533,18 @@ def updateTranslationStore():
             if dataStore_modified_time < bundleStore_modified_time:
                 Log.Info('Updating translation file in storage')
                 copyfile(bundleStore, dataStore)
+                createPluginStringTranslations()
         except Exception, e:
             Log.Exception(
                 'Exception in updateTranslationStore was %s' % str(e))
     else:
         Log.Info('Updating translation file in storage')
         copyfile(bundleStore, dataStore)
+        createPluginStringTranslations()
     return
 
-# Get a list of languages avail from translation site
+
+''' Get a list of languages avail from translation site '''
 
 
 def getTranslationLanguages():
@@ -547,3 +557,42 @@ def getTranslationLanguages():
         Log.Exception(
             'Exception happened in getTranslationLanguages was: ' + str(e))
         return None
+
+
+''' Extraxt channel plugin translations from the translations.js file '''
+
+
+def createPluginStringTranslations():
+    try:
+        # Get Strings directory
+        STRINGSDIR = Core.storage.join_path(
+            Core.bundle_path, 'Contents', 'Strings')
+        # Now open existing translations.js file, walk it line by line, and update the relevant translation
+        translationLines = Data.Load(
+            'translations.js').splitlines()
+        for line in translationLines:
+            # Start of a language?
+            if line.lstrip().startswith("gettextCatalog.setStrings('"):
+                lang, translation = line.split("',", 1)
+                # Grap language in Spe
+                lang = lang.split("'")[1]
+                # Temp store for translation file
+                jsonTranslation = {}
+                translation = translation[:-2]
+                translationJson = JSON.ObjectFromString(translation)
+                # Walk the translation for keys, looking for <PLUGIN>
+                for key in translationJson:
+                    if key.startswith('<plugin>'):
+                        jsonTranslation[key[8:-9].replace('\n        ', ' ')] = translationJson[key][8:-
+                                                                                                     9].replace('\n        ', ' ')
+                if len(jsonTranslation) > 0:
+                    fileName = Core.storage.join_path(
+                        STRINGSDIR, lang + '.json')
+                    Core.storage.ensure_dirs(os.path.dirname(fileName))
+                    with io.open(fileName, 'w', encoding="utf-8") as outfile:
+                        outfile.write(
+                            unicode(json.dumps(jsonTranslation, indent=4, ensure_ascii=False)))
+    except Exception, e:
+        Log.Exception(
+            'Exception in createPluginStringTranslations was: %s' % str(e))
+    return

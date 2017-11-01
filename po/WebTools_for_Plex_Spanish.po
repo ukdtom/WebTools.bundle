@@ -73,7 +73,7 @@ msgstr "Seleccione uno de los temas disponibles:"
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
-msgstr "Seleccione una de las siguientes bibliotecas para buscar películas que no estén ni en la base de datos Plex ni en su disco duro"
+msgstr "Seleccione una de las bibliotecas abajo para identificar discrepancias entre metadatos y archivos (metadatos en falta para archivos existentes, o apuntando para archivos inexistentes)"
 
 #: ../http/static/menu/menu.html:16
 msgid "Theme"
@@ -756,37 +756,66 @@ msgstr "Ocioso"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
 msgid "Choose language for the subtitle"
-msgstr ""
+msgstr "Seleccionar idioma de subtítulo"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
 msgid "Choose part"
-msgstr ""
+msgstr "Seleccionar parte"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
 msgid "Missing file"
-msgstr ""
+msgstr "Archivo en falta"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
 msgid "Missing part"
-msgstr ""
+msgstr "Parte en falta"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
 msgid "No language"
-msgstr ""
+msgstr "Idioma no existente"
 
 #: ../Contents/Resources/language_template.html:28
 msgid "Scanning database: %s : Done"
-msgstr ""
+msgstr "Escaneando base de datos: %s : Completo"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
 msgid "Subtitle Management Upload Subtitle"
-msgstr ""
+msgstr "Gestion de Subtítulos Cargar Subtítulo"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
 msgid "Upload"
-msgstr ""
+msgstr "Cargar"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
 msgid "Upload subtitle for"
+msgstr "Cargar subtítulo para"
+
+#: ../Contents/Resources/language_template.html:48
+msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
+msgstr "<plugin>URL (si hay proxy, si no deve estar en blanco).\n"
+"EX: /WebTools)</plugin>"
+
+#: ../Contents/Resources/language_template.html:33
+msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Nombre del archivo con el certificado (en carpeta Contents/Code/Certificate)</plugin>"
+
+#: ../Contents/Resources/language_template.html:45
+msgid "<plugin>Select to force https</plugin>"
+msgstr "<plugin>Seleccionar para forzar HTTPS</plugin>"
+
+#: ../Contents/Resources/language_template.html:51
+msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
+msgstr "<plugin>Para acceder este canal puede abrir uno de los URLs seguientes en una nueva pestaña o pantalla </plugin>"
+
+#: ../Contents/Resources/language_template.html:39
+msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:42
+msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:36
+msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
 msgstr ""
 

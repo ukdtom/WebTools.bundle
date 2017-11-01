@@ -24,6 +24,26 @@ import socket
 from consts import DEBUGMODE, VERSION, NAME, ICON, PREFIX, BASEURL
 from wtV3 import upgradeCleanup
 
+''' Translate function override to avoid unicode decoding bug, as well as make it work in the WebClient.
+    Code shamelessly stolen from:
+    https://bitbucket.org/czukowski/plex-locale-patch
+    and altered a bit to make it work for WebTools
+    '''
+
+
+def L(string):
+    try:
+        # Missing X-Plex-Language?
+        if 'X-Plex-Language' not in Request.Headers:
+            Request.Headers['X-Plex-Language'] = Request.Headers['Accept-Language']
+        # Grap string to return
+        local_string = Locale.LocalString(string)
+        # Decode it, since we need it to be XML compliant
+        return str(local_string).decode()
+    except Exception, e:
+        Log.Critical('Exception in L was %s' % str(e))
+        pass
+
 ####################################################################################################
 # Initialize
 ####################################################################################################
@@ -67,23 +87,21 @@ def Start():
 def MainMenu():
     Log.Debug("**********  Starting MainMenu  **********")
     oc = ObjectContainer()
-
     Log.Debug('Network Address: ' + str(Network.Address))
     Log.Debug('WebPort http: ' + str(Prefs['WEB_Port_http']))
     Log.Debug('WebPort https: ' + str(Prefs['WEB_Port_https']))
     Log.Debug('BaseURL: ' + str(BASEURL))
-    url = str(Network.Address) + ':' + \
+    url = 'http://' + str(Network.Address) + ':' + \
+        str(Prefs['WEB_Port_http']) + str(BASEURL)
+    urlhttps = 'https://' + str(Network.Address) + ':' + \
         str(Prefs['WEB_Port_https']) + str(BASEURL)
     oc.add(DirectoryObject(key=Callback(MainMenu),
-                           title="To access this channel, type the url's below to a new browser tab"))
+                           title=L("To access this channel, type the url's below to a new browser tab")))
     if Prefs['Force_SSL']:
-        oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' +
-                               url))
+        oc.add(DirectoryObject(key=Callback(MainMenu), title=urlhttps))
     else:
-        oc.add(DirectoryObject(key=Callback(MainMenu), title='http://' +
-                               url))
-        oc.add(DirectoryObject(key=Callback(MainMenu), title='https://' +
-                               url))
+        oc.add(DirectoryObject(key=Callback(MainMenu), title=url))
+        oc.add(DirectoryObject(key=Callback(MainMenu), title=urlhttps))
     oc.add(PrefsObject(title='Preferences', thumb=R('icon-prefs.png')))
     Log.Debug("**********  Ending MainMenu  **********")
     return oc

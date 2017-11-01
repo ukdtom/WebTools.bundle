@@ -790,3 +790,31 @@ msgstr ""
 msgid "Upload subtitle for"
 msgstr ""
 
+#: ../Contents/Resources/language_template.html:48
+msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:33
+msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:45
+msgid "<plugin>Select to force https</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:51
+msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:39
+msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:42
+msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:36
+msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
+msgstr ""
+
