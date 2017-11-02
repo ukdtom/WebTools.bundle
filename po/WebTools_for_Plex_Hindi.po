@@ -23,7 +23,7 @@ msgstr "दोनों सह-स्थित (मूवी फ़ोल्ड�
 msgid "Change Theme"
 msgstr "थीम बदलें"
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr "बदलाव की सूची"
 
@@ -39,7 +39,7 @@ msgstr "हार्ड ड्राइव से चयनित साइड�
 msgid "File empty"
 msgstr "खाली फ़ाइल"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "Help"
 msgstr "सहायता"
 
@@ -51,11 +51,11 @@ msgstr "एक फिल्म / टीवी शो के लिए सभी 
 msgid "LogViewer Tool"
 msgstr "लॉग व्यूअर"
 
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:20
 msgid "Logout"
 msgstr "लोग आउट"
 
-#: ../http/static/menu/menu.html:11
+#: ../http/static/menu/menu.html:12
 msgid "Options"
 msgstr "विकल्प"
 
@@ -75,7 +75,7 @@ msgstr "उपयोग करने के लिए उपलब्ध वि�
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "फिल्म / टीवी शो के लिए स्कैन करने के लिए नीचे दिए गए एक पुस्तकालयों का चयन करें जो Plex डेटाबेस में नहीं हैं या आपके हार्ड ड्राइव पर नहीं हैं."
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr "थीम"
 
@@ -83,7 +83,7 @@ msgstr "थीम"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "यह टूल 'FindUnmatched' और 'FindMissing' का संयोजन है."
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr "WebTools अपडेट करें"
 
@@ -91,11 +91,11 @@ msgstr "WebTools अपडेट करें"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "किस उपशीर्षक को हटाने के लिए उपशीर्षक सामग्री को देखें."
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Forum Thread"
 msgstr "WT फोरम थ्रेड"
 
-#: ../http/static/menu/menu.html:25
+#: ../http/static/menu/menu.html:26
 msgid "WT GitHub"
 msgstr "WT GitHub"
 
@@ -189,7 +189,7 @@ msgstr "मान्य एक्सटेंशन"
 msgid "Change Language"
 msgstr "भाषा बदलें"
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:15
 msgid "Language"
 msgstr "भाषा"
 
@@ -325,16 +325,16 @@ msgstr "माइग्रेट"
 msgid "Categories:"
 msgstr "श्रेणियाँ:"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Copy"
 msgstr "प्रतिलिपि"
 
-#: ../http/static/playlist/playlist.html:36
+#: ../http/static/playlist/playlist.html:41
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "हटाना"
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:46
 msgid "Download"
 msgstr "डाउनलोड"
 
@@ -410,7 +410,7 @@ msgstr "एक प्लेलिस्ट आयात करें"
 msgid "Select target user"
 msgstr "लक्ष्य उपयोगकर्ता चुनें"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Select target user to copy"
 msgstr "प्रतिलिपि बनाने के लिए लक्षित उपयोगकर्ता का चयन करें"
 
@@ -440,7 +440,7 @@ msgstr "सभी सेटिंग्स को हटा दिया जा�
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr "फ़ैक्टरी रीसेट"
 
@@ -452,7 +452,7 @@ msgstr "यदि आप नीचे क्लिक करते हैं, �
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "यह उसकी मूल स्थिति में WebTools रीसेट कर देगा जब आपने पहली बार WebTools स्थापित किया था."
 
-#: ../http/static/playlist/playlist.html:48
+#: ../http/static/playlist/playlist.html:52
 msgid "No playlists available"
 msgstr "कोई प्लेलिस्ट उपलब्ध नहीं है"
 
@@ -460,7 +460,7 @@ msgstr "कोई प्लेलिस्ट उपलब्ध नहीं �
 msgid "Updates available"
 msgstr "अपडेट उपलब्ध"
 
-#: ../http/static/menu/menu.html:26
+#: ../http/static/menu/menu.html:27
 msgid "WT Manual Online"
 msgstr "WT मैनुअल ऑनलाइन"
 
@@ -468,7 +468,7 @@ msgstr "WT मैनुअल ऑनलाइन"
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
 msgstr "WebTools का अनुवाद और परीक्षण करने में सहायता करने वाले सभी लोगों के लिए बहुत बड़ा धन्यवाद."
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "About us"
 msgstr "हमारे बारे में"
 
@@ -818,5 +818,21 @@ msgstr ""
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:29
+msgid "Import"
+msgstr ""
+
+#: ../http/static/info/info.html:6
+msgid "Key"
+msgstr ""
+
+#: ../http/static/info/info.html:2
+msgid "Techincal Info"
+msgstr ""
+
+#: ../http/static/info/info.html:7
+msgid "Value"
 msgstr ""
 

@@ -65,7 +65,7 @@ msgstr ""
 msgid "Abort scan"
 msgstr ""
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "About us"
 msgstr ""
 
@@ -114,7 +114,7 @@ msgstr ""
 msgid "Change Theme"
 msgstr ""
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr ""
 
@@ -151,7 +151,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Copy"
 msgstr ""
 
@@ -176,7 +176,7 @@ msgstr ""
 msgid "Custom Themes and Wiki"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:36
+#: ../http/static/playlist/playlist.html:41
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr ""
@@ -201,7 +201,7 @@ msgstr ""
 msgid "Deselect All"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:46
 msgid "Download"
 msgstr ""
 
@@ -240,7 +240,7 @@ msgstr ""
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr ""
 
@@ -273,7 +273,7 @@ msgstr ""
 msgid "Get missing from database"
 msgstr ""
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "Help"
 msgstr ""
 
@@ -316,6 +316,10 @@ msgstr ""
 msgid "Ignore folders"
 msgstr ""
 
+#: ../http/static/playlist/playlist.html:29
+msgid "Import"
+msgstr ""
+
 #: ../http/static/playlist/playlistHelp.html:7
 msgid "Import a playlist"
 msgstr ""
@@ -329,11 +333,15 @@ msgstr ""
 msgid "Jump to top"
 msgstr ""
 
+#: ../http/static/info/info.html:6
+msgid "Key"
+msgstr ""
+
 #: ../http/static/sub_management/Directive/subDetails.html:21
 msgid "Lang"
 msgstr ""
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:15
 msgid "Language"
 msgstr ""
 
@@ -357,7 +365,7 @@ msgstr ""
 msgid "LogViewer Tool"
 msgstr ""
 
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:20
 msgid "Logout"
 msgstr ""
 
@@ -434,7 +442,7 @@ msgstr ""
 msgid "No movies found in"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:48
+#: ../http/static/playlist/playlist.html:52
 msgid "No playlists available"
 msgstr ""
 
@@ -458,7 +466,7 @@ msgstr ""
 msgid "Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),"
 msgstr ""
 
-#: ../http/static/menu/menu.html:11
+#: ../http/static/menu/menu.html:12
 msgid "Options"
 msgstr ""
 
@@ -567,7 +575,7 @@ msgstr ""
 msgid "Select target user"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Select target user to copy"
 msgstr ""
 
@@ -613,6 +621,10 @@ msgstr ""
 msgid "Support:"
 msgstr ""
 
+#: ../http/static/info/info.html:2
+msgid "Techincal Info"
+msgstr ""
+
 #: ../http/static/aboutus/aboutus.html:30
 msgid "Thank you for your support!!"
 msgstr ""
@@ -631,7 +643,7 @@ msgid ""
 "        hard work."
 msgstr ""
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr ""
 
@@ -679,7 +691,7 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr ""
 
@@ -727,6 +739,10 @@ msgstr ""
 msgid "Valid extentions"
 msgstr ""
 
+#: ../http/static/info/info.html:7
+msgid "Value"
+msgstr ""
+
 #: ../http/static/sub_management/subController.js:22
 msgid "View Subtitle"
 msgstr ""
@@ -735,15 +751,15 @@ msgstr ""
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr ""
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Forum Thread"
 msgstr ""
 
-#: ../http/static/menu/menu.html:25
+#: ../http/static/menu/menu.html:26
 msgid "WT GitHub"
 msgstr ""
 
-#: ../http/static/menu/menu.html:26
+#: ../http/static/menu/menu.html:27
 msgid "WT Manual Online"
 msgstr ""
 

@@ -24,7 +24,7 @@ msgstr "Både lokalt (Undertext i samme bibliotek som filmen, eller i en underfo
 msgid "Change Theme"
 msgstr "Skift tema"
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr "Change Log"
 
@@ -40,7 +40,7 @@ msgstr "Slet valgte \"sidecar\" undertekst fra harddisken"
 msgid "File empty"
 msgstr "Filen er tom"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "Help"
 msgstr "Hjælp"
 
@@ -52,11 +52,11 @@ msgstr "Vis en liste over alle undertekster for et Film/TV bibliotek"
 msgid "LogViewer Tool"
 msgstr "LogViewer Tool"
 
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:20
 msgid "Logout"
 msgstr "Log af"
 
-#: ../http/static/menu/menu.html:11
+#: ../http/static/menu/menu.html:12
 msgid "Options"
 msgstr "Indstillinger"
 
@@ -77,7 +77,7 @@ msgstr "Vælg en af de mulige temaer"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Vælg et af dine biblioteker for at scanne dem for film/tv-shows som enten mangler i Plex databasen eller på harddisken"
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr "Tema"
 
@@ -85,7 +85,7 @@ msgstr "Tema"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "Dette værktøj er en kombination af \"FindUnmatched\" og \"FindMissing\""
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr "Opdater WebTools"
 
@@ -93,11 +93,11 @@ msgstr "Opdater WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Se en undertekst for at afgøre, om den skal slettes"
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Forum Thread"
 msgstr "WebTools Forum tråd"
 
-#: ../http/static/menu/menu.html:25
+#: ../http/static/menu/menu.html:26
 msgid "WT GitHub"
 msgstr "WebTools Github"
 
@@ -192,7 +192,7 @@ msgstr "Valide fil endelser"
 msgid "Change Language"
 msgstr "Skift sprog"
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:15
 msgid "Language"
 msgstr "Sprog"
 
@@ -333,16 +333,16 @@ msgstr "Migrer"
 msgid "Categories:"
 msgstr "Kategorier:"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Copy"
 msgstr "Kopier"
 
-#: ../http/static/playlist/playlist.html:36
+#: ../http/static/playlist/playlist.html:41
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "Slet"
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:46
 msgid "Download"
 msgstr "Download"
 
@@ -418,7 +418,7 @@ msgstr "Importer en playliste"
 msgid "Select target user"
 msgstr "Vælg bruger som skal modtage"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Select target user to copy"
 msgstr "Vælg bruger at kopiere til"
 
@@ -448,7 +448,7 @@ msgstr "Alle indstillinger vil forsvinde, efter du har nulstillet, og du skal ba
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr "Nulstil WebTools"
 
@@ -460,7 +460,7 @@ msgstr "Hvis du klikker på knappen, vil WebTools ikke svare i ca. 1 minut. Du s
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "Dette vil nulstille WebTools, til hvad det var da du først installerede det"
 
-#: ../http/static/playlist/playlist.html:48
+#: ../http/static/playlist/playlist.html:52
 msgid "No playlists available"
 msgstr "Ingen playliste tilgængelig"
 
@@ -468,7 +468,7 @@ msgstr "Ingen playliste tilgængelig"
 msgid "Updates available"
 msgstr "Opdateringer tilgængelige"
 
-#: ../http/static/menu/menu.html:26
+#: ../http/static/menu/menu.html:27
 msgid "WT Manual Online"
 msgstr "WT Manual Online"
 
@@ -476,7 +476,7 @@ msgstr "WT Manual Online"
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
 msgstr "En stor tak går til alle de folk, som har hjulpet med at oversætte og teste WebTools"
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "About us"
 msgstr "Om os"
 
@@ -826,4 +826,20 @@ msgstr "<plugin>Indtast den port som WebTools skal benytte for https. Brug IKKE 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
 msgstr "<plugin>Navn på certifikat crt fil i Contents/Code/Certificate directory</plugin>"
+
+#: ../http/static/playlist/playlist.html:29
+msgid "Import"
+msgstr "Importer"
+
+#: ../http/static/info/info.html:6
+msgid "Key"
+msgstr "Nøgle"
+
+#: ../http/static/info/info.html:2
+msgid "Techincal Info"
+msgstr "Teknisk information"
+
+#: ../http/static/info/info.html:7
+msgid "Value"
+msgstr "Værdi"
 

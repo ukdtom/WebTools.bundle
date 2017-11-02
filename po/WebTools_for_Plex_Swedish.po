@@ -23,7 +23,7 @@ msgstr "Både lokala (placerade bredvid filmen i sin katalog eller i en tillhör
 msgid "Change Theme"
 msgstr "Ändra Tema"
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr "Ändra logg"
 
@@ -39,7 +39,7 @@ msgstr "Ta bort vald lokal undertext från hårddisken."
 msgid "File empty"
 msgstr "Filen är tom"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "Help"
 msgstr "Hjälp"
 
@@ -51,11 +51,11 @@ msgstr "Skapa en lista på alla undertexter för en Film / ett TV-program i ditt
 msgid "LogViewer Tool"
 msgstr "LogViewer Verktyget"
 
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:20
 msgid "Logout"
 msgstr "Logga ut"
 
-#: ../http/static/menu/menu.html:11
+#: ../http/static/menu/menu.html:12
 msgid "Options"
 msgstr "Alternativ"
 
@@ -75,7 +75,7 @@ msgstr "Välj ett av följande teman för användning:"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Välj ett av biblioteken nedan för att leta efter Filmer / TV-program som inte existerar i antingen Plex-databasen eller på din hårddisk."
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr "Tema"
 
@@ -83,7 +83,7 @@ msgstr "Tema"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "Det här verktyget är en kombination av \"FindUnmatched\" och \"FindMissing\"."
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr "Uppdatera WebTools"
 
@@ -91,11 +91,11 @@ msgstr "Uppdatera WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Granska innehållet av undertexter för att bedöma vad som ska tas bort."
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Forum Thread"
 msgstr "WT Forumtråd"
 
-#: ../http/static/menu/menu.html:25
+#: ../http/static/menu/menu.html:26
 msgid "WT GitHub"
 msgstr "WT GitHub"
 
@@ -189,7 +189,7 @@ msgstr "Giltig Ändelse"
 msgid "Change Language"
 msgstr "Ändra Språk"
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:15
 msgid "Language"
 msgstr "Språk"
 
@@ -325,16 +325,16 @@ msgstr "Migrera"
 msgid "Categories:"
 msgstr "Kategorier:"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Copy"
 msgstr "Kopiera"
 
-#: ../http/static/playlist/playlist.html:36
+#: ../http/static/playlist/playlist.html:41
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "Ta bort"
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:46
 msgid "Download"
 msgstr "Ladda ned"
 
@@ -410,7 +410,7 @@ msgstr "Importera en spellista"
 msgid "Select target user"
 msgstr "Välj målanvändare"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Select target user to copy"
 msgstr "Välj målanvändare att kopiera till"
 
@@ -440,7 +440,7 @@ msgstr "Alla inställningar kommer att tas bort och efter återställningen kan 
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr "Fabriksåterställning"
 
@@ -452,7 +452,7 @@ msgstr "Om du klickar på nedan kommer WebTools att bli otillgängligt i ungefä
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "Det här kommer återställa WebTools till dess ursprungliga tillstånd när du först installerade WebTools."
 
-#: ../http/static/playlist/playlist.html:48
+#: ../http/static/playlist/playlist.html:52
 msgid "No playlists available"
 msgstr "Inga spellistor tillgängliga"
 
@@ -460,7 +460,7 @@ msgstr "Inga spellistor tillgängliga"
 msgid "Updates available"
 msgstr "Uppdateringar tillgängliga"
 
-#: ../http/static/menu/menu.html:26
+#: ../http/static/menu/menu.html:27
 msgid "WT Manual Online"
 msgstr "WT Online Help"
 
@@ -468,7 +468,7 @@ msgstr "WT Online Help"
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
 msgstr "Ett stort tack går ut till alla personer som hjälpte till med översättning och testning av WebTools."
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "About us"
 msgstr "Om oss"
 
@@ -816,5 +816,21 @@ msgstr ""
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:29
+msgid "Import"
+msgstr ""
+
+#: ../http/static/info/info.html:6
+msgid "Key"
+msgstr ""
+
+#: ../http/static/info/info.html:2
+msgid "Techincal Info"
+msgstr ""
+
+#: ../http/static/info/info.html:7
+msgid "Value"
 msgstr ""
 

@@ -23,7 +23,7 @@ msgstr "שניהם שיתוף ממוקם (ליד הסרט בתיקיה שלה א
 msgid "Change Theme"
 msgstr "לשנות נושא"
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr "שינוי יומן"
 
@@ -39,7 +39,7 @@ msgstr "מחק את הסירה שנבחרה מהכונן הקשיח. הערה: �
 msgid "File empty"
 msgstr "הקובץ ריק"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "Help"
 msgstr "עֶזרָה"
 
@@ -51,11 +51,11 @@ msgstr "רשום את כל הכתוביות עבור סרט / תכנית טלו�
 msgid "LogViewer Tool"
 msgstr "מציג יומן הרישום"
 
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:20
 msgid "Logout"
 msgstr "להתנתק"
 
-#: ../http/static/menu/menu.html:11
+#: ../http/static/menu/menu.html:12
 msgid "Options"
 msgstr "אפשרויות"
 
@@ -75,7 +75,7 @@ msgstr "בחר אחד מהנושאים הזמינים:"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "בחר אחת מהספריות שלהלן כדי לסרוק סרטים / תוכניות טלוויזיה שאינם נמצאים במסד הנתונים של Plex או שאינם נמצאים בכונן הקשיח."
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr "נושא"
 
@@ -83,7 +83,7 @@ msgstr "נושא"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "כלי זה הוא שילוב של 'מצא ללא תחרות' ו 'מצא חסר'"
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr "עדכון WebTools"
 
@@ -91,11 +91,11 @@ msgstr "עדכון WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "הצג את תוכן הכתוביות כדי לקבוע איזו כותרת משנה למחוק"
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Forum Thread"
 msgstr "פורום WebTools"
 
-#: ../http/static/menu/menu.html:25
+#: ../http/static/menu/menu.html:26
 msgid "WT GitHub"
 msgstr "WebTools GitHub"
 
@@ -189,7 +189,7 @@ msgstr "סיומת חוקית"
 msgid "Change Language"
 msgstr "שנה שפה"
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:15
 msgid "Language"
 msgstr "שפה"
 
@@ -325,16 +325,16 @@ msgstr "להגר"
 msgid "Categories:"
 msgstr "קטגוריות"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Copy"
 msgstr "עותק"
 
-#: ../http/static/playlist/playlist.html:36
+#: ../http/static/playlist/playlist.html:41
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "לִמְחוֹק"
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:46
 msgid "Download"
 msgstr "הורד"
 
@@ -410,7 +410,7 @@ msgstr "ייבא רשימת השמעה"
 msgid "Select target user"
 msgstr "בחר משתמש יעד"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Select target user to copy"
 msgstr "בחר משתמש יעד שברצונך להעתיק אליו"
 
@@ -440,7 +440,7 @@ msgstr "כל ההגדרות יוסרו. לאחר האיפוס, ייתכן שתצ
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr "איפוס המפעל"
 
@@ -452,7 +452,7 @@ msgstr "אם תלחץ למטה, אז WebTools יהיה להגיב במשך דק�
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "פעולה זו תאפס את WebTools למצב ברירת המחדל שלה."
 
-#: ../http/static/playlist/playlist.html:48
+#: ../http/static/playlist/playlist.html:52
 msgid "No playlists available"
 msgstr "אין פלייליסטים זמינים"
 
@@ -460,7 +460,7 @@ msgstr "אין פלייליסטים זמינים"
 msgid "Updates available"
 msgstr "עדכונים זמינים"
 
-#: ../http/static/menu/menu.html:26
+#: ../http/static/menu/menu.html:27
 msgid "WT Manual Online"
 msgstr "WT - עזרה באינטרנט"
 
@@ -468,7 +468,7 @@ msgstr "WT - עזרה באינטרנט"
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
 msgstr "תודה ענקית יוצאת לכל האנשים שעזרו בתרגום ובדיקה של WebTools."
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "About us"
 msgstr "אודות"
 
@@ -817,5 +817,21 @@ msgstr ""
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:29
+msgid "Import"
+msgstr ""
+
+#: ../http/static/info/info.html:6
+msgid "Key"
+msgstr ""
+
+#: ../http/static/info/info.html:2
+msgid "Techincal Info"
+msgstr ""
+
+#: ../http/static/info/info.html:7
+msgid "Value"
 msgstr ""
 

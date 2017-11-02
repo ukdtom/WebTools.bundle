@@ -23,7 +23,7 @@ msgstr "Sowohl 'externe' (neben der Videodatei im Ordner) als auch im Plex Daten
 msgid "Change Theme"
 msgstr "Farbschema wechseln"
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr "Versionsnotizen"
 
@@ -39,7 +39,7 @@ msgstr "Lösche externe Untertitel-Dateien. Achtung: dies kann nicht rückgängi
 msgid "File empty"
 msgstr "Leere Datei"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "Help"
 msgstr "Hilfe"
 
@@ -51,11 +51,11 @@ msgstr "Zeige alle Untertitel für ein Video in deiner Bibliothek."
 msgid "LogViewer Tool"
 msgstr "Logdatei Betrachter"
 
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:20
 msgid "Logout"
 msgstr "Abmelden"
 
-#: ../http/static/menu/menu.html:11
+#: ../http/static/menu/menu.html:12
 msgid "Options"
 msgstr "Optionen"
 
@@ -76,7 +76,7 @@ msgstr "Wähle eines der Farbschemen aus:"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Wähle unten eine deiner Bibliotheken, um darin nach 'nicht zugeordneten' oder fehlenden Dateien zu suchen."
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr "Farbschema"
 
@@ -84,7 +84,7 @@ msgstr "Farbschema"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "Dieses Modul vereint die altbekannten Plugins 'FindUnmatched' und 'FindMissing'."
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr "WebTools aktualisieren"
 
@@ -92,11 +92,11 @@ msgstr "WebTools aktualisieren"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Zeige Inhalt der Untertitel (um falsche oder überzählige zu löschen)"
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Forum Thread"
 msgstr "WT Forum"
 
-#: ../http/static/menu/menu.html:25
+#: ../http/static/menu/menu.html:26
 msgid "WT GitHub"
 msgstr "WT auf GitHub"
 
@@ -193,7 +193,7 @@ msgstr "gültige Dateinamenserweiterungen"
 msgid "Change Language"
 msgstr "Sprache wechseln"
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:15
 msgid "Language"
 msgstr "Sprache"
 
@@ -330,16 +330,16 @@ msgstr "Migrieren"
 msgid "Categories:"
 msgstr "Kategorie:"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Copy"
 msgstr "Kopieren"
 
-#: ../http/static/playlist/playlist.html:36
+#: ../http/static/playlist/playlist.html:41
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:46
 msgid "Download"
 msgstr "Download"
 
@@ -416,7 +416,7 @@ msgstr "Importiere Wiedergabeliste"
 msgid "Select target user"
 msgstr "Zielbenutzer auswählen"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Select target user to copy"
 msgstr "kopieren ins Benutzerkonto"
 
@@ -446,7 +446,7 @@ msgstr "Alle Einstellungen werdne gelöscht. Anschließend solltest du ins UAS M
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr "Reset"
 
@@ -458,7 +458,7 @@ msgstr "Nach dem Klicken wird WebTools für ca. 1 Minute nicht reagieren. Anschl
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "Damit wird WebTools in einen Zustand wie frisch nach der Installation zurückversetzt."
 
-#: ../http/static/playlist/playlist.html:48
+#: ../http/static/playlist/playlist.html:52
 msgid "No playlists available"
 msgstr "Keine Wiedergabelisten vorhanden"
 
@@ -466,7 +466,7 @@ msgstr "Keine Wiedergabelisten vorhanden"
 msgid "Updates available"
 msgstr "Updates verfügbar"
 
-#: ../http/static/menu/menu.html:26
+#: ../http/static/menu/menu.html:27
 msgid "WT Manual Online"
 msgstr "WT Online-Hilfe"
 
@@ -474,7 +474,7 @@ msgstr "WT Online-Hilfe"
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
 msgstr "Ein großes Dankeschön an alle, die beim Übersetzen und Testen von WebTools mitgeholfen haben!"
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "About us"
 msgstr "Über"
 
@@ -817,13 +817,29 @@ msgstr "<plugin>Um auf dieses Plugin zuzugreifen, öffne die folgende URL in ein
 
 #: ../Contents/Resources/language_template.html:39
 msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr ""
+msgstr "<plugin>Portnummer unter der dieses Plugin per http erreichbar sein soll. Bitte NICHT benutzen: [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
 
 #: ../Contents/Resources/language_template.html:42
 msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr ""
+msgstr "<plugin>Portnummer unter der dieses Plugin per https erreichbar sein soll. Bitte NICHT benutzen: [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Name der Zertifikatsdatei crt (für https) in Contents/Code/Certificate directory</plugin>"
+
+#: ../http/static/playlist/playlist.html:29
+msgid "Import"
+msgstr ""
+
+#: ../http/static/info/info.html:6
+msgid "Key"
+msgstr ""
+
+#: ../http/static/info/info.html:2
+msgid "Techincal Info"
+msgstr ""
+
+#: ../http/static/info/info.html:7
+msgid "Value"
 msgstr ""
 

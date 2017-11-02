@@ -23,7 +23,7 @@ msgstr "Aussi bien local (dans le répertoire du film ou le sous-répertoire 'su
 msgid "Change Theme"
 msgstr "Changer le thème"
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr "Changements"
 
@@ -40,7 +40,7 @@ msgstr "Supprimer le fichier “sidecar” du disque dur. \n"
 msgid "File empty"
 msgstr "Fichier vide"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "Help"
 msgstr "Aide"
 
@@ -52,11 +52,11 @@ msgstr "Lister tous les sous-titres pour un film ou une série de votre biblioth
 msgid "LogViewer Tool"
 msgstr "Visionneur de journaux"
 
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:20
 msgid "Logout"
 msgstr "Sortir"
 
-#: ../http/static/menu/menu.html:11
+#: ../http/static/menu/menu.html:12
 msgid "Options"
 msgstr "Options"
 
@@ -76,7 +76,7 @@ msgstr "Sélectionnez l'un des thèmes ci-dessous:"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Sélectionnez une des bibliothèques ci-dessous pour y rechercher les Films/Séries qui ne sont pas dans la base de données Plex ou ne sont pas sur votre disque dur."
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr "Thèmes"
 
@@ -85,7 +85,7 @@ msgstr "Thèmes"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "Cet outil est une combinaison de 'Trouvé Non associés' et 'Trouvé Manquant'."
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr "Mettre à jour WebTools"
 
@@ -93,11 +93,11 @@ msgstr "Mettre à jour WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Afficher le contenu des sous-titres pour déterminer lequel supprimer."
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Forum Thread"
 msgstr "Support"
 
-#: ../http/static/menu/menu.html:25
+#: ../http/static/menu/menu.html:26
 msgid "WT GitHub"
 msgstr "GitHub"
 
@@ -191,7 +191,7 @@ msgstr "Extensions valides"
 msgid "Change Language"
 msgstr "Changer la langue"
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:15
 msgid "Language"
 msgstr "Langue"
 
@@ -327,16 +327,16 @@ msgstr "Migrer"
 msgid "Categories:"
 msgstr "Catégories:"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Copy"
 msgstr "Copier"
 
-#: ../http/static/playlist/playlist.html:36
+#: ../http/static/playlist/playlist.html:41
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "Effacer"
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:46
 msgid "Download"
 msgstr "Télécharger"
 
@@ -413,7 +413,7 @@ msgstr "Importer une liste de lecture"
 msgid "Select target user"
 msgstr "Sélectionnez l'utilisateur cible"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Select target user to copy"
 msgstr "Sélectionnez l'utilisateur cible pour la copie"
 
@@ -443,7 +443,7 @@ msgstr "Tous les paramètres seront supprimés et après la réinitialisation, v
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr "Paramètres d'usine"
 
@@ -455,7 +455,7 @@ msgstr "Si vous cliquez sur le bouton ci-dessous, WebTools ne répondra pas pend
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "Cela réinitialisera WebTools à son état original comme lorsque vous avez installé WebTools pour la première fois."
 
-#: ../http/static/playlist/playlist.html:48
+#: ../http/static/playlist/playlist.html:52
 msgid "No playlists available"
 msgstr "Aucune liste de lecture disponible"
 
@@ -463,7 +463,7 @@ msgstr "Aucune liste de lecture disponible"
 msgid "Updates available"
 msgstr "Mises àa jour disponibles"
 
-#: ../http/static/menu/menu.html:26
+#: ../http/static/menu/menu.html:27
 msgid "WT Manual Online"
 msgstr "Aide en ligne"
 
@@ -471,7 +471,7 @@ msgstr "Aide en ligne"
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
 msgstr "Un grand merci à toutes les personnes qui ont aidé à traduire et à tester WebTools."
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "About us"
 msgstr "À propos de nous"
 
@@ -821,5 +821,21 @@ msgstr ""
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:29
+msgid "Import"
+msgstr ""
+
+#: ../http/static/info/info.html:6
+msgid "Key"
+msgstr ""
+
+#: ../http/static/info/info.html:2
+msgid "Techincal Info"
+msgstr ""
+
+#: ../http/static/info/info.html:7
+msgid "Value"
 msgstr ""
 

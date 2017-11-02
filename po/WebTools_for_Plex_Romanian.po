@@ -23,7 +23,7 @@ msgstr "Ambele se află în co-locație (lângă filmul din dosarul sau subfolde
 msgid "Change Theme"
 msgstr "Schimbare Tema"
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr "Schimbare istoric"
 
@@ -39,7 +39,7 @@ msgstr "Ștergeți atas selectate din harddrive. Notă: nu se poate obține din 
 msgid "File empty"
 msgstr "Fișierul este gol"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "Help"
 msgstr "Ajutor"
 
@@ -51,11 +51,11 @@ msgstr "Afișează toate subtitrările pentru un film / TV Show în biblioteca t
 msgid "LogViewer Tool"
 msgstr "Vizualizator de jurnal"
 
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:20
 msgid "Logout"
 msgstr "Deconectare"
 
-#: ../http/static/menu/menu.html:11
+#: ../http/static/menu/menu.html:12
 msgid "Options"
 msgstr "Opțiuni"
 
@@ -75,7 +75,7 @@ msgstr "Selectați una dintre temele disponibile pentru utilizare:"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "Selectați una din bibliotecile de mai jos pentru a scana filme / emisiuni TV care nu se află în baza de date Plex sau nu se află pe hard disk."
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr "Teme"
 
@@ -83,7 +83,7 @@ msgstr "Teme"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "Acest instrument este o combinație de \"FindUnmatched\" și \"FindMissing\"."
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr "Actualizare WebTools"
 
@@ -92,11 +92,11 @@ msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "Vizualizați conținutul subtitrării pentru a determina ce subtitrare să fie ștearsă.\n"
 ""
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Forum Thread"
 msgstr "Forum WT"
 
-#: ../http/static/menu/menu.html:25
+#: ../http/static/menu/menu.html:26
 msgid "WT GitHub"
 msgstr "GitHub WT"
 
@@ -190,7 +190,7 @@ msgstr "Extensii valide"
 msgid "Change Language"
 msgstr "Schimbați limba"
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:15
 msgid "Language"
 msgstr "Limbă"
 
@@ -326,16 +326,16 @@ msgstr "Migrare"
 msgid "Categories:"
 msgstr "Categori"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Copy"
 msgstr "Copiere"
 
-#: ../http/static/playlist/playlist.html:36
+#: ../http/static/playlist/playlist.html:41
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "Ștergere"
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:46
 msgid "Download"
 msgstr "Descărcare"
 
@@ -411,7 +411,7 @@ msgstr "Importați o listă de redare"
 msgid "Select target user"
 msgstr "Selectați utilizatorul țintă"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Select target user to copy"
 msgstr "Selectați utilizatorul vizat pentru a copia"
 
@@ -441,7 +441,7 @@ msgstr "Toate setările vor fi eliminate și după efectuarea resetării ar pute
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr "Resetare fabrică"
 
@@ -453,7 +453,7 @@ msgstr "Dacă dați clic mai jos, WebTools nu va răspunde pentru aproximativ 1 
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "Acest lucru va reseta WebTools în starea inițială când ați instalat pentru prima dată WebTools."
 
-#: ../http/static/playlist/playlist.html:48
+#: ../http/static/playlist/playlist.html:52
 msgid "No playlists available"
 msgstr "Nu sunt disponibile liste de redare"
 
@@ -461,7 +461,7 @@ msgstr "Nu sunt disponibile liste de redare"
 msgid "Updates available"
 msgstr "Actualizări disponibile"
 
-#: ../http/static/menu/menu.html:26
+#: ../http/static/menu/menu.html:27
 msgid "WT Manual Online"
 msgstr "Ajutor WT Online"
 
@@ -469,7 +469,7 @@ msgstr "Ajutor WT Online"
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
 msgstr "Multe mulțumiri îi aparțin tuturor celor care au ajutat la traducerea și testarea WebTools."
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "About us"
 msgstr "Despre noi"
 
@@ -817,5 +817,21 @@ msgstr ""
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:29
+msgid "Import"
+msgstr ""
+
+#: ../http/static/info/info.html:6
+msgid "Key"
+msgstr ""
+
+#: ../http/static/info/info.html:2
+msgid "Techincal Info"
+msgstr ""
+
+#: ../http/static/info/info.html:7
+msgid "Value"
 msgstr ""
 

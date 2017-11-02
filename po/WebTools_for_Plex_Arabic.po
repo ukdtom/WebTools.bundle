@@ -23,7 +23,7 @@ msgstr "سواءً ملفات الترجمة المرافقة ( ملفات ال�
 msgid "Change Theme"
 msgstr "تغيير المظهر"
 
-#: ../http/static/menu/menu.html:17
+#: ../http/static/menu/menu.html:18
 msgid "Changelog"
 msgstr "سجل التغييرات"
 
@@ -40,7 +40,7 @@ msgstr "حذف الترجمة المرافقة من القرص الصلب.\n"
 msgid "File empty"
 msgstr "الملف فارغ"
 
-#: ../http/static/menu/menu.html:22
+#: ../http/static/menu/menu.html:23
 msgid "Help"
 msgstr "المساعدة"
 
@@ -52,11 +52,11 @@ msgstr "قائمة لكل الترجمات للأفلام/المسلسلات ا�
 msgid "LogViewer Tool"
 msgstr "مستعرض السجلات"
 
-#: ../http/static/menu/menu.html:19
+#: ../http/static/menu/menu.html:20
 msgid "Logout"
 msgstr "تسجيل الخروج"
 
-#: ../http/static/menu/menu.html:11
+#: ../http/static/menu/menu.html:12
 msgid "Options"
 msgstr "الخيارات"
 
@@ -76,7 +76,7 @@ msgstr "أختر ما بين المظاهر الموجود:"
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr "أختر واحدة من المكتبات في الأسفل للمسح عن الأفلام/المسلسلات الغير موجودة في قاعدة بيانات بلكس أو غير موجودة في قرصك الصلب."
 
-#: ../http/static/menu/menu.html:16
+#: ../http/static/menu/menu.html:17
 msgid "Theme"
 msgstr "المظهر"
 
@@ -84,7 +84,7 @@ msgstr "المظهر"
 msgid "This tool is a combination of FindUnmatched and FindMissing."
 msgstr "هذه الأداة هي خليط ما بين ( إيجاد الغير متطابق ) و ( إيجاد المفقود )."
 
-#: ../http/static/menu/menu.html:13
+#: ../http/static/menu/menu.html:14
 msgid "Update WT"
 msgstr "تحديث WebTools"
 
@@ -92,12 +92,12 @@ msgstr "تحديث WebTools"
 msgid "View the subtitle and see it's contents to determine what to delete."
 msgstr "أظهر محتوى الترجمة ، لتحديد الترجمة المراد حذفها."
 
-#: ../http/static/menu/menu.html:24
+#: ../http/static/menu/menu.html:25
 msgid "WT Forum Thread"
 msgstr "منتدى WT"
 
 #. No translation for this one.
-#: ../http/static/menu/menu.html:25
+#: ../http/static/menu/menu.html:26
 msgid "WT GitHub"
 msgstr "WT GitHub"
 
@@ -192,7 +192,7 @@ msgstr "الامتدادات المسموحة"
 msgid "Change Language"
 msgstr "تغيير اللغة"
 
-#: ../http/static/menu/menu.html:14
+#: ../http/static/menu/menu.html:15
 msgid "Language"
 msgstr "اللغة"
 
@@ -330,16 +330,16 @@ msgstr "ترحيل/دمج"
 msgid "Categories:"
 msgstr "الفئات"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Copy"
 msgstr "نسخ"
 
-#: ../http/static/playlist/playlist.html:36
+#: ../http/static/playlist/playlist.html:41
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "حذف"
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:46
 msgid "Download"
 msgstr "تحميل"
 
@@ -415,7 +415,7 @@ msgstr "استيراد قائمة تشغيل"
 msgid "Select target user"
 msgstr "أختر المستخدم المستهدف"
 
-#: ../http/static/playlist/playlist.html:37
+#: ../http/static/playlist/playlist.html:42
 msgid "Select target user to copy"
 msgstr "أختر المستخدم المستهدف للنسخ إليه"
 
@@ -445,7 +445,7 @@ msgstr "جميع الإعدادات ستُزال ، وبعد أكتمال إعا
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
-#: ../http/static/menu/menu.html:18
+#: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
 msgstr "إعادة ضبط المصنع"
 
@@ -457,7 +457,7 @@ msgstr "إذا ضغطت الزر في الأسفل ، سوف يكون \" ويب 
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "هذا سوف يقوم بإعادة \"ويب تولز\" إلى حالته الأصلية كما كانت عندما قمت بتثبيت \"ويب تولز\" لأول مرة."
 
-#: ../http/static/playlist/playlist.html:48
+#: ../http/static/playlist/playlist.html:52
 msgid "No playlists available"
 msgstr "لا يوجد قوائم تشغيل"
 
@@ -465,7 +465,7 @@ msgstr "لا يوجد قوائم تشغيل"
 msgid "Updates available"
 msgstr "تحديثات متوفرة"
 
-#: ../http/static/menu/menu.html:26
+#: ../http/static/menu/menu.html:27
 msgid "WT Manual Online"
 msgstr "مساعدة مباشرة"
 
@@ -473,7 +473,7 @@ msgstr "مساعدة مباشرة"
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
 msgstr "كل الشكر للأشخاص الذين ساعدوا في ترجمة واختبار \"ويب تولز\""
 
-#: ../http/static/menu/menu.html:15
+#: ../http/static/menu/menu.html:16
 msgid "About us"
 msgstr "عنّنا"
 
@@ -823,5 +823,21 @@ msgstr ""
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:29
+msgid "Import"
+msgstr ""
+
+#: ../http/static/info/info.html:6
+msgid "Key"
+msgstr ""
+
+#: ../http/static/info/info.html:2
+msgid "Techincal Info"
+msgstr ""
+
+#: ../http/static/info/info.html:7
+msgid "Value"
 msgstr ""
 
