@@ -158,7 +158,7 @@ class playlistsV3(object):
                     'Seems like we are trying to import a file that is not a playlist!')
                 return            
             if extended:
-                print 'Ged extended'
+                
                 try:                
                     for line in lines[5:len(lines):3]:
                         media = json.loads(lines[lineNo][1:])
@@ -182,7 +182,7 @@ class playlistsV3(object):
                 finally:
                     return items
             else:
-                print 'Ged not extended'
+                
                 try:
                     # Guess the media type
                     sType = guessMediaType(lines[2].replace('\r', '').replace('\n', ''))                    
@@ -194,7 +194,7 @@ class playlistsV3(object):
                     mediaList = getFilesFromLib(libs, sType)
 
 
-                    print 'GED RETUNER1'
+                    
                     return
 
 
@@ -273,8 +273,7 @@ class playlistsV3(object):
             except Exception, e:
                 # Log.Exception('Exception happened in phraseOurs was %s' %(str(e)))
                 pass
-            finally:
-                print 'Ged own', items
+            finally:                
                 return items
 
         ''' *************** Main stuff here *********************** '''
@@ -314,19 +313,20 @@ class playlistsV3(object):
             if bOurs:
                 sType = lines[3].split(':')[1][1:]
                 items = phraseOurs(lines)
-            else:
+            else:                
+                # REMOVE THIS WHEN DOING 3.PARTY IMPORT 
                 # Abort, since not ours
                 Log.Error('Playlist is not ours')
                 req.clear()
                 req.set_status(415)
                 req.finish('Aborted, since not our playlist')
                 return
-                
+                '''
                 # TODO: Code below for 3.Party import
                 items = phrase3Party(lines)
                 sType = guessMediaType(items)
-            return
-
+            #return
+                '''
             # Now validate the entries
             finalItems = {}
             for item in items:
@@ -918,7 +918,7 @@ def searchForItemKey(title, sType):
         # TODO: Fix for other types
         # Are we talking about a video here?
 
-        print 'GED STYPE *****************', sType
+        
 
         url = misc.GetLoopBack() + '/search?type=10&query=' + \
             String.Quote(title) + '&' + EXCLUDE
