@@ -169,7 +169,7 @@ class techinfo(object):
                 pass
             try:
                 Log.Info('PLEXTOKEN: **** SCRAMBLED ****')
-                StringKey = '********* PLEXTOKEN *********'
+                StringKey = 'PLEXTOKEN *********'
                 StringValue = wtV3().GETTRANSLATE(None, None, Internal=True, String='DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!')
                 techInfo[StringKey] = StringValue
                 techInfo['PLEXTOKEN'] = os.environ['PLEXTOKEN']

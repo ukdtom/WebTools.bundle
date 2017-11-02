@@ -1,6 +1,6 @@
 {
-    "Select to force https": "Seleccioner pour forcer HTTPS", 
-    "Name of Certificate key file in Contents/Code/Certificate directory": "Nombre du fichier contenant le certificat (dans dossier Contents/Code/Certificate)", 
     "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": "URL (pour le cas des \"proxy\", si non doit être blanc).\nEX: /WebTools)", 
+    "Name of Certificate key file in Contents/Code/Certificate directory": "Nombre du fichier contenant le certificat (dans dossier Contents/Code/Certificate)", 
+    "Select to force https": "Seleccioner pour forcer HTTPS", 
     "To access this channel, type the url's below to a new browser tab": "Pour accèder a ce canal vous pouvez ouvrir un des URLs indiqués dans une nouvelle fenêtre "
 }
