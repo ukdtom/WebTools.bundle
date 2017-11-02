@@ -157,7 +157,7 @@ class wtV3(object):
             req.finish(
                 'Fatal error happened in wt.getLanguageList: %s' % (str(e)))
 
-    ''' Download and update a translation from live translation site '''
+    ''' Get a translation string '''
     @classmethod
     def GETTRANSLATE(self, req, *args, **kwargs):
         try:

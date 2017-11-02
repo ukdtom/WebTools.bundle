@@ -15,6 +15,7 @@ import sys
 import locale
 import os
 import json
+from wtV3 import wtV3
 
 
 GET = ['GETINFO']
@@ -168,7 +169,9 @@ class techinfo(object):
                 pass
             try:
                 Log.Info('PLEXTOKEN: **** SCRAMBLED ****')
-                techInfo['PLEXTOKEN Warning *********'] = 'DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!'
+                StringKey = '********* PLEXTOKEN *********'
+                StringValue = wtV3().GETTRANSLATE(None, None, Internal=True, String='DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!')
+                techInfo[StringKey] = StringValue
                 techInfo['PLEXTOKEN'] = os.environ['PLEXTOKEN']
             except:
                 pass
