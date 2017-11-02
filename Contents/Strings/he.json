@@ -1,8 +1,6 @@
 {
-    "Select to force https": ">בחר כדי לאלץ (HTTPS", 
-    "To access this channel, type the url's below to a new browser tab": ">כדי לגשת לערוץ זה, פתח את אחת מכתובות האתרים שבהמשך בכרטיסייה או בחלון דפדפן חדש", 
-    "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": ">כתובת אתר בסיסית (אם מאחורי פרוקסי - אם לא, השאר ריק).\n(EX: /WebTools", 
+    "Select to force https": ">בחר כדי לכפות HTTPS, ", 
     "Name of Certificate key file in Contents/Code/Certificate directory": ">שם קובץ אישור התעודה בתוכן - Contents/Code/Certificate ספריית", 
-    "Enter the port that this plugin should use for http. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": ">הזן את היציאה שתוסף זה צריך להשתמש בה HTTP. אל תשתמש בכל אחת מהפעולות הבאות: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 ו -32469", 
-    "Enter the port that this plugin should use for https. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": ">הזן את היציאה שתוסף זה צריך להשתמש בה HTTPS. אל תשתמש בכל אחת מהפעולות הבאות: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 ו -32469"
+    "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": ">כתובת אתר בסיסית (אם מאחורי פרוקסי - אם לא, השאר ריק).\n(EX: /WebTools", 
+    "To access this channel, type the url's below to a new browser tab": ">כדי לגשת לערוץ זה, פתח את אחת מכתובות האתרים שבהמשך בכרטיסייה או בחלון דפדפן חדש"
 }

@@ -1,8 +1,6 @@
 {
     "Select to force https": "Seleccionar para forzar HTTPS", 
-    "To access this channel, type the url's below to a new browser tab": "Para acceder este canal puede abrir uno de los URLs seguientes en una nueva pestaña o pantalla ", 
-    "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": "URL (si hay proxy, si no deve estar en blanco).\nEX: /WebTools)", 
     "Name of Certificate key file in Contents/Code/Certificate directory": "Nombre del archivo con el certificado (en carpeta Contents/Code/Certificate)", 
-    "Enter the port that this plugin should use for http. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Indicar puerto HTTP para esto plugin. No son permitidas puertos: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, y 32469", 
-    "Enter the port that this plugin should use for https. do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Indicar puerto HTTPS para esto plugin. No son permitidas puertos: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, y 32469"
+    "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": "URL (si hay proxy, si no deve estar en blanco).\nEX: /WebTools)", 
+    "To access this channel, type the url's below to a new browser tab": "Para acceder este canal puede abrir uno de los URLs seguientes en una nueva pestaña o pantalla "
 }

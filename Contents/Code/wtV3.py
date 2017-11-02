@@ -583,7 +583,8 @@ def createPluginStringTranslations():
                 # Walk the translation for keys, looking for <PLUGIN>
                 for key in translationJson:
                     if key.startswith('<plugin>'):
-                        jsonTranslation[key[8:-9].replace('\n        ', ' ')] = translationJson[key][8:-
+                        if translationJson[key][8:-9].replace('\n        ', ' ') != "":                            
+                            jsonTranslation[key[8:-9].replace('\n        ', ' ')] = translationJson[key][8:-
                                                                                                      9].replace('\n        ', ' ')
                 if len(jsonTranslation) > 0:
                     fileName = Core.storage.join_path(
