@@ -827,17 +827,21 @@ msgstr "<plugin>Naam van certificaat bestand in Contents/Code/Certificate map</p
 
 #: ../http/static/playlist/playlist.html:29
 msgid "Import"
-msgstr ""
+msgstr "Importeer"
 
 #: ../http/static/info/info.html:6
 msgid "Key"
-msgstr ""
+msgstr "Sleutel"
 
 #: ../http/static/info/info.html:2
 msgid "Techincal Info"
-msgstr ""
+msgstr "Technische info"
 
 #: ../http/static/info/info.html:7
 msgid "Value"
+msgstr "Waarde"
+
+#: ../Contents/Resources/language_template.html:56
+msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr ""
 

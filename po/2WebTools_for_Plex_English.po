@@ -812,11 +812,11 @@ msgstr "<plugin>To access this channel, open one of the URLs below in a new brow
 
 #: ../Contents/Resources/language_template.html:39
 msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr "<plugin>Enter the port that this plugin should use for HTTP. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:42
 msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr "<plugin>Enter the port that this plugin should use for HTTPS. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
@@ -824,17 +824,22 @@ msgstr "<plugin>Name of certificate crt file in Contents/Code/Certificate direct
 
 #: ../http/static/playlist/playlist.html:29
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #: ../http/static/info/info.html:6
 msgid "Key"
-msgstr ""
+msgstr "Key"
 
+#. You misspelled "Technical" .   You typed "Techincal"  :P
 #: ../http/static/info/info.html:2
 msgid "Techincal Info"
-msgstr ""
+msgstr "Technical Info"
 
 #: ../http/static/info/info.html:7
 msgid "Value"
+msgstr "Value"
+
+#: ../Contents/Resources/language_template.html:56
+msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr ""
 

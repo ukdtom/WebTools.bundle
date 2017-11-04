@@ -32,10 +32,6 @@ msgstr ""
 msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
 msgstr ""
 
-#: ../Contents/Resources/language_template.html:56
-msgid "<plugin>DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!</plugin>"
-msgstr ""
-
 #: ../Contents/Resources/language_template.html:39
 msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
 msgstr ""
@@ -178,6 +174,10 @@ msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:9
 msgid "Custom Themes and Wiki"
+msgstr ""
+
+#: ../Contents/Resources/language_template.html:56
+msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr ""
 
 #: ../http/static/playlist/playlist.html:41

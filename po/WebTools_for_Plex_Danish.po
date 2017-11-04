@@ -844,6 +844,6 @@ msgid "Value"
 msgstr "Værdi"
 
 #: ../Contents/Resources/language_template.html:56
-msgid "<plugin>DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!</plugin>"
-msgstr "<plugin>DU MÅ IKKE POSTE DETTE TIL ET OFFENTLIGT WEBSITE!!!</plugin>"
+msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
+msgstr "DEL IKKE DETTE PÅ ET OFFENTLIGT WEBSITE!!!"
 

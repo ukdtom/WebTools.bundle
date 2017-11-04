@@ -835,3 +835,7 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
+#: ../Contents/Resources/language_template.html:56
+msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
+msgstr ""
+

@@ -829,17 +829,22 @@ msgstr "<plugin>Name der Zertifikatsdatei crt (für https) in Contents/Code/Cert
 
 #: ../http/static/playlist/playlist.html:29
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
+#. What is the context here? What kind of Key?
 #: ../http/static/info/info.html:6
 msgid "Key"
-msgstr ""
+msgstr "Schlüssel"
 
 #: ../http/static/info/info.html:2
 msgid "Techincal Info"
-msgstr ""
+msgstr "Technische Details"
 
 #: ../http/static/info/info.html:7
 msgid "Value"
+msgstr "Wert"
+
+#: ../Contents/Resources/language_template.html:56
+msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr ""
 
