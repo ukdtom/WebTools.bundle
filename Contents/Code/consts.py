@@ -26,10 +26,12 @@ BASEURL = ''																				# Base url if behind a proxy
 JSONTIMESTAMP = 0																			# timestamp for json export
 WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'               # URL to latest WebTools
 BUNDLEDIRNAME = ''																			# Name of the bundle dir
+EXCLUDEELEMENTS = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role' # Elements to be excluded, when sending req. to PMS
+EXCLUDEFIELDS = 'excludeFields=summary,tagline,file'
 
 # Modules used in WebTools
 V3MODULES = {'WT': 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3', 'LANGUAGE': 'languageV3',
-             'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3', 'TECHINFO': 'techinfo'}
+             'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3', 'TECHINFO': 'techinfo', 'VIEWSTATE': 'viewstate'}
 UILANGUAGE = 'en'
 UILANGUAGEDEBUG = False
 

@@ -23,7 +23,7 @@ import findMediaV3
 import jsonExporterV3
 import playlistsV3
 import techinfo
-
+import viewstate
 
 class BaseHandler(RequestHandler):
     def get_current_user(self):
@@ -100,13 +100,16 @@ class apiv3(BaseHandler):
                                             try:
                                                 myClass = getattr(
                                                     techinfo, V3MODULES[self.module])
-
-                                            except Exception, e:
-                                                Log.Exception(
-                                                    'Exception getting the class in apiV3: %s' % str(e))
-                                                self.clear()
-                                                self.set_status(501)
-                                                self.finish('Bad module?')
+                                            except:
+                                                try:
+                                                    myClass = getattr(
+                                                        viewstate, V3MODULES[self.module])                                                    
+                                                except Exception, e:
+                                                    Log.Exception(
+                                                        'Exception getting the class in apiV3: %s' % str(e))
+                                                    self.clear()
+                                                    self.set_status(501)
+                                                    self.finish('Bad module?')
         try:
             # Make the call
             getattr(myClass, 'getFunction')(self.request.method.lower(), self)

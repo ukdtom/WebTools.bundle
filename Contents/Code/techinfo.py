@@ -16,6 +16,7 @@ import locale
 import os
 import json
 from wtV3 import wtV3
+from misc import misc
 
 
 GET = ['GETINFO']
@@ -36,7 +37,7 @@ class techinfo(object):
         try:
             techInfo = {}
             try:
-                id = XML.ElementFromURL('http://127.0.0.1:32400/identity')
+                id = XML.ElementFromURL(misc.GetLoopBack() + '/identity')
             except:
                 pass
             Log.Info(
@@ -170,7 +171,8 @@ class techinfo(object):
             try:
                 Log.Info('PLEXTOKEN: **** SCRAMBLED ****')
                 StringKey = 'PLEXTOKEN *********'
-                StringValue = wtV3().GETTRANSLATE(None, None, Internal=True, String='DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!')
+                StringValue = wtV3().GETTRANSLATE(None, None, Internal=True,
+                                                  String='DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!')
                 techInfo[StringKey] = StringValue
                 techInfo['PLEXTOKEN'] = os.environ['PLEXTOKEN']
             except:
