@@ -74,7 +74,7 @@
 .uas .type:hover{
     background:rgba(200, 200, 200, 1.00);
 }
-.uas .type.active{
+/*.uas .type.active{
     color:white;
     border-radius:3px;
     background: #2370ca;
@@ -89,7 +89,7 @@
     -webkit-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
     -moz-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
     box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
-}
+}*/
 .uas .type.update{
     color: #FF9800;
     border-radius: 3px;

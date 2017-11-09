@@ -1,4 +1,5 @@
-﻿/* Main Page Background Color */
+﻿/* Custom Style Sheet by trumpy81 */
+/* Main Page Background Color */
 body{
     background-color: rgba(63,82,91,1);
     color: rgba(230,230,230,1);
@@ -161,11 +162,11 @@ help:hover {
 /* Logs ---------------------------------------------------------------------------------------- */
 
 /* Logs Download Buttons */
-.logs .download{
+.logs .logButton{
     background: rgba(54,68,77,1);
     color: rgba(255,255,255,0.5);
 }
-.logs .download:hover{
+.logs .logButton:hover {
     background: rgba(63,82,91,1);
     color: rgba(255,255,255,0.9);
 }
@@ -365,6 +366,22 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fc9700', end
     background: rgba(217,0,0,0.75);
     color: rgba(224,224,224,0.7);
     border: 1px solid rgba(224,224,224,0.7);
+}
+/* PlayLists Browse Container */
+.playlists .userContainer .fileContainer{
+    background: rgba(63,82,91,1);
+}
+.playlists .userContainer .fileContainer .label{
+    color: rgba(255,255,255,0.5);
+}
+
+/* TechInfo ------------------------------------------------------------------------------------ */
+
+.info tr:nth-child(2n+1){
+    background-color: rgba(63,82,91,0.7);
+}
+.info tr:nth-child(2n+2){
+    background-color: rgba(20,26,30,0.1);
 }
 
 /* Language ------------------------------------------------------------------------------------ */

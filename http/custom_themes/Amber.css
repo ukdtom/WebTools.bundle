@@ -147,11 +147,11 @@ help:hover {
 }
 
 /* Logs */
-.logs .download{
+.logs .logButton{
     box-shadow: 2px 2px 4px 1px black;
     background-color: rgba(255, 152, 0, 0.3);
 }
-.logs .download:hover{
+.logs .logButton:hover{
     background-color: rgba(255, 152, 0, 0.5);
 }
 .logs .search{

@@ -1,4 +1,5 @@
-﻿/* Main Page Background Color */
+﻿/* Custom Style Sheet by trumpy81 */
+/* Main Page Background Color */
 body{
     background-color: rgba(230,247,255,1);
     color: rgba(0,0,153,0.7);
@@ -158,11 +159,11 @@ help:hover {
 /* Logs ---------------------------------------------------------------------------------------- */
 
 /* Logs Download Buttons */
-.logs .download{
+.logs .logButton{
     background-color: rgba(0,51,204,0.85);
     color: rgba(0,170,255,1);
 }
-.logs .download:hover{
+.logs .logButton:hover {
     background-color: rgba(0,170,255,1);
     color: rgba(0,51,204,0.75);
 }
@@ -178,8 +179,13 @@ help:hover {
 /* Logs Search Bar Buttons */
 .logs .search .btnSearch{
     background-color: rgba(0,51,204,0.85);
-    color: rgba(246,170,81,1);
+    color: rgba(0,170,255,1);
 }
+.logs .search .btnSearch:hover {
+    background-color: rgba(0,170,255,1);
+    color: rgba(0,51,204,0.75);
+}
+
 /* Logs Alternate Line Colors */
 .logs .logDetails table tr:nth-child(odd) {
 }
@@ -357,6 +363,22 @@ help:hover {
     background: rgba(217,0,0,0.75);
     color: rgba(224,224,224,0.7);
     border: 1px solid rgba(224,224,224,0.7);
+}
+/* PlayLists Browse Container */
+.playlists .userContainer .fileContainer{
+    background: rgba(230,247,255,1);
+}
+.playlists .userContainer .fileContainer .label{
+    color: rgba(0,51,204,0.85);
+}
+
+/* TechInfo ------------------------------------------------------------------------------------ */
+
+.info tr:nth-child(2n+1){
+    background-color: rgba(230,247,255,0.7);
+}
+.info tr:nth-child(2n+2){
+    background-color: rgba(19,175,255,0.1);
 }
 
 /* Language ------------------------------------------------------------------------------------ */
