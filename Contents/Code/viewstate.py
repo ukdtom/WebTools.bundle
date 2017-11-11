@@ -14,13 +14,17 @@
 import json
 from misc import misc
 from consts import EXCLUDEELEMENTS, EXCLUDEFIELDS
+from plextvhelper import plexTV
+import time
+# TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
+import urllib2
 
 GET = ['GETVIEWSTATE']
 PUT = []
 POST = []
 DELETE = []
 
-STEPS = 2
+MEDIASTEPS = 25              # Amount of medias to extract for each call....Paging
 
 
 class viewstate(object):
@@ -90,12 +94,15 @@ class viewstate(object):
 
             # So now user is either none or a keyId
             if user == None:
-                print 'Ged 2 User is the owner'
                 result['user'] = None
+                result['username'] = 'Owner'
             else:
                 # Darn....Hard work ahead..We have to logon as another user here :-(
-                print 'Ged3 user is specific'
                 result['user'] = user
+                # Get user list, among with their access tokens
+                users = plexTV().getUserList()
+                result['username'] = users[user]['username']
+            count = 0
             # Add some export core info here
             result['section'] = section
             sectionTypeUrl = misc.GetLoopBack() + '/library/sections/' + str(section) + \
@@ -106,7 +113,9 @@ class viewstate(object):
                 sectionTypeUrl).get('librarySectionTitle')
             result['serverId'] = XML.ElementFromURL(
                 misc.GetLoopBack() + '/identity').get('machineIdentifier')
-            print 'Ged44', result['sectionType']
+
+            # print 'Ged44', result['sectionType']
+
             if result['sectionType'] == 'show':
                 url = misc.GetLoopBack() + '/library/sections/' + str(section) + '/all?unwatched!=1&' + \
                     EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&type=4&X-Plex-Container-Start='
@@ -118,19 +127,40 @@ class viewstate(object):
             medias = {}
             while True:
                 fetchUrl = url + str(start) + \
-                    '&X-Plex-Container-Size=' + str(STEPS)
-                unwatchedXML = XML.ElementFromURL(fetchUrl)
+                    '&X-Plex-Container-Size=' + str(MEDIASTEPS)
+                if result['user'] == None:
+                    unwatchedXML = XML.ElementFromURL(fetchUrl)
+                else:
+                    # TODO Change to native framework call, when Plex allows token in header
+                    opener = urllib2.build_opener(urllib2.HTTPHandler)
+                    request = urllib2.Request(fetchUrl)
+                    request.add_header(
+                        'X-Plex-Token', users[user]['accessToken'])
+                    response = opener.open(request).read()
+                    unwatchedXML = XML.ElementFromString(response)
                 for media in unwatchedXML.xpath('Video'):
                     title = media.get('title')
                     ratingKey = media.get('ratingKey')
                     medias[media.get('title')] = int(media.get('ratingKey'))
-                start += STEPS
+                    count += 1
+                start += MEDIASTEPS
                 if int(unwatchedXML.get('size')) == 0:
                     break
             result['watched'] = medias
-            req.set_status(200)
-            req.set_header('Content-Type', 'application/json; charset=utf-8')
-            req.finish(json.dumps(result))
+            result['count'] = count
+            # Filename of file to download
+            fileName = result['sectionTitle'] + '_' + \
+                result['username'] + \
+                '_' + time.strftime("%Y%m%d-%H%M%S") + '.json'
+            req.set_header('Content-Disposition',
+                           'attachment; filename="' + fileName + '"')
+            req.set_header(
+                'Content-Type', 'application/text/plain')
+            req.set_header('Cache-Control', 'no-cache')
+            req.set_header('Pragma', 'no-cache')
+            req.write(json.dumps(result, indent=4, sort_keys=True))
+            req.finish()
+            return req
         except Exception, e:
             Log.Exception('Exception in getViewState was %s' % str(e))
             req.set_status(500)
