@@ -13,7 +13,7 @@
 
 import json
 from misc import misc
-from consts import EXCLUDEELEMENTS, EXCLUDEFIELDS
+from consts import EXCLUDEELEMENTS, EXCLUDEFIELDS, MEDIATYPE
 from plextvhelper import plexTV
 import time
 # TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
@@ -116,12 +116,15 @@ class viewstate(object):
 
             # print 'Ged44', result['sectionType']
 
+            # Get the type of items to get, based on section type
             if result['sectionType'] == 'show':
-                url = misc.GetLoopBack() + '/library/sections/' + str(section) + '/all?unwatched!=1&' + \
-                    EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&type=4&X-Plex-Container-Start='
+                Type = MEDIATYPE['METADATA_EPISODE']
             elif result['sectionType'] == 'movie':
-                url = misc.GetLoopBack() + '/library/sections/' + str(section) + '/all?unwatched!=1&' + \
-                    EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&type=1&X-Plex-Container-Start='
+                Type = MEDIATYPE['METADATA_MOVIE']
+            # Url to grap
+            url = misc.GetLoopBack() + '/library/sections/' + str(section) + '/all?unwatched!=1&' + \
+                EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&type=' + \
+                str(Type) + '&X-Plex-Container-Start='
             # Now let's walk the actual section, in small steps, and add to the result
             start = 0
             medias = {}

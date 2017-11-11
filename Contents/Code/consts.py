@@ -45,6 +45,25 @@ VALIDEXT = {'video': ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', '
               'audio': ['mp3', 'm4a', 'm4b', 'flac', 'aac', 'rm', 'rma', 'mpa', 'wav', 'wma', 'ogg', 'mp2', 'mka',
               'ac3', 'dts', 'ape', 'mpc', 'mp+', 'mpp', 'shn', 'oga', 'aiff', 'aif', 'wv', 'dsf', 'dsd', 'opus']}
 
+MEDIATYPE = {
+    'METADATA_MOVIE' : 1,
+    'METADATA_SHOW' : 2,
+    'METADATA_SEASON' : 3,
+    'METADATA_EPISODE' : 4,
+    'METADATA_TRAILER' : 5,
+    'METADATA_COMIC' : 6,
+    'METADATA_PERSON' : 7,
+    'METADATA_ARTIST' : 8,
+    'METADATA_ALBUM' : 9,
+    'METADATA_TRACK' : 10,
+    'METADATA_CLIP' : 12,
+    'METADATA_PHOTO' : 13,
+    'METADATA_PHOTO_ALBUM' : 14,
+    'METADATA_PLAYLIST' : 15,
+    'METADATA_PLAYLIST_FOLDER' : 16,
+    'METADATA_PODCAST' : 17
+}
+
 ISO639_3 = {
         "Unknown": "unk",
         "Afar": "aar",
