@@ -106,31 +106,28 @@ class viewstate(object):
                 sectionTypeUrl).get('librarySectionTitle')
             result['serverId'] = XML.ElementFromURL(
                 misc.GetLoopBack() + '/identity').get('machineIdentifier')
+            print 'Ged44', result['sectionType']
+            if result['sectionType'] == 'show':
+                url = misc.GetLoopBack() + '/library/sections/' + str(section) + '/all?unwatched!=1&' + \
+                    EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&type=4&X-Plex-Container-Start='
+            elif result['sectionType'] == 'movie':
+                url = misc.GetLoopBack() + '/library/sections/' + str(section) + '/all?unwatched!=1&' + \
+                    EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&type=1&X-Plex-Container-Start='
             # Now let's walk the actual section, in small steps, and add to the result
-            url = misc.GetLoopBack() + '/library/sections/' + str(section) + \
-                '/all?unwatched!=1&' + EXCLUDEELEMENTS + '&' + \
-                EXCLUDEFIELDS + '&X-Plex-Container-Start='
             start = 0
             medias = {}
             while True:
                 fetchUrl = url + str(start) + \
                     '&X-Plex-Container-Size=' + str(STEPS)
-
                 unwatchedXML = XML.ElementFromURL(fetchUrl)
                 for media in unwatchedXML.xpath('Video'):
-
-                    print 'Ged madia', media.get('title')
                     title = media.get('title')
                     ratingKey = media.get('ratingKey')
                     medias[media.get('title')] = int(media.get('ratingKey'))
-
                 start += STEPS
                 if int(unwatchedXML.get('size')) == 0:
                     break
-
-            print 'Ged search url', url
-            result['unwatched'] = medias
-
+            result['watched'] = medias
             req.set_status(200)
             req.set_header('Content-Type', 'application/json; charset=utf-8')
             req.finish(json.dumps(result))
