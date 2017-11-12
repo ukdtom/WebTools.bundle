@@ -114,13 +114,15 @@ class viewstate(object):
             result['serverId'] = XML.ElementFromURL(
                 misc.GetLoopBack() + '/identity').get('machineIdentifier')
 
-            # print 'Ged44', result['sectionType']
+            print 'Ged44', result['sectionType']
 
             # Get the type of items to get, based on section type
             if result['sectionType'] == 'show':
                 Type = MEDIATYPE['METADATA_EPISODE']
             elif result['sectionType'] == 'movie':
                 Type = MEDIATYPE['METADATA_MOVIE']
+            elif result['sectionType'] == 'artist':
+                Type = MEDIATYPE['METADATA_TRACK']
             # Url to grap
             url = misc.GetLoopBack() + '/library/sections/' + str(section) + '/all?unwatched!=1&' + \
                 EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&type=' + \
@@ -141,11 +143,20 @@ class viewstate(object):
                         'X-Plex-Token', users[user]['accessToken'])
                     response = opener.open(request).read()
                     unwatchedXML = XML.ElementFromString(response)
-                for media in unwatchedXML.xpath('Video'):
-                    title = media.get('title')
-                    ratingKey = media.get('ratingKey')
-                    medias[media.get('title')] = int(media.get('ratingKey'))
-                    count += 1
+                if result['sectionType'] in ['show', 'movie']:
+                    for media in unwatchedXML.xpath('Video'):
+                        title = media.get('title')
+                        ratingKey = media.get('ratingKey')
+                        medias[media.get('title')] = int(
+                            media.get('ratingKey'))
+                        count += 1
+                elif result['sectionType'] == 'artist':
+                    for media in unwatchedXML.xpath('Track'):
+                        title = media.get('title')
+                        ratingKey = media.get('ratingKey')
+                        medias[media.get('title')] = int(
+                            media.get('ratingKey'))
+                        count += 1
                 start += MEDIASTEPS
                 if int(unwatchedXML.get('size')) == 0:
                     break
