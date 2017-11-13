@@ -77,6 +77,11 @@
             var mffs = section.result.MissingFromFS[x];
             text += mffs + " \r\n";
         }
+        text += "\r\nUNMATCHED: \r\n";
+        for (var x = 0; x < section.result.Unmatched.length; x++) {
+            var mfum = section.result.Unmatched[x];
+            text += mfum + " \r\n";
+        }
 
         var element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
