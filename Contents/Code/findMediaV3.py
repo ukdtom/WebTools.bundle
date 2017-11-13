@@ -361,21 +361,17 @@ class findMediaV3(object):
                         iCount += 1
                         year = video.get('year')
                         if year == None:
-                            Log.Info('Potential unmatched movie found: %s' %
-                                     video.get('title'))
                             # No year, so most likely a mismatch
                             key = video.get('ratingKey')
                             unmatchedURL = misc.GetLoopBack() + '/library/metadata/' + key + '?excludeElements=' + \
                                 excludeElements + '&excludeFields=' + excludeFields
                             unmatched = XML.ElementFromURL(
                                 unmatchedURL).xpath('//Video')
-                            guid = unmatched[0].get('guid')
-                            if 'local://' in guid:
-                                filename = unmatched[0].xpath(
-                                    '//Part/@file')[0]
-                                Log.Info(
-                                    'Unmatched file confirmed as %s' % filename)
-                                unmatchedByPlex.append(filename)
+                            filename = unmatched[0].xpath(
+                                '//Part/@file')[0]
+                            Log.Info(
+                                'Unmatched file confirmed as %s' % filename)
+                            unmatchedByPlex.append(filename)
                         parts = XML.ElementFromString(
                             XML.StringFromElement(video)).xpath('//Part')
                         # Walk the parts of a media
