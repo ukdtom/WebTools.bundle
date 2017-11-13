@@ -120,9 +120,11 @@ class findMediaV3(object):
             global mediasFromDB
             global statusMsg
             global runningState
+            global unmatchedByPlex
             try:
                 Log.Debug('Starting scanShowDB for section %s' %
                           (sectionNumber))
+                unmatchedByPlex = []
                 runningState = -1
                 statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
                                                 String='Starting to scan database for section %s') % (sectionNumber)
@@ -139,8 +141,10 @@ class findMediaV3(object):
                 # So let's walk the library
                 while True:
                     # Grap shows
-                    shows = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iCShow) + '&X-Plex-Container-Size=' + str(
-                        self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Directory')
+                    urlShows = self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iCShow) + '&X-Plex-Container-Size=' + str(
+                        self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields
+                    print 'Ged urlShows', urlShows
+                    shows = XML.ElementFromURL(urlShows).xpath('//Directory')
                     # Grap individual show
                     for show in shows:
                         statusShow = show.get('title')
@@ -163,8 +167,12 @@ class findMediaV3(object):
                                 iEpisode = 0
                                 iCEpisode = 0
                                 while True:
-                                    episodes = XML.ElementFromURL(misc.GetLoopBack() + season.get('key') + '?X-Plex-Container-Start=' + str(iCEpisode) + '&X-Plex-Container-Size=' + str(
-                                        self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Part')
+                                    url = misc.GetLoopBack() + season.get('key') + '?X-Plex-Container-Start=' + str(iCEpisode) + '&X-Plex-Container-Size=' + \
+                                        str(self.MediaChuncks) + '&excludeElements=' + \
+                                        excludeElements + '&excludeFields=' + excludeFields
+                                    print 'Ged url', url
+                                    episodes = XML.ElementFromURL(
+                                        url).xpath('//Part')
                                     for episode in episodes:
                                         if bAbort:
                                             raise ValueError('Aborted')
