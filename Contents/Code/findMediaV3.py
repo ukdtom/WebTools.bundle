@@ -143,7 +143,6 @@ class findMediaV3(object):
                     # Grap shows
                     urlShows = self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iCShow) + '&X-Plex-Container-Size=' + str(
                         self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields
-                    print 'Ged urlShows', urlShows
                     shows = XML.ElementFromURL(urlShows).xpath('//Directory')
                     # Grap individual show
                     for show in shows:
@@ -170,7 +169,20 @@ class findMediaV3(object):
                                     url = misc.GetLoopBack() + season.get('key') + '?X-Plex-Container-Start=' + str(iCEpisode) + '&X-Plex-Container-Size=' + \
                                         str(self.MediaChuncks) + '&excludeElements=' + \
                                         excludeElements + '&excludeFields=' + excludeFields
-                                    print 'Ged url', url
+                                    # print 'Ged url', url
+
+                                    print 'GED TODO: Grap video instead of part, and check for year for unmatched...Then grap the parts'
+                                    videos = XML.ElementFromURL(
+                                        url).xpath('//Video')
+                                    for video in videos:
+                                        if bAbort:
+                                            raise ValueError('Aborted')
+                                        bUnmatched = False
+                                        if video.get('year') == None:
+                                            print 'GED UNMATCHED **************************************'
+                                            print 'Ged title', video.get('title')
+                                            bUnmatched = True
+
                                     episodes = XML.ElementFromURL(
                                         url).xpath('//Part')
                                     for episode in episodes:
