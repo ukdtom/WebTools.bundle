@@ -178,7 +178,32 @@ class techinfo(object):
             except:
                 pass
             Log.Info('************************** INFO End **********************')
-
+            try:
+                if 'PLEX_MEDIA_SERVER_LOG_DIR' in os.environ:
+                    LOGDIR = os.environ['PLEX_MEDIA_SERVER_LOG_DIR']
+                elif sys.platform.find('linux') == 0 and 'PLEXLOCALAPPDATA' in os.environ:
+                    LOGDIR = os.path.join(
+                        os.environ['PLEXLOCALAPPDATA'], 'Plex Media Server', 'Logs')
+                elif sys.platform == 'win32':
+                    if 'PLEXLOCALAPPDATA' in os.environ:
+                        key = 'PLEXLOCALAPPDATA'
+                    else:
+                        key = 'LOCALAPPDATA'
+                    LOGDIR = os.path.join(
+                        os.environ[key], 'Plex Media Server', 'Logs')
+                else:
+                    LOGDIR = os.path.join(
+                        os.environ['HOME'], 'Library', 'Logs', 'Plex Media Server')
+                    if not os.path.isdir(self.LOGDIR):
+                        LOGDIR = os.path.join(Core.app_support_path, 'Logs')
+            except Exception, e:
+                Log.Exception(
+                    'Fatal error happened in getting the Log Directory: ' + str(e))
+                req.clear()
+                req.set_status(500)
+                req.finish(
+                    'Fatal error happened in FM getting the Log Dir list: ' + str(e))
+            techInfo['Log Directory'] = LOGDIR
             req.clear()
             req.set_status(200)
             req.set_header(
