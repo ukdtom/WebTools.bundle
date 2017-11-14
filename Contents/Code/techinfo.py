@@ -202,7 +202,7 @@ class techinfo(object):
                 req.clear()
                 req.set_status(500)
                 req.finish(
-                    'Fatal error happened in FM getting the Log Dir list: ' + str(e))
+                    'Fatal error happened in TechInfo getting the Log Dir list: ' + str(e))
             techInfo['Log Directory'] = LOGDIR
             req.clear()
             req.set_status(200)
