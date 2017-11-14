@@ -169,9 +169,6 @@ class findMediaV3(object):
                                     url = misc.GetLoopBack() + season.get('key') + '?X-Plex-Container-Start=' + str(iCEpisode) + '&X-Plex-Container-Size=' + \
                                         str(self.MediaChuncks) + '&excludeElements=' + \
                                         excludeElements + '&excludeFields=' + excludeFields
-                                    # print 'Ged url', url
-
-                                    print 'GED TODO: Grap video instead of part, and check for year for unmatched...Then grap the parts'
                                     videos = XML.ElementFromURL(
                                         url).xpath('//Video')
                                     for video in videos:
@@ -179,23 +176,31 @@ class findMediaV3(object):
                                             raise ValueError('Aborted')
                                         bUnmatched = False
                                         if video.get('year') == None:
-                                            print 'GED UNMATCHED **************************************'
-                                            print 'Ged title', video.get('title')
                                             bUnmatched = True
-
-                                    episodes = XML.ElementFromURL(
-                                        url).xpath('//Part')
-                                    for episode in episodes:
-                                        if bAbort:
-                                            raise ValueError('Aborted')
-                                        filename = episode.get('file')
-                                        filename = String.Unquote(
-                                            filename).encode('utf8', 'ignore')
-                                        mediasFromDB.append(filename)
-                                        iEpisode += 1
+                                            # No year, so most likely a mismatch
+                                            key = video.get('ratingKey')
+                                            unmatchedURL = misc.GetLoopBack() + '/library/metadata/' + key + '?excludeElements=' + \
+                                                excludeElements + '&excludeFields=' + excludeFields
+                                            unmatched = XML.ElementFromURL(
+                                                unmatchedURL).xpath('//Video')
+                                            filename = unmatched[0].xpath(
+                                                '//Part/@file')[0]
+                                            Log.Info(
+                                                'Unmatched file confirmed as %s' % filename)
+                                            unmatchedByPlex.append(filename)
+                                        episodes = XML.ElementFromString(
+                                            XML.StringFromElement(video)).xpath('//Part')
+                                        for episode in episodes:
+                                            if bAbort:
+                                                raise ValueError('Aborted')
+                                            filename = episode.get('file')
+                                            filename = String.Unquote(
+                                                filename).encode('utf8', 'ignore')
+                                            mediasFromDB.append(filename)
+                                            iEpisode += 1
                                     # Inc Episodes counter
                                     iCEpisode += self.MediaChuncks
-                                    if len(episodes) == 0:
+                                    if len(videos) == 0:
                                         break
                             # Inc Season counter
                             iCSeason += self.MediaChuncks
