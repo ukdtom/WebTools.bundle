@@ -17,7 +17,7 @@ msgstr "WebTools is a plug-in that enables the use of tool modules to help with 
 
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
-msgstr "Both co-located (next to the movie in its folder or subfolder) and in the agents folder."
+msgstr "Both co-located (with the movie in its folder or subfolder) and in the agents folder."
 
 #: ../http/static/theme/theme.html:2
 msgid "Change Theme"
@@ -268,7 +268,7 @@ msgstr "This module allows you to locate media that are either missing from the 
 
 #: ../http/static/home/home.html:10
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
-msgstr "This module allows you to manage subtitles, regardless of whether or not they are sidecars (located next to the media file) or downloaded via another plugin, such as the OpenSubtitles.org agent. The module also allows viewing the subtitles for media and, optionally, deleting them (unless they are embedded or burned into the media itself)."
+msgstr "This module allows you to manage subtitles, regardless of whether or not they are sidecars (located next to the media file) or downloaded via another plug-in, such as the OpenSubtitles.org agent. The module also allows viewing the subtitles for media and, optionally, deleting them (unless they are embedded or burned into the media itself)."
 
 #: ../http/static/home/home.html:16
 msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
@@ -759,7 +759,7 @@ msgstr "idle"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
 msgid "Choose language for the subtitle"
-msgstr "Choose language"
+msgstr "Select language"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
 msgid "Choose part"
@@ -783,7 +783,7 @@ msgstr "Scanning database: %s complete"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
 msgid "Subtitle Management Upload Subtitle"
-msgstr "Subtitle Management : Upload Subtitle"
+msgstr "Subtitle Management: Upload Subtitle"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
 msgid "Upload"
@@ -793,10 +793,11 @@ msgstr "Upload"
 msgid "Upload subtitle for"
 msgstr "Upload subtitle for"
 
+#. "EX" was short for EXAMPLE. "E.G." is an abbreviation of the Latin phrase "exempli gratia" and would require punctuation. Since not everyone necessarily knows the phrase or shorthand, I changed it to "EXAMPLE." :)
 #: ../Contents/Resources/language_template.html:48
 msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
 msgstr "<plugin>Base URL (if behind a proxy – if not, leave blank).\n"
-"EX: /WebTools)</plugin>"
+"EXAMPLE: /WebTools)</plugin>"
 
 #: ../Contents/Resources/language_template.html:33
 msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
@@ -812,11 +813,11 @@ msgstr "<plugin>To access this channel, open one of the URLs below in a new brow
 
 #: ../Contents/Resources/language_template.html:39
 msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr "<plugin>Enter the port that this plugin should use for HTTP. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
+msgstr "<plugin>Enter the port that this plug-in should use for HTTP. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:42
 msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr "<plugin>Enter the port that this plugin should use for HTTPS. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
+msgstr "<plugin>Enter the port that this plug-in should use for HTTPS. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
@@ -839,7 +840,16 @@ msgstr "Technical Info"
 msgid "Value"
 msgstr "Value"
 
+#. Removed (again) the multiple exclamation marks, which don't look very professional. Fine in a text message, but not so much in a serious UI.
 #: ../Contents/Resources/language_template.html:56
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
+msgstr "DO NOT SHARE THIS ON ANY PUBLIC WEBSITE!"
+
+#: ../http/static/findmedia/fm.html:122
+msgid "No unmatched medias found"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:125
+msgid "Unmatched medias from Plex Media Server"
 msgstr ""
 

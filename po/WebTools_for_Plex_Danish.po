@@ -847,3 +847,11 @@ msgstr "Værdi"
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr "DEL IKKE DETTE PÅ ET OFFENTLIGT WEBSITE!!!"
 
+#: ../http/static/findmedia/fm.html:122
+msgid "No unmatched medias found"
+msgstr "Ingen ikke matched medias fundet"
+
+#: ../http/static/findmedia/fm.html:125
+msgid "Unmatched medias from Plex Media Server"
+msgstr "Ikke matchede medias fra Plex Media Server"
+

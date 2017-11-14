@@ -846,5 +846,13 @@ msgstr "Wert"
 
 #: ../Contents/Resources/language_template.html:56
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
+msgstr "NIEMALS ÖFFENTLICH auf Webseiten u.ä. zeigen!! Dies ist wie ein Generalschlüssel zu deinem Plex Konto!"
+
+#: ../http/static/findmedia/fm.html:122
+msgid "No unmatched medias found"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:125
+msgid "Unmatched medias from Plex Media Server"
 msgstr ""
 

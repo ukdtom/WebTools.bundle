@@ -817,25 +817,33 @@ msgstr "<plugin>Indique a porta que este plugin deve usar para https. NÃO USE [
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
-msgstr ""
+msgstr "<plugin>Nome do certificado \"crt file\" em Contents/Code/Certificate directory</plugin>"
 
 #: ../http/static/playlist/playlist.html:29
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 #: ../http/static/info/info.html:6
 msgid "Key"
-msgstr ""
+msgstr "Chave"
 
 #: ../http/static/info/info.html:2
 msgid "Techincal Info"
-msgstr ""
+msgstr "Informação Técnica"
 
 #: ../http/static/info/info.html:7
 msgid "Value"
-msgstr ""
+msgstr "Valor"
 
 #: ../Contents/Resources/language_template.html:56
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
+msgstr "NÃO PARTILHE ISTO EM NENHUM \"SITE\" PÚBLICO !"
+
+#: ../http/static/findmedia/fm.html:122
+msgid "No unmatched medias found"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:125
+msgid "Unmatched medias from Plex Media Server"
 msgstr ""
 

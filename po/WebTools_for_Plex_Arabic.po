@@ -845,3 +845,11 @@ msgstr ""
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr ""
 
+#: ../http/static/findmedia/fm.html:122
+msgid "No unmatched medias found"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:125
+msgid "Unmatched medias from Plex Media Server"
+msgstr ""
+

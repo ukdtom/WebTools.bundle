@@ -813,11 +813,11 @@ msgstr "<plugin>Pour accèder a ce canal vous pouvez ouvrir un des URLs indiqué
 
 #: ../Contents/Resources/language_template.html:39
 msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr ""
+msgstr "<plugin>Specifiez le port HTTP pour ce plug-in. Ne PAS utilizer: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 ou 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:42
 msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr ""
+msgstr "<plugin>Specifiez le port HTTPS pour ce plug-in. Ne PAS utilizer: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 ou 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
@@ -829,17 +829,25 @@ msgstr ""
 
 #: ../http/static/info/info.html:6
 msgid "Key"
-msgstr ""
+msgstr "Clé"
 
 #: ../http/static/info/info.html:2
 msgid "Techincal Info"
-msgstr ""
+msgstr "Information Téchnique"
 
 #: ../http/static/info/info.html:7
 msgid "Value"
-msgstr ""
+msgstr "Valeur"
 
 #: ../Contents/Resources/language_template.html:56
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:122
+msgid "No unmatched medias found"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:125
+msgid "Unmatched medias from Plex Media Server"
 msgstr ""
 

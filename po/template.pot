@@ -458,6 +458,10 @@ msgstr ""
 msgid "No records missing from harddrive"
 msgstr ""
 
+#: ../http/static/findmedia/fm.html:122
+msgid "No unmatched medias found"
+msgstr ""
+
 #: ../http/static/sub_management/Directive/subDetails.html:38
 msgid "None"
 msgstr ""
@@ -685,6 +689,10 @@ msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:12
 msgid "Translations and Beta testers"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:125
+msgid "Unmatched medias from Plex Media Server"
 msgstr ""
 
 #: ../http/static/uas/uasHelp.html:1
