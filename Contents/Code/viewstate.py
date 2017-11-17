@@ -19,17 +19,78 @@ import time
 # TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
 import urllib2
 
-GET = ['GETVIEWSTATE']
+
+GET = ['GETVIEWSTATE', 'GETSECTIONSLIST']
 PUT = []
-POST = []
+POST = ['SCAN']
 DELETE = []
 
-MEDIASTEPS = 25              # Amount of medias to extract for each call....Paging
+# Amount of medias to extract for each call....Paging
+MEDIASTEPS = 25
+SUPPORTEDSECTIONS = ['movie', 'show']           # Supported sections
 
 
 class viewstate(object):
     @classmethod
     def init(self):
+        return
+
+    '''
+    Gets a json with the supported sections
+    '''
+    @classmethod
+    def GETSECTIONSLIST(self, req, *args):
+        Log.Debug('getSectionsList requested')
+        try:
+            rawSections = XML.ElementFromURL(
+                misc.GetLoopBack() + '/library/sections')
+            Sections = []
+            for directory in rawSections:
+                if directory.get('type') in SUPPORTEDSECTIONS:
+                    Section = {'key': directory.get('key'), 'title': directory.get(
+                        'title'), 'type': directory.get('type')}
+                    Sections.append(Section)
+            req.clear()
+            req.set_status(200)
+            req.set_header('Content-Type', 'application/json; charset=utf-8')
+            req.finish(json.dumps(Sections))
+        except Exception, e:
+            Log.Exception(
+                'Fatal error happened in getSectionsList: %s' % (str(e)))
+            req.clear()
+            req.set_status(500)
+            req.finish('Fatal error happened in getSectionsList')
+
+    '''
+    This metode will scan a viewlist file, and then return a json with it contents.
+    * Param: localFile (In the payload)
+    '''
+    @classmethod
+    def SCAN(self, req, *args):
+        Log.Info('ViewState Scan called')
+        # Payload Upload file present?
+        if not 'localFile' in req.request.files:
+            req.clear()
+            req.set_status(412)
+            req.finish(
+                'Missing upload file parameter named localFile from the payload')
+        else:
+            localFile = req.request.files['localFile'][0]['body']
+        try:
+            ViewState = json.loads(localFile)
+            Log.Info('Import returned %s' %
+                     (json.dumps(ViewState, ensure_ascii=False)))
+            req.clear()
+            req.set_header('Content-Type', 'application/json; charset=utf-8')
+            req.set_status(200)
+            req.finish(json.dumps(ViewState, ensure_ascii=False))
+        except Exception, e:
+            Log.Exception(
+                'Exception happened in ViewState Scan was: %s' % (str(e)))
+            req.clear()
+            req.set_status(500)
+            req.finish(
+                'Exception happened in ViewState Scan was: %s' % (str(e)))
         return
 
     '''
@@ -179,6 +240,8 @@ class viewstate(object):
             Log.Exception('Exception in getViewState was %s' % str(e))
             req.set_status(500)
             req.finish('Unknown error was %s' % str(e))
+
+# ******************* Internal functions ************************
 
     ''' Get the relevant function and call it with optinal params '''
     @classmethod
