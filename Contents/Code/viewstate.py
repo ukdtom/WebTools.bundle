@@ -20,9 +20,9 @@ import time
 import urllib2
 
 
-GET = ['GETVIEWSTATE', 'GETSECTIONSLIST']
+GET = ['EXPORT', 'GETSECTIONSLIST']
 PUT = []
-POST = ['SCAN']
+POST = ['SCAN', 'IMPORT']
 DELETE = []
 
 # Amount of medias to extract for each call....Paging
@@ -33,6 +33,67 @@ SUPPORTEDSECTIONS = ['movie', 'show']           # Supported sections
 class viewstate(object):
     @classmethod
     def init(self):
+        return
+
+    '''
+    This metode will import a viewlist file
+    * Param: localFile (In the payload)
+    * Param: User (In param, optional, and if missing, is the uwner)
+    * Param: Section (In param, and mandentory)
+    '''
+    @classmethod
+    def IMPORT(self, req, *args):
+        Log.Info('ViewState Import called')
+        # Payload Upload file present?
+        if not 'localFile' in req.request.files:
+            req.clear()
+            req.set_status(412)
+            req.finish(
+                'Missing upload file parameter named localFile from the payload')
+        else:
+            localFile = req.request.files['localFile'][0]['body']
+        # Get parameters from url
+        try:
+            user = None
+            if args != None:
+                # We got additional arguments
+                if len(args) > 0:
+                    # Get them in lower case
+                    arguments = [item.lower() for item in list(args)[0]]
+                    if 'user' in arguments:
+                        # Get key of the user
+                        user = arguments[arguments.index('user') + 1]
+                    if 'section' in arguments:
+                        # Get Section Number
+                        section = arguments[arguments.index('section') + 1]
+                    else:
+                        section = None
+            if not section:
+                req.clear()
+                req.set_status(412)
+                req.finish('Missing import file parameter named Section')
+        except Exception, e:
+            Log.Exception(
+                'Exception happened in ViewState Import was: %s' % (str(e)))
+            req.clear()
+            req.set_status(500)
+            req.finish(
+                'Exception happened in ViewState Import was: %s' % (str(e)))
+
+        print 'Ged1', user, section
+
+        try:
+            ViewState = json.loads(localFile)
+            Log.Info('Import returned %s' %
+                     (json.dumps(ViewState, ensure_ascii=False)))
+
+        except Exception, e:
+            Log.Exception(
+                'Exception happened in ViewState Import was: %s' % (str(e)))
+            req.clear()
+            req.set_status(500)
+            req.finish(
+                'Exception happened in ViewState Import was: %s' % (str(e)))
         return
 
     '''
@@ -99,8 +160,8 @@ class viewstate(object):
     * Param: user/userID (optional, if missing, user is the owner)
     '''
     @classmethod
-    def GETVIEWSTATE(self, req, *args):
-        Log.Debug('Starting getViewState')
+    def EXPORT(self, req, *args):
+        Log.Debug('Starting export')
         Log.Debug('Arguments are: ' + str(args))
         result = {}
         unwatched = {}
@@ -152,9 +213,8 @@ class viewstate(object):
                 req.set_status(412)
                 req.finish('Missing parameter')
                 return
-
             # So now user is either none or a keyId
-            if user == None:
+            if not user:
                 result['user'] = None
                 result['username'] = 'Owner'
             else:
@@ -174,9 +234,6 @@ class viewstate(object):
                 sectionTypeUrl).get('librarySectionTitle')
             result['serverId'] = XML.ElementFromURL(
                 misc.GetLoopBack() + '/identity').get('machineIdentifier')
-
-            print 'Ged44', result['sectionType']
-
             # Get the type of items to get, based on section type
             if result['sectionType'] == 'show':
                 Type = MEDIATYPE['METADATA_EPISODE']
@@ -237,7 +294,7 @@ class viewstate(object):
             req.finish()
             return req
         except Exception, e:
-            Log.Exception('Exception in getViewState was %s' % str(e))
+            Log.Exception('Exception in export was %s' % str(e))
             req.set_status(500)
             req.finish('Unknown error was %s' % str(e))
 
