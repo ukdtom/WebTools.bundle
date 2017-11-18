@@ -24,8 +24,8 @@
                 </select>
             </div>
             <div class="pull-left pushLeftMajor fileContainer">
-                <input type="file" fileread="playlistModel.selectedFile" />
-                <div class="label pull-left">Choose a file to import a playlist</div>
+                <input type="file" fileread="playlistModel.selectedFile" />                
+                <div class="label pull-left" translate>Choose a playlist file to import</div>
                 <div class="playlistBtn pull-right" ng-click="importPlaylist(playlistModel.selectedFile)" ng-class="{'disabled' : !playlistModel.selectedFile}" translate>Import</div>
             </div>
         </div>

@@ -81,6 +81,7 @@ class viewstate(object):
                 'Exception happened in ViewState Import was: %s' % (str(e)))
 
         print 'Ged1', user, section
+        print 'Ged 2 HER SKAL DER KODES'
 
         try:
             ViewState = json.loads(localFile)
