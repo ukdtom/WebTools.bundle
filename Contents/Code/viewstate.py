@@ -82,11 +82,40 @@ class viewstate(object):
 
         print 'Ged1', user, section
         print 'Ged 2 HER SKAL DER KODES'
+        # So now user is either none or a keyId
+        if user:
+            # Darn....Hard work ahead..We have to logon as another user here :-(
+            result['user'] = user
+            # Get user list, among with their access tokens
+            users = plexTV().getUserList()
+
+            print 'Ged Users', users
+        else:
+            print 'User is the owner'
 
         try:
             ViewState = json.loads(localFile)
             Log.Info('Import returned %s' %
                      (json.dumps(ViewState, ensure_ascii=False)))
+            watched = ViewState['watched']
+            print 'Ged Watched', watched
+            ServerId = ViewState['serverId']
+            CurrentServerId = XML.ElementFromURL(
+                misc.GetLoopBack() + '/identity').get('machineIdentifier')
+            print 'Ged ServedID', CurrentServerId, ServerId
+            if ServerId == CurrentServerId:
+                # Same Server, so no need to search here :)
+                print 'Ged Same server detected'
+                Log.Debug('Same Server detected, so no need to search here')
+                print 'Ged do stuff'
+                self.setWatched(req, watched, user, None)
+
+            else:
+                # We need to search sadly
+                Log.Debug(
+                    'New server, so we need to search here, limited to selected section key')
+                print 'Ged do stuff but search first'
+                self.setWatched(req, watched, user, None)
 
         except Exception, e:
             Log.Exception(
@@ -300,6 +329,28 @@ class viewstate(object):
             req.finish('Unknown error was %s' % str(e))
 
 # ******************* Internal functions ************************
+
+    ''' Set media as watched  '''
+    @classmethod
+    def setWatched(self, req, watched, user, users):
+        print 'Ged watched started', watched
+        url = misc.GetLoopBack() + '/:/scrobble?identifier=com.plexapp.plugins.library&key='
+        print 'Ged url', url
+        print 'Ged User', user
+        for key, value in watched.items():
+            print 'Ged MediaKey', value
+            target = url + str(value)
+            print 'Ged url to send', target
+            if not user:
+                httpResponse = HTTP.Request(target, immediate=True, timeout=5)
+            else:
+                print 'Ged do alternative http get'
+                # TODO Change to native framework call, when Plex allows token in header
+                opener = urllib2.build_opener(urllib2.HTTPHandler)
+                request = urllib2.Request(target)
+                request.add_header(
+                    'X-Plex-Token', users[user]['accessToken'])
+                response = opener.open(request).read()
 
     ''' Get the relevant function and call it with optinal params '''
     @classmethod
