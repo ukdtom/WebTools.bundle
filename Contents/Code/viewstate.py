@@ -43,6 +43,9 @@ class viewstate(object):
     '''
     @classmethod
     def IMPORT(self, req, *args):
+        print '*********** GED ***********'
+        print 'Ged logon as not owner', 'Check access denied', 'Check search', 'Make it a thread', 'Make a method to grap status', 'Make it possible to abort'
+
         Log.Info('ViewState Import called')
         # Payload Upload file present?
         if not 'localFile' in req.request.files:
@@ -80,8 +83,6 @@ class viewstate(object):
             req.finish(
                 'Exception happened in ViewState Import was: %s' % (str(e)))
 
-        print 'Ged1', user, section
-        print 'Ged 2 HER SKAL DER KODES'
         # So now user is either none or a keyId
         if user:
             # Darn....Hard work ahead..We have to logon as another user here :-(
@@ -100,6 +101,8 @@ class viewstate(object):
             watched = ViewState['watched']
             print 'Ged Watched', watched
             ServerId = ViewState['serverId']
+            sectionType = ViewState['sectionType']
+
             CurrentServerId = XML.ElementFromURL(
                 misc.GetLoopBack() + '/identity').get('machineIdentifier')
             print 'Ged ServedID', CurrentServerId, ServerId
@@ -107,7 +110,6 @@ class viewstate(object):
                 # Same Server, so no need to search here :)
                 print 'Ged Same server detected'
                 Log.Debug('Same Server detected, so no need to search here')
-                print 'Ged do stuff'
                 self.setWatched(req, watched, user, None)
 
             else:
@@ -115,6 +117,7 @@ class viewstate(object):
                 Log.Debug(
                     'New server, so we need to search here, limited to selected section key')
                 print 'Ged do stuff but search first'
+                watched = self.SearchMedia(req, watched, section, sectionType)
                 self.setWatched(req, watched, user, None)
 
         except Exception, e:
@@ -330,17 +333,39 @@ class viewstate(object):
 
 # ******************* Internal functions ************************
 
+    ''' Search for titles '''
+    @classmethod
+    def SearchMedia(self, req, watched, section, sectionType):
+        Log.Info('Starting to search')
+        returnJson = {}
+        try:
+            if sectionType == 'movie':
+                MediaType = str(MEDIATYPE['METADATA_MOVIE'])
+            elif sectionType == 'Ged':
+                pass
+            url = misc.GetLoopBack() + '/library/sections/' + section + '/all?type=' + \
+                MediaType + '&X-Plex-Container-Start=0&X-Plex-Container-Size=1&' + \
+                EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&title='
+            for title, key in watched.items():
+                SearchUrl = url + String.Quote(title)
+                key = XML.ElementFromURL(SearchUrl).xpath(
+                    '//Video/@ratingKey')[0]
+                returnJson[title] = key
+            return returnJson
+        except Exception, e:
+            Log.Exception(
+                'Fatal exception happened in ViewState Search was %s' % str(e))
+            req.clear()
+            req.set_status(500)
+            req.finish(
+                'Exception happened in ViewState Search was: %s' % (str(e)))
+
     ''' Set media as watched  '''
     @classmethod
     def setWatched(self, req, watched, user, users):
-        print 'Ged watched started', watched
         url = misc.GetLoopBack() + '/:/scrobble?identifier=com.plexapp.plugins.library&key='
-        print 'Ged url', url
-        print 'Ged User', user
         for key, value in watched.items():
-            print 'Ged MediaKey', value
             target = url + str(value)
-            print 'Ged url to send', target
             if not user:
                 httpResponse = HTTP.Request(target, immediate=True, timeout=5)
             else:
