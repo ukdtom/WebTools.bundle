@@ -72,7 +72,7 @@ class language(object):
 		"Irish" : "gle",
 		"Galician" : "glg",
 		"Manx" : "glv",
-		"Greek" : "ell",
+		"Greek" : "el",
 		"Guarani" : "grn",
 		"Gujarati" : "guj",
 		"Haitian" : "hat",
