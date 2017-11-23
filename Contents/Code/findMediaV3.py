@@ -176,18 +176,21 @@ class findMediaV3(object):
                                             raise ValueError('Aborted')
                                         bUnmatched = False
                                         if video.get('year') == None:
-                                            bUnmatched = True
-                                            # No year, so most likely a mismatch
-                                            key = video.get('ratingKey')
-                                            unmatchedURL = misc.GetLoopBack() + '/library/metadata/' + key + '?excludeElements=' + \
-                                                excludeElements + '&excludeFields=' + excludeFields
-                                            unmatched = XML.ElementFromURL(
-                                                unmatchedURL).xpath('//Video')
-                                            filename = unmatched[0].xpath(
-                                                '//Part/@file')[0]
-                                            Log.Info(
-                                                'Unmatched file confirmed as %s' % filename)
-                                            unmatchedByPlex.append(filename)
+                                            # Also check if summery is missing, since else, it might be a false alert
+                                            if video.get('summary') == None:
+                                                bUnmatched = True
+                                                # No year, so most likely a mismatch
+                                                key = video.get('ratingKey')
+                                                unmatchedURL = misc.GetLoopBack() + '/library/metadata/' + key + '?excludeElements=' + \
+                                                    excludeElements + '&excludeFields=' + excludeFields
+                                                unmatched = XML.ElementFromURL(
+                                                    unmatchedURL).xpath('//Video')
+                                                filename = unmatched[0].xpath(
+                                                    '//Part/@file')[0]
+                                                Log.Info(
+                                                    'Unmatched file confirmed as %s' % filename)
+                                                unmatchedByPlex.append(
+                                                    filename)
                                         episodes = XML.ElementFromString(
                                             XML.StringFromElement(video)).xpath('//Part')
                                         for episode in episodes:

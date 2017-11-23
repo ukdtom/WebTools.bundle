@@ -106,6 +106,8 @@ class viewstate(object):
             CurrentServerId = XML.ElementFromURL(
                 misc.GetLoopBack() + '/identity').get('machineIdentifier')
             print 'Ged ServedID', CurrentServerId, ServerId
+            self.ImportFile(ServerId == CurrentServerId)
+            '''
             if ServerId == CurrentServerId:
                 # Same Server, so no need to search here :)
                 print 'Ged Same server detected'
@@ -119,7 +121,7 @@ class viewstate(object):
                 print 'Ged do stuff but search first'
                 watched = self.SearchMedia(req, watched, section, sectionType)
                 self.setWatched(req, watched, user, None)
-
+            '''
         except Exception, e:
             Log.Exception(
                 'Exception happened in ViewState Import was: %s' % (str(e)))
@@ -332,6 +334,16 @@ class viewstate(object):
             req.finish('Unknown error was %s' % str(e))
 
 # ******************* Internal functions ************************
+
+    '''
+    Do the actual import 
+    Here we import the json in a thread with search and all
+    Have to do in a thread, since this can be time consuming
+    '''
+    @classmethod
+    def ImportFile(SearchNeeded):
+        print 'Ged Import', SearchNeeded
+        return
 
     ''' Search for titles '''
     @classmethod
