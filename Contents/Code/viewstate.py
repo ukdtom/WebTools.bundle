@@ -44,7 +44,7 @@ class viewstate(object):
     @classmethod
     def IMPORT(self, req, *args):
         print '*********** GED ***********'
-        print 'Ged logon as not owner', 'Check access denied', 'Check search', 'Make it a thread', 'Make a method to grap status', 'Make it possible to abort'
+        print 'Ged logon as not owner', 'Check access denied', 'Make it a thread', 'Make a method to grap status', 'Make it possible to abort'
 
         Log.Info('ViewState Import called')
         # Payload Upload file present?
