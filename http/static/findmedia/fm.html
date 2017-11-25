@@ -95,10 +95,10 @@
                             </div>
                             <div class="row"><div class="col-xs-12"><hr /></div></div>
                             <div class="row" ng-if="section.result.MissingFromDB.length === 0">
-                                <div class="col-xs-12 textBold600" translate>No records missing from Plex database</div>
+                                <div class="col-xs-12 textBold600" translate>No unrecognized media files in the Plex database</div>                                
                             </div>
                             <div class="row" ng-if="section.result.MissingFromDB.length > 0">
-                                <div class="col-xs-12 textBold600" translate>Records missing from Plex database</div>
+                                <div class="col-xs-12 textBold600" translate>Unrecognized media files in the Plex database</div>
                             </div>
                             <div class="row" ng-repeat="missingFromDb in section.result.MissingFromDB track by $index">
                                 <div class="col-xs-12">
@@ -107,10 +107,10 @@
                             </div>
                             <div class="row"><div class="col-xs-12"><hr /></div></div>
                             <div class="row" ng-if="section.result.MissingFromFS.length === 0">
-                                <div class="col-xs-12 textBold600" translate>No records missing from harddrive</div>
+                                <div class="col-xs-12 textBold600" translate>No unrecognized media files from the harddrive</div>
                             </div>
                             <div class="row" ng-if="section.result.MissingFromFS.length > 0">
-                                <div class="col-xs-12 textBold600" translate>Records missing from harddrive</div>
+                                <div class="col-xs-12 textBold600" translate>Unrecognized media files missing from harddrive</div>
                             </div>
                             <div class="row" ng-repeat="missingFromFS in section.result.MissingFromFS track by $index">
                                 <div class="col-xs-12">
@@ -119,10 +119,10 @@
                             </div>
                             <div class="row"><div class="col-xs-12"><hr /></div></div>
                             <div class="row" ng-if="section.result.Unmatched.length === 0">
-                                <div class="col-xs-12 textBold600" translate>No unmatched medias found</div>
+                                <div class="col-xs-12 textBold600" translate>No items without metadata found</div>
                             </div>
                             <div class="row" ng-if="section.result.Unmatched.length > 0">
-                                <div class="col-xs-12 textBold600" translate>Unmatched medias from Plex Media Server</div>
+                                <div class="col-xs-12 textBold600" translate>Items without metadata from Plex Media Server</div>
                             </div>
                             <div class="row" ng-repeat="Unmatched in section.result.Unmatched track by $index">
                                 <div class="col-xs-12">

@@ -176,10 +176,10 @@ class findMediaV3(object):
                                             raise ValueError('Aborted')
                                         bUnmatched = False
                                         if video.get('year') == None:
-                                            # Also check if summery is missing, since else, it might be a false alert
-                                            if video.get('summary') == None:
+                                            # Also check if summary is missing, since else, it might be a false alert
+                                            if (video.get('summary') == None) or (video.get('summary') == ""):
                                                 bUnmatched = True
-                                                # No year, so most likely a mismatch
+                                                # No year nor summary, so most likely a mismatch
                                                 key = video.get('ratingKey')
                                                 unmatchedURL = misc.GetLoopBack() + '/library/metadata/' + key + '?excludeElements=' + \
                                                     excludeElements + '&excludeFields=' + excludeFields
@@ -201,7 +201,7 @@ class findMediaV3(object):
                                                 filename).encode('utf8', 'ignore')
                                             mediasFromDB.append(filename)
                                             iEpisode += 1
-                                    # Inc Episodes counter
+                                        # Inc Episodes counter
                                     iCEpisode += self.MediaChuncks
                                     if len(videos) == 0:
                                         break
@@ -211,12 +211,12 @@ class findMediaV3(object):
                                 break
                         iShow += 1
                         statusShows = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                          String='Scanning database show %s of %s :') % (iShow, totalSize)
+                                                          String='Scanning database show %s of %s :') % (str(iShow), str(totalSize))
                     # Inc. Shows counter
                     iCShow += self.MediaChuncks
                     if len(shows) == 0:
                         statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                        String='Scanning database: %s : Done') % (totalSize)
+                                                        String='Scanning database: %s : Done') % (str(totalSize))
                         Log.Debug('***** Done scanning the database *****')
                         if DEBUGMODE:
                             Log.Debug(mediasFromDB)
@@ -426,7 +426,7 @@ class findMediaV3(object):
                         break
 
                     '''
-                    # Grap a chunk from the server                    
+                    # Grap a chunk from the server
                     medias = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iStart) + '&X-Plex-Container-Size=' + str(
                         self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Part')
                     # Walk the chunk
@@ -440,7 +440,8 @@ class findMediaV3(object):
                         filename = unicode(misc.Unicodize(
                             part.get('file')).encode('utf8', 'ignore'))
                         mediasFromDB.append(filename)
-                        statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Scanning database: item %s of %s : Working') % (iCount, totalSize)                        
+                        statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
+                                         String='Scanning database: item %s of %s : Working') % (iCount, totalSize)
                     iStart += self.MediaChuncks
                     if len(medias) == 0:
                         statusMsg = 'Scanning database: %s : Done' % (
