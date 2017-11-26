@@ -66,6 +66,7 @@
             url: url,
             data: {
                 IGNORE_HIDDEN: fmModel.settings.IGNORE_HIDDEN,
+                IGNORE_SPECIALS: fmModel.settings.IGNORE_SPECIALS,
                 IGNORE_EXTRAS: fmModel.settings.IGNORE_EXTRAS,
                 IGNORED_DIRS: fmModel.settings.IGNORED_DIRS,
                 VALID_EXTENSIONS: fmModel.settings.VALID_EXTENSIONS,

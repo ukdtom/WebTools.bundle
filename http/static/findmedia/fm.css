@@ -37,6 +37,13 @@
 .fm .settings .ignoreDir{
     color:black;
 }
+.fm .settings .ignoreHidden{
+    color:black;
+}
+.fm .settings .ignoreSpecials{
+    color:black;
+}
+
 
 .fm .sections{
 }

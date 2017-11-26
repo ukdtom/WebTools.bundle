@@ -37,8 +37,9 @@ Extras = ['behindthescenes', 'deleted', 'featurette', 'interview',
           'scene', 'short', 'trailer']														# Local extras
 ExtrasDirs = ['behind the scenes', 'deleted scenes', 'featurettes',
               'interviews', 'scenes', 'shorts', 'trailers']		# Directories to be ignored
+Specials = ['season 00', 'season 0', 'specials']                # Specials dirs
 # Valid keys for prefs
-KEYS = ['IGNORE_HIDDEN', 'IGNORED_DIRS', 'VALID_EXTENSIONS']
+KEYS = ['IGNORE_HIDDEN', 'IGNORED_DIRS', 'VALID_EXTENSIONS', 'IGNORE_SPECIALS']
 excludeElements = 'Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Role,Similar,Writer'
 excludeFields = 'summary,tagline'
 SUPPORTEDSECTIONS = ['movie', 'show']
@@ -92,6 +93,8 @@ class findMediaV3(object):
             # Walk the settings body, and only accept valid settings
             if 'IGNORE_HIDDEN' in data:
                 Dict['findMedia']['IGNORE_HIDDEN'] = data['IGNORE_HIDDEN']
+            if 'IGNORE_SPECIALS' in data:
+                Dict['findMedia']['IGNORE_SPECIALS'] = data['IGNORE_SPECIALS']
             if 'IGNORED_DIRS' in data:
                 Dict['findMedia']['IGNORED_DIRS'] = data['IGNORED_DIRS']
             if 'VALID_EXTENSIONS' in data:
@@ -187,10 +190,11 @@ class findMediaV3(object):
                                                     unmatchedURL).xpath('//Video')
                                                 filename = unmatched[0].xpath(
                                                     '//Part/@file')[0]
-                                                Log.Info(
-                                                    'Unmatched file confirmed as %s' % filename)
-                                                unmatchedByPlex.append(
-                                                    filename)
+                                                if self.addThisItem(filename, 'video'):
+                                                    Log.Info(
+                                                        'Unmatched file confirmed as %s' % filename)
+                                                    unmatchedByPlex.append(
+                                                        filename)
                                         episodes = XML.ElementFromString(
                                             XML.StringFromElement(video)).xpath('//Part')
                                         for episode in episodes:
@@ -199,7 +203,8 @@ class findMediaV3(object):
                                             filename = episode.get('file')
                                             filename = String.Unquote(
                                                 filename).encode('utf8', 'ignore')
-                                            mediasFromDB.append(filename)
+                                            if self.addThisItem(filename, 'video'):
+                                                mediasFromDB.append(filename)
                                             iEpisode += 1
                                         # Inc Episodes counter
                                     iCEpisode += self.MediaChuncks
@@ -263,7 +268,7 @@ class findMediaV3(object):
                 Log.Info('Aborted in findMissingFromFS')
 
         # Scan the file system
-        def getFiles(filePath):
+        def getFiles(filePath, mediaType):
             global mediasFromFileSystem
             global runningState
             global statusMsg
@@ -282,65 +287,22 @@ class findMediaV3(object):
                         bScanStatusCount, filePath2.encode('utf8', 'ignore')))
                     try:
                         for root, subdirs, files in os.walk(filePath2):
-                            if DEBUGMODE:
-                                Log.Debug('Extreme root: ' + root)
-                                Log.Debug('Extreme subdirs: ' + str(subdirs))
-                                Log.Debug('Extreme files: ' + str(files))
-                            # Need to check if directory in ignore list?
-                            if os.path.basename(root) in Dict['findMedia']['IGNORED_DIRS']:
-                                if DEBUGMODE:
-                                    Log.Debug('root in ignored dirs: ' + root)
-                                continue
-                            # Lets look at the file
                             for file in files:
-                                file = misc.Unicodize(file).encode('utf8')
-                                if DEBUGMODE:
-                                    Log.Debug('file in files: ' + file)
-                                if bAbort:
-                                    Log.Info('Aborted in getFiles')
-                                    raise ValueError('Aborted')
-                                if DEBUGMODE:
-                                    Log.Debug('File extention is : ' +
-                                              os.path.splitext(file)[1][1:].lower())
-                                if os.path.splitext(file)[1][1:].lower() in Dict['findMedia']['VALID_EXTENSIONS']:
-                                    if DEBUGMODE:
-                                        Log.Debug(
-                                            'File has valid extention, so checking it out')
-                                    # File has a valid extention
-                                    if file.startswith('.') and Dict['findMedia']['IGNORE_HIDDEN']:
-                                        if DEBUGMODE:
-                                            Log.Debug(
-                                                'File hidden, so ignore : ' + file)
-                                        continue
-                                    # Filter out local extras
-                                    if Dict['findMedia']['IGNORE_EXTRAS']:
-                                        if '-' in file:
-                                            if os.path.splitext(os.path.basename(file))[0].rsplit('-', 1)[1].lower() in Extras:
-                                                if DEBUGMODE:
-                                                    Log.Debug('Ignoring Extras file %s' % (
-                                                        os.path.basename(file)))
-                                                continue
-                                        # filter out local extras directories
-                                        if os.path.basename(os.path.normpath(root)).lower() in ExtrasDirs:
-                                            if DEBUGMODE:
-                                                Log.Debug(
-                                                    'Ignoring Extras dir %s' % (root))
-                                            continue
-                                    composed_file = misc.Unicodize(
-                                        Core.storage.join_path(root, file))
+                                filename = Core.storage.join_path(root, file)
+                                file = misc.Unicodize(filename).encode('utf8')
+                                if self.addThisItem(filename, mediaType):
                                     if Platform.OS == 'Windows':
                                         # I hate windows
-                                        pos = composed_file.find(':') - 1
+                                        pos = filename.find(':') - 1
                                         if pos != -2:
                                             # We dont got an UNC path here
-                                            composed_file = composed_file[pos:]
-                                    mediasFromFileSystem.append(composed_file)
-                                    if DEBUGMODE:
-                                        Log.Debug('Scanning file: ' + file)
-                                        Log.Debug(
-                                            'appending file: ' + composed_file)
-                                    statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                                    String='Scanning file: %s') % file
+                                            filename = filename[pos:]
+                                    Log.Debug('appending file: ' + filename)
+                                    mediasFromFileSystem.append(filename)
+                                if DEBUGMODE:
+                                    Log.Debug('Scanning file: ' + file)
+                                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
+                                                                String='Scanning file: %s') % file
                     except Exception, e:
                         Log.Exception(
                             'Exception happened in FM scanning filesystem: ' + str(e))
@@ -397,9 +359,10 @@ class findMediaV3(object):
                                 unmatchedURL).xpath('//Video')
                             filename = unmatched[0].xpath(
                                 '//Part/@file')[0]
-                            Log.Info(
-                                'Unmatched file confirmed as %s' % filename)
-                            unmatchedByPlex.append(filename)
+                            if self.addThisItem(filename, 'video'):
+                                Log.Info(
+                                    'Unmatched file confirmed as %s' % filename)
+                                unmatchedByPlex.append(filename)
                         parts = XML.ElementFromString(
                             XML.StringFromElement(video)).xpath('//Part')
                         # Walk the parts of a media
@@ -411,10 +374,10 @@ class findMediaV3(object):
                             filename = part.get('file')
                             filename = unicode(misc.Unicodize(
                                 part.get('file')).encode('utf8', 'ignore'))
-                            mediasFromDB.append(filename)
+                            if self.addThisItem(filename, 'video'):
+                                mediasFromDB.append(filename)
                             statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
                                                             String='Scanning database: item %s of %s : Working') % (iCount, totalSize)
-
                     iStart += self.MediaChuncks
                     if len(medias) == 0:
                         statusMsg = 'Scanning database: %s : Done' % (
@@ -465,8 +428,10 @@ class findMediaV3(object):
             global retMsg
             try:
                 if sectionType == 'movie':
+                    MediaType = 'video'
                     scanMovieDb(sectionNumber=sectionNumber)
                 elif sectionType == 'show':
+                    MediaType = 'video'
                     scanShowDB(sectionNumber=sectionNumber)
                 else:
                     req.clear()
@@ -474,7 +439,7 @@ class findMediaV3(object):
                     req.finish('Unknown Section Type')
                 if bAbort:
                     raise ValueError('Aborted')
-                getFiles(sectionLocations)
+                getFiles(sectionLocations, MediaType)
                 if bAbort:
                     raise ValueError('Aborted')
                 retMsg = {}
@@ -619,6 +584,8 @@ class findMediaV3(object):
         req.set_status(200)
         req.finish(json.dumps(Dict['findMedia']))
 
+################### Internal functions #############################
+
     ''' Get the relevant function and call it with optinal params '''
     @classmethod
     def getFunction(self, metode, req, *args):
@@ -682,8 +649,6 @@ class findMediaV3(object):
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
-################### Internal functions #############################
-
     ''' Populate the defaults, if not already there '''
     @classmethod
     def populatePrefs(self):
@@ -693,12 +658,62 @@ class findMediaV3(object):
                     'IGNORE_HIDDEN': True,
                     'IGNORED_DIRS': [".@__thumb", ".AppleDouble", "lost+found"],
                     'VALID_EXTENSIONS': VALIDEXT['video'],
-                    'IGNORE_EXTRAS': True
+                    'IGNORE_EXTRAS': True,
+                    'IGNORE_SPECIALS': True
                 }
                 Dict.Save()
             # New key from V3.0, so need to handle seperately
             if 'IGNORE_EXTRAS' not in Dict['findMedia'].keys():
                 Dict['findMedia']['IGNORE_EXTRAS'] = True
                 Dict.Save()
+            # New key from V3.0, so need to handle seperately
+            if 'IGNORE_SPECIALS' not in Dict['findMedia'].keys():
+                Dict['findMedia']['IGNORE_SPECIALS'] = True
+                Dict.Save()
         except Exception, e:
             Log.Exception('Exception in populatePrefs was %s' % str(e))
+
+    ''' Returns true or false, depending on if a media should be added to the list '''
+    @classmethod
+    def addThisItem(self, file, mediaType):
+        try:
+            if os.path.splitext(file)[1].lower()[1:] in Dict['findMedia']['VALID_EXTENSIONS']:
+                parts = self.splitall(file)
+                for part in parts:
+                    if Dict['findMedia']['IGNORE_EXTRAS']:
+                        if part.lower() in ExtrasDirs:
+                            return False
+                        for extra in Extras:
+                            if extra in part.lower():
+                                return False
+                    # Ignore specials
+                    if Dict['findMedia']['IGNORE_SPECIALS']:
+                        if part.lower() in Specials:
+                            return False
+                    # Ignore hiddens
+                    if Dict['findMedia']['IGNORE_HIDDEN']:
+                        if part.startswith('.'):
+                            return False
+                return True
+            else:
+                return False
+        except Exception, e:
+            Log.Exception('Exception in addThisItem was %s' % str(e))
+            return False
+
+    ''' Returns the different parts of a filepath '''
+    @classmethod
+    def splitall(self, path):
+        allparts = []
+        while 1:
+            parts = os.path.split(path)
+            if parts[0] == path:  # sentinel for absolute paths
+                allparts.insert(0, parts[0])
+                break
+            elif parts[1] == path:  # sentinel for relative paths
+                allparts.insert(0, parts[1])
+                break
+            else:
+                path = parts[0]
+                allparts.insert(0, parts[1])
+        return allparts
