@@ -113,10 +113,10 @@
                             </div>
                             <div class="row"><div class="col-xs-12"><hr /></div></div>
                             <div class="row" ng-if="section.result.MissingFromFS.length === 0">
-                                <div class="col-xs-12 textBold600" translate>No unrecognized media files from the harddrive</div>
+                                <div class="col-xs-12 textBold600" translate>No 'unmatched' files on the harddrive(s)</div>
                             </div>
                             <div class="row" ng-if="section.result.MissingFromFS.length > 0">
-                                <div class="col-xs-12 textBold600" translate>Unrecognized media files missing from harddrive</div>
+                                <div class="col-xs-12 textBold600" translate>'unmatched' files on the harddrive(s)</div>
                             </div>
                             <div class="row" ng-repeat="missingFromFS in section.result.MissingFromFS track by $index">
                                 <div class="col-xs-12">
