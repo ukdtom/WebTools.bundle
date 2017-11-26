@@ -101,10 +101,10 @@
                             </div>
                             <div class="row"><div class="col-xs-12"><hr /></div></div>
                             <div class="row" ng-if="section.result.MissingFromDB.length === 0">
-                                <div class="col-xs-12 textBold600" translate>No unmatched files</div>                                
+                                <div class="col-xs-12 textBold600" translate>No unmatched files from Plex database</div>                                
                             </div>
                             <div class="row" ng-if="section.result.MissingFromDB.length > 0">
-                                <div class="col-xs-12 textBold600" translate>unmatched files</div>
+                                <div class="col-xs-12 textBold600" translate>unmatched files from Plex database</div>
                             </div>
                             <div class="row" ng-repeat="missingFromDb in section.result.MissingFromDB track by $index">
                                 <div class="col-xs-12">
@@ -113,10 +113,10 @@
                             </div>
                             <div class="row"><div class="col-xs-12"><hr /></div></div>
                             <div class="row" ng-if="section.result.MissingFromFS.length === 0">
-                                <div class="col-xs-12 textBold600" translate>No 'unmatched' files on the harddrive(s)</div>
+                                <div class="col-xs-12 textBold600" translate>No unmatched files on the harddrive(s)</div>
                             </div>
                             <div class="row" ng-if="section.result.MissingFromFS.length > 0">
-                                <div class="col-xs-12 textBold600" translate>'unmatched' files on the harddrive(s)</div>
+                                <div class="col-xs-12 textBold600" translate>unmatched files on the harddrive(s)</div>
                             </div>
                             <div class="row" ng-repeat="missingFromFS in section.result.MissingFromFS track by $index">
                                 <div class="col-xs-12">
