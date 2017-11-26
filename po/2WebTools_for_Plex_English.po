@@ -116,12 +116,12 @@ msgstr "Download all logs"
 msgid "Download selected logfile"
 msgstr "Download selected logs"
 
-#: ../http/static/findmedia/fm.html:78
+#: ../http/static/findmedia/fm.html:84
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
 msgstr "Abort scanning"
 
-#: ../http/static/findmedia/fm.html:43
+#: ../http/static/findmedia/fm.html:49
 #: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
 msgstr "Add ignored folder"
@@ -131,12 +131,12 @@ msgstr "Add ignored folder"
 msgid "Current features:"
 msgstr "Current features:"
 
-#: ../http/static/findmedia/fm.html:92
+#: ../http/static/findmedia/fm.html:98
 #: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
 msgstr "Download result"
 
-#: ../http/static/findmedia/fm.html:26
+#: ../http/static/findmedia/fm.html:32
 msgid "Ignore Extras"
 msgstr "Ignore extras"
 
@@ -144,36 +144,20 @@ msgstr "Ignore extras"
 msgid "Ignore Hidden"
 msgstr "Ignore hidden"
 
-#: ../http/static/findmedia/fm.html:31
+#: ../http/static/findmedia/fm.html:37
 msgid "Ignore folders"
 msgstr "Ignore folders"
-
-#: ../http/static/findmedia/fm.html:98
-msgid "No records missing from Plex database"
-msgstr "No records missing from the Plex database"
-
-#: ../http/static/findmedia/fm.html:110
-msgid "No records missing from harddrive"
-msgstr "No files missing from the hard drive"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
 msgstr "Playlist Help"
 
-#: ../http/static/findmedia/fm.html:101
-msgid "Records missing from Plex database"
-msgstr "Records missing from the Plex database"
-
-#: ../http/static/findmedia/fm.html:113
-msgid "Records missing from harddrive"
-msgstr "Records missing from the hard drive"
-
-#: ../http/static/findmedia/fm.html:59
+#: ../http/static/findmedia/fm.html:65
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
 msgstr "Reset Settings"
 
-#: ../http/static/findmedia/fm.html:67
+#: ../http/static/findmedia/fm.html:73
 #: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
 msgstr "Save Settings"
@@ -182,7 +166,7 @@ msgstr "Save Settings"
 msgid "Show settings"
 msgstr "Show Settings"
 
-#: ../http/static/findmedia/fm.html:48
+#: ../http/static/findmedia/fm.html:54
 msgid "Valid extentions"
 msgstr "Valid Extensions"
 
@@ -801,7 +785,7 @@ msgstr "<plugin>Base URL (if behind a proxy – if not, leave blank).\n"
 
 #: ../Contents/Resources/language_template.html:33
 msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
-msgstr "<plugin>Name of certificate key file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Name of the certificate key file in Contents/Code/Certificate directory</plugin>"
 
 #: ../Contents/Resources/language_template.html:45
 msgid "<plugin>Select to force https</plugin>"
@@ -809,15 +793,15 @@ msgstr "<plugin>Select to force HTTPS</plugin>"
 
 #: ../Contents/Resources/language_template.html:51
 msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
-msgstr "<plugin>To access this channel, open one of the URLs below in a new browser tab or window.</plugin>"
+msgstr "<plugin>To access this channel, enter one of the URLs below in a new browser tab or window.</plugin>"
 
 #: ../Contents/Resources/language_template.html:39
 msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr "<plugin>Enter the port that this plug-in should use for HTTP. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
+msgstr "<plugin>Enter the port number that this plug-in should use for HTTP. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:42
 msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr "<plugin>Enter the port that this plug-in should use for HTTPS. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
+msgstr "<plugin>Enter the port number that this plug-in should use for HTTPS. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
@@ -843,13 +827,41 @@ msgstr "Value"
 #. Removed (again) the multiple exclamation marks, which don't look very professional. Fine in a text message, but not so much in a serious UI.
 #: ../Contents/Resources/language_template.html:56
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
-msgstr "DO NOT SHARE THIS ON ANY PUBLIC WEBSITE!"
+msgstr "DO NOT SHARE THIS PAGE ON ANY PUBLIC WEBSITE!"
 
-#: ../http/static/findmedia/fm.html:122
-msgid "No unmatched medias found"
+#: ../http/static/playlist/playlist.html:28
+msgid "Choose a playlist file to import"
 msgstr ""
 
-#: ../http/static/findmedia/fm.html:125
-msgid "Unmatched medias from Plex Media Server"
+#: ../http/static/findmedia/fm.html:26
+msgid "Ignore Specials"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:131
+msgid "Items without metadata from Plex Media Server"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:128
+msgid "No items without metadata found"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:116
+msgid "No unrecognized media files from the harddrive"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:104
+msgid "No unrecognized media files in the Plex database"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:107
+msgid "Unrecognized media files in the Plex database"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:119
+msgid "Unrecognized media files missing from harddrive"
+msgstr ""
+
+#: ../http/static/home/home.html:25
+msgid "Will show technical information about the server."
 msgstr ""
 

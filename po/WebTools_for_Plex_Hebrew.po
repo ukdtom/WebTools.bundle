@@ -115,12 +115,12 @@ msgstr "Download all logs"
 msgid "Download selected logfile"
 msgstr "הורד יומנים נבחרים"
 
-#: ../http/static/findmedia/fm.html:78
+#: ../http/static/findmedia/fm.html:84
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
 msgstr "ביטול סריקה"
 
-#: ../http/static/findmedia/fm.html:43
+#: ../http/static/findmedia/fm.html:49
 #: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
 msgstr "הוסף תיקייה שהתעלמה ממנה"
@@ -130,12 +130,12 @@ msgstr "הוסף תיקייה שהתעלמה ממנה"
 msgid "Current features:"
 msgstr "תכונות נוכחיות:"
 
-#: ../http/static/findmedia/fm.html:92
+#: ../http/static/findmedia/fm.html:98
 #: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
 msgstr "הורד את התוצאה"
 
-#: ../http/static/findmedia/fm.html:26
+#: ../http/static/findmedia/fm.html:32
 msgid "Ignore Extras"
 msgstr "להתעלם ניצבים"
 
@@ -143,36 +143,20 @@ msgstr "להתעלם ניצבים"
 msgid "Ignore Hidden"
 msgstr "להתעלם מוסתר"
 
-#: ../http/static/findmedia/fm.html:31
+#: ../http/static/findmedia/fm.html:37
 msgid "Ignore folders"
 msgstr "להתעלם תיקיות"
-
-#: ../http/static/findmedia/fm.html:98
-msgid "No records missing from Plex database"
-msgstr "אין רשומות חסרות מתוך מסד הנתונים Plex"
-
-#: ../http/static/findmedia/fm.html:110
-msgid "No records missing from harddrive"
-msgstr "אין קבצים חסרים מהכונן הקשיח"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
 msgstr "עזרה רשימת השמעה"
 
-#: ../http/static/findmedia/fm.html:101
-msgid "Records missing from Plex database"
-msgstr "רשומות חסרות ממסד הנתונים של Plex"
-
-#: ../http/static/findmedia/fm.html:113
-msgid "Records missing from harddrive"
-msgstr "רשומות חסרות מהכונן הקשיח"
-
-#: ../http/static/findmedia/fm.html:59
+#: ../http/static/findmedia/fm.html:65
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
 msgstr "אפס הגדרות"
 
-#: ../http/static/findmedia/fm.html:67
+#: ../http/static/findmedia/fm.html:73
 #: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
 msgstr "שמור הגדרות"
@@ -181,7 +165,7 @@ msgstr "שמור הגדרות"
 msgid "Show settings"
 msgstr "הצג הגדרות"
 
-#: ../http/static/findmedia/fm.html:48
+#: ../http/static/findmedia/fm.html:54
 msgid "Valid extentions"
 msgstr "סיומת חוקית"
 
@@ -839,11 +823,39 @@ msgstr ""
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr ""
 
-#: ../http/static/findmedia/fm.html:122
-msgid "No unmatched medias found"
+#: ../http/static/playlist/playlist.html:28
+msgid "Choose a playlist file to import"
 msgstr ""
 
-#: ../http/static/findmedia/fm.html:125
-msgid "Unmatched medias from Plex Media Server"
+#: ../http/static/findmedia/fm.html:26
+msgid "Ignore Specials"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:131
+msgid "Items without metadata from Plex Media Server"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:128
+msgid "No items without metadata found"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:116
+msgid "No unrecognized media files from the harddrive"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:104
+msgid "No unrecognized media files in the Plex database"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:107
+msgid "Unrecognized media files in the Plex database"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:119
+msgid "Unrecognized media files missing from harddrive"
+msgstr ""
+
+#: ../http/static/home/home.html:25
+msgid "Will show technical information about the server."
 msgstr ""
 

@@ -117,12 +117,12 @@ msgstr "Télécharger tous les fichiers journaux (fichier ZIP)"
 msgid "Download selected logfile"
 msgstr "Télécharger le fichier journal sélectionné"
 
-#: ../http/static/findmedia/fm.html:78
+#: ../http/static/findmedia/fm.html:84
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
 msgstr "Abandonner le balayage"
 
-#: ../http/static/findmedia/fm.html:43
+#: ../http/static/findmedia/fm.html:49
 #: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
 msgstr "Ajouter un dossier ignoré"
@@ -132,12 +132,12 @@ msgstr "Ajouter un dossier ignoré"
 msgid "Current features:"
 msgstr "Caractéristiques actuelles:"
 
-#: ../http/static/findmedia/fm.html:92
+#: ../http/static/findmedia/fm.html:98
 #: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
 msgstr "Télécharger le résultat"
 
-#: ../http/static/findmedia/fm.html:26
+#: ../http/static/findmedia/fm.html:32
 msgid "Ignore Extras"
 msgstr "Ignorer les extras"
 
@@ -145,36 +145,20 @@ msgstr "Ignorer les extras"
 msgid "Ignore Hidden"
 msgstr "Ignorer fichiers cachés"
 
-#: ../http/static/findmedia/fm.html:31
+#: ../http/static/findmedia/fm.html:37
 msgid "Ignore folders"
 msgstr "Ignorer les dossiers"
-
-#: ../http/static/findmedia/fm.html:98
-msgid "No records missing from Plex database"
-msgstr "Aucun enregistrement manquant dans la base de données Plex"
-
-#: ../http/static/findmedia/fm.html:110
-msgid "No records missing from harddrive"
-msgstr "Aucun enregistrement manquant sur le disque dur"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
 msgstr "Aide pour liste de lecture"
 
-#: ../http/static/findmedia/fm.html:101
-msgid "Records missing from Plex database"
-msgstr "Enregistrements manquants dans la base de données Plex"
-
-#: ../http/static/findmedia/fm.html:113
-msgid "Records missing from harddrive"
-msgstr "Enregistrements manquants dans le disque dur"
-
-#: ../http/static/findmedia/fm.html:59
+#: ../http/static/findmedia/fm.html:65
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
 msgstr "Paramètres par défaut"
 
-#: ../http/static/findmedia/fm.html:67
+#: ../http/static/findmedia/fm.html:73
 #: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
 msgstr "Sauvegarder paramètres"
@@ -183,7 +167,7 @@ msgstr "Sauvegarder paramètres"
 msgid "Show settings"
 msgstr "Afficher les paramètres"
 
-#: ../http/static/findmedia/fm.html:48
+#: ../http/static/findmedia/fm.html:54
 msgid "Valid extentions"
 msgstr "Extensions valides"
 
@@ -821,11 +805,11 @@ msgstr "<plugin>Specifiez le port HTTPS pour ce plug-in. Ne PAS utilizer: 1900, 
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
-msgstr ""
+msgstr "<plugin>Nom du fichier CRT dans Contents/Code/Certificate directory</plugin>"
 
 #: ../http/static/playlist/playlist.html:29
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
 #: ../http/static/info/info.html:6
 msgid "Key"
@@ -841,13 +825,41 @@ msgstr "Valeur"
 
 #: ../Contents/Resources/language_template.html:56
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
+msgstr "NE PAS PARTAGER CECI SUR TOUT SITE WEB PUBLIC!"
+
+#: ../http/static/playlist/playlist.html:28
+msgid "Choose a playlist file to import"
 msgstr ""
 
-#: ../http/static/findmedia/fm.html:122
-msgid "No unmatched medias found"
+#: ../http/static/findmedia/fm.html:26
+msgid "Ignore Specials"
 msgstr ""
 
-#: ../http/static/findmedia/fm.html:125
-msgid "Unmatched medias from Plex Media Server"
+#: ../http/static/findmedia/fm.html:131
+msgid "Items without metadata from Plex Media Server"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:128
+msgid "No items without metadata found"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:116
+msgid "No unrecognized media files from the harddrive"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:104
+msgid "No unrecognized media files in the Plex database"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:107
+msgid "Unrecognized media files in the Plex database"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:119
+msgid "Unrecognized media files missing from harddrive"
+msgstr ""
+
+#: ../http/static/home/home.html:25
+msgid "Will show technical information about the server."
 msgstr ""
 

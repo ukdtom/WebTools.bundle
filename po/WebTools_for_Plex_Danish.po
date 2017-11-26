@@ -117,12 +117,12 @@ msgstr "Download alle logfiler som en zip fil"
 msgid "Download selected logfile"
 msgstr "Download valgte logfil"
 
-#: ../http/static/findmedia/fm.html:78
+#: ../http/static/findmedia/fm.html:84
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
 msgstr "Afbryd scanning"
 
-#: ../http/static/findmedia/fm.html:43
+#: ../http/static/findmedia/fm.html:49
 #: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
 msgstr "Tilføj et bibliotek som skal ignoreres"
@@ -133,12 +133,12 @@ msgstr "Tilføj et bibliotek som skal ignoreres"
 msgid "Current features:"
 msgstr "Tilgængelige muligheder"
 
-#: ../http/static/findmedia/fm.html:92
+#: ../http/static/findmedia/fm.html:98
 #: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
 msgstr "Download resultatet"
 
-#: ../http/static/findmedia/fm.html:26
+#: ../http/static/findmedia/fm.html:32
 msgid "Ignore Extras"
 msgstr "Ignorer Extras"
 
@@ -146,36 +146,20 @@ msgstr "Ignorer Extras"
 msgid "Ignore Hidden"
 msgstr "Ignorer skjulte filer"
 
-#: ../http/static/findmedia/fm.html:31
+#: ../http/static/findmedia/fm.html:37
 msgid "Ignore folders"
 msgstr "Ignorer biblioteker"
-
-#: ../http/static/findmedia/fm.html:98
-msgid "No records missing from Plex database"
-msgstr "Der mangler intet fra Plex databasen"
-
-#: ../http/static/findmedia/fm.html:110
-msgid "No records missing from harddrive"
-msgstr "Ingen filer mangler fra dine harddiske"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
 msgstr "Playlist hjælp"
 
-#: ../http/static/findmedia/fm.html:101
-msgid "Records missing from Plex database"
-msgstr "Media der mangler fra Plex databasen"
-
-#: ../http/static/findmedia/fm.html:113
-msgid "Records missing from harddrive"
-msgstr "Filer der mangler fra harddiske"
-
-#: ../http/static/findmedia/fm.html:59
+#: ../http/static/findmedia/fm.html:65
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
 msgstr "Nulstil indstillinger"
 
-#: ../http/static/findmedia/fm.html:67
+#: ../http/static/findmedia/fm.html:73
 #: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
 msgstr "Gem instillinger"
@@ -184,7 +168,7 @@ msgstr "Gem instillinger"
 msgid "Show settings"
 msgstr "Vis indstillinger"
 
-#: ../http/static/findmedia/fm.html:48
+#: ../http/static/findmedia/fm.html:54
 msgid "Valid extentions"
 msgstr "Valide fil endelser"
 
@@ -847,11 +831,39 @@ msgstr "Værdi"
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr "DEL IKKE DETTE PÅ ET OFFENTLIGT WEBSITE!!!"
 
-#: ../http/static/findmedia/fm.html:122
-msgid "No unmatched medias found"
-msgstr "Ingen ikke matched medias fundet"
+#: ../http/static/playlist/playlist.html:28
+msgid "Choose a playlist file to import"
+msgstr "Vælg en playliste at importere"
 
-#: ../http/static/findmedia/fm.html:125
-msgid "Unmatched medias from Plex Media Server"
-msgstr "Ikke matchede medias fra Plex Media Server"
+#: ../http/static/findmedia/fm.html:26
+msgid "Ignore Specials"
+msgstr "Ignorer Specials"
+
+#: ../http/static/findmedia/fm.html:131
+msgid "Items without metadata from Plex Media Server"
+msgstr "Media uden metadata fra Plex Media Server"
+
+#: ../http/static/findmedia/fm.html:128
+msgid "No items without metadata found"
+msgstr "Ingen media blev fundet, som mangler Metadata"
+
+#: ../http/static/findmedia/fm.html:116
+msgid "No unrecognized media files from the harddrive"
+msgstr "Ingen ukendte media filer fundet på harddisken"
+
+#: ../http/static/findmedia/fm.html:104
+msgid "No unrecognized media files in the Plex database"
+msgstr "Ingen ukendte media fundet i Plex databasen"
+
+#: ../http/static/findmedia/fm.html:107
+msgid "Unrecognized media files in the Plex database"
+msgstr "Ukendte media filer i Plex databasen"
+
+#: ../http/static/findmedia/fm.html:119
+msgid "Unrecognized media files missing from harddrive"
+msgstr "Ukendte media på harddisken"
+
+#: ../http/static/home/home.html:25
+msgid "Will show technical information about the server."
+msgstr "Vil vise teknisk information om din Plex Media Server"
 

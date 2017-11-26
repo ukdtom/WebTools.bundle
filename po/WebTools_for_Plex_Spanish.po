@@ -115,12 +115,12 @@ msgstr "Descargar logs en formato ZIP"
 msgid "Download selected logfile"
 msgstr "Descargar el log seleccionado"
 
-#: ../http/static/findmedia/fm.html:78
+#: ../http/static/findmedia/fm.html:84
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
 msgstr "Cancelar escaneo"
 
-#: ../http/static/findmedia/fm.html:43
+#: ../http/static/findmedia/fm.html:49
 #: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
 msgstr "Agregar carpeta ignorada"
@@ -130,12 +130,12 @@ msgstr "Agregar carpeta ignorada"
 msgid "Current features:"
 msgstr "Características actuales:"
 
-#: ../http/static/findmedia/fm.html:92
+#: ../http/static/findmedia/fm.html:98
 #: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
 msgstr "Descargar resultado"
 
-#: ../http/static/findmedia/fm.html:26
+#: ../http/static/findmedia/fm.html:32
 msgid "Ignore Extras"
 msgstr "Ignorar Extras"
 
@@ -143,36 +143,20 @@ msgstr "Ignorar Extras"
 msgid "Ignore Hidden"
 msgstr "Ignorar Ocultos"
 
-#: ../http/static/findmedia/fm.html:31
+#: ../http/static/findmedia/fm.html:37
 msgid "Ignore folders"
 msgstr "Ignorar Carpetas"
-
-#: ../http/static/findmedia/fm.html:98
-msgid "No records missing from Plex database"
-msgstr "No faltan registros en la base de datos de Plex"
-
-#: ../http/static/findmedia/fm.html:110
-msgid "No records missing from harddrive"
-msgstr "No faltan archivos en tu disco duro"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
 msgstr "Ayuda \"playlist\""
 
-#: ../http/static/findmedia/fm.html:101
-msgid "Records missing from Plex database"
-msgstr "Registros en falta en la base de datos de Plex"
-
-#: ../http/static/findmedia/fm.html:113
-msgid "Records missing from harddrive"
-msgstr "Registros en falta en disco duro"
-
-#: ../http/static/findmedia/fm.html:59
+#: ../http/static/findmedia/fm.html:65
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
 msgstr "Reiniciar parametraje"
 
-#: ../http/static/findmedia/fm.html:67
+#: ../http/static/findmedia/fm.html:73
 #: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
 msgstr "Guardar parametraje"
@@ -181,7 +165,7 @@ msgstr "Guardar parametraje"
 msgid "Show settings"
 msgstr "Presentar parametraje"
 
-#: ../http/static/findmedia/fm.html:48
+#: ../http/static/findmedia/fm.html:54
 msgid "Valid extentions"
 msgstr "Extensiones válidas"
 
@@ -839,11 +823,39 @@ msgstr ""
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr ""
 
-#: ../http/static/findmedia/fm.html:122
-msgid "No unmatched medias found"
+#: ../http/static/playlist/playlist.html:28
+msgid "Choose a playlist file to import"
 msgstr ""
 
-#: ../http/static/findmedia/fm.html:125
-msgid "Unmatched medias from Plex Media Server"
+#: ../http/static/findmedia/fm.html:26
+msgid "Ignore Specials"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:131
+msgid "Items without metadata from Plex Media Server"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:128
+msgid "No items without metadata found"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:116
+msgid "No unrecognized media files from the harddrive"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:104
+msgid "No unrecognized media files in the Plex database"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:107
+msgid "Unrecognized media files in the Plex database"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:119
+msgid "Unrecognized media files missing from harddrive"
+msgstr ""
+
+#: ../http/static/home/home.html:25
+msgid "Will show technical information about the server."
 msgstr ""
 

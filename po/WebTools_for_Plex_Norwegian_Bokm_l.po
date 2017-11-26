@@ -115,12 +115,12 @@ msgstr "Last ned alle loggene i en ZIP-fil"
 msgid "Download selected logfile"
 msgstr "Last ned den valgte loggfila"
 
-#: ../http/static/findmedia/fm.html:78
+#: ../http/static/findmedia/fm.html:84
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
 msgstr "Avbryt skanning"
 
-#: ../http/static/findmedia/fm.html:43
+#: ../http/static/findmedia/fm.html:49
 #: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
 msgstr "Legg til ignorert mappe"
@@ -130,12 +130,12 @@ msgstr "Legg til ignorert mappe"
 msgid "Current features:"
 msgstr "Nåværende funksjoner:"
 
-#: ../http/static/findmedia/fm.html:92
+#: ../http/static/findmedia/fm.html:98
 #: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
 msgstr "Nedlastingsresultat"
 
-#: ../http/static/findmedia/fm.html:26
+#: ../http/static/findmedia/fm.html:32
 msgid "Ignore Extras"
 msgstr "Ignorer ekstramateriale"
 
@@ -143,36 +143,20 @@ msgstr "Ignorer ekstramateriale"
 msgid "Ignore Hidden"
 msgstr "Ignorer skjulte"
 
-#: ../http/static/findmedia/fm.html:31
+#: ../http/static/findmedia/fm.html:37
 msgid "Ignore folders"
 msgstr "Ignorer mapper"
-
-#: ../http/static/findmedia/fm.html:98
-msgid "No records missing from Plex database"
-msgstr "Ingen poster mangler i Plex-databasen"
-
-#: ../http/static/findmedia/fm.html:110
-msgid "No records missing from harddrive"
-msgstr "Ingen filer mangler på harddisken"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
 msgstr "Spillelistehjelp"
 
-#: ../http/static/findmedia/fm.html:101
-msgid "Records missing from Plex database"
-msgstr "Poster som mangler i Plex-databasen"
-
-#: ../http/static/findmedia/fm.html:113
-msgid "Records missing from harddrive"
-msgstr "Filer som mangler på harddisken"
-
-#: ../http/static/findmedia/fm.html:59
+#: ../http/static/findmedia/fm.html:65
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
 msgstr "Tilbakestill innstillinger"
 
-#: ../http/static/findmedia/fm.html:67
+#: ../http/static/findmedia/fm.html:73
 #: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
 msgstr "Lagre innstillinger"
@@ -181,7 +165,7 @@ msgstr "Lagre innstillinger"
 msgid "Show settings"
 msgstr "Vis innstillinger"
 
-#: ../http/static/findmedia/fm.html:48
+#: ../http/static/findmedia/fm.html:54
 msgid "Valid extentions"
 msgstr "Gyldige filetternavn"
 
@@ -820,29 +804,57 @@ msgstr "<plugin>Filnavnet til crt sertifikatfila i Contents/Code/Certificate map
 
 #: ../http/static/playlist/playlist.html:29
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #: ../http/static/info/info.html:6
 msgid "Key"
-msgstr ""
+msgstr "Nøkkel"
 
 #: ../http/static/info/info.html:2
 msgid "Techincal Info"
-msgstr ""
+msgstr "Teknisk info"
 
 #: ../http/static/info/info.html:7
 msgid "Value"
-msgstr ""
+msgstr "Verdi"
 
 #: ../Contents/Resources/language_template.html:56
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
+msgstr "IKKE DEL DETTE PÅ NOEN OFFENTLIGE NETTSTEDER!"
+
+#: ../http/static/playlist/playlist.html:28
+msgid "Choose a playlist file to import"
 msgstr ""
 
-#: ../http/static/findmedia/fm.html:122
-msgid "No unmatched medias found"
+#: ../http/static/findmedia/fm.html:26
+msgid "Ignore Specials"
 msgstr ""
 
-#: ../http/static/findmedia/fm.html:125
-msgid "Unmatched medias from Plex Media Server"
+#: ../http/static/findmedia/fm.html:131
+msgid "Items without metadata from Plex Media Server"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:128
+msgid "No items without metadata found"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:116
+msgid "No unrecognized media files from the harddrive"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:104
+msgid "No unrecognized media files in the Plex database"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:107
+msgid "Unrecognized media files in the Plex database"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:119
+msgid "Unrecognized media files missing from harddrive"
+msgstr ""
+
+#: ../http/static/home/home.html:25
+msgid "Will show technical information about the server."
 msgstr ""
 

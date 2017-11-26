@@ -5,496 +5,496 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
 "Project-Id-Version: WebTools for Plex\n"
-"Language: sv\n"
+"Language: el\n"
 
 #: ../http/static/home/home.html:4
 msgid "Use the menu on the left side to navigate in WebTools."
-msgstr "Använd menyn på vänster sida för att navigera i WebTools."
+msgstr "Χρησιμοποιήστε το μενού στα αριστερά για περιήγηση στο WebTools"
 
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
-msgstr "WebTools är ett verktyg bestående av moduler som hjälper dig att administrera din Plex server."
+msgstr "Το WebTools είναι ένα επιπρόσθετο που βοηθάει στην διαχείρηση του Plex Server"
 
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
-msgstr "Både lokala (placerade bredvid filmen i sin katalog eller i en tillhörande underkatalog) och i agentens egna katalog."
+msgstr "Και τα δύο συνύπαρχουν (στο φάκελο/υποφάκελο της ταινίας) και στο φάκελο του προγράμματος αντιστοίχησης."
 
 #: ../http/static/theme/theme.html:2
 msgid "Change Theme"
-msgstr "Ändra Tema"
+msgstr "Αλλαγή Θέματος"
 
 #: ../http/static/menu/menu.html:18
 msgid "Changelog"
-msgstr "Ändra logg"
+msgstr "Αλλαγές εκδόσεων"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
-msgstr "Ändra loggvisare"
+msgstr "Προβολέας αλλαγών"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
-msgstr "Ta bort vald lokal undertext från hårddisken."
+msgstr "Διαγράψτε το επιλεγμένο εξωτερικό υπότιτλο. Σημείωση: Μη αναστρέψιμη ενέργεια"
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
-msgstr "Filen är tom"
+msgstr "Άδειο αρχείο"
 
 #: ../http/static/menu/menu.html:23
 msgid "Help"
-msgstr "Hjälp"
+msgstr "Βοήθεια"
 
 #: ../http/static/sub_management/subHelp.html:5
 msgid "List all subtitles for a movie/tv show in your library."
-msgstr "Skapa en lista på alla undertexter för en Film / ett TV-program i ditt bibliotek"
+msgstr "Εμφάνισε όλους του υπότιτλους για μια ταινία/σειρά στην βιβλιοθήκη σου"
 
 #: ../http/static/logs/logs.html:17
 msgid "LogViewer Tool"
-msgstr "LogViewer Verktyget"
+msgstr "Προβολή Log"
 
 #: ../http/static/menu/menu.html:20
 msgid "Logout"
-msgstr "Logga ut"
+msgstr "Αποσύνδεση"
 
 #: ../http/static/menu/menu.html:12
 msgid "Options"
-msgstr "Alternativ"
+msgstr "Επιλογές"
 
 #: ../http/static/sub_management/subHelp.html:15
 msgid "Options for output."
-msgstr "Resultatalternativ."
+msgstr "Επιλογές εξόδου"
 
 #: ../http/static/sub_management/subHelp.html:18
 msgid "Search for for movies and series inside categories"
-msgstr "Sök efter Filmer och TV-program inuti kategorier."
+msgstr "Αναζήτηση ταινίας ή σειράς στις κατηγορίες"
 
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
-msgstr "Välj ett av följande teman för användning:"
+msgstr "Επιλέξτε ένα απο τα διαθέσιμα θέματα:"
 
 #: ../http/static/findmedia/fm.html:4
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
-msgstr "Välj ett av biblioteken nedan för att leta efter Filmer / TV-program som inte existerar i antingen Plex-databasen eller på din hårddisk."
+msgstr "Επιλέξτε μία βιβλιοθήκη παρακάτω για εύρεση ταινιών/σειρών που δεν υπάρχουν στο Plex ή στον σκλήρο."
 
 #: ../http/static/menu/menu.html:17
 msgid "Theme"
-msgstr "Tema"
+msgstr "Θέμα"
 
 #: ../http/static/findmedia/fm.html:3
 msgid "This tool is a combination of FindUnmatched and FindMissing."
-msgstr "Det här verktyget är en kombination av \"FindUnmatched\" och \"FindMissing\"."
+msgstr "Το εργαλέιο είναι συνδυασμός του 'ΨάξεΜηΑντιστοιχήσιμο' και ΨάξεΑγνοούμενο'"
 
 #: ../http/static/menu/menu.html:14
 msgid "Update WT"
-msgstr "Uppdatera WebTools"
+msgstr "Ενημέρωση WebTools"
 
 #: ../http/static/sub_management/subHelp.html:9
 msgid "View the subtitle and see it's contents to determine what to delete."
-msgstr "Granska innehållet av undertexter för att bedöma vad som ska tas bort."
+msgstr "Προβολή του υπότιτλου για την επίλογη υπότιτλου προς διαγραφή."
 
 #: ../http/static/menu/menu.html:25
 msgid "WT Forum Thread"
-msgstr "WT Forumtråd"
+msgstr "Φόρουμ WebTools"
 
 #: ../http/static/menu/menu.html:26
 msgid "WT GitHub"
-msgstr "WT GitHub"
+msgstr "WebTools GitHub"
 
 #: ../http/static/404/404.html:1
 msgid "We could not find the page :("
-msgstr "Vi kunde inte hitta sidan :("
+msgstr "Η σελίδα δεν βρέθηκε. :("
 
 #: ../http/static/logs/logs.html:36
 msgid "We recommend you to download large files and view them in your favourite text editor."
-msgstr "Vi rekommenderar att du laddar ner större filer och visar dem lokalt i din textredigerare."
+msgstr "Προτίνουμε να κατεβάσετε μεγάλα αρχεία και να τα προβάλετε σε text editor της επιλογής σας."
 
 #: ../http/static/logs/logs.html:28
 msgid "Download all logfiles as zip"
-msgstr "Ladda ned alla loggfiler i en ZIP-fil"
+msgstr "Κατέβαστε ολα τα logs"
 
 #: ../http/static/logs/logs.html:27
 msgid "Download selected logfile"
-msgstr "Ladda ned vald loggfil"
+msgstr "Κατεβάστε τα επιλεγμένα logs"
 
 #: ../http/static/findmedia/fm.html:84
 #: ../http/static/findmedia/fmController.js:12
 msgid "Abort scan"
-msgstr "Avbryt genomsökning"
+msgstr "Ακύρωση σάρωσης"
 
 #: ../http/static/findmedia/fm.html:49
 #: ../http/static/findmedia/fmController.js:9
 msgid "Add ignored folder"
-msgstr "Lägg till ignorerad katalog"
+msgstr "Προσθήκη εξαιρούμενου φακέλου"
 
 #: ../http/static/playlist/playlistHelp.html:2
 #: ../http/static/sub_management/subHelp.html:2
 msgid "Current features:"
-msgstr "Aktuella funktioner:"
+msgstr "Τωρινές δυνατότητες:"
 
 #: ../http/static/findmedia/fm.html:98
 #: ../http/static/findmedia/fmController.js:13
 msgid "Download result"
-msgstr "Nedladdningsresultat"
+msgstr "Αποτέλεσμα λήψης"
 
 #: ../http/static/findmedia/fm.html:32
 msgid "Ignore Extras"
-msgstr "Ignorera Extramaterial"
+msgstr "Αγνόηση εξτρα"
 
 #: ../http/static/findmedia/fm.html:20
 msgid "Ignore Hidden"
-msgstr "Ignorera Dolda"
+msgstr "Αγνόηση κρυμμένων"
 
 #: ../http/static/findmedia/fm.html:37
 msgid "Ignore folders"
-msgstr "Ignorera kataloger"
+msgstr "Αγνόηση φακέλων"
 
 #: ../http/static/playlist/playlistHelp.html:1
 msgid "Playlist Help"
-msgstr "Spellista Hjälp"
+msgstr "Λίστα βοήθειας"
 
 #: ../http/static/findmedia/fm.html:65
 #: ../http/static/findmedia/fmController.js:10
 msgid "Reset settings"
-msgstr "Återställ Inställningarna"
+msgstr "Εκαθάρισση Ρυθμίσεων"
 
 #: ../http/static/findmedia/fm.html:73
 #: ../http/static/findmedia/fmController.js:11
 msgid "Save settings"
-msgstr "Spara Inställningarna"
+msgstr "Αποθήκευση Ρυθμίσεων"
 
 #: ../http/static/findmedia/fm.html:12
 msgid "Show settings"
-msgstr "Visa Inställningarna"
+msgstr "Εμφάνιση Ρυθμίσεων"
 
 #: ../http/static/findmedia/fm.html:54
 msgid "Valid extentions"
-msgstr "Giltig Ändelse"
+msgstr "Επικ"
 
 #: ../http/static/language/language.html:5
 msgid "Change Language"
-msgstr "Ändra Språk"
+msgstr "Αλλάξτε γλώσσα"
 
 #: ../http/static/menu/menu.html:15
 msgid "Language"
-msgstr "Språk"
+msgstr "Γλώσσα"
 
 #: ../http/static/language/language.html:12
 msgid "Force language translation update"
-msgstr "Tvinga en uppdatering av språköversättningen"
+msgstr "Αναγκαστική ενημέρωση γλώσσας"
 
 #: ../http/static/logs/logs.html:5
 #: ../http/static/sub_management/sub.html:88
 msgid "Found"
-msgstr "Hittad"
+msgstr "Βρέθηκε"
 
 #: ../http/static/home/home.html:1
 msgid "Welcome to"
-msgstr "Välkommen till"
+msgstr "Καλώς ήρθατε στο"
 
 #: ../http/static/logs/logs.html:5
 #: ../http/static/sub_management/sub.html:89
 msgid "rows"
-msgstr "rader"
+msgstr "γραμμές"
 
 #: ../http/static/logs/logsController.js:9
 #: ../http/static/sub_management/subController.js:8
 msgid "Clear search"
-msgstr "Rensa Sökning"
+msgstr "Εκκαθάριση Αναζήτησης"
 
 #: ../http/static/findmedia/fmController.js:8
 msgid "Delete ignored folder"
-msgstr "Sluta ignorera katalog"
+msgstr "Σταμάτα να αγνοείς το φάκελο"
 
 #: ../http/static/logs/logsController.js:13
 #: ../http/static/sub_management/subController.js:12
 msgid "Hide/Show search menu"
-msgstr "Göm/Visa Sökmenyn"
+msgstr "Απέκρυψε/Εμφάνισε το Μενού Αναζήτησης"
 
 #: ../http/static/findmedia/fmController.js:14
 msgid "Hide/Show settings menu"
-msgstr "Göm/Visa Inställningsmenyn"
+msgstr "Απέκρυψε/Εμφάνισε το Μενού Ρυθμίσεων"
 
 #: ../http/static/logs/logsController.js:12
 #: ../http/static/sub_management/subController.js:11
 msgid "Jump to top"
-msgstr "Hoppa till Toppen"
+msgstr "Πήγαινε στην Αρχή"
 
 #: ../http/static/logs/logsController.js:11
 #: ../http/static/sub_management/subController.js:10
 msgid "Next"
-msgstr "Nästa"
+msgstr "Επόμενο"
 
 #: ../http/static/logs/logsController.js:10
 #: ../http/static/sub_management/subController.js:9
 msgid "Previous"
-msgstr "Föregående"
+msgstr "Προηγούμενο"
 
 #: ../http/static/logs/logsController.js:8
 #: ../http/static/sub_management/subController.js:7
 msgid "Search keyword"
-msgstr "Sök nyckelord"
+msgstr "Αναζήτηση λέξης"
 
 #: ../http/static/logs/logsController.js:7
 msgid "search..."
-msgstr "Sök..."
+msgstr "Αναζήτηση..."
 
 #: ../http/static/home/home.html:22
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
-msgstr "Tillåter dig att kopiera spellistor mellan användare, liksom att importera, exportera och ta bort dem."
+msgstr "Σας επιτρέπει να αντιγράψετε λίστες μεταξύ χρηστών όπως και να τις εισάγετε, εξάγετε, διαγράψετε."
 
 #: ../http/static/home/home.html:13
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
-msgstr "Den här verktygsmodulen möjliggör enkel tillgång till alla Plex Media Server loggar och tillåter även ett enkelt sätt att ladda ned individuella loggar eller alla loggar i ett behändigt ZIP-arkiv."
+msgstr ""
 
 #: ../http/static/home/home.html:19
 msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
-msgstr "Den här verktygsmodulen gör det möjligt att hitta media som saknas från antingen databasen eller filsystemet."
+msgstr ""
 
 #: ../http/static/home/home.html:10
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
-msgstr "Den här verktygsmodulen gör det möjligt för dig att hantera dina undertexter, oavsett om dessa är lokaliserade bredvid ditt media eller nedladdade via något annat insticksprogram, som till exempel OpenSubtitles.org agenten. Du får en överblick av alla undertexter kopplade till ditt media och kan även ta bort dessa förutsatt att de inte är inbäddade i själva mediafilen."
+msgstr ""
 
 #: ../http/static/home/home.html:16
 msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
-msgstr "Den här verktygsmodulen tillåter dig att installera, uppdatera och ta bort osupporterade Plex Media Server insticksprogram."
+msgstr "Αυτό το εργαλείο σας επιτρέπει να εγκαταστήσετε, ενημερώσετε και να διαγράψετε επιπρόσθετα στο Plex Server"
 
 #: ../http/static/home/home.html:7
 msgid "Tool Modules currently available are:"
-msgstr "Verktygsmoduler som för närvarande är tillgängliga:"
+msgstr "Διαθέσιμα Εργαλεία:"
 
 #: ../http/static/uas/uasHelp.html:1
 msgid "UnsupportedAppStore Help"
-msgstr "UnsupportedAppStore Hjälp"
+msgstr ""
 
 #: ../http/static/uas/uasHelp.html:6
 msgid "* Category names contain installed/total available channels."
-msgstr "* Kategorinamn visar installerade/totalt tillgängliga insticksprogram."
+msgstr ""
 
 #: ../http/static/uas/uasHelp.html:2
 msgid "* Here you can either install a channel by it's Github repository link or by selecting one of the categories below."
-msgstr "* Här kan du antingen installera ett insticksprogram från dess GitHub repositorium eller genom att välja en av kategorierna nedan."
+msgstr ""
 
 #: ../http/static/uas/uasHelp.html:3
 msgid "* If you have installed channels manually before installing WebTools, you can click on the \"Migrate manually/previously installed channels\" to make WebTools aware of them."
-msgstr "* Om du har installerat insticksprogram manuellt innan du installerade WebTools, så kan du klicka på \"Migrera manuella/tidigare installerade insticksprogram\" för att uppmärksamma WebTools att dessa är tillgängliga."
+msgstr ""
 
 #: ../http/static/uas/uasHelp.html:4
 msgid "* You can also search for updates for all installed channels managed by WebTools via the \"Check for updates for all installed channels\" button."
-msgstr "* Du kan också söka för uppdateringar avseende alla insticksprogram hanterade genom att i WebTools klicka på \"Kontrollera uppdateringar för alla installerade insticksprogram\"-knappen."
+msgstr ""
 
 #: ../http/static/uas/uasHelp.html:7
 msgid "* You can expand the items by clicking on them."
-msgstr "* Du kan expandera alternativen genom att klicka på dem."
+msgstr ""
 
 #: ../http/static/uas/uasHelp.html:5
 msgid "* You can select a category on the menu on the right."
-msgstr "* Du kan välja en kategori från menyn på höger sida. "
+msgstr ""
 
 #: ../http/static/uas/uas.html:13
 msgid "Check for bundle updates"
-msgstr "Kontrollera uppdateringar för insticksprogram"
+msgstr ""
 
 #: ../http/static/uas/uas.html:12
 msgid "Force UAS update"
-msgstr "Tvinga UAS uppdatering"
+msgstr ""
 
 #: ../http/static/uas/uas.html:8
 msgid "Manual Install"
-msgstr "Manuell Installation"
+msgstr ""
 
 #: ../http/static/uas/uas.html:11
 msgid "Migrate"
-msgstr "Migrera"
+msgstr ""
 
 #: ../http/static/uas/uas.html:80
 msgid "Categories:"
-msgstr "Kategorier:"
+msgstr ""
 
 #: ../http/static/playlist/playlist.html:42
 msgid "Copy"
-msgstr "Kopiera"
+msgstr ""
 
 #: ../http/static/playlist/playlist.html:41
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
-msgstr "Ta bort"
+msgstr ""
 
 #: ../http/static/playlist/playlist.html:46
 msgid "Download"
-msgstr "Ladda ned"
+msgstr ""
 
 #: ../http/static/uas/uas.html:54
 msgid "Install"
-msgstr "Installera"
+msgstr ""
 
 #: ../http/static/uas/uas.html:88
 msgid "Last updated:"
-msgstr "Sist uppdaterad:"
+msgstr ""
 
 #: ../http/static/uas/uasController.js:9
 msgid "Manual install url..."
-msgstr "Manuell installations-URL..."
+msgstr ""
 
 #: ../http/static/uas/uas.html:96
 msgid "Manual:"
-msgstr "Manual:"
+msgstr ""
 
 #: ../http/static/uas/uas.html:104
 msgid "Repo:"
-msgstr "Repo:"
+msgstr ""
 
 #: ../http/static/playlist/playlist.html:9
 msgid "Select user"
-msgstr "Välj användare"
+msgstr ""
 
 #: ../http/static/_shared/webtoolsService.js:5
 msgid "Self"
-msgstr "Själv"
+msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:1
 msgid "Subtitle Management Help"
-msgstr "Hantera Undertexter Hjälp"
+msgstr ""
 
 #: ../http/static/uas/uas.html:113
 msgid "Support:"
-msgstr "Support:"
+msgstr ""
 
 #: ../http/static/sub_management/sub.html:4
 msgid "This is an unofficial manager for subtitles."
-msgstr "Den här verktygsmodulen är en inofficiell hanterare för undertexter."
+msgstr ""
 
 #: ../http/static/sub_management/sub.html:6
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
-msgstr "För att komma igång, välj ett av dina bibliotek eller klicka på \"?\" för ytterligare hjälp"
+msgstr ""
 
 #: ../http/static/uas/uas.html:55
 msgid "Update"
-msgstr "Uppdatera"
+msgstr ""
 
 #: ../http/static/sub_management/sub.html:5
 msgid "Usage at your own risk!"
-msgstr "Använd på eget bevåg!"
+msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:6
 msgid "Copy a playlist between users"
-msgstr "Kopiera en spellista mellan användare"
+msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:5
 msgid "Delete a playlist"
-msgstr "Ta bort en spellista"
+msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:4
 msgid "Download a playlist"
-msgstr "Ladda ned en spellista"
+msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:7
 msgid "Import a playlist"
-msgstr "Importera en spellista"
+msgstr ""
 
 #: ../http/static/playlist/playlist.html:18
 msgid "Select target user"
-msgstr "Välj målanvändare"
+msgstr ""
 
 #: ../http/static/playlist/playlist.html:42
 msgid "Select target user to copy"
-msgstr "Välj målanvändare att kopiera till"
+msgstr ""
 
 #: ../http/static/playlist/playlist.html:3
 msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
-msgstr "För att komma igång, välj en av dina Spellistor eller klicka på \"?\" för ytterligare hjälp"
+msgstr ""
 
 #: ../http/static/language/language.html:15
 msgid "If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:"
-msgstr "Om ditt språk saknas, inte är översatt till 100%, eller om du helt enkelt vill förbättra översättningen, vänligen gå hit:"
+msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:9
 msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
-msgstr "Notera: För att kunna använda kopieringsfunktionen måste din Plex Media Server vara inloggad på plex.tv, detta eftersom vi hämtar användarlistan från plex.tv."
+msgstr ""
 
 #: ../http/static/uas/uasService.js:5
 msgid "Channels/Plug-ins migrated:"
-msgstr "Kanaler/Insticksprogram migrerade:"
+msgstr ""
 
 #: ../http/static/uas/uasService.js:6
 msgid "No Channels/Plug-ins was migrated"
-msgstr "Inga Kanaler/Insticksprogram blev migrerade"
+msgstr ""
 
 #: ../http/static/factoryreset/fr.html:4
 msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
-msgstr "Alla inställningar kommer att tas bort och efter återställningen kan du komma att behöva gå till UAS och klicka på migrera för att återställa dina insticksprogram."
+msgstr ""
 
 #: ../http/static/factoryreset/fr.html:2
 #: ../http/static/factoryreset/fr.html:7
 #: ../http/static/menu/menu.html:19
 msgid "Factory Reset"
-msgstr "Fabriksåterställning"
+msgstr ""
 
 #: ../http/static/factoryreset/fr.html:6
 msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
-msgstr "Om du klickar på nedan kommer WebTools att bli otillgängligt i ungefär 1 minut, efter det behöver du bara uppdatera sidan i din webbläsare."
+msgstr ""
 
 #: ../http/static/factoryreset/fr.html:3
 msgid "This will reset WebTools to what is was, when first installed"
-msgstr "Det här kommer återställa WebTools till dess ursprungliga tillstånd när du först installerade WebTools."
+msgstr ""
 
 #: ../http/static/playlist/playlist.html:52
 msgid "No playlists available"
-msgstr "Inga spellistor tillgängliga"
+msgstr ""
 
 #: ../http/static/uas/uasService.js:7
 msgid "Updates available"
-msgstr "Uppdateringar tillgängliga"
+msgstr ""
 
 #: ../http/static/menu/menu.html:27
 msgid "WT Manual Online"
-msgstr "WT Online Help"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:13
 msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
-msgstr "Ett stort tack går ut till alla personer som hjälpte till med översättning och testning av WebTools."
+msgstr ""
 
 #: ../http/static/menu/menu.html:16
 msgid "About us"
-msgstr "Om oss"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:22
 msgid "And Many Thanks To"
-msgstr "Och Ett Stort Tack Till"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:25
 msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
-msgstr "Och våra vänner hos POEditor.com, eftersom vi är ett öppet källkodsprojekt tillhandahöll de oss med en gratis översättningshemsida."
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:5
 msgid "Main Developers"
-msgstr "Huvudutvecklare"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:18
 msgid "Never Forget"
-msgstr "Glöm Aldrig"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:6
 msgid "Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),"
-msgstr "Oliver aka omc1000, en medlem av Plex sociala nätverk (creoludifico  på GitHub) (Front-end),"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:30
 msgid "Thank you for your support!!"
-msgstr "Tack för din support!"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:19
 msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
-msgstr "Idéen om en Unsupported AppStore kläcktes av mikedm139, originalutvecklaren av Unsupported AppStore."
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:7
 msgid "Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)"
-msgstr "Tommy aka dane22, en medlem av Plex sociala nätverk (ukdtom på GitHub) (Back-end),"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:20
 msgid "V2 frontend was made by dagalufh"
-msgstr "V2 front-end utvecklades av dagalufh"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:27
 msgid "Your Support"
-msgstr "Din Support"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:10
 msgid "trumpy81"
@@ -502,25 +502,25 @@ msgstr "trumpy81"
 
 #: ../http/static/aboutus/aboutus.html:3
 msgid "About us and Credits"
-msgstr "Om oss och Eftertext"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:9
 msgid "Custom Themes and Wiki"
-msgstr "Anpassat Tema och Wiki"
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:28
 msgid "If you use WebTools and you are willing to support the developers with a beer or two, then please click on the 'Donate'\n"
 "        button below."
-msgstr "Om du använder WebTools och är villig att supportera utvecklarna med en öl eller två, klicka då gärna på \"Donate\"-knappen nedan."
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:23
 msgid "The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and\n"
 "        hard work."
-msgstr "De talangfulla och hårt arbetande utvecklare och övrig personal hos Plex. Vi är evigt tacksamma för er dedikation och hårda arbete."
+msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:12
 msgid "Translations and Beta testers"
-msgstr "Översättare och Beta-testare"
+msgstr ""
 
 #: ../http/static/uas/uas.html:45
 msgid "Update all"
@@ -657,7 +657,7 @@ msgstr ""
 
 #: ../http/static/sub_management/Directive/subDetails.html:21
 msgid "Lang"
-msgstr ""
+msgstr "Γλώσσα"
 
 #: ../http/static/sub_management/sub.html:45
 msgid "Load more"
@@ -736,7 +736,7 @@ msgstr ""
 
 #: ../Contents/Resources/language_template.html:20
 msgid "idle"
-msgstr ""
+msgstr "αδράνεια"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
 msgid "Choose language for the subtitle"
@@ -808,11 +808,11 @@ msgstr ""
 
 #: ../http/static/info/info.html:6
 msgid "Key"
-msgstr ""
+msgstr "Κλειδί"
 
 #: ../http/static/info/info.html:2
 msgid "Techincal Info"
-msgstr ""
+msgstr "Τεχνίκες Πληροφορίες"
 
 #: ../http/static/info/info.html:7
 msgid "Value"
