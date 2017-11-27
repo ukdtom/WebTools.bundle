@@ -116,7 +116,7 @@
 
 .sub .rowShow .lineShow .contentShow .loadmore{
     height: 40px;
-    padding-top: 8px;
+    padding-top: 3px;
     text-align: center;
     background: rgba(0, 0, 0, 0.13);
     cursor:pointer;
