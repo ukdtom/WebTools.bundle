@@ -101,10 +101,10 @@
                             </div>
                             <div class="row"><div class="col-xs-12"><hr /></div></div>
                             <div class="row" ng-if="section.result.MissingFromDB.length === 0">
-                                <div class="col-xs-12 textBold600" translate>No file(s) found in the database, that wasn't present in the filesystem. All is good</div>                                
+                                <div class="col-xs-12 textBold600" translate>Perfect, media files are present and accessible for all items in the Plex database.</div>                                
                             </div>
                             <div class="row" ng-if="section.result.MissingFromDB.length > 0">
-                                <div class="col-xs-12 textBold600" translate>Plex has this file(s) in the database, but failed to locate it</div>
+                                <div class="col-xs-12 textBold600" translate>The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)</div>
                             </div>
                             <div class="row" ng-repeat="missingFromDb in section.result.MissingFromDB track by $index">
                                 <div class="col-xs-12">
@@ -113,10 +113,10 @@
                             </div>
                             <div class="row"><div class="col-xs-12"><hr /></div></div>
                             <div class="row" ng-if="section.result.MissingFromFS.length === 0">
-                                <div class="col-xs-12 textBold600" translate>No file(s) found in the file system, that wasn't present in the database. All is good</div>
+                                <div class="col-xs-12 textBold600" translate>Perfect, media files are present and accessible for all items in the Plex database</div>
                             </div>
                             <div class="row" ng-if="section.result.MissingFromFS.length > 0">
-                                <div class="col-xs-12 textBold600" translate>Plex has this file(s) in the file system, but failed to locate it in the database</div>
+                                <div class="col-xs-12 textBold600" translate>These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally</div>
                             </div>
                             <div class="row" ng-repeat="missingFromFS in section.result.MissingFromFS track by $index">
                                 <div class="col-xs-12">
