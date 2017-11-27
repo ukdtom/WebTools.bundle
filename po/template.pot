@@ -341,7 +341,7 @@ msgid "Install"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:131
-msgid "Items without metadata from Plex Media Server"
+msgid "Items missing metadata"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:12
@@ -451,7 +451,7 @@ msgid "No TV-Shows found in"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:128
-msgid "No items without metadata found"
+msgid "No items missing metadata"
 msgstr ""
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
@@ -464,14 +464,6 @@ msgstr ""
 
 #: ../http/static/playlist/playlist.html:52
 msgid "No playlists available"
-msgstr ""
-
-#: ../http/static/findmedia/fm.html:116
-msgid "No unrecognized media files from the harddrive"
-msgstr ""
-
-#: ../http/static/findmedia/fm.html:104
-msgid "No unrecognized media files in the Plex database"
 msgstr ""
 
 #: ../http/static/sub_management/Directive/subDetails.html:38
@@ -504,6 +496,14 @@ msgstr ""
 
 #: ../http/login.html:43
 msgid "Password again"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:104
+msgid "Perfect, media files are present and accessible for all items in the Plex database."
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
 msgstr ""
 
 #: ../http/static/playlist/playlistHelp.html:1
@@ -641,6 +641,10 @@ msgstr ""
 msgid "Thank you for your support!!"
 msgstr ""
 
+#: ../http/static/findmedia/fm.html:107
+msgid "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
+msgstr ""
+
 #: ../http/static/aboutus/aboutus.html:19
 msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
 msgstr ""
@@ -657,6 +661,10 @@ msgstr ""
 
 #: ../http/static/menu/menu.html:17
 msgid "Theme"
+msgstr ""
+
+#: ../http/static/findmedia/fm.html:119
+msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
 msgstr ""
 
 #: ../http/static/sub_management/sub.html:4
@@ -693,14 +701,6 @@ msgstr ""
 
 #: ../http/static/aboutus/aboutus.html:12
 msgid "Translations and Beta testers"
-msgstr ""
-
-#: ../http/static/findmedia/fm.html:107
-msgid "Unrecognized media files in the Plex database"
-msgstr ""
-
-#: ../http/static/findmedia/fm.html:119
-msgid "Unrecognized media files missing from harddrive"
 msgstr ""
 
 #: ../http/static/uas/uasHelp.html:1
