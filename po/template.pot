@@ -94,12 +94,16 @@ msgstr ""
 msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:108
+#: ../http/static/sub_management/sub.html:115
 msgid "Back"
 msgstr ""
 
 #: ../http/static/sub_management/subHelp.html:6
 msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
+msgstr ""
+
+#: ../http/static/_shared/Directive/confirm/confirm.html:5
+msgid "Cancel"
 msgstr ""
 
 #: ../http/static/uas/uas.html:80
@@ -130,7 +134,7 @@ msgstr ""
 msgid "Check for bundle updates"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:28
+#: ../http/static/playlist/playlist.html:34
 msgid "Choose a playlist file to import"
 msgstr ""
 
@@ -147,7 +151,7 @@ msgstr ""
 msgid "Clear search"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:23
+#: ../http/static/sub_management/Directive/subDetails.html:27
 msgid "Codec"
 msgstr ""
 
@@ -155,7 +159,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:42
+#: ../http/static/playlist/playlist.html:53
 msgid "Copy"
 msgstr ""
 
@@ -184,7 +188,7 @@ msgstr ""
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:47
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr ""
@@ -209,7 +213,7 @@ msgstr ""
 msgid "Deselect All"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:46
+#: ../http/static/playlist/playlist.html:57
 msgid "Download"
 msgstr ""
 
@@ -256,7 +260,12 @@ msgstr ""
 msgid "File empty"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:25
+#: ../http/static/playlist/playlist.html:31
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
+msgid "File selected"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:32
 msgid "Filter by letter"
 msgstr ""
 
@@ -269,7 +278,7 @@ msgid "Force language translation update"
 msgstr ""
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:88
+#: ../http/static/sub_management/sub.html:95
 msgid "Found"
 msgstr ""
 
@@ -283,6 +292,10 @@ msgstr ""
 
 #: ../http/static/menu/menu.html:23
 msgid "Help"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:22
+msgid "Hide media without subtitles"
 msgstr ""
 
 #: ../http/static/logs/logsController.js:13
@@ -328,7 +341,7 @@ msgstr ""
 msgid "Ignore folders"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:29
+#: ../http/static/playlist/playlist.html:35
 msgid "Import"
 msgstr ""
 
@@ -353,7 +366,7 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:21
+#: ../http/static/sub_management/Directive/subDetails.html:25
 msgid "Lang"
 msgstr ""
 
@@ -369,11 +382,11 @@ msgstr ""
 msgid "List all subtitles for a movie/tv show in your library."
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:45
+#: ../http/static/sub_management/sub.html:52
 msgid "Load more"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:22
+#: ../http/static/sub_management/Directive/subDetails.html:26
 msgid "Location"
 msgstr ""
 
@@ -413,11 +426,11 @@ msgstr ""
 msgid "Migrate"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:35
 msgid "Missing file"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:34
 msgid "Missing part"
 msgstr ""
 
@@ -446,8 +459,13 @@ msgstr ""
 msgid "No Channels/Plug-ins was migrated"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:53
+#: ../http/static/sub_management/sub.html:60
 msgid "No TV-Shows found in"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:2
+#: ../http/static/sub_management/subService.js:5
+msgid "No filter"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:128
@@ -458,15 +476,15 @@ msgstr ""
 msgid "No language"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:42
+#: ../http/static/sub_management/sub.html:49
 msgid "No movies found in"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:52
+#: ../http/static/playlist/playlist.html:63
 msgid "No playlists available"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:38
+#: ../http/static/sub_management/Directive/subDetails.html:42
 msgid "None"
 msgstr ""
 
@@ -575,6 +593,11 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
+#: ../http/static/playlist/playlist.html:30
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
+msgid "Select File"
+msgstr ""
+
 #: ../http/static/theme/theme.html:5
 msgid "Select one of the available themes to use it:"
 msgstr ""
@@ -583,15 +606,15 @@ msgstr ""
 msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:18
+#: ../http/static/playlist/playlist.html:19
 msgid "Select target user"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:42
+#: ../http/static/playlist/playlist.html:53
 msgid "Select target user to copy"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:9
+#: ../http/static/playlist/playlist.html:10
 msgid "Select user"
 msgstr ""
 
@@ -667,7 +690,7 @@ msgstr ""
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:4
+#: ../http/static/sub_management/sub.html:6
 msgid "This is an unofficial manager for subtitles."
 msgstr ""
 
@@ -683,7 +706,7 @@ msgstr ""
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:6
+#: ../http/static/sub_management/sub.html:8
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr ""
 
@@ -723,7 +746,7 @@ msgstr ""
 msgid "Updates available"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:40
 msgid "Upload"
 msgstr ""
 
@@ -735,7 +758,7 @@ msgstr ""
 msgid "Upload subtitle for"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:5
+#: ../http/static/sub_management/sub.html:7
 msgid "Usage at your own risk!"
 msgstr ""
 
@@ -840,7 +863,7 @@ msgid "not up to date."
 msgstr ""
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:89
+#: ../http/static/sub_management/sub.html:96
 msgid "rows"
 msgstr ""
 
@@ -852,7 +875,7 @@ msgstr ""
 msgid "trumpy81"
 msgstr ""
 
-#: ../http/static/sub_management/sub.html:42
-#: ../http/static/sub_management/sub.html:53
+#: ../http/static/sub_management/sub.html:49
+#: ../http/static/sub_management/sub.html:60
 msgid "with current search filter"
 msgstr ""
