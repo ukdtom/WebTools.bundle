@@ -1,4 +1,4 @@
-﻿angular.module('webtools').directive('confirm', ['ngDialog', function (ngDialog) {
+﻿angular.module('webtools').directive('confirm', ['ngDialog', 'gettext', function (ngDialog, gettext) {
     return {
         restrict: 'A',
         scope: {
@@ -8,6 +8,9 @@
             cText: "@"
         },
         link: function (scope, element, attrs) {
+            scope.cBtnText = gettext(scope.cBtnText);
+            scope.cText = gettext(scope.cText);
+
             element.on('click', function (event) {
                 ngDialog.openConfirm({
                     scope: scope,
