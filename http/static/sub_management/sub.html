@@ -1,4 +1,6 @@
 <div class="sub">
+    <span translate style="visibility:hidden;">No filter</span><!-- Trash -->
+
     <div class="textSize4 textBold600 pull-left">Subtitle Management</div>
     <help src="static/sub_management/subHelp.html"></help>
     <div class="pushTopTrivial" translate>This is an unofficial manager for subtitles.</div>
@@ -13,6 +15,11 @@
                 <input class="searchInput" ng-enter="searchSub()" ng-model="subModel.searchValue" ng-placeholder="searchPlaceholder|translate"
                     ng-disabled="!isAnyShowExpanded()" />
                 <button class="btnSearch" ng-click="searchSub()" title="Search" ng-disabled="!isAnyShowExpanded()"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+
+            <div class="settings">
+                <input id="hideWithoutSubs" type="checkbox" ng-model="subModel.setting.hideWithoutSub" ng-change="searchSub()" />
+                <label for="hideWithoutSubs" translate>Hide media without subtitles</label>
             </div>
 
             <div class="row rowShow" ng-repeat="show in subModel.shows track by show.key | orderBy : 'title'" ng-class="{'expanded': show.expanded}">

@@ -25,7 +25,9 @@
             </select>
         </div>
         <div class="fileContainer">
-            <input type="file" fileread="subModel.selectedFile" />
+            <label for="file" class="btnInput" translate>Select File</label>
+            <div ng-if="subModel.selectedFile" class="pull-left" style="margin-top:8px; margin-left:3px;"><translate>File selected</translate> <span class="textBold600">{[{subModel.selectedFile.name}]}</span></div>
+            <input id="file" type="file" style="visibility:hidden;" fileread="subModel.selectedFile" />
         </div>
         <div class="btnContainer">
             <div class="warning">

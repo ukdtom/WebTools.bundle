@@ -1,9 +1,9 @@
 ﻿angular.module('webtools').service('subService', ['$http', 'subModel', 'webtoolsModel', 'webtoolsService', 'DialogFactory', '$window', 'gettext', function ($http, subModel, webtoolsModel, webtoolsService, DialogFactory, $window, gettext) {
     var _this = this;
 
-    //this.lang = {
-    //    all: gettext("")
-    //}
+    this.lang = {
+        noFilter: gettext("No filter")
+    }
 
     this.getShows = function (callback) {
         webtoolsModel.subLoading = true;
@@ -37,7 +37,7 @@
             url: url,
         }).then(function (resp) {
             show.letterOptions = [{
-                name: " ",
+                name: "- " + _this.lang.noFilter + " -",
                 key: null,
                 size: ""
             }];
@@ -72,6 +72,9 @@
             if (resp.data.length !== take) show.full = true;
 
             for (var i = 0; i < resp.data.length; i++) {
+                if (subModel.setting.hideWithoutSub && resp.data[i].subtitles.length === 0) {
+                    continue;
+                }
                 show.details.push(resp.data[i]);
             }
             show.skip = show.details.length;

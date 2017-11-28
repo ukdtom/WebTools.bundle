@@ -232,7 +232,6 @@ $(function () {
                 passwordSet = data.PasswordSet;
                 plexTvOnline = data.PlexTVOnline;
                 version = data.version;
-                wtCssTheme = data.wt_csstheme;
                 if (plexTvOnline) {
                     plexOnlineEle.show();
                     plexOfflineEle.hide();
@@ -258,8 +257,8 @@ $(function () {
 
                 $("#webtoolsVersion").html('WebTools - v' + version);
 
-                if (data[wtCssTheme]) {
-                    $("#themeCSS").attr("href", "custom_themes/" + data[wtCssTheme]);
+                if (data.wt_csstheme) {
+                    $("#themeCSS").attr("href", "custom_themes/" + data.wt_csstheme);
                 }
 
                 translate();

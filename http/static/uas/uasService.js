@@ -215,6 +215,7 @@
     }
 
     this.installUpdate = function (repo, callback) {
+        repo.message = "";
         repo.workingLoading = true;
         var url = webtoolsModel.apiV3Url + "/git/install";
         $http({
@@ -233,6 +234,9 @@
                     uasModel.types["All"].installed += 1;
                     uasModel.types["All"].viewInstalled += 1;
                 }
+                repo.message = "App successfully installed";
+            } else {
+                repo.message = "App successfully updated";
             }
             repo.installed = true;
             repo.date = resp.data.date;
@@ -256,6 +260,7 @@
     }
 
     this.delete = function (repo, callback) {
+        repo.message = "";
         repo.workingLoading = true;
         var url = webtoolsModel.apiV3Url + "/pms/delBundle/" + repo.bundle;
         $http({

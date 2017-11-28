@@ -132,17 +132,12 @@ webtools.filter('orderObjectBy', function () {
         return array;
     }
 });
-//webtools.filter('subSearchFilter', ['subModel', function (subModel) {
-//    return function (items, searchResults) {
-//        if (searchResults === null) return items;
-
-//        var filtered = [];
-//        for (var i = 0; i < items.length; i++) {
-//            var item = items[i];
-//            for (var searchResult in searchResults) {
-//                if (item.key === searchResult) filtered.push(item);
-//            }
-//        }
-//        return filtered;
-//    };
-//}]);
+webtools.filter('filterDot', function () {
+    return function (x) {
+        var index = x.indexOf(".css");
+        if (index !== -1) {
+            x = x.substr(0, index);
+        }
+        return x;
+    };
+});

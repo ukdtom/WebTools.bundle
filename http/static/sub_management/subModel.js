@@ -1,4 +1,8 @@
 ﻿angular.module('webtools').service('subModel', function () {
+    this.setting = {
+        hideWithoutSub: false
+    };
+
     this.shows = []; //THIS IS BOTH MOVIES & TV SHOWS
 
     this.searchValue = "";

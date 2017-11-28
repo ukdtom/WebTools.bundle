@@ -112,6 +112,10 @@
         detail.subAllChecked = !allChecked;
     };
 
+    $scope.isCodexView = function (subtitle) {
+        return subtitle.codec === "srt" || subtitle.codec === "subrip";
+    }
+
     $scope.getParts = function(detail) {
         subService.getParts(detail);
     }
@@ -124,7 +128,7 @@
         $event.stopPropagation();
         subService.downloadSubtitle(subtitle.key);
     }
-
+    
     $scope.view = function (subtitle, $event) {
         $event.stopPropagation();
         subService.viewSubtitle(subtitle.key);

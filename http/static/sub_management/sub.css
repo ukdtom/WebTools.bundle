@@ -19,16 +19,28 @@
 
 /* Shows */
 .sub .search{
-    width:100%;
+    float:left;
     height:40px;
 }
-.sub .search .searchInput{
-    float:left;
-    margin:3px;
-    padding:2px;
-    width:225px;
-    color:#000000;
-    font-size:0.8em;
+.sub .settings {
+    float: left;
+    height: 30px;
+    margin-left: 15px;
+    padding: 3px 15px;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.15);
+}
+.sub .settings input[type='checkbox'] {
+    position:relative;
+    top:2px;
+}
+.sub .search .searchInput {
+    float: left;
+    margin: 3px;
+    padding: 2px;
+    width: 225px;
+    color: #000000;
+    font-size: 0.8em;
 }
 .sub .search .btnSearch{
     float:left;

@@ -14,7 +14,11 @@
                 <!--<div class="fa fa-upload" ng-title="lang.uploadSubtitle|translate"></div>-->
                 <sub-upload detail="detail" show="show"></sub-upload>
             </div>
-            <div ng-click="deleteSelected(detail);" ng-if="detail.subtitles.length > 0">
+            <div confirm="deleteSelected"
+                 c-data="detail" 
+                 c-text="Are you sure you want to delete the selected subtitles?" 
+                 c-btn-text="Delete"
+                 ng-if="detail.subtitles.length > 0">
                 <div class="fa fa-trash-o" ng-title="lang.deleteSelected|translate"></div>
             </div>
         </div>
@@ -26,7 +30,7 @@
         <div class="col-md-2 col-sm-3 col-xs-5 selectSubtitle" ng-if="subtitle.location !== 'Embedded'" ng-click="subtitle.checked = !subtitle.checked; detail.subAllChecked = getAllSubtitlesChecked(detail);">
             <div class="fa fa-square-o" ng-if="!subtitle.checked"></div>
             <div class="fa fa-check-square-o" ng-if="subtitle.checked"></div>
-            <div class="download" ng-click="view(subtitle, $event);">
+            <div class="download" ng-if="isCodexView(subtitle)" ng-click="view(subtitle, $event);">
                 <div class="fa fa-file-text-o" ng-title="lang.viewSubtitle|translate"></div>
             </div>
             <div class="download" ng-click="download(subtitle, $event);">

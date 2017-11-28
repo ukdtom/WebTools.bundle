@@ -5,27 +5,33 @@
     <content-loading ng-if="webtoolsModel.playlistsLoading" class="pushTopMinor"></content-loading>
     <div ng-if="!webtoolsModel.playlistsLoading" class="pushTopMinor">
         <div class="userContainer">
-            <div class="pull-left">
-                <label for="userSelector" class="textSize4 textBold600" translate>Select user</label><br/>
-                <select class="userSelector" id="userSelector" ng-model="webtoolsModel.userSelected" ng-change="changeUserSelected()">
-                    <option ng-repeat="user in webtoolsModel.users track by user.id"
-                            value="{[{user.id}]}">
-                        {[{user.username}]}
-                    </option>
-                </select>
+            <div class="pull-left" style="height:100%;">
+                <div class="pull-left">
+                    <label for="userSelector" class="textSize2 textBold600" translate>Select user</label><br />
+                    <select class="userSelector" id="userSelector" ng-model="webtoolsModel.userSelected" ng-change="changeUserSelected()">
+                        <option ng-repeat="user in webtoolsModel.users track by user.id"
+                                value="{[{user.id}]}">
+                            {[{user.username}]}
+                        </option>
+                    </select>
+                </div>
+                <div class="pull-left pushTopTrivial" style="clear:left;">
+                    <label for="userSelector2" class="textSize2 textBold600" translate>Select target user</label><br />
+                    <select class="userSelector" id="userSelector2" ng-model="webtoolsModel.userToSelected">
+                        <option ng-repeat="user in webtoolsModel.users track by user.id"
+                                value="{[{user.id}]}" ng-if="user.id !== null">
+                            {[{user.username}]}
+                        </option>
+                    </select>
+                </div>
             </div>
-            <div class="pull-left pushLeftMajor">
-                <label for="userSelector2" class="textSize4 textBold600" translate>Select target user</label><br />
-                <select class="userSelector" id="userSelector2" ng-model="webtoolsModel.userToSelected">
-                    <option ng-repeat="user in webtoolsModel.users track by user.id"
-                            value="{[{user.id}]}" ng-if="user.id !== null">
-                        {[{user.username}]}
-                    </option>
-                </select>
-            </div>
-            <div class="pull-left pushLeftMajor fileContainer">
-                <input type="file" fileread="playlistModel.selectedFile" />                
-                <div class="label pull-left" translate>Choose a playlist file to import</div>
+            <div class="pull-left pushLeftMajor pushTopMinor fileContainer">
+                <div class="pull-left">
+                    <label for="file" class="btnInput" translate>Select File</label>
+                    <div ng-if="playlistModel.selectedFile" class="pull-left" style="margin-top:8px; margin-left:3px;"><translate>File selected</translate> <span class="textBold600">{[{playlistModel.selectedFile.name}]}</span></div>
+                    <input id="file" type="file" style="display:none;" fileread="playlistModel.selectedFile" />
+                </div>
+                <div class="label pull-left" style="clear:left;" translate>Choose a playlist file to import</div>
                 <div class="playlistBtn pull-right" ng-click="importPlaylist(playlistModel.selectedFile)" ng-class="{'disabled' : !playlistModel.selectedFile}" translate>Import</div>
             </div>
         </div>
@@ -38,7 +44,12 @@
                 <div class="topPart">
                     <div class="title pull-left textBold600">{[{playlist.title}]}</div>
                     <div class="buttons pull-right">
-                        <div class="playlistBtn" ng-click="deletePlaylist(playlist)" translate>Delete</div>
+                        <div class="playlistBtn" 
+                             confirm="deletePlaylist"
+                             c-data="playlist" 
+                             c-text="Are you sure you want to delete the playlist?" 
+                             c-btn-text="Delete" 
+                             translate>Delete</div>
                         <div class="playlistBtn" ng-click="copyPlaylist(playlist)" 
                              ng-disabled="!webtoolsModel.userToSelected"
                              ng-class="{'disabled' : !webtoolsModel.userToSelected}"

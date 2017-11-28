@@ -25,13 +25,13 @@
 }
 
 .playlists .userContainer {
-    height: 100px;
+    height: 140px;
 }
 .playlists .userContainer .userSelector {
     float: left;
     color: black;
     min-width: 200px;
-    height: 40px;
+    height: 28px;
     border-radius: 5px;
     padding: 2px;
 }
@@ -44,6 +44,7 @@
     box-shadow: 3px 3px 10px 1px black;
     border-radius: 5px;
     border: 1px solid #4c4c4c;
+    min-width: 400px;
 }
 .playlists .userContainer .fileContainer .label{
     margin-top:13px;
@@ -103,4 +104,13 @@
     height: 20px;
     padding-left: 15px;
     color: #d4d4d4;
+}
+
+
+@media screen and (max-width: 825px) {
+    .playlists .userContainer .fileContainer {
+        margin-left: 0 !important;
+        margin-top: 0 !important;
+        margin-bottom: 20px;
+    }
 }
