@@ -151,7 +151,7 @@ msgstr ""
 msgid "Clear search"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:27
+#: ../http/static/sub_management/Directive/subDetails.html:28
 msgid "Codec"
 msgstr ""
 
@@ -366,7 +366,7 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:25
+#: ../http/static/sub_management/Directive/subDetails.html:26
 msgid "Lang"
 msgstr ""
 
@@ -386,7 +386,7 @@ msgstr ""
 msgid "Load more"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:26
+#: ../http/static/sub_management/Directive/subDetails.html:27
 msgid "Location"
 msgstr ""
 
@@ -484,7 +484,7 @@ msgstr ""
 msgid "No playlists available"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:42
+#: ../http/static/sub_management/Directive/subDetails.html:43
 msgid "None"
 msgstr ""
 
