@@ -94,10 +94,6 @@ msgstr ""
 msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subDetails.html:20
-msgid "Are you sure you want to delete the selected subtitles?"
-msgstr ""
-
 #: ../http/static/sub_management/sub.html:115
 msgid "Back"
 msgstr ""
@@ -193,7 +189,6 @@ msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr ""
 
 #: ../http/static/playlist/playlist.html:47
-#: ../http/static/sub_management/Directive/subDetails.html:21
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr ""
