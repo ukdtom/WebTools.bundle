@@ -673,7 +673,11 @@ class findMediaV3(object):
         except Exception, e:
             Log.Exception('Exception in populatePrefs was %s' % str(e))
 
-    ''' Returns true or false, depending on if a media should be added to the list '''
+    ''' 
+    Returns true or false, depending on if a media should be added to the list
+    Param file: The file to be investigated, with full path
+    Param mediaType: Type of media
+    '''
     @classmethod
     def addThisItem(self, file, mediaType):
         try:
@@ -688,8 +692,9 @@ class findMediaV3(object):
                                 return False
                     # Ignore specials
                     if Dict['findMedia']['IGNORE_SPECIALS']:
-                        if part.lower() in Specials:
-                            return False
+                        for special in Specials:
+                            if special in part.lower():
+                                return False
                     # Ignore hiddens
                     if Dict['findMedia']['IGNORE_HIDDEN']:
                         if part.startswith('.'):
