@@ -182,7 +182,7 @@ msgid "Force language translation update"
 msgstr "Obter tradução atualizada"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:88
+#: ../http/static/sub_management/sub.html:95
 msgid "Found"
 msgstr "Encontrado"
 
@@ -191,7 +191,7 @@ msgid "Welcome to"
 msgstr "Bem vindo a"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:89
+#: ../http/static/sub_management/sub.html:96
 msgid "rows"
 msgstr "linhas"
 
@@ -309,16 +309,18 @@ msgstr "Migrar"
 msgid "Categories:"
 msgstr "Categorias:"
 
-#: ../http/static/playlist/playlist.html:42
+#: ../http/static/playlist/playlist.html:53
 msgid "Copy"
 msgstr "Copiar"
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:47
+#: ../http/static/playlist/playlistController.js:7
+#: ../http/static/sub_management/subController.js:25
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "Apagar"
 
-#: ../http/static/playlist/playlist.html:46
+#: ../http/static/playlist/playlist.html:57
 msgid "Download"
 msgstr "Descarregar"
 
@@ -342,7 +344,7 @@ msgstr "Manual:"
 msgid "Repo:"
 msgstr "Repo:"
 
-#: ../http/static/playlist/playlist.html:9
+#: ../http/static/playlist/playlist.html:10
 msgid "Select user"
 msgstr "Escolher utilizador"
 
@@ -358,11 +360,11 @@ msgstr "Ajuda para Gestão de Legendas"
 msgid "Support:"
 msgstr "Suporte:"
 
-#: ../http/static/sub_management/sub.html:4
+#: ../http/static/sub_management/sub.html:6
 msgid "This is an unofficial manager for subtitles."
 msgstr "Este módulo é um gestor não-oficial de legendas."
 
-#: ../http/static/sub_management/sub.html:6
+#: ../http/static/sub_management/sub.html:8
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "Para começar, selecione uma das suas bibliotecas ou clique em \"?\" para ajuda"
 
@@ -370,7 +372,7 @@ msgstr "Para começar, selecione uma das suas bibliotecas ou clique em \"?\" par
 msgid "Update"
 msgstr "Atualizar"
 
-#: ../http/static/sub_management/sub.html:5
+#: ../http/static/sub_management/sub.html:7
 msgid "Usage at your own risk!"
 msgstr "Use com cautela !"
 
@@ -390,11 +392,11 @@ msgstr "Descarregar playlist"
 msgid "Import a playlist"
 msgstr "Importar playlist"
 
-#: ../http/static/playlist/playlist.html:18
+#: ../http/static/playlist/playlist.html:19
 msgid "Select target user"
 msgstr "Selecionar destinatário"
 
-#: ../http/static/playlist/playlist.html:42
+#: ../http/static/playlist/playlist.html:53
 msgid "Select target user to copy"
 msgstr "Selecionar destinatário para cópia"
 
@@ -436,7 +438,7 @@ msgstr "Se clicar abaixo esta página ficará inativa, e deverá refrescá-la pa
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "Esta ação vai repor WebTools no estado inicial, como se tivesse sido acabado de instalar"
 
-#: ../http/static/playlist/playlist.html:52
+#: ../http/static/playlist/playlist.html:63
 msgid "No playlists available"
 msgstr "Não há playlists disponíveis"
 
@@ -619,7 +621,7 @@ msgstr "Utilizador e/ou senha inválida"
 msgid "PMS is not connected to plex.tv"
 msgstr "PMS não está logado em plex.tv"
 
-#: ../http/static/sub_management/sub.html:108
+#: ../http/static/sub_management/sub.html:115
 msgid "Back"
 msgstr "Anterior"
 
@@ -635,7 +637,7 @@ msgstr "Ficheiro anterior"
 msgid "Reload file"
 msgstr "Recarregar o ficheiro"
 
-#: ../http/static/sub_management/Directive/subDetails.html:23
+#: ../http/static/sub_management/Directive/subDetails.html:28
 msgid "Codec"
 msgstr "Codec"
 
@@ -651,27 +653,27 @@ msgstr "Desmarcar tudo"
 msgid "Download Subtitle"
 msgstr "Descarregar legenda"
 
-#: ../http/static/sub_management/sub.html:25
+#: ../http/static/sub_management/sub.html:32
 msgid "Filter by letter"
 msgstr "Filtrar por letra"
 
-#: ../http/static/sub_management/Directive/subDetails.html:21
+#: ../http/static/sub_management/Directive/subDetails.html:26
 msgid "Lang"
 msgstr "Lang"
 
-#: ../http/static/sub_management/sub.html:45
+#: ../http/static/sub_management/sub.html:52
 msgid "Load more"
 msgstr "Carregar mais"
 
-#: ../http/static/sub_management/Directive/subDetails.html:22
+#: ../http/static/sub_management/Directive/subDetails.html:27
 msgid "Location"
 msgstr "Local"
 
-#: ../http/static/sub_management/sub.html:42
+#: ../http/static/sub_management/sub.html:49
 msgid "No movies found in"
 msgstr "Não há filmes em"
 
-#: ../http/static/sub_management/Directive/subDetails.html:38
+#: ../http/static/sub_management/Directive/subDetails.html:43
 msgid "None"
 msgstr "Nenhum"
 
@@ -692,8 +694,8 @@ msgstr "Carregar legenda"
 msgid "View Subtitle"
 msgstr "Ver legenda"
 
-#: ../http/static/sub_management/sub.html:42
-#: ../http/static/sub_management/sub.html:53
+#: ../http/static/sub_management/sub.html:49
+#: ../http/static/sub_management/sub.html:60
 msgid "with current search filter"
 msgstr "com o filtro de pesquisa atual"
 
@@ -713,7 +715,7 @@ msgstr "Usar base de dados para suprir faltas"
 msgid "Idle"
 msgstr "Pausa"
 
-#: ../http/static/sub_management/sub.html:53
+#: ../http/static/sub_management/sub.html:60
 msgid "No TV-Shows found in"
 msgstr "Não foram encontradas Séries "
 
@@ -746,11 +748,11 @@ msgstr "Escolher idioma da legenda"
 msgid "Choose part"
 msgstr "Escolher parte"
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:35
 msgid "Missing file"
 msgstr "Ficheiro em falta"
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:34
 msgid "Missing part"
 msgstr "Parte em falta"
 
@@ -766,7 +768,7 @@ msgstr "Pesquisando base de dados: %s : Completo"
 msgid "Subtitle Management Upload Subtitle"
 msgstr "Gestão de Legendas Carregar Legenda"
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:40
 msgid "Upload"
 msgstr "Carregar"
 
@@ -803,7 +805,7 @@ msgstr "<plugin>Indique a porta que este plugin deve usar para https. NÃO USE [
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
 msgstr "<plugin>Nome do certificado \"crt file\" em Contents/Code/Certificate directory</plugin>"
 
-#: ../http/static/playlist/playlist.html:29
+#: ../http/static/playlist/playlist.html:35
 msgid "Import"
 msgstr "Importar"
 
@@ -823,7 +825,7 @@ msgstr "Valor"
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr "NÃO PARTILHE ISTO EM NENHUM \"SITE\" PÚBLICO !"
 
-#: ../http/static/playlist/playlist.html:28
+#: ../http/static/playlist/playlist.html:34
 msgid "Choose a playlist file to import"
 msgstr ""
 
@@ -831,31 +833,62 @@ msgstr ""
 msgid "Ignore Specials"
 msgstr ""
 
+#: ../http/static/home/home.html:25
+msgid "Will show technical information about the server."
+msgstr ""
+
 #: ../http/static/findmedia/fm.html:131
-msgid "Items without metadata from Plex Media Server"
+msgid "Items missing metadata"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:128
-msgid "No items without metadata found"
-msgstr ""
-
-#: ../http/static/findmedia/fm.html:116
-msgid "No unrecognized media files from the harddrive"
+msgid "No items missing metadata"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:104
-msgid "No unrecognized media files in the Plex database"
+msgid "Perfect, media files are present and accessible for all items in the Plex database."
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:107
-msgid "Unrecognized media files in the Plex database"
+msgid "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:119
-msgid "Unrecognized media files missing from harddrive"
+msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
 msgstr ""
 
-#: ../http/static/home/home.html:25
-msgid "Will show technical information about the server."
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
+msgstr ""
+
+#: ../http/static/_shared/Directive/confirm/confirm.html:5
+msgid "Cancel"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:31
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
+msgid "File selected"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:22
+msgid "Hide media without subtitles"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:2
+#: ../http/static/sub_management/subService.js:5
+msgid "No filter"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:30
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
+msgid "Select File"
+msgstr ""
+
+#: ../http/static/playlist/playlistController.js:6
+msgid "Are you sure you want to delete the playlist?"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:24
+msgid "Are you sure you want to delete the selected subtitles?"
 msgstr ""
 

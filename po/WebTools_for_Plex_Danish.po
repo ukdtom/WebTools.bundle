@@ -186,7 +186,7 @@ msgid "Force language translation update"
 msgstr "Opdater oversættelse"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:88
+#: ../http/static/sub_management/sub.html:95
 msgid "Found"
 msgstr "Fundet"
 
@@ -195,7 +195,7 @@ msgid "Welcome to"
 msgstr "Velkommen til"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:89
+#: ../http/static/sub_management/sub.html:96
 msgid "rows"
 msgstr "rækker"
 
@@ -317,16 +317,18 @@ msgstr "Migrer"
 msgid "Categories:"
 msgstr "Kategorier:"
 
-#: ../http/static/playlist/playlist.html:42
+#: ../http/static/playlist/playlist.html:53
 msgid "Copy"
 msgstr "Kopier"
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:47
+#: ../http/static/playlist/playlistController.js:7
+#: ../http/static/sub_management/subController.js:25
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "Slet"
 
-#: ../http/static/playlist/playlist.html:46
+#: ../http/static/playlist/playlist.html:57
 msgid "Download"
 msgstr "Download"
 
@@ -350,7 +352,7 @@ msgstr "Manuel:"
 msgid "Repo:"
 msgstr "Git Repo:"
 
-#: ../http/static/playlist/playlist.html:9
+#: ../http/static/playlist/playlist.html:10
 msgid "Select user"
 msgstr "Vælg bruger"
 
@@ -366,11 +368,11 @@ msgstr "Undertekst management hjælp"
 msgid "Support:"
 msgstr "Support:"
 
-#: ../http/static/sub_management/sub.html:4
+#: ../http/static/sub_management/sub.html:6
 msgid "This is an unofficial manager for subtitles."
 msgstr "Dette er en uofficiel manager for undertekster."
 
-#: ../http/static/sub_management/sub.html:6
+#: ../http/static/sub_management/sub.html:8
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "For at starte, vælg et af dine biblioteker eller klik på \"?\" for yderligere hjælp"
 
@@ -378,7 +380,7 @@ msgstr "For at starte, vælg et af dine biblioteker eller klik på \"?\" for yde
 msgid "Update"
 msgstr "Opdater"
 
-#: ../http/static/sub_management/sub.html:5
+#: ../http/static/sub_management/sub.html:7
 msgid "Usage at your own risk!"
 msgstr "Brug for egen risiko!"
 
@@ -398,11 +400,11 @@ msgstr "Download en playliste"
 msgid "Import a playlist"
 msgstr "Importer en playliste"
 
-#: ../http/static/playlist/playlist.html:18
+#: ../http/static/playlist/playlist.html:19
 msgid "Select target user"
 msgstr "Vælg bruger som skal modtage"
 
-#: ../http/static/playlist/playlist.html:42
+#: ../http/static/playlist/playlist.html:53
 msgid "Select target user to copy"
 msgstr "Vælg bruger at kopiere til"
 
@@ -444,7 +446,7 @@ msgstr "Hvis du klikker på knappen, vil WebTools ikke svare i ca. 1 minut. Du s
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "Dette vil nulstille WebTools, til hvad det var da du først installerede det"
 
-#: ../http/static/playlist/playlist.html:52
+#: ../http/static/playlist/playlist.html:63
 msgid "No playlists available"
 msgstr "Ingen playliste tilgængelig"
 
@@ -628,7 +630,7 @@ msgstr "Forkert brugernavn og/eller kodeord "
 msgid "PMS is not connected to plex.tv"
 msgstr "PMS er ikke logget ind til plex.tv"
 
-#: ../http/static/sub_management/sub.html:108
+#: ../http/static/sub_management/sub.html:115
 msgid "Back"
 msgstr "Tilbage"
 
@@ -644,7 +646,7 @@ msgstr "Forrige fil"
 msgid "Reload file"
 msgstr "Genindlæs"
 
-#: ../http/static/sub_management/Directive/subDetails.html:23
+#: ../http/static/sub_management/Directive/subDetails.html:28
 msgid "Codec"
 msgstr "Codec"
 
@@ -660,27 +662,27 @@ msgstr "Fravælg alle"
 msgid "Download Subtitle"
 msgstr "Hent undertekst"
 
-#: ../http/static/sub_management/sub.html:25
+#: ../http/static/sub_management/sub.html:32
 msgid "Filter by letter"
 msgstr "Filtrer på bogstav"
 
-#: ../http/static/sub_management/Directive/subDetails.html:21
+#: ../http/static/sub_management/Directive/subDetails.html:26
 msgid "Lang"
 msgstr "Sprog"
 
-#: ../http/static/sub_management/sub.html:45
+#: ../http/static/sub_management/sub.html:52
 msgid "Load more"
 msgstr "Hent flere"
 
-#: ../http/static/sub_management/Directive/subDetails.html:22
+#: ../http/static/sub_management/Directive/subDetails.html:27
 msgid "Location"
 msgstr "Placering"
 
-#: ../http/static/sub_management/sub.html:42
+#: ../http/static/sub_management/sub.html:49
 msgid "No movies found in"
 msgstr "Ingen film fundet i"
 
-#: ../http/static/sub_management/Directive/subDetails.html:38
+#: ../http/static/sub_management/Directive/subDetails.html:43
 msgid "None"
 msgstr "Ingen"
 
@@ -701,8 +703,8 @@ msgstr "Upload undertekst"
 msgid "View Subtitle"
 msgstr "Vis undertekst"
 
-#: ../http/static/sub_management/sub.html:42
-#: ../http/static/sub_management/sub.html:53
+#: ../http/static/sub_management/sub.html:49
+#: ../http/static/sub_management/sub.html:60
 msgid "with current search filter"
 msgstr "med valgte søge filter"
 
@@ -722,7 +724,7 @@ msgstr "Hent manglende fra databasen"
 msgid "Idle"
 msgstr "Venter"
 
-#: ../http/static/sub_management/sub.html:53
+#: ../http/static/sub_management/sub.html:60
 msgid "No TV-Shows found in"
 msgstr "Ingen TV-Shows fundet i"
 
@@ -755,11 +757,11 @@ msgstr "Vælg sprog for undertekst"
 msgid "Choose part"
 msgstr "Vælg del"
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:35
 msgid "Missing file"
 msgstr "Mangler fil"
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:34
 msgid "Missing part"
 msgstr "Mangler del"
 
@@ -775,7 +777,7 @@ msgstr "Skanner database: %s : færdig"
 msgid "Subtitle Management Upload Subtitle"
 msgstr "Subtitle Management upload undertekst"
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:40
 msgid "Upload"
 msgstr "Upload"
 
@@ -811,7 +813,7 @@ msgstr "<plugin>Indtast den port som WebTools skal benytte for https. Brug IKKE 
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
 msgstr "<plugin>Navn på certifikat crt fil i Contents/Code/Certificate directory</plugin>"
 
-#: ../http/static/playlist/playlist.html:29
+#: ../http/static/playlist/playlist.html:35
 msgid "Import"
 msgstr "Importer"
 
@@ -831,7 +833,7 @@ msgstr "Værdi"
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr "DEL IKKE DETTE PÅ ET OFFENTLIGT WEBSITE!!!"
 
-#: ../http/static/playlist/playlist.html:28
+#: ../http/static/playlist/playlist.html:34
 msgid "Choose a playlist file to import"
 msgstr "Vælg en playliste at importere"
 
@@ -839,31 +841,62 @@ msgstr "Vælg en playliste at importere"
 msgid "Ignore Specials"
 msgstr "Ignorer Specials"
 
-#: ../http/static/findmedia/fm.html:131
-msgid "Items without metadata from Plex Media Server"
-msgstr "Media uden metadata fra Plex Media Server"
-
-#: ../http/static/findmedia/fm.html:128
-msgid "No items without metadata found"
-msgstr "Ingen media blev fundet, som mangler Metadata"
-
-#: ../http/static/findmedia/fm.html:116
-msgid "No unrecognized media files from the harddrive"
-msgstr "Ingen ukendte media filer fundet på harddisken"
-
-#: ../http/static/findmedia/fm.html:104
-msgid "No unrecognized media files in the Plex database"
-msgstr "Ingen ukendte media fundet i Plex databasen"
-
-#: ../http/static/findmedia/fm.html:107
-msgid "Unrecognized media files in the Plex database"
-msgstr "Ukendte media filer i Plex databasen"
-
-#: ../http/static/findmedia/fm.html:119
-msgid "Unrecognized media files missing from harddrive"
-msgstr "Ukendte media på harddisken"
-
 #: ../http/static/home/home.html:25
 msgid "Will show technical information about the server."
 msgstr "Vil vise teknisk information om din Plex Media Server"
+
+#: ../http/static/findmedia/fm.html:131
+msgid "Items missing metadata"
+msgstr "Media der mangler metadata"
+
+#: ../http/static/findmedia/fm.html:128
+msgid "No items missing metadata"
+msgstr "Ingen media mangler metadata"
+
+#: ../http/static/findmedia/fm.html:104
+msgid "Perfect, media files are present and accessible for all items in the Plex database."
+msgstr "Perfekt. Alle media er tilstede for alle records i Plex databasen."
+
+#: ../http/static/findmedia/fm.html:107
+msgid "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
+msgstr "Følgende media fundet på disk er ikke at finde i Plex databasen. (Enten blev de ignoreret af Plex grundet en dårlig navngivning, eller biblioteket er endnu ikke blevet opdateret i Plex)"
+
+#: ../http/static/findmedia/fm.html:119
+msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
+msgstr "Følgende filer mangler fra harddisken, men Plex har dem stadig i sin database. Enten er de blevet slettet, harddisken er ikke forbundet, eller du har simpelthen glemt at tømme skraldespanden i Plex, efter du slettede dem"
+
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
+msgstr "Perfekt. Samtlige media i Plex databasen er også tilstede på harddisken"
+
+#: ../http/static/_shared/Directive/confirm/confirm.html:5
+msgid "Cancel"
+msgstr "Afbryd"
+
+#: ../http/static/playlist/playlist.html:31
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
+msgid "File selected"
+msgstr "Fil valgt"
+
+#: ../http/static/sub_management/sub.html:22
+msgid "Hide media without subtitles"
+msgstr "Skjul medias uden undertekster"
+
+#: ../http/static/sub_management/sub.html:2
+#: ../http/static/sub_management/subService.js:5
+msgid "No filter"
+msgstr "Ingen filter"
+
+#: ../http/static/playlist/playlist.html:30
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
+msgid "Select File"
+msgstr "Vælg fil"
+
+#: ../http/static/playlist/playlistController.js:6
+msgid "Are you sure you want to delete the playlist?"
+msgstr "Er du sikker på du vil slette denne Playliste?"
+
+#: ../http/static/sub_management/subController.js:24
+msgid "Are you sure you want to delete the selected subtitles?"
+msgstr "Er du sikker på du vil slette denne undertekst?"
 

@@ -185,7 +185,7 @@ msgid "Force language translation update"
 msgstr "إجبار التحديث لملف اللغة"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:88
+#: ../http/static/sub_management/sub.html:95
 msgid "Found"
 msgstr "وجد"
 
@@ -194,7 +194,7 @@ msgid "Welcome to"
 msgstr "مرحباً بك في"
 
 #: ../http/static/logs/logs.html:5
-#: ../http/static/sub_management/sub.html:89
+#: ../http/static/sub_management/sub.html:96
 msgid "rows"
 msgstr "الصفوف"
 
@@ -314,16 +314,18 @@ msgstr "ترحيل/دمج"
 msgid "Categories:"
 msgstr "الفئات"
 
-#: ../http/static/playlist/playlist.html:42
+#: ../http/static/playlist/playlist.html:53
 msgid "Copy"
 msgstr "نسخ"
 
-#: ../http/static/playlist/playlist.html:41
+#: ../http/static/playlist/playlist.html:47
+#: ../http/static/playlist/playlistController.js:7
+#: ../http/static/sub_management/subController.js:25
 #: ../http/static/uas/uas.html:61
 msgid "Delete"
 msgstr "حذف"
 
-#: ../http/static/playlist/playlist.html:46
+#: ../http/static/playlist/playlist.html:57
 msgid "Download"
 msgstr "تحميل"
 
@@ -347,7 +349,7 @@ msgstr "الكتيب:"
 msgid "Repo:"
 msgstr "المصدر:"
 
-#: ../http/static/playlist/playlist.html:9
+#: ../http/static/playlist/playlist.html:10
 msgid "Select user"
 msgstr "أختر مستخدم"
 
@@ -363,11 +365,11 @@ msgstr "المساعدة في إدارة الترجمات"
 msgid "Support:"
 msgstr "الدعم:"
 
-#: ../http/static/sub_management/sub.html:4
+#: ../http/static/sub_management/sub.html:6
 msgid "This is an unofficial manager for subtitles."
 msgstr "هذه الأداة هي أداة غير رسمية لإدارة الترجمات."
 
-#: ../http/static/sub_management/sub.html:6
+#: ../http/static/sub_management/sub.html:8
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "للشروع بالبدء ، أختر أحدى مكتباتك أو اضغط على \"؟\" للمساعدة"
 
@@ -375,7 +377,7 @@ msgstr "للشروع بالبدء ، أختر أحدى مكتباتك أو اض�
 msgid "Update"
 msgstr "تحديث"
 
-#: ../http/static/sub_management/sub.html:5
+#: ../http/static/sub_management/sub.html:7
 msgid "Usage at your own risk!"
 msgstr "استخدمه على مسؤوليتك الخاصة!"
 
@@ -395,11 +397,11 @@ msgstr "تحميل قائمة تشغيل"
 msgid "Import a playlist"
 msgstr "استيراد قائمة تشغيل"
 
-#: ../http/static/playlist/playlist.html:18
+#: ../http/static/playlist/playlist.html:19
 msgid "Select target user"
 msgstr "أختر المستخدم المستهدف"
 
-#: ../http/static/playlist/playlist.html:42
+#: ../http/static/playlist/playlist.html:53
 msgid "Select target user to copy"
 msgstr "أختر المستخدم المستهدف للنسخ إليه"
 
@@ -441,7 +443,7 @@ msgstr "إذا ضغطت الزر في الأسفل ، سوف يكون \" ويب 
 msgid "This will reset WebTools to what is was, when first installed"
 msgstr "هذا سوف يقوم بإعادة \"ويب تولز\" إلى حالته الأصلية كما كانت عندما قمت بتثبيت \"ويب تولز\" لأول مرة."
 
-#: ../http/static/playlist/playlist.html:52
+#: ../http/static/playlist/playlist.html:63
 msgid "No playlists available"
 msgstr "لا يوجد قوائم تشغيل"
 
@@ -624,7 +626,7 @@ msgstr "اسم المستخدم او/و كلمة السر غير صحيحة"
 msgid "PMS is not connected to plex.tv"
 msgstr "سيرفر بلكس الخاص بك غير متصل بـplex.tv"
 
-#: ../http/static/sub_management/sub.html:108
+#: ../http/static/sub_management/sub.html:115
 msgid "Back"
 msgstr "الخلف"
 
@@ -640,7 +642,7 @@ msgstr "الملف السابق"
 msgid "Reload file"
 msgstr "إعادة تحميل الملف"
 
-#: ../http/static/sub_management/Directive/subDetails.html:23
+#: ../http/static/sub_management/Directive/subDetails.html:28
 msgid "Codec"
 msgstr "الكوديك"
 
@@ -656,28 +658,28 @@ msgstr "عدم تحدد الكل"
 msgid "Download Subtitle"
 msgstr "تحميل الترجمة"
 
-#: ../http/static/sub_management/sub.html:25
+#: ../http/static/sub_management/sub.html:32
 msgid "Filter by letter"
 msgstr "فهرسة بالأبجدية"
 
 #. language ?
-#: ../http/static/sub_management/Directive/subDetails.html:21
+#: ../http/static/sub_management/Directive/subDetails.html:26
 msgid "Lang"
 msgstr "اللغة"
 
-#: ../http/static/sub_management/sub.html:45
+#: ../http/static/sub_management/sub.html:52
 msgid "Load more"
 msgstr "عرض المزيد"
 
-#: ../http/static/sub_management/Directive/subDetails.html:22
+#: ../http/static/sub_management/Directive/subDetails.html:27
 msgid "Location"
 msgstr "الموقع"
 
-#: ../http/static/sub_management/sub.html:42
+#: ../http/static/sub_management/sub.html:49
 msgid "No movies found in"
 msgstr "لا وجود لأفلام هنا"
 
-#: ../http/static/sub_management/Directive/subDetails.html:38
+#: ../http/static/sub_management/Directive/subDetails.html:43
 msgid "None"
 msgstr "لا يوجد"
 
@@ -698,8 +700,8 @@ msgstr "تحديث الترجمة"
 msgid "View Subtitle"
 msgstr "عرض الترجمة"
 
-#: ../http/static/sub_management/sub.html:42
-#: ../http/static/sub_management/sub.html:53
+#: ../http/static/sub_management/sub.html:49
+#: ../http/static/sub_management/sub.html:60
 msgid "with current search filter"
 msgstr "البحث مع طريقة الفهرسة الحالية"
 
@@ -719,7 +721,7 @@ msgstr ""
 msgid "Idle"
 msgstr "خامل"
 
-#: ../http/static/sub_management/sub.html:53
+#: ../http/static/sub_management/sub.html:60
 msgid "No TV-Shows found in"
 msgstr "لم يتم وجود أي مسلسل تلفزيوني"
 
@@ -753,11 +755,11 @@ msgstr ""
 msgid "Choose part"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:33
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:35
 msgid "Missing file"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:32
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:34
 msgid "Missing part"
 msgstr ""
 
@@ -773,7 +775,7 @@ msgstr ""
 msgid "Subtitle Management Upload Subtitle"
 msgstr ""
 
-#: ../http/static/sub_management/Directive/subUpload/subUpload.html:38
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:40
 msgid "Upload"
 msgstr ""
 
@@ -809,7 +811,7 @@ msgstr ""
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:29
+#: ../http/static/playlist/playlist.html:35
 msgid "Import"
 msgstr ""
 
@@ -829,7 +831,7 @@ msgstr ""
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
 msgstr ""
 
-#: ../http/static/playlist/playlist.html:28
+#: ../http/static/playlist/playlist.html:34
 msgid "Choose a playlist file to import"
 msgstr ""
 
@@ -837,31 +839,62 @@ msgstr ""
 msgid "Ignore Specials"
 msgstr ""
 
+#: ../http/static/home/home.html:25
+msgid "Will show technical information about the server."
+msgstr ""
+
 #: ../http/static/findmedia/fm.html:131
-msgid "Items without metadata from Plex Media Server"
+msgid "Items missing metadata"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:128
-msgid "No items without metadata found"
-msgstr ""
-
-#: ../http/static/findmedia/fm.html:116
-msgid "No unrecognized media files from the harddrive"
+msgid "No items missing metadata"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:104
-msgid "No unrecognized media files in the Plex database"
+msgid "Perfect, media files are present and accessible for all items in the Plex database."
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:107
-msgid "Unrecognized media files in the Plex database"
+msgid "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:119
-msgid "Unrecognized media files missing from harddrive"
+msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
 msgstr ""
 
-#: ../http/static/home/home.html:25
-msgid "Will show technical information about the server."
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
+msgstr ""
+
+#: ../http/static/_shared/Directive/confirm/confirm.html:5
+msgid "Cancel"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:31
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
+msgid "File selected"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:22
+msgid "Hide media without subtitles"
+msgstr ""
+
+#: ../http/static/sub_management/sub.html:2
+#: ../http/static/sub_management/subService.js:5
+msgid "No filter"
+msgstr ""
+
+#: ../http/static/playlist/playlist.html:30
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
+msgid "Select File"
+msgstr ""
+
+#: ../http/static/playlist/playlistController.js:6
+msgid "Are you sure you want to delete the playlist?"
+msgstr ""
+
+#: ../http/static/sub_management/subController.js:24
+msgid "Are you sure you want to delete the selected subtitles?"
 msgstr ""
 
