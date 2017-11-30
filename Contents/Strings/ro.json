@@ -1,0 +1,9 @@
+{
+    "Select to force https": " Selectați pentru a forța HTTPS ", 
+    "To access this channel, type the url's below to a new browser tab": " Pentru a accesa acest canal, introduceți una dintre adresele URL de mai jos într-o nouă filă sau fereastră browser. ", 
+    "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": " URL-ul de bază (dacă este în spatele unui proxy - dacă nu, lăsați necompletat).\nEXEMPLU: / WebTools) ", 
+    "Name of Certificate key file in Contents/Code/Certificate directory": " Numele fișierului cheie de certificat din directorul Cuprins / Cod / certificat ", 
+    "Name of Certificate crt file in Contents/Code/Certificate directory": " Numele fișierului crt al certificatului în directorul Cuprins / Cod / certificat ", 
+    "Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": " Introduceți numărul de port pe care acest plug-in ar trebui să îl utilizeze pentru HTTP. NU utilizați oricare dintre următoarele, care sunt rezervate pentru Plex și plugin-uri conexe:. 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 sau 32469 ", 
+    "Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": " Introduceți numărul de port pe care acest plug-in ar trebui să îl utilizeze pentru HTTPS. NU utilizați oricare dintre următoarele, care sunt rezervate pentru Plex și plugin-uri conexe:. 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 sau 32469 "
+}
