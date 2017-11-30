@@ -115,7 +115,10 @@
     };
 
     $scope.isCodexView = function (subtitle) {
-        return subtitle.codec === "srt" || subtitle.codec === "subrip";
+        return subtitle.codec === "srt"
+            || subtitle.codec === "subrip"
+            || subtitle.codec === "smi"
+            || subtitle.codec === "ass";
     }
 
     $scope.getParts = function(detail) {
