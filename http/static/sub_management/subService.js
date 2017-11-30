@@ -71,14 +71,17 @@
         }).then(function (resp) {
             if (resp.data.length !== take) show.full = true;
 
+            var call = true;
             for (var i = 0; i < resp.data.length; i++) {
                 if (subModel.setting.hideWithoutSub && resp.data[i].subtitles.length === 0) {
                     continue;
                 }
+                var call = false;
                 show.details.push(resp.data[i]);
             }
-            show.skip = show.details.length;
+            show.skip = skip + resp.data.length;
 
+            if (call) _this.getMovieDetails(show, callback);
             if (callback) callback(resp.data);
             show.loading--;
         }, function (errorResp) {
