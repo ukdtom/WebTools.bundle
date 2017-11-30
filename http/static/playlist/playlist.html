@@ -46,9 +46,9 @@
                     <div class="buttons pull-right">
                         <div class="playlistBtn" 
                              confirm="deletePlaylist"
-                             c-data="playlist" 
-                             c-text="{[{'Are you sure you want to delete the playlist?'|translate}]}" 
-                             c-btn-text="{[{'Delete'|translate}]}" 
+                             c-data="playlist"
+                             c-text="lang.confirmDeleteQuestion|translate" 
+                             c-btn-text="lang.confirmDelete|translate"
                              translate>Delete</div>
                         <div class="playlistBtn" ng-click="copyPlaylist(playlist)" 
                              ng-disabled="!webtoolsModel.userToSelected"

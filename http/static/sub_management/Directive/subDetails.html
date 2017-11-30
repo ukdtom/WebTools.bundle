@@ -17,8 +17,8 @@
             <!-- Just testing here -->
             <div confirm="deleteSelected"
                  c-data="detail" 
-                 c-text="{[{'Are you sure you want to delete the selected subtitles?'|translate}]}" 
-                 c-btn-text="{[{'Delete'|translate}]}" 
+                 c-text="lang.confirmDeleteQuestion|translate" 
+                 c-btn-text="lang.confirmDelete|translate" 
                  ng-if="detail.subtitles.length > 0">
                 <div class="fa fa-trash-o" ng-title="lang.deleteSelected|translate"></div>
             </div>

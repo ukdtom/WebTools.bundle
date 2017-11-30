@@ -20,7 +20,9 @@
             uploadSubtitle: gettext("Upload Subtitle"),
             deleteSelected: gettext("Delete Selected"),
             viewSubtitle: gettext("View Subtitle"),
-            downloadSubtitle: gettext("Download Subtitle")
+            downloadSubtitle: gettext("Download Subtitle"),
+            confirmDeleteQuestion: gettext("Are you sure you want to delete the selected subtitles?"),
+            confirmDelete: gettext("Delete")
         };
         $scope.lang = lang;
         $scope.searchPlaceholder = $scope.lang.search;

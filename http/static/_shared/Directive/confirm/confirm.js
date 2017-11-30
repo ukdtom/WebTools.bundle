@@ -1,16 +1,13 @@
-﻿angular.module('webtools').directive('confirm', ['ngDialog', 'gettext', function (ngDialog, gettext) {
+﻿angular.module('webtools').directive('confirm', ['ngDialog', function (ngDialog) {
     return {
         restrict: 'A',
         scope: {
             confirm: "=",
             cData: "=",
-            cBtnText: "@",
-            cText: "@"
+            cBtnText: "=",
+            cText: "="
         },
         link: function (scope, element, attrs) {
-            scope.cBtnText = gettext(scope.cBtnText);
-            scope.cText = gettext(scope.cText);
-
             element.on('click', function (event) {
                 ngDialog.openConfirm({
                     scope: scope,
@@ -20,6 +17,7 @@
                     else scope.confirm();
                 }, function (reject) {
                 });
+
             });
         },
 
