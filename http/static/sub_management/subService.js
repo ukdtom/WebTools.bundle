@@ -37,7 +37,7 @@
             url: url,
         }).then(function (resp) {
             show.letterOptions = [{
-                name: "- " + _this.lang.noFilter + " -",
+                name: _this.lang.noFilter,
                 key: null,
                 size: ""
             }];
