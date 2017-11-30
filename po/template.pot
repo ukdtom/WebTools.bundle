@@ -114,7 +114,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../http/static/uas/uas.html:80
+#: ../http/static/uas/uas.html:87
 msgid "Categories:"
 msgstr ""
 
@@ -199,7 +199,7 @@ msgstr ""
 #: ../http/static/playlist/playlist.html:47
 #: ../http/static/playlist/playlistController.js:7
 #: ../http/static/sub_management/subController.js:25
-#: ../http/static/uas/uas.html:61
+#: ../http/static/uas/uas.html:68
 msgid "Delete"
 msgstr ""
 
@@ -359,8 +359,12 @@ msgstr ""
 msgid "Import a playlist"
 msgstr ""
 
-#: ../http/static/uas/uas.html:54
+#: ../http/static/uas/uas.html:61
 msgid "Install"
+msgstr ""
+
+#: ../http/static/uas/uasService.js:9
+msgid "Installed"
 msgstr ""
 
 #: ../http/static/findmedia/fm.html:131
@@ -384,7 +388,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: ../http/static/uas/uas.html:88
+#: ../http/static/uas/uas.html:95
 msgid "Last updated:"
 msgstr ""
 
@@ -428,7 +432,7 @@ msgstr ""
 msgid "Manual install url..."
 msgstr ""
 
-#: ../http/static/uas/uas.html:96
+#: ../http/static/uas/uas.html:103
 msgid "Manual:"
 msgstr ""
 
@@ -555,7 +559,7 @@ msgstr ""
 msgid "Reload file"
 msgstr ""
 
-#: ../http/static/uas/uas.html:104
+#: ../http/static/uas/uas.html:111
 msgid "Repo:"
 msgstr ""
 
@@ -662,7 +666,7 @@ msgstr ""
 msgid "Subtitle Management Upload Subtitle"
 msgstr ""
 
-#: ../http/static/uas/uas.html:113
+#: ../http/static/uas/uas.html:120
 msgid "Support:"
 msgstr ""
 
@@ -740,7 +744,7 @@ msgstr ""
 msgid "UnsupportedAppStore Help"
 msgstr ""
 
-#: ../http/static/uas/uas.html:55
+#: ../http/static/uas/uas.html:62
 msgid "Update"
 msgstr ""
 
@@ -748,7 +752,7 @@ msgstr ""
 msgid "Update WT"
 msgstr ""
 
-#: ../http/static/uas/uas.html:45
+#: ../http/static/uas/uas.html:52
 msgid "Update all"
 msgstr ""
 
@@ -848,7 +852,7 @@ msgstr ""
 msgid "Wrong username and/or password"
 msgstr ""
 
-#: ../http/static/uas/uas.html:39
+#: ../http/static/uas/uas.html:46
 msgid "You have"
 msgstr ""
 
@@ -856,11 +860,11 @@ msgstr ""
 msgid "Your Support"
 msgstr ""
 
-#: ../http/static/uas/uas.html:41
+#: ../http/static/uas/uas.html:48
 msgid "bundle"
 msgstr ""
 
-#: ../http/static/uas/uas.html:42
+#: ../http/static/uas/uas.html:49
 msgid "bundles"
 msgstr ""
 
@@ -868,7 +872,7 @@ msgstr ""
 msgid "idle"
 msgstr ""
 
-#: ../http/static/uas/uas.html:43
+#: ../http/static/uas/uas.html:50
 msgid "not up to date."
 msgstr ""
 
