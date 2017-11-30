@@ -102,6 +102,9 @@
 .uas .type.update:hover{
     color: white;
 }
+.uas .type.installed{
+    font-weight: bold;
+}
 
 
 .uas .repoContainer{

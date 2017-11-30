@@ -24,6 +24,13 @@
                 <div class="pull-left">{[{uasModel.updateType.key | translate}]}</div>
                 <!--<div class="pull-right">{[{uasModel.updateType.viewInstalled}]}/{[{uasModel.updateType.viewTotal}]}</div>-->
             </div>
+            <div class="type installed"
+                 ng-if="uasModel.installType"
+                 ng-click="setType(uasModel.installType.key, uasModel.installType)"
+                 ng-class="{'active' : uasModel.selectedType.name === uasModel.installType.key}">
+                <div class="pull-left">{[{uasModel.installType.key | translate}]}</div>
+                <div class="pull-right">{[{uasModel.installType.viewInstalled}]}</div>
+            </div>
             <div class="type"
                  ng-repeat="(typeName, type) in uasModel.types | orderObjectBy: 'key'"
                  ng-click="setType(type.key, type)"
@@ -47,7 +54,7 @@
         </div>
 
         <div class="repoContainer" ng-if="uasModel.selectedType">
-            <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue | orderObjectBy: 'title'" ng-if="typeExist(uasModel.selectedType.name, repo.type)">
+            <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue | orderObjectBy: 'title'" ng-if="typeExist(uasModel.selectedType.name, repo.type, repo.installed)">
                 <div class="header" ng-click="repo.revealed = !repo.revealed">
                     <div class="right">
                         <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && repo.key && validUrl(repo.key)" ng-click="installUpdate(repo, repo.key);$event.stopPropagation();">

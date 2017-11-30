@@ -4,7 +4,9 @@
     this.lang = {
         appsMigrated: gettext("Channels/Plug-ins migrated:"),
         noAppsMigrated: gettext("No Channels/Plug-ins was migrated"),
-        updatesAvailable: gettext("Updates available")
+        updatesAvailable: gettext("Updates available"),
+
+        installed: gettext("Installed")
     }
 
     this.getInstalled = function (callback) {
@@ -14,23 +16,47 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            uasModel.installedList = resp.data;
-            for (var installedItem in uasModel.installedList) {
-                var item = uasModel.list[installedItem];
+            uasModel.installedList = [];
+            for (var key in resp.data) {
+                var item = uasModel.list[key];
                 if (!item) {
-                    item = uasModel.installedList[installedItem];
-                    //item.description = "----";
+                    item = resp.data[key];
                 }
+                item.key = key;
                 item.installed = true;
-                item.url = installedItem;
-                item.date = uasModel.installedList[installedItem].date;
-                item.supporturl = uasModel.installedList[installedItem].supporturl;
-
+                item.url = key;
+                item.date = resp.data[key].date;
+                item.supporturl = resp.data[key].supporturl;
                 if (!item.icon) item.icon = "art-default.jpg";
 
-                uasModel.list[installedItem] = item;
-                //_this.getLastUpdateTime(uasModel.list[installedItem]);
+                uasModel.list[key] = item;
+                uasModel.installedList.push(item);
             }
+
+            //uasModel.installedList = resp.data;
+            //for (var installedItem in uasModel.installedList) {
+            //    var item = uasModel.list[installedItem];
+            //    if (!item) {
+            //        item = uasModel.installedList[installedItem];
+            //        //item.description = "----";
+            //    }
+            //    item.installed = true;
+            //    item.url = installedItem;
+            //    item.date = uasModel.installedList[installedItem].date;
+            //    item.supporturl = uasModel.installedList[installedItem].supporturl;
+
+            //    if (!item.icon) item.icon = "art-default.jpg";
+
+            //    uasModel.list[installedItem] = item;
+                //_this.getLastUpdateTime(uasModel.list[installedItem]);
+            //}
+            uasModel.installType = {
+                key: _this.lang.installed,
+                installed: uasModel.installedList.length,
+                viewInstalled: uasModel.installedList.length,
+                total: uasModel.types["All"].installed,
+                viewTotal: uasModel.types["All"].installed
+            };
             if (callback) callback(resp.data);
             webtoolsModel.uasLoading = false;
         }, function (errorResp) {
@@ -233,6 +259,11 @@
 
                     uasModel.types["All"].installed += 1;
                     uasModel.types["All"].viewInstalled += 1;
+
+                    if (uasModel.installType) {
+                        uasModel.installType.installed += 1;
+                        uasModel.installType.viewInstalled += 1;
+                    }
                 }
                 repo.message = "App successfully installed";
             } else {
@@ -272,6 +303,11 @@
 
             uasModel.types["All"].installed -= 1;
             uasModel.types["All"].viewInstalled -= 1;
+
+            if (uasModel.installType) {
+                uasModel.installType.installed -= 1;
+                uasModel.installType.viewInstalled -= 1;
+            }
 
             for (var i = 0; i < repo.type.length; i++) {
                 var type = repo.type[i];
