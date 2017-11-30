@@ -28,8 +28,9 @@
         $scope.uasModel.selectedType = type;
     }
 
-    $scope.typeExist = function (selectedTypeName, itemTypes) {
+    $scope.typeExist = function (selectedTypeName, itemTypes, installed) {
         if (selectedTypeName === "All") return true;
+        if (selectedTypeName === "Installed") return installed;
         for (var i = 0; i < itemTypes.length; i++) {
             if (selectedTypeName === itemTypes[i]) return true;
         }
