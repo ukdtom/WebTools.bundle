@@ -313,7 +313,7 @@ msgstr "Manuel installation"
 msgid "Migrate"
 msgstr "Migrer"
 
-#: ../http/static/uas/uas.html:80
+#: ../http/static/uas/uas.html:87
 msgid "Categories:"
 msgstr "Kategorier:"
 
@@ -324,7 +324,7 @@ msgstr "Kopier"
 #: ../http/static/playlist/playlist.html:47
 #: ../http/static/playlist/playlistController.js:7
 #: ../http/static/sub_management/subController.js:25
-#: ../http/static/uas/uas.html:61
+#: ../http/static/uas/uas.html:68
 msgid "Delete"
 msgstr "Slet"
 
@@ -332,11 +332,11 @@ msgstr "Slet"
 msgid "Download"
 msgstr "Download"
 
-#: ../http/static/uas/uas.html:54
+#: ../http/static/uas/uas.html:61
 msgid "Install"
 msgstr "Installer"
 
-#: ../http/static/uas/uas.html:88
+#: ../http/static/uas/uas.html:95
 msgid "Last updated:"
 msgstr "Seneste Updatering:"
 
@@ -344,11 +344,11 @@ msgstr "Seneste Updatering:"
 msgid "Manual install url..."
 msgstr "Manuelt installations url..."
 
-#: ../http/static/uas/uas.html:96
+#: ../http/static/uas/uas.html:103
 msgid "Manual:"
 msgstr "Manuel:"
 
-#: ../http/static/uas/uas.html:104
+#: ../http/static/uas/uas.html:111
 msgid "Repo:"
 msgstr "Git Repo:"
 
@@ -364,7 +364,7 @@ msgstr "Selv"
 msgid "Subtitle Management Help"
 msgstr "Undertekst management hjælp"
 
-#: ../http/static/uas/uas.html:113
+#: ../http/static/uas/uas.html:120
 msgid "Support:"
 msgstr "Support:"
 
@@ -376,7 +376,7 @@ msgstr "Dette er en uofficiel manager for undertekster."
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "For at starte, vælg et af dine biblioteker eller klik på \"?\" for yderligere hjælp"
 
-#: ../http/static/uas/uas.html:55
+#: ../http/static/uas/uas.html:62
 msgid "Update"
 msgstr "Opdater"
 
@@ -533,23 +533,23 @@ msgstr "De talentfulde og hårdt arbejdende folk hos Plex. Vi er evigt taknemmel
 msgid "Translations and Beta testers"
 msgstr "Oversættere og Beta testere"
 
-#: ../http/static/uas/uas.html:45
+#: ../http/static/uas/uas.html:52
 msgid "Update all"
 msgstr "Opdater alle"
 
-#: ../http/static/uas/uas.html:39
+#: ../http/static/uas/uas.html:46
 msgid "You have"
 msgstr "Du har"
 
-#: ../http/static/uas/uas.html:41
+#: ../http/static/uas/uas.html:48
 msgid "bundle"
 msgstr "bundle"
 
-#: ../http/static/uas/uas.html:42
+#: ../http/static/uas/uas.html:49
 msgid "bundles"
 msgstr "bundles"
 
-#: ../http/static/uas/uas.html:43
+#: ../http/static/uas/uas.html:50
 msgid "not up to date."
 msgstr "som ikke er opdateret"
 
@@ -899,4 +899,8 @@ msgstr "Er du sikker på du vil slette denne Playliste?"
 #: ../http/static/sub_management/subController.js:24
 msgid "Are you sure you want to delete the selected subtitles?"
 msgstr "Er du sikker på du vil slette denne undertekst?"
+
+#: ../http/static/uas/uasService.js:9
+msgid "Installed"
+msgstr "Installeret"
 
