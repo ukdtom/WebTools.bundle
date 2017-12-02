@@ -1147,9 +1147,26 @@ class pmsV3(object):
         Log.Debug('Need to delete element with an attribute named "%s" with a value of "%s" from file named "%s"' % (
             attribute, value, fileName))
         if Platform.OS == 'MacOSX':
-            Log.Debug('OSX detected')
-            print 'Ged special case for OSX in delfrom XML'
+            Log.Info('Mac OSx detected')
+            try:
+                xmlFile = os.fdopen(os.open(fileName, os.O_RDWR), "r+")
+                with xmlFile as f:
+                    tree = ElementTree.parse(f)
+                    root = tree.getroot()
+                    mySubtitles = root.findall('.//Subtitle')
+                    for Subtitles in root.findall("Language[Subtitle]"):
+                        for node in Subtitles.findall("Subtitle"):
+                            myValue = node.attrib.get(attribute)
+                            if myValue:
+                                if '_' in myValue:
+                                    drop, myValue = myValue.split("_")
+                                if myValue == value:
+                                    Subtitles.remove(node)
+                    tree.write(f, encoding='utf-8', xml_declaration=True)
+            except Exception, e:
+                Log.Exception('Exception in DelFromXML was %s' % e)
         else:
+            Log.Info('Non Mac OSx detected')
             with io.open(fileName, 'r') as f:
                 tree = ElementTree.parse(f)
                 root = tree.getroot()
