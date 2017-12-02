@@ -118,6 +118,7 @@
         return subtitle.codec === "srt"
             || subtitle.codec === "subrip"
             || subtitle.codec === "smi"
+            || subtitle.codec === "ssa"
             || subtitle.codec === "ass";
     }
 
