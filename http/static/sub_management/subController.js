@@ -119,6 +119,7 @@
             || subtitle.codec === "subrip"
             || subtitle.codec === "smi"
             || subtitle.codec === "ssa"
+            || subtitle.codec === "vtt"
             || subtitle.codec === "ass";
     }
 
