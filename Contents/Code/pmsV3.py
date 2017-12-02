@@ -838,8 +838,17 @@ class pmsV3(object):
                     if getSubs == True:
                         subtitles = self.GETSUBTITLES(
                             req, mediaKey=media.get('ratingKey'))
-                        media = {'key': media.get('ratingKey'), 'title': media.get(
-                            'title'), 'subtitles': subtitles}
+                        if Dict['HideWithoutSubs'].lower() == 'true':
+                            if len(subtitles) > 0:
+                                # Found subs
+                                media = {'key': media.get('ratingKey'), 'title': media.get(
+                                    'title'), 'subtitles': subtitles}
+                            else:
+                                continue
+                        else:
+                            # Add regardless of subs present or not
+                            media = {'key': media.get('ratingKey'), 'title': media.get(
+                                'title'), 'subtitles': subtitles}
                     else:
                         media = {'key': media.get(
                             'ratingKey'), 'title': media.get('title')}
