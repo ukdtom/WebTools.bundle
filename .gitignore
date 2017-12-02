@@ -61,4 +61,8 @@ Icon
 translations/
 debug
 
+#****************
+# LibraOffice specific
+#****************
+.~lock.*
 
