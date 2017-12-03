@@ -126,7 +126,7 @@
 
     this.getTvShowDetails = function (show, callback) {
         var skip = (show.skip ? show.skip : 0);
-        var take = 3;
+        var take = 30;
 
         show.loading++;
         var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/" + skip + "/size/" + take + "/title/" + subModel.searchValue;
