@@ -92,6 +92,9 @@ help:hover {
 
 /* Subtitles ----------------------------------------------------------------------------------- */
 
+.sub .settings {
+    background: rgba(133,202,133,1);
+}
 .sub .search .btnSearch {
     background: rgba(0,102,0,0.85);
     color: rgba(0,255,0,0.9);
@@ -337,6 +340,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#002400', end
 
 /* Playlists ----------------------------------------------------------------------------------- */
 
+.btnInput {
+    background: rgba(0,102,0,0.85);
+    color: rgba(0,245,0,1);
+}
+.btnInput:hover {
+    background: rgba(0,204,0,0.9);
+    color: rgba(0,102,0,0.9);
+}
 /* Playlists Item Container */
 .playlists .playlistContainer {
     background-color: rgba(133,202,133,1);
@@ -366,7 +377,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#002400', end
 }
 /* PlayLists Browse Container */
 .playlists .userContainer .fileContainer{
-    background: rgba(204,225,204,1);
+    background: rgba(133,202,133,1);
 }
 .playlists .userContainer .fileContainer .label{
     color: rgba(0,102,0,0.85);

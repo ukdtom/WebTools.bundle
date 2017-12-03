@@ -103,6 +103,10 @@ help:hover {
 
 /* Subtitles ----------------------------------------------------------------------------------- */
 
+.sub .settings {
+    background: rgba(0,0,0,1);
+    border: solid 1px rgba(255,255,102,0.5);
+}
 .sub .search .btnSearch {
     background: rgba(51,51,0,1);
     color: rgba(255,255,102,1);
@@ -376,6 +380,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff66', end
 
 /* Playlists ----------------------------------------------------------------------------------- */
 
+.btnInput {
+    background: rgba(0,0,0,1);
+    color: rgba(255,255,102,1);
+    Border: 1px solid rgba(255,255,102,0.5);
+}
+.btnInput:hover {
+    background: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    Border: 1px solid rgba(255,255,255,1);
+}
 /* Playlists Item Container */
 .playlists .playlistContainer {
     background: rgba(0,0,0,1);
