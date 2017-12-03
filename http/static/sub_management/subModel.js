@@ -1,5 +1,5 @@
 ﻿angular.module('webtools').service('subModel', function () {
-    this.setting = {
+    this.settings = {
         hideWithoutSub: false
     };
 

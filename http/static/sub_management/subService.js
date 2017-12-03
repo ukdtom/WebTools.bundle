@@ -5,6 +5,45 @@
         noFilter: gettext("No filter")
     }
 
+
+    this.setSettings = function (callback) {
+        if (!subModel.settings) {
+            console.log("No settings!?");
+            return;
+        }
+
+        var url = webtoolsModel.apiV3Url + "/settings/setSetting";
+        $http({
+            method: "PUT",
+            url: url,
+            data: {
+                HideWithoutSubs: subModel.settings.hideWithoutSub
+            }
+        }).then(function (resp) {
+            if (callback) callback(resp.data);
+        }, function (errorResp) {
+            webtoolsService.log("subService.setSettings - " + webtoolsService.formatError(errorResp), "Sub", true, url);
+        });
+    }
+
+    this.getSettings = function (callback) {
+        var url = webtoolsModel.apiV3Url + "/settings/getSettings/HideWithoutSubs";
+        $http({
+            method: "GET",
+            url: url,
+        }).then(function (resp) {
+            if (!subModel.settings) {
+                subModel.settings = {}
+            }
+            subModel.settings.hideWithoutSub = resp.data;
+
+            if (callback) callback(resp.data);
+        }, function (errorResp) {
+            webtoolsService.log("subService.getSettings - " + webtoolsService.formatError(errorResp), "Sub", true, url);
+        });
+    }
+
+
     this.getShows = function (callback) {
         webtoolsModel.subLoading = true;
         var url = webtoolsModel.apiV3Url + "/pms/getSectionsList";
@@ -69,19 +108,14 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            if (resp.data.length !== take) show.full = true;
+            if (resp.data.count !== take) show.full = true;
 
-            var call = true;
-            for (var i = 0; i < resp.data.length; i++) {
-                if (subModel.setting.hideWithoutSub && resp.data[i].subtitles.length === 0) {
-                    continue;
-                }
-                var call = false;
-                show.details.push(resp.data[i]);
+            for (var i = 0; i < resp.data.Section.length; i++) {
+                show.details.push(resp.data.Section[i]);
             }
-            show.skip = skip + resp.data.length;
 
-            if (call) _this.getMovieDetails(show, callback);
+            show.skip = skip + resp.data.count;
+
             if (callback) callback(resp.data);
             show.loading--;
         }, function (errorResp) {

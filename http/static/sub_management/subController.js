@@ -30,6 +30,7 @@
 
     $scope.init = function () {
         $scope.translate();
+        subService.getSettings();
         subService.getShows();
     }
 
@@ -43,6 +44,12 @@
         if (isExpanded) $scope.searchPlaceholder = $scope.lang.search;
         else $scope.searchPlaceholder = $scope.lang.expandShowToSearch;
         return isExpanded;
+    }
+
+    $scope.filterSub = function () {
+        subService.setSettings(function () {
+            $scope.searchSub();
+        });
     }
 
     $scope.searchSub = function () {

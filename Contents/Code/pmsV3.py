@@ -822,7 +822,11 @@ class pmsV3(object):
                 title = None
             # Got all the needed params, so lets grap the contents
             try:
-                if letterKey:
+                if letterKey and title:
+                    myURL = misc.GetLoopBack() + '/library/sections/' + key + '/firstCharacter/' + \
+                        letterKey + '?X-Plex-Container-Start=' + \
+                        start + '&X-Plex-Container-Size=' + size + '&title=' + title
+                elif letterKey:
                     myURL = misc.GetLoopBack() + '/library/sections/' + key + '/firstCharacter/' + \
                         letterKey + '?X-Plex-Container-Start=' + \
                         start + '&X-Plex-Container-Size=' + size
@@ -838,7 +842,7 @@ class pmsV3(object):
                     if getSubs == True:
                         subtitles = self.GETSUBTITLES(
                             req, mediaKey=media.get('ratingKey'))
-                        if Dict['HideWithoutSubs'].lower() == 'true':
+                        if str(Dict['HideWithoutSubs']).lower() == 'true':
                             if len(subtitles) > 0:
                                 # Found subs
                                 media = {'key': media.get('ratingKey'), 'title': media.get(
@@ -858,7 +862,7 @@ class pmsV3(object):
                 req.set_status(200)
                 req.set_header(
                     'Content-Type', 'application/json; charset=utf-8')
-                req.finish(json.dumps(Section))
+                req.finish(json.dumps({'Section': Section, 'count': len(rawSection)}))
             except Exception, e:
                 Log.Exception(
                     'Fatal error happened in getSection %s' % (str(e)))
