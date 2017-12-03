@@ -194,7 +194,7 @@ class findMediaV3(object):
                                                     Log.Info(
                                                         'Unmatched file confirmed as %s' % filename)
                                                     unmatchedByPlex.append(
-                                                        filename)
+                                                        filename.encode("utf-8"))
                                         episodes = XML.ElementFromString(
                                             XML.StringFromElement(video)).xpath('//Part')
                                         for episode in episodes:
@@ -204,7 +204,8 @@ class findMediaV3(object):
                                             filename = String.Unquote(
                                                 filename).encode('utf8', 'ignore')
                                             if self.addThisItem(filename, 'video'):
-                                                mediasFromDB.append(filename)
+                                                mediasFromDB.append(
+                                                    filename.encode("utf-8"))
                                             iEpisode += 1
                                         # Inc Episodes counter
                                     iCEpisode += self.MediaChuncks
@@ -298,7 +299,8 @@ class findMediaV3(object):
                                             # We dont got an UNC path here
                                             filename = filename[pos:]
                                     Log.Debug('appending file: ' + filename)
-                                    mediasFromFileSystem.append(filename)
+                                    mediasFromFileSystem.append(
+                                        filename.encode("utf-8"))
                                 if DEBUGMODE:
                                     Log.Debug('Scanning file: ' + file)
                                 statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
@@ -362,7 +364,8 @@ class findMediaV3(object):
                             if self.addThisItem(filename, 'video'):
                                 Log.Info(
                                     'Unmatched file confirmed as %s' % filename)
-                                unmatchedByPlex.append(filename)
+                                unmatchedByPlex.append(
+                                    filename.encode("utf-8"))
                         parts = XML.ElementFromString(
                             XML.StringFromElement(video)).xpath('//Part')
                         # Walk the parts of a media
@@ -375,7 +378,7 @@ class findMediaV3(object):
                             filename = unicode(misc.Unicodize(
                                 part.get('file')).encode('utf8', 'ignore'))
                             if self.addThisItem(filename, 'video'):
-                                mediasFromDB.append(filename)
+                                mediasFromDB.append(filename.encode("utf-8"))
                             statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
                                                             String='Scanning database: item %s of %s : Working') % (iCount, totalSize)
                     iStart += self.MediaChuncks
@@ -673,7 +676,7 @@ class findMediaV3(object):
         except Exception, e:
             Log.Exception('Exception in populatePrefs was %s' % str(e))
 
-    ''' 
+    '''
     Returns true or false, depending on if a media should be added to the list
     Param file: The file to be investigated, with full path
     Param mediaType: Type of media
