@@ -370,8 +370,7 @@ class pmsV3(object):
                 myEpisode = {}
                 myEpisode['key'] = episode.get('id')
                 myEpisode['title'] = episode.get('title')
-                myEpisode['episode'] = episode.get('index')
-                print 'Ged hidesubs', Dict['HideWithoutSubs']
+                myEpisode['episode'] = episode.get('index')                
                 if bGetSubs:
                     if bGetFile:
                         myEpisode['subtitles'] = self.GETSUBTITLES(
