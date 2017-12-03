@@ -108,7 +108,7 @@
             method: "GET",
             url: url,
         }).then(function (resp) {
-            if (resp.data.count !== take) show.full = true;
+            show.full = resp.data.count !== take;
 
             for (var i = 0; i < resp.data.Section.length; i++) {
                 show.details.push(resp.data.Section[i]);
@@ -126,17 +126,17 @@
 
     this.getTvShowDetails = function (show, callback) {
         var skip = (show.skip ? show.skip : 0);
-        var take = 20;
+        var take = 3;
 
         show.loading++;
-        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/" + skip + "/size/" + take + "/getSubs/title/" + subModel.searchValue;
+        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/" + skip + "/size/" + take + "/title/" + subModel.searchValue;
         if (show.letter) url += "/letterKey/" + show.letter;
 
         $http({
             method: "GET",
             url: url,
         }).then(function (resp) {
-            if (resp.data.count !== take) show.full = true;
+            show.full = resp.data.count !== take;
 
             if (!show.tvshows) show.tvshows = [];
             for (var i = 0; i < resp.data.Section.length; i++) {

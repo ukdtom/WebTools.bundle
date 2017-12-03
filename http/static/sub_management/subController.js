@@ -83,7 +83,7 @@
         if (!show.details && show.type === "movie") {
             show.details = [];
             subService.getMovieDetails(show);
-        } else if (!show.details && show.type === "show") {
+        } else if (!show.tvshows && show.type === "show") {
             subService.getTvShowDetails(show);
         }
     };
@@ -104,7 +104,7 @@
     $scope.loadmore = function (show) {
         if (show.details && show.type === "movie") {
             subService.getMovieDetails(show);
-        } else if (show.details && show.type === "show") {
+        } else if (show.tvshows && show.type === "show") {
             subService.getTvShowDetails(show);
         }
     }
