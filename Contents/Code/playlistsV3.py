@@ -567,9 +567,18 @@ class playlistsV3(object):
                     req.finish('Missing key of playlist')
                 try:
                     Log.Info('downloading playlist with ID: %s' % key)
+                    sizeURL = misc.GetLoopBack() + '/playlists/' + key + '/items?X-Plex-Container-Start=0&X-Plex-Container-Size=0'                    
                     if user == None:
-                        # Get playlist from the owner
-                        playlist = XML.ElementFromURL(url)
+                        try:
+                            # Get the amount of leafs
+                            print 'GED TODO....Need to grap in small chuncks'
+                            # Get playlist from the owner
+                            playlist = XML.ElementFromURL(url)
+                            print 'Ged 33', url
+                        except Exception, e:
+                            Log.Exception('Exception when downloading a playlist as the owner was %s' %str(e))
+                            Log.Debug('Trying to get more info here')
+
                     else:
                         # Get Auth token for user
                         try:
