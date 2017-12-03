@@ -420,6 +420,9 @@ class consts(object):
         # Init default language to en, if none is present
         if Dict['UILanguage'] == None:
             Dict['UILanguage'] = 'en'
+        # Init default language to en, if none is present
+        if Dict['HideWithoutSubs'] == None:
+            Dict['HideWithoutSubs'] = 'False'        
         return
 
 
