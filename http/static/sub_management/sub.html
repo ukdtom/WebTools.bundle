@@ -62,6 +62,10 @@
                             <div class="tvshow" ng-if="!show.selectedTvShow" ng-click="expandTvShow(show, tvshow)" ng-repeat="tvshow in show.tvshows track by tvshow.key | orderBy : 'title'">
                                 {[{tvshow.title}]}
                             </div>
+                            <div ng-if="!show.full && !show.selectedTvShow && !show.selectedSeason" ng-click="loadmore(show)" class="loadmore textSize3 clearleft">
+                                <span class="fa fa-tasks"></span>
+                                <translate>Load more</translate>
+                            </div>
                             <div class="row" ng-if="!show.loading && show.tvshows.length === 0"> <span class="textSize3"><translate>No TV-Shows found in</translate> '{[{show.title}]}' <translate>with current search filter</translate></span></div>
                             <content-loading ng-if="(show.selectedTvShow && show.selectedTvShow.loading) || (show.selectedSeason && show.selectedSeason.loading)"></content-loading>
                             <div class="tvshowheader textSize3 textBold600">
@@ -77,10 +81,6 @@
                             <div class="tvshow" ng-if="show.selectedTvShow && !show.selectedTvShow.loading && !show.selectedSeason" ng-click="expandTvShowSeason(show, season)"
                                 ng-repeat="season in show.selectedTvShow.seasons track by season.key | orderBy : 'title'">
                                 {[{season.title}]}
-                            </div>
-                            <div ng-if="!show.full && !show.loading && show.selectedTvShow && !show.selectedTvShow.loading && !show.selectedSeason" ng-click="loadmore(show)" class="loadmore textSize3">
-                                <span class="fa fa-tasks"></span>
-                                <translate>Load more</translate>
                             </div>
                             <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.selectedSeason.details track by detail.key | orderBy : 'title'"
                                 ng-init="detail.subAllChecked = false;detail.loading = false;" ng-if="show.selectedTvShow && !show.selectedTvShow.loading && show.selectedSeason && !show.selectedSeason.loading">
