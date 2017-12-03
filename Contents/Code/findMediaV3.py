@@ -693,7 +693,7 @@ class findMediaV3(object):
                     # Ignore specials
                     if Dict['findMedia']['IGNORE_SPECIALS']:
                         for special in Specials:
-                            if special in part.lower():
+                            if special == part.lower():
                                 return False
                     # Ignore hiddens
                     if Dict['findMedia']['IGNORE_HIDDEN']:
