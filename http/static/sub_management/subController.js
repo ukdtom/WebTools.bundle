@@ -66,6 +66,8 @@
             show.details = [];
             subService.getMovieDetails(show);
         } else if (show.tvshows && show.type === "show") {
+            show.skip = 0;
+            show.full = false;
             show.tvshows = [];
             subService.getTvShowDetails(show);
         }

@@ -125,16 +125,26 @@
     }
 
     this.getTvShowDetails = function (show, callback) {
+        var skip = (show.skip ? show.skip : 0);
+        var take = 20;
 
         show.loading++;
-        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/0/size/9999/title/" + subModel.searchValue;
+        var url = webtoolsModel.apiV3Url + "/pms/getSection/key/" + show.key + "/start/" + skip + "/size/" + take + "/getSubs/title/" + subModel.searchValue;
         if (show.letter) url += "/letterKey/" + show.letter;
 
         $http({
             method: "GET",
             url: url,
         }).then(function (resp) {
-            show.tvshows = resp.data;
+            if (resp.data.count !== take) show.full = true;
+
+            if (!show.tvshows) show.tvshows = [];
+            for (var i = 0; i < resp.data.Section.length; i++) {
+                show.tvshows.push(resp.data.Section[i]);
+            }
+
+            show.skip = skip + resp.data.count;
+
             if (callback) callback(resp.data);
             show.loading--;
         }, function (errorResp) {
