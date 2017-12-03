@@ -78,6 +78,10 @@
                                 ng-repeat="season in show.selectedTvShow.seasons track by season.key | orderBy : 'title'">
                                 {[{season.title}]}
                             </div>
+                            <div ng-if="!show.full && !show.loading && show.selectedTvShow && !show.selectedTvShow.loading && !show.selectedSeason" ng-click="loadmore(show)" class="loadmore textSize3">
+                                <span class="fa fa-tasks"></span>
+                                <translate>Load more</translate>
+                            </div>
                             <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.selectedSeason.details track by detail.key | orderBy : 'title'"
                                 ng-init="detail.subAllChecked = false;detail.loading = false;" ng-if="show.selectedTvShow && !show.selectedTvShow.loading && show.selectedSeason && !show.selectedSeason.loading">
                                 <div class="col-sm-12 detail">

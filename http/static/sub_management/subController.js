@@ -104,6 +104,8 @@
     $scope.loadmore = function (show) {
         if (show.details && show.type === "movie") {
             subService.getMovieDetails(show);
+        } else if (show.details && show.type === "show") {
+            subService.getTvShowDetails(show);
         }
     }
 
