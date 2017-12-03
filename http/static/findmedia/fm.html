@@ -87,10 +87,13 @@
             </div>
             <div ng-if="!fmModel.scanning">
                 <div class="section" ng-repeat="section in fmModel.sections">
-                    <div class="row header" ng-click="scanStart(section)">
+                    <div class="type">
+                        <img ng-src="icons/{[{section.type}]}.png">
+                    </div>
+                    <div class="row header textSize3 textBold600" ng-click="scanStart(section)">
                         <div class="col-xs-12">{[{section.title}]}</div>
                     </div>
-                    <div class="row" ng-if="section.result">
+                    <div class="row result" ng-if="section.result">
                         <div class="col-xs-12">
                             <div class="row">
                                 <div class="col-xs-12">

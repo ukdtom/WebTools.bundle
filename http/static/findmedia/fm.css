@@ -49,19 +49,48 @@
 }
 
 .fm .sections .section{
-    width:100%;
+    /*width:100%;
     min-height:40px;
     margin-top:7px;
     border-bottom:1px solid black;
     padding:10px;
     background: rgba(0, 0, 0, 0.15);
-    border-radius:5px;
+    border-radius:5px;*/
+
+    margin-top: 10px;
+    min-height: 50px;
+    width: 100%;
+    background: rgba(0, 77, 255, 0.15);
+    box-shadow: 3px 3px 10px 1px black;
+    border-radius: 5px;
+    overflow: hidden;
 }
 .fm .sections .section:hover{
     background: rgba(0, 30, 30, 0.35);
 }
+.fm .sections .section .type{
+    min-height: 50px;
+    margin-left: 5px;
+    width: 40px;
+    float: left;
+    cursor: pointer;
+}
+.fm .sections .section .type img {
+    width: 34px;
+    height: 34px;
+    padding: 4px;
+    margin-top: 7px;
+    border-radius: 10px;
+}
 .fm .sections .section .header{
-    cursor:pointer;
+    float: left;
+    padding: 12px;
+    height: 50px;
+    width: calc(100% - 50px);
+    cursor: pointer;
+}
+.fm .sections .section .result{
+    padding:5px;
 }
 .fm .sections .section .download{
     margin:8px 3px;
