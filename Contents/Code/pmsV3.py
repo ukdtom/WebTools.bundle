@@ -371,14 +371,21 @@ class pmsV3(object):
                 myEpisode['key'] = episode.get('id')
                 myEpisode['title'] = episode.get('title')
                 myEpisode['episode'] = episode.get('index')
+                print 'Ged hidesubs', Dict['HideWithoutSubs']
                 if bGetSubs:
                     if bGetFile:
                         myEpisode['subtitles'] = self.GETSUBTITLES(
                             req, 'getFile', mediaKey=myEpisode['key'])
                     else:
                         myEpisode['subtitles'] = self.GETSUBTITLES(
-                            req, mediaKey=myEpisode['key'])
-                mySeason.append(myEpisode)
+                            req, mediaKey=myEpisode['key'])                    
+                    if not Dict['HideWithoutSubs']:
+                        mySeason.append(myEpisode)                        
+                    else:
+                        if len(myEpisode['subtitles']) > 0:
+                            mySeason.append(myEpisode)                            
+                else:
+                    mySeason.append(myEpisode)
             Log.Debug('returning: %s' % (mySeason))
             req.clear()
             req.set_status(200)
