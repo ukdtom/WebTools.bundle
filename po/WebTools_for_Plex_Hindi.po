@@ -305,7 +305,7 @@ msgstr "मैनुअल इंस्टॉल करें"
 msgid "Migrate"
 msgstr "माइग्रेट"
 
-#: ../http/static/uas/uas.html:80
+#: ../http/static/uas/uas.html:87
 msgid "Categories:"
 msgstr "श्रेणियाँ:"
 
@@ -316,7 +316,7 @@ msgstr "प्रतिलिपि"
 #: ../http/static/playlist/playlist.html:47
 #: ../http/static/playlist/playlistController.js:7
 #: ../http/static/sub_management/subController.js:25
-#: ../http/static/uas/uas.html:61
+#: ../http/static/uas/uas.html:68
 msgid "Delete"
 msgstr "हटाना"
 
@@ -324,11 +324,11 @@ msgstr "हटाना"
 msgid "Download"
 msgstr "डाउनलोड"
 
-#: ../http/static/uas/uas.html:54
+#: ../http/static/uas/uas.html:61
 msgid "Install"
 msgstr "इंस्टॉल"
 
-#: ../http/static/uas/uas.html:88
+#: ../http/static/uas/uas.html:95
 msgid "Last updated:"
 msgstr "आखरी अपडेट:"
 
@@ -336,11 +336,11 @@ msgstr "आखरी अपडेट:"
 msgid "Manual install url..."
 msgstr "मैन्युअल इंस्टॉल यूआरएल..."
 
-#: ../http/static/uas/uas.html:96
+#: ../http/static/uas/uas.html:103
 msgid "Manual:"
 msgstr "मैन्युअल:"
 
-#: ../http/static/uas/uas.html:104
+#: ../http/static/uas/uas.html:111
 msgid "Repo:"
 msgstr "रीपो:"
 
@@ -356,7 +356,7 @@ msgstr "स्वयं"
 msgid "Subtitle Management Help"
 msgstr "प्रबंधित उपशीर्षक की सहायता"
 
-#: ../http/static/uas/uas.html:113
+#: ../http/static/uas/uas.html:120
 msgid "Support:"
 msgstr "सहायता:"
 
@@ -368,7 +368,7 @@ msgstr "यह टूल मॉड्यूल उप-शीर्षक के 
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "आरंभ करने के लिए, अपनी एक पुस्तकालय चुनें या \"?\" पर क्लिक करें अतिरिक्त सहायता के लिए"
 
-#: ../http/static/uas/uas.html:55
+#: ../http/static/uas/uas.html:62
 msgid "Update"
 msgstr "अद्यतन"
 
@@ -525,23 +525,23 @@ msgstr "प्रतिभाशाली और कड़ी मेहनत �
 msgid "Translations and Beta testers"
 msgstr "अनुवाद और बीटा परीक्षक"
 
-#: ../http/static/uas/uas.html:45
+#: ../http/static/uas/uas.html:52
 msgid "Update all"
 msgstr "सभी अपडेट करें"
 
-#: ../http/static/uas/uas.html:39
+#: ../http/static/uas/uas.html:46
 msgid "You have"
 msgstr "आपके पास"
 
-#: ../http/static/uas/uas.html:41
+#: ../http/static/uas/uas.html:48
 msgid "bundle"
 msgstr "बंडल"
 
-#: ../http/static/uas/uas.html:42
+#: ../http/static/uas/uas.html:49
 msgid "bundles"
 msgstr "बंडलों"
 
-#: ../http/static/uas/uas.html:43
+#: ../http/static/uas/uas.html:50
 msgid "not up to date."
 msgstr "वर्तमान से पुराने"
 
@@ -707,189 +707,194 @@ msgstr "खोज करने के लिए पुस्तकालय क�
 
 #: ../Contents/Resources/language_template.html:19
 msgid "Get missing from File System"
-msgstr ""
+msgstr "Get missing from file system"
 
 #: ../Contents/Resources/language_template.html:27
 msgid "Get missing from database"
-msgstr ""
+msgstr "Get missing from database"
 
 #: ../Contents/Resources/language_template.html:23
 msgid "Idle"
-msgstr ""
+msgstr "Idle"
 
 #: ../http/static/sub_management/sub.html:60
 msgid "No TV-Shows found in"
-msgstr ""
+msgstr "No TV shows found"
 
 #: ../Contents/Resources/language_template.html:22
 msgid "Scanning database show %s of %s :"
-msgstr ""
+msgstr "Scanning database: show %s of %s:"
 
 #: ../Contents/Resources/language_template.html:26
 msgid "Scanning database: item %s of %s : Working"
-msgstr ""
+msgstr "Scanning database: item %s of %s: Working"
 
 #: ../Contents/Resources/language_template.html:24
 msgid "Scanning file: %s"
-msgstr ""
+msgstr "Scanning file: %s"
 
 #: ../Contents/Resources/language_template.html:21
 #: ../Contents/Resources/language_template.html:25
 msgid "Starting to scan database for section %s"
-msgstr ""
+msgstr "Starting database scan for section: %s"
 
 #: ../Contents/Resources/language_template.html:20
 msgid "idle"
-msgstr ""
+msgstr "idle"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
 msgid "Choose language for the subtitle"
-msgstr ""
+msgstr "Select language"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
 msgid "Choose part"
-msgstr ""
+msgstr "Choose part"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:35
 msgid "Missing file"
-msgstr ""
+msgstr "Missing file"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:34
 msgid "Missing part"
-msgstr ""
+msgstr "Missing part"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
 msgid "No language"
-msgstr ""
+msgstr "No language"
 
 #: ../Contents/Resources/language_template.html:28
 msgid "Scanning database: %s : Done"
-msgstr ""
+msgstr "Scanning database: %s complete"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
 msgid "Subtitle Management Upload Subtitle"
-msgstr ""
+msgstr "Subtitle Management: Upload Subtitle"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:40
 msgid "Upload"
-msgstr ""
+msgstr "Upload"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
 msgid "Upload subtitle for"
-msgstr ""
+msgstr "Upload subtitle for"
 
 #: ../Contents/Resources/language_template.html:48
 msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
-msgstr ""
+msgstr "<plugin>Base URL (if behind a proxy – if not, leave blank).\n"
+"EXAMPLE: /WebTools)</plugin>"
 
 #: ../Contents/Resources/language_template.html:33
 msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
-msgstr ""
+msgstr "<plugin>Name of the certificate key file in Contents/Code/Certificate directory</plugin>"
 
 #: ../Contents/Resources/language_template.html:45
 msgid "<plugin>Select to force https</plugin>"
-msgstr ""
+msgstr "<plugin>Select to force HTTPS</plugin>"
 
 #: ../Contents/Resources/language_template.html:51
 msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
-msgstr ""
+msgstr "<plugin>To access this channel, open one of the URLs below in a new browser tab or window.</plugin>"
 
 #: ../Contents/Resources/language_template.html:39
 msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr ""
+msgstr "<plugin>Enter the port number that this plug-in should use for HTTP. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:42
 msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr ""
+msgstr "<plugin>Enter the port number that this plug-in should use for HTTPS. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
-msgstr ""
+msgstr "<plugin>Name of certificate crt file in Contents/Code/Certificate directory</plugin>"
 
 #: ../http/static/playlist/playlist.html:35
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #: ../http/static/info/info.html:6
 msgid "Key"
-msgstr ""
+msgstr "Key"
 
 #: ../http/static/info/info.html:2
 msgid "Techincal Info"
-msgstr ""
+msgstr "Technical Info"
 
 #: ../http/static/info/info.html:7
 msgid "Value"
-msgstr ""
+msgstr "Value"
 
 #: ../Contents/Resources/language_template.html:56
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
-msgstr ""
+msgstr "DO NOT SHARE THIS PAGE ON ANY PUBLIC WEBSITE!"
 
 #: ../http/static/playlist/playlist.html:34
 msgid "Choose a playlist file to import"
-msgstr ""
+msgstr "Choose a playlist file to import"
 
 #: ../http/static/findmedia/fm.html:26
 msgid "Ignore Specials"
-msgstr ""
+msgstr "Ignore Specials"
 
 #: ../http/static/home/home.html:25
 msgid "Will show technical information about the server."
-msgstr ""
+msgstr "Will show technical information about the server."
 
 #: ../http/static/findmedia/fm.html:131
 msgid "Items missing metadata"
-msgstr ""
+msgstr "Items missing metadata"
 
 #: ../http/static/findmedia/fm.html:128
 msgid "No items missing metadata"
-msgstr ""
+msgstr "No items missing metadata"
 
 #: ../http/static/findmedia/fm.html:104
 msgid "Perfect, media files are present and accessible for all items in the Plex database."
-msgstr ""
+msgstr "Perfect! Media files are present and accessible for all items in the Plex database."
 
 #: ../http/static/findmedia/fm.html:107
 msgid "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
-msgstr ""
+msgstr "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are named incorrectly or the library hasn't yet been updated after they were added.)"
 
 #: ../http/static/findmedia/fm.html:119
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
-msgstr ""
-
-#: ../http/static/findmedia/fm.html:116
-msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
-msgstr ""
+msgstr "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved, or you simply forgot to empty the library trash in Plex if you erased them intentionally."
 
 #: ../http/static/_shared/Directive/confirm/confirm.html:5
 msgid "Cancel"
-msgstr ""
+msgstr "Cancel"
 
 #: ../http/static/playlist/playlist.html:31
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
 msgid "File selected"
-msgstr ""
+msgstr "File selected"
 
 #: ../http/static/sub_management/sub.html:22
 msgid "Hide media without subtitles"
-msgstr ""
+msgstr "Hide media without subtitles"
 
 #: ../http/static/sub_management/sub.html:2
 #: ../http/static/sub_management/subService.js:5
 msgid "No filter"
-msgstr ""
+msgstr "No filter"
 
 #: ../http/static/playlist/playlist.html:30
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
 msgid "Select File"
-msgstr ""
+msgstr "Select File"
 
 #: ../http/static/playlist/playlistController.js:6
 msgid "Are you sure you want to delete the playlist?"
-msgstr ""
+msgstr "Are you sure you want to delete the selected playlist?"
 
 #: ../http/static/sub_management/subController.js:24
 msgid "Are you sure you want to delete the selected subtitles?"
-msgstr ""
+msgstr "Are you sure you want to delete the selected subtitles?"
+
+#: ../http/static/uas/uasService.js:9
+msgid "Installed"
+msgstr "Installed"
+
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, all media files are present in database"
+msgstr "Perfect! All media files are present in the database."
 

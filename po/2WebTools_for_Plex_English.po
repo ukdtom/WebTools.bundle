@@ -306,7 +306,7 @@ msgstr "Manual Installation"
 msgid "Migrate"
 msgstr "Migrate"
 
-#: ../http/static/uas/uas.html:80
+#: ../http/static/uas/uas.html:87
 msgid "Categories:"
 msgstr "Categories:"
 
@@ -317,7 +317,7 @@ msgstr "Copy"
 #: ../http/static/playlist/playlist.html:47
 #: ../http/static/playlist/playlistController.js:7
 #: ../http/static/sub_management/subController.js:25
-#: ../http/static/uas/uas.html:61
+#: ../http/static/uas/uas.html:68
 msgid "Delete"
 msgstr "Delete"
 
@@ -325,11 +325,11 @@ msgstr "Delete"
 msgid "Download"
 msgstr "Download"
 
-#: ../http/static/uas/uas.html:54
+#: ../http/static/uas/uas.html:61
 msgid "Install"
 msgstr "Install"
 
-#: ../http/static/uas/uas.html:88
+#: ../http/static/uas/uas.html:95
 msgid "Last updated:"
 msgstr "Last updated:"
 
@@ -337,11 +337,11 @@ msgstr "Last updated:"
 msgid "Manual install url..."
 msgstr "Manual installation URL"
 
-#: ../http/static/uas/uas.html:96
+#: ../http/static/uas/uas.html:103
 msgid "Manual:"
 msgstr "Manual:"
 
-#: ../http/static/uas/uas.html:104
+#: ../http/static/uas/uas.html:111
 msgid "Repo:"
 msgstr "Repo:"
 
@@ -357,7 +357,7 @@ msgstr "Self"
 msgid "Subtitle Management Help"
 msgstr "Manage Subtitles Help"
 
-#: ../http/static/uas/uas.html:113
+#: ../http/static/uas/uas.html:120
 msgid "Support:"
 msgstr "Support:"
 
@@ -369,7 +369,7 @@ msgstr "This module is an unofficial manager for subtitles."
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "To get started, select one of your Libraries or click the \"?\" for additional help"
 
-#: ../http/static/uas/uas.html:55
+#: ../http/static/uas/uas.html:62
 msgid "Update"
 msgstr "Update"
 
@@ -526,23 +526,23 @@ msgstr "The authors/developers and staff at Plex. We are eternally grateful for 
 msgid "Translations and Beta testers"
 msgstr "Translations and Beta Testers"
 
-#: ../http/static/uas/uas.html:45
+#: ../http/static/uas/uas.html:52
 msgid "Update all"
 msgstr "Update all"
 
-#: ../http/static/uas/uas.html:39
+#: ../http/static/uas/uas.html:46
 msgid "You have"
 msgstr "You have"
 
-#: ../http/static/uas/uas.html:41
+#: ../http/static/uas/uas.html:48
 msgid "bundle"
 msgstr "bundle"
 
-#: ../http/static/uas/uas.html:42
+#: ../http/static/uas/uas.html:49
 msgid "bundles"
 msgstr "bundles"
 
-#: ../http/static/uas/uas.html:43
+#: ../http/static/uas/uas.html:50
 msgid "not up to date."
 msgstr "not up to date."
 
@@ -795,7 +795,7 @@ msgstr "<plugin>Select to force HTTPS</plugin>"
 
 #: ../Contents/Resources/language_template.html:51
 msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
-msgstr "<plugin>To access this channel, enter one of the URLs below in a new browser tab or window.</plugin>"
+msgstr "<plugin>To access this channel, open one of the URLs below in a new browser tab or window.</plugin>"
 
 #: ../Contents/Resources/language_template.html:39
 msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
@@ -853,19 +853,15 @@ msgstr "No items missing metadata"
 
 #: ../http/static/findmedia/fm.html:104
 msgid "Perfect, media files are present and accessible for all items in the Plex database."
-msgstr "Perfect, media files are present and accessible for all items in the Plex database."
+msgstr "Perfect! Media files are present and accessible for all items in the Plex database."
 
 #: ../http/static/findmedia/fm.html:107
 msgid "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
-msgstr "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
+msgstr "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are named incorrectly or the library hasn't yet been updated after they were added.)"
 
 #: ../http/static/findmedia/fm.html:119
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
-msgstr "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
-
-#: ../http/static/findmedia/fm.html:116
-msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
-msgstr "Perfect, media files are present in the file system and accessible for all items in the Plex database"
+msgstr "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved, or you simply forgot to empty the library trash in Plex if you erased them intentionally."
 
 #: ../http/static/_shared/Directive/confirm/confirm.html:5
 msgid "Cancel"
@@ -892,9 +888,17 @@ msgstr "Select File"
 
 #: ../http/static/playlist/playlistController.js:6
 msgid "Are you sure you want to delete the playlist?"
-msgstr ""
+msgstr "Are you sure you want to delete the selected playlist?"
 
 #: ../http/static/sub_management/subController.js:24
 msgid "Are you sure you want to delete the selected subtitles?"
-msgstr ""
+msgstr "Are you sure you want to delete the selected subtitles?"
+
+#: ../http/static/uas/uasService.js:9
+msgid "Installed"
+msgstr "Installed"
+
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, all media files are present in database"
+msgstr "Perfect! All media files are present in the database."
 

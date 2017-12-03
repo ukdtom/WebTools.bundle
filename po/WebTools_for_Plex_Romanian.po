@@ -306,7 +306,7 @@ msgstr "Instalare manuală"
 msgid "Migrate"
 msgstr "Migrare"
 
-#: ../http/static/uas/uas.html:80
+#: ../http/static/uas/uas.html:87
 msgid "Categories:"
 msgstr "Categori"
 
@@ -317,7 +317,7 @@ msgstr "Copiere"
 #: ../http/static/playlist/playlist.html:47
 #: ../http/static/playlist/playlistController.js:7
 #: ../http/static/sub_management/subController.js:25
-#: ../http/static/uas/uas.html:61
+#: ../http/static/uas/uas.html:68
 msgid "Delete"
 msgstr "Ștergere"
 
@@ -325,11 +325,11 @@ msgstr "Ștergere"
 msgid "Download"
 msgstr "Descărcare"
 
-#: ../http/static/uas/uas.html:54
+#: ../http/static/uas/uas.html:61
 msgid "Install"
 msgstr "Instalare"
 
-#: ../http/static/uas/uas.html:88
+#: ../http/static/uas/uas.html:95
 msgid "Last updated:"
 msgstr "Ultima actualizare"
 
@@ -337,11 +337,11 @@ msgstr "Ultima actualizare"
 msgid "Manual install url..."
 msgstr "Adresă URL de instalare manuală ..."
 
-#: ../http/static/uas/uas.html:96
+#: ../http/static/uas/uas.html:103
 msgid "Manual:"
 msgstr "Manual:"
 
-#: ../http/static/uas/uas.html:104
+#: ../http/static/uas/uas.html:111
 msgid "Repo:"
 msgstr "Repo:"
 
@@ -357,7 +357,7 @@ msgstr "Auto"
 msgid "Subtitle Management Help"
 msgstr "Gestionați ajutorul pentru subtitrări"
 
-#: ../http/static/uas/uas.html:113
+#: ../http/static/uas/uas.html:120
 msgid "Support:"
 msgstr "Suport:"
 
@@ -369,7 +369,7 @@ msgstr "Acest modul de instrument este un manager neoficial pentru subtitrări."
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "Pentru a începe, selectați una din Biblioteci sau faceți clic pe \"?\" pentru ajutor suplimentar"
 
-#: ../http/static/uas/uas.html:55
+#: ../http/static/uas/uas.html:62
 msgid "Update"
 msgstr "Actualizare"
 
@@ -525,23 +525,23 @@ msgstr "Autorii / dezvoltatorii talentați și cei care lucrează din greu și p
 msgid "Translations and Beta testers"
 msgstr "Traduceri și testeri Beta"
 
-#: ../http/static/uas/uas.html:45
+#: ../http/static/uas/uas.html:52
 msgid "Update all"
 msgstr "Actualizați-le pe toate"
 
-#: ../http/static/uas/uas.html:39
+#: ../http/static/uas/uas.html:46
 msgid "You have"
 msgstr "Tu ai"
 
-#: ../http/static/uas/uas.html:41
+#: ../http/static/uas/uas.html:48
 msgid "bundle"
 msgstr "pachet"
 
-#: ../http/static/uas/uas.html:42
+#: ../http/static/uas/uas.html:49
 msgid "bundles"
 msgstr "pachete"
 
-#: ../http/static/uas/uas.html:43
+#: ../http/static/uas/uas.html:50
 msgid "not up to date."
 msgstr "nu sunt actualizate."
 
@@ -858,38 +858,42 @@ msgstr "Următoarele fișiere media de pe disc nu sunt menționate în baza de d
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
 msgstr "Aceste fișiere media lipsesc, însă baza de date Plex le afișează în continuare. Acestea au fost fie șterse, hard disk-ul a fost deconectat sau mutat sau pur și simplu ați uitat să goliți coșul de gunoi în bibliotecă dacă le-ați șters intenționat."
 
-#: ../http/static/findmedia/fm.html:116
-msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
-msgstr "Perfect, fișierele media sunt prezente în sistemul de fișiere și sunt accesibile pentru toate elementele din baza de date Plex"
-
 #: ../http/static/_shared/Directive/confirm/confirm.html:5
 msgid "Cancel"
-msgstr ""
+msgstr "Cancel"
 
 #: ../http/static/playlist/playlist.html:31
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
 msgid "File selected"
-msgstr ""
+msgstr "File selected"
 
 #: ../http/static/sub_management/sub.html:22
 msgid "Hide media without subtitles"
-msgstr ""
+msgstr "Hide media without subtitles"
 
 #: ../http/static/sub_management/sub.html:2
 #: ../http/static/sub_management/subService.js:5
 msgid "No filter"
-msgstr ""
+msgstr "No filter"
 
 #: ../http/static/playlist/playlist.html:30
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
 msgid "Select File"
-msgstr ""
+msgstr "Select File"
 
 #: ../http/static/playlist/playlistController.js:6
 msgid "Are you sure you want to delete the playlist?"
-msgstr ""
+msgstr "Are you sure you want to delete the selected playlist?"
 
 #: ../http/static/sub_management/subController.js:24
 msgid "Are you sure you want to delete the selected subtitles?"
-msgstr ""
+msgstr "Are you sure you want to delete the selected subtitles?"
+
+#: ../http/static/uas/uasService.js:9
+msgid "Installed"
+msgstr "Installed"
+
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, all media files are present in database"
+msgstr "Perfect! All media files are present in the database."
 

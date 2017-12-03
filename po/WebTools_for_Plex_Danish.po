@@ -865,10 +865,6 @@ msgstr "Følgende media fundet på disk er ikke at finde i Plex databasen. (Ente
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
 msgstr "Følgende filer mangler fra harddisken, men Plex har dem stadig i sin database. Enten er de blevet slettet, harddisken er ikke forbundet, eller du har simpelthen glemt at tømme skraldespanden i Plex, efter du slettede dem"
 
-#: ../http/static/findmedia/fm.html:116
-msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
-msgstr "Perfekt. Samtlige media i Plex databasen er også tilstede på harddisken"
-
 #: ../http/static/_shared/Directive/confirm/confirm.html:5
 msgid "Cancel"
 msgstr "Afbryd"
@@ -880,7 +876,7 @@ msgstr "Fil valgt"
 
 #: ../http/static/sub_management/sub.html:22
 msgid "Hide media without subtitles"
-msgstr "Skjul medias uden undertekster"
+msgstr "Skjul medier uden undertekster"
 
 #: ../http/static/sub_management/sub.html:2
 #: ../http/static/sub_management/subService.js:5
@@ -903,4 +899,8 @@ msgstr "Er du sikker på du vil slette denne undertekst?"
 #: ../http/static/uas/uasService.js:9
 msgid "Installed"
 msgstr "Installeret"
+
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, all media files are present in database"
+msgstr "Perfekt, alle medie filer findes i databasen"
 

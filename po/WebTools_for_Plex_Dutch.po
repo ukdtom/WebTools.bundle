@@ -307,7 +307,7 @@ msgstr "Handmatige installatie"
 msgid "Migrate"
 msgstr "Migreer"
 
-#: ../http/static/uas/uas.html:80
+#: ../http/static/uas/uas.html:87
 msgid "Categories:"
 msgstr "Categorieën:"
 
@@ -318,7 +318,7 @@ msgstr "Kopiëren"
 #: ../http/static/playlist/playlist.html:47
 #: ../http/static/playlist/playlistController.js:7
 #: ../http/static/sub_management/subController.js:25
-#: ../http/static/uas/uas.html:61
+#: ../http/static/uas/uas.html:68
 msgid "Delete"
 msgstr "Verwijder"
 
@@ -326,12 +326,12 @@ msgstr "Verwijder"
 msgid "Download"
 msgstr "Download"
 
-#: ../http/static/uas/uas.html:54
+#: ../http/static/uas/uas.html:61
 msgid "Install"
 msgstr "\n"
 "Installeren"
 
-#: ../http/static/uas/uas.html:88
+#: ../http/static/uas/uas.html:95
 msgid "Last updated:"
 msgstr "Laatst bijgewerkt"
 
@@ -339,11 +339,11 @@ msgstr "Laatst bijgewerkt"
 msgid "Manual install url..."
 msgstr "Handmatige installatie URL"
 
-#: ../http/static/uas/uas.html:96
+#: ../http/static/uas/uas.html:103
 msgid "Manual:"
 msgstr "Manueel"
 
-#: ../http/static/uas/uas.html:104
+#: ../http/static/uas/uas.html:111
 msgid "Repo:"
 msgstr "Repo"
 
@@ -359,7 +359,7 @@ msgstr "Zelf"
 msgid "Subtitle Management Help"
 msgstr "Beheer ondertitels hulp"
 
-#: ../http/static/uas/uas.html:113
+#: ../http/static/uas/uas.html:120
 msgid "Support:"
 msgstr "Ondersteuning"
 
@@ -371,7 +371,7 @@ msgstr "Deze module is de officieuze beheertool voor ondertitels"
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "Kies een van je bibliotheken om mee te starten of klik op de \"?\" voor extra hulp"
 
-#: ../http/static/uas/uas.html:55
+#: ../http/static/uas/uas.html:62
 msgid "Update"
 msgstr "Bijwerken"
 
@@ -530,23 +530,23 @@ msgstr "De auteurs / ontwikkelaars en medewerkers van Plex. Wij zijn eeuwig dank
 msgid "Translations and Beta testers"
 msgstr "Vertalingen en Beta Testers"
 
-#: ../http/static/uas/uas.html:45
+#: ../http/static/uas/uas.html:52
 msgid "Update all"
 msgstr "Alles updaten"
 
-#: ../http/static/uas/uas.html:39
+#: ../http/static/uas/uas.html:46
 msgid "You have"
 msgstr "je hebt"
 
-#: ../http/static/uas/uas.html:41
+#: ../http/static/uas/uas.html:48
 msgid "bundle"
 msgstr "Bundel"
 
-#: ../http/static/uas/uas.html:42
+#: ../http/static/uas/uas.html:49
 msgid "bundles"
 msgstr "bundels"
 
-#: ../http/static/uas/uas.html:43
+#: ../http/static/uas/uas.html:50
 msgid "not up to date."
 msgstr "Niet nieuwste versie"
 
@@ -863,38 +863,42 @@ msgstr "De volgende media-bestanden zijn niet teruggevonden in de Plex-database.
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
 msgstr "Deze media-bestanden zijn zoek, maar de Plex-database heeft ze nog steeds wel in de lijst staan. De bestanden zijn ofwel verwijderd, verplaatst, of de harde schijf is ontkoppeld, of je bent wellicht vergeten om de bibliotheek bij te werken, omdat de bestanden verwijderd zijn."
 
-#: ../http/static/findmedia/fm.html:116
-msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
-msgstr "Perfect, media-bestanden zijn aanwezig en toegankelijk op het bestandssysteem en toegankelijk voor alle items in de Plex-database."
-
 #: ../http/static/_shared/Directive/confirm/confirm.html:5
 msgid "Cancel"
-msgstr ""
+msgstr "Annuleer"
 
 #: ../http/static/playlist/playlist.html:31
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
 msgid "File selected"
-msgstr ""
+msgstr "Geselecteerd bestand"
 
 #: ../http/static/sub_management/sub.html:22
 msgid "Hide media without subtitles"
-msgstr ""
+msgstr "Verberg media zonder ondertitels"
 
 #: ../http/static/sub_management/sub.html:2
 #: ../http/static/sub_management/subService.js:5
 msgid "No filter"
-msgstr ""
+msgstr "Geen filter"
 
 #: ../http/static/playlist/playlist.html:30
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
 msgid "Select File"
-msgstr ""
+msgstr "Selecteer bestand"
 
 #: ../http/static/playlist/playlistController.js:6
 msgid "Are you sure you want to delete the playlist?"
-msgstr ""
+msgstr "Weet je zeker dat je deze speellijst wilt verwijderen?"
 
 #: ../http/static/sub_management/subController.js:24
 msgid "Are you sure you want to delete the selected subtitles?"
-msgstr ""
+msgstr "Weet je zeker dat je de geselecteerde ondertitels wil verwijderen?"
+
+#: ../http/static/uas/uasService.js:9
+msgid "Installed"
+msgstr "Geïnstalleerd"
+
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, all media files are present in database"
+msgstr "Perfect, alle bestanden zijn aanwezig in de database."
 

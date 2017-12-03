@@ -9,7 +9,7 @@ msgstr ""
 
 #: ../http/static/home/home.html:4
 msgid "Use the menu on the left side to navigate in WebTools."
-msgstr "Mit dem Menü links in WebTools navigieren"
+msgstr "Wähle ein Modul auf der linken Seite"
 
 #: ../http/static/home/home.html:2
 msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
@@ -82,7 +82,7 @@ msgstr "Farbschema"
 
 #: ../http/static/findmedia/fm.html:3
 msgid "This tool is a combination of FindUnmatched and FindMissing."
-msgstr "Dieses Modul vereint die altbekannten Plugins 'FindUnmatched' und 'FindMissing'."
+msgstr "Dieses Modul vereint u.a. die altbekannten Plugins 'FindUnmatched' und 'FindMissing'."
 
 #: ../http/static/menu/menu.html:14
 msgid "Update WT"
@@ -243,7 +243,7 @@ msgstr "Suche..."
 
 #: ../http/static/home/home.html:22
 msgid "Allows you to copy playlists between users, as well as import, export and delete them."
-msgstr "Kopiere Wiedergabelisten zwischen Plex-Benutzern. Importiere, exportiere und lösche sie."
+msgstr "Kopiere Wiedergabelisten zwischen Plex-Benutzern. Importiere, exportiere und lösche sie. 'Smarte' Listen werden in 'dumme' konvertiert!"
 
 #: ../http/static/home/home.html:13
 msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
@@ -251,11 +251,11 @@ msgstr "ALLE Plex Media Server Logs einfach einsehen und einzeln oder im Paket d
 
 #: ../http/static/home/home.html:19
 msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
-msgstr "Finde heraus, welche Mediendateien auf der Festplatte fehlen und welche von Plex nicht erkannt wurden."
+msgstr "Finde heraus, welche Mediendateien auf der Festplatte fehlen, welche von Plex nicht erkannt wurden und welche keine Metadaten haben."
 
 #: ../http/static/home/home.html:10
 msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
-msgstr "Untertitelverwaltung - egal ob externe oder automatisch von Agenten (z.B. Opensubtitle.org) heruntergeladen. Übersicht: welche Videos haben überhaupt Untertitel? Untertitel anschauen oder löschen (außer interne). "
+msgstr "Untertitelverwaltung - egal ob externe oder automatisch von Agenten (z.B. Opensubtitle.org) heruntergeladen. Übersicht: welche Videos haben überhaupt Untertitel? Untertitel anschauen oder löschen (außer interne)."
 
 #: ../http/static/home/home.html:16
 msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
@@ -310,9 +310,9 @@ msgstr "Manuell installieren"
 msgid "Migrate"
 msgstr "Migrieren"
 
-#: ../http/static/uas/uas.html:80
+#: ../http/static/uas/uas.html:87
 msgid "Categories:"
-msgstr "Kategorie:"
+msgstr "Kategorien:"
 
 #: ../http/static/playlist/playlist.html:53
 msgid "Copy"
@@ -321,7 +321,7 @@ msgstr "Kopieren"
 #: ../http/static/playlist/playlist.html:47
 #: ../http/static/playlist/playlistController.js:7
 #: ../http/static/sub_management/subController.js:25
-#: ../http/static/uas/uas.html:61
+#: ../http/static/uas/uas.html:68
 msgid "Delete"
 msgstr "Löschen"
 
@@ -329,11 +329,11 @@ msgstr "Löschen"
 msgid "Download"
 msgstr "Download"
 
-#: ../http/static/uas/uas.html:54
+#: ../http/static/uas/uas.html:61
 msgid "Install"
 msgstr "Installieren"
 
-#: ../http/static/uas/uas.html:88
+#: ../http/static/uas/uas.html:95
 msgid "Last updated:"
 msgstr "Zuletzt aktualisiert:"
 
@@ -342,11 +342,11 @@ msgid "Manual install url..."
 msgstr "URL für manuelle Installation:"
 
 #. manual in the sense of 'user guide' or manual in the sense of 'with the hand'?
-#: ../http/static/uas/uas.html:96
+#: ../http/static/uas/uas.html:103
 msgid "Manual:"
 msgstr "Anleitung:"
 
-#: ../http/static/uas/uas.html:104
+#: ../http/static/uas/uas.html:111
 msgid "Repo:"
 msgstr "Repo:"
 
@@ -362,7 +362,7 @@ msgstr "Mein Konto"
 msgid "Subtitle Management Help"
 msgstr "Hilfe für Untertitelverwaltung"
 
-#: ../http/static/uas/uas.html:113
+#: ../http/static/uas/uas.html:120
 msgid "Support:"
 msgstr "Unterstützung:"
 
@@ -374,7 +374,7 @@ msgstr "Eine inoffizielle Untertitel-Verwaltung"
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "Wähle eine deiner Bibliotheken aus oder klicke auf \"?\" für weitere Tips"
 
-#: ../http/static/uas/uas.html:55
+#: ../http/static/uas/uas.html:62
 msgid "Update"
 msgstr "Update"
 
@@ -530,24 +530,24 @@ msgstr "die begabten und fleißigen Entwickler und Mitarbeiter von Plex. Wir sch
 msgid "Translations and Beta testers"
 msgstr "Übersetzungen und Beta Tester"
 
-#: ../http/static/uas/uas.html:45
+#: ../http/static/uas/uas.html:52
 msgid "Update all"
 msgstr "Alle aktualisieren"
 
-#: ../http/static/uas/uas.html:39
+#: ../http/static/uas/uas.html:46
 msgid "You have"
 msgstr "Es sind"
 
 #. which kind of bundle is meant here? meta data bundles for media items or the bundle folders of plex plugins?
-#: ../http/static/uas/uas.html:41
+#: ../http/static/uas/uas.html:48
 msgid "bundle"
 msgstr "Bundle"
 
-#: ../http/static/uas/uas.html:42
+#: ../http/static/uas/uas.html:49
 msgid "bundles"
 msgstr "Bundles"
 
-#: ../http/static/uas/uas.html:43
+#: ../http/static/uas/uas.html:50
 msgid "not up to date."
 msgstr "veraltet"
 
@@ -614,7 +614,7 @@ msgstr "Benutzername"
 
 #: ../http/login.html:55
 msgid "WebTools not available... Please contact Devs!"
-msgstr "WebTools nicht bereit... Bitte Entwickler kontaktieren!"
+msgstr "WebTools ist defekt... Bitte Entwickler kontaktieren!"
 
 #: ../http/login.html:48
 msgid "Wrong password"
@@ -774,7 +774,7 @@ msgstr "Durchsuche Datenbank: %s abgeschlossen"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
 msgid "Subtitle Management Upload Subtitle"
-msgstr "Untertitel Verwaltung : Untertitel hochladen"
+msgstr "Untertitel Verwaltung: Untertitel hochladen"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:40
 msgid "Upload"
@@ -866,38 +866,42 @@ msgstr "Die folgenden Mediendateien sind nicht in der Plexdatenbank aufgeführt.
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
 msgstr "Diese Dateien fehlen oder sind nicht zugänglich. Sie wurden entweder gelöscht, die Festplatte wurde abgezogen oder verschoben, oder es wurde der Plex-Papierkorb noch nicht geleert (falls sie absichtlich gelöscht wurden)."
 
-#: ../http/static/findmedia/fm.html:116
-msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
-msgstr ""
-
 #: ../http/static/_shared/Directive/confirm/confirm.html:5
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: ../http/static/playlist/playlist.html:31
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
 msgid "File selected"
-msgstr ""
+msgstr "gewählte Datei"
 
 #: ../http/static/sub_management/sub.html:22
 msgid "Hide media without subtitles"
-msgstr ""
+msgstr "Videos ohne Untertitel ausblenden"
 
 #: ../http/static/sub_management/sub.html:2
 #: ../http/static/sub_management/subService.js:5
 msgid "No filter"
-msgstr ""
+msgstr "Kein Filter"
 
 #: ../http/static/playlist/playlist.html:30
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
 msgid "Select File"
-msgstr ""
+msgstr "Datei auswählen"
 
 #: ../http/static/playlist/playlistController.js:6
 msgid "Are you sure you want to delete the playlist?"
-msgstr ""
+msgstr "Playliste wirklich löschen?"
 
 #: ../http/static/sub_management/subController.js:24
 msgid "Are you sure you want to delete the selected subtitles?"
-msgstr ""
+msgstr "Ausgewählte Untertitel wirklich löschen?"
+
+#: ../http/static/uas/uasService.js:9
+msgid "Installed"
+msgstr "Installiert"
+
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, all media files are present in database"
+msgstr "Perfekt, alle Mediendateien wurden von Plex erkannt und in die Bibliothek aufgenommen."
 

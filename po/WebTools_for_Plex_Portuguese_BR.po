@@ -305,7 +305,7 @@ msgstr "Instalação manual"
 msgid "Migrate"
 msgstr "Migrar"
 
-#: ../http/static/uas/uas.html:80
+#: ../http/static/uas/uas.html:87
 msgid "Categories:"
 msgstr "Categorias:"
 
@@ -316,7 +316,7 @@ msgstr "Copiar"
 #: ../http/static/playlist/playlist.html:47
 #: ../http/static/playlist/playlistController.js:7
 #: ../http/static/sub_management/subController.js:25
-#: ../http/static/uas/uas.html:61
+#: ../http/static/uas/uas.html:68
 msgid "Delete"
 msgstr "Apagar"
 
@@ -324,11 +324,11 @@ msgstr "Apagar"
 msgid "Download"
 msgstr "Descarregar"
 
-#: ../http/static/uas/uas.html:54
+#: ../http/static/uas/uas.html:61
 msgid "Install"
 msgstr "Instalar"
 
-#: ../http/static/uas/uas.html:88
+#: ../http/static/uas/uas.html:95
 msgid "Last updated:"
 msgstr "Última atualização"
 
@@ -336,11 +336,11 @@ msgstr "Última atualização"
 msgid "Manual install url..."
 msgstr "URL para instalação manual..."
 
-#: ../http/static/uas/uas.html:96
+#: ../http/static/uas/uas.html:103
 msgid "Manual:"
 msgstr "Manual:"
 
-#: ../http/static/uas/uas.html:104
+#: ../http/static/uas/uas.html:111
 msgid "Repo:"
 msgstr "Repo:"
 
@@ -356,7 +356,7 @@ msgstr "Auto"
 msgid "Subtitle Management Help"
 msgstr "Ajuda para Gestão de Legendas"
 
-#: ../http/static/uas/uas.html:113
+#: ../http/static/uas/uas.html:120
 msgid "Support:"
 msgstr "Suporte:"
 
@@ -368,7 +368,7 @@ msgstr "Este módulo é um gestor não-oficial de legendas."
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "Para começar, selecione uma das suas bibliotecas ou clique em \"?\" para ajuda"
 
-#: ../http/static/uas/uas.html:55
+#: ../http/static/uas/uas.html:62
 msgid "Update"
 msgstr "Atualizar"
 
@@ -524,23 +524,23 @@ msgstr "Aos talentosos e esforçados autores e desenvolvedores do Plex. Estamos 
 msgid "Translations and Beta testers"
 msgstr "Tradutores e \"beta testers\""
 
-#: ../http/static/uas/uas.html:45
+#: ../http/static/uas/uas.html:52
 msgid "Update all"
 msgstr "Atualizar tudo"
 
-#: ../http/static/uas/uas.html:39
+#: ../http/static/uas/uas.html:46
 msgid "You have"
 msgstr "Tem"
 
-#: ../http/static/uas/uas.html:41
+#: ../http/static/uas/uas.html:48
 msgid "bundle"
 msgstr "agrupamento"
 
-#: ../http/static/uas/uas.html:42
+#: ../http/static/uas/uas.html:49
 msgid "bundles"
 msgstr "agrupamentos"
 
-#: ../http/static/uas/uas.html:43
+#: ../http/static/uas/uas.html:50
 msgid "not up to date."
 msgstr "desatualizado."
 
@@ -827,68 +827,72 @@ msgstr "NÃO PARTILHE ISTO EM NENHUM \"SITE\" PÚBLICO !"
 
 #: ../http/static/playlist/playlist.html:34
 msgid "Choose a playlist file to import"
-msgstr ""
+msgstr "Selecione playlist para importar"
 
 #: ../http/static/findmedia/fm.html:26
 msgid "Ignore Specials"
-msgstr ""
+msgstr "Ignorar 'Specials'"
 
 #: ../http/static/home/home.html:25
 msgid "Will show technical information about the server."
-msgstr ""
+msgstr "Mostrar dados técnicos do Servidor"
 
 #: ../http/static/findmedia/fm.html:131
 msgid "Items missing metadata"
-msgstr ""
+msgstr "Itens sem metadados"
 
 #: ../http/static/findmedia/fm.html:128
 msgid "No items missing metadata"
-msgstr ""
+msgstr "Existem metadados para todos os itens"
 
 #: ../http/static/findmedia/fm.html:104
 msgid "Perfect, media files are present and accessible for all items in the Plex database."
-msgstr ""
+msgstr "Perfeito ! Todos os itens do catálogo de Plex estão acessíveis."
 
 #: ../http/static/findmedia/fm.html:107
 msgid "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
-msgstr ""
+msgstr "Os itens seguintes existem em disco mas não no catálogo de Plex (foram ignorados ou por não terem nomes corretos, ou porque a biblioteca ainda não foi atualizada)."
 
 #: ../http/static/findmedia/fm.html:119
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
-msgstr ""
-
-#: ../http/static/findmedia/fm.html:116
-msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
-msgstr ""
+msgstr "Os itens seguintes existem no catálogo de Plex mas não em disco (podem ter sido removidos, copiados para outra pasta, ou o disco pode estar inacessível ou desconectado). Sugere-se que actualize a biblioteca e esvazie a lixeira."
 
 #: ../http/static/_shared/Directive/confirm/confirm.html:5
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: ../http/static/playlist/playlist.html:31
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
 msgid "File selected"
-msgstr ""
+msgstr "Ficheiro selecionado"
 
 #: ../http/static/sub_management/sub.html:22
 msgid "Hide media without subtitles"
-msgstr ""
+msgstr "Ocultar 'media' sem legendas"
 
 #: ../http/static/sub_management/sub.html:2
 #: ../http/static/sub_management/subService.js:5
 msgid "No filter"
-msgstr ""
+msgstr "Sem filtro"
 
 #: ../http/static/playlist/playlist.html:30
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
 msgid "Select File"
-msgstr ""
+msgstr "Selecionar ficheiro"
 
 #: ../http/static/playlist/playlistController.js:6
 msgid "Are you sure you want to delete the playlist?"
-msgstr ""
+msgstr "Confirme que quer apagar a playlist selecionada !"
 
 #: ../http/static/sub_management/subController.js:24
 msgid "Are you sure you want to delete the selected subtitles?"
-msgstr ""
+msgstr "Confirme que quer apagar as legendas selecionadas !"
+
+#: ../http/static/uas/uasService.js:9
+msgid "Installed"
+msgstr "Instalado"
+
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, all media files are present in database"
+msgstr "Perfeito ! Todos os itens existem no catálogo de Plex."
 

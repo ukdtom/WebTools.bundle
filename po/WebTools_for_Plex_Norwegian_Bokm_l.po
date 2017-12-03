@@ -305,7 +305,7 @@ msgstr "Installer manuelt"
 msgid "Migrate"
 msgstr "Migrer"
 
-#: ../http/static/uas/uas.html:80
+#: ../http/static/uas/uas.html:87
 msgid "Categories:"
 msgstr "Kategorier:"
 
@@ -316,7 +316,7 @@ msgstr "Kopier"
 #: ../http/static/playlist/playlist.html:47
 #: ../http/static/playlist/playlistController.js:7
 #: ../http/static/sub_management/subController.js:25
-#: ../http/static/uas/uas.html:61
+#: ../http/static/uas/uas.html:68
 msgid "Delete"
 msgstr "Slett"
 
@@ -324,11 +324,11 @@ msgstr "Slett"
 msgid "Download"
 msgstr "Last ned"
 
-#: ../http/static/uas/uas.html:54
+#: ../http/static/uas/uas.html:61
 msgid "Install"
 msgstr "Installer"
 
-#: ../http/static/uas/uas.html:88
+#: ../http/static/uas/uas.html:95
 msgid "Last updated:"
 msgstr "Sist oppdatert:"
 
@@ -336,11 +336,11 @@ msgstr "Sist oppdatert:"
 msgid "Manual install url..."
 msgstr "Manuell installasjons URL..."
 
-#: ../http/static/uas/uas.html:96
+#: ../http/static/uas/uas.html:103
 msgid "Manual:"
 msgstr "Manual:"
 
-#: ../http/static/uas/uas.html:104
+#: ../http/static/uas/uas.html:111
 msgid "Repo:"
 msgstr "Oppbevaringssted:"
 
@@ -356,7 +356,7 @@ msgstr "Selv"
 msgid "Subtitle Management Help"
 msgstr "Hjelp til undertekstbehandling"
 
-#: ../http/static/uas/uas.html:113
+#: ../http/static/uas/uas.html:120
 msgid "Support:"
 msgstr "Støtte:"
 
@@ -368,7 +368,7 @@ msgstr "Dette er en uoffisiell behandler for undertekster."
 msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
 msgstr "For å komme i gang, velg en av dine biblioteker eller klikk på \"?\" for ytterligere hjelp"
 
-#: ../http/static/uas/uas.html:55
+#: ../http/static/uas/uas.html:62
 msgid "Update"
 msgstr "Oppdater"
 
@@ -524,23 +524,23 @@ msgstr "De talentfulle og hardt arbeidende utviklerne og ansatte ved Plex. Vi er
 msgid "Translations and Beta testers"
 msgstr "Oversettelser og betatestere"
 
-#: ../http/static/uas/uas.html:45
+#: ../http/static/uas/uas.html:52
 msgid "Update all"
 msgstr "Oppdater alle"
 
-#: ../http/static/uas/uas.html:39
+#: ../http/static/uas/uas.html:46
 msgid "You have"
 msgstr "Du har"
 
-#: ../http/static/uas/uas.html:41
+#: ../http/static/uas/uas.html:48
 msgid "bundle"
 msgstr "pakke"
 
-#: ../http/static/uas/uas.html:42
+#: ../http/static/uas/uas.html:49
 msgid "bundles"
 msgstr "pakker"
 
-#: ../http/static/uas/uas.html:43
+#: ../http/static/uas/uas.html:50
 msgid "not up to date."
 msgstr "ikke oppdatert"
 
@@ -856,38 +856,42 @@ msgstr "Følgende mediefiler på disken er ikke referert i Plex-databasen. (De b
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
 msgstr "Disse mediefilene mangler, men Plex-databasen har dem fortsatt oppført. De ble enten slettet, harddisken ble frakoblet eller flyttet, eller du bare glemte å tømme søppelkurven i Plex hvis du bevist slettet dem"
 
-#: ../http/static/findmedia/fm.html:116
-msgid "Perfect, media files are present in the file system and accessible for all items in the Plex database"
-msgstr "Perfekt, mediefilene er til stede i filsystemet og tilgjengelig for alle elementer i Plex-databasen"
-
 #: ../http/static/_shared/Directive/confirm/confirm.html:5
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: ../http/static/playlist/playlist.html:31
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
 msgid "File selected"
-msgstr ""
+msgstr "Vlagt fil"
 
 #: ../http/static/sub_management/sub.html:22
 msgid "Hide media without subtitles"
-msgstr ""
+msgstr "Skjul media uten undertekster"
 
 #: ../http/static/sub_management/sub.html:2
 #: ../http/static/sub_management/subService.js:5
 msgid "No filter"
-msgstr ""
+msgstr "Ingen filter"
 
 #: ../http/static/playlist/playlist.html:30
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
 msgid "Select File"
-msgstr ""
+msgstr "Velg fil"
 
 #: ../http/static/playlist/playlistController.js:6
 msgid "Are you sure you want to delete the playlist?"
-msgstr ""
+msgstr "Er du sikker på at du ønsker å slette den valgte spillelista?"
 
 #: ../http/static/sub_management/subController.js:24
 msgid "Are you sure you want to delete the selected subtitles?"
-msgstr ""
+msgstr "Er du sikker på at du ønsker å slette den valgte underteksten?"
+
+#: ../http/static/uas/uasService.js:9
+msgid "Installed"
+msgstr "Installert"
+
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, all media files are present in database"
+msgstr "Perfekt! Alle mediefiler er tilstede i databasen."
 
