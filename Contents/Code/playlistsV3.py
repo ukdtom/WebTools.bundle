@@ -566,17 +566,13 @@ class playlistsV3(object):
                     req.set_status(412)
                     req.finish('Missing key of playlist')
                 try:
-                    Log.Info('downloading playlist with ID: %s' % key)
-                    
-                    
+                    Log.Info('downloading playlist with ID: %s' % key)                                        
                     if user == None:
                         try:
                             getPlayListItems( user, key)
-
                         except Exception, e:
                             Log.Exception('Exception when downloading a playlist as the owner was %s' %str(e))
                             Log.Debug('Trying to get more info here')
-
                     else:
                         # Get Auth token for user
                         try:
@@ -922,50 +918,89 @@ user : key of user, or null if the owner
 key : key of playlist
 '''
 def getPlayListItems(user, key):
+
+    # Send the request to the server, and returns the respond
+    def sendReq(userToken, url):
+        if not userToken:
+            # User is the owner
+            try:
+                return XML.ElementFromURL(url)
+            except Exception, e:
+                Log.Exception('Exception when getting a response for %s as the owner was %s' %(url, str(e)))
+        else:
+            try:
+                # TODO Change to native framework call, when Plex allows token in header
+                opener = urllib2.build_opener(urllib2.HTTPHandler)
+                request = urllib2.Request(sizeURL)
+                request.add_header(
+                    'X-Plex-Token', userToken)
+                response = opener.open(request).read()
+                return XML.ElementFromString(response)
+            except Exception, e:
+                Log.Exception('Exception when getting a response for %s as a user was %s' %(url, str(e)))
+
+    # *********** MAIN *****************
     Log.Info('Starting getPlaylistItems with user: %s and key of: %s' %(user, key))
 
+    playlist = []
     print 'Ged getPlayListItems'
     sizeURL = misc.GetLoopBack() + '/playlists/' + key + '/items?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
-    if user == null:
-        # User is the owner
-        try:
-            top = XML.ElementFromURL(sizeURL)
-        except Exception, e:
-            Log.Exception('Exception when downloading a playlist as the owner was %s' %str(e))
-    else:
+    userToken = None
+    if user:        
         # Shared or Home user
         try:
             # Get user list, among with their access tokens
             users = plexTV().getUserList()
-            # TODO Change to native framework call, when Plex allows token in header
-            opener = urllib2.build_opener(urllib2.HTTPHandler)
-            request = urllib2.Request(sizeURL)
-            request.add_header(
-                'X-Plex-Token', users[user]['accessToken'])
-            response = opener.open(request).read()
-            top = XML.ElementFromString(response)
+            userToken = users[user]['accessToken']
+            # TODO Change to native framework call, when Plex allows token in header            
         except Exception, e:
-            Log.Exception('Exception when downloading a playlist for a user was %s' %str(e))
+            Log.Exception('Exception getting the token for a user was: %s' %str(e))
+    try:
+        top = sendReq(userToken, sizeURL)
+    except Exception, e:
+        Log.Exception('Exception getting top was: %s' %str(e))
 
 
+    # Start adding to the array
+    playlist.append(unicode('#EXTM3U'))
+    playlist.append(unicode('#Written by WebTools for Plex'))
+    playlist.append(unicode('#Playlist name: ' + top.get('title')))
+    playlist.append('#Playlist type: ' + top.get('playlistType'))
+    playlist.append(unicode('#Server Id: ' + XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')))
+    start = 0
+    while True:        
+        url = misc.GetLoopBack() + '/playlists/' + key + '/items?X-Plex-Container-Start=' + str(start) + '&X-Plex-Container-Size=' + str(MEDIASTEPS)
+        response = sendReq(userToken, url)        
+        start += MEDIASTEPS
+        if response.get('size') == '0':
+            break
+        for item in response.xpath('//Video'):
+            print 'Ged title', item.get('title')
+
+            # Get the Library UUID
+            itemURL = misc.GetLoopBack() + '/library/metadata/' + item.get('ratingKey') + '?' + EXCLUDE            
+            libraryUUID = sendReq(userToken, url).get('librarySectionUUID')
+            print 'Ged9-1 libraryUUID', libraryUUID
+            print 'Ged9-2 ratingKey', item.get('ratingKey')
+            print 'Ged9-3 ListId', litem.get('playlistItemID')
+            playlist.append(unicode('#{"Id":' + item.get('ratingKey') + ', "ListId":' + item.get('playlistItemID') + ', "LibraryUUID":"' + libraryUUID + '"}'))
+
+
+
+
+
+
+
+    print 'Ged TODO make /Video above dynamic'
 
 
     # Get the amount of leafs
-    print 'GED TODO....Need to grap in small chuncks'
-    print 'Ged sizeUrl', sizeURL
-    top = XML.ElementFromURL(sizeURL)
-    print 'Ged 33 start'
 
-    # Get playlist from the owner
-    # playlist = XML.ElementFromURL(url)
-    # print 'Ged 33', url
     totalSize = top.get('totalSize')
     print 'Ged33 totalSize', str(totalSize)
-    playlistType = top.get('playlistType')
-    print 'Ged 33 playlistType', playlistType
-    title = top.get('title')
-    print 'Ged33 title', title
 
+    print 'Ged45'
+    print str(playlist)
     return
 
 
