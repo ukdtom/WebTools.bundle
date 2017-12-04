@@ -228,9 +228,11 @@ class pmsV3(object):
                         # Nuke the actual file
                         try:
                             # Delete the actual file
-                            os.remove(filePath)
+                            if os.path.exists(filePath):
+                                os.remove(filePath)
                             # Delete the symb link
-                            os.remove(filePath3)
+                            if os.path.exists(filePath3):
+                                os.remove(filePath3)
                             # TODO: Refresh is sadly not working for me, so could use some help here :-(
                             # Let's refresh the media
                             url = misc.GetLoopBack() + '/library/metadata/' + key + '/refresh?force=1'
@@ -370,19 +372,19 @@ class pmsV3(object):
                 myEpisode = {}
                 myEpisode['key'] = episode.get('id')
                 myEpisode['title'] = episode.get('title')
-                myEpisode['episode'] = episode.get('index')                
+                myEpisode['episode'] = episode.get('index')
                 if bGetSubs:
                     if bGetFile:
                         myEpisode['subtitles'] = self.GETSUBTITLES(
                             req, 'getFile', mediaKey=myEpisode['key'])
                     else:
                         myEpisode['subtitles'] = self.GETSUBTITLES(
-                            req, mediaKey=myEpisode['key'])                    
+                            req, mediaKey=myEpisode['key'])
                     if not Dict['HideWithoutSubs']:
-                        mySeason.append(myEpisode)                        
+                        mySeason.append(myEpisode)
                     else:
                         if len(myEpisode['subtitles']) > 0:
-                            mySeason.append(myEpisode)                            
+                            mySeason.append(myEpisode)
                 else:
                     mySeason.append(myEpisode)
             Log.Debug('returning: %s' % (mySeason))
@@ -868,7 +870,8 @@ class pmsV3(object):
                 req.set_status(200)
                 req.set_header(
                     'Content-Type', 'application/json; charset=utf-8')
-                req.finish(json.dumps({'Section': Section, 'count': len(rawSection)}))
+                req.finish(json.dumps(
+                    {'Section': Section, 'count': len(rawSection)}))
             except Exception, e:
                 Log.Exception(
                     'Fatal error happened in getSection %s' % (str(e)))
