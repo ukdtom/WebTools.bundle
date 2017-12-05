@@ -36,10 +36,11 @@
             </div>
         </div>
         <div class="playlistContainer" ng-repeat="playlist in playlistModel.playlists track by playlist.key">
-            <div class="icon">
+            <div class="type"><img ng-src="icons/{[{playlist.playlistType}]}.png" /></div>
+            <!--<div class="icon">
                 <i class="fa fa-film" aria-hidden="true" ng-if="playlist.playlistType !== 'audio'"></i>
                 <i class="fa fa-music" aria-hidden="true" ng-if="playlist.playlistType === 'audio'"></i>
-            </div>
+            </div>-->
             <div class="playlistContent">
                 <div class="topPart">
                     <div class="title pull-left textBold600">{[{playlist.title}]}</div>

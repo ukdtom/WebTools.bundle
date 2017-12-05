@@ -67,20 +67,36 @@
     position: relative;
     border: 1px solid #4c4c4c;
 }
-.playlists .playlistContainer .icon {
+/*.playlists .playlistContainer .icon {
     width: 50px;
     height: 100%;
     float: left;
     font-size: 2em;
     padding-top: 17px;
     padding-left: 13px;
+}*/
+
+.playlists .playlistContainer .type{
+    min-height: 50px;
+    margin-left: 10px;
+    width:60px;
+    float:left;
+    cursor:pointer;
 }
+.playlists .playlistContainer .type img{
+    width: 55px;
+    height: 55px;
+    padding: 4px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
 .playlists .playlistContainer .playlistContent {
     padding-top: 8px;
     padding-left: 13px;
     height: 100%;
     float: left;
-    width: calc(100% - 50px); /* Minus icon */
+    width: calc(100% - 70px); /* Minus icon */
     overflow: hidden;
 }
 .playlists .playlistContainer .playlistContent .topPart {
