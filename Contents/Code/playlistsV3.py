@@ -568,7 +568,7 @@ class playlistsV3(object):
                 try:
                     Log.Info('downloading playlist with ID: %s' % key)     
                     try:
-                        playList = getPlayListItems( user, key)
+                        title, playList = getPlayListItems( user, key)
                         # Replace invalid caracters for a filename with underscore
                         fileName = re.sub('[\/[:#*?"<>|]', '_',title).strip() + '.m3u8'
                         req.set_header('Content-Disposition','attachment; filename="' + fileName + '"')
@@ -577,129 +577,13 @@ class playlistsV3(object):
                         req.set_header('Content-Type', 'application/text/plain')
                         # start writing
                         for line in playList:
+                            #print line
                             req.write(unicode(line))
-
-
-
                         req.set_status(200)
                         req.finish()
-
-
-
                     except Exception, e:
                         Log.Exception('Exception when downloading a playlist as the owner was %s' %str(e))
                         Log.Debug('Trying to get more info here')
-                                   
-                    '''
-                    if user == None:
-                        try:
-                            getPlayListItems( user, key)
-                        except Exception, e:
-                            Log.Exception('Exception when downloading a playlist as the owner was %s' %str(e))
-                            Log.Debug('Trying to get more info here')
-                    else:
-
-                        # Get Auth token for user
-                        try:
-                            # Get user list, among with their access tokens
-                            users = plexTV().getUserList()
-                            # TODO Change to native framework call, when Plex allows token in header
-                            opener = urllib2.build_opener(urllib2.HTTPHandler)
-                            request = urllib2.Request(url)
-                            request.add_header(
-                                'X-Plex-Token', users[user]['accessToken'])
-                            response = opener.open(request).read()
-                            playlist = XML.ElementFromString(response)
-                        except Ex.HTTPError, e:
-                            Log.Exception(
-                                'HTTP exception when downloading a playlist for the owner was: %s' % (e))
-                            req.clear()
-                            req.set_status(e.code)
-                            req.finish(str(e))
-                        except Exception, e:
-                            Log.Exception(
-                                'Exception happened when downloading a playlist for the user was: %s' % (str(e)))
-                            req.clear()
-                            req.set_status(e.code)
-                            req.finish(
-                                'Exception happened when downloading a playlist for the user was: %s' % (str(e)))
-                    '''                                
-                    '''
-                    # Get title of playlist
-                    title = playlist.get('title')
-                    playListType = playlist.get('playlistType')
-                    # Replace invalid caracters for a filename with underscore
-                    fileName = re.sub('[\/[:#*?"<>|]', '_',
-                                      title).strip() + '.m3u8'
-                    # Prep the download http headers
-                    req.set_header('Content-Disposition',
-                                   'attachment; filename="' + fileName + '"')
-                    req.set_header('Cache-Control', 'no-cache')
-                    req.set_header('Pragma', 'no-cache')
-                    req.set_header('Content-Type', 'application/text/plain')
-                    # start writing
-                    req.write(unicode('#EXTM3U') + '\n')
-                    req.write(unicode('#Written by WebTools for Plex') + '\n')
-                    req.write(unicode('#Playlist name: ' + title) + '\n')
-                    req.write(unicode('#Playlist type: ' + playListType) + '\n')
-                    req.write(unicode('#Server Id: ' + XML.ElementFromURL(
-                        misc.GetLoopBack() + '/identity').get('machineIdentifier')) + '\n')
-                    # Lets grap the individual items
-                    for item in playlist:
-                        # Get the Library UUID
-                        url = misc.GetLoopBack() + '/library/metadata/' + \
-                            item.get('ratingKey') + '?' + EXCLUDE
-                        libraryUUID = XML.ElementFromURL(
-                            url).get('librarySectionUUID')
-                        req.write(unicode('#{"Id":' + item.get('ratingKey') + ', "ListId":' + item.get(
-                            'playlistItemID') + ', "LibraryUUID":"' + libraryUUID + '"}\n'))
-                        row = '#EXTINF:'
-                        # Get duration
-                        try:
-                            duration = int(item.get('duration')) / 1000
-                        except:
-                            duration = -1
-                            pass
-                        row = row + str(duration) + ','
-                        # Audio List
-                        if playListType == 'audio':
-                            try:
-                                if item.get('originalTitle') == None:
-                                    row = row + item.get('grandparentTitle').replace(
-                                        ' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
-                                else:
-                                    row = row + item.get('originalTitle').replace(
-                                        ' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
-                            except Exception, e:
-                                Log.Exception(
-                                    'Exception digesting an audio entry was %s' % (str(e)))
-                                pass
-                        # Video
-                        elif playListType == 'video':
-                            try:
-                                entryType = item.get('type')
-                                if entryType == 'movie':
-                                    # Movie
-                                    row = row + 'movie' + \
-                                        ' - ' + item.get('title')
-                                else:
-                                    # Show
-                                    row = row + 'show' + \
-                                        ' - ' + item.get('title')
-                            except Exception, e:
-                                Log.Exception(
-                                    'Exception happened when digesting the line for Playlist was %s' % (str(e)))
-                                pass
-                        # Pictures
-                        else:
-                            row = row + 'Picture - ' + \
-                                item.get('title').replace(' - ', ' ')
-                        # Add file path
-                        row = row + '\n' + item.xpath('Media/Part/@file')[0]
-                        req.write(unicode(row) + '\n')
-                    '''
-                    req.set_status(200)
-                    req.finish()
                 except Ex.HTTPError, e:
                     Log.Exception(
                         'HTTP exception  when downloading a playlist for the owner was: %s' % (e))
@@ -1060,9 +944,7 @@ def getPlayListItems(user, key):
 
     # *********** MAIN *****************
     Log.Info('Starting getPlaylistItems with user: %s and key of: %s' %(user, key))
-
-    playlist = []
-    print 'Ged getPlayListItems'
+    playlist = []    
     sizeURL = misc.GetLoopBack() + '/playlists/' + key + '/items?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
     userToken = None
     if user:        
@@ -1079,78 +961,74 @@ def getPlayListItems(user, key):
     except Exception, e:
         Log.Exception('Exception getting top was: %s' %str(e))
 
-
+    title = top.get('title')
     # Start adding to the array
-    playlist.append(unicode('#EXTM3U'))
-    playlist.append(unicode('#Written by WebTools for Plex'))
-    playlist.append(unicode('#Playlist name: ' + top.get('title')))
+    playlist.append(unicode('#EXTM3U\n'))
+    playlist.append(unicode('#Written by WebTools for Plex\n'))
+    playlist.append(unicode('#Playlist name: %s\n' %title ))
     playListType = top.get('playlistType')  
-    print 'Ged123 playListType', playListType
-    playlist.append('#Playlist type: %s' %playListType)
-    playlist.append(unicode('#Server Id: ' + XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')))
+    #print 'Ged123 playListType', playListType
+    playlist.append('#Playlist type: %s\n' %playListType)
+    playlist.append(unicode('#Server Id: %s\n' %XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')))
     start = 0
     while True:        
         url = misc.GetLoopBack() + '/playlists/' + key + '/items?X-Plex-Container-Start=' + str(start) + '&X-Plex-Container-Size=' + str(MEDIASTEPS)
         response = sendReq(userToken, url)        
-        start += MEDIASTEPS
+        start += MEDIASTEPS        
         if response.get('size') == '0':
             break
-        for item in response.xpath('//Video'):
-            print 'Ged title', item.get('title')
-
-            # Get the Library UUID
-            itemURL = misc.GetLoopBack() + '/library/metadata/' + item.get('ratingKey') + '?' + EXCLUDE            
-            libraryUUID = sendReq(userToken, itemURL).get('librarySectionUUID')
-            print 'Ged9-0 url', itemURL
-            print 'Ged9-1 libraryUUID', libraryUUID
-            print 'Ged9-2 ratingKey', item.get('ratingKey')
-            print 'Ged9-3 ListId', item.get('playlistItemID')
-            playlist.append(unicode('#{"Id":' + item.get('ratingKey') + ', "ListId":' + item.get('playlistItemID') + ', "LibraryUUID":"' + libraryUUID + '"}'))
-            row = '#EXTINF:'
-            # Get duration
-            try:
-                duration = int(item.get('duration')) / 1000
-            except:
-                duration = -1
-                pass
-            row = row + str(duration) + ','
-            # Audio List
-            if playListType == 'audio':
+        try:
+            for item in response.xpath('//Video'):                
+                # Get the Library UUID
+                itemURL = misc.GetLoopBack() + '/library/metadata/' + item.get('ratingKey') + '?' + EXCLUDE            
+                libraryUUID = sendReq(userToken, itemURL).get('librarySectionUUID')
+                playlist.append(unicode('#{"Id":' + item.get('ratingKey') + ', "ListId":' + str(item.get('playlistItemID')) + ', "LibraryUUID":"' + libraryUUID + '"}\n'))
+                row = '#EXTINF:'
+                # Get duration
                 try:
-                    if item.get('originalTitle') == None:
-                        row = row + item.get('grandparentTitle').replace(
-                            ' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
-                    else:
-                        row = row + item.get('originalTitle').replace(
-                            ' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
-                except Exception, e:
-                    Log.Exception(
-                        'Exception digesting an audio entry was %s' % (str(e)))
+                    duration = int(item.get('duration')) / 1000
+                except:
+                    duration = -1
                     pass
-            # Video
-            elif playListType == 'video':
-                try:
-                    entryType = item.get('type')
-                    if entryType == 'movie':
-                        # Movie
-                        row = row + 'movie' + \
-                            ' - ' + item.get('title')
-                    else:
-                        # Show
-                        row = row + 'show' + \
-                            ' - ' + item.get('title')
-                except Exception, e:
-                    Log.Exception(
-                        'Exception happened when digesting the line for Playlist was %s' % (str(e)))
-                    pass
-            # Pictures
-            else:
-                row = row + 'Picture - ' + \
-                    item.get('title').replace(' - ', ' ')
-            playlist.append(unicode(row))                    
-            # Add file path
-            playlist.append(unicode(item.xpath('Media/Part/@file')[0]))                    
-                    
-    print 'Ged end'
-    return playlist
+                row = row + str(duration) + ','
+                # Audio List
+                if playListType == 'audio':
+                    try:
+                        if item.get('originalTitle') == None:
+                            row = row + item.get('grandparentTitle').replace(
+                                ' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
+                        else:
+                            row = row + item.get('originalTitle').replace(
+                                ' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
+                    except Exception, e:
+                        Log.Exception(
+                            'Exception digesting an audio entry was %s' % (str(e)))
+                        pass
+                # Video
+                elif playListType == 'video':
+                    try:
+                        entryType = item.get('type')
+                        if entryType == 'movie':
+                            # Movie
+                            row = row + 'movie' + \
+                                ' - ' + item.get('title')
+                        else:
+                            # Show
+                            row = row + 'show' + \
+                                ' - ' + item.get('title')
+                    except Exception, e:
+                        Log.Exception(
+                            'Exception happened when digesting the line for Playlist was %s' % (str(e)))
+                        pass
+                # Pictures
+                else:
+                    row = row + 'Picture - ' + \
+                        item.get('title').replace(' - ', ' ')
+                playlist.append(unicode(row + '\n'))                    
+                # Add file path
+                playlist.append(unicode(item.xpath('Media/Part/@file')[0]) + '\n') 
+        except Exception, e:                
+            Log.Exception('Exception in getPlayListItems was: %s' %str(e))
+            Log.Critical('Url to offending item was %s' %itemURL)                                                   
+    return [ title, playlist ]
 
