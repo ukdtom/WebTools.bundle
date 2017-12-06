@@ -15,7 +15,7 @@ import re
 from misc import misc
 from plextvhelper import plexTV
 from uuid import uuid4
-from consts import MEDIATYPE, VALIDEXT
+from consts import MEDIATYPE, VALIDEXT, EXCLUDEELEMENTS, EXCLUDEFIELDS
 
 
 # TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
@@ -31,7 +31,7 @@ DELETE = ['DELETE']
 
 MEDIASTEPS = 25 # Amount of medias we ask for at a time
 
-EXCLUDE = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline'
+EXCLUDE = EXCLUDEELEMENTS + '&excludeFields=summary,tagline'
 
 ROOTNODES = {'audio': 'Track', 'video': 'Video', 'photo': 'Photo'}
 
@@ -983,6 +983,7 @@ def getPlayListItems(user, key):
         playListType = info.get('playlistType')
         jsonLine['playlistType'] = playListType
         jsonLine['ServerID'] = XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')
+        Log.Debug('getPlayListItems returning: %s' %str(jsonLine))
         playlist.append(unicode('#' + str(jsonLine) + '\n' ))
         playlist.append('#\n#\n')            
     except Exception, e:
@@ -996,7 +997,8 @@ def getPlayListItems(user, key):
         if response.get('size') == '0':
             break
         try:
-            for item in response.xpath('//Video'):                
+            root = '//' + ROOTNODES[playListType]            
+            for item in response.xpath(root):                
                 # Get the Library UUID
                 itemURL = misc.GetLoopBack() + '/library/metadata/' + item.get('ratingKey') + '?' + EXCLUDE            
                 libraryUUID = sendReq(userToken, itemURL).get('librarySectionUUID')
