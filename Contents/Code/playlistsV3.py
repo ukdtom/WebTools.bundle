@@ -584,24 +584,27 @@ class playlistsV3(object):
                     except Exception, e:
                         Log.Exception('Exception when downloading a playlist as the owner was %s' %str(e))
                         Log.Debug('Trying to get more info here')
+                        req.clear()
+                        req.set_status(500)
+                        req.finish(str(e))
                 except Ex.HTTPError, e:
                     Log.Exception(
                         'HTTP exception  when downloading a playlist for the owner was: %s' % (e))
                     req.clear()
-                    req.set_status(e.code)
+                    req.set_status(500)
                     req.finish(str(e))
                 except Exception, e:
                     Log.Exception(
                         'Exception happened when downloading a playlist for the owner was: %s' % (str(e)))
                     req.clear()
-                    req.set_status(e.code)
+                    req.set_status(500)
                     req.finish(
                         'Exception happened when downloading a playlist for the owner was: %s' % (str(e)))
         except Exception, e:
             Log.Exception(
                 'Fatal error happened in playlists.download: ' + str(e))
             req.clear()
-            req.set_status(e.code)
+            req.set_status(500)
             req.finish(
                 'Fatal error happened in playlists.download: %s' % (str(e)))
 
@@ -930,6 +933,7 @@ def getPlayListItems(user, key):
                 return XML.ElementFromURL(url)
             except Exception, e:
                 Log.Exception('Exception when getting a response for %s as the owner was %s' %(url, str(e)))
+                return None
         else:
             try:
                 # TODO Change to native framework call, when Plex allows token in header
@@ -941,11 +945,12 @@ def getPlayListItems(user, key):
                 return XML.ElementFromString(response)
             except Exception, e:
                 Log.Exception('Exception when getting a response for %s as a user was %s' %(url, str(e)))
+                return None
 
     # *********** MAIN *****************
     Log.Info('Starting getPlaylistItems with user: %s and key of: %s' %(user, key))
     playlist = []    
-    sizeURL = misc.GetLoopBack() + '/playlists/' + key + '/items?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+    infoURL = misc.GetLoopBack() + '/playlists/' + key
     userToken = None
     if user:        
         # Shared or Home user
@@ -956,20 +961,33 @@ def getPlayListItems(user, key):
             # TODO Change to native framework call, when Plex allows token in header            
         except Exception, e:
             Log.Exception('Exception getting the token for a user was: %s' %str(e))
-    try:
-        top = sendReq(userToken, sizeURL)
+            return None
+    try:        
+        info = sendReq(userToken, infoURL).xpath('//Playlist')[0]        
     except Exception, e:
-        Log.Exception('Exception getting top was: %s' %str(e))
-
-    title = top.get('title')
-    # Start adding to the array
-    playlist.append(unicode('#EXTM3U\n'))
-    playlist.append(unicode('#Written by WebTools for Plex\n'))
-    playlist.append(unicode('#Playlist name: %s\n' %title ))
-    playListType = top.get('playlistType')  
-    #print 'Ged123 playListType', playListType
-    playlist.append('#Playlist type: %s\n' %playListType)
-    playlist.append(unicode('#Server Id: %s\n' %XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')))
+        Log.Exception('Exception getting info was: %s' %str(e))
+        return None
+    try:        
+        title = info.get('title')
+        # Start adding to the array
+        playlist.append(unicode('#EXTM3U\n'))
+        playlist.append(unicode('#Written by WebTools for Plex\n'))
+        jsonLine = {}
+        jsonLine['title'] = title
+        jsonLine['smart'] = info.get('smart')
+        jsonLine['leafCount'] = info.get('leafCount')        
+        content = info.get('content')
+        if content:            
+            content = content[content.index('library', content.index('library')+1):]
+        jsonLine['content'] = content
+        playListType = info.get('playlistType')
+        jsonLine['playlistType'] = playListType
+        jsonLine['ServerID'] = XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')
+        playlist.append(unicode('#' + str(jsonLine) + '\n' ))
+        playlist.append('#\n#\n')            
+    except Exception, e:
+        Log.Exception('Exception in Download was %s' %str(e))
+        return None
     start = 0
     while True:        
         url = misc.GetLoopBack() + '/playlists/' + key + '/items?X-Plex-Container-Start=' + str(start) + '&X-Plex-Container-Size=' + str(MEDIASTEPS)
@@ -1029,6 +1047,7 @@ def getPlayListItems(user, key):
                 playlist.append(unicode(item.xpath('Media/Part/@file')[0]) + '\n') 
         except Exception, e:                
             Log.Exception('Exception in getPlayListItems was: %s' %str(e))
-            Log.Critical('Url to offending item was %s' %itemURL)                                                   
+            Log.Critical('Url to offending item was %s' %itemURL) 
+            return None                                                  
     return [ title, playlist ]
 
