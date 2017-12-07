@@ -14,7 +14,7 @@ import shutil
 import sys
 import os
 import io
-from consts import BUNDLEDIRNAME, NAME, VERSION, WTURL
+from consts import BUNDLEDIRNAME, NAME, VERSION, WT_URL
 from plextvhelper import plexTV
 from shutil import copyfile
 from misc import misc
@@ -59,11 +59,11 @@ class wtV3(object):
     @classmethod
     def UPGRADEWT(self, req, *args):
         Log.Info('We recieved a call to upgrade WebTools itself')
-        Log.Info('Release URL on Github is %s' % WTURL)
+        Log.Info('Release URL on Github is %s' % WT_URL)
         try:
             downloadUrl = None
             # Digest release info, in order to grab the download url
-            jsonReponse = JSON.ObjectFromURL(WTURL)
+            jsonReponse = JSON.ObjectFromURL(WT_URL)
             # Walk assets to find the one named WebTools.bundle.zip
             for asset in jsonReponse['assets']:
                 if asset['name'] == 'WebTools.bundle.zip':

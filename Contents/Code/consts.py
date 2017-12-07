@@ -24,7 +24,7 @@ NAME = ''																					# Name of plugin
 ICON = 'WebTools.png'																		# Name of Icon in Resource Dir
 BASEURL = ''																				# Base url if behind a proxy
 JSONTIMESTAMP = 0																			# timestamp for json export
-WTURL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'               # URL to latest WebTools
+WT_URL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'               # URL to latest WebTools
 BUNDLEDIRNAME = ''																			# Name of the bundle dir
 EXCLUDEELEMENTS = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role' # Elements to be excluded, when sending req. to PMS
 EXCLUDEFIELDS = 'excludeFields=summary,tagline,file'
@@ -273,6 +273,7 @@ class consts(object):
         global BASEURL
         global UILANGUAGE
         global UILANGUAGEDEBUG
+        global WT_URL
 
         # Lets find the name of the bundle directory
         BUNDLEDIRNAME = os.path.split(os.path.split(os.path.split(
@@ -316,6 +317,8 @@ class consts(object):
                     UAS_BRANCH = debugParams['UAS_RepoBranch']
                 if 'WT_AUTH' in debugParams:
                     WT_AUTH = debugParams['WT_AUTH']
+                if 'WT_URL' in debugParams:
+                    WT_URL = debugParams['WT_URL']                    
                 if 'JSONTIMESTAMP' in debugParams:
                     JSONTIMESTAMP = debugParams['JSONTIMESTAMP']
                 # Try and fetch a user language, if set
@@ -332,15 +335,6 @@ class consts(object):
             except Exception, e:
                 Log.Exception('Exception in const was %s' % (str(e)))
                 pass
-            Log.Debug('******** Using the following debug params ***********')
-            Log.Debug('DEBUGMODE: ' + str(DEBUGMODE))
-            Log.Debug('UAS_Repo: ' + UAS_URL)
-            Log.Debug('UAS_RepoBranch: ' + UAS_BRANCH)
-            Log.Debug('Authenticate: ' + str(WT_AUTH))
-            Log.Debug('JSON timestamp: ' + str(JSONTIMESTAMP))
-            Log.Debug('UI Language: ' + str(UILANGUAGE))
-            Log.Debug('UI Language Debug: ' + str(UILANGUAGEDEBUG))
-            Log.Debug('*****************************************************')
         else:
             DEBUGMODE = False
 
