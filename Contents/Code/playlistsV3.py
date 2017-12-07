@@ -241,12 +241,16 @@ class playlistsV3(object):
         def phraseOurs(lines):
             # Placeholder for items to import
             items = {}
-            Log.Debug('Import file was ours')
-            sName = lines[2].split(':')[1][1:]
+            Log.Debug('Import file was ours')            
+            ourLine = lines[2][1:].replace('None', '"None"')            
+            jsonLine = JSON.ObjectFromString(ourLine)
+            sName = jsonLine['title']
             Log.Debug('Playlist name internally is %s' % sName)
-            sType = lines[3].split(':')[1][1:]
+            sType = jsonLine['playlistType']
             Log.Debug('Playlist type is %s' % sType)
-            sSrvId = lines[4].split(':')[1][1:]
+            sSrvId = jsonLine['ServerID']
+            smart = jsonLine['smart']
+            Log.Debug('Playlist smart is %s' % smart)
             Log.Debug('ServerId this playlist belongs to is %s' % sSrvId)
             thisServerID = XML.ElementFromURL(
                 misc.GetLoopBack() + '/identity').get('machineIdentifier')
@@ -255,7 +259,11 @@ class playlistsV3(object):
             lineNo = 5
             try:
                 for line in lines[5:len(lines):3]:
-                    media = json.loads(lines[lineNo][1:])
+                    if not line:
+                        break
+                    myLine = str(line[1:])
+                    myLine = myLine.replace("None", str(-1))
+                    media = JSON.ObjectFromString(myLine)
                     id = media['Id']
                     item = {}
                     item['ListId'] = media['ListId']
@@ -268,13 +276,13 @@ class playlistsV3(object):
                     items[id] = item
                     lineNo += 1
                 return items
-            except IndexError:
+            except IndexError:                
                 pass
             except Exception, e:
-                # Log.Exception('Exception happened in phraseOurs was %s' %(str(e)))
+                Log.Exception('Exception happened in phraseOurs was %s' %(str(e)))
                 pass
             finally:                
-                return items
+                return [sType, smart, items]
 
         ''' *************** Main stuff here *********************** '''
 
@@ -309,10 +317,9 @@ class playlistsV3(object):
                 req.finish('Aborted, since playlist "%s" already existed' % playlistTitle)
                 return
             # Let's check if it's one of ours
-            bOurs = (lines[1] == '#Written by WebTools for Plex')
-            if bOurs:
-                sType = lines[3].split(':')[1][1:]
-                items = phraseOurs(lines)
+            bOurs = (lines[1] == '#Written by WebTools for Plex')            
+            if bOurs:                                
+                sType, smart, items = phraseOurs(lines)
             else:                
                 # REMOVE THIS WHEN DOING 3.PARTY IMPORT 
                 # Abort, since not ours
@@ -328,7 +335,7 @@ class playlistsV3(object):
             #return
                 '''
             # Now validate the entries
-            finalItems = {}
+            finalItems = {}            
             for item in items:
                 if checkItemIsValid(item, items[item]['title'], sType):
                     finalItem = {}
@@ -361,10 +368,11 @@ class playlistsV3(object):
                     else:
                         failed.append(items[item]['title'])
                         Log.Error('Item %s was not found' %
-                                  items[item]['title'])
-            ratingKey = doImport(finalItems, sType, playlistTitle)
-            # Now order the playlist
-            orderPlaylist(ratingKey, finalItems, sType)
+                                  items[item]['title'])                        
+            ratingKey = doImport(finalItems, sType, playlistTitle)            
+            if not smart:
+                # Now order the playlist
+                orderPlaylist(ratingKey, finalItems, sType)
             returnResult['success'] = success
             returnResult['failed'] = failed
             Log.Info('Import returned %s' %
@@ -372,7 +380,6 @@ class playlistsV3(object):
             req.clear()
             req.set_status(200)
             req.finish(json.dumps(returnResult, ensure_ascii=False))
-
         except Exception, e:
             Log.Exception(
                 'Exception happened in Playlist import was: %s' % (str(e)))
