@@ -15,7 +15,7 @@ import re
 from misc import misc
 from plextvhelper import plexTV
 from uuid import uuid4
-from consts import MEDIATYPE, VALIDEXT
+from consts import MEDIATYPE, VALIDEXT, EXCLUDEELEMENTS, EXCLUDEFIELDS
 
 
 # TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
@@ -31,7 +31,7 @@ DELETE = ['DELETE']
 
 MEDIASTEPS = 25 # Amount of medias we ask for at a time
 
-EXCLUDE = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role&excludeFields=summary,tagline'
+EXCLUDE = EXCLUDEELEMENTS + '&excludeFields=summary,tagline'
 
 ROOTNODES = {'audio': 'Track', 'video': 'Video', 'photo': 'Photo'}
 
@@ -241,12 +241,16 @@ class playlistsV3(object):
         def phraseOurs(lines):
             # Placeholder for items to import
             items = {}
-            Log.Debug('Import file was ours')
-            sName = lines[2].split(':')[1][1:]
+            Log.Debug('Import file was ours')            
+            ourLine = lines[2][1:].replace('None', '"None"')            
+            jsonLine = JSON.ObjectFromString(ourLine)
+            sName = jsonLine['title']
             Log.Debug('Playlist name internally is %s' % sName)
-            sType = lines[3].split(':')[1][1:]
+            sType = jsonLine['playlistType']
             Log.Debug('Playlist type is %s' % sType)
-            sSrvId = lines[4].split(':')[1][1:]
+            sSrvId = jsonLine['ServerID']
+            smart = jsonLine['smart']
+            Log.Debug('Playlist smart is %s' % smart)
             Log.Debug('ServerId this playlist belongs to is %s' % sSrvId)
             thisServerID = XML.ElementFromURL(
                 misc.GetLoopBack() + '/identity').get('machineIdentifier')
@@ -255,7 +259,11 @@ class playlistsV3(object):
             lineNo = 5
             try:
                 for line in lines[5:len(lines):3]:
-                    media = json.loads(lines[lineNo][1:])
+                    if not line:
+                        break
+                    myLine = str(line[1:])
+                    myLine = myLine.replace("None", str(-1))
+                    media = JSON.ObjectFromString(myLine)
                     id = media['Id']
                     item = {}
                     item['ListId'] = media['ListId']
@@ -268,13 +276,13 @@ class playlistsV3(object):
                     items[id] = item
                     lineNo += 1
                 return items
-            except IndexError:
+            except IndexError:                
                 pass
             except Exception, e:
-                # Log.Exception('Exception happened in phraseOurs was %s' %(str(e)))
+                Log.Exception('Exception happened in phraseOurs was %s' %(str(e)))
                 pass
             finally:                
-                return items
+                return [sType, smart, items]
 
         ''' *************** Main stuff here *********************** '''
 
@@ -309,10 +317,9 @@ class playlistsV3(object):
                 req.finish('Aborted, since playlist "%s" already existed' % playlistTitle)
                 return
             # Let's check if it's one of ours
-            bOurs = (lines[1] == '#Written by WebTools for Plex')
-            if bOurs:
-                sType = lines[3].split(':')[1][1:]
-                items = phraseOurs(lines)
+            bOurs = (lines[1] == '#Written by WebTools for Plex')            
+            if bOurs:                                
+                sType, smart, items = phraseOurs(lines)
             else:                
                 # REMOVE THIS WHEN DOING 3.PARTY IMPORT 
                 # Abort, since not ours
@@ -328,7 +335,7 @@ class playlistsV3(object):
             #return
                 '''
             # Now validate the entries
-            finalItems = {}
+            finalItems = {}            
             for item in items:
                 if checkItemIsValid(item, items[item]['title'], sType):
                     finalItem = {}
@@ -361,10 +368,11 @@ class playlistsV3(object):
                     else:
                         failed.append(items[item]['title'])
                         Log.Error('Item %s was not found' %
-                                  items[item]['title'])
-            ratingKey = doImport(finalItems, sType, playlistTitle)
-            # Now order the playlist
-            orderPlaylist(ratingKey, finalItems, sType)
+                                  items[item]['title'])                        
+            ratingKey = doImport(finalItems, sType, playlistTitle)            
+            if not smart:
+                # Now order the playlist
+                orderPlaylist(ratingKey, finalItems, sType)
             returnResult['success'] = success
             returnResult['failed'] = failed
             Log.Info('Import returned %s' %
@@ -372,7 +380,6 @@ class playlistsV3(object):
             req.clear()
             req.set_status(200)
             req.finish(json.dumps(returnResult, ensure_ascii=False))
-
         except Exception, e:
             Log.Exception(
                 'Exception happened in Playlist import was: %s' % (str(e)))
@@ -584,24 +591,27 @@ class playlistsV3(object):
                     except Exception, e:
                         Log.Exception('Exception when downloading a playlist as the owner was %s' %str(e))
                         Log.Debug('Trying to get more info here')
+                        req.clear()
+                        req.set_status(500)
+                        req.finish(str(e))
                 except Ex.HTTPError, e:
                     Log.Exception(
                         'HTTP exception  when downloading a playlist for the owner was: %s' % (e))
                     req.clear()
-                    req.set_status(e.code)
+                    req.set_status(500)
                     req.finish(str(e))
                 except Exception, e:
                     Log.Exception(
                         'Exception happened when downloading a playlist for the owner was: %s' % (str(e)))
                     req.clear()
-                    req.set_status(e.code)
+                    req.set_status(500)
                     req.finish(
                         'Exception happened when downloading a playlist for the owner was: %s' % (str(e)))
         except Exception, e:
             Log.Exception(
                 'Fatal error happened in playlists.download: ' + str(e))
             req.clear()
-            req.set_status(e.code)
+            req.set_status(500)
             req.finish(
                 'Fatal error happened in playlists.download: %s' % (str(e)))
 
@@ -930,6 +940,7 @@ def getPlayListItems(user, key):
                 return XML.ElementFromURL(url)
             except Exception, e:
                 Log.Exception('Exception when getting a response for %s as the owner was %s' %(url, str(e)))
+                return None
         else:
             try:
                 # TODO Change to native framework call, when Plex allows token in header
@@ -941,11 +952,12 @@ def getPlayListItems(user, key):
                 return XML.ElementFromString(response)
             except Exception, e:
                 Log.Exception('Exception when getting a response for %s as a user was %s' %(url, str(e)))
+                return None
 
     # *********** MAIN *****************
     Log.Info('Starting getPlaylistItems with user: %s and key of: %s' %(user, key))
     playlist = []    
-    sizeURL = misc.GetLoopBack() + '/playlists/' + key + '/items?X-Plex-Container-Start=0&X-Plex-Container-Size=0'
+    infoURL = misc.GetLoopBack() + '/playlists/' + key
     userToken = None
     if user:        
         # Shared or Home user
@@ -956,20 +968,36 @@ def getPlayListItems(user, key):
             # TODO Change to native framework call, when Plex allows token in header            
         except Exception, e:
             Log.Exception('Exception getting the token for a user was: %s' %str(e))
-    try:
-        top = sendReq(userToken, sizeURL)
+            return None
+    try:        
+        info = sendReq(userToken, infoURL).xpath('//Playlist')[0]        
     except Exception, e:
-        Log.Exception('Exception getting top was: %s' %str(e))
-
-    title = top.get('title')
-    # Start adding to the array
-    playlist.append(unicode('#EXTM3U\n'))
-    playlist.append(unicode('#Written by WebTools for Plex\n'))
-    playlist.append(unicode('#Playlist name: %s\n' %title ))
-    playListType = top.get('playlistType')  
-    #print 'Ged123 playListType', playListType
-    playlist.append('#Playlist type: %s\n' %playListType)
-    playlist.append(unicode('#Server Id: %s\n' %XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')))
+        Log.Exception('Exception getting info was: %s' %str(e))
+        return None
+    try:        
+        title = info.get('title')
+        # Start adding to the array
+        playlist.append(unicode("#EXTM3U\n"))
+        playlist.append(unicode("#Written by WebTools for Plex\n"))
+        jsonLine = {}
+        jsonLine["title"] = title
+        jsonLine["smart"] = info.get('smart')
+        jsonLine["leafCount"] = info.get('leafCount')        
+        content = info.get('content')
+        if content:            
+            content = content[content.index('library', content.index('library')+1):]
+        jsonLine["content"] = content
+        playListType = info.get('playlistType')
+        jsonLine["playlistType"] = playListType
+        jsonLine["ServerID"] = XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')
+        Log.Debug('getPlayListItems returning: %s' %str(jsonLine))
+        # Switch to double quotes, to make framework happy
+        jsonLine = json.dumps(jsonLine)
+        playlist.append(unicode("#" + str(jsonLine) + "\n" ))
+        playlist.append("#\n#\n")            
+    except Exception, e:
+        Log.Exception('Exception in Download was %s' %str(e))
+        return None
     start = 0
     while True:        
         url = misc.GetLoopBack() + '/playlists/' + key + '/items?X-Plex-Container-Start=' + str(start) + '&X-Plex-Container-Size=' + str(MEDIASTEPS)
@@ -978,7 +1006,8 @@ def getPlayListItems(user, key):
         if response.get('size') == '0':
             break
         try:
-            for item in response.xpath('//Video'):                
+            root = '//' + ROOTNODES[playListType]            
+            for item in response.xpath(root):                
                 # Get the Library UUID
                 itemURL = misc.GetLoopBack() + '/library/metadata/' + item.get('ratingKey') + '?' + EXCLUDE            
                 libraryUUID = sendReq(userToken, itemURL).get('librarySectionUUID')
@@ -1029,6 +1058,7 @@ def getPlayListItems(user, key):
                 playlist.append(unicode(item.xpath('Media/Part/@file')[0]) + '\n') 
         except Exception, e:                
             Log.Exception('Exception in getPlayListItems was: %s' %str(e))
-            Log.Critical('Url to offending item was %s' %itemURL)                                                   
+            Log.Critical('Url to offending item was %s' %itemURL) 
+            return None                                                  
     return [ title, playlist ]
 
