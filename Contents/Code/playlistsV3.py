@@ -977,22 +977,24 @@ def getPlayListItems(user, key):
     try:        
         title = info.get('title')
         # Start adding to the array
-        playlist.append(unicode('#EXTM3U\n'))
-        playlist.append(unicode('#Written by WebTools for Plex\n'))
+        playlist.append(unicode("#EXTM3U\n"))
+        playlist.append(unicode("#Written by WebTools for Plex\n"))
         jsonLine = {}
-        jsonLine['title'] = title
-        jsonLine['smart'] = info.get('smart')
-        jsonLine['leafCount'] = info.get('leafCount')        
+        jsonLine["title"] = title
+        jsonLine["smart"] = info.get('smart')
+        jsonLine["leafCount"] = info.get('leafCount')        
         content = info.get('content')
         if content:            
             content = content[content.index('library', content.index('library')+1):]
-        jsonLine['content'] = content
+        jsonLine["content"] = content
         playListType = info.get('playlistType')
-        jsonLine['playlistType'] = playListType
-        jsonLine['ServerID'] = XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')
+        jsonLine["playlistType"] = playListType
+        jsonLine["ServerID"] = XML.ElementFromURL(misc.GetLoopBack() + '/identity').get('machineIdentifier')
         Log.Debug('getPlayListItems returning: %s' %str(jsonLine))
-        playlist.append(unicode('#' + str(jsonLine) + '\n' ))
-        playlist.append('#\n#\n')            
+        # Switch to double quotes, to make framework happy
+        jsonLine = json.dumps(jsonLine)
+        playlist.append(unicode("#" + str(jsonLine) + "\n" ))
+        playlist.append("#\n#\n")            
     except Exception, e:
         Log.Exception('Exception in Download was %s' %str(e))
         return None
