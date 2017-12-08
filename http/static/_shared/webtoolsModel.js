@@ -1,6 +1,7 @@
 ﻿angular.module('webtools').service('webtoolsModel', function () {
     this.version = "";
     this.versionFormated = "";
+    this.downloadUrl = null;
     this.UILanguage = "en";
     this.users = [];
     this.userSelected = null;

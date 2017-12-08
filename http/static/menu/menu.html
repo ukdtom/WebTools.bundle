@@ -11,7 +11,7 @@
 <div class="line pushTopTrivial"></div>
 <div class="textBold600 textSize3 pushTopTrivial pushLeftTrivial" translate>Options</div>
 <div>
-    <div class="item textBold900" ng-click="upgradeWT()" ng-if="webtoolsModel.isNewVersionAvailable" translate>Update WT</div> 
+    <div class="item textBold900" ng-click="upgradeWT()" ng-if="webtoolsModel.isNewVersionAvailable" style="color:red;" translate>Update WT</div> 
     <div class="item" ng-click="navigateTo('language')" ng-class="{'active' : path === '/language'}"><i class="fa fa-globe" aria-hidden="true"></i> <translate> Language</translate></div>
     <div class="item" ng-click="navigateTo('aboutus')" ng-class="{'active' : path === '/aboutus'}" translate>About us</div>
     <div class="item" ng-click="navigateTo('theme')" ng-class="{'active' : path === '/theme'}" translate>Theme</div>

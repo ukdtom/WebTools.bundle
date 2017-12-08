@@ -35,6 +35,7 @@
 
             if (resp.data.published_at && anyNewVersion(webtoolsModel.version, resp.data.tag_name)) {
                 webtoolsModel.isNewVersionAvailable = true;
+                localStorage.isNewVersionAvailable = true;
             }
             if (callback) callback(resp.data);
             webtoolsModel.globalLoading--;
@@ -58,6 +59,7 @@
             url: url,
         }).then(function (resp) {
             webtoolsModel.version = resp.data.version;
+            webtoolsModel.downloadUrl = resp.data.WT_URL;
             webtoolsModel.versionFormated = "WebTools - v" + resp.data.version;
             webtoolsModel.globalLoading--;
             checkIsNewVersionAvailable();
