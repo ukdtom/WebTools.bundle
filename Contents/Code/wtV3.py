@@ -59,11 +59,11 @@ class wtV3(object):
     @classmethod
     def UPGRADEWT(self, req, *args):
         Log.Info('We recieved a call to upgrade WebTools itself')
-        Log.Info('Release URL on Github is %s' % WT_URL)
+        Log.Info('Release URL on Github is %s' % WTURL)
         try:
             downloadUrl = None
             # Digest release info, in order to grab the download url
-            jsonReponse = JSON.ObjectFromURL(WT_URL)
+            jsonReponse = JSON.ObjectFromURL(WTURL)
             # Walk assets to find the one named WebTools.bundle.zip
             for asset in jsonReponse['assets']:
                 if asset['name'] == 'WebTools.bundle.zip':
@@ -91,6 +91,8 @@ class wtV3(object):
                             'Exception happend in UPGRADEWT: ' + str(e))
             # All done, so now time to flip directories
             try:
+                print 'Ged rename org dir', Core.bundle_path, Core.storage.join_path(
+                    Core.bundle_path.replace(NAME + '.bundle', ''), NAME + '.bundle.upgraded')
                 os.rename(Core.bundle_path, Core.storage.join_path(
                     Core.bundle_path.replace(NAME + '.bundle', ''), NAME + '.bundle.upgraded'))
                 os.rename(Core.storage.join_path(Core.bundle_path.replace(
@@ -583,9 +585,9 @@ def createPluginStringTranslations():
                 # Walk the translation for keys, looking for <PLUGIN>
                 for key in translationJson:
                     if key.startswith('<plugin>'):
-                        if translationJson[key][8:-9].replace('\n        ', ' ') != "":                            
+                        if translationJson[key][8:-9].replace('\n        ', ' ') != "":
                             jsonTranslation[key[8:-9].replace('\n        ', ' ')] = translationJson[key][8:-
-                                                                                                     9].replace('\n        ', ' ')
+                                                                                                         9].replace('\n        ', ' ')
                 if len(jsonTranslation) > 0:
                     fileName = Core.storage.join_path(
                         STRINGSDIR, lang + '.json')
