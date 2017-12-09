@@ -25,7 +25,7 @@
 
         webtoolsModel.globalLoading++;
 
-        var url = webtoolsModel.apiV3Url + "/git/getReleaseInfo/url/" + encodeURIComponent(webtoolsModel.repoUrl) + "/version/latest";
+        var url = webtoolsModel.apiV3Url + "/git/getReleaseInfo/url/" + encodeURIComponent(webtoolsModel.newRepoUrl) + "/version/latest";
         //var url = webtoolsModel.apiUrl + "?module=git&function=getReleaseInfo&url=" + webtoolsModel.repoUrl + "&version=latest";
         $http({
             method: "GET",
@@ -59,7 +59,7 @@
             url: url,
         }).then(function (resp) {
             webtoolsModel.version = resp.data.version;
-            webtoolsModel.downloadUrl = resp.data.WT_URL;
+            webtoolsModel.newRepoUrl = resp.data.WT_URL;
             webtoolsModel.versionFormated = "WebTools - v" + resp.data.version;
             webtoolsModel.globalLoading--;
             checkIsNewVersionAvailable();
