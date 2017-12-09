@@ -898,11 +898,12 @@ class gitV3(object):
             req.set_status(200)
             req.finish(response)
             Log.Debug('Ending getReleaseInfo')
-        except:
-            Log.Critical('Fatal error happened in getReleaseInfo')
+        except Exception, e:
+            Log.Critical(
+                'Fatal error happened in getReleaseInfo was %s' % str(e))
             req.clear()
             req.set_status(500)
-            req.finish('Fatal error happened in getInfo')
+            req.finish('Fatal error happened in getReleaseInfo')
 
     ''' list will return a list of all installed gits from GitHub'''
     @classmethod

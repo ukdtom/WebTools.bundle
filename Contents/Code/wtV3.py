@@ -59,11 +59,13 @@ class wtV3(object):
     @classmethod
     def UPGRADEWT(self, req, *args):
         Log.Info('We recieved a call to upgrade WebTools itself')
-        Log.Info('Release URL on Github is %s' % WTURL)
+        upgradeURL = WT_URL.replace(
+            'https://github.com/', 'https://api.github.com/repos/') + '/releases/latest'
+        Log.Info('Release URL on Github is %s' % upgradeURL)
         try:
             downloadUrl = None
             # Digest release info, in order to grab the download url
-            jsonReponse = JSON.ObjectFromURL(WTURL)
+            jsonReponse = JSON.ObjectFromURL(upgradeURL)
             # Walk assets to find the one named WebTools.bundle.zip
             for asset in jsonReponse['assets']:
                 if asset['name'] == 'WebTools.bundle.zip':
@@ -91,8 +93,6 @@ class wtV3(object):
                             'Exception happend in UPGRADEWT: ' + str(e))
             # All done, so now time to flip directories
             try:
-                print 'Ged rename org dir', Core.bundle_path, Core.storage.join_path(
-                    Core.bundle_path.replace(NAME + '.bundle', ''), NAME + '.bundle.upgraded')
                 os.rename(Core.bundle_path, Core.storage.join_path(
                     Core.bundle_path.replace(NAME + '.bundle', ''), NAME + '.bundle.upgraded'))
                 os.rename(Core.storage.join_path(Core.bundle_path.replace(
