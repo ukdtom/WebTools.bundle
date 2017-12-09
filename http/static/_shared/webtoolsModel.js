@@ -1,7 +1,6 @@
 ﻿angular.module('webtools').service('webtoolsModel', function () {
     this.version = "";
     this.versionFormated = "";
-    this.downloadUrl = null;
     this.UILanguage = "en";
     this.users = [];
     this.userSelected = null;
@@ -36,6 +35,7 @@
     this.wtCssTheme = "wt_csstheme";
     this.UILanguageKey = "UILanguage";
 
+    this.newRepoUrl = null;
     this.repoUrl = "https://github.com/ukdtom/WebTools.bundle";
     this.threadUrl = "https://forums.plex.tv/discussion/288191";
     this.manualUrl = "https://github.com/ukdtom/WebTools.bundle/wiki";
