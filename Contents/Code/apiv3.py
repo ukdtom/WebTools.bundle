@@ -10,7 +10,7 @@
 '''
 
 from tornado.web import *
-from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES
+from Code.consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES
 import sys
 
 import wtV3
@@ -24,6 +24,7 @@ import jsonExporterV3
 import playlistsV3
 import techinfo
 import viewstate
+
 
 class BaseHandler(RequestHandler):
     def get_current_user(self):
@@ -103,7 +104,7 @@ class apiv3(BaseHandler):
                                             except:
                                                 try:
                                                     myClass = getattr(
-                                                        viewstate, V3MODULES[self.module])                                                    
+                                                        viewstate, V3MODULES[self.module])
                                                 except Exception, e:
                                                     Log.Exception(
                                                         'Exception getting the class in apiV3: %s' % str(e))
