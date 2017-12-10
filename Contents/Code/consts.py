@@ -24,7 +24,7 @@ NAME = ''																					# Name of plugin
 ICON = 'WebTools.png'																		# Name of Icon in Resource Dir
 BASEURL = ''																				# Base url if behind a proxy
 JSONTIMESTAMP = 0																			# timestamp for json export
-WT_URL = 'https://api.github.com/repos/ukdtom/WebTools.bundle/releases/latest'               # URL to latest WebTools
+WT_URL = 'https://github.com/ukdtom/WebTools.bundle'                                        # URL to latest WebTools
 BUNDLEDIRNAME = ''																			# Name of the bundle dir
 EXCLUDEELEMENTS = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role' # Elements to be excluded, when sending req. to PMS
 EXCLUDEFIELDS = 'excludeFields=summary,tagline,file'
