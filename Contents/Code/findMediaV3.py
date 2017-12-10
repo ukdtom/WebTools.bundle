@@ -190,7 +190,7 @@ class findMediaV3(object):
                                                     unmatchedURL).xpath('//Video')
                                                 filename = unmatched[0].xpath(
                                                     '//Part/@file')[0]
-                                                if self.addThisItem(filename, 'video'):
+                                                if self.addThisItem(filename):
                                                     Log.Info(
                                                         'Unmatched file confirmed as %s' % filename)
                                                     unmatchedByPlex.append(
@@ -203,7 +203,7 @@ class findMediaV3(object):
                                             filename = episode.get('file')
                                             filename = String.Unquote(
                                                 filename).encode('utf8', 'ignore')
-                                            if self.addThisItem(filename, 'video'):
+                                            if self.addThisItem(filename):
                                                 mediasFromDB.append(
                                                     filename.encode("utf-8"))
                                             iEpisode += 1
@@ -269,7 +269,7 @@ class findMediaV3(object):
                 Log.Info('Aborted in findMissingFromFS')
 
         # Scan the file system
-        def getFiles(filePath, mediaType):
+        def getFiles(filePath):
             global mediasFromFileSystem
             global runningState
             global statusMsg
@@ -291,7 +291,7 @@ class findMediaV3(object):
                             for file in files:
                                 filename = Core.storage.join_path(root, file)
                                 file = misc.Unicodize(filename).encode('utf8')
-                                if self.addThisItem(filename, mediaType):
+                                if self.addThisItem(filename):
                                     if Platform.OS == 'Windows':
                                         # I hate windows
                                         pos = filename.find(':') - 1
@@ -361,7 +361,7 @@ class findMediaV3(object):
                                 unmatchedURL).xpath('//Video')
                             filename = unmatched[0].xpath(
                                 '//Part/@file')[0]
-                            if self.addThisItem(filename, 'video'):
+                            if self.addThisItem(filename):
                                 Log.Info(
                                     'Unmatched file confirmed as %s' % filename)
                                 unmatchedByPlex.append(
@@ -377,7 +377,7 @@ class findMediaV3(object):
                             filename = part.get('file')
                             filename = unicode(misc.Unicodize(
                                 part.get('file')).encode('utf8', 'ignore'))
-                            if self.addThisItem(filename, 'video'):
+                            if self.addThisItem(filename):
                                 mediasFromDB.append(filename.encode("utf-8"))
                             statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
                                                             String='Scanning database: item %s of %s : Working') % (iCount, totalSize)
@@ -431,10 +431,8 @@ class findMediaV3(object):
             global retMsg
             try:
                 if sectionType == 'movie':
-                    MediaType = 'video'
                     scanMovieDb(sectionNumber=sectionNumber)
                 elif sectionType == 'show':
-                    MediaType = 'video'
                     scanShowDB(sectionNumber=sectionNumber)
                 else:
                     req.clear()
@@ -442,7 +440,7 @@ class findMediaV3(object):
                     req.finish('Unknown Section Type')
                 if bAbort:
                     raise ValueError('Aborted')
-                getFiles(sectionLocations, MediaType)
+                getFiles(sectionLocations)
                 if bAbort:
                     raise ValueError('Aborted')
                 retMsg = {}
@@ -679,10 +677,9 @@ class findMediaV3(object):
     '''
     Returns true or false, depending on if a media should be added to the list
     Param file: The file to be investigated, with full path
-    Param mediaType: Type of media
     '''
     @classmethod
-    def addThisItem(self, file, mediaType):
+    def addThisItem(self, file):
         try:
             if os.path.splitext(file)[1].lower()[1:] in Dict['findMedia']['VALID_EXTENSIONS']:
                 parts = self.splitall(file)
