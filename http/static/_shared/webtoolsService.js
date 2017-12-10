@@ -44,6 +44,18 @@
             webtoolsModel.globalLoading--;
         });
     }
+    var pingReload = function () {
+        var url = "/";
+        $http({
+            method: "GET",
+            url: url
+        }).then(function (resp) {
+            $window.location.reload(true);
+            webtoolsModel.globalLoading--;
+        }, function (errorResp) {
+            setTimeout(function () { pingReload(); }, 3000);
+        });
+    }
 
     //Public
     this.formatError = function (errorResp) {
@@ -103,12 +115,10 @@
             method: "PUT",
             url: url
         }).then(function (resp) {
-            $window.location.reload(true);
-            webtoolsModel.globalLoading--;
+            setTimeout(function () { pingReload(); }, 300);
         }, function (errorResp) {
             //self.log("webtoolsService.upgradeWT - " + self.formatError(errorResp), "Core", true, url);
-            $window.location.reload(true);
-            webtoolsModel.globalLoading--;
+            setTimeout(function () { pingReload(); }, 300);
         });
     }
 
