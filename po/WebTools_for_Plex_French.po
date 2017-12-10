@@ -831,72 +831,72 @@ msgstr "NE PAS PARTAGER CECI SUR TOUT SITE WEB PUBLIC!"
 
 #: ../http/static/playlist/playlist.html:34
 msgid "Choose a playlist file to import"
-msgstr "Choose a playlist file to import"
+msgstr "Choisir liste de musique a télécharger"
 
 #: ../http/static/findmedia/fm.html:26
 msgid "Ignore Specials"
-msgstr "Ignore Specials"
+msgstr "Ignorer spéciales"
 
 #: ../http/static/home/home.html:25
 msgid "Will show technical information about the server."
-msgstr "Will show technical information about the server."
+msgstr "Afficher les informations techniques du serveur"
 
 #: ../http/static/findmedia/fm.html:131
 msgid "Items missing metadata"
-msgstr "Items missing metadata"
+msgstr "Itens sans metadata"
 
 #: ../http/static/findmedia/fm.html:128
 msgid "No items missing metadata"
-msgstr "No items missing metadata"
+msgstr "Tous les itens ont metadata"
 
 #: ../http/static/findmedia/fm.html:104
 msgid "Perfect, media files are present and accessible for all items in the Plex database."
-msgstr "Perfect! Media files are present and accessible for all items in the Plex database."
+msgstr "Parfait, tous les fichiers media sont accessibles"
 
 #: ../http/static/findmedia/fm.html:107
 msgid "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
-msgstr "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are named incorrectly or the library hasn't yet been updated after they were added.)"
+msgstr "Les fichiers de media suivants ne sont pas dans la base de donnés de Plex (nom incorrect, ou il faut scanner la bibliothèque)"
 
 #: ../http/static/findmedia/fm.html:119
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
-msgstr "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved, or you simply forgot to empty the library trash in Plex if you erased them intentionally."
+msgstr "Les fichiers de media suivants existent dans la base de donnés de Plex mais pas dans le disque (soit ils sont effacés et vous avez oublié de vider la corbeille, ou le disque n’est pas monté)"
 
 #: ../http/static/_shared/Directive/confirm/confirm.html:5
 msgid "Cancel"
-msgstr "Cancel"
+msgstr "Annuler"
 
 #: ../http/static/playlist/playlist.html:31
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
 msgid "File selected"
-msgstr "File selected"
+msgstr "Fichier sélectioné"
 
 #: ../http/static/sub_management/sub.html:22
 msgid "Hide media without subtitles"
-msgstr "Hide media without subtitles"
+msgstr "Cacher media sans sous-titres"
 
 #: ../http/static/sub_management/sub.html:2
 #: ../http/static/sub_management/subService.js:5
 msgid "No filter"
-msgstr "No filter"
+msgstr "Sans filtre"
 
 #: ../http/static/playlist/playlist.html:30
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
 msgid "Select File"
-msgstr "Select File"
+msgstr "Sélectionnez fichier"
 
 #: ../http/static/playlist/playlistController.js:6
 msgid "Are you sure you want to delete the playlist?"
-msgstr "Are you sure you want to delete the selected playlist?"
+msgstr "Voulez-vous effacer cette liste de musiques ?"
 
 #: ../http/static/sub_management/subController.js:24
 msgid "Are you sure you want to delete the selected subtitles?"
-msgstr "Are you sure you want to delete the selected subtitles?"
+msgstr "Voulez-vous effacer les sous-titres ?"
 
 #: ../http/static/uas/uasService.js:9
 msgid "Installed"
-msgstr "Installed"
+msgstr "Installé"
 
 #: ../http/static/findmedia/fm.html:116
 msgid "Perfect, all media files are present in database"
-msgstr "Perfect! All media files are present in the database."
+msgstr "Parfait, les fichiers media existent dans la base de donnés de Plex"
 

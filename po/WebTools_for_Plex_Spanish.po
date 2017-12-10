@@ -795,104 +795,104 @@ msgstr "<plugin>Para acceder este canal puede abrir uno de los URLs seguientes e
 
 #: ../Contents/Resources/language_template.html:39
 msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr "<plugin>Enter the port number that this plug-in should use for HTTP. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
+msgstr "<plugin>Puerto HTTP para esto plug-in. No se puede usar: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 ó 32469 (reservados para Plex o otros plug-ins).</plugin>"
 
 #: ../Contents/Resources/language_template.html:42
 msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr "<plugin>Enter the port number that this plug-in should use for HTTPS. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
+msgstr "<plugin>Puerto HTTPS para esto plug-in. No se puede usar: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 ó 32469 (reservados para Plex o otros plug-ins).</plugin>"
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
-msgstr "<plugin>Name of certificate crt file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Nombre del certificado (fichero crt en Contents/Code/Certificate directory)</plugin>"
 
 #: ../http/static/playlist/playlist.html:35
 msgid "Import"
-msgstr "Import"
+msgstr "Importar"
 
 #: ../http/static/info/info.html:6
 msgid "Key"
-msgstr "Key"
+msgstr "Llave"
 
 #: ../http/static/info/info.html:2
 msgid "Techincal Info"
-msgstr "Technical Info"
+msgstr "Información técnica"
 
 #: ../http/static/info/info.html:7
 msgid "Value"
-msgstr "Value"
+msgstr "Valor"
 
 #: ../Contents/Resources/language_template.html:56
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
-msgstr "DO NOT SHARE THIS PAGE ON ANY PUBLIC WEBSITE!"
+msgstr "NO COMPARTir ESTA PÁGINA EN NINGÚN SITIO WEB PÚBLICO"
 
 #: ../http/static/playlist/playlist.html:34
 msgid "Choose a playlist file to import"
-msgstr "Choose a playlist file to import"
+msgstr "Elige una lista de reproducción para importar"
 
 #: ../http/static/findmedia/fm.html:26
 msgid "Ignore Specials"
-msgstr "Ignore Specials"
+msgstr "Ignorar ofertas especiales"
 
 #: ../http/static/home/home.html:25
 msgid "Will show technical information about the server."
-msgstr "Will show technical information about the server."
+msgstr "Mostrará información técnica sobre el servidor"
 
 #: ../http/static/findmedia/fm.html:131
 msgid "Items missing metadata"
-msgstr "Items missing metadata"
+msgstr "Elementos que faltan metadatos"
 
 #: ../http/static/findmedia/fm.html:128
 msgid "No items missing metadata"
-msgstr "No items missing metadata"
+msgstr "No hay elementos que faltan metadatos"
 
 #: ../http/static/findmedia/fm.html:104
 msgid "Perfect, media files are present and accessible for all items in the Plex database."
-msgstr "Perfect! Media files are present and accessible for all items in the Plex database."
+msgstr "¡Perfecto! Los archivos multimedia están accesibles para todos los elementos en la base de datos Plex."
 
 #: ../http/static/findmedia/fm.html:107
 msgid "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
-msgstr "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are named incorrectly or the library hasn't yet been updated after they were added.)"
+msgstr "Los siguientes archivos multimedia en el disco no están en la base de datos de Plex. (Se ignoraron porque se nombraron incorrectamente o la biblioteca no se ha actualizado aún después de que se agregaron)."
 
 #: ../http/static/findmedia/fm.html:119
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
-msgstr "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved, or you simply forgot to empty the library trash in Plex if you erased them intentionally."
+msgstr "Estos archivos de medios faltan, pero la base de datos de Plex aún los contiene. Se borraron y olvidó de vaciar la papelera de la biblioteca en Plex, o el disco duro se desconectó o se movió."
 
 #: ../http/static/_shared/Directive/confirm/confirm.html:5
 msgid "Cancel"
-msgstr "Cancel"
+msgstr "Cancelar"
 
 #: ../http/static/playlist/playlist.html:31
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
 msgid "File selected"
-msgstr "File selected"
+msgstr "Archivo seleccionado"
 
 #: ../http/static/sub_management/sub.html:22
 msgid "Hide media without subtitles"
-msgstr "Hide media without subtitles"
+msgstr "Ocultar media sin subtítulos"
 
 #: ../http/static/sub_management/sub.html:2
 #: ../http/static/sub_management/subService.js:5
 msgid "No filter"
-msgstr "No filter"
+msgstr "Sin filtro"
 
 #: ../http/static/playlist/playlist.html:30
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
 msgid "Select File"
-msgstr "Select File"
+msgstr "Seleccionar fichero"
 
 #: ../http/static/playlist/playlistController.js:6
 msgid "Are you sure you want to delete the playlist?"
-msgstr "Are you sure you want to delete the selected playlist?"
+msgstr "¿Seguro que quieres eliminar la lista de reproducción seleccionada?"
 
 #: ../http/static/sub_management/subController.js:24
 msgid "Are you sure you want to delete the selected subtitles?"
-msgstr "Are you sure you want to delete the selected subtitles?"
+msgstr "¿Seguro que quieres eliminar los subtítulos seleccionados?"
 
 #: ../http/static/uas/uasService.js:9
 msgid "Installed"
-msgstr "Installed"
+msgstr "Instalado"
 
 #: ../http/static/findmedia/fm.html:116
 msgid "Perfect, all media files are present in database"
-msgstr "Perfect! All media files are present in the database."
+msgstr "¡Perfecto! Todos los archivos multimedia existen en la base de datos de Plex."
 

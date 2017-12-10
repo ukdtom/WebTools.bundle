@@ -184,7 +184,7 @@ msgstr "Tvinga en uppdatering av språköversättningen"
 #: ../http/static/logs/logs.html:5
 #: ../http/static/sub_management/sub.html:95
 msgid "Found"
-msgstr "Hittad"
+msgstr "Hittade"
 
 #: ../http/static/home/home.html:1
 msgid "Welcome to"
@@ -526,11 +526,11 @@ msgstr "Översättare och Beta-testare"
 
 #: ../http/static/uas/uas.html:52
 msgid "Update all"
-msgstr "Update all"
+msgstr "Uppdatera alla"
 
 #: ../http/static/uas/uas.html:46
 msgid "You have"
-msgstr "You have"
+msgstr "Du har"
 
 #: ../http/static/uas/uas.html:48
 msgid "bundle"
@@ -538,104 +538,104 @@ msgstr "bundle"
 
 #: ../http/static/uas/uas.html:49
 msgid "bundles"
-msgstr "bundles"
+msgstr "bundlar"
 
 #: ../http/static/uas/uas.html:50
 msgid "not up to date."
-msgstr "not up to date."
+msgstr "inte senaste versionen."
 
 #: ../http/login.html:53
 msgid "Continue"
-msgstr "Continue"
+msgstr "Fortsätt"
 
 #: ../http/login.html:40
 msgid "Create a local password"
-msgstr "Create a local password"
+msgstr "Skapa ett lokalt lösenord"
 
 #: ../http/login.html:45
 msgid "Create password"
-msgstr "Create password"
+msgstr "Skapa lösenord"
 
 #: ../http/login.html:54
 msgid "Download Latest"
-msgstr "Download Latest"
+msgstr "Ladda hem senaste"
 
 #: ../http/login.html:50
 msgid "New Version available"
-msgstr "New version available"
+msgstr "Ny version tillgänglig"
 
 #: ../http/login.html:51
 msgid "New Version:"
-msgstr "New Version:"
+msgstr "Ny version:"
 
 #: ../http/login.html:42
 msgid "Password"
-msgstr "Password"
+msgstr "Lösenord"
 
 #: ../http/login.html:43
 msgid "Password again"
-msgstr "Password (again)"
+msgstr "Lösenord (igen)"
 
 #: ../http/login.html:52
 msgid "Release Notes:"
-msgstr "Release Notes:"
+msgstr "Versionsinformation:"
 
 #: ../http/login.html:44
 msgid "Sign in"
-msgstr "Sign in"
+msgstr "Logga in"
 
 #: ../http/login.html:39
 msgid "Sign in with your local password"
-msgstr "Sign in with your local password"
+msgstr "Logga in med ditt lokala lösenord"
 
 #: ../http/login.html:36
 #: ../http/login.html:47
 msgid "Signing in towards plex.tv"
-msgstr "Sign in with plex.tv"
+msgstr "Logga in med plex.tv"
 
 #: ../http/login.html:49
 msgid "The passwords does not match"
-msgstr "The passwords do not match"
+msgstr "Lösenorden matchar ej"
 
 #: ../http/login.html:37
 msgid "Use your regular Plex credentials"
-msgstr "Use your regular Plex credentials"
+msgstr "Använd ditt vanliga Plex-login"
 
 #: ../http/login.html:41
 msgid "Username"
-msgstr "Username"
+msgstr "Användarnamn"
 
 #: ../http/login.html:55
 msgid "WebTools not available... Please contact Devs!"
-msgstr "WebTools is unavailable. Please contact the devs!"
+msgstr "WebTools är ej tillgänglig. Vänligen kontakta utvecklarna."
 
 #: ../http/login.html:48
 msgid "Wrong password"
-msgstr "Wrong password"
+msgstr "Fel lösenord"
 
 #: ../http/login.html:46
 msgid "Wrong username and/or password"
-msgstr "Wrong username and/or password"
+msgstr "Fel användarnamn och/eller lösenord"
 
 #: ../http/login.html:38
 msgid "PMS is not connected to plex.tv"
-msgstr "Plex Media Server is not connected to plex.tv"
+msgstr "Plex Media Server är inte kopplad till plex.tv"
 
 #: ../http/static/sub_management/sub.html:115
 msgid "Back"
-msgstr "Back"
+msgstr "Tillbaka"
 
 #: ../http/static/logs/logs.html:46
 msgid "Next file"
-msgstr "Next file"
+msgstr "Nästa fil"
 
 #: ../http/static/logs/logs.html:44
 msgid "Previous file"
-msgstr "Previous file"
+msgstr "Föregående fil"
 
 #: ../http/static/logs/logs.html:45
 msgid "Reload file"
-msgstr "Reload file"
+msgstr "Ladda om fil"
 
 #: ../http/static/sub_management/Directive/subDetails.html:28
 msgid "Codec"
@@ -643,256 +643,257 @@ msgstr "Codec"
 
 #: ../http/static/sub_management/subController.js:21
 msgid "Delete Selected"
-msgstr "Delete Selected"
+msgstr "Radera valda"
 
 #: ../http/static/sub_management/subController.js:19
 msgid "Deselect All"
-msgstr "Deselect All"
+msgstr "Avmarkera alla"
 
 #: ../http/static/sub_management/subController.js:23
 msgid "Download Subtitle"
-msgstr "Download Subtitle"
+msgstr "Ladda hem undertext"
 
 #: ../http/static/sub_management/sub.html:32
 msgid "Filter by letter"
-msgstr "Filter by letter"
+msgstr "Filtrera på bokstav"
 
 #: ../http/static/sub_management/Directive/subDetails.html:26
 msgid "Lang"
-msgstr "Language"
+msgstr "Språk"
 
 #: ../http/static/sub_management/sub.html:52
 msgid "Load more"
-msgstr "Load more"
+msgstr "Ladda in fler"
 
 #: ../http/static/sub_management/Directive/subDetails.html:27
 msgid "Location"
-msgstr "Location"
+msgstr "Plats"
 
 #: ../http/static/sub_management/sub.html:49
 msgid "No movies found in"
-msgstr "No movies found in"
+msgstr "Inga filmer funna i"
 
 #: ../http/static/sub_management/Directive/subDetails.html:43
 msgid "None"
-msgstr "None"
+msgstr "Inga"
 
 #: ../http/static/sub_management/subController.js:14
 #: ../http/static/sub_management/subController.js:6
 msgid "Search..."
-msgstr "Search..."
+msgstr "Sök"
 
 #: ../http/static/sub_management/subController.js:18
 msgid "Select All"
-msgstr "Select All"
+msgstr "Markera alla"
 
 #: ../http/static/sub_management/subController.js:20
 msgid "Upload Subtitle"
-msgstr "Upload Subtitle"
+msgstr "Ladda upp undertext"
 
 #: ../http/static/sub_management/subController.js:22
 msgid "View Subtitle"
-msgstr "View Subtitle"
+msgstr "Se undertext"
 
 #: ../http/static/sub_management/sub.html:49
 #: ../http/static/sub_management/sub.html:60
 msgid "with current search filter"
-msgstr "with current search filter"
+msgstr "med befintligt sökfilter"
 
 #: ../http/static/sub_management/subController.js:15
 msgid "Expand a library to search"
-msgstr "Expand a library to search"
+msgstr "Fäll ut ett bibliotek för att söka"
 
 #: ../Contents/Resources/language_template.html:19
 msgid "Get missing from File System"
-msgstr "Get missing from file system"
+msgstr "Hämta saknade från filsystemet"
 
 #: ../Contents/Resources/language_template.html:27
 msgid "Get missing from database"
-msgstr "Get missing from database"
+msgstr "Hämta saknade från databasen"
 
 #: ../Contents/Resources/language_template.html:23
 msgid "Idle"
-msgstr "Idle"
+msgstr "Inaktiv"
 
 #: ../http/static/sub_management/sub.html:60
 msgid "No TV-Shows found in"
-msgstr "No TV shows found"
+msgstr "Inga TV-serier funna"
 
 #: ../Contents/Resources/language_template.html:22
 msgid "Scanning database show %s of %s :"
-msgstr "Scanning database: show %s of %s:"
+msgstr "Scannar databas: visa %s av %s:"
 
 #: ../Contents/Resources/language_template.html:26
 msgid "Scanning database: item %s of %s : Working"
-msgstr "Scanning database: item %s of %s: Working"
+msgstr "Scannar databas: objekt %s av %s: Arbetar"
 
 #: ../Contents/Resources/language_template.html:24
 msgid "Scanning file: %s"
-msgstr "Scanning file: %s"
+msgstr "Scannar fil: %s"
 
 #: ../Contents/Resources/language_template.html:21
 #: ../Contents/Resources/language_template.html:25
 msgid "Starting to scan database for section %s"
-msgstr "Starting database scan for section: %s"
+msgstr "Startar databas-scanning för sektion: %s"
 
 #: ../Contents/Resources/language_template.html:20
 msgid "idle"
-msgstr "idle"
+msgstr "inaktiv"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
 msgid "Choose language for the subtitle"
-msgstr "Select language"
+msgstr "Välj språk"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
 msgid "Choose part"
-msgstr "Choose part"
+msgstr "Välj del"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:35
 msgid "Missing file"
-msgstr "Missing file"
+msgstr "Fil saknas"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:34
 msgid "Missing part"
-msgstr "Missing part"
+msgstr "Saknad del"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
 msgid "No language"
-msgstr "No language"
+msgstr "Inget språk"
 
 #: ../Contents/Resources/language_template.html:28
 msgid "Scanning database: %s : Done"
-msgstr "Scanning database: %s complete"
+msgstr "Scannar databas: %s färdig"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
 msgid "Subtitle Management Upload Subtitle"
-msgstr "Subtitle Management: Upload Subtitle"
+msgstr "Undertexthantering: Ladda upp undertext"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:40
 msgid "Upload"
-msgstr "Upload"
+msgstr "Ladda upp"
 
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
 msgid "Upload subtitle for"
-msgstr "Upload subtitle for"
+msgstr "Ladda upp undertext för"
 
 #: ../Contents/Resources/language_template.html:48
 msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
-msgstr "<plugin>Base URL (if behind a proxy – if not, leave blank).\n"
-"EXAMPLE: /WebTools)</plugin>"
+msgstr "<plugin>Bas-URL (om bakom en proxy – om inte, lämna blankt).\n"
+"EXEMPEL: /WebTools)</plugin>"
 
 #: ../Contents/Resources/language_template.html:33
 msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
-msgstr "<plugin>Name of the certificate key file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Namnet på certifikat-nyckeln i Contents/Code/Certificate -mappen</plugin>"
 
 #: ../Contents/Resources/language_template.html:45
 msgid "<plugin>Select to force https</plugin>"
-msgstr "<plugin>Select to force HTTPS</plugin>"
+msgstr "<plugin>Välj för att tvinga HTTPS</plugin>"
 
 #: ../Contents/Resources/language_template.html:51
 msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
-msgstr "<plugin>To access this channel, open one of the URLs below in a new browser tab or window.</plugin>"
+msgstr "<plugin>För att få åtkomst till denna kanal, öppna en av nedan adresser i din webbläsare.</plugin>\n"
+""
 
 #: ../Contents/Resources/language_template.html:39
 msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr "<plugin>Enter the port number that this plug-in should use for HTTP. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
+msgstr "<plugin>Skriv in det portnummer som denna plug-in ska använda för HTTP. Använd EJ någon av följande (de är reserverade för Plex och dess plugins): 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 eller 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:42
 msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
-msgstr "<plugin>Enter the port number that this plug-in should use for HTTPS. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.</plugin>"
+msgstr "<plugin>Skriv in det portnummer som denna plug-in ska använda för HTTPS. Använd EJ någon av följande (de är reserverade för Plex och dess plugins): 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 eller 32469.</plugin>"
 
 #: ../Contents/Resources/language_template.html:36
 msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
-msgstr "<plugin>Name of certificate crt file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Namnet på certifikat crt-filen i Contents/Code/Certificate -mappen</plugin>"
 
 #: ../http/static/playlist/playlist.html:35
 msgid "Import"
-msgstr "Import"
+msgstr "Importera"
 
 #: ../http/static/info/info.html:6
 msgid "Key"
-msgstr "Key"
+msgstr "Nyckel"
 
 #: ../http/static/info/info.html:2
 msgid "Techincal Info"
-msgstr "Technical Info"
+msgstr "Teknisk info"
 
 #: ../http/static/info/info.html:7
 msgid "Value"
-msgstr "Value"
+msgstr "Värde"
 
 #: ../Contents/Resources/language_template.html:56
 msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
-msgstr "DO NOT SHARE THIS PAGE ON ANY PUBLIC WEBSITE!"
+msgstr "DELA EJ DENNA SIDA PÅ NÅGOT PUBLIK HEMSIDA"
 
 #: ../http/static/playlist/playlist.html:34
 msgid "Choose a playlist file to import"
-msgstr "Choose a playlist file to import"
+msgstr "Välj en spellista att importera"
 
 #: ../http/static/findmedia/fm.html:26
 msgid "Ignore Specials"
-msgstr "Ignore Specials"
+msgstr "Ignorera specialavsnitt"
 
 #: ../http/static/home/home.html:25
 msgid "Will show technical information about the server."
-msgstr "Will show technical information about the server."
+msgstr "Visar teknisk information om servern."
 
 #: ../http/static/findmedia/fm.html:131
 msgid "Items missing metadata"
-msgstr "Items missing metadata"
+msgstr "Objekt som saknar metadata"
 
 #: ../http/static/findmedia/fm.html:128
 msgid "No items missing metadata"
-msgstr "No items missing metadata"
+msgstr "Inga objekt saknar metadata"
 
 #: ../http/static/findmedia/fm.html:104
 msgid "Perfect, media files are present and accessible for all items in the Plex database."
-msgstr "Perfect! Media files are present and accessible for all items in the Plex database."
+msgstr "Perfekt! Alla mediafiler är på plats och tillgängliga för alla objekt i Plex-databasen."
 
 #: ../http/static/findmedia/fm.html:107
 msgid "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
-msgstr "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are named incorrectly or the library hasn't yet been updated after they were added.)"
+msgstr "Följande mediafiler refereras ej i Plex-databasen. (Antingen ignorerades dom på grund av felaktig namngivning eller så har ej biblioteket uppdaterats ännu sedan de blev tillagda.)"
 
 #: ../http/static/findmedia/fm.html:119
 msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
-msgstr "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved, or you simply forgot to empty the library trash in Plex if you erased them intentionally."
+msgstr "Dessa mediafiler saknas, men de finns fortfarande listade i Plex-databasen. Antingen så har de blivit raderade, hårddisken avmonterats/flyttad, eller så har du helt enkelt glömt att tömma bibliotekets papperskord i Plex om du raderat dem avsiktligt."
 
 #: ../http/static/_shared/Directive/confirm/confirm.html:5
 msgid "Cancel"
-msgstr "Cancel"
+msgstr "Avbryt"
 
 #: ../http/static/playlist/playlist.html:31
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
 msgid "File selected"
-msgstr "File selected"
+msgstr "Fil vald"
 
 #: ../http/static/sub_management/sub.html:22
 msgid "Hide media without subtitles"
-msgstr "Hide media without subtitles"
+msgstr "Göm media utan undertexter"
 
 #: ../http/static/sub_management/sub.html:2
 #: ../http/static/sub_management/subService.js:5
 msgid "No filter"
-msgstr "No filter"
+msgstr "Inget filter"
 
 #: ../http/static/playlist/playlist.html:30
 #: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
 msgid "Select File"
-msgstr "Select File"
+msgstr "Välj fil"
 
 #: ../http/static/playlist/playlistController.js:6
 msgid "Are you sure you want to delete the playlist?"
-msgstr "Are you sure you want to delete the selected playlist?"
+msgstr "Är du säker att du vill radera den valda spellistan?"
 
 #: ../http/static/sub_management/subController.js:24
 msgid "Are you sure you want to delete the selected subtitles?"
-msgstr "Are you sure you want to delete the selected subtitles?"
+msgstr "Är du säker att du vill radera de valda undertexterna?"
 
 #: ../http/static/uas/uasService.js:9
 msgid "Installed"
-msgstr "Installed"
+msgstr "Installerad"
 
 #: ../http/static/findmedia/fm.html:116
 msgid "Perfect, all media files are present in database"
-msgstr "Perfect! All media files are present in the database."
+msgstr "Perfekt! Alla mediafiler finns representerade i databasen."
 

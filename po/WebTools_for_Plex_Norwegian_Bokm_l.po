@@ -29,11 +29,11 @@ msgstr "Endringslogg"
 
 #: ../http/static/changelog/cl.html:2
 msgid "Changelog viewer"
-msgstr "Endringsloggviser"
+msgstr "Vis endringslogger"
 
 #: ../http/static/sub_management/subHelp.html:12
 msgid "Delete selected sidecar from the harddrive."
-msgstr "Slett eksterne undertekster fra disken."
+msgstr "Slett eksterne undertekster fra disken. OBS: De kan ikke gjenopprettes når de er slettet."
 
 #: ../http/static/logs/logs.html:33
 msgid "File empty"
