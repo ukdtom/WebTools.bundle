@@ -1,0 +1,14 @@
+<div class="info">
+    <div class="textSize4 textBold600" translate>Techincal Info</div>
+
+    <table class="pushTopTrivial">
+        <tr>
+            <th translate>Key</th>
+            <th translate>Value</th>
+        </tr>
+        <tr ng-repeat="info in infoModel.informations track by info.key">
+            <td>{[{info.key}]}</td>
+            <td>{[{info.value}]}</td>
+        </tr>
+    </table>
+</div>

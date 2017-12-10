@@ -1,0 +1,470 @@
+﻿/* Custom Style Sheet by trumpy81 */
+/* Main Page Background Color */
+body{
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+}
+/* Scrollbar styles (Does Not Work In FireFox) */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.75);
+    outline: 1px solid rgba(0,0,0,1);
+    -webkit-border-radius: 1ex;
+    -webkit-box-shadow: 0px 1px 2px rgba(0,0,0,0.75);
+}  
+::-webkit-scrollbar-corner {
+    background: #1A1A1A;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0,0,0,1);
+    outline: 1px solid rgba(255,255,102,1);
+}
+/* The Dreaded Gear Wheel Spinning Icon Thingy */
+webtools-loading{
+    background-color: rgba(0,0,0,0.3);
+}
+webtools-loading .webtoolsLoading {
+    color: rgba(0,0,0,0.7);
+}
+content-loading{
+}
+content-loading .contentLoading {
+    color: rgba(0,0,0,0.7);
+}
+help {
+    color: rgba(0,0,0,0.55);
+}
+help:hover {
+    color: rgba(0,0,0,1);
+}
+
+/* Login */
+.vertical-center {
+    background-color: rgba(255,255,255,0.00);
+    box-shadow: inset 0px 15px 15px -4px rgba(255,255,0,0.06);
+}
+.mainContainer{
+    background-color: rgba(0,0,0,.15);
+}
+.mainContainer input.mainBtn{
+    color:#fff;
+    background-color: #f0ad4e;
+    background-image: none;
+    border-color: #eea236;
+}
+.mainContainer input.mainBtn:focus{
+    color:#fff;
+    background-color:#ec971f;
+    border-color:#985f0d;
+}
+.mainContainer input.mainBtn:hover{
+    color:#fff;
+    background-color:#ec971f;
+    border-color:#d58512;
+}
+
+/* Head ---------------------------------------------------------------------------------------- */
+
+/* Top Title Bar */
+.head{
+    background-color: rgba(0,0,0,1);
+    box-shadow:0 0 0 3px rgba(51,51,0,1);
+}
+.head .title{
+    color: rgba(255,255,255,1);
+}
+
+/* Menu ---------------------------------------------------------------------------------------- */
+/* Menu Separator Line */
+.line{
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+}
+
+/* Menu Background Color */
+.menu{
+    background-color: rgba(0,0,0,.1);
+    box-shadow:0 0 0 3px rgba(0,0,0,.2);
+}
+.menu .item{
+    background: rgba(0,0,0,0.55);
+    color: rgba(255,255,255,1);
+}
+.menu .item:hover{
+    background: rgba(0,0,0,1);
+}
+.menu .item.active{
+    background: rgba(0,0,0,1);
+}
+.menu .toggle{
+    color: rgba(255,255,255,1);
+    background: rgba(0,0,0,0.55);
+}
+.menu .toggle:hover{
+    background: rgba(0,0,0,1);
+}
+
+/* Subtitles ----------------------------------------------------------------------------------- */
+
+.sub .settings {
+    background: rgba(255,255,255,1);
+    border: solid 1px rgba(0,0,0,1);
+}
+.sub .search .btnSearch {
+    background: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+}
+.sub .search .btnSearch:hover {
+    background-color: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+}
+.sub .search .searchInput{
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+}
+/* Sub Item Row */
+.sub .rowShow{
+    background: rgba(255,255,255,1);
+    border: solid 1px rgba(0,0,0,1);
+}
+/* Expanded Row Separator Under Icon */
+.sub .rowShow.expanded .lineShow .type{
+    border-bottom-color: rgba(0,0,0,0.5);
+}
+/* Expanded Row Separator Under Title */
+.sub .rowShow.expanded .lineShow .title{
+    border-bottom-color: rgba(0,0,0,0.5);
+}
+/* Sub Item Box */
+.sub .rowShow .lineShow .contentShow .detail{
+    background: rgba(255,255,255,1);
+    border: solid 1px rgba(0,0,0,0.5);
+}
+/* Sub Item Subtitle List */
+.sub .rowShow .lineShow .contentShow .detail .subItem{
+    background: rgba(0,0,0,0.1);
+}
+/* Sub Item Subtitle List Checked */
+.sub .rowShow .lineShow .contentShow .detail .subItem.checked{
+    background: rgba(0,0,0,0.25);
+}
+/* Sub Item Load More Button */
+.sub .rowShow .lineShow .contentShow .loadmore{
+    background: rgba(0,0,0,0.55);
+    color:  rgba(255,255,255,1);
+    border: solid 6px rgba(255,255,255,1);
+}
+.sub .rowShow .lineShow .contentShow .loadmore:hover{
+    background: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    border: solid 6px rgba(255,255,255,1);
+}
+/* Sub TV Show Button */
+.sub .rowShow .lineShow .contentShow .tvshow{
+    background-color: rgba(255,255,255,1);
+    border: solid 1px rgba(0,0,0,0.5);
+}
+.sub .rowShow .lineShow .contentShow .tvshow:hover{
+    background-color: rgba(0,0,0,0.5);
+    border: solid 1px rgba(255,255,255,1);
+    Color: rgba(255,255,255,1)
+}
+/* Sub TV Show Series Title / Back Button */
+.sub .rowShow .lineShow .contentShow .tvshowheader div{
+    padding:5px
+    cursor:pointer;
+    border-radius: 10px;
+    background: rgba(255,255,255,1);
+    overflow:hidden; 
+    border: solid 1px rgba(0,0,0,0.25);
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div:hover{
+    background: rgba(0,0,0,0.25);
+    Color: rgba(255,255,255,1);
+    border: solid 1px rgba(255,255,255,0.55);
+}
+
+/* Logs ---------------------------------------------------------------------------------------- */
+
+/* Logs Download Buttons */
+.logs .logButton{
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    border: solid 1px rgba(0,0,0,1)
+}
+.logs .logButton:hover {
+    background-color: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    border: solid 1px rgba(255,255,255,1)
+}
+/* Logs Search Bar Background */
+.logs .search{
+    background-color: rgba(255,255,255,1);
+    border: solid 1px rgba(0,0,0,1)
+}
+
+/* Logs Search Bar Input Text */
+.logs .search .searchInput{
+    background-color: rgba(255,255,255,1);
+    color: #000000;
+}
+/* Logs Search Bar Buttons */
+.logs .search .btnSearch{
+    background-color: rgba(255,255,255,1);
+    border: solid 1px rgba(0,0,0,1)
+}
+.logs .search .btnSearch:hover {
+    background-color: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    border: solid 1px rgba(255,255,255,1)
+}
+
+/* Logs Alternate Line Colors */
+.logs .logDetails table tr:nth-child(odd) {
+    background-color: rgba(0,0,0,0.01);
+}
+.logs .logDetails table tr:nth-child(even) {
+    background-color: rgba(0,0,0,0.1);
+}
+/* Highlight Error Lines */
+.logs .logDetails table tr.danger {
+    background-color: rgba(194,49,36,0.7);
+    color: rgba(255,255,255,1)
+}
+/* Logs Search Result Colors */
+.logs .logDetails table tr.lineFound{
+    background-color: rgba(0,77,255,0.5);
+    color: rgba(255,255,255,1)   
+}
+.logs .logDetails table tr.lineFound.focused{
+    background-color: rgba(0,77,255,0.75);
+    color: rgba(255,255,255,1)   
+    box-shadow: 0px 0px 2px 0px rgba(0,0,0,1);
+}
+
+/* UAS ----------------------------------------------------------------------------------------- */
+
+/* UAS Category Selector Box */
+.uas .typesMenu {
+    background-color: rgba(0,0,0,0.55);
+    color: rgba(255,255,255,1);
+    border: solid 1px rgba(255,255,255,1)
+}
+.uas .type:hover{
+    background:rgba(0,0,0,1);
+}
+/* UAS Category Selector Box Selected Highlight */
+.uas .type.active{
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,000000+31,000000+72,ffffff+100 */
+background: #ffffff; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjMxJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjcyJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #ffffff 0%, #000000 31%, #000000 72%, #ffffff 100%); /* FF3.6-15 */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(31%,#000000), color-stop(72%,#000000), color-stop(100%,#ffffff)); /* Chrome4-9,Safari4-5 */
+background: -webkit-linear-gradient(top,  #ffffff 0%,#000000 31%,#000000 72%,#ffffff 100%); /* Chrome10-25,Safari5.1-6 */
+background: -o-linear-gradient(top,  #ffffff 0%,#000000 31%,#000000 72%,#ffffff 100%); /* Opera 11.10-11.50 */
+background: -ms-linear-gradient(top,  #ffffff 0%,#000000 31%,#000000 72%,#ffffff 100%); /* IE10 preview */
+background: linear-gradient(to bottom,  #ffffff 0%,#000000 31%,#000000 72%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-8 */
+}
+
+/* Search Button */
+.uas .typesMenu .search .btnSearch {
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    border: solid 1px rgba(0,0,0,1);
+}
+.uas .typesMenu .search .btnSearch:hover {
+    background-color: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    border: solid 1px rgba(255,255,255,1)
+}
+/* Search Text Input */
+.uas .typesMenu .search .searchInput {
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+}
+/* Manual Installation Text Input */
+.uas .manualInstall {
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+}
+/* UAS Buttons */
+.uas .uasBtn {
+    background: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    border: solid 1px rgba(0,0,0,1)
+}
+.uas .uasBtn:hover {
+    background-color: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    border: solid 1px rgba(255,255,255,1)
+}
+/* UAS Item Container */
+.uas .repoContainer .repo {
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    border: solid 1px rgba(0,0,0,1)
+}
+/* UAS Item Revealed Row Upper&Lower */
+.uas .repoContainer .repo .details .row {
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+}
+/* UAS Item Revealed Row Middle */
+.uas .repoContainer .repo .details .row:nth-child(2n) {
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+}
+/* UAS Item Installed Container */
+.uas .repoContainer .repo.installed{
+    background:rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    border: solid 1px rgba(255,255,255,1)
+}
+/* UAS Item Installed Row Upper&Lower */
+.uas .repoContainer .repo.installed .details .row{
+    background: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+}
+/* UAS Item Installed Row Middle */
+.uas .repoContainer .repo.installed .details .row:nth-child(2n){
+    background: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+}
+/* UAS Item Install/Update Button */
+.uas .repoContainer .repo .header .right .installUpdate{
+    background:rgba(255,255,255,1);
+    color: rgba(0,0,0,1); 
+}
+.uas .repoContainer .repo .header .right .installUpdate:hover{
+    background:rgba(0,0,0,1);
+    color: rgba(255,255,255,1); 
+}
+/* UAS Item Delete Button */
+.uas .repoContainer .repo .header .right .delete{
+    background:rgba(255,255,255,1);
+    color: rgba(0,0,0,1); 
+}
+.uas .repoContainer .repo .header .right .delete:hover{
+    background:rgba(0,0,0,1);
+    color: rgba(255,255,255,1); 
+    border: solid 1px rgba(255,255,255,1)
+}
+
+/* Find Media ---------------------------------------------------------------------------------- */
+
+/* FM Settings Box */
+.fm .settings {
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    Border: 1px solid rgba(0,0,0,1);
+}
+/* FM Buttons */
+.fm button{
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    Border: 1px solid rgba(0,0,0,1);
+}
+.fm button:hover {
+    background-color: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    Border: 1px solid rgba(255,255,255,1);
+}
+/* FM Library List Rows */
+.fm .sections .section {
+    background-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    Border: 1px solid rgba(0,0,0,1);
+}
+.fm .sections .section:hover {
+    background-color: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    Border: 1px solid rgba(255,255,255,1);
+}
+
+/* Playlists ----------------------------------------------------------------------------------- */
+
+.btnInput {
+    background: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    Border: 1px solid rgba(0,0,0,1);
+}
+.btnInput:hover {
+    background: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    Border: 1px solid rgba(255,255,255,1);
+}
+/* Playlists Item Container */
+.playlists .playlistContainer {
+    background: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    Border: 1px solid rgba(0,0,0,1);
+}
+/* Playlists Buttons */
+.playlists .playlistBtn {
+    background: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    Border: 1px solid rgba(0,0,0,1);
+}
+.playlists .playlistBtn:not(.disabled):hover {
+    background: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    Border: 1px solid rgba(255,255,255,1);
+}
+/* Playlists Buttons Disabled */
+.playlists .playlistBtn.disabled {
+    background: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    border: 1px solid rgba(255,0,0,1);
+}
+.playlists .playlistBtn.disabled:hover {
+    background: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    border: 1px solid rgba(255,0,0,1);
+}
+/* PlayLists Browse Container */
+.playlists .userContainer .fileContainer{
+    background: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    Border: 1px solid rgba(0,0,0,1);
+}
+.playlists .userContainer .fileContainer .label{
+    color: rgba(0,0,0,1);
+}
+
+/* TechInfo ------------------------------------------------------------------------------------ */
+
+.info tr:nth-child(2n+1){
+    background-color: rgba(255,255,255,1);
+    border: 1px solid rgba(0,0,0,1);
+}
+.info tr:nth-child(2n+2){
+    background-color: rgba(0,0,0,0.1);
+}
+
+/* Language ------------------------------------------------------------------------------------ */
+
+.language .languageActions .langBtn {
+    background: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    Border: 1px solid rgba(0,0,0,1);
+}
+.language .languageActions .langBtn:hover {
+    background: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    Border: 1px solid rgba(255,255,255,1);
+}
+/* Theme --------------------------------------------------------------------------------------- */
+
+.theme .block{
+    border-color: rgba(255,255,255,1);
+    color: rgba(0,0,0,1);
+    Border: 1px solid rgba(0,0,0,1);
+}
+.theme .block:hover:not(.activeTheme){
+    background-color: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+}
+.theme .block.activeTheme{
+    background-color: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+}

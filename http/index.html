@@ -1,112 +1,128 @@
-<html lang="en">
-	<head>
-		<title>WebTools</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
-		<!-- Bootstrap -->
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/default.css" rel="stylesheet">
-        <link id="ModuleCSS" href="" rel="stylesheet">
-		<script type="text/javascript" src="jscript/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="jscript/bootstrap.min.js"></script>
-        <script type="text/javascript" src="jscript/jquery.md5.js"></script>
-        <script type="text/javascript" src="jscript/asynchelper.js"></script>
-        <script type="text/javascript" src="jscript/functions.js"></script>
-        
-	</head>
-    <script>
-    $(document).ready(function() {
-        // Initial bootup
-        webtools.log('Application started', 'Core');
-        webtools.list_modules.start();        
-    });  
-    </script>
-	<body>
-        <nav class="navbar navbar-default navbar-fixed-top">
-          <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="/" id="MainLink">WebTools</a>
-              <!-- removed in favor of dropdown menu of all modules instead. highlighting the current selected. <a class="navbar-brand" id="SubLink" onclick=""></a> -->
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav">
-								<li class="dropdown" id="SublinkMainLi">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span id="SublinkMainTitle">Choose Module</span><span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu" id="SublinkMenu">
-                  </ul>
-                </li>
-                <li class="dropdown" id="ModuleMenu">
-                </li>
-                <li class="dropdown" id="OptionsMainLi">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Options<span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu" id="OptionsMenu">
-                  </ul>
-                </li>
-								<li class="dropdown" id="HelpMainLi">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Help<span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu" id="HelpMenu">
-										<li><a target="_NEW" href="https://forums.plex.tv/discussion/126254">WebTools Forum Thread</a></li>
-										<li><a target="_NEW" href="https://github.com/dagalufh/WebTools.bundle">WebTools Github</a></li>
-										<li><a target="_NEW" href="/manual/WebTools-User-Manual.pdf">WebTools Manual(PDF)</a></li>
-                  </ul>
-                </li>
-                  <li><a href="/logout">Logout</a></li>
-              </ul>
-            </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
-        </nav>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title" id="ContentHeader">Welcome to Webtools!</h3>
-          </div>
-          <div class="panel-body" id="ContentBody"></div>
-        <div class="panel-footer" id="ContentFoot"></div>
-        </div>
-        
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-              </div>
-              <div class="modal-body wordwrap" id="myModalBody">
-              Placeholder
-              </div>
-              <div class="modal-footer" id="myModalFoot">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-default">Save changes</button>
-              </div>
-            </div>
-          </div>
-        </div>	
-			<!--
-        <div class="modal fade" id="OptionsModal" tabindex="-1" role="dialog" aria-labelledby="OptionsLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title" id="OptionsLabel">Preferences</h4>
-              </div>
-              <div class="modal-body" id="OptionsBody">
-                <div class="alert alert-danger" role="alert" id="OptionsModalAlert"></div>
-                <table class="table table-bordered" id="OptionsTable"></table>
-              </div>
-            <div class="modal-footer" id="OptionsFoot">
-              </div>
-            </div>
-          </div>
-        </div>
+﻿<!--
+    CREATED BY OLIVER CHRISTENSEN & TOMMY MIKKELSEN
+    GitHub: Creoludifico
+    Plex Forum: omc1000
 -->
-        <nav class="navbar navbar-default navbar-fixed-bottom navbar-thin">
-          <div class="container-fluid" id="navfoot"></div>
-        </nav>
-	</body>
+<!DOCTYPE html>
+<html lang="en" ng-app="webtools" ng-controller="webtoolsController">
+    <head>
+        <title>WebTools</title>
+        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+
+        <!--EXTERNAL CSS INIT-->
+        <link rel="stylesheet" type="text/css" href="external/css/bootstrap.min.css"> <!-- No CSS preprocessor so no mapping for now -->
+        <link rel="stylesheet" type="text/css" href="external/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="external/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="external/css/ngDialog.min.css">
+        <link rel="stylesheet" type="text/css" href="external/css/ngDialog-theme-default.min.css">
+        
+        <!--EXTERNAL SCRIPT INIT-->
+        <script src="external/scripts/jquery-2.2.4.min.js"></script>
+        <script src="external/scripts/bootstrap.min.js"></script>
+        <script src="external/scripts/angular.min.js"></script>
+        <script src="external/scripts/angular-gettext.min.js"></script>
+        <script src="external/scripts/angular-route.min.js"></script>
+        <script src="external/scripts/ngDialog.min.js"></script>
+        
+        <!-- STATIC -->
+        <!-- TODO: Bundle Config? -->
+        <link rel="stylesheet" type="text/css" href="static/_shared/global.css" />
+        <script src="static/app.js"></script>
+        <script src="static/_shared/translations.js"></script>
+
+        <script src="static/_shared/webtoolsModel.js"></script>
+        <script src="static/_shared/webtoolsService.js"></script>
+        <script src="static/_shared/webtoolsController.js"></script>
+
+        <script src="static/home/homeController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/head/head.css" />
+        <script src="static/head/headController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/menu/menu.css" />
+        <script src="static/menu/menuModel.js"></script>
+        <script src="static/menu/menuService.js"></script>
+        <script src="static/menu/menuController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/sub_management/sub.css" />
+        <script src="static/sub_management/subModel.js"></script>
+        <script src="static/sub_management/subService.js"></script>
+        <script src="static/sub_management/subController.js"></script>
+        <script src="static/sub_management/Directive/subDetails.js"></script>
+        <script src="static/sub_management/Directive/subFileDisplay/subFileDisplay.js"></script>
+        <script src="static/sub_management/Directive/subUpload/subUpload.js"></script>
+        <script src="static/sub_management/Directive/subUpload/subUploadController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/logs/logs.css" />
+        <script src="static/logs/logsModel.js"></script>
+        <script src="static/logs/logsService.js"></script>
+        <script src="static/logs/logsController.js"></script>
+        <script src="static/logs/Directive/logFileDisplay/logFileDisplay.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/uas/uas.css" />
+        <script src="static/uas/uasModel.js"></script>
+        <script src="static/uas/uasService.js"></script>
+        <script src="static/uas/uasController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/findmedia/fm.css" />
+        <script src="static/findmedia/fmModel.js"></script>
+        <script src="static/findmedia/fmService.js"></script>
+        <script src="static/findmedia/fmController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/playlist/playlist.css" />
+        <script src="static/playlist/playlistModel.js"></script>
+        <script src="static/playlist/playlistService.js"></script>
+        <script src="static/playlist/playlistController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/info/info.css" />
+        <script src="static/info/infoModel.js"></script>
+        <script src="static/info/infoService.js"></script>
+        <script src="static/info/infoController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/theme/theme.css" />
+        <script src="static/theme/themeModel.js"></script>
+        <script src="static/theme/themeService.js"></script>
+        <script src="static/theme/themeController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/aboutus/aboutus.css" />
+        <script src="static/aboutus/aboutusModel.js"></script>
+        <script src="static/aboutus/aboutusService.js"></script>
+        <script src="static/aboutus/aboutusController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/language/language.css" />
+        <script src="static/language/languageModel.js"></script>
+        <script src="static/language/languageService.js"></script>
+        <script src="static/language/languageController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/changelog/cl.css" />
+        <script src="static/changelog/clModel.js"></script>
+        <script src="static/changelog/clService.js"></script>
+        <script src="static/changelog/clController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="static/factoryreset/fr.css" />        
+        <script src="static/factoryreset/frModel.js"></script>
+        <script src="static/factoryreset/frService.js"></script>
+        <script src="static/factoryreset/frController.js"></script>
+        
+        <script src="static/_shared/Directive/loading/loading.js"></script>
+        <script src="static/_shared/Directive/help/help.js"></script>
+
+        <script src="static/_shared/Factory/Dialog/DialogFactory.js"></script>
+        <script src="static/_shared/Directive/scrolly/scrolly.js"></script>
+        <script src="static/_shared/Directive/ngEnter/ngEnter.js"></script>
+        <script src="static/_shared/Directive/ngTitle/ngTitle.js"></script>
+        <script src="static/_shared/Directive/ngPlaceholder/ngPlaceholder.js"></script>
+        <script src="static/_shared/Directive/fileread/fileread.js"></script>
+        <script src="static/_shared/Directive/confirm/confirm.js"></script>
+
+        <link rel="stylesheet" type="text/css" ng-href="custom_themes/{[{webtoolsThemeModel.activeTheme}]}" />
+    </head>
+    <body>
+        <webtools-loading ng-if="webtoolsModel.globalLoading"></webtools-loading>
+        <div ng-include="'static/head/head.html'" class="head" ng-controller="headController"></div>
+        <div ng-include="'static/menu/menu.html'" class="menu" ng-controller="menuController" ng-class="{animation: !menuModel.visible}"></div>
+        <div ng-view class="content" ng-class="{animation: !webtoolsMenuModel.visible}"></div>
+    </body>
 </html>

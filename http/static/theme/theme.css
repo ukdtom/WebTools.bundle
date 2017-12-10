@@ -1,0 +1,22 @@
+﻿.theme{
+    max-width:600px;
+}
+.theme .block{
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid;
+    border-color: rgba(204, 253, 209, 0.21);
+    border-radius:5px;
+    margin:10px;
+    cursor:pointer;
+    width:150px;
+    text-align:center;
+    overflow:hidden;
+}
+.theme .block:hover:not(.activeTheme){
+    background-color: rgba(0, 255, 30, 0.73);
+}
+.theme .block.activeTheme{
+    background-color: rgba(0, 255, 30, 0.73);
+    cursor:default;
+}

@@ -1,0 +1,63 @@
+﻿.menu{
+    width: 140px;
+    height: calc(100% - 60px); /* Window - Head */
+    background-color: rgba(0,0,0,.15);
+    box-shadow:0 0 0 3px rgba(0,0,0,.2);
+    overflow:auto;
+    float: left;
+    transition: width 0.5s;
+}
+
+.menu .item{
+    margin:4px;
+    margin-top:10px;
+    height: 30px;
+    overflow: hidden;
+    cursor:pointer;
+    text-align:center;
+    background: rgba(254, 155, 0, 0.04);
+    border-radius: 3px;
+    padding-top: 5px;
+}
+.menu .item:first-child{
+    margin-top:3px;
+}
+.menu .item:hover{
+    background: rgba(64, 139, 255, 0.30);
+}
+.menu .item.active{
+    background: rgba(64, 139, 255, 0.50);
+}
+
+.menu .toggle{
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    top: 63px;
+    left: 57px;
+    font-size: 16px;
+    border-radius: 15px;
+    background: rgba(22, 79, 167, 0.73);
+    cursor: pointer;
+    padding: 6px;
+    color: rgb(255, 255, 255);
+    transition: left 0.5s;
+}
+.menu .toggle:hover{
+    background: rgba(64, 139, 255, 0.73);
+}
+
+/* Animation */
+.menu.animation{
+    width:0px;
+    overflow:hidden;
+    transition: width 0.5s;
+}
+.menu .toggle.animation{
+    left:-10px;
+    transition: left 0.5s;
+}
+
+/* Resp */
+@media screen and (max-height: 480px) {
+}

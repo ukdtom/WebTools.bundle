@@ -1,0 +1,295 @@
+﻿.uas{
+
+}
+.uas .topcontainer{
+    width:calc(100% - 190px);
+    float:left;
+    margin-bottom:10px;
+}
+.uas .uasBtn{
+    padding:2px 8px;
+    border: 1px solid grey;
+    border-radius:5px;
+    cursor:pointer;
+    background:rgba(0, 77, 255, 0.25);
+}
+.uas .uasBtn:hover{
+    background:rgba(0, 77, 255, 0.55);
+}
+
+.uas .manualInstall{
+    width:300px;
+    border-radius:5px;
+    border-bottom-right-radius:0;
+    border-top-right-radius:0;
+    color:black;
+}
+.uas .manualInstallBtn{
+    border-bottom-left-radius:0;
+    border-top-left-radius:0;
+}
+
+.uas .typesMenu{
+    position:fixed;
+    right:25px;
+    top:100px;
+    width:180px;
+    background-color: rgba(0,0,0,.15);
+    box-shadow: 0 0 0 3px rgba(0,0,0,.2);
+    z-index:2;
+    border-radius:5px;
+    padding-bottom:10px;
+}
+.uas .typesMenu .search{
+    width:100%;
+    height:40px;
+}
+.uas .typesMenu .search .searchInput{
+    float:left;
+    margin:3px;
+    padding:2px;
+    width:125px;
+    color:#000000;
+    font-size:0.8em;
+}
+.uas .typesMenu .search .btnSearch{
+    float:left;
+    margin:3px;
+    padding:2px;
+    border-radius:3px;
+    cursor:pointer;
+    font-size:0.8em;
+    width:40px;
+    background-color: #286090;
+}
+.uas .typesMenu .type{
+    float:right;
+    width:100%;
+    height:40px;
+    padding:10px;
+    overflow:hidden;
+    font-size:1.1em;
+    cursor:pointer;
+}
+.uas .type:hover{
+    background:rgba(200, 200, 200, 1.00);
+}
+/*.uas .type.active{
+    color:white;
+    border-radius:3px;
+    background: #2370ca;
+    background: rgba(33,98,173,1);
+    background: -moz-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -webkit-gradient(left top,right top,color-stop(0%,rgba(33,98,173,1)),color-stop(25%,rgba(40,125,222,1)),color-stop(75%,rgba(40,125,222,1)),color-stop(100%,rgba(33,98,173,1)));
+    background: -webkit-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -o-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -ms-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%)!important;
+    background: linear-gradient(to right,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%)!important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2162ad',endColorstr='#2162ad',GradientType=1)!important;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    -moz-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+}*/
+.uas .type.update{
+    color: #FF9800;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    -moz-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    font-weight: 600;
+    font-size: 0.9em;
+}
+.uas .type.update:hover{
+    color: white;
+}
+.uas .type.installed{
+    font-weight: bold;
+}
+
+
+.uas .repoContainer{
+    width:90%;
+    width:calc(100% - 190px); /* Minus typesMenu */
+    border-radius:2px;
+    padding:5px;
+}
+
+.uas .repoContainer .repo{
+    margin-top: 10px; 
+    background: rgba(0, 77, 255, 0.15);
+    box-shadow: 3px 3px 10px 1px black;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 15px;
+    position: relative;
+    border: 1px solid #4c4c4c;
+    height:90px;
+}
+.uas .repoContainer .repo.revealed{
+    height:220px;
+}
+.uas .repoContainer .repo.installed{
+    background:rgba(76, 175, 80, 0.35);
+}
+
+.uas .repoContainer .repo .header{
+    padding: 5px;
+    padding-bottom:0;
+    cursor:pointer;
+    height:90px;
+    width:100%;
+}
+.uas .repoContainer .repo.revealed .header{
+}
+
+/* Repo Left header */
+.uas .repoContainer .repo .header .left {
+    width: calc(100% - 160px); /*Minus install & delete & icon*/
+    float:left;
+}
+.uas .repoContainer .repo .header .icon{
+    float:left;
+    width: 70px;
+    height: 80px;
+    margin-right: 10px;
+}
+.uas .repoContainer .repo .header .title{
+    width: calc(100% - 100px); /*Minus install & delete & icon*/
+    float:left;
+    font-size:1.4em;
+    max-height:30px;
+    white-space: nowrap; 
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.uas .repoContainer .repo .header .description{
+    height: 40px;
+    width: calc(100% - 100px); /*Minus install & delete & icon*/
+    float: left;
+    overflow:hidden;
+}
+
+/* Repo Right header */
+.uas .repoContainer .repo .header .right {
+    width: 160px;
+    height: calc(100% - 10px);
+    float: right;
+}
+.uas .repoContainer .repo .header .right .installUpdate{
+}
+.uas .repoContainer .repo .header .right .installUpdate:hover{
+}
+.uas .repoContainer .repo .header .right .delete{
+    margin-right:10px;
+}
+.uas .repoContainer .repo .header .right .delete:hover{
+}
+.uas .repoContainer .repo .header .right .revealedIcon {
+    position: absolute;
+    right: 17px;
+    font-size: 1.3em;
+    bottom: 6px;
+    border-radius: 90px;
+    border: 1px rgba(247, 247, 247, 0.55) groove;
+    padding: 3px 5px 0px 5px;
+    z-index:2;
+}
+.uas .repoContainer .repo .header .right .revealedIcon:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Repo Details */
+.uas .repoContainer .repo .details{
+    padding: 5px;
+    padding-top:1px;
+    padding-left:10px;
+    height:130px;
+}
+.uas .repoContainer .repo .details .row{
+    background: rgb(30, 41, 68);
+}
+.uas .repoContainer .repo .details .row:nth-child(2n){
+    background: rgb(33, 48, 72);
+}
+
+.uas .repoContainer .repo.installed .details .row{
+    background:rgb(38, 72, 41);
+}
+.uas .repoContainer .repo.installed .details .row:nth-child(2n){
+    background:rgb(50, 93, 54);
+}
+
+/* Responsive */
+@media screen and (max-width: 1210px) {
+    .uas .topcontainer .uasBtn {
+        margin-bottom: 7px;
+    }
+
+    .uas .repoContainer .repo .header .title {
+        font-size: 1.2em;
+    }
+}
+@media screen and (max-width: 950px) {
+    .uas .repoContainer .repo .header .icon{
+        width: 35px;
+        height: 40px;
+    }
+    .uas .repoContainer .repo .header .title{
+        font-size:1.1em;
+        width:calc(100% - 50px);
+    }
+    .uas .repoContainer .repo .header .description{
+        font-size:0.9em;
+        height:50px;
+        width:calc(100% - 50px);
+    }
+    .uas .repoContainer .repo .header .description > div{
+        float:left !important;
+    }
+}
+@media screen and (max-width: 790px) {
+    .uas .repoContainer .repo .header .icon{
+        display:none;
+    }
+    .uas .repoContainer .repo .header .title{
+        width:100%;
+    }
+    .uas .repoContainer .repo .header .description{
+        width:100%;
+    }
+    .uas .manualInstall{
+        width:160px;
+    }
+    .uas .manualInstallBtn{
+    }
+}
+@media screen and (max-width: 750px) {
+    .uas .repoContainer .repo .header .left {
+        width: calc(100% - 100px);
+        float: left;
+    }
+    .uas .repoContainer .repo .header .right{
+        width:85px;
+    }
+    .uas .right .uasBtn{
+        height:23px;
+    }
+    .uas .repoContainer .repo .header .right .delete{
+        margin-right:0;
+        margin: 5px 0;
+    }
+    .uas .repoContainer .repo .header .right .revealedIcon{
+        display:none;
+    }
+}
+@media screen and (max-width: 645px) {
+    .uas .manualInstall{
+        border-bottom-right-radius:5px;
+        border-top-right-radius:5px;
+    }
+    .uas .manualInstallBtn{
+        margin-left:15px;
+        border-bottom-left-radius:5px;
+        border-top-left-radius:5px;
+    }
+}

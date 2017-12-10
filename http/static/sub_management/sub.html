@@ -1,0 +1,133 @@
+<div class="sub">
+    <div class="textSize4 textBold600 pull-left">Subtitle Management</div>
+    <help src="static/sub_management/subHelp.html"></help>
+    <div class="pushTopTrivial" translate>This is an unofficial manager for subtitles.</div>
+    <div translate>Usage at your own risk!</div>
+    <div class="pushTopMinor" translate>To get started, select one of your Libraries or click on the "?" for additional help</div>
+
+    <content-loading ng-if="webtoolsModel.subLoading" class="pushTopMinor"></content-loading>
+    <div ng-if="!webtoolsModel.subLoading" class="pushTopMinor">
+
+        <div ng-if="!subModel.selectedSub">
+            <div class="search">
+                <input class="searchInput" ng-enter="searchSub()" ng-model="subModel.searchValue" ng-placeholder="searchPlaceholder|translate"
+                    ng-disabled="!isAnyShowExpanded()" />
+                <button class="btnSearch" ng-click="searchSub()" title="Search" ng-disabled="!isAnyShowExpanded()"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+
+            <div class="settings">
+                <input id="hideWithoutSubs" type="checkbox" ng-model="subModel.settings.hideWithoutSub" ng-change="filterSub()" />
+                <label for="hideWithoutSubs" translate>Hide media without subtitles</label>
+            </div>
+
+            <div class="row rowShow" ng-repeat="show in subModel.shows track by show.key | orderBy : 'title'" ng-class="{'expanded': show.expanded}">
+                <div class="col-sm-12 lineShow">
+                    <div class="type" ng-click="expandShow(show)"><img ng-src="icons/{[{show.type}]}.png" /></div>
+                    <div class="title textSize3 textBold600" ng-click="expandShow(show)">{[{show.title}]}</div>
+                    <div class="contentShow" ng-if="show.expanded">
+
+                        <div class="letterChooserContainer">
+                            <div class="letterChooserLabel textBold600 textSize2" translate>Filter by letter</div>
+                            <select class="letterChooser" ng-model="show.letter" ng-change="reloadShow(show)">
+
+                                <option ng-repeat="letter in show.letterOptions track by letter.key"
+                                        value="{[{letter.key}]}" ng-if="letter.key === null">
+                                    {[{letter.name|translate}]} {[{letter.size}]}
+
+                                </option>
+                                <option ng-repeat="letter in show.letterOptions track by letter.key"
+                                        value="{[{letter.key}]}"  ng-if="letter.key !== null">
+                                    {[{letter.name}]} {[{letter.size}]}
+                                </option>
+
+                            </select>
+                        </div>
+
+                        <div ng-if="show.type === 'movie'">
+                            <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.details track by detail.key"
+                                ng-init="detail.subAllChecked = false;detail.loading = false;">
+                                <div class="col-sm-12 detail">
+                                    <content-loading ng-if="detail.loading"></content-loading>
+                                    <div ng-if="!detail.loading" sub-details></div>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="!show.loading && show.details.length === 0"> <span class="textSize3"><translate>No movies found in</translate> '{[{show.title}]}' <translate>with current search filter</translate></span></div>
+                            <content-loading ng-if="show.loading"></content-loading>
+                            <div ng-if="!show.full && !show.loading" ng-click="loadmore(show)" class="loadmore textSize3"><span class="fa fa-tasks"></span>
+                                <translate>Load more</translate>
+                            </div>
+                        </div>
+
+                        <div ng-if="!show.loading && show.type === 'show'">
+                            <div class="tvshow" ng-if="!show.selectedTvShow" ng-click="expandTvShow(show, tvshow)" ng-repeat="tvshow in show.tvshows track by tvshow.key | orderBy : 'title'">
+                                {[{tvshow.title}]}
+                            </div>
+                            <div ng-if="!show.full && !show.selectedTvShow && !show.selectedSeason" ng-click="loadmore(show)" class="loadmore textSize3 clearleft">
+                                <span class="fa fa-tasks"></span>
+                                <translate>Load more</translate>
+                            </div>
+                            <div class="row" ng-if="!show.loading && show.tvshows.length === 0"> <span class="textSize3"><translate>No TV-Shows found in</translate> '{[{show.title}]}' <translate>with current search filter</translate></span></div>
+                            <content-loading ng-if="(show.selectedTvShow && show.selectedTvShow.loading) || (show.selectedSeason && show.selectedSeason.loading)"></content-loading>
+                            <div class="tvshowheader textSize3 textBold600">
+                                <div ng-if="show.selectedTvShow && !show.selectedTvShow.loading && !show.selectedSeason">
+                                    <div ng-click="show.selectedTvShow = null"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> {[{show.selectedTvShow.title}]}
+                                        </div>
+                                </div>
+                                <div ng-if="show.selectedTvShow && !show.selectedTvShow.loading && show.selectedSeason && !show.selectedSeason.loading">
+                                    <div ng-click="show.selectedSeason = null"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> {[{show.selectedTvShow.title}]}
+                                        : {[{show.selectedSeason.title}]} </div>
+                                </div>
+                            </div>
+                            <div class="tvshow" ng-if="show.selectedTvShow && !show.selectedTvShow.loading && !show.selectedSeason" ng-click="expandTvShowSeason(show, season)"
+                                ng-repeat="season in show.selectedTvShow.seasons track by season.key | orderBy : 'title'">
+                                {[{season.title}]}
+                            </div>
+                            <div class="row" ng-class="{'pushTopNormal': !$first}" ng-repeat="detail in show.selectedSeason.details track by detail.key | orderBy : 'title'"
+                                ng-init="detail.subAllChecked = false;detail.loading = false;" ng-if="show.selectedTvShow && !show.selectedTvShow.loading && show.selectedSeason && !show.selectedSeason.loading">
+                                <div class="col-sm-12 detail">
+                                    <content-loading ng-if="detail.loading"></content-loading>
+                                    <div ng-if="!detail.loading" sub-details></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="subModel.selectedSub">
+            <div class="row viewSearch">
+                <div class="col-xs-12">
+                    <div ng-class="{'hideFields' : !subModel.searchVisible}">
+                        <div class="counter" ng-if="subModel.searchKeywordValueLast">
+                            <translate>Found</translate> {[{subModel.searchFoundLines.length}]}
+                            <translate>rows</translate>
+                        </div>
+                        <input class="searchInput" ng-model="subModel.searchKeywordValue" ng-placeholder="lang.searchPlaceholder|translate" ng-enter="searchKeyword()"
+                        />
+                        <button class="btnSearch" ng-click="searchKeyword()" ng-title="lang.searchKeyword|translate"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        <button class="btnSearch" ng-click="searchClear()" ng-title="lang.clearSearch|translate"><i class="fa fa-eraser" aria-hidden="true"></i></button>
+                        <button class="btnSearch" ng-click="searchPrevious()" ng-title="lang.previous|translate" ng-class="{'disabled' : subModel.searchFoundLines.length === 0}"
+                            ng-disabled="subModel.searchFoundLines.length === 0"><i class="fa fa-backward" aria-hidden="true"></i></button>
+                        <button class="btnSearch" ng-click="searchKeyword()" ng-title="lang.next|translate" ng-class="{'disabled' : subModel.searchFoundLines.length === 0}"
+                            ng-disabled="subModel.searchFoundLines.length === 0"><i class="fa fa-forward" aria-hidden="true"></i></button>
+                        <button class="btnSearch" ng-click="searchJumpToTop()" ng-title="lang.jumpToTop|translate"><i class="fa fa-hand-o-up" aria-hidden="true"></i></button>
+                        <button class="btnSearch toggleSearch" ng-click="subModel.searchVisible = !subModel.searchVisible" ng-title="lang.hideShowMenu|translate"><i class="fa" ng-class="{'fa-eye-slash' : !subModel.searchVisible, 'fa-eye' : subModel.searchVisible}" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subDetailsButtons">
+                <div class="subButton textBold600" ng-click="subModel.selectedSub = null">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <translate>Back</translate>
+                </div>
+            </div>
+            <div class="subDetails">
+                <sub-file-display data="subModel.selectedSub"></sub-file-display>
+            </div>
+        </div>
+
+    </div>
+</div>

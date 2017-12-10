@@ -1,0 +1,406 @@
+﻿.sub{
+}
+.sub .subButton {
+    float: left;
+    padding: 5px;
+    height: 30px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px 1px black;
+    background-color: rgba(40, 96, 144, 1);
+    cursor: pointer;
+    margin: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.sub .subButton:hover {
+    background-color: rgba(40, 96, 144, 0.8);
+}
+
+/* Shows */
+.sub .search{
+    float:left;
+    height:40px;
+}
+.sub .settings {
+    float: left;
+    height: 30px;
+    margin-left: 15px;
+    padding: 3px 15px;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.15);
+}
+.sub .settings input[type='checkbox'] {
+    position:relative;
+    top:2px;
+}
+.sub .search .searchInput {
+    float: left;
+    margin: 3px;
+    padding: 2px;
+    width: 225px;
+    color: #000000;
+    font-size: 0.8em;
+}
+.sub .search .btnSearch{
+    float:left;
+    margin:3px;
+    padding:2px;
+    border-radius:3px;
+    cursor:pointer;
+    font-size:0.8em;
+    width:40px;
+    background-color: #286090;
+}
+
+.sub .rowShow{
+    margin-top:10px;
+    min-height: 50px;
+    width: 100%;
+    background: rgba(0, 77, 255, 0.15);
+    box-shadow: 3px 3px 10px 1px black;
+    border-radius: 5px;
+    overflow:hidden;
+}
+
+.sub .rowShow.expanded{
+    min-height:200px;
+}
+
+.sub .rowShow .lineShow{
+    height:100%;
+}
+
+.sub .rowShow .lineShow .type{
+    min-height: 50px;
+    margin-left: -10px;
+    width:40px;
+    float:left;
+    cursor:pointer;
+}
+.sub .rowShow.expanded .lineShow .type{
+    border-bottom: solid 1px rgba(255, 255, 255, 0.03);
+}
+
+.sub .rowShow .lineShow .type img{
+    width: 34px;
+    height: 34px;
+    padding: 4px;
+    margin-top: 7px;
+    border-radius: 10px;
+}
+
+.sub .rowShow .lineShow .title{
+    float:left;
+    padding:12px;
+    height:50px;
+    width: calc(100% - 50px);
+    cursor:pointer;
+}
+
+.sub .rowShow.expanded .lineShow .title{
+    border-bottom: solid 1px rgba(255, 255, 255, 0.03);
+}
+
+/**/
+.sub .rowShow .lineShow .contentShow{
+    float:left;
+    padding:12px;
+    width:100%;
+}
+.sub .rowShow .lineShow .contentShow .letterChooserContainer{
+    float:left;
+    width:100%;
+    margin-bottom: 20px;
+}
+.sub .rowShow .lineShow .contentShow .letterChooserContainer .letterChooserLabel {
+    float: left;
+    margin-right:10px;
+}
+.sub .rowShow .lineShow .contentShow .letterChooserContainer .letterChooser {
+    float: left;
+    color: black;
+    min-width: 100px;
+    height: 22px;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.sub .rowShow .lineShow .contentShow .loadmore{
+    height: 40px;
+    padding-top: 3px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.13);
+    cursor:pointer;
+    overflow:hidden;
+}
+.sub .rowShow .lineShow .contentShow .loadmore:hover{
+    background: rgba(0, 0, 0, 0.33);
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader{
+    width:100%;
+    min-height:50px;
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div{
+    padding:5px;
+    cursor:pointer;
+    background: rgba(0, 0, 0, 0.13);
+    overflow:hidden;
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div:hover{
+    background: rgba(0, 0, 0, 0.33);
+}
+
+/* Tv Show */
+.sub .rowShow .lineShow .contentShow .tvshow{
+    height: 40px;
+    border-radius: 10px;
+    background-color: rgba(85, 128, 255, 0.31);
+    padding:10px;
+    float:left;
+    margin:5px;
+    cursor:pointer;
+    overflow:hidden;
+}
+.sub .rowShow .lineShow .contentShow .tvshow:hover{
+    background-color: rgba(85, 128, 255, 0.51);
+}
+
+/* Details */
+.sub .rowShow .lineShow .contentShow .detail{
+    min-height:60px;
+    width:100%;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius:5px;
+    padding:10px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions{
+    font-size:20px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions div:first-child{
+    width:20px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions > div{
+    float:left;
+    cursor:pointer;
+}
+.sub .rowShow .lineShow .contentShow .detail .subHeader .selectActions > div:not(:first-child){
+    margin-left:10px;
+}
+
+.sub .rowShow .lineShow .contentShow .detail .subItem{
+    background: rgba(255, 255, 255, 0.04);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.checked{
+    background: rgba(255, 255, 255, 0.08);
+    border-radius:3px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected{
+    background: rgba(2, 255, 0, 0.04);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected.checked{
+    background: rgba(2, 255, 0, 0.08);
+}
+
+.sub .rowShow .lineShow .contentShow .detail .subItem .selectSubtitle{
+    cursor:pointer;
+    font-size:20px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem div:not(.selectSubtitle){
+    padding-top:5px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem .download{
+    padding-top:0 !important;
+    float:right;
+    padding-right:10px;
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem .download div{
+    padding-top:0 !important;
+}
+
+/* subUpload */
+.subUpload .subUploadTitle {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.subUpload .partsContainer {
+    height: 60px;
+}
+.subUpload .partsContainer .partChooserLabel {
+}
+.subUpload .partsContainer .partChooser {
+    float: left;
+    color: black;
+    min-width: 100px;
+    max-width:550px;
+    height: 24px;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.subUpload .languageContainer {
+    height: 60px;
+}
+.subUpload .languageContainer .languageChooserLabel {
+}
+.subUpload .languageContainer .languageChooser {
+    float: left;
+    color: black;
+    min-width: 200px;
+    height: 24px;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.subUpload .fileContainer {
+    height: 30px;
+}
+
+.subUpload .btnContainer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 30px;
+}
+.subUpload .btnContainer .warning {
+    float: left;
+    color: #e60700;
+}
+.subUpload .btnContainer .success {
+    float: left;
+    color: #009300;
+}
+.subUpload .btnContainer .btnUpload {
+    float: right;
+    padding: 0 10px;
+}
+
+/* Responsive */
+@media screen and (max-width: 480px) {
+    .sub .rowShow .lineShow .type{
+        display:none;
+    }
+    .sub .rowShow .lineShow .contentShow .detail .subHeader > div:not(.selectActions){
+        display:none;
+    }
+    .sub .rowShow .lineShow .contentShow .detail .selectActions > div{
+        float:none !important;
+        width:initial;
+        margin-left: 0 !important;
+    }
+    .sub .rowShow .lineShow .contentShow .detail .subItem div{
+        float:none;
+        width:initial;
+    }
+}
+
+
+
+
+
+/* View Search */
+.sub .viewSearch {
+    position: fixed;
+    right: 30px;
+    top: 65px;
+    z-index: 3;
+    background-color: rgba(0, 34, 64, 0.4);
+    border-radius: 10px;
+    margin-right: 5px;
+    overflow: hidden;
+    padding: 6px;
+}
+
+.sub .viewSearch .searchInput {
+    float: left;
+    margin: 3px;
+    padding: 2px;
+    max-width: 200px;
+    color: #000000;
+    font-size: 0.8em;
+}
+
+.sub .viewSearch .btnSearch {
+    float: left;
+    margin: 3px;
+    padding: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8em;
+    width: 40px;
+    background-color: #286090;
+}
+
+.sub .viewSearch .btnSearch.disabled {
+    cursor: default;
+    opacity: 0.7;
+}
+
+.sub .viewSearch .counter {
+    float: left;
+    padding: 5px;
+}
+.sub .viewSearch .hideFields .searchInput,
+.sub .viewSearch .hideFields .btnSearch:not(.toggleSearch),
+.sub .viewSearch .hideFields .counter {
+    display: none;
+}
+
+/* View Details */
+.sub .subDetailsButtons {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 5px;
+}
+
+.sub .subDetails {
+    margin-bottom: 40px; /* Minus fixed search */
+    background-color: rgba(128, 128, 128, 0.14);
+    padding: 5px;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+}
+
+/* Directive subFileDisplay */
+.sub .subDetails table {
+    width: 100%;
+}
+
+.sub .subDetails table tr {
+    border-bottom: 1px rgba(128, 128, 128, 0.15) solid;
+    word-break: break-word;
+}
+
+.sub .subDetails table tr:nth-child(odd) {
+}
+
+.sub .subDetails table tr:nth-child(even) {
+    background-color: rgba(0, 77, 255, 0.1);
+}
+
+/*.sub .subDetails table tr.danger {
+    background-color: rgb(169, 68, 66);
+}*/
+
+.sub .subDetails table tr.lineFound {
+    background-color: rgba(0, 77, 255, 0.3);
+}
+
+.sub .subDetails table tr.lineFound.focused {
+    background-color: rgba(0, 77, 255, 1);
+    box-shadow: 0px 0px 2px 0px yellow;
+}
+
+.sub .subDetails table tr td {
+    height: 40px;
+    padding: 5px;
+}
+
+.sub .subDetails table tr td.index {
+    width: 80px;
+}
+
+.sub .subDetails table tr td.detail {
+    width: calc(100% - 60px);
+}

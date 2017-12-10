@@ -1,0 +1,30 @@
+<div class="textBold600 textSize3 pushTopMajor pushLeftTrivial">Tools</div>
+<div>
+    <div class="item" ng-click="navigateTo('/')" ng-class="{'active' : path === '/'}">Home</div>
+    <div class="item" ng-click="navigateTo('sub')" ng-class="{'active' : path === '/sub'}">Subtitles</div>
+    <div class="item" ng-click="navigateTo('logs')" ng-class="{'active' : path === '/logs'}">Logs</div>
+    <div class="item" ng-click="navigateTo('uas')" ng-class="{'active' : path === '/uas'}">UAS</div>
+    <div class="item" ng-click="navigateTo('fm')" ng-class="{'active' : path === '/fm'}">FindMedia</div>
+    <div class="item" ng-click="navigateTo('playlist')" ng-class="{'active' : path === '/playlist'}">Playlists</div>
+    <div class="item" ng-click="navigateTo('info')" ng-class="{'active' : path === '/info'}">TechInfo</div>
+</div>
+<div class="line pushTopTrivial"></div>
+<div class="textBold600 textSize3 pushTopTrivial pushLeftTrivial" translate>Options</div>
+<div>
+    <div class="item textBold900" ng-click="upgradeWT()" ng-if="webtoolsModel.isNewVersionAvailable" style="color:red;" translate>Update WT</div> 
+    <div class="item" ng-click="navigateTo('language')" ng-class="{'active' : path === '/language'}"><i class="fa fa-globe" aria-hidden="true"></i> <translate> Language</translate></div>
+    <div class="item" ng-click="navigateTo('aboutus')" ng-class="{'active' : path === '/aboutus'}" translate>About us</div>
+    <div class="item" ng-click="navigateTo('theme')" ng-class="{'active' : path === '/theme'}" translate>Theme</div>
+    <div class="item" ng-click="redirectTo(webtoolsModel.changelogUrl, true)" translate>Changelog</div>
+    <div class="item" ng-click="navigateTo('fr')" ng-class="{'active' : path === '/fr'}" translate>Factory Reset</div>
+    <div class="item" ng-click="redirectTo('logout')" translate>Logout</div> 
+</div>
+<div class="line pushTopTrivial"></div>
+<div class="textBold600 textSize3 pushTopTrivial pushLeftTrivial" translate>Help</div>
+<div>
+    <div class="item" ng-click="redirectTo(webtoolsModel.threadUrl, true)" translate>WT Forum Thread</div>
+    <div class="item" ng-click="redirectTo(webtoolsModel.repoUrl, true)" translate>WT GitHub</div>
+    <div class="item" ng-click="redirectTo(webtoolsModel.manualUrl, true)" translate>WT Manual Online</div>
+</div>
+
+<div class="toggle glyphicon" ng-click="menuModel.visible = !menuModel.visible" ng-class="{'glyphicon-arrow-left' : menuModel.visible, 'animation glyphicon-arrow-right' : !menuModel.visible}"></div>

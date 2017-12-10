@@ -1,0 +1,37 @@
+﻿.vertical-center {
+    height: calc(100% - 120px);
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.00);
+    box-shadow: inset 0px 15px 15px -4px rgba(255, 255, 0, 0.06);
+}
+.mainContainer{
+    margin: auto;
+    width: 335px;
+    height: 320px;
+    font-size: 18px;
+    background-color: rgba(0,0,0,.15);
+    padding: 20px;
+    border-radius: 10px;
+}
+.mainContainer input{
+    width:100%;
+}
+.mainContainer input::-webkit-input-placeholder{
+    font-size:10px;
+}
+.mainContainer input.mainBtn{
+    font-size:14px;
+}
+.mainContainer .warning{
+    display:none;
+    color:#f44336;    
+    margin-top: 12px;
+    text-align: center;
+}
+.newReleaseContainer{
+    width:550px;
+}
+#info_Notes{
+    max-width:550px;
+}

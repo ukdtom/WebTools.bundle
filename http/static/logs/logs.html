@@ -1,0 +1,49 @@
+<div class="logs">
+    <div class="row search" ng-if="logsModel.selectedLog.details.length !== 0">
+        <div class="col-xs-12">
+            <div ng-class="{'hideFields' : !logsModel.searchVisible}">
+                <div class="counter" ng-if="logsModel.searchKeywordValueLast"><translate>Found</translate> {[{logsModel.searchFoundLines.length}]} <translate>rows</translate></div>
+                <input class="searchInput" ng-model="logsModel.searchKeywordValue" ng-placeholder="lang.searchPlaceholder|translate" ng-enter="searchKeyword()" />
+                <button class="btnSearch" ng-click="searchKeyword()" ng-title="lang.searchKeyword|translate"><i class="fa fa-search" aria-hidden="true"></i></button>
+                <button class="btnSearch" ng-click="searchClear()" ng-title="lang.clearSearch|translate"><i class="fa fa-eraser" aria-hidden="true"></i></button>
+                <button class="btnSearch" ng-click="searchPrevious()" ng-title="lang.previous|translate" ng-class="{'disabled' : logsModel.searchFoundLines.length === 0}" ng-disabled="logsModel.searchFoundLines.length === 0"><i class="fa fa-backward" aria-hidden="true"></i></button>
+                <button class="btnSearch" ng-click="searchKeyword()" ng-title="lang.next|translate" ng-class="{'disabled' : logsModel.searchFoundLines.length === 0}" ng-disabled="logsModel.searchFoundLines.length === 0"><i class="fa fa-forward" aria-hidden="true"></i></button>
+                <button class="btnSearch" ng-click="searchJumpToTop()" ng-title="lang.jumpToTop|translate"><i class="fa fa-hand-o-up" aria-hidden="true"></i></button>
+                <button class="btnSearch toggleSearch" ng-click="logsModel.searchVisible = !logsModel.searchVisible" ng-title="lang.hideShowMenu|translate"><i class="fa" ng-class="{'fa-eye-slash' : !logsModel.searchVisible, 'fa-eye' : logsModel.searchVisible}" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="textSize4 textBold600 pushBottomMinor" translate>LogViewer Tool</div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group selectLog">
+                <select class="form-control" 
+                        ng-model="logsModel.selectedLog"
+                        ng-options="log as log.value for log in logsModel.logs track by log.id"
+                        ng-change="loadLog(logsModel.selectedLog)">
+                </select>
+            </div>
+            <div class="logButton textBold600 pushLeftMinor" ng-if="logsModel.selectedLog.value" ng-click="downloadLog()"><i class="fa fa-download" aria-hidden="true"></i> <translate>Download selected logfile</translate></div>
+            <div class="logButton textBold600 pushLeftMinor" ng-click="downloadLogs()"><i class="fa fa-download" aria-hidden="true"></i> <translate>Download all logfiles as zip</translate></div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="logsModel.selectedLog.details.length === 0">
+        <div class="col-xs-12 textBold600" translate>File empty</div>
+    </div>
+    <div class="row" ng-if="logsModel.selectedLog.big">
+        <div class="col-xs-12 textBold600 textSize3 warning" translate>We recommend you to download large files and view them in your favourite text editor.</div>
+    </div>
+
+    <content-loading ng-if="webtoolsModel.logsLoading"></content-loading>
+    <div class="logDetails pushTopMinor" ng-if="!webtoolsModel.logsLoading && logsModel.selectedLog.details">
+        <log-file-display data="logsModel.selectedLog.details"></log-file-display>
+
+        <div class="pull-left pushTopMinor" ng-if="logsModel.selectedLog">
+            <div class="logButton textBold600" ng-click="previousFile()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <translate>Previous file</translate></div>
+            <div class="logButton textBold600" ng-click="reloadFile()"><translate>Reload file</translate></div>
+            <div class="logButton textBold600" ng-click="nextFile()"><translate>Next file</translate> <i class="fa fa-arrow-right" aria-hidden="true"></i></div>
+        </div>
+    </div>
+</div>

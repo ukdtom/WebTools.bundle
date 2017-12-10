@@ -1,0 +1,220 @@
+﻿/*
+    Monochrome.css 
+*/
+
+html{
+    /*background: url("../static/_shared/asfalt.png") repeat; /* Credit Subtlepatterns.com */
+}
+body{
+    background-color: rgba(255, 255, 255, 0.09);
+    color: rgb(254, 155, 0);
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(254, 155, 0, 0.30);
+    outline: 1px solid rgba(254, 155, 0, 0.30);
+}
+::-webkit-scrollbar-thumb:hover{
+    background-color: rgba(254, 155, 0, 0.60);
+}
+.content{
+    background-color: rgba(255, 255, 255, 0.00);
+}
+.line{
+    border-bottom: 1px solid rgba(254, 155, 0, 0.14);
+}
+webtools-loading{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+webtools-loading .webtoolsLoading {
+    color: rgb(240, 173, 78);
+}
+content-loading{
+}
+content-loading .contentLoading {
+    color: rgb(240, 173, 78);
+}
+help {
+    color: rgba(238, 238, 238, 0.80);
+}
+help:hover {
+    color: rgba(238, 238, 238, 1);
+}
+
+/* Login */
+.vertical-center {
+    background-color: rgba(255, 255, 255, 0.00);
+    box-shadow: inset 0px 15px 15px -4px rgba(255, 255, 0, 0.06);
+}
+.mainContainer{
+    background-color: rgba(0,0,0,.15);
+}
+.mainContainer input.mainBtn{
+    color:#fff;
+    background-color: #f0ad4e;
+    background-image: none;
+    border-color: #eea236;
+}
+.mainContainer input.mainBtn:focus{
+    color:#fff;
+    background-color:#ec971f;
+    border-color:#985f0d;
+}
+.mainContainer input.mainBtn:hover{
+    color:#fff;
+    background-color:#ec971f;
+    border-color:#d58512;
+}
+
+
+/* Head */
+.head{
+    background-color: rgba(0, 0, 0, 0.53);
+    box-shadow:0 0 0 3px rgba(0,0,0,.2);
+}
+.head .title{
+    color: inherit;
+}
+
+/* Menu */
+.menu{
+    background-color: rgba(0,0,0,.15);
+    box-shadow:0 0 0 3px rgba(0,0,0,.2);
+}
+.menu .item{
+    background: rgba(254, 155, 0, 0.04);
+}
+.menu .item:hover{
+    background: rgba(254, 155, 0, 0.23);
+}
+.menu .item.active{
+    background: rgba(254, 155, 0, 0.23);
+}
+.menu .toggle{
+    background: rgba(254, 155, 0, 0.4);
+    color: rgb(255, 255, 255);
+}
+.menu .toggle:hover{
+    background: rgba(254, 155, 0, 0.7);
+}
+
+/* Sub Management */
+.sub{
+}
+.sub .rowShow{
+    background: rgba(0, 0, 0, 0.45);
+    box-shadow: 3px 3px 10px 1px rgba(255, 203, 130, 0.07);
+}
+.sub .rowShow.expanded .lineShow .type{
+    border-bottom-color: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow.expanded .lineShow .title{
+    border-bottom-color: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow .lineShow .contentShow .tvshow{
+    background-color: rgba(231, 155, 0, 0.1);
+}
+.sub .rowShow .lineShow .contentShow .tvshow:hover{
+    background-color: rgba(231, 155, 0, 0.3);
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div{
+    background: rgba(0, 0, 0, 0.13);
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div:hover{
+    background: rgba(0, 0, 0, 0.33);
+}
+.sub .rowShow .lineShow .contentShow .loadmore{
+    background: rgba(30,30,31,1);
+    border: solid 6px rgba(23,23,24,1);    
+}
+.sub .rowShow .lineShow .contentShow .loadmore:hover{
+    background: rgba(42,43,42,1);
+}
+
+.sub .rowShow .lineShow .contentShow .detail{
+    background: rgba(255, 255, 255, 0.03);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem{
+    background: rgba(255, 255, 255, 0.04);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.checked{
+    background: rgba(255, 255, 255, 0.08);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected{
+    background: rgba(2, 255, 0, 0.04);
+}
+.sub .rowShow .lineShow .contentShow .detail .subItem.selected.checked{
+    background: rgba(2, 255, 0, 0.08);
+}
+
+/* Logs */
+.logs .logButton{
+    box-shadow: 2px 2px 4px 1px black;
+    background-color: rgba(255, 152, 0, 0.3);
+}
+.logs .logButton:hover{
+    background-color: rgba(255, 152, 0, 0.5);
+}
+.logs .search{
+    background-color: rgba(104, 74, 30, 0.3);
+}
+.logs .search .searchInput{
+    color:#000000;
+}
+.logs .search .btnSearch{
+    background-color: #191919;
+}
+.logs .search .toggleSearch{
+}
+.logs .logDetails{
+    background-color: rgba(128, 128, 128, 0.14);
+}
+.logs .logDetails table tr {
+    border-bottom-color: rgba(128, 128, 128, 0.15);
+}
+.logs .logDetails table tr:nth-child(odd) {
+}
+.logs .logDetails table tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+.logs .logDetails table tr.danger {
+    background-color:#a94442;
+}
+.logs .logDetails table tr.lineFound{
+    background-color: rgba(119, 119, 119, 0.4);
+}
+.logs .logDetails table tr.lineFound.focused{
+    background-color: rgba(119, 119, 119, 0.8);
+    box-shadow: 0px 0px 2px 0px yellow;
+}
+
+/* UAS */
+
+.uas .type.active{
+    color:white;
+    border-radius:3px;
+    background: #2370ca;
+    background: rgba(33,98,173,1);
+    background: -moz-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -webkit-gradient(left top,right top,color-stop(0%,rgba(33,98,173,1)),color-stop(25%,rgba(40,125,222,1)),color-stop(75%,rgba(40,125,222,1)),color-stop(100%,rgba(33,98,173,1)));
+    background: -webkit-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -o-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%);
+    background: -ms-linear-gradient(left,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%)!important;
+    background: linear-gradient(to right,rgba(33,98,173,1) 0%,rgba(40,125,222,1) 25%,rgba(40,125,222,1) 75%,rgba(33,98,173,1) 100%)!important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2162ad',endColorstr='#2162ad',GradientType=1)!important;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    -moz-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+}
+
+/* Theme */
+.theme{
+}
+.theme .block{
+    border-color: rgba(204, 253, 209, 0.21);
+}
+.theme .block:hover:not(.activeTheme){
+    background-color: rgba(255, 156, 0, 0.23);
+}
+.theme .block.activeTheme{
+    background-color: rgba(255, 156, 0, 0.23);
+}

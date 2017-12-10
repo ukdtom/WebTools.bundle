@@ -1,0 +1,21 @@
+﻿.fr{
+}
+.fr .reset{
+    float: left;
+    padding: 5px;
+    height: 30px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px 1px black;
+    background-color: rgba(40, 96, 144, 1);
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.fr .reset:hover{
+    background-color: rgba(40, 96, 144, 0.8);
+}
+
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+}

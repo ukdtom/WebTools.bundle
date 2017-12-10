@@ -1,0 +1,36 @@
+<div class="aboutus">
+
+    <div class="textSize4 textBold600" translate>About us and Credits</div>
+
+    <div class="textSize3 textBold600 pushTopNormal" translate>Main Developers</div>
+    <div translate>Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),</div>
+    <div translate>Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)</div>
+
+    <div class="textSize3 textBold600 pushTopNormal" translate>Custom Themes and Wiki</div>
+    <div translate>trumpy81</div>
+
+    <div class="textSize3 textBold600 pushTopNormal" translate>Translations and Beta testers</div>
+    <div class="pushBottomTrivial" translate>A huge thanks goes out to all the people that helped in translating and testing WebTools.</div>
+    <div>
+        <span ng-repeat="(name, translator) in aboutusModel.translators track by $index">{[{name}]}<span ng-if="!$last">, </span></span>
+    </div>
+
+    <div class="textSize3 textBold600 pushTopNormal" translate>Never Forget</div>
+    <div translate>The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore.</div>
+    <div translate>V2 frontend was made by dagalufh</div>
+
+    <div class="textSize3 textBold600 pushTopNormal" translate>And Many Thanks To</div>
+    <div translate>The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and
+        hard work.</div>
+    <div translate>And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site.</div>
+
+    <div class="textSize3 textBold600 pushTopNormal" translate>Your Support</div>
+    <div translate>If you use WebTools and you are willing to support the developers with a beer or two, then please click on the 'Donate'
+        button below.</div>
+    <div class="textBold600" translate>Thank you for your support!!</div>
+    <div class="pushTopTrivial">
+        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2PUDZF8LK8MUC" target="_blank">
+            <img src="static/_shared/btn_donate_LG.gif" />
+        </a>
+    </div>
+</div>

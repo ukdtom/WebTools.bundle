@@ -1,0 +1,12 @@
+<div class="theme">
+    <div class="textSize4 textBold600" translate>Change Theme</div>
+    <content-loading ng-if="webtoolsModel.themeLoading"></content-loading>
+    <div ng-if="!webtoolsModel.themeLoading">
+        <div class="pushTopTrivial" translate>Select one of the available themes to use it:</div>
+        <div ng-repeat="theme in themeModel.themes" class="pushTopMinor">
+            <div class="block pushTopTrivial pull-left textBold600"
+                 ng-class="{'activeTheme' : theme === themeModel.activeTheme}"
+                 ng-click="selectTheme(theme);">{[{theme|filterDot}]}</div>
+        </div>
+    </div>
+</div>

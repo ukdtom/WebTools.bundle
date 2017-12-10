@@ -1,0 +1,16 @@
+﻿.info{
+}
+
+.info table{
+    border: solid 1px black;
+}
+.info th, .info td{
+    min-width:300px;
+    padding:3px;
+}
+.info tr:nth-child(2n+1){
+    background-color:#041225;
+}
+.info tr:nth-child(2n+2){
+    background-color:#4f5d73;
+}

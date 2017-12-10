@@ -45,11 +45,24 @@ Icon
 *~
  
 *.pyc
-debug
+
 
 #****************
 # Ignore Linux copy
 #****************
 *copy*.*
 
+# VS Code
+.vscode
+
+#****************
+# WebTools specific
+#****************
+translations/
+debug
+
+#****************
+# LibraOffice specific
+#****************
+.~lock.*
 

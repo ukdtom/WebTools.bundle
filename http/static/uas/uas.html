@@ -1,0 +1,131 @@
+<div class="uas">
+    <div class="textSize4 textBold600 pull-left">UnsupportedAppStore</div><help src="static/uas/uasHelp.html"></help>
+    <content-loading ng-if="webtoolsModel.uasLoading" class="pushTopMinor"></content-loading>
+    <div ng-if="!webtoolsModel.uasLoading">
+        <div class="topcontainer">
+            <input class="pull-left manualInstall" ng-placeholder="lang.manualInstall|translate" ng-model="manualInstallUrl" />
+            <div class="pull-left uasBtn manualInstallBtn" ng-click="installUpdate(manualRepo, manualInstallUrl, true)">
+                <span ng-if="!manualRepo.workingLoading" translate>Manual Install</span>
+                <inline-loading2 ng-if="manualRepo.workingLoading"></inline-loading2>
+            </div>
+            <div class="pull-left uasBtn pushLeftMinor" ng-click="migrate()" translate>Migrate</div>
+            <div class="pull-left uasBtn pushLeftMinor" ng-click="forceCache()" translate>Force UAS update</div>
+            <div class="pull-left uasBtn pushLeftMinor" ng-click="checkBundleUpdates()" translate>Check for bundle updates</div>
+        </div>
+        <div class="typesMenu">
+            <div class="search">
+                <input class="searchInput" ng-model="searchValue" placeholder="Search..." />
+                <button class="btnSearch" ng-click="DEADFUNCTION()" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+            <div class="type update"
+                 ng-if="uasModel.updateType"
+                 ng-click="setType(uasModel.updateType.key, uasModel.updateType)"
+                 ng-class="{'active' : uasModel.selectedType.name === uasModel.updateType.key}">
+                <div class="pull-left">{[{uasModel.updateType.key | translate}]}</div>
+                <!--<div class="pull-right">{[{uasModel.updateType.viewInstalled}]}/{[{uasModel.updateType.viewTotal}]}</div>-->
+            </div>
+            <div class="type installed"
+                 ng-if="uasModel.installType"
+                 ng-click="setType(uasModel.installType.key, uasModel.installType)"
+                 ng-class="{'active' : uasModel.selectedType.name === uasModel.installType.key}">
+                <div class="pull-left">{[{uasModel.installType.key | translate}]}</div>
+                <div class="pull-right">{[{uasModel.installType.viewInstalled}]}</div>
+            </div>
+            <div class="type"
+                 ng-repeat="(typeName, type) in uasModel.types | orderObjectBy: 'key'"
+                 ng-click="setType(type.key, type)"
+                 ng-class="{'active' : uasModel.selectedType.name === type.key}">
+                <div class="pull-left">{[{type.key}]}</div>
+                <div class="pull-right">{[{type.viewInstalled}]}/{[{type.viewTotal}]}</div>
+            </div>
+        </div>
+
+        <div class="row" ng-if="uasModel.selectedType.name === lang.updatesAvailable">
+            <div class="col-xs-12 textBold600">
+                <div class="pull-left" style="margin-top: 2px;">
+                    <translate>You have</translate>
+                    {[{uasModel.updateType.viewInstalled}]} 
+                    <span ng-if="uasModel.updateType.viewInstalled === 1" translate>bundle</span>
+                    <span ng-if="uasModel.updateType.viewInstalled > 1" translate>bundles</span> 
+                    <translate>not up to date.</translate>
+                </div>
+                <div class="pull-left uasBtn pushLeftMinor" ng-click="updateAllBundles()" translate>Update all</div>
+            </div>
+        </div>
+
+        <div class="repoContainer" ng-if="uasModel.selectedType">
+            <div class="repo" ng-class="{'installed' : repo.installed, 'revealed' : repo.revealed}" ng-repeat="(key, repo) in uasModel.list | uasSearchBy:searchValue | orderObjectBy: 'title'" ng-if="typeExist(uasModel.selectedType.name, repo.type, repo.installed)">
+                <div class="header" ng-click="repo.revealed = !repo.revealed">
+                    <div class="right">
+                        <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="!repo.workingLoading && repo.key && validUrl(repo.key)" ng-click="installUpdate(repo, repo.key);$event.stopPropagation();">
+                            <span ng-if="!repo.installed" translate>Install</span>
+                            <span ng-if="repo.installed" translate>Update</span>
+                        </div>
+                        <div class="uasBtn installUpdate pull-right mainBtn textBold600" ng-if="repo.workingLoading">
+                            <inline-loading></inline-loading>
+                        </div>
+                        <div class="uasBtn delete pull-right mainBtn textBold600" ng-if="repo.installed && !repo.workingLoading" ng-click="delete(repo, repo.key);$event.stopPropagation();">
+                            <span translate>Delete</span>
+                        </div>
+                        <div class="revealedIcon">
+                            <span ng-if="!repo.revealed" title="Toggle details"><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
+                            <span ng-if="repo.revealed" title="Toggle details"><i class="fa fa-arrow-up" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="left">
+                        <div class="icon" ng-style="{'background': 'url(uas/Resources/{[{repo.icon}]}) center center no-repeat', 'background-size': '90%'}"></div>
+                        <div class="title">
+                            {[{repo.title}]}
+                        </div>
+                        <div class="description">{[{repo.description}]} <div class="pull-right textBold600" ng-if="repo.message">{[{repo.message}]}</div></div>
+                    </div>
+                </div>
+
+                <div ng-if="repo.revealed" class="details">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-5 col-md-3 col-lg-2" translate>
+                            Categories:
+                        </div>
+                        <div class="col-xs-6 col-sm-7 col-md-9 col-lg-10">
+                            <span ng-repeat="type in repo.type">{[{type}]}<span ng-if="!$last">, </span></span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="repo.date">
+                        <div class="col-xs-6 col-sm-5 col-md-3 col-lg-2" translate>
+                            Last updated:
+                        </div>
+                        <div class="col-xs-6 col-sm-7 col-md-9 col-lg-10">
+                            {[{repo.date}]}
+                        </div>
+                    </div>
+                    <div class="row" ng-if="repo.manual">
+                        <div class="col-xs-6 col-sm-5 col-md-3 col-lg-2" translate>
+                            Manual:
+                        </div>
+                        <div class="col-xs-6 col-sm-7 col-md-9 col-lg-10">
+                            <a target="_blank" href="{[{repo.manual}]}">{[{repo.manual}]}</a>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="validUrl(repo.key)">
+                        <div class="col-xs-6 col-sm-5 col-md-3 col-lg-2" translate>
+                            Repo:
+                        </div>
+                        <div class="col-xs-6 col-sm-7 col-md-9 col-lg-10">
+                            <a ng-if="!repo.key">NO KEY? :(</a>
+                            <a target="_blank" href="{[{repo.key}]}" ng-if="repo.key">{[{repo.key}]}</a>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="repo.supporturl">
+                        <div class="col-xs-6 col-sm-5 col-md-3 col-lg-2" translate>
+                            Support:
+                        </div>
+                        <div class="col-xs-6 col-sm-7 col-md-9 col-lg-10">
+                            <a target="_blank" href="{[{repo.supporturl}]}">{[{repo.supporturl}]}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

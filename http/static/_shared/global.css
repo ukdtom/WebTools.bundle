@@ -1,0 +1,222 @@
+﻿/*
+    CONSIDER IMPLEMENTING .LESS
+*/
+
+html{
+    width:100%;
+    height: 100%;
+    overflow: hidden;
+    background: url(asfalt.png) repeat; /* Credit Subtlepatterns.com */
+    font-size:12px;
+    line-height:12px;
+}
+body{
+    width:100%;
+    height:100%;
+    background-color: rgba(255, 255, 255, 0.09);
+    color: rgba(255, 255, 255, 1);
+}
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.30);
+  outline: 1px solid rgba(255, 255, 255, 0.30);
+}
+::-webkit-scrollbar-thumb:hover{
+  background-color: rgba(255, 255, 255, 0.60);
+}
+
+
+.content{
+    width:calc(100% - 140px); /* Window - Menu */
+    height:calc(100% - 60px); /* Window - Head */
+    padding: 10px;
+    padding-left: 30px;
+    float:left;
+    transition: width 0.5s;
+    background-color: rgba(255, 255, 255, 0.00);
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+.content.animation{
+    width:100%;
+    transition: width 0.5s;
+}
+
+/* Loading */
+webtools-loading{
+    display: block;
+    z-index: 2;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+webtools-loading .webtoolsLoading {
+    position:fixed;
+    top: calc(50% - 50px);
+    left: calc(50% - 50px);
+    font-size:100px;
+    color: rgb(51, 122, 183);
+}
+content-loading{
+    margin-left:50px;
+    margin-top:30px;
+    display: block;
+    z-index: 2;
+}
+content-loading .contentLoading {
+    font-size:60px;
+    color: rgb(51, 122, 183);
+}
+inline-loading{
+    display: block;
+    z-index: 2;
+}
+inline-loading .inlineLoading {
+    font-size:24px;
+    color: rgb(51, 122, 183);
+}
+inline-loading2{
+    display: block;
+    z-index: 2;
+    height:20px;
+}
+inline-loading2 .inlineLoading2 {
+    font-size:20px;
+    color: rgb(51, 122, 183);
+}
+
+/* Error Dialog (This is not for Custom Themes - Maybe Later?) */
+.error-dialog .ngdialog-content{
+    border: #a94442 5px solid;
+    color: #a94442 !important;
+}
+
+/* Help */
+help {
+    font-size:22px;
+    margin:0 15px;
+    cursor:pointer;
+    color: rgba(217, 237, 247, 0.80);
+}
+help:hover {
+    color: rgba(217, 237, 247, 1);
+}
+
+/* Push Tops */
+.pushTopTrivial{
+    margin-top:5px !important;
+}
+.pushTopMinor {
+    margin-top: 15px !important;
+}
+.pushTopNormal {
+    margin-top: 25px !important;
+}
+.pushTopMajor {
+    margin-top: 35px !important;
+}
+/* Push Bóooottoms */
+.pushBottomTrivial {
+    margin-bottom: 5px !important;
+}
+.pushBottomMinor {
+    margin-bottom: 15px !important;
+}
+.pushBottomNormal {
+    margin-bottom: 25px !important;
+}
+.pushBottomMajor {
+    margin-bottom: 35px !important;
+}
+/* Push Lefts */
+.pushLeftTrivial {
+    margin-left: 5px !important;
+}
+.pushLeftMinor {
+    margin-left: 15px !important;
+}
+.pushLeftNormal {
+    margin-left: 25px !important;
+}
+.pushLeftMajor {
+    margin-left: 35px !important;
+}
+/* Push Rights */
+.pushRightTrivial {
+    margin-right: 5px !important;
+}
+.pushRightMinor {
+    margin-right: 15px !important;
+}
+.pushRightNormal {
+    margin-right: 25px !important;
+}
+.pushRightMajor {
+    margin-right: 35px !important;
+}
+
+/* Size */
+.textSize1 {
+    font-size:0.7em;
+}
+.textSize2{
+    font-size:1.0em;
+}
+.textSize3{
+    font-size:1.3em;
+}
+.textSize4{
+    font-size:1.6em;
+}
+
+/* Bolds */
+.textBold300{
+    font-weight:300;
+}
+.textBold600{
+    font-weight:600;
+}
+.textBold900{
+    font-weight:900;
+}
+
+/* Misc */
+.btnInput {
+    float: left;
+    padding: 5px;
+    height: 30px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px 1px black;
+    background-color: rgba(40, 96, 144, 1);
+    cursor: pointer;
+    margin: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    color: white;
+}
+.btnInput:hover {
+    background-color: rgba(40, 96, 144, 0.8);
+}
+.textCenter{
+    text-align:center;
+}
+.warning{
+    color: #a94442;
+}
+.line{
+    display: block;
+    margin-left: 3px;
+    margin-right: 3px;
+    height: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+.noLeftRightMargin{ /* Just aint happy without it :-) */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+.clearleft{
+    clear:left;
+}

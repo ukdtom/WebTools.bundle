@@ -1,0 +1,9 @@
+{
+    "Select to force https": "Seleccioner pour forcer HTTPS", 
+    "To access this channel, type the url's below to a new browser tab": "Pour accèder a ce canal vous pouvez ouvrir un des URLs indiqués dans une nouvelle fenêtre ", 
+    "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": "URL (pour le cas des \"proxy\", si non doit être blanc).\nEX: /WebTools)", 
+    "Name of Certificate key file in Contents/Code/Certificate directory": "Nombre du fichier contenant le certificat (dans dossier Contents/Code/Certificate)", 
+    "Name of Certificate crt file in Contents/Code/Certificate directory": "Nom du fichier CRT dans Contents/Code/Certificate directory", 
+    "Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Specifiez le port HTTP pour ce plug-in. Ne PAS utilizer: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 ou 32469.", 
+    "Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Specifiez le port HTTPS pour ce plug-in. Ne PAS utilizer: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 ou 32469."
+}

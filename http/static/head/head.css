@@ -1,0 +1,20 @@
+﻿.head{
+    width: 100%;
+    height: 60px;
+    font-size: 30px;
+    background-color: rgba(6, 32, 150, 0.22);
+    box-shadow:0 0 0 3px rgba(0,0,0,.2);
+    overflow:hidden;
+}
+.head .logo{
+    height:45px;
+    width:45px;
+    float:left;
+    background: url(../_shared/WebTools.png);
+    margin:8px;
+}
+.head .title{
+    padding-top: 10px;
+    padding-left: 25px;
+    font-weight:600;
+}

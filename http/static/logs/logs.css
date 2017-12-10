@@ -1,0 +1,117 @@
+﻿.logs{
+    overflow-x:hidden;
+    overflow-y:auto;
+    height:100%;
+}
+.logs .selectLog{
+    float:left;
+    width:400px;
+    margin:5px;
+}
+.logs .logButton{
+    float:left;
+    padding: 5px;
+    height:30px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px 1px black;
+    background-color: rgba(40, 96, 144, 1);
+    cursor:pointer;
+    margin:5px;
+    white-space: nowrap;
+    overflow:hidden;
+}
+.logs .logButton:hover {
+    background-color: rgba(40, 96, 144, 0.8);
+}
+
+/* Search */
+.logs .search{
+    position:fixed;
+    right:30px;
+    top:65px;
+    z-index:3;
+    background-color: rgba(0, 34, 64, 0.4);
+    border-radius: 10px;
+    margin-right:5px;
+    overflow:hidden;
+    padding: 6px;
+}
+.logs .search .searchInput{
+    float:left;
+    margin:3px;
+    padding:2px;
+    max-width:200px;
+    color:#000000;
+    font-size:0.8em;
+}
+.logs .search .btnSearch{
+    float:left;
+    margin:3px;
+    padding:2px;
+    border-radius:3px;
+    cursor:pointer;
+    font-size:0.8em;
+    width:40px;
+    background-color: #286090;
+}
+.logs .search .btnSearch.disabled{
+    cursor:default;
+    opacity: 0.7;
+}
+.logs .search .counter{
+    float:left;
+    padding:5px;
+}
+.logs .search .hideFields .searchInput, 
+.logs .search .hideFields .btnSearch:not(.toggleSearch), 
+.logs .search .hideFields .counter{
+    display:none;
+}
+
+/* Details */
+.logs .logDetails{
+    margin-bottom:40px; /* Minus fixed search */
+    background-color: rgba(128, 128, 128, 0.14);
+    padding: 5px;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+}
+
+/* Directive logFileDisplay */
+.logs .logDetails table {
+    width:100%;
+}
+.logs .logDetails table tr {
+    border-bottom: 1px rgba(128, 128, 128, 0.15) solid;
+    word-break: break-word;
+}
+.logs .logDetails table tr:nth-child(odd) {
+}
+.logs .logDetails table tr:nth-child(even) {
+    background-color: rgba(0, 77, 255, 0.1);
+}
+.logs .logDetails table tr.danger {
+    background-color:rgb(169, 68, 66);
+}
+.logs .logDetails table tr.lineFound{
+    background-color: rgba(0, 77, 255, 0.3);
+}
+.logs .logDetails table tr.lineFound.focused{
+    background-color: rgba(0, 77, 255, 1);
+    box-shadow: 0px 0px 2px 0px yellow;
+}
+.logs .logDetails table tr td {
+    height:40px;
+    padding:5px;
+}
+.logs .logDetails table tr td.index {
+    width:80px;
+}
+.logs .logDetails table tr td.detail {
+    width:calc(100% - 60px);
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+}

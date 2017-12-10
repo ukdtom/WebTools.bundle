@@ -1,0 +1,898 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: WebTools for Plex\n"
+"Language: el\n"
+
+#: ../http/static/home/home.html:4
+msgid "Use the menu on the left side to navigate in WebTools."
+msgstr "Χρησιμοποιήστε το μενού στα αριστερά για περιήγηση στο WebTools"
+
+#: ../http/static/home/home.html:2
+msgid "Webtools is a tool that enables the use of modules to help you with your Plex Server management."
+msgstr "Το WebTools είναι ένα επιπρόσθετο που βοηθάει στην διαχείρηση του Plex Server"
+
+#: ../http/static/sub_management/subHelp.html:6
+msgid "Both local (next to the movie in it's folder or one subfolder) and in the agents folder."
+msgstr "Και τα δύο συνύπαρχουν (στο φάκελο/υποφάκελο της ταινίας) και στο φάκελο του προγράμματος αντιστοίχησης."
+
+#: ../http/static/theme/theme.html:2
+msgid "Change Theme"
+msgstr "Αλλαγή Θέματος"
+
+#: ../http/static/menu/menu.html:18
+msgid "Changelog"
+msgstr "Αλλαγές εκδόσεων"
+
+#: ../http/static/changelog/cl.html:2
+msgid "Changelog viewer"
+msgstr "Προβολέας αλλαγών"
+
+#: ../http/static/sub_management/subHelp.html:12
+msgid "Delete selected sidecar from the harddrive."
+msgstr "Διαγράψτε το επιλεγμένο εξωτερικό υπότιτλο. Σημείωση: Μη αναστρέψιμη ενέργεια"
+
+#: ../http/static/logs/logs.html:33
+msgid "File empty"
+msgstr "Άδειο αρχείο"
+
+#: ../http/static/menu/menu.html:23
+msgid "Help"
+msgstr "Βοήθεια"
+
+#: ../http/static/sub_management/subHelp.html:5
+msgid "List all subtitles for a movie/tv show in your library."
+msgstr "Εμφάνισε όλους του υπότιτλους για μια ταινία/σειρά στην βιβλιοθήκη σου"
+
+#: ../http/static/logs/logs.html:17
+msgid "LogViewer Tool"
+msgstr "Προβολή Log"
+
+#: ../http/static/menu/menu.html:20
+msgid "Logout"
+msgstr "Αποσύνδεση"
+
+#: ../http/static/menu/menu.html:12
+msgid "Options"
+msgstr "Επιλογές"
+
+#: ../http/static/sub_management/subHelp.html:15
+msgid "Options for output."
+msgstr "Επιλογές εξόδου"
+
+#: ../http/static/sub_management/subHelp.html:18
+msgid "Search for for movies and series inside categories"
+msgstr "Αναζήτηση ταινίας ή σειράς στις κατηγορίες"
+
+#: ../http/static/theme/theme.html:5
+msgid "Select one of the available themes to use it:"
+msgstr "Επιλέξτε ένα απο τα διαθέσιμα θέματα:"
+
+#: ../http/static/findmedia/fm.html:4
+msgid "Select one of the libraries below to scan for videos/shows that are not in the Plex database or is not on your harddrive."
+msgstr "Επιλέξτε μία βιβλιοθήκη παρακάτω για εύρεση ταινιών/σειρών που δεν υπάρχουν στο Plex ή στον σκλήρο."
+
+#: ../http/static/menu/menu.html:17
+msgid "Theme"
+msgstr "Θέμα"
+
+#: ../http/static/findmedia/fm.html:3
+msgid "This tool is a combination of FindUnmatched and FindMissing."
+msgstr "Το εργαλέιο είναι συνδυασμός του 'ΨάξεΜηΑντιστοιχήσιμο' και ΨάξεΑγνοούμενο'"
+
+#: ../http/static/menu/menu.html:14
+msgid "Update WT"
+msgstr "Ενημέρωση WebTools"
+
+#: ../http/static/sub_management/subHelp.html:9
+msgid "View the subtitle and see it's contents to determine what to delete."
+msgstr "Προβολή του υπότιτλου για την επίλογη υπότιτλου προς διαγραφή."
+
+#: ../http/static/menu/menu.html:25
+msgid "WT Forum Thread"
+msgstr "Φόρουμ WebTools"
+
+#: ../http/static/menu/menu.html:26
+msgid "WT GitHub"
+msgstr "WebTools GitHub"
+
+#: ../http/static/404/404.html:1
+msgid "We could not find the page :("
+msgstr "Η σελίδα δεν βρέθηκε. :("
+
+#: ../http/static/logs/logs.html:36
+msgid "We recommend you to download large files and view them in your favourite text editor."
+msgstr "Προτίνουμε να κατεβάσετε μεγάλα αρχεία και να τα προβάλετε σε text editor της επιλογής σας."
+
+#: ../http/static/logs/logs.html:28
+msgid "Download all logfiles as zip"
+msgstr "Κατέβαστε ολα τα logs"
+
+#: ../http/static/logs/logs.html:27
+msgid "Download selected logfile"
+msgstr "Κατεβάστε τα επιλεγμένα logs"
+
+#: ../http/static/findmedia/fm.html:84
+#: ../http/static/findmedia/fmController.js:12
+msgid "Abort scan"
+msgstr "Ακύρωση σάρωσης"
+
+#: ../http/static/findmedia/fm.html:49
+#: ../http/static/findmedia/fmController.js:9
+msgid "Add ignored folder"
+msgstr "Προσθήκη εξαιρούμενου φακέλου"
+
+#: ../http/static/playlist/playlistHelp.html:2
+#: ../http/static/sub_management/subHelp.html:2
+msgid "Current features:"
+msgstr "Τωρινές δυνατότητες:"
+
+#: ../http/static/findmedia/fm.html:98
+#: ../http/static/findmedia/fmController.js:13
+msgid "Download result"
+msgstr "Αποτέλεσμα λήψης"
+
+#: ../http/static/findmedia/fm.html:32
+msgid "Ignore Extras"
+msgstr "Αγνόηση εξτρα"
+
+#: ../http/static/findmedia/fm.html:20
+msgid "Ignore Hidden"
+msgstr "Αγνόηση κρυμμένων"
+
+#: ../http/static/findmedia/fm.html:37
+msgid "Ignore folders"
+msgstr "Αγνόηση φακέλων"
+
+#: ../http/static/playlist/playlistHelp.html:1
+msgid "Playlist Help"
+msgstr "Λίστα βοήθειας"
+
+#: ../http/static/findmedia/fm.html:65
+#: ../http/static/findmedia/fmController.js:10
+msgid "Reset settings"
+msgstr "Εκαθάρισση Ρυθμίσεων"
+
+#: ../http/static/findmedia/fm.html:73
+#: ../http/static/findmedia/fmController.js:11
+msgid "Save settings"
+msgstr "Αποθήκευση Ρυθμίσεων"
+
+#: ../http/static/findmedia/fm.html:12
+msgid "Show settings"
+msgstr "Εμφάνιση Ρυθμίσεων"
+
+#: ../http/static/findmedia/fm.html:54
+msgid "Valid extentions"
+msgstr "Επικ"
+
+#: ../http/static/language/language.html:5
+msgid "Change Language"
+msgstr "Αλλάξτε γλώσσα"
+
+#: ../http/static/menu/menu.html:15
+msgid "Language"
+msgstr "Γλώσσα"
+
+#: ../http/static/language/language.html:12
+msgid "Force language translation update"
+msgstr "Αναγκαστική ενημέρωση γλώσσας"
+
+#: ../http/static/logs/logs.html:5
+#: ../http/static/sub_management/sub.html:95
+msgid "Found"
+msgstr "Βρέθηκε"
+
+#: ../http/static/home/home.html:1
+msgid "Welcome to"
+msgstr "Καλώς ήρθατε στο"
+
+#: ../http/static/logs/logs.html:5
+#: ../http/static/sub_management/sub.html:96
+msgid "rows"
+msgstr "γραμμές"
+
+#: ../http/static/logs/logsController.js:9
+#: ../http/static/sub_management/subController.js:8
+msgid "Clear search"
+msgstr "Εκκαθάριση Αναζήτησης"
+
+#: ../http/static/findmedia/fmController.js:8
+msgid "Delete ignored folder"
+msgstr "Σταμάτα να αγνοείς το φάκελο"
+
+#: ../http/static/logs/logsController.js:13
+#: ../http/static/sub_management/subController.js:12
+msgid "Hide/Show search menu"
+msgstr "Απέκρυψε/Εμφάνισε το Μενού Αναζήτησης"
+
+#: ../http/static/findmedia/fmController.js:14
+msgid "Hide/Show settings menu"
+msgstr "Απέκρυψε/Εμφάνισε το Μενού Ρυθμίσεων"
+
+#: ../http/static/logs/logsController.js:12
+#: ../http/static/sub_management/subController.js:11
+msgid "Jump to top"
+msgstr "Πήγαινε στην Αρχή"
+
+#: ../http/static/logs/logsController.js:11
+#: ../http/static/sub_management/subController.js:10
+msgid "Next"
+msgstr "Επόμενο"
+
+#: ../http/static/logs/logsController.js:10
+#: ../http/static/sub_management/subController.js:9
+msgid "Previous"
+msgstr "Προηγούμενο"
+
+#: ../http/static/logs/logsController.js:8
+#: ../http/static/sub_management/subController.js:7
+msgid "Search keyword"
+msgstr "Αναζήτηση λέξης"
+
+#: ../http/static/logs/logsController.js:7
+msgid "search..."
+msgstr "Αναζήτηση..."
+
+#: ../http/static/home/home.html:22
+msgid "Allows you to copy playlists between users, as well as import, export and delete them."
+msgstr "Σας επιτρέπει να αντιγράψετε λίστες μεταξύ χρηστών όπως και να τις εισάγετε, εξάγετε, διαγράψετε."
+
+#: ../http/static/home/home.html:13
+msgid "Easy access to all of the Plex Media Server logs, and it will also allow an easy way to download individual logs or all logs."
+msgstr "Αυτό το εργαλείο επιτρέπει την εύκολη πρόσβαση στα logs του Plex Media Server αλλά και στο κατέβασμα ενός ή ολών των logs σε zip"
+
+#: ../http/static/home/home.html:19
+msgid "Makes it possible to locate your media, that is either missing from the database or from the filesystem."
+msgstr "Αυτό το εργαλείο επιτρέπει στο να εντοπίσετε αγνοούμενα αρχεία απο την βάση δεδομένων ή το σύστημα."
+
+#: ../http/static/home/home.html:10
+msgid "Manage subtitle files, regardless of them been sidecars (Located next to the media file), or downloaded via another plugin, like the OpenSubtitle.org bundle. What this plugin can do, is allow you to gather an overview of subtitles for your media, view them, and delete them, unless they are embedded within the media itself."
+msgstr "Αυτό το εργαλείο επιτρέπει να διαχειριστείτε του υπότιτλους, ανεξαρτήτως αν είναι εξωτερικοί ή κατεβασμένοι απο κάποιον agent όπως το OpenSubtitles.org. Σας επιτρέπει να τα προβάλετε και, προαιρετικά, να τα διαγράψετε (εκτός αν είναι ενσωματωμένα στο βίντεο)"
+
+#: ../http/static/home/home.html:16
+msgid "This will allow you to install, update and delete unsupported Plex Media Server plugin's."
+msgstr "Αυτό το εργαλείο σας επιτρέπει να εγκαταστήσετε, ενημερώσετε και να διαγράψετε επιπρόσθετα στο Plex Server"
+
+#: ../http/static/home/home.html:7
+msgid "Tool Modules currently available are:"
+msgstr "Διαθέσιμα Εργαλεία:"
+
+#: ../http/static/uas/uasHelp.html:1
+msgid "UnsupportedAppStore Help"
+msgstr "Βοήθεια για το Unsupported App Store"
+
+#: ../http/static/uas/uasHelp.html:6
+msgid "* Category names contain installed/total available channels."
+msgstr "*Οι κατηγορίες ονομάτων εμφανίζουν εγκατεστημένα/συνολικά διαθέσιμα επιπρόσθετα."
+
+#: ../http/static/uas/uasHelp.html:2
+msgid "* Here you can either install a channel by it's Github repository link or by selecting one of the categories below."
+msgstr "*Εδώ μπορείτε να εγκαταστήσετε ένα επιπρόσθετο απο το Github ή επιλέγοντας μια απο τις κατηγορίες παρακάτω."
+
+#: ../http/static/uas/uasHelp.html:3
+msgid "* If you have installed channels manually before installing WebTools, you can click on the \"Migrate manually/previously installed channels\" to make WebTools aware of them."
+msgstr "*Εάν έχετε εγκαταστήσει επιπρόσθετα χειροκίνητα πριν την εγκατάσταση του WebTools, πατήστε \"Εισαγωγή χειροκίνητων/προηγούμενων επιπρόσθετων\" για να τα εντοπίσει το WebTools."
+
+#: ../http/static/uas/uasHelp.html:4
+msgid "* You can also search for updates for all installed channels managed by WebTools via the \"Check for updates for all installed channels\" button."
+msgstr "* Μπορείτε να βρείτε ενημερώσεις για όλα τα εγκατεστημένα επιπρόσθετα που βρίσκονται στο WebTools με το \"Έλεγχος για ενημερώσεις εγκατεστημένων εφαρμογων\"."
+
+#: ../http/static/uas/uasHelp.html:7
+msgid "* You can expand the items by clicking on them."
+msgstr "* Μπορείτε να επεκτείνετε τα αντικείμενα πατώντας πάνω τους."
+
+#: ../http/static/uas/uasHelp.html:5
+msgid "* You can select a category on the menu on the right."
+msgstr "Μπορείτε να επιλέξετε κατηγορία από το αριστερά."
+
+#: ../http/static/uas/uas.html:13
+msgid "Check for bundle updates"
+msgstr "Έλεγχος για ενημερώσεις επιπρόσθετου"
+
+#: ../http/static/uas/uas.html:12
+msgid "Force UAS update"
+msgstr "Αναγκαστική ενημέρωση του Unsupported App Store"
+
+#: ../http/static/uas/uas.html:8
+msgid "Manual Install"
+msgstr "Χειροκίνητη εγκατάσταση"
+
+#: ../http/static/uas/uas.html:11
+msgid "Migrate"
+msgstr "Εισαγωγή"
+
+#: ../http/static/uas/uas.html:87
+msgid "Categories:"
+msgstr "Κατηγορίες:"
+
+#: ../http/static/playlist/playlist.html:53
+msgid "Copy"
+msgstr "Αντιγραφή"
+
+#: ../http/static/playlist/playlist.html:47
+#: ../http/static/playlist/playlistController.js:7
+#: ../http/static/sub_management/subController.js:25
+#: ../http/static/uas/uas.html:68
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: ../http/static/playlist/playlist.html:57
+msgid "Download"
+msgstr "Λήψη"
+
+#: ../http/static/uas/uas.html:61
+msgid "Install"
+msgstr "Εγκατάσταση"
+
+#: ../http/static/uas/uas.html:95
+msgid "Last updated:"
+msgstr "Τελευταία ενημέρωση:"
+
+#: ../http/static/uas/uasController.js:9
+msgid "Manual install url..."
+msgstr "Χειροκίνητη εγκατάσταση URL"
+
+#: ../http/static/uas/uas.html:103
+msgid "Manual:"
+msgstr "Χειροκίνητα:"
+
+#: ../http/static/uas/uas.html:111
+msgid "Repo:"
+msgstr "Repo:"
+
+#: ../http/static/playlist/playlist.html:10
+msgid "Select user"
+msgstr "Επιλέξτε χρήστη"
+
+#: ../http/static/_shared/webtoolsService.js:5
+msgid "Self"
+msgstr "Εγώ"
+
+#: ../http/static/sub_management/subHelp.html:1
+msgid "Subtitle Management Help"
+msgstr "Βοήθεια για την διαχείρηση υποτίτλων"
+
+#: ../http/static/uas/uas.html:120
+msgid "Support:"
+msgstr "Υποστήριξη"
+
+#: ../http/static/sub_management/sub.html:6
+msgid "This is an unofficial manager for subtitles."
+msgstr "Αυτό το εργαλείο είναι ένας ανεπίσημος διαχειριστής υποτίτλων"
+
+#: ../http/static/sub_management/sub.html:8
+msgid "To get started, select one of your Libraries or click on the \"?\" for additional help"
+msgstr "Για να αρχίσετε, επιλέξτε ένα απο την Βιβλιοθήκη σας ή κάντε κλικ στο \"?\" για βοήθεια"
+
+#: ../http/static/uas/uas.html:62
+msgid "Update"
+msgstr "Ενημέρωση"
+
+#: ../http/static/sub_management/sub.html:7
+msgid "Usage at your own risk!"
+msgstr "Χρήση με δικό σας ρίσκο!"
+
+#: ../http/static/playlist/playlistHelp.html:6
+msgid "Copy a playlist between users"
+msgstr "Αντιγραφή βιβλιοθήκης μεταξύ χρηστών"
+
+#: ../http/static/playlist/playlistHelp.html:5
+msgid "Delete a playlist"
+msgstr "Διαγραφή βιβλιοθήκης"
+
+#: ../http/static/playlist/playlistHelp.html:4
+msgid "Download a playlist"
+msgstr "Λήψη βιβλιοθήκης"
+
+#: ../http/static/playlist/playlistHelp.html:7
+msgid "Import a playlist"
+msgstr "Εισάγεται μια βιβλιοθήκη"
+
+#: ../http/static/playlist/playlist.html:19
+msgid "Select target user"
+msgstr "Επιλογή χρήστη"
+
+#: ../http/static/playlist/playlist.html:53
+msgid "Select target user to copy"
+msgstr "Επιλέξτε χρήστη για αντιγραφή προς"
+
+#: ../http/static/playlist/playlist.html:3
+msgid "To get started, select one of your Playlists or click on the \"?\" for additional help"
+msgstr "Για να ξεκινήσετε επιλέξτε μια βιβλιοθήκη ή κάντε κλικ στο \"?\" για Βοήθεια"
+
+#: ../http/static/language/language.html:15
+msgid "If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:"
+msgstr "Εάν η γλώσσα σας λείπει ή είναι ελλειπής η μετάφραση ή εάν θέλετε να βοηθήσετε στην μετάφραση πηγαίνετε έχω:"
+
+#: ../http/static/playlist/playlistHelp.html:9
+msgid "Note: In order to use copy function, the Plex Media Server must be logged into plex.tv, since we are fetching the user lists from plex.tv"
+msgstr "Σημείωση: Για να χρησιμοποιήσετε την αντιγραφή πρέπει ο Plex Server να είναι συνδεμένος στο plex.tv, για να πάρουμε την λίστα χρηστών από το plex.tv"
+
+#: ../http/static/uas/uasService.js:5
+msgid "Channels/Plug-ins migrated:"
+msgstr "Εισαγμένα Κανάλια/Επιπρόσθετα:"
+
+#: ../http/static/uas/uasService.js:6
+msgid "No Channels/Plug-ins was migrated"
+msgstr "Κανένα Κανάλι/Επιπρόσθετο δεν εισάχθηκε"
+
+#: ../http/static/factoryreset/fr.html:4
+msgid "All settings will be gone, and after the reset has taken place, you might need to go into your UAS, and select migrate."
+msgstr "Όλες οι ρυθμίσεις θα αφαιρεθούν. Μετά απο την επαναφορά μπορεί να χρειαστεί να πάτε στο Unsupported App Store και να επιλέξετε \"Επαναεισαγωγή\" για να ξανα-εισάγετε τα επιπρόσθετα."
+
+#: ../http/static/factoryreset/fr.html:2
+#: ../http/static/factoryreset/fr.html:7
+#: ../http/static/menu/menu.html:19
+msgid "Factory Reset"
+msgstr "Επαναφορά εργοστασιακών ρυθμίσεων"
+
+#: ../http/static/factoryreset/fr.html:6
+msgid "If you click below, then WebTools will be unresponsive for about 1 min. and after that, simply reload the page in your browser"
+msgstr "Εάν πατήσετε το κουμπί παρακάτω, το WebTools δεν θα ανταποκρίνεται για ένα περίπου λεπτό. Έπειτα ξανα-φορτώστε την σελίδα."
+
+#: ../http/static/factoryreset/fr.html:3
+msgid "This will reset WebTools to what is was, when first installed"
+msgstr "Αυτό θα επαναφέρει το WebTools στο αρχικό στάδιο."
+
+#: ../http/static/playlist/playlist.html:63
+msgid "No playlists available"
+msgstr "Καμία διαθέσιμη βιβλιοθήκη"
+
+#: ../http/static/uas/uasService.js:7
+msgid "Updates available"
+msgstr "Διαθέσιμες ενημερώσεις"
+
+#: ../http/static/menu/menu.html:27
+msgid "WT Manual Online"
+msgstr "WT Online βοήθεια"
+
+#: ../http/static/aboutus/aboutus.html:13
+msgid "A huge thanks goes out to all the people that helped in translating and testing WebTools."
+msgstr "Ένα μεγάλο ευχαριστώ στους ανθρώπους που μετέφεραν και τέσταραν το WebTools"
+
+#: ../http/static/menu/menu.html:16
+msgid "About us"
+msgstr "Σχετικά με"
+
+#: ../http/static/aboutus/aboutus.html:22
+msgid "And Many Thanks To"
+msgstr "Και πολλά ευχαριστώ στο"
+
+#: ../http/static/aboutus/aboutus.html:25
+msgid "And our friends at POEditor.com, and since we are an Open-Source project, they provided us with a free translation site."
+msgstr "Και στους φίλους μας στο POEditor.com, που παρείχαν δωρεάν site μετάφρασης επειδή είμαστε ανοιχτού κώδικα πρότζεκτ."
+
+#: ../http/static/aboutus/aboutus.html:5
+msgid "Main Developers"
+msgstr "Βασικοί προγραμματιστές"
+
+#: ../http/static/aboutus/aboutus.html:18
+msgid "Never Forget"
+msgstr "Δεν ξεχνάμε"
+
+#: ../http/static/aboutus/aboutus.html:6
+msgid "Oliver aka omc1000, a Plex community member (creoludifico on GitHub) (Front end),"
+msgstr "Oliver (και ως omc1000), μέλος της Plex κοινότητάς(creoludifico on GitHub) (Front end)"
+
+#: ../http/static/aboutus/aboutus.html:30
+msgid "Thank you for your support!!"
+msgstr "Ευχαριστούμε για την υποστήριξη!!"
+
+#: ../http/static/aboutus/aboutus.html:19
+msgid "The idea of an Unsupported AppStore was conceived by mikedm139, the original author of the Unsupported AppStore."
+msgstr "Η ιδέα του Unsupported App Store επινοήθηκε απο τον mikedm139, αρχικό δημιουργό του Unsupported App Store."
+
+#: ../http/static/aboutus/aboutus.html:7
+msgid "Tommy aka dane22, a Plex community member (ukdtom on GitHub) (Back end)"
+msgstr "Tommy (aka dane22), μέλος της Plex κοινότητάς(ukdtom on GitHub) (Back end)"
+
+#: ../http/static/aboutus/aboutus.html:20
+msgid "V2 frontend was made by dagalufh"
+msgstr "V2 Frontend από τον dagalufh"
+
+#: ../http/static/aboutus/aboutus.html:27
+msgid "Your Support"
+msgstr "Η υποστήριξη σας"
+
+#: ../http/static/aboutus/aboutus.html:10
+msgid "trumpy81"
+msgstr "trumpy81"
+
+#: ../http/static/aboutus/aboutus.html:3
+msgid "About us and Credits"
+msgstr "Σχετικά με εμάς και Credits"
+
+#: ../http/static/aboutus/aboutus.html:9
+msgid "Custom Themes and Wiki"
+msgstr "Προσαρμοσμένο Θέμα και Wiki"
+
+#: ../http/static/aboutus/aboutus.html:28
+msgid "If you use WebTools and you are willing to support the developers with a beer or two, then please click on the 'Donate'\n"
+"        button below."
+msgstr "Εάν χρησιμοποιείτε το WebTools και θέλετε να υποστηρίξετε τους προγραμματιστές κεράστε τους μια μπύρα κάνοντας μια δωρεά παρακάτω."
+
+#: ../http/static/aboutus/aboutus.html:23
+msgid "The talented and hard working authors/developers and staff at Plex. We are eternally grateful for your dedication and\n"
+"        hard work."
+msgstr "Τους προγραμματιστές του Plex. Ευχαριστούμε για την αφοσίωση, ταλέντο και σκληρή δουλειά."
+
+#: ../http/static/aboutus/aboutus.html:12
+msgid "Translations and Beta testers"
+msgstr "Μεταφράσεις και Beta δοκιμάστες"
+
+#: ../http/static/uas/uas.html:52
+msgid "Update all"
+msgstr "Ενημέρωση όλων"
+
+#: ../http/static/uas/uas.html:46
+msgid "You have"
+msgstr "Έχετε"
+
+#: ../http/static/uas/uas.html:48
+msgid "bundle"
+msgstr "bundle"
+
+#: ../http/static/uas/uas.html:49
+msgid "bundles"
+msgstr "bundles"
+
+#: ../http/static/uas/uas.html:50
+msgid "not up to date."
+msgstr "μη ενημερωμένο"
+
+#: ../http/login.html:53
+msgid "Continue"
+msgstr "Συνέχεια"
+
+#: ../http/login.html:40
+msgid "Create a local password"
+msgstr "Δημιουργία τοπικού κωδικού"
+
+#: ../http/login.html:45
+msgid "Create password"
+msgstr "Δημιουργία κωδικού"
+
+#: ../http/login.html:54
+msgid "Download Latest"
+msgstr "Λήψη τελευταίας"
+
+#: ../http/login.html:50
+msgid "New Version available"
+msgstr "Υπάρχει νέα έκδοση"
+
+#: ../http/login.html:51
+msgid "New Version:"
+msgstr "Νέα έκδοση:"
+
+#: ../http/login.html:42
+msgid "Password"
+msgstr "Κωδικός"
+
+#: ../http/login.html:43
+msgid "Password again"
+msgstr "Κωδικός (ξανά)"
+
+#: ../http/login.html:52
+msgid "Release Notes:"
+msgstr "Αλλαγές:"
+
+#: ../http/login.html:44
+msgid "Sign in"
+msgstr "Σύνδεση"
+
+#: ../http/login.html:39
+msgid "Sign in with your local password"
+msgstr "Σύνδεση με τοπικό κωδικό"
+
+#: ../http/login.html:36
+#: ../http/login.html:47
+msgid "Signing in towards plex.tv"
+msgstr "Σύνδεση με plex.tv"
+
+#: ../http/login.html:49
+msgid "The passwords does not match"
+msgstr "Οι κωδικοί δεν ταιριάζουν"
+
+#: ../http/login.html:37
+msgid "Use your regular Plex credentials"
+msgstr "Χρήση της Plex ταυτοποίησης σας"
+
+#: ../http/login.html:41
+msgid "Username"
+msgstr "Όνομα χρήστη"
+
+#: ../http/login.html:55
+msgid "WebTools not available... Please contact Devs!"
+msgstr "Το WebTools είναι μη διαθέσιμο. Επικοινωνήστε με τους devs!"
+
+#: ../http/login.html:48
+msgid "Wrong password"
+msgstr "Λάθος κωδικός"
+
+#: ../http/login.html:46
+msgid "Wrong username and/or password"
+msgstr "Λάθος όνομα και/ή κωδικός"
+
+#: ../http/login.html:38
+msgid "PMS is not connected to plex.tv"
+msgstr "Το Plex Media Server δεν είναι συνδεδεμένο με το plex.tv"
+
+#: ../http/static/sub_management/sub.html:115
+msgid "Back"
+msgstr "Πίσω"
+
+#: ../http/static/logs/logs.html:46
+msgid "Next file"
+msgstr "Επόμενο αρχείο"
+
+#: ../http/static/logs/logs.html:44
+msgid "Previous file"
+msgstr "Προηγούμενο αρχείο"
+
+#: ../http/static/logs/logs.html:45
+msgid "Reload file"
+msgstr "Επαναφόρτωση αρχείου"
+
+#: ../http/static/sub_management/Directive/subDetails.html:28
+msgid "Codec"
+msgstr "Codec"
+
+#: ../http/static/sub_management/subController.js:21
+msgid "Delete Selected"
+msgstr "Διαγραφή επιλεγμένων"
+
+#: ../http/static/sub_management/subController.js:19
+msgid "Deselect All"
+msgstr "Αποεπιλογή όλων"
+
+#: ../http/static/sub_management/subController.js:23
+msgid "Download Subtitle"
+msgstr "Λήψη υπότιτλου"
+
+#: ../http/static/sub_management/sub.html:32
+msgid "Filter by letter"
+msgstr "Φιλτράρισμα κατά γράμμα"
+
+#: ../http/static/sub_management/Directive/subDetails.html:26
+msgid "Lang"
+msgstr "Γλώσσα"
+
+#: ../http/static/sub_management/sub.html:52
+msgid "Load more"
+msgstr "Περισσότερα"
+
+#: ../http/static/sub_management/Directive/subDetails.html:27
+msgid "Location"
+msgstr "Τοποθεσία"
+
+#: ../http/static/sub_management/sub.html:49
+msgid "No movies found in"
+msgstr "Δεν βρέθηκαν ταινίες"
+
+#: ../http/static/sub_management/Directive/subDetails.html:43
+msgid "None"
+msgstr "Τίποτα"
+
+#: ../http/static/sub_management/subController.js:14
+#: ../http/static/sub_management/subController.js:6
+msgid "Search..."
+msgstr "Αναζήτηση.."
+
+#: ../http/static/sub_management/subController.js:18
+msgid "Select All"
+msgstr "Επιλογή όλων"
+
+#: ../http/static/sub_management/subController.js:20
+msgid "Upload Subtitle"
+msgstr "Ανεβάστε υπότιτλο"
+
+#: ../http/static/sub_management/subController.js:22
+msgid "View Subtitle"
+msgstr "Προβολή υπότιτλου"
+
+#: ../http/static/sub_management/sub.html:49
+#: ../http/static/sub_management/sub.html:60
+msgid "with current search filter"
+msgstr "με το τρέχον φίλτρο"
+
+#: ../http/static/sub_management/subController.js:15
+msgid "Expand a library to search"
+msgstr "Επέκταση βιβλιοθήκης αναζήτησης"
+
+#: ../Contents/Resources/language_template.html:19
+msgid "Get missing from File System"
+msgstr "Λήψη αγνοούμενων από το σύστημα"
+
+#: ../Contents/Resources/language_template.html:27
+msgid "Get missing from database"
+msgstr "Λήψη αγνοούμενων από την βάση δεδομένων"
+
+#: ../Contents/Resources/language_template.html:23
+msgid "Idle"
+msgstr "Αναμονή"
+
+#: ../http/static/sub_management/sub.html:60
+msgid "No TV-Shows found in"
+msgstr "Δεν βρέθηκαν Σειρές"
+
+#: ../Contents/Resources/language_template.html:22
+msgid "Scanning database show %s of %s :"
+msgstr "Σκανάρισμα βάσης:  προβολή %s από %s:"
+
+#: ../Contents/Resources/language_template.html:26
+msgid "Scanning database: item %s of %s : Working"
+msgstr "Σκανάρισμα βάσης:  αντικείμενο %s από %s: Υπό εξέλιξη"
+
+#: ../Contents/Resources/language_template.html:24
+msgid "Scanning file: %s"
+msgstr "Σκανάρισμα αρχείου: %s"
+
+#: ../Contents/Resources/language_template.html:21
+#: ../Contents/Resources/language_template.html:25
+msgid "Starting to scan database for section %s"
+msgstr "Έναρξη αναζήτησης βάσης για τον τομέα: %s"
+
+#: ../Contents/Resources/language_template.html:20
+msgid "idle"
+msgstr "αδράνεια"
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:18
+msgid "Choose language for the subtitle"
+msgstr "Επιλογή γλώσσας"
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:9
+msgid "Choose part"
+msgstr "Επιλογή κομματιού"
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:35
+msgid "Missing file"
+msgstr "Αγνοούμενο αρχείο"
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:34
+msgid "Missing part"
+msgstr "Αγνοούμενο κομμάτι"
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:20
+msgid "No language"
+msgstr "Καμία γλώσσα"
+
+#: ../Contents/Resources/language_template.html:28
+msgid "Scanning database: %s : Done"
+msgstr "Σκανάρισμα βάσης: %s ολοκληρώθηκε"
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:2
+msgid "Subtitle Management Upload Subtitle"
+msgstr "Διαχείριση υποτίτλων: Ανέβασμα υπότιτλου"
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:40
+msgid "Upload"
+msgstr "Ανέβασμα"
+
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:6
+msgid "Upload subtitle for"
+msgstr "Ανέβασμα υπότιτλου για"
+
+#: ../Contents/Resources/language_template.html:48
+msgid "<plugin>Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)</plugin>"
+msgstr "<plugin>Βασικό URL (εάν πίσω από proxy αφήστε κενο).\n"
+"Παράδειγμα: /WebTools)</plugin>"
+
+#: ../Contents/Resources/language_template.html:33
+msgid "<plugin>Name of Certificate key file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Όνομα του αρχείου κλειδιού πιστοποίησης στο Contents/Code/Certificate φακέλου</plugin>"
+
+#: ../Contents/Resources/language_template.html:45
+msgid "<plugin>Select to force https</plugin>"
+msgstr "<plugin>Επιλογή για αναγκαστική χρήση HTTPS</plugin>"
+
+#: ../Contents/Resources/language_template.html:51
+msgid "<plugin>To access this channel, type the url's below to a new browser tab</plugin>"
+msgstr "<plugin>Για να εισέλθετε στο κανάλι, ανοίξτε ένα απο τα παρακάτω URLs παρακάτω.</plugin>"
+
+#: ../Contents/Resources/language_template.html:39
+msgid "<plugin>Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr "<plugin>Εισάγετε την θύρα που θα χρησιμοποιήσει το επιπρόσθετο για HTTP. Μην χρησιμοποιήσετε ένα από τα ακόλουθα που χρησιμοποιούνται από το Plex: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 ή 32469.</plugin>"
+
+#: ../Contents/Resources/language_template.html:42
+msgid "<plugin>Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]</plugin>"
+msgstr "<plugin>Εισάγετε την θύρα που θα χρησιμοποιήσει το επιπρόσθετο για HTTPS. Μην χρησιμοποιήσετε ένα από τα ακόλουθα που χρησιμοποιούνται από το Plex: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 ή 32469.</plugin>"
+
+#: ../Contents/Resources/language_template.html:36
+msgid "<plugin>Name of Certificate crt file in Contents/Code/Certificate directory</plugin>"
+msgstr "<plugin>Όνομα crt αρχείου στο Contents/Code/Certificate φάκελο</plugin>"
+
+#: ../http/static/playlist/playlist.html:35
+msgid "Import"
+msgstr "Εισαγωγή"
+
+#: ../http/static/info/info.html:6
+msgid "Key"
+msgstr "Κλειδί"
+
+#: ../http/static/info/info.html:2
+msgid "Techincal Info"
+msgstr "Τεχνίκες Πληροφορίες"
+
+#: ../http/static/info/info.html:7
+msgid "Value"
+msgstr "Τιμή"
+
+#: ../Contents/Resources/language_template.html:56
+msgid "DO NOT SHARE THIS IN ANY PUBLIC WEBSITE!!!"
+msgstr "ΜΗΝ ΚΟΙΝΟΠΟΙΗΣΕΤΕ ΑΥΤΗΝ ΤΗΝ ΣΕΛΙΔΑ ΔΗΜΟΣΙΑ!"
+
+#: ../http/static/playlist/playlist.html:34
+msgid "Choose a playlist file to import"
+msgstr "Επιλέξτε μια βιβλιοθήκη για εισαγωγή"
+
+#: ../http/static/findmedia/fm.html:26
+msgid "Ignore Specials"
+msgstr "Αγνόησε σπέσιαλ"
+
+#: ../http/static/home/home.html:25
+msgid "Will show technical information about the server."
+msgstr "Θα προβάλει τεχνικές πληροφορίες του σέρβερ."
+
+#: ../http/static/findmedia/fm.html:131
+msgid "Items missing metadata"
+msgstr "Ελλειπή metadata αντικειμένου"
+
+#: ../http/static/findmedia/fm.html:128
+msgid "No items missing metadata"
+msgstr "Μη Ελλειπή metadata αντικειμένου"
+
+#: ../http/static/findmedia/fm.html:104
+msgid "Perfect, media files are present and accessible for all items in the Plex database."
+msgstr "Υπέροχα! Υπάρχουν αρχεία πολυμέσων και είναι διαθέσιμα για όλα τα στοιχεία της βάσης του Plex."
+
+#: ../http/static/findmedia/fm.html:107
+msgid "The following media files on disk are not referenced in Plex's database. (They were either ignored because they are incorrectly named or the library hasn't been updated yet after they were added)"
+msgstr "Τα παρακάτω αρχεία στο δίσκο δεν είναι \"συνδεμένα\" στην βάση του Plex. (Αγνοήθηκαν επειδή ήταν ανώνυμα ή δεν ενημερώθηκε ακόμα η βιβλιοθήκη μετά την προσθήκη)"
+
+#: ../http/static/findmedia/fm.html:119
+msgid "These media files are missing, but the Plex database still has them listed. They were either deleted, the hard drive got disconnected or moved or you simply forgot to empty the library trash in Plex if you erased them intentionally"
+msgstr "Αυτά τα αρχεία είναι αγνοούμενα, αλλά το Plex τα έχει ακόμη καταχωρημένα. Διαγράφτηκαν, ο δίσκος αποσυνδέθηκε η μετακινήθηκε, ή ξεχάσατε να αδειάσετε τον κάδο της βιβλιοθήκης έπειτα από την διαγραφή."
+
+#: ../http/static/_shared/Directive/confirm/confirm.html:5
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: ../http/static/playlist/playlist.html:31
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:29
+msgid "File selected"
+msgstr "Αρχείο επιλέχθηκε"
+
+#: ../http/static/sub_management/sub.html:22
+msgid "Hide media without subtitles"
+msgstr "Απόκρυψη πολυμέσων χωρίς υπότιτλους"
+
+#: ../http/static/sub_management/sub.html:2
+#: ../http/static/sub_management/subService.js:5
+msgid "No filter"
+msgstr "Κανένα φίλτρο"
+
+#: ../http/static/playlist/playlist.html:30
+#: ../http/static/sub_management/Directive/subUpload/subUpload.html:28
+msgid "Select File"
+msgstr "Επιλογή αρχείου"
+
+#: ../http/static/playlist/playlistController.js:6
+msgid "Are you sure you want to delete the playlist?"
+msgstr "Είστε σίγουρος για την διαγραφή αυτής της βιβλιοθήκης;"
+
+#: ../http/static/sub_management/subController.js:24
+msgid "Are you sure you want to delete the selected subtitles?"
+msgstr "Είστε σίγουρος για την διαγραφή αυτων των υποτίτλων;"
+
+#: ../http/static/uas/uasService.js:9
+msgid "Installed"
+msgstr "Εγκατεστημένα"
+
+#: ../http/static/findmedia/fm.html:116
+msgid "Perfect, all media files are present in database"
+msgstr "Υπέροχα! Όλα τα πολυμέσα βρίσκονται στην βάση."
+

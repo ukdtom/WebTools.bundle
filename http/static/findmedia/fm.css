@@ -1,0 +1,101 @@
+﻿.fm{
+}
+.fm label{
+    cursor:pointer;
+}
+
+.fm button{
+    margin: 5px 0;
+    padding: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+    width:27px;
+    height:27px;
+    background-color: #286090;
+}
+
+.fm .settings{
+    background-color: #353535;
+    position: fixed;
+    top: 55px;
+    right: 30px;
+    border-radius: 10px;
+    z-index: 5;
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 560px;
+}
+.fm .settings .validExtensions{
+    color:black;
+    width:320px;
+    height:110px;
+}
+.fm .settings.hideFields .row:not(.toggleSettings) {
+    display:none;
+}
+.fm .settings .ignoreDir{
+    color:black;
+}
+.fm .settings .ignoreHidden{
+    color:black;
+}
+.fm .settings .ignoreSpecials{
+    color:black;
+}
+
+
+.fm .sections{
+}
+
+.fm .sections .section{
+    /*width:100%;
+    min-height:40px;
+    margin-top:7px;
+    border-bottom:1px solid black;
+    padding:10px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius:5px;*/
+
+    margin-top: 10px;
+    min-height: 50px;
+    width: 100%;
+    background: rgba(0, 77, 255, 0.15);
+    box-shadow: 3px 3px 10px 1px black;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.fm .sections .section:hover{
+    background: rgba(0, 30, 30, 0.35);
+}
+.fm .sections .section .type{
+    min-height: 50px;
+    margin-left: 5px;
+    width: 40px;
+    float: left;
+    cursor: pointer;
+}
+.fm .sections .section .type img {
+    width: 34px;
+    height: 34px;
+    padding: 4px;
+    margin-top: 7px;
+    border-radius: 10px;
+}
+.fm .sections .section .header{
+    float: left;
+    padding: 12px;
+    height: 50px;
+    width: calc(100% - 50px);
+    cursor: pointer;
+}
+.fm .sections .section .result{
+    padding:5px;
+}
+.fm .sections .section .download{
+    margin:8px 3px;
+    cursor:pointer;
+}
+.fm .sections .section .download > div{
+    font-size:1.2em;
+}

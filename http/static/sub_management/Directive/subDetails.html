@@ -1,0 +1,47 @@
+<div ng-if="!detail.loading">
+    <div class="row pushBottomMinor noLeftRightMargin">
+        <div class="col-xs-12">
+            <div class="textBold900 pushLeftTrivial">{[{detail.title}]}</div>
+        </div>
+    </div>
+    <div class="row subHeader noLeftRightMargin">
+        <div class="col-md-2 col-sm-3 col-xs-5 selectActions">
+            <div ng-click="toggleAllSubtitles(detail);" ng-if="detail.subtitles.length > 0">
+                <div class="fa fa-square-o" ng-if="!detail.subAllChecked" ng-title="lang.selectAll|translate"></div>
+                <div class="fa fa-check-square-o" ng-if="detail.subAllChecked" ng-title="lang.deselectAll|translate"></div>
+            </div>
+            <div> <!--ng-click="upload(detail);"-->
+                <!--<div class="fa fa-upload" ng-title="lang.uploadSubtitle|translate"></div>-->
+                <sub-upload detail="detail" show="show"></sub-upload>
+            </div>
+            <!-- Just testing here -->
+            <div confirm="deleteSelected"
+                 c-data="detail" 
+                 c-text="lang.confirmDeleteQuestion|translate" 
+                 c-btn-text="lang.confirmDelete|translate" 
+                 ng-if="detail.subtitles.length > 0">
+                <div class="fa fa-trash-o" ng-title="lang.deleteSelected|translate"></div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-2 textBold600" translate>Lang</div>
+        <div class="col-md-2 col-sm-2 col-xs-3 textBold600" translate>Location</div>
+        <div class="col-md-6 col-sm-5 col-xs-2 textBold600" translate>Codec</div>
+    </div>
+    <div class="row subItem noLeftRightMargin pushTopTrivial" ng-repeat="subtitle in detail.subtitles track by subtitle.key" ng-class="{'checked': subtitle.checked, 'selected': subtitle.selected}">
+        <div class="col-md-2 col-sm-3 col-xs-5 selectSubtitle" ng-if="subtitle.location !== 'Embedded'" ng-click="subtitle.checked = !subtitle.checked; detail.subAllChecked = getAllSubtitlesChecked(detail);">
+            <div class="fa fa-square-o" ng-if="!subtitle.checked"></div>
+            <div class="fa fa-check-square-o" ng-if="subtitle.checked"></div>
+            <div class="download" ng-if="isCodexView(subtitle)" ng-click="view(subtitle, $event);">
+                <div class="fa fa-file-text-o" ng-title="lang.viewSubtitle|translate"></div>
+            </div>
+            <div class="download" ng-click="download(subtitle, $event);">
+                <div class="fa fa-download" ng-title="lang.downloadSubtitle|translate"></div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-5" ng-if="subtitle.location === 'Embedded'"></div>
+
+        <div class="col-md-2 col-sm-2 col-xs-2"><span ng-if="subtitle.languageCode">{[{subtitle.languageCode}]}</span><span ng-if="!subtitle.languageCode" translate>None</span></div>
+        <div class="col-md-2 col-sm-2 col-xs-3">{[{subtitle.location}]}</div>
+        <div class="col-md-6 col-sm-5 col-xs-2">{[{subtitle.codec}]}</div>
+    </div>
+</div>

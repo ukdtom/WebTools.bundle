@@ -1,0 +1,9 @@
+{
+    "Select to force https": "Selecteer om HTTPS-verbindingen te forceren", 
+    "To access this channel, type the url's below to a new browser tab": "Om dit kanaal te openen, open dan een van de volgende links in een nieuwe tab of venster van jouw browser", 
+    "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": " Basis URL (indien achter een proxy, bijvoorbeeld, zo niet, kun je deze leeg laten. Voorbeeld:/WebTools)", 
+    "Name of Certificate key file in Contents/Code/Certificate directory": "Bestandsnaam van het certificaat in Contents/Code/Certificaat-map", 
+    "Name of Certificate crt file in Contents/Code/Certificate directory": "Naam van certificaat bestand in Contents/Code/Certificate map", 
+    "Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Vul het nummer van de poort in voor HTTP. Gebruik GEEN [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 of 32469]", 
+    "Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Vul het nummer van de poort in voor HTTPS. Gebruik GEEN [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 of 32469]"
+}

@@ -1,0 +1,43 @@
+<div class="subUpload" ng-controller="subUploadController">
+    <div class="textBold600 textSize3 subUploadTitle" translate>Subtitle Management Upload Subtitle</div>
+    
+    <content-loading ng-show="subModel.subUploadLoading" class="pushTopMinor"></content-loading>
+    <div ng-show="!subModel.subUploadLoading">
+        <div class="textSize2 text-center pushBottomMinor"><translate>Upload subtitle for</translate> {[{detail.title}]}</div>
+
+        <div class="partsContainer" ng-if="subModel.parts.length > 1" ngCloak>
+            <div class="partChooserLabel textSize2" translate>Choose part</div>
+            <select class="partChooser" ng-model="subModel.selectedPart">
+                <option ng-repeat="part in subModel.parts track by part.id"
+                        value="{[{part.id}]}">
+                    {[{part.value}]}
+                </option>
+            </select>
+        </div>
+        <div class="languageContainer">
+            <div class="languageChooserLabel textSize2" translate>Choose language for the subtitle</div>
+            <select class="languageChooser" ng-model="subModel.selectedLanguage">
+                <option value="NO_LANG" translate>No language</option>
+                <option ng-repeat="lang in languageModel.codeLanguages track by lang.code"
+                        value="{[{lang.code}]}">
+                    {[{lang.name}]}
+                </option>
+            </select>
+        </div>
+        <div class="fileContainer">
+            <label for="file" class="btnInput" translate>Select File</label>
+            <div ng-if="subModel.selectedFile" class="pull-left" style="margin-top:8px; margin-left:3px;"><translate>File selected</translate> <span class="textBold600">{[{subModel.selectedFile.name}]}</span></div>
+            <input id="file" type="file" style="visibility:hidden;" fileread="subModel.selectedFile" />
+        </div>
+        <div class="btnContainer">
+            <div class="warning">
+                <div ng-if="subModel.missingPart" translate>Missing part</div>
+                <div ng-if="subModel.missingFile" translate>Missing file</div>
+            </div>
+            <!--<div class="success">
+                <div ng-if="subModel.success" translate>File successfully uploaded</div>
+            </div>-->
+            <button class="btnUpload" ng-click="upload()" translate>Upload</button>
+        </div>
+    </div>
+</div>

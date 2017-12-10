@@ -1,0 +1,19 @@
+<div class="language">
+    <content-loading ng-if="webtoolsModel.languageLoading" class="pushTopMinor"></content-loading>
+    <div ng-if="!webtoolsModel.languageLoading">
+        <div class="languageActions">
+            <label for="languageSelector" class="textSize4 textBold600" translate>Change Language</label><br />
+            <select class="languageSelector" id="languageSelector" ng-model="webtoolsModel.UILanguage" ng-change="changeLang()">
+                <option ng-repeat="lang in languageModel.languages track by lang.code"
+                        value="{[{lang.code}]}">
+                    {[{lang.name}]} ({[{lang.percentage}]}%)
+                </option>
+            </select>
+            <div class="langBtn" ng-click="forceLangUpdate(webtoolsModel.UILanguage)" translate>Force language translation update</div>
+        </div>
+        <div class="pushTopMinor">
+            <translate>If your language is missing, is not translated 100 %, or you want to improve on the translation of it, then please go here:</translate>
+            <a href="https://poeditor.com/join/project/8uRxEmAE4M">POEditor</a>
+        </div>
+    </div>
+</div>

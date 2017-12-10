@@ -1,0 +1,415 @@
+﻿/* Custom Style Sheet by trumpy81 */
+/* Main Page Background Color */
+body{
+    background-color: rgba(230,247,255,1);
+    color: rgba(0,0,153,0.7);
+}
+/* Scrollbar styles (Does Not Work In FireFox) */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(198,236,255,0.9);
+    outline: 1px solid rgba(255,255,255,0.30);
+    -webkit-border-radius: 1ex;
+    -webkit-box-shadow: 0px 1px 2px rgba(0,0,0,0.75);
+}  
+::-webkit-scrollbar-corner {
+    background: #1A1A1A;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(198,236,255,0.9);
+    outline: 1px solid rgba(0,0,0,1);
+}
+/* The Dreaded Gear Wheel Spinning Icon Thingy */
+webtools-loading{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+webtools-loading .webtoolsLoading {
+    color: rgba(0,0,153,0.7);
+}
+content-loading{
+}
+content-loading .contentLoading {
+    color: rgba(0,0,153,0.7);
+}
+/* Help ? Button */
+help {
+    color: rgba(0,0,153,0.7);
+}
+help:hover {
+    color: rgba(0,170,255,0.9);
+}
+/* Help ? Button Dialog Page */
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    background-color: rgba(230,247,255,1);
+}
+
+/* Head ---------------------------------------------------------------------------------------- */
+
+/* Top Title Bar */
+.head{
+    background-color: rgba(0,51,204,1);
+    box-shadow:0 0 0 0px rgba(0,0,0,1);
+}
+.head .title{
+    color: rgba(0,204,255,1);
+}
+
+/* Menu ---------------------------------------------------------------------------------------- */
+
+/* Menu Separator Line */
+.line{
+    border-bottom: 3px solid rgba(255,255,255,0.5);
+}
+
+/* Menu Background Color */
+.menu {
+    background-color: rgba(102,204,255,0.25);
+    box-shadow:0 0 0 0px rgba(0,0,0,0);
+}
+.menu .item {
+    background: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,.45);
+}
+.menu .item:hover {
+    background: rgba(0,170,255,0.9);
+    color: rgba(0,51,204,0.85);
+}
+.menu .item.active {
+    background: rgba(0,170,255,0.9);
+    color: rgba(0,51,204,0.85);
+}
+/* Menu Hide/Show */
+.menu .toggle {
+    background: rgba(0,0,153,1);
+    color: rgba(0,170,255,1);
+}
+.menu .toggle:hover {
+    background: rgba(13,89,165,.9);
+}
+.menu .toggle:active {
+    background: rgba(104,69,44,.9);
+}
+
+/* Subtitles ----------------------------------------------------------------------------------- */
+
+.sub .settings {
+    background: rgba(198,236,255,1);
+}
+.sub .search .btnSearch {
+    background: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+}
+.sub .search .btnSearch:hover {
+    background-color: rgba(119,59,34,0.23);
+    color: rgba(119,59,34,1);
+}
+.sub .search .searchInput{
+    background-color: rgba(122,156,188,0.2);
+    color: rgba(0,0,0,1);
+}
+/* Sub Item Row */
+.sub .rowShow{
+    background: rgba(102,204,255,0.25);
+    box-shadow: 1px 1px 2px 1px rgba(0,0,0,.25);
+}
+/* Expanded Row Separator Under Icon */
+.sub .rowShow.expanded .lineShow .type{
+    border-bottom-color: rgba(0,0,153,0.2);
+}
+/* Expanded Row Separator Under Title */
+.sub .rowShow.expanded .lineShow .title{
+    border-bottom-color: rgba(0,0,153,0.2);
+}
+/* Sub Item Box */
+.sub .rowShow .lineShow .contentShow .detail{
+    background: rgba(13,89,165,0.25);
+}
+/* Sub Item Subtitle List */
+.sub .rowShow .lineShow .contentShow .detail .subItem{
+    background: rgba(255,255,255,0.2);
+}
+/* Sub Item Subtitle List Checked */
+.sub .rowShow .lineShow .contentShow .detail .subItem.checked{
+    background: rgba(255,255,255,0.75);
+}
+/* Sub Item Load More Button */
+.sub .rowShow .lineShow .contentShow .loadmore{
+    background: rgba(151,199,232,1);
+    border: solid 6px rgba(198,236,255,1);    
+}
+.sub .rowShow .lineShow .contentShow .loadmore:hover{
+    background: rgba(230,247,255,1);
+}
+/* Sub TV Show Button */
+.sub .rowShow .lineShow .contentShow .tvshow{
+    background-color: rgba(194,49,36,0.35);
+}
+.sub .rowShow .lineShow .contentShow .tvshow:hover{
+    background-color: rgba(194,49,36,0.55);
+}
+/* Sub TV Show Series Title / Back Button */
+.sub .rowShow .lineShow .contentShow .tvshowheader div{
+    padding:5px;
+    cursor:pointer;
+    border-radius: 10px;
+    background: rgba(215,170,147,0.5);
+    overflow:hidden; 
+}
+.sub .rowShow .lineShow .contentShow .tvshowheader div:hover{
+    background: rgba(215,170,147,1);
+}
+
+/* Logs ---------------------------------------------------------------------------------------- */
+
+/* Logs Download Buttons */
+.logs .logButton{
+    background-color: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+}
+.logs .logButton:hover {
+    background-color: rgba(0,170,255,1);
+    color: rgba(0,51,204,0.75);
+}
+/* Logs Search Bar Background */
+.logs .search{
+    background-color: rgba(102,204,255,0.25);
+}
+/* Logs Search Bar Input Text */
+.logs .search .searchInput{
+    background-color: rgba(230,247,255,0.5);
+    color: rgba(0,0,0,1);
+}
+/* Logs Search Bar Buttons */
+.logs .search .btnSearch{
+    background-color: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+}
+.logs .search .btnSearch:hover {
+    background-color: rgba(0,170,255,1);
+    color: rgba(0,51,204,0.75);
+}
+
+/* Logs Alternate Line Colors */
+.logs .logDetails table tr:nth-child(odd) {
+}
+.logs .logDetails table tr:nth-child(even) {
+    background-color: rgba(230,247,255,0.5);
+}
+/* Highlight Error Lines */
+.logs .logDetails table tr.danger {
+    background-color: rgba(194,49,36,0.7);
+    color: rgba(255,255,255,1)
+}
+/* Logs Search Result Colors */
+.logs .logDetails table tr.lineFound{
+    background-color: rgba(0,77,255,0.5);
+    color: rgba(255,255,255,1)   
+}
+.logs .logDetails table tr.lineFound.focused{
+    background-color: rgba(0,77,255,0.75);
+    color: rgba(255,255,255,1)   
+    box-shadow: 0px 0px 2px 0px rgba(0,0,0,1);
+}
+
+/* UAS ----------------------------------------------------------------------------------------- */
+
+/* UAS Category Selector Box */
+.uas .typesMenu {
+    background-color: rgba(230,247,255,0.25);
+    box-shadow: 0 0 0 3px rgba(0,0,0,.2);
+}
+.uas .type:hover{
+    background:rgba(102,204,255,0.25);
+}
+/* UAS Category Selector Box Selected Highlight */
+.uas .type.active{
+    color:white;
+    border-radius: 3px;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+36,207cca+69,7db9e8+100 */
+    background: rgb(30,87,153); /* Old browsers */
+    background: -moz-linear-gradient(left,  rgba(30,87,153,1) 0%, rgba(41,137,216,1) 36%, rgba(32,124,202,1) 69%, rgba(125,185,232,1) 100%); /* FF3.6-15 */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(30,87,153,1)), color-stop(36%,rgba(41,137,216,1)), color-stop(69%,rgba(32,124,202,1)), color-stop(100%,rgba(125,185,232,1))); /* Chrome4-9,Safari4-5 */
+    background: -webkit-linear-gradient(left,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 36%,rgba(32,124,202,1) 69%,rgba(125,185,232,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: -o-linear-gradient(left,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 36%,rgba(32,124,202,1) 69%,rgba(125,185,232,1) 100%); /* Opera 11.10-11.50 */
+    background: -ms-linear-gradient(left,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 36%,rgba(32,124,202,1) 69%,rgba(125,185,232,1) 100%); /* IE10 preview */
+    background: linear-gradient(to right,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 36%,rgba(32,124,202,1) 69%,rgba(125,185,232,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=1 ); /* IE6-9 */
+    -webkit-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    -moz-box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+    box-shadow: 0 2px 2px 0 rgba(50,50,50,.6);
+}
+
+/* Search Button */
+.uas .typesMenu .search .btnSearch {
+    background-color: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+}
+.uas .typesMenu .search .btnSearch:hover {
+    background-color: rgba(0,170,255,1);
+    color: rgba(0,51,204,0.85);
+}
+/* Search Text Input */
+.uas .typesMenu .search .searchInput {
+    background-color: rgba(230,247,255,0.55);
+    color: rgba(0,0,0,1);
+}
+/* Manual Installation Text Input */
+.uas .manualInstall {
+    background-color: rgba(230,247,255,0.55);
+    color: rgba(0,0,0,1);
+}
+/* UAS Buttons */
+.uas .uasBtn {
+    background-color: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+}
+.uas .uasBtn:hover {
+    background-color: rgba(0,170,255,1);
+    color: rgba(0,51,204,0.85);
+}
+/* UAS Item Installed Container */
+.uas .repoContainer .repo.installed{
+    background:rgba(102,204,255,0.75);
+}
+/* UAS Item Install/Update Button */
+.uas .repoContainer .repo .header .right .installUpdate{
+    background-color: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+}
+.uas .repoContainer .repo .header .right .installUpdate:hover{
+    background-color: rgba(0,170,255,1);
+    color: rgba(0,51,204,0.85);    
+}
+/* UAS Item Delete Button */
+.uas .repoContainer .repo .header .right .delete{
+    background-color: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+}
+.uas .repoContainer .repo .header .right .delete:hover{
+    background-color: rgba(0,170,255,1);
+    color: rgba(0,51,204,0.85);    
+}
+/* UAS Item Container */
+.uas .repoContainer .repo {
+    background-color: rgba(102,204,255,0.25);
+    color: rgba(0,51,204,0.85);
+}
+/* UAS Item Revealed Row Upper&Lower */
+.uas .repoContainer .repo .details .row {
+    background: rgba(230,247,255,0.5);
+    color: rgba(0,51,204,0.85);
+}
+/* UAS Item Revealed Row Middle */
+.uas .repoContainer .repo .details .row:nth-child(2n) {
+    background: rgba(230,247,255,0.5);
+    color: rgba(0,51,204,0.85);
+}
+/* UAS Item Installed Row Upper&Lower */
+.uas .repoContainer .repo.installed .details .row{
+    background: rgba(230,247,255,0.55);
+}
+/* UAS Item Installed Row Middle */
+.uas .repoContainer .repo.installed .details .row:nth-child(2n){
+    background: rgba(230,247,255,0.55);
+}
+
+/* Find Media ---------------------------------------------------------------------------------- */
+
+/* FM Settings Box */
+.fm .settings {
+    background: rgba(102,204,255,1);
+    color: rgba(0,51,204,0.85);
+    Border: 1px solid rgba(0,0,0,0.2);
+}
+/* FM Buttons */
+.fm button{
+    background-color: rgba(230,247,255,1);
+}
+.fm button:hover {
+    background-color: rgba(0,51,204,0.15);
+}
+/* FM Library List Rows */
+.fm .sections .section {
+    background: rgba(102,204,255,0.75);
+    color: rgba(0,51,204,0.85);
+}
+.fm .sections .section:hover {
+    background: rgba(19,176,255,1);
+    color: rgba(0,51,204,0.85);
+}
+
+/* Playlists ----------------------------------------------------------------------------------- */
+
+.btnInput {
+    background-color: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+}
+.btnInput:hover {
+    background-color: rgba(0,170,255,1);
+    color: rgba(0,51,204,0.85);
+}
+/* Playlists Item Container */
+.playlists .playlistContainer {
+    background: rgba(102,204,255,0.75);
+    color: rgba(0,51,204,0.85);
+}
+/* Playlists Buttons */
+.playlists .playlistBtn {
+    background-color: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+    border: 1px solid rgba(255,255,255,0.7);
+}
+.playlists .playlistBtn:not(.disabled):hover {
+    background-color: rgba(0,170,255,1);
+    color: rgba(0,51,204,0.85);
+    border: 1px solid rgba(119,59,34,0.7);
+}
+/* Playlists Buttons Disabled*/
+.playlists .playlistBtn.disabled {
+    background: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+    border: 1px solid rgba(255,0,0,1);
+}
+.playlists .playlistBtn.disabled:hover {
+    background: rgba(217,0,0,0.75);
+    color: rgba(224,224,224,0.7);
+    border: 1px solid rgba(224,224,224,0.7);
+}
+/* PlayLists Browse Container */
+.playlists .userContainer .fileContainer{
+    background: rgba(134,215,255,1);
+}
+.playlists .userContainer .fileContainer .label{
+    color: rgba(0,51,204,0.85);
+}
+
+/* TechInfo ------------------------------------------------------------------------------------ */
+
+.info tr:nth-child(2n+1){
+    background-color: rgba(230,247,255,0.7);
+}
+.info tr:nth-child(2n+2){
+    background-color: rgba(19,175,255,0.1);
+}
+
+/* Language ------------------------------------------------------------------------------------ */
+
+.language .languageActions .langBtn {
+    background-color: rgba(0,51,204,0.85);
+    color: rgba(0,170,255,1);
+}
+.language .languageActions .langBtn:hover {
+    background-color: rgba(0,170,255,1);
+    color: rgba(0,51,204,0.85);
+}
+/* Theme --------------------------------------------------------------------------------------- */
+
+.theme .block{
+    border-color: rgba(0,51,204,0.25);
+}
+.theme .block:hover:not(.activeTheme){
+    background-color: rgba(19,176,255,0.25);
+}
+.theme .block.activeTheme{
+    background-color: rgba(19,176,255,0.5);
+}
