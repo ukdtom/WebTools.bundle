@@ -28,17 +28,18 @@ import viewstate
 
 class BaseHandler(RequestHandler):
     def get_current_user(self):
+        """Returns the Cookie of the logged in user"""
         return self.get_secure_cookie(NAME)
-
-# API V3
 
 
 class apiv3(BaseHandler):
+
+    """This is the class for API V3"""
     module = None
     function = None
 
-    # Disable auth when debug, and get module
     def prepare(self):
+        """Disable auth when debug, and get module"""
         # Set Default header
         self.set_header('Cache-Control',
                         'no-store, no-cache, must-revalidate, max-age=0')
