@@ -163,6 +163,13 @@ class pmsV3(object):
     @classmethod
     def DELSUB(self, req, *args):
         Log.Debug('Delete subtitle requested')
+        # TODO: Remove when #420 is done
+        if Platform.OS == 'MacOSX':
+            Log.Critical('MacOSX detected, so aborting')
+            req.clear()
+            req.set_status(405)
+            req.finish(
+                'Sadly not working on Mac OSx at the moment. Stay tuned for an update')
         try:
             # Start by checking if we got what it takes ;-)
             # Get params
