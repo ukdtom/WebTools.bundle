@@ -13,7 +13,7 @@
 
 import json
 from misc import misc
-from consts import EXCLUDEELEMENTS, EXCLUDEFIELDS, MEDIATYPE
+from consts import EXCLUDEELEMENTS, EXCLUDEFIELDS, PLEX_MEDIATYPE as MEDIATYPE
 from plextvhelper import plexTV
 import time
 # TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
@@ -271,11 +271,11 @@ class viewstate(object):
                 misc.GetLoopBack() + '/identity').get('machineIdentifier')
             # Get the type of items to get, based on section type
             if result['sectionType'] == 'show':
-                Type = MEDIATYPE['METADATA_EPISODE']
+                Type = PLEX_MEDIATYPE['METADATA_EPISODE']
             elif result['sectionType'] == 'movie':
-                Type = MEDIATYPE['METADATA_MOVIE']
+                Type = PLEX_MEDIATYPE['METADATA_MOVIE']
             elif result['sectionType'] == 'artist':
-                Type = MEDIATYPE['METADATA_TRACK']
+                Type = PLEX_MEDIATYPE['METADATA_TRACK']
             # Url to grap
             url = misc.GetLoopBack() + '/library/sections/' + str(section) + '/all?unwatched!=1&' + \
                 EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&type=' + \
@@ -352,7 +352,7 @@ class viewstate(object):
         returnJson = {}
         try:
             if sectionType == 'movie':
-                MediaType = str(MEDIATYPE['METADATA_MOVIE'])
+                MediaType = str(PLEX_MEDIATYPE['METADATA_MOVIE'])
             elif sectionType == 'Ged':
                 pass
             url = misc.GetLoopBack() + '/library/sections/' + section + '/all?type=' + \

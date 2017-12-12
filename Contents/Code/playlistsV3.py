@@ -15,7 +15,7 @@ import re
 from misc import misc
 from plextvhelper import plexTV
 from uuid import uuid4
-from consts import MEDIATYPE, VALIDEXT, EXCLUDEELEMENTS, EXCLUDEFIELDS
+from consts import VALIDEXT, EXCLUDEELEMENTS, EXCLUDEFIELDS
 
 
 # TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
@@ -896,6 +896,7 @@ def getFilesFromLib(libs, sType):
     # Add from one library at a time
     for lib in libs:        
         start = 0 # Start point of items                
+        print 'Ged Types int', str(MEDIATYPES[ROOTNODES[sType]])
         baseUrl = misc.GetLoopBack() + '/library/sections/' + lib + '/all?type=' + str(MEDIATYPES[ROOTNODES[sType]]) + '&' + EXCLUDE + '&X-Plex-Container-Start='        
         url = baseUrl + '0' + '&X-Plex-Container-Size=0'        
         libInfo = XML.ElementFromURL(url)

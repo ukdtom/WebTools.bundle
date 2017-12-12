@@ -44,7 +44,7 @@ VALIDEXT = {'video': ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', '
               'audio': ['mp3', 'm4a', 'm4b', 'flac', 'aac', 'rm', 'rma', 'mpa', 'wav', 'wma', 'ogg', 'mp2', 'mka',
               'ac3', 'dts', 'ape', 'mpc', 'mp+', 'mpp', 'shn', 'oga', 'aiff', 'aif', 'wv', 'dsf', 'dsd', 'opus']}
 
-MEDIATYPE = {
+PLEX_MEDIATYPE = {
     'METADATA_MOVIE' : 1,
     'METADATA_SHOW' : 2,
     'METADATA_SEASON' : 3,
