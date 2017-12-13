@@ -55,9 +55,9 @@ class wtV3(object):
             lang['Language'] = Dict['UILanguage']
             req.finish(json.dumps(lang))
 
-    ''' Upgrade WebTools from latest release. This is the new call, that replace the one that in V2 was located in the git module '''
     @classmethod
     def UPGRADEWT(self, req, *args):
+        """Upgrade WebTools from latest release. This is the new call, that replace the one that in V2 was located in the git module"""
         Log.Info('We recieved a call to upgrade WebTools itself')
         upgradeURL = WT_URL.replace(
             'https://github.com/', 'https://api.github.com/repos/') + '/releases/latest'
@@ -93,10 +93,29 @@ class wtV3(object):
                             'Exception happend in UPGRADEWT: ' + str(e))
             # All done, so now time to flip directories
             try:
-                os.rename(Core.bundle_path, Core.storage.join_path(
-                    Core.bundle_path.replace(NAME + '.bundle', ''), NAME + '.bundle.upgraded'))
-                os.rename(Core.storage.join_path(Core.bundle_path.replace(
-                    NAME + '.bundle', ''), NAME + '.bundle.upgrade'), Core.bundle_path)
+                WTOrigen = Core.bundle_path
+                WTNew = Core.storage.join_path(Core.bundle_path.replace(
+                    NAME + '.bundle', ''), NAME + '.bundle.upgrade')
+                WTOld = WTOrigen + '.upgraded'
+                # We need to save custom certificates, before doing the actual upgrade here
+                targetDir = Core.storage.join_path(
+                    WTNew, 'Contents', 'Code', 'Certificate')
+                for root, subdirs, files in os.walk(Core.storage.join_path(WTOrigen, 'Contents', 'Code', 'Certificate')):
+                    for file in files:
+                        if file not in ['WebTools.crt', 'WebTools.key']:
+                            if os.path.splitext(file)[1].upper() in ['.KEY', '.CRT']:
+                                # We need to save this file
+                                sourceFile = Core.storage.join_path(root, file)
+                                targetFile = Core.storage.join_path(
+                                    targetDir, file)
+                                Log.Info(
+                                    "We need to save the file named %s" % file)
+                                shutil.copy(sourceFile, targetFile)
+                            else:
+                                Log.Error(
+                                    "Found a file in the certificate folder, that doesn't belong there named %s. File will be ignored" % file)
+                os.rename(WTOrigen, WTOld)
+                os.rename(WTNew, WTOrigen)
             except Exception, e:
                 Log.Exception(
                     'Exception in UPGRADEWT during rename was %s' % str(e))
