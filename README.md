@@ -16,3 +16,7 @@ To download, go here:
 
 https://github.com/ukdtom/WebTools.bundle/releases/latest
 
+To download the WebTools installer for Asustor, QNAP, Synology or Windows, go here:
+
+https://github.com/ukdtom/WTInstaller/releases/tag/1.2
+
