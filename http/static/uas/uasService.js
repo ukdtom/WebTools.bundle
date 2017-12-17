@@ -218,9 +218,9 @@
             url: url
         }).then(function (resp) {
             var migratedItems = resp.data;            
-            var appMigratedText = "<b>" + _this.lang.noAppsMigrated + "</b> <br /><br />";            
+            var appMigratedText = "<b translate>" + _this.lang.noAppsMigrated + "</b> <br /><br />";            
             if(Object.keys(migratedItems).length > 0) {
-                appMigratedText = "<b>" + _this.lang.appsMigrated + "</b> <br /><br />";
+                appMigratedText = "<b translate>" + _this.lang.appsMigrated + "</b> <br /><br />";
                 for (var key in migratedItems) {
                     var item = migratedItems[key];
                     appMigratedText += item.title + "<br />";
