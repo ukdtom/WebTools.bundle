@@ -1210,9 +1210,7 @@ class pmsV3(object):
 
 # Undate uasTypesCounters
 def updateUASTypesCounters():
-    try:
-        alliCounter = 0
-        alltCounter = 0
+    try:                
         counter = {}
         # Grap a list of all bundles
         bundleList = Dict['PMS-AllBundleInfo']
@@ -1220,14 +1218,12 @@ def updateUASTypesCounters():
             for bundleType in bundleList[bundle]['type']:
                 if bundleType in counter:
                     tCounter = int(counter[bundleType]['total'])
-                    tCounter += 1
-                    alltCounter += 1
+                    tCounter += 1                    
                     iCounter = int(counter[bundleType]['installed'])
                     if 'date' not in bundleList[bundle]:
                         bundleList[bundle]['date'] = ''
                     if bundleList[bundle]['date'] != '':
-                        iCounter += 1
-                        alliCounter += 1
+                        iCounter += 1                        
                     counter[bundleType] = {
                         'installed': iCounter, 'total': tCounter}
                 else:
@@ -1236,18 +1232,13 @@ def updateUASTypesCounters():
                     elif bundleList[bundle]['date'] == '':
                         counter[bundleType] = {'installed': 0, 'total': 1}
                     else:
-                        counter[bundleType] = {'installed': 1, 'total': 1}
-                    alltCounter += 1
-        counter['All'] = {'installed': alliCounter, 'total': alltCounter}
+                        counter[bundleType] = {'installed': 1, 'total': 1}                    
+        counter['All'] = {'installed': len(Dict['installed']), 'total': len(Dict['PMS-AllBundleInfo'])}
         Dict['uasTypes'] = counter
         Dict.Save()
     except Exception, e:
         Log.Exception(
             'Fatal error happened in updateUASTypesCounters: ' + str(e))
-
-# TODO fix updateAllBundleInfo
-# updateAllBundleInfo
-
 
 def updateAllBundleInfoFromUAS():
     def updateInstallDict():
