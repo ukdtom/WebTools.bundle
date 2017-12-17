@@ -1,0 +1,9 @@
+{
+    "Select to force https": " Seleziona per forzare HTTPS ", 
+    "To access this channel, type the url's below to a new browser tab": "Per accedere a questo canale, apri uno degli URL in basso in una nuova scheda o finestra del browser. ", 
+    "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": "Base URL (se dietro un proxy - se non, lascia vuoto).\nESEMPIO: / WebTools)", 
+    "Name of Certificate key file in Contents/Code/Certificate directory": "Nome del file chiave del certificato nella directory Contents / Code / Certificate", 
+    "Name of Certificate crt file in Contents/Code/Certificate directory": "Nome del file crt del certificato nella directory Contents / Code / Certificate", 
+    "Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Immettere il numero di porta che questo plug-in deve utilizzare per HTTP. NON utilizzare nessuno dei seguenti elementi, che sono riservati a Plex e ai relativi plugin: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 o 32469.", 
+    "Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Inserisci il numero di porta che questo plug-in deve utilizzare per HTTPS. NON utilizzare nessuno dei seguenti elementi, che sono riservati a Plex e ai relativi plugin: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 o 32469."
+}
