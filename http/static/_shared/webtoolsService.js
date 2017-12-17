@@ -45,7 +45,7 @@
         });
     }
     var pingReload = function () {
-        var url = "/";
+        var url = "/version";
         $http({
             method: "GET",
             url: url
