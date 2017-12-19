@@ -14,20 +14,14 @@ import datetime
 import re
 from misc import misc
 from plextvhelper import plexTV
-#from uuid import uuid4
 from consts import VALIDEXT, EXCLUDEELEMENTS, EXCLUDEFIELDS
-
 
 # TODO: Remove when Plex framework allows token in the header. Also look at copy, delete and list method
 import urllib2
 from xml.etree import ElementTree
 # TODO End
 
-
-GET = ['LIST', 'DOWNLOAD']
-PUT = []
-POST = ['COPY', 'IMPORT']
-DELETE = ['DELETE']
+FUNCTIONS = {"get": ["LIST", "DOWNLOAD"], "post": ["COPY", "IMPORT"], "delete": ["DELETE"]}
 
 MEDIASTEPS = 25 # Amount of medias we ask for at a time
 
@@ -799,64 +793,20 @@ class playlistsV3(object):
 
     ''' Get the relevant function and call it with optinal params '''
     @classmethod
-    def getFunction(self, metode, req):
-        self.init()
-        params = req.request.uri[8:].upper().split('/')
-        self.function = None
-        if metode == 'get':
-            for param in params:
-                if param in GET:
-                    self.function = param
-                    break
-                else:
-                    pass
-        elif metode == 'post':
-            for param in params:
-                if param in POST:
-                    self.function = param
-                    break
-                else:
-                    pass
-        elif metode == 'put':
-            for param in params:
-                if param in PUT:
-                    self.function = param
-                    break
-                else:
-                    pass
-        elif metode == 'delete':
-            for param in params:
-                if param in DELETE:
-                    self.function = param
-                    break
-                else:
-                    pass
-        if self.function == None:
+    def getFunction(self, metode, req):        
+        self.init()        
+        function, params = misc.getFunction(FUNCTIONS, metode, req)                    
+        if function == None:
             Log.Debug('Function to call is None')
             req.clear()
             req.set_status(404)
             req.finish('Unknown function call')
-        else:
-            # Check for optional argument
-            paramsStr = req.request.uri[req.request.uri.upper().find(
-                self.function) + len(self.function):]
-            # remove starting and ending slash
-            if paramsStr.endswith('/'):
-                paramsStr = paramsStr[:-1]
-            if paramsStr.startswith('/'):
-                paramsStr = paramsStr[1:]
-            # Turn into a list
-            params = paramsStr.split('/')
-            # If empty list, turn into None
-            if params[0] == '':
-                params = None
+        else:           
             try:
-                Log.Debug('Function to call is: ' + self.function +
-                          ' with params: ' + str(params))
                 if params == None:
-                    getattr(self, self.function)(req)
+                    getattr(self, function)(req)
                 else:
-                    getattr(self, self.function)(req, params)
+                    getattr(self, function)(req, params)
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
