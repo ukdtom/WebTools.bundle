@@ -1,5 +1,4 @@
 # ![Logo](https://github.com/ukdtom/WebTools.bundle/blob/master/Wiki/WebTools/Logos/WebTools-48x48.png) WebTools.bundle
-===============
 
 [![GitHub issues](https://img.shields.io/github/issues/ukdtom/WebTools.bundle.svg?style=flat)](https://github.com/ukdtom/WebTools.bundle/issues)
 [![Release](https://img.shields.io/github/release/ukdtom/WebTools.bundle.svg?style=flat)](https://github.com/ukdtom/WebTools.bundle/releases/latest)
