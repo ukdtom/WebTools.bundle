@@ -14,11 +14,11 @@ import datetime
 import re
 from misc import misc
 from plextvhelper import plexTV
-from uuid import uuid4
+#from uuid import uuid4
 from consts import VALIDEXT, EXCLUDEELEMENTS, EXCLUDEFIELDS
 
 
-# TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
+# TODO: Remove when Plex framework allows token in the header. Also look at copy, delete and list method
 import urllib2
 from xml.etree import ElementTree
 # TODO End
@@ -284,7 +284,7 @@ class playlistsV3(object):
             finally:                
                 return [sType, smart, items]
 
-        ''' *************** Main stuff here *********************** '''
+        """ *************** Main stuff here *********************** """
 
         returnResult = {}
         success = []
@@ -993,37 +993,13 @@ def getFilesFromLib(libs, sType):
     Log.Debug(itemList)    
     return itemList
 
-'''
-getPlayListItems returns an array with the playlist items
-Params:
-user : key of user, or null if the owner
-key : key of playlist
-'''
 def getPlayListItems(user, key):
-
-    # Send the request to the server, and returns the respond
-    def sendReq(userToken, url):
-        if not userToken:
-            # User is the owner
-            try:
-                return XML.ElementFromURL(url)
-            except Exception, e:
-                Log.Exception('Exception when getting a response for %s as the owner was %s' %(url, str(e)))
-                return None
-        else:
-            try:
-                # TODO Change to native framework call, when Plex allows token in header
-                opener = urllib2.build_opener(urllib2.HTTPHandler)
-                request = urllib2.Request(sizeURL)
-                request.add_header(
-                    'X-Plex-Token', userToken)
-                response = opener.open(request).read()
-                return XML.ElementFromString(response)
-            except Exception, e:
-                Log.Exception('Exception when getting a response for %s as a user was %s' %(url, str(e)))
-                return None
-
-    # *********** MAIN *****************
+    """
+    getPlayListItems returns an array with the playlist items
+    Params:
+    user : key of user, or null if the owner
+    key : key of playlist
+    """
     Log.Info('Starting getPlaylistItems with user: %s and key of: %s' %(user, key))
     playlist = []    
     infoURL = misc.GetLoopBack() + '/playlists/' + key
@@ -1039,7 +1015,7 @@ def getPlayListItems(user, key):
             Log.Exception('Exception getting the token for a user was: %s' %str(e))
             return None
     try:        
-        info = sendReq(userToken, infoURL).xpath('//Playlist')[0]        
+        info = getXMLElement(userToken, infoURL).xpath('//Playlist')[0]        
     except Exception, e:
         Log.Exception('Exception getting info was: %s' %str(e))
         return None
@@ -1070,7 +1046,7 @@ def getPlayListItems(user, key):
     start = 0
     while True:        
         url = misc.GetLoopBack() + '/playlists/' + key + '/items?X-Plex-Container-Start=' + str(start) + '&X-Plex-Container-Size=' + str(MEDIASTEPS)
-        response = sendReq(userToken, url)        
+        response = getXMLElement(userToken, url)        
         start += MEDIASTEPS        
         if response.get('size') == '0':
             break
@@ -1130,4 +1106,32 @@ def getPlayListItems(user, key):
             Log.Critical('Url to offending item was %s' %itemURL) 
             return None                                                  
     return [ title, playlist ]
+
+def getXMLElement(userToken, url):
+    """
+    Send the request to the server, and returns the respond as an XML element
+    If an error happened, then return None
+    Params: 
+    UserToken: None if Owner, else token
+    url: Url to fetch info from
+    """
+    if not userToken:
+        # User is the owner
+        try:
+            return XML.ElementFromURL(url)
+        except Exception, e:
+            Log.Exception('Exception when getting a response for %s as the owner was %s' %(url, str(e)))
+            return None
+    else:
+        try:
+            # TODO Change to native framework call, when Plex allows token in header
+            opener = urllib2.build_opener(urllib2.HTTPHandler)
+            request = urllib2.Request(sizeURL)
+            request.add_header(
+                'X-Plex-Token', userToken)
+            response = opener.open(request).read()
+            return XML.ElementFromString(response)
+        except Exception, e:
+            Log.Exception('Exception when getting a response for %s as a user was %s' %(url, str(e)))
+            return None
 
