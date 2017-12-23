@@ -360,13 +360,13 @@ class wtV3(object):
             if include > 0:
                 addSelf = '-- ' + self.GETTRANSLATE(None, None, Internal=True, String='Self') + ' --'
                 addAll = '-- ' + self.GETTRANSLATE(None, None, Internal=True, String='All') + ' --'
-            if include == 1:                
-                users[addSelf] = {}
-            elif include == 2:
-                users[addAll] = {}
+            if include == 1:                                
+                users['-1'] = {"username" : addSelf, "title" : addSelf}                
+            elif include == 2:                
+                users['-2'] = {"username" : addAll, "title" : addAll}
             elif include == 3:
-                users[addSelf] = {}
-                users[addAll] = {}
+                users['-1'] = {"username" : addSelf, "title" : addSelf}                
+                users['-2'] = {"username" : addAll, "title" : addAll}                
             else:
                 pass
             req.clear()
