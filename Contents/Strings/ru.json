@@ -1,0 +1,9 @@
+{
+    "Select to force https": "Выберите для принудительного включения HTTPS", 
+    "To access this channel, type the url's below to a new browser tab": "Для доступа к этому каналу, откройте одну из нижеприведенных ссылок в окне или вкладке браузера.", 
+    "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": "URL для <plugin>  (если находится за прокси-сервером– если нет, то оставить пустым).\nПример: /WebTools)", 
+    "Name of Certificate key file in Contents/Code/Certificate directory": "Имя файла сертификата ключа в директории Contents/Code/Certificate directory", 
+    "Name of Certificate crt file in Contents/Code/Certificate directory": "Имя CRT-файла сертификата в Contents/Code/Certificate directory", 
+    "Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": ">Введите порт который будет использоваться для доступа по протоколу HTTP. Не используйте любой из этих портов, зарезервированных для работы Plex или зависимых плагинов: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.", 
+    "Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": ">Введите порт который будет использоваться для доступа по протоколу HTTPS. Не используйте любой из этих портов, зарезервированных для работы Plex или зависимых плагинов: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469."
+}

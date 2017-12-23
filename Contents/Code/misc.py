@@ -84,6 +84,7 @@ class misc(object):
 		'''
 
     def getFunction(self, FUNCTIONS, metode, req):
+        """ This function will break  up a req, and split it out into function to call, and params for it """
         params = req.request.uri[8:].upper().split('/')
         function = None
         if metode not in FUNCTIONS:
@@ -110,6 +111,22 @@ class misc(object):
         Log.Debug('Function to call is: %s with params: %s' %
                   (function, str(params)))
         return [function, params]
+
+    def enum(self, *sequential, **named):
+        """
+        This will emulate an emun
+        Params: 
+            enum('users', 'users_self', 'users_all', 'users_self_all')
+                Above will create the enum
+            enum.users_self_all 
+                Above will return 3
+            enum.reverse_mapping[3]
+                Above will return users_self_all
+        """
+        enums = dict(zip(sequential, range(len(sequential))), **named)
+        reverse = dict((value, key) for key, value in enums.iteritems())
+        enums['reverse_mapping'] = reverse
+        return type('Enum', (), enums)
 
     ####################################################################################################
     # This function will return a filtered json, Non case sensitive, based on a url params filter

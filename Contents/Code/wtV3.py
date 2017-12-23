@@ -19,16 +19,12 @@ from plextvhelper import plexTV
 from shutil import copyfile
 from misc import misc
 
-GET = ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST',
-       'GETTRANSLATORLIST', 'GETCURRENTLANG']
-PUT = ['RESET', 'UPGRADEWT']
-POST = ['UPDATELANGUAGE', 'GETTRANSLATE']
-DELETE = ['']
+FUNCTIONS = {"get": ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST',
+       'GETTRANSLATORLIST', 'GETCURRENTLANG'], "put": ['RESET', 'UPGRADEWT'], "post": ['UPDATELANGUAGE', 'GETTRANSLATE']}
 
 PAYLOAD = 'aWQ9MTE5Mjk1JmFwaV90b2tlbj0wODA2OGU0ZjRkNTI3NDVlOTM0NzAyMWQ2NDU5MGYzOQ__'
 TRANSLATESITEBASE = 'https://api.poeditor.com/v2'
 TRANSLATESITEHEADER = {'content-type': 'application/x-www-form-urlencoded'}
-
 
 class wtV3(object):
 
@@ -37,10 +33,10 @@ class wtV3(object):
         return
 
     #********** Functions below ******************
-
-    ''' Get the language code for the UI '''
+    
     @classmethod
     def GETCURRENTLANG(self, req, *args, **kwargs):
+        """Get the language code for the UI"""
         if kwargs:
             if kwargs['Internal']:
                 return Dict['UILanguage']
@@ -131,10 +127,10 @@ class wtV3(object):
         req.clear()
         req.set_status(200)
         req.finish('WebTools finished upgrading')
-
-    ''' Get list of translators '''
+    
     @classmethod
     def GETTRANSLATORLIST(self, req, *args):
+        """Get list of translators"""
         try:
             response = HTTP.Request(method='POST', url=TRANSLATESITEBASE + '/contributors/list',
                                     data=String.Decode(PAYLOAD), headers=TRANSLATESITEHEADER)
@@ -159,10 +155,10 @@ class wtV3(object):
             req.set_status(e.code)
             req.finish(
                 'Fatal error happened in wt.getTranslatorList: %s' % (str(e)))
-
-    ''' Get list of avail languages, as well as their translation status '''
+    
     @classmethod
     def GETLANGUAGELIST(self, req, *args):
+        """Get list of avail languages, as well as their translation status"""
         try:
             response = HTTP.Request(method='POST', url=TRANSLATESITEBASE + '/languages/list',
                                     data=String.Decode(PAYLOAD), headers=TRANSLATESITEHEADER)
@@ -177,10 +173,10 @@ class wtV3(object):
             req.set_status(e.code)
             req.finish(
                 'Fatal error happened in wt.getLanguageList: %s' % (str(e)))
-
-    ''' Get a translation string '''
+    
     @classmethod
     def GETTRANSLATE(self, req, *args, **kwargs):
+        """Get a translation string"""
         try:
             Internal = False
             if kwargs:
@@ -255,10 +251,10 @@ class wtV3(object):
             req.set_status(e.code)
             req.finish('Fatal error happened in wt.getTranslate: %s' %
                        (str(e)))
-
-    ''' Download and update a translation from live translation site '''
+    
     @classmethod
     def UPDATELANGUAGE(self, req, *args):
+        """Download and update a translation from live translation site"""            
         try:
             # Get params
             if not args:
@@ -334,12 +330,45 @@ class wtV3(object):
             req.set_status(e.code)
             req.finish(
                 'Fatal error happened in wt.updateLanguage: %s' % (str(e)))
-
-    ''' Get list of users '''
+    
     @classmethod
     def GETUSERS(self, req, *args):
-        try:
+        include = 0
+        try:            
+            if args != None:                                
+                # We got additional arguments
+                if len(args) > 0:
+                    # Get them in lower case
+                    arguments = [item.lower() for item in list(args)[0]]                                
+                # Get include parameter
+                if 'include' in arguments:
+                    # Get the include
+                    include = arguments[arguments.index('include') + 1]
+                    if not include.isdigit():                        
+                        INCLUDE = misc.enum('users', 'users_self', 'users_all', 'users_self_all')
+                        include = getattr(INCLUDE, include)
+                else:
+                    # Copy from the Owner
+                    include = 0 
+            else:
+                include = 0       
+        except:
+            pass
+        """Get list of users"""
+        try:            
             users = plexTV().getUserList()
+            if include > 0:
+                addSelf = '-- ' + self.GETTRANSLATE(None, None, Internal=True, String='Self') + ' --'
+                addAll = '-- ' + self.GETTRANSLATE(None, None, Internal=True, String='All') + ' --'
+            if include == 1:                
+                users[addSelf] = {}
+            elif include == 2:
+                users[addAll] = {}
+            elif include == 3:
+                users[addSelf] = {}
+                users[addAll] = {}
+            else:
+                pass
             req.clear()
             if users == None:
                 Log.Error('Access denied towards plex.tv')
@@ -354,10 +383,10 @@ class wtV3(object):
             req.clear()
             req.set_status(e.code)
             req.finish('Fatal error happened in wt.getUsers: %s' % (str(e)))
-
-    '''  Reset WT to factory settings '''
+    
     @classmethod
     def RESET(self, req, *args):
+        """Reset WT to factory settings"""
         try:
             Log.Info('Factory Reset called')
             cachePath = Core.storage.join_path(
@@ -381,10 +410,10 @@ class wtV3(object):
             req.clear()
             req.set_status(e.code)
             req.finish('Fatal error happened in wt.reset: %s' % (str(e)))
-
-    ''' Get a list of all css files in http/custom_themes '''
+    
     @classmethod
     def GETCSS(self, req, *args):
+        """Get a list of all css files in http/custom_themes"""
         Log.Debug('getCSS requested')
         try:
             targetDir = Core.storage.join_path(
@@ -408,78 +437,30 @@ class wtV3(object):
             req.clear()
             req.set_status(e.code)
             req.finish('Fatal error happened in getCSS: ' + str(e))
-
-    ''' Get the relevant function and call it with optinal params '''
+    
     @classmethod
     def getFunction(self, metode, req):
+        """Get the relevant function and call it with optinal params"""
         self.init()
-        params = req.request.uri[8:].upper().split('/')
-        self.function = None
-        if metode == 'get':
-            for param in params:
-                if param in GET:
-                    self.function = param
-                    break
-                else:
-                    pass
-        elif metode == 'post':
-            for param in params:
-                if param in POST:
-                    self.function = param
-                    break
-                else:
-                    pass
-        elif metode == 'put':
-            for param in params:
-                if param in PUT:
-                    self.function = param
-                    break
-                else:
-                    pass
-        elif metode == 'delete':
-            for param in params:
-                if param in DELETE:
-                    self.function = param
-                    break
-                else:
-                    pass
-        if self.function == None:
+        function, params = misc.getFunction(FUNCTIONS, metode, req)                    
+        if function == None:
             Log.Debug('Function to call is None')
             req.clear()
             req.set_status(404)
             req.finish('Unknown function call')
-        else:
-            # Check for optional argument
-            paramsStr = req.request.uri[req.request.uri.upper().find(
-                self.function) + len(self.function):]
-            # remove starting and ending slash
-            if paramsStr.endswith('/'):
-                paramsStr = paramsStr[:-1]
-            if paramsStr.startswith('/'):
-                paramsStr = paramsStr[1:]
-            # Turn into a list
-            params = paramsStr.split('/')
-            # If empty list, turn into None
-            if params[0] == '':
-                params = None
+        else:           
             try:
-                Log.Debug('Function to call is: ' + self.function +
-                          ' with params: ' + str(params))
                 if params == None:
-                    getattr(self, self.function)(req)
+                    getattr(self, function)(req)
                 else:
-                    getattr(self, self.function)(req, params)
+                    getattr(self, function)(req, params)
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
-
 ''' ********************* Internal functions *********************************** '''
 
-
-''' This function will do a cleanup of old stuff, if needed '''
-
-
 def upgradeCleanup():
+    """This function will do a cleanup of old stuff, if needed"""
     ''' Always check translation file regardless of version '''
     updateTranslationStore()
     ''' Remove leftovers from an upgrade '''
@@ -519,11 +500,8 @@ def upgradeCleanup():
                 'We encountered an error during cleanup that was %s' % (str(e)))
             pass
 
-
-''' Remove old version that's upgraded, if present '''
-
-
 def removeUpgraded():
+    """Remove old version that's upgraded, if present"""
     try:
         pluginDir = Core.storage.join_path(
             Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle.upgraded')
@@ -533,11 +511,8 @@ def removeUpgraded():
     except Exception, e:
         Log.Exception('Exception in removeUpgraded was %s' % str(e))
 
-
-''' This function will update the translation.js file in PMS storage if needed '''
-
-
 def updateTranslationStore():
+    """This function will update the translation.js file in PMS storage if needed"""
     Log.Debug('updateTranslationStore started')
     bundleStore = Core.storage.join_path(
         Core.bundle_path, 'http', 'static', '_shared', 'translations.js')
@@ -564,11 +539,8 @@ def updateTranslationStore():
         createPluginStringTranslations()
     return
 
-
-''' Get a list of languages avail from translation site '''
-
-
 def getTranslationLanguages():
+    """Get a list of languages avail from translation site"""
     try:
         response = HTTP.Request(method='POST', url=TRANSLATESITEBASE + '/languages/list',
                                 data=String.Decode(PAYLOAD), headers=TRANSLATESITEHEADER)
@@ -579,11 +551,8 @@ def getTranslationLanguages():
             'Exception happened in getTranslationLanguages was: ' + str(e))
         return None
 
-
-''' Extraxt channel plugin translations from the translations.js file '''
-
-
 def createPluginStringTranslations():
+    """Extraxt channel plugin translations from the translations.js file"""
     try:
         # Get Strings directory
         STRINGSDIR = Core.storage.join_path(

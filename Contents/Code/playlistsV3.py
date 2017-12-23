@@ -35,8 +35,8 @@ MEDIATYPES = {'Track' : 10}
 class playlistsV3(object):
     ''' Defaults used by the rest of the class '''
     @classmethod
-    def init(self):
-        self.getListsURL = misc.GetLoopBack() + '/playlists/all'
+    def init(self):                        
+        self.getListsURL = misc.GetLoopBack() + '/playlists/all'        
 
     ''' This metode will import a playlist. '''
     @classmethod
