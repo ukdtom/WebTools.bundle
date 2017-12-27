@@ -32,15 +32,16 @@ ROOTNODES = {'audio': 'Track', 'video': 'Video', 'photo': 'Photo'}
 MEDIATYPES = {'Track' : 10}
 
 
-class playlistsV3(object):
-    ''' Defaults used by the rest of the class '''
+class playlistsV3(object):    
     @classmethod
-    def init(self):                        
+    def init(self):
+        """Defaults used by the rest of the class"""                        
         self.getListsURL = misc.GetLoopBack() + '/playlists/all'        
 
-    ''' This metode will import a playlist. '''
+    
     @classmethod
     def IMPORT(self, req, *args):
+        """This metode will import a playlist"""
         # Just init of internal stuff
         sName = None
         sType = None
@@ -382,11 +383,22 @@ class playlistsV3(object):
             req.finish(
                 'Exception happened in Playlist import was: %s' % (str(e)))
         return
-
-    ''' This metode will copy a playlist. between users '''
+    
     @classmethod
     def COPY(self, req, *args):
+        """
+        This metode will copy a playlist. between users
+        Params:
+        key : Key of PlayList to copy
+        UserTo : ID of target User to copy Playlist to
+            * If UserTo is -1 or None, then target user is owner
+            * If UserTo is -2, then target user is all users
+        UserFrom : Id of Source user having the PlayList
+            * If UserFrom is -1 or None, then UserFrom is owner
+        """
         users = None
+        # Get user list, among with access token
+        users = plexTV().getUserList()
         # Start by getting the key of the PlayList
         if args != None:
             # We got additional arguments
@@ -398,7 +410,7 @@ class playlistsV3(object):
                 req.clear()
                 req.set_status(412)
                 req.finish('Missing Arguments')
-            # Get playlist Key
+            # Get playlist Key            
             if 'key' in arguments:
                 # Get key of the user
                 key = arguments[arguments.index('key') + 1]
@@ -408,9 +420,20 @@ class playlistsV3(object):
                 req.set_status(412)
                 req.finish('Missing key of playlist')
             # Get UserFrom
-            if 'userfrom' in arguments:
+            if 'userfrom' in arguments:                                
                 # Get the userfrom
-                userfrom = arguments[arguments.index('userfrom') + 1]
+                userfrom = arguments[arguments.index('userfrom') + 1]                
+                if userfrom == '-1':
+                    userfrom = None
+                elif userfrom == '-2':
+                    Log.Critical('All selected as from')
+                    req.clear()
+                    req.set_status(405)
+                    req.finish("We can't have all users as the source") 
+                elif userfrom not in users:
+                    req.clear()
+                    req.set_status(404)
+                    req.finish("UserFrom not found")                    
             else:
                 # Copy from the Owner
                 userfrom = None
@@ -418,61 +441,47 @@ class playlistsV3(object):
             if 'userto' in arguments:
                 # Get the userto
                 userto = arguments[arguments.index('userto') + 1]
+                if userto == '-1':
+                    userto = None
             else:
-                Log.Error('Missing target user of playlist')
-                req.clear()
-                req.set_status(412)
-                req.finish('Missing targetuser of playlist')
-            # Get user list, among with access token
-            users = plexTV().getUserList()
-            # Get the playlist that needs to be copied
-            url = misc.GetLoopBack() + '/playlists/' + key + '/items'
-            if userfrom == None:
-                # Get it from the owner
-                playlist = XML.ElementFromURL(url)
+                userto = None
+            # Get the playlist that needs to be copied            
+            url = misc.GetLoopBack() + '/playlists/' + key + '/items?' + EXCLUDE
+            # Get User Token
+            if userfrom:
+                userToken = users[userfrom]['accessToken']
             else:
-                # We need to logon as specified user
-                try:
-                    # Get user playlist
-                    # TODO Change to native framework call, when Plex allows token in header
-                    opener = urllib2.build_opener(urllib2.HTTPHandler)
-                    request = urllib2.Request(url)
-                    request.add_header(
-                        'X-Plex-Token', users[userfrom]['accessToken'])
-                    response = opener.open(request).read()
-                    playlist = XML.ElementFromString(response)
-                except Ex.HTTPError, e:
-                    Log.Exception(
-                        'HTTP exception  when downloading a playlist for the owner was: %s' % (e))
-                    req.clear()
-                    req.set_status(e.code)
-                    req.finish(str(e))
-                except Exception, e:
-                    Log.Exception(
-                        'Exception happened when downloading a playlist for the user was: %s' % (str(e)))
-                    req.clear()
-                    req.set_status(500)
-                    req.finish(
-                        'Exception happened when downloading a playlist for the user was: %s' % (str(e)))
+                userToken = None
+            # Get the playlist                        
+            playlist = getXMLElement(userToken, url)            
             # Now walk the playlist, and do a lookup for the items, in order to grab the librarySectionUUID
-            jsonItems = {}
-            playlistType = playlist.get('playlistType')
-            playlistTitle = playlist.get('title')
-            playlistSmart = (playlist.get('smart') == 1)
-            for item in playlist:
-                itemKey = item.get('ratingKey')
-                xmlUrl = misc.GetLoopBack() + '/library/metadata/' + itemKey + '?' + EXCLUDE
-                UUID = XML.ElementFromURL(
-                    misc.GetLoopBack() + '/library/metadata/' + itemKey).get('librarySectionUUID')
-                if UUID in jsonItems:
-                    jsonItems[UUID].append(itemKey)
-                else:
-                    jsonItems[UUID] = []
-                    jsonItems[UUID].append(itemKey)
+            try:                
+                jsonItems = {}
+                playlistType = playlist.get('playlistType')
+                playlistTitle = playlist.get('title')
+                playlistSmart = (playlist.get('smart') == 1)
+                for item in playlist:
+                    itemKey = item.get('ratingKey')                    
+                    xmlUrl = misc.GetLoopBack() + '/library/metadata/' + itemKey + '?' + EXCLUDE
+                    UUID = XML.ElementFromURL(
+                        misc.GetLoopBack() + '/library/metadata/' + itemKey).get('librarySectionUUID')
+                    if UUID in jsonItems:
+                        jsonItems[UUID].append(itemKey)
+                    else:
+                        jsonItems[UUID] = []
+                        jsonItems[UUID].append(itemKey)
+            except Exception, e:
+                Log.Exception('Exception in extracting a playlist was %s' %str(e))           
             Log.Debug('Got a playlist that looks like:')
-            Log.Debug(json.dumps(jsonItems))
+            Log.Debug(json.dumps(jsonItems))            
             # So we got all the info needed now from the source user, now time for the target user
-            if userto.upper() == 'ALL':
+            if userto == None:
+                # Target is the owner
+                print 'Ged target is owner'
+
+
+
+            elif userto.upper() == '-2':
                 Log.Info('Copy to all users')                
                 for user in users:
                     try:
@@ -486,7 +495,7 @@ class playlistsV3(object):
                         playlistto = XML.ElementFromString(response)
                     except Ex.HTTPError, e:
                         Log.Exception(
-                            'HTTP exception when downloading a playlist for the owner was: %s' % (e))
+                            'HTTP exception when downloading a playlist for the user was: %s' % (e))
                         req.clear()
                         req.set_status(e.code)
                         req.finish(str(e))
@@ -572,9 +581,11 @@ class playlistsV3(object):
                 targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + \
                     '&title=' + String.Quote(playlistTitle) + \
                     '&smart=0&uri=library://'
-                counter = 0
+                #counter = 0
+                bFirstRun = True
                 for lib in jsonItems:
-                    if counter < 1:
+                    #if counter < 1:
+                    if bFirstRun:
                         targetFirstUrl += lib + '/directory//library/metadata/'
                         medias = ','.join(map(str, jsonItems[lib]))
                         targetFirstUrl += String.Quote(medias)
@@ -591,7 +602,8 @@ class playlistsV3(object):
                         except Exception, e:
                             Log.Exception(
                                 'Exception creating first part of playlist was: %s' % (str(e)))
-                        counter += 1
+                        #counter += 1
+                        bFirstRun = False
                     else:
                         # Remaining as put
                         medias = ','.join(map(str, jsonItems[lib]))
@@ -610,9 +622,10 @@ class playlistsV3(object):
             req.set_status(412)
             req.finish('Missing Arguments')
 
-    ''' This metode will download a playlist. accepts a user parameter '''
+    
     @classmethod
     def DOWNLOAD(self, req, *args):
+        """This metode will download a playlist. accepts a user parameter"""
         try:
             user = None
             if args != None:
@@ -677,9 +690,10 @@ class playlistsV3(object):
             req.finish(
                 'Fatal error happened in playlists.download: %s' % (str(e)))
 
-    ''' This metode will delete a playlist. accepts a user parameter '''
+    
     @classmethod
     def DELETE(self, req, *args):
+        """This metode will delete a playlist. accepts a user parameter"""
         try:
             user = None
             if args != None:
@@ -748,9 +762,10 @@ class playlistsV3(object):
             req.finish(
                 'Fatal error happened in playlists.delete: %s' % (str(e)))
 
-    ''' This metode will return a list of playlists. accepts a user parameter '''
+    
     @classmethod
     def LIST(self, req, *args):
+        """This metode will return a list of playlists. accepts a user parameter"""
         try:
             user = None
             if args != None:
@@ -791,9 +806,10 @@ class playlistsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in playlists.list: %s' % (str(e)))
 
-    ''' Get the relevant function and call it with optinal params '''
+
     @classmethod
-    def getFunction(self, metode, req):        
+    def getFunction(self, metode, req):
+        """Get the relevant function and call it with optinal params"""
         self.init()        
         function, params = misc.getFunction(FUNCTIONS, metode, req)                    
         if function == None:
@@ -838,10 +854,8 @@ def deletePlayLIstforUsr(req, key, token):
     return req
 
 
-''' This function returns true or false, if key/path matches for a media '''
-
-
 def checkItemIsValid(key, title, sType):
+    """This function returns true or false, if key/path matches for a media"""
     url = misc.GetLoopBack() + '/library/metadata/' + str(key) + '?' + EXCLUDE
     mediaTitle = None
     try:
@@ -851,10 +865,9 @@ def checkItemIsValid(key, title, sType):
         pass
     return (title == mediaTitle)
 
-''' This function will search for a a media based on title and type, and return the key '''
-
 
 def searchForItemKey(title, sType):
+    """This function will search for a a media based on title and type, and return the key"""
     try:
         result = []
         # TODO: Fix for other types
@@ -877,9 +890,8 @@ def searchForItemKey(title, sType):
         pass
 
 
-''' Here we detect the Plex type of a media file '''
-
 def guessMediaType(fileName):
+    """Here we detect the Plex type of a media file"""
     sType = None
     # Get ext of the file
     ext = os.path.splitext(fileName)[1][1:]    
@@ -889,9 +901,8 @@ def guessMediaType(fileName):
     return sType
 
 
-''' Get libraries of a certain type '''
-
 def getLibsOfType(sType):   
+    """Get libraries of a certain type"""
     libsToSearch = []
     if sType == 'audio':
         sType = 'artist'    
@@ -908,13 +919,13 @@ def getLibsOfType(sType):
         Log.Exception('Exception in playList getLibsOfType was %s' %str(e))
     return
 
-''' Get media files from filePath '''
-def getFilesFromLib(libs, sType):                
+
+def getFilesFromLib(libs, sType): 
+    """Get media files from filePath"""               
     itemList = {}
     # Add from one library at a time
     for lib in libs:        
-        start = 0 # Start point of items                
-        print 'Ged Types int', str(MEDIATYPES[ROOTNODES[sType]])
+        start = 0 # Start point of items                        
         baseUrl = misc.GetLoopBack() + '/library/sections/' + lib + '/all?type=' + str(MEDIATYPES[ROOTNODES[sType]]) + '&' + EXCLUDE + '&X-Plex-Container-Start='        
         url = baseUrl + '0' + '&X-Plex-Container-Size=0'        
         libInfo = XML.ElementFromURL(url)
@@ -943,12 +954,13 @@ def getFilesFromLib(libs, sType):
     Log.Debug(itemList)    
     return itemList
 
+
 def getPlayListItems(user, key):
-    """
-    getPlayListItems returns an array with the playlist items
+    """    
     Params:
     user : key of user, or null if the owner
     key : key of playlist
+    Return [title, playlist]
     """
     Log.Info('Starting getPlaylistItems with user: %s and key of: %s' %(user, key))
     playlist = []    
@@ -1057,6 +1069,7 @@ def getPlayListItems(user, key):
             return None                                                  
     return [ title, playlist ]
 
+
 def getXMLElement(userToken, url):
     """
     Send the request to the server, and returns the respond as an XML element
@@ -1076,7 +1089,7 @@ def getXMLElement(userToken, url):
         try:
             # TODO Change to native framework call, when Plex allows token in header
             opener = urllib2.build_opener(urllib2.HTTPHandler)
-            request = urllib2.Request(sizeURL)
+            request = urllib2.Request(url)
             request.add_header(
                 'X-Plex-Token', userToken)
             response = opener.open(request).read()
@@ -1084,4 +1097,3 @@ def getXMLElement(userToken, url):
         except Exception, e:
             Log.Exception('Exception when getting a response for %s as a user was %s' %(url, str(e)))
             return None
-
