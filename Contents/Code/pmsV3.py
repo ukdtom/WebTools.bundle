@@ -15,11 +15,13 @@ import io
 import sys
 from xml.etree import ElementTree
 
-GET = ['SEARCH', 'GETALLBUNDLEINFO', 'GETSECTIONSLIST', 'GETSECTIONSIZE', 'GETSECTIONLETTERLIST', 'GETSECTION', 'GETSUBTITLES',
-       'GETPARTS', 'SHOWSUBTITLE', 'GETSHOWSIZE', 'GETSHOWSEASONS', 'GETSHOWSEASON', 'GETSHOWCONTENTS', 'DOWNLOADSUBTITLE']
-PUT = ['']
-POST = ['UPLOADFILE', 'UPLOADSUB']
-DELETE = ['DELBUNDLE', 'DELSUB']
+FUNCTIONS = {
+    "get": ["SEARCH", "GETALLBUNDLEINFO", "GETSECTIONSLIST", "GETSECTIONSIZE", "GETSECTIONLETTERLIST", 
+            "GETSECTION", "GETSUBTITLES", "GETPARTS", "SHOWSUBTITLE", "GETSHOWSIZE", "GETSHOWSEASONS", 
+            "GETSHOWSEASON", "GETSHOWCONTENTS", "DOWNLOADSUBTITLE", "GETSECTIONKEYUUID"],
+    "post": ["UPLOADFILE", "UPLOADSUB"], 
+    "delete": ["DELBUNDLE", "DELSUB"]
+    }
 
 
 class pmsV3(object):
@@ -29,70 +31,45 @@ class pmsV3(object):
         self.PLUGIN_DIR = Core.storage.join_path(
             Core.app_support_path, Core.config.bundles_dir_name)
 
-    ''' Get the relevant function and call it with optinal params '''
+
     @classmethod
     def getFunction(self, metode, req):
-        self.init()
-        params = req.request.uri[8:].upper().split('/')
-        self.function = None
-        if metode == 'get':
-            for param in params:
-                if param in GET:
-                    self.function = param
-                    break
-                else:
-                    pass
-        elif metode == 'post':
-            for param in params:
-                if param in POST:
-                    self.function = param
-                    break
-                else:
-                    pass
-        elif metode == 'put':
-            for param in params:
-                if param in PUT:
-                    self.function = param
-                    break
-                else:
-                    pass
-        elif metode == 'delete':
-            for param in params:
-                if param in DELETE:
-                    self.function = param
-                    break
-                else:
-                    pass
-        if self.function == None:
+        """Get the relevant function and call it with optinal params"""
+        self.init()        
+        function, params = misc.getFunction(FUNCTIONS, metode, req)                    
+        if function == None:
             Log.Debug('Function to call is None')
             req.clear()
             req.set_status(404)
             req.finish('Unknown function call')
-        else:
-            # Check for optional argument
-            paramsStr = req.request.uri[req.request.uri.upper().find(
-                self.function) + len(self.function):]
-            # remove starting and ending slash
-            if paramsStr.endswith('/'):
-                paramsStr = paramsStr[:-1]
-            if paramsStr.startswith('/'):
-                paramsStr = paramsStr[1:]
-            # Turn into a list
-            params = paramsStr.split('/')
-            # If empty list, turn into None
-            if params[0] == '':
-                params = None
+        else:           
             try:
-                Log.Debug('Function to call is: ' + self.function +
-                          ' with params: ' + str(params))
                 if params == None:
-                    getattr(self, self.function)(req)
+                    getattr(self, function)(req)
                 else:
-                    getattr(self, self.function)(req, params)
+                    getattr(self, function)(req, params)
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
     #********** Functions below ******************
+
+    @classmethod
+    def GETSECTIONKEYUUID(self, key=None):
+        """
+        Returns the UUID of a section specified by the key
+        if not found, then returns None
+        """        
+        url = misc.GetLoopBack() + '/library/sections'
+        returnJson = {}
+        try:
+            sections = XML.ElementFromURL(url).xpath('//Directory')
+            for section in sections:
+                if str(section.get('key')) == str(key):
+                    return section.get('uuid')
+            return None
+        except Exception, e:
+            Log.Exception('Exception in GetSectionKeyUUID was: %s' %str(e))
+
 
     ''' Download Subtitle '''
     @classmethod
