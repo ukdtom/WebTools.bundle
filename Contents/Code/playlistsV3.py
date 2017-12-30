@@ -454,13 +454,65 @@ class playlistsV3(object):
                 userToken = users[userfrom]['accessToken']
             else:
                 userToken = None
-            # Get the playlist    
+            # Get the playlist                
+            jsonItems = getPlayListAsJSON(userToken, key)
+            playlistTitle = jsonItems['playlistTitle']
+            playlistType = jsonItems['playlistType']
+            # Now split items into smaller chunks, defined by MEDIASTEPS
+            itemsToAdd = {}
+            for libDir in jsonItems['items']:                  
+                #itemsArray = misc.chunks(jsonItems['items'][libDir], MEDIASTEPS)
+                itemsToAdd[libDir] = misc.chunks(jsonItems['items'][libDir], 3)
+            print 'Ged dyutui23417843287 SKIFT TIL MEDIASTEPS', itemsToAdd
 
 
-            
-            getPlayListAsJSON(userToken, key)
+            try:            
+                # So we got all the info needed now from the source user, now time for the target user
+                urltoPlayLists = misc.GetLoopBack() + '/playlists?' + EXCLUDE
+                if userto == None:
+                    # Target is the owner
+                    Log.Debug('Target user is the owner')
+                    print 'Ged target is owner'
+                    playlistto = XML.ElementFromURL(urltoPlayLists)
+                    # So we got the target users list of playlists, and if the one we need to copy already is there, we delete it
+                    for itemto in playlistto:
+                        if playlistTitle == itemto.get('title'):
+                            keyto = itemto.get('ratingKey')
+                            deletePlayListforUsr(req, keyto, None)
 
-            #playlist = getXMLElement(userToken, url) 
+                    # Make url for creation of playlist
+                    targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + \
+                        '&title=' + String.Quote(playlistTitle) + \
+                        '&smart=0&uri=library://'
+                    bFirstRun = True
+
+
+
+
+                    #for lib in jsonItems['items']:
+                    for lib in itemsToAdd:  
+                        for items in lib:
+                                                                                                
+                            if bFirstRun:
+                                targetFirstUrl += lib + '/directory//library/metadata/'                            
+                                medias = ','.join(map(str, jsonItems['items'][lib]))
+                                targetFirstUrl += String.Quote(medias)
+                                # First url for the post created, so send it, and grab the response
+                                try:
+                                    response = HTTP.Request(targetFirstUrl, cacheTime=0, immediate=True, method="POST")
+                                    ratingKey = XML.ElementFromString(
+                                        response).xpath('Playlist/@ratingKey')[0]
+                                except Exception, e:
+                                    Log.Exception(
+                                        'Exception creating first part of playlist was: %s' % (str(e)))
+                                bFirstRun = False
+                            else:
+                                # Remaining as put
+                                medias = ','.join(map(str, jsonItems[lib]))
+                                targetSecondUrl = misc.GetLoopBack() + '/playlists/' + ratingKey + '/items?uri=library://' + \
+                                    lib + '/directory//library/metadata/' + \
+                                    String.Quote(medias)
+                                HTTP.Request(targetSecondUrl, cacheTime=0, immediate=True, method="PUT")
 
 
 
@@ -469,92 +521,88 @@ class playlistsV3(object):
 
 
 
-            # Now walk the playlist, and do a lookup for the items, in order to grab the librarySectionUUID
-            try:                
-                jsonItems = {}
-                playlistType = playlist.get('playlistType')
-                playlistTitle = playlist.get('title')
-                playlistSmart = (playlist.get('smart') == 1)
-                for item in playlist:
-                    itemKey = item.get('ratingKey')                    
-                    xmlUrl = misc.GetLoopBack() + '/library/metadata/' + itemKey + '?' + EXCLUDE
-                    UUID = XML.ElementFromURL(
-                        misc.GetLoopBack() + '/library/metadata/' + itemKey).get('librarySectionUUID')
-                    if UUID in jsonItems:
-                        jsonItems[UUID].append(itemKey)
-                    else:
-                        jsonItems[UUID] = []
-                        jsonItems[UUID].append(itemKey)
-            except Exception, e:
-                Log.Exception('Exception in extracting a playlist was %s' %str(e))           
-            Log.Debug('Got a playlist that looks like:')
-            Log.Debug(json.dumps(jsonItems))            
-            # So we got all the info needed now from the source user, now time for the target user
-            urltoPlayLists = misc.GetLoopBack() + '/playlists?' + EXCLUDE
-            if userto == None:
-                # Target is the owner
-                Log.Debug('Target user is the owner')
-                print 'Ged target is owner'
-                playlistto = XML.ElementFromURL(urltoPlayLists)
-                # So we got the target users list of playlists, and if the one we need to copy already is there, we delete it
-                for itemto in playlistto:
-                    if playlistTitle == itemto.get('title'):
-                        keyto = itemto.get('ratingKey')
-                        deletePlayListforUsr(req, keyto, None)
 
-                # Make url for creation of playlist
-                targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + \
-                    '&title=' + String.Quote(playlistTitle) + \
-                    '&smart=0&uri=library://'
-                bFirstRun = True
-                for lib in jsonItems:
-                    if bFirstRun:
-                        targetFirstUrl += lib + '/directory//library/metadata/'
-                        medias = ','.join(map(str, jsonItems[lib]))
-                        targetFirstUrl += String.Quote(medias)
-                        # First url for the post created, so send it, and grab the response
+
+
+                elif userto.upper() == '-2':
+                    Log.Info('Copy to all users')                
+                    for user in users:
                         try:
-                            response = HTTP.Request(targetFirstUrl, cacheTime=0, immediate=True, method="POST")
-                            ratingKey = XML.ElementFromString(
-                                response).xpath('Playlist/@ratingKey')[0]
+                            # TODO Change to native framework call, when Plex allows token in header
+                            
+                            opener = urllib2.build_opener(urllib2.HTTPHandler)
+                            request = urllib2.Request(urltoPlayLists)
+                            request.add_header(
+                                'X-Plex-Token', users[user]['accessToken'])
+                            response = opener.open(request).read()
+                            playlistto = XML.ElementFromString(response)
+                        except Ex.HTTPError, e:
+                            Log.Exception(
+                                'HTTP exception when downloading a playlist for the user was: %s' % (e))
+                            req.clear()
+                            req.set_status(e.code)
+                            req.finish(str(e))
                         except Exception, e:
                             Log.Exception(
-                                'Exception creating first part of playlist was: %s' % (str(e)))
-                        bFirstRun = False
-                    else:
-                        # Remaining as put
-                        medias = ','.join(map(str, jsonItems[lib]))
-                        targetSecondUrl = misc.GetLoopBack() + '/playlists/' + ratingKey + '/items?uri=library://' + \
-                            lib + '/directory//library/metadata/' + \
-                            String.Quote(medias)
-                        HTTP.Request(targetSecondUrl, cacheTime=0, immediate=True, method="PUT")
-
-
-
-
-
-
-
-
-
-
-
-
-            elif userto.upper() == '-2':
-                Log.Info('Copy to all users')                
-                for user in users:
+                                'Exception happened when downloading a playlist for the user was: %s' % (str(e)))
+                            req.clear()
+                            req.set_status(500)
+                            req.finish(
+                                'Exception happened when downloading a playlist for the user was: %s' % (str(e)))
+                        # So we got the target users list of playlists, and if the one we need to copy already is there, we delete it
+                        for itemto in playlistto:
+                            if playlistTitle == itemto.get('title'):
+                                keyto = itemto.get('ratingKey')
+                                deletePlayListforUsr(
+                                    req, keyto, users[user]['accessToken'])
+                        # Make url for creation of playlist
+                        targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + \
+                            '&title=' + String.Quote(playlistTitle) + \
+                            '&smart=0&uri=library://'
+                        counter = 0
+                        for lib in jsonItems:
+                            if counter < 1:
+                                targetFirstUrl += lib + '/directory//library/metadata/'
+                                medias = ','.join(map(str, jsonItems[lib]))
+                                targetFirstUrl += String.Quote(medias)
+                                # First url for the post created, so send it, and grab the response
+                                try:
+                                    opener = urllib2.build_opener(urllib2.HTTPHandler)
+                                    request = urllib2.Request(targetFirstUrl)
+                                    request.add_header(
+                                        'X-Plex-Token', users[user]['accessToken'])
+                                    request.get_method = lambda: 'POST'
+                                    response = opener.open(request).read()
+                                    ratingKey = XML.ElementFromString(
+                                        response).xpath('Playlist/@ratingKey')[0]
+                                except Exception, e:
+                                    Log.Exception(
+                                        'Exception creating first part of playlist was: %s' % (str(e)))
+                                counter += 1
+                            else:
+                                # Remaining as put
+                                medias = ','.join(map(str, jsonItems[lib]))
+                                targetSecondUrl = misc.GetLoopBack() + '/playlists/' + ratingKey + '/items?uri=library://' + \
+                                    lib + '/directory//library/metadata/' + \
+                                    String.Quote(medias)
+                                opener = urllib2.build_opener(urllib2.HTTPHandler)
+                                request = urllib2.Request(targetSecondUrl)
+                                request.add_header(
+                                    'X-Plex-Token', users[user]['accessToken'])
+                                request.get_method = lambda: 'PUT'
+                                opener.open(request)
+                else:
                     try:
-                        # TODO Change to native framework call, when Plex allows token in header
-                        
+                        # TODO Change to native framework call, when Plex allows token in header                    
                         opener = urllib2.build_opener(urllib2.HTTPHandler)
                         request = urllib2.Request(urltoPlayLists)
                         request.add_header(
-                            'X-Plex-Token', users[user]['accessToken'])
+                            'X-Plex-Token', users[userto]['accessToken'])
                         response = opener.open(request).read()
                         playlistto = XML.ElementFromString(response)
                     except Ex.HTTPError, e:
                         Log.Exception(
-                            'HTTP exception when downloading a playlist for the user was: %s' % (e))
+                            'HTTP exception when downloading a playlist for the owner was: %s' % (e))
                         req.clear()
                         req.set_status(e.code)
                         req.finish(str(e))
@@ -570,14 +618,16 @@ class playlistsV3(object):
                         if playlistTitle == itemto.get('title'):
                             keyto = itemto.get('ratingKey')
                             deletePlayListforUsr(
-                                req, keyto, users[user]['accessToken'])
+                                req, keyto, users[userto]['accessToken'])
                     # Make url for creation of playlist
                     targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + \
                         '&title=' + String.Quote(playlistTitle) + \
                         '&smart=0&uri=library://'
-                    counter = 0
+                    #counter = 0
+                    bFirstRun = True
                     for lib in jsonItems:
-                        if counter < 1:
+                        #if counter < 1:
+                        if bFirstRun:
                             targetFirstUrl += lib + '/directory//library/metadata/'
                             medias = ','.join(map(str, jsonItems[lib]))
                             targetFirstUrl += String.Quote(medias)
@@ -586,7 +636,7 @@ class playlistsV3(object):
                                 opener = urllib2.build_opener(urllib2.HTTPHandler)
                                 request = urllib2.Request(targetFirstUrl)
                                 request.add_header(
-                                    'X-Plex-Token', users[user]['accessToken'])
+                                    'X-Plex-Token', users[userto]['accessToken'])
                                 request.get_method = lambda: 'POST'
                                 response = opener.open(request).read()
                                 ratingKey = XML.ElementFromString(
@@ -594,7 +644,8 @@ class playlistsV3(object):
                             except Exception, e:
                                 Log.Exception(
                                     'Exception creating first part of playlist was: %s' % (str(e)))
-                            counter += 1
+                            #counter += 1
+                            bFirstRun = False
                         else:
                             # Remaining as put
                             medias = ','.join(map(str, jsonItems[lib]))
@@ -604,76 +655,16 @@ class playlistsV3(object):
                             opener = urllib2.build_opener(urllib2.HTTPHandler)
                             request = urllib2.Request(targetSecondUrl)
                             request.add_header(
-                                'X-Plex-Token', users[user]['accessToken'])
+                                'X-Plex-Token', users[userto]['accessToken'])
                             request.get_method = lambda: 'PUT'
                             opener.open(request)
-            else:
-                try:
-                    # TODO Change to native framework call, when Plex allows token in header                    
-                    opener = urllib2.build_opener(urllib2.HTTPHandler)
-                    request = urllib2.Request(urltoPlayLists)
-                    request.add_header(
-                        'X-Plex-Token', users[userto]['accessToken'])
-                    response = opener.open(request).read()
-                    playlistto = XML.ElementFromString(response)
-                except Ex.HTTPError, e:
-                    Log.Exception(
-                        'HTTP exception when downloading a playlist for the owner was: %s' % (e))
-                    req.clear()
-                    req.set_status(e.code)
-                    req.finish(str(e))
-                except Exception, e:
-                    Log.Exception(
-                        'Exception happened when downloading a playlist for the user was: %s' % (str(e)))
-                    req.clear()
-                    req.set_status(500)
-                    req.finish(
-                        'Exception happened when downloading a playlist for the user was: %s' % (str(e)))
-                # So we got the target users list of playlists, and if the one we need to copy already is there, we delete it
-                for itemto in playlistto:
-                    if playlistTitle == itemto.get('title'):
-                        keyto = itemto.get('ratingKey')
-                        deletePlayListforUsr(
-                            req, keyto, users[userto]['accessToken'])
-                # Make url for creation of playlist
-                targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + \
-                    '&title=' + String.Quote(playlistTitle) + \
-                    '&smart=0&uri=library://'
-                #counter = 0
-                bFirstRun = True
-                for lib in jsonItems:
-                    #if counter < 1:
-                    if bFirstRun:
-                        targetFirstUrl += lib + '/directory//library/metadata/'
-                        medias = ','.join(map(str, jsonItems[lib]))
-                        targetFirstUrl += String.Quote(medias)
-                        # First url for the post created, so send it, and grab the response
-                        try:
-                            opener = urllib2.build_opener(urllib2.HTTPHandler)
-                            request = urllib2.Request(targetFirstUrl)
-                            request.add_header(
-                                'X-Plex-Token', users[userto]['accessToken'])
-                            request.get_method = lambda: 'POST'
-                            response = opener.open(request).read()
-                            ratingKey = XML.ElementFromString(
-                                response).xpath('Playlist/@ratingKey')[0]
-                        except Exception, e:
-                            Log.Exception(
-                                'Exception creating first part of playlist was: %s' % (str(e)))
-                        #counter += 1
-                        bFirstRun = False
-                    else:
-                        # Remaining as put
-                        medias = ','.join(map(str, jsonItems[lib]))
-                        targetSecondUrl = misc.GetLoopBack() + '/playlists/' + ratingKey + '/items?uri=library://' + \
-                            lib + '/directory//library/metadata/' + \
-                            String.Quote(medias)
-                        opener = urllib2.build_opener(urllib2.HTTPHandler)
-                        request = urllib2.Request(targetSecondUrl)
-                        request.add_header(
-                            'X-Plex-Token', users[userto]['accessToken'])
-                        request.get_method = lambda: 'PUT'
-                        opener.open(request)
+
+            except Exception, e:
+                Log.Exception('Exception in CopyPlaylist was %s' %str(e))
+
+
+
+
         else:
             Log.Critical('Missing Arguments')
             req.clear()
@@ -1160,14 +1151,21 @@ def getXMLElement(userToken, url):
             return None
 
 
-def getPlayListAsJSON(userToken, key):    
+def getPlayListAsJSON(userToken, key, copyAsSmart = False):    
     """
     Gets a playlist from the PMS, and returns the respond as an XML element
     If an error happened, then return None
     Params: 
     UserToken: None if Owner, else token
     key: key of playlist
-    """
+    """    
+    # Start by getting initial info
+    url = url = misc.GetLoopBack() + '/playlists/' + key
+    initialInfo = getXMLElement(userToken, url).xpath('//Playlist')[0]
+    playlistType = initialInfo.get('playlistType')
+    playlistTitle = initialInfo.get('title')
+    playlistSmart = (initialInfo.get('smart') == 1)
+    content = initialInfo.get('content')    
     # Prepare the url
     url = misc.GetLoopBack() + '/playlists/' + key + '/items?' + EXCLUDE
     # Temp Storage
@@ -1176,9 +1174,7 @@ def getPlayListAsJSON(userToken, key):
     start = 0    
     while True:
         url = url + '&X-Plex-Container-Start=' + str(start) + '&X-Plex-Container-Size=' + str(MEDIASTEPS)
-        if userToken == None:
-            grab = XML.ElementFromURL(url)
-        playlistType = grab.get('playlistType')
+        grab = getXMLElement(userToken, url)
         ROOTNODE = ROOTNODES[playlistType]                
         if grab.get('size') == '0':
             #Reached the end        
@@ -1193,8 +1189,17 @@ def getPlayListAsJSON(userToken, key):
             else:                
                 jsonItemsTmp[librarySectionID] = [ratingKey]                
     # Now change librarySectionID into UUID
-    jsonItems = {}    
+    jsonItems = {}
+    playlist = {}    
     for item in jsonItemsTmp:
         jsonItems[pmsV3.pmsV3().GETSECTIONKEYUUID(item)] = jsonItemsTmp[item]
+    # Add type, title and if smart
+    playlist['playlistType'] = playlistType
+    playlist['playlistTitle'] = playlistTitle
+    playlist['playlistSmart'] = playlistSmart
+    playlist['items'] = jsonItems   
+    playlist['content'] = content
     # Now return the result
-    return json.dumps(jsonItems)
+    Log.Debug('getPlayListAsJSON returning a playlist as:')
+    Log.Debug(json.dumps(playlist))
+    return playlist

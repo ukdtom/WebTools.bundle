@@ -128,6 +128,27 @@ class misc(object):
         enums['reverse_mapping'] = reverse
         return type('Enum', (), enums)
 
+
+
+    def chunks(self, l, n):
+        """
+        Split a list into multiple parts
+        Params:
+            l: the list
+            n: amount of items in the chunk
+        """
+        retList = []
+        # For item i in a range that is a length of l
+        print 'Ged l', l
+        print 'ged2', list(l)
+        for i in range(0, len(l), n):
+            print 'Ged4', i, n
+            # Create an index range for l of n items:
+            #yield l[i:i+n]
+            retList.append(l[i:i+n])
+        return retList
+
+
     ####################################################################################################
     # This function will return a filtered json, Non case sensitive, based on a url params filter
     ####################################################################################################
