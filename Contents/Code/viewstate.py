@@ -1,22 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-######################################################################################################################
-#					WebTools bundle module for Plex
+###############################################################################
+# WebTools bundle module for Plex
 #
-#					HAndles ViewState info about your users on your Plex Media Server
+# Handles ViewState info about your users on your Plex Media Server
 #
-#					Author:			dane22, a Plex Community member
+# Author:			dane22, a Plex Community member
 #
-#					Support thread:	http://forums.plex.tv/discussion/288191
+# Support thread:	http://forums.plex.tv/discussion/288191
 #
-######################################################################################################################
+###############################################################################
 
 import json
 from misc import misc
 from consts import EXCLUDEELEMENTS, EXCLUDEFIELDS, PLEX_MEDIATYPE as MEDIATYPE
 from plextvhelper import plexTV
 import time
-# TODO: Remove when Plex framework allows token in the header. Also look at delete and list method
+# TODO: Remove when Plex framework allows token in the header.
+# Also look at delete and list method
 import urllib2
 
 
@@ -52,13 +53,14 @@ class viewstate(object):
             req.clear()
             req.set_status(412)
             req.finish(
-                'Missing upload file parameter named localFile from the payload')
+                'Missing upload file parameter named \
+                localFile from the payload')
         else:
             localFile = req.request.files['localFile'][0]['body']
         # Get parameters from url
         try:
             user = None
-            if args != None:
+            if args is not None:
                 # We got additional arguments
                 if len(args) > 0:
                     # Get them in lower case
@@ -85,7 +87,8 @@ class viewstate(object):
 
         # So now user is either none or a keyId
         if user:
-            # Darn....Hard work ahead..We have to logon as another user here :-(
+            # Darn....Hard work ahead..We have
+            # to logon as another user here :-(
             result['user'] = user
             # Get user list, among with their access tokens
             users = plexTV().getUserList()
@@ -143,8 +146,10 @@ class viewstate(object):
             Sections = []
             for directory in rawSections:
                 if directory.get('type') in SUPPORTEDSECTIONS:
-                    Section = {'key': directory.get('key'), 'title': directory.get(
-                        'title'), 'type': directory.get('type')}
+                    Section = {
+                        'key': directory.get('key'),
+                        'title': directory.get('title'),
+                        'type': directory.get('type')}
                     Sections.append(Section)
             req.clear()
             req.set_status(200)
@@ -158,7 +163,8 @@ class viewstate(object):
             req.finish('Fatal error happened in getSectionsList')
 
     '''
-    This metode will scan a viewlist file, and then return a json with it contents.
+    This metode will scan a viewlist file, and then
+    return a json with it contents.
     * Param: localFile (In the payload)
     '''
     @classmethod
@@ -169,7 +175,8 @@ class viewstate(object):
             req.clear()
             req.set_status(412)
             req.finish(
-                'Missing upload file parameter named localFile from the payload')
+                'Missing upload file parameter named \
+                localFile from the payload')
         else:
             localFile = req.request.files['localFile'][0]['body']
         try:
@@ -203,7 +210,7 @@ class viewstate(object):
         try:
             # Let's start by checking, if we got the relevant parameters
             user = None
-            if args != None:
+            if args is not None:
                 # We got additional arguments
                 if len(args) > 0:
                     # Get them in lower case
@@ -215,10 +222,12 @@ class viewstate(object):
                             user = arguments[arguments.index('user') + 1]
                         except Exception, e:
                             Log.Exception(
-                                'Exception in getViewState to digest the user was: %s' % str(e))
+                                'Exception in getViewState to digest \
+                                the user was: %s' % str(e))
                             req.set_status(500)
                             req.finish(
-                                'Unknown error digesting the specified user was: %s' % str(e))
+                                'Unknown error digesting the specified \
+                                user was: %s' % str(e))
                             return
                     # Look for section
                     if 'section' in arguments:
@@ -228,10 +237,12 @@ class viewstate(object):
                                 arguments[arguments.index('section') + 1])
                         except Exception, e:
                             Log.Exception(
-                                'Exception in getViewState to digest the section was: %s' % str(e))
+                                'Exception in getViewState to digest \
+                                the section was: %s' % str(e))
                             req.set_status(500)
                             req.finish(
-                                'Unknown error digesting the specified section was: %s' % str(e))
+                                'Unknown error digesting the specified \
+                                section was: %s' % str(e))
                             return
                     else:
                         Log.Critical('Missing Section key in parameters')
@@ -253,7 +264,8 @@ class viewstate(object):
                 result['user'] = None
                 result['username'] = 'Owner'
             else:
-                # Darn....Hard work ahead..We have to logon as another user here :-(
+                # Darn....Hard work ahead..We have to
+                # logon as another user here :-(
                 result['user'] = user
                 # Get user list, among with their access tokens
                 users = plexTV().getUserList()
@@ -280,16 +292,18 @@ class viewstate(object):
             url = misc.GetLoopBack() + '/library/sections/' + str(section) + '/all?unwatched!=1&' + \
                 EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&type=' + \
                 str(Type) + '&X-Plex-Container-Start='
-            # Now let's walk the actual section, in small steps, and add to the result
+            # Now let's walk the actual section, in small steps,
+            # and add to the result
             start = 0
             medias = {}
             while True:
                 fetchUrl = url + str(start) + \
                     '&X-Plex-Container-Size=' + str(MEDIASTEPS)
-                if result['user'] == None:
+                if result['user'] is None:
                     unwatchedXML = XML.ElementFromURL(fetchUrl)
                 else:
-                    # TODO Change to native framework call, when Plex allows token in header
+                    # TODO Change to native framework call, when
+                    # Plex allows token in header
                     opener = urllib2.build_opener(urllib2.HTTPHandler)
                     request = urllib2.Request(fetchUrl)
                     request.add_header(
@@ -336,7 +350,7 @@ class viewstate(object):
 # ******************* Internal functions ************************
 
     '''
-    Do the actual import 
+    Do the actual import
     Here we import the json in a thread with search and all
     Have to do in a thread, since this can be time consuming
     '''
@@ -355,9 +369,10 @@ class viewstate(object):
                 MediaType = str(PLEX_MEDIATYPE['METADATA_MOVIE'])
             elif sectionType == 'Ged':
                 pass
-            url = misc.GetLoopBack() + '/library/sections/' + section + '/all?type=' + \
-                MediaType + '&X-Plex-Container-Start=0&X-Plex-Container-Size=1&' + \
-                EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&title='
+            url = misc.GetLoopBack() + '/library/sections/' + section
+            url += '/all?type=' + MediaType
+            url += '&X-Plex-Container-Start=0&X-Plex-Container-Size=1&'
+            url += EXCLUDEELEMENTS + '&' + EXCLUDEFIELDS + '&title='
             for title, key in watched.items():
                 SearchUrl = url + String.Quote(title)
                 key = XML.ElementFromURL(SearchUrl).xpath(
@@ -375,14 +390,16 @@ class viewstate(object):
     ''' Set media as watched  '''
     @classmethod
     def setWatched(self, req, watched, user, users):
-        url = misc.GetLoopBack() + '/:/scrobble?identifier=com.plexapp.plugins.library&key='
+        url = misc.GetLoopBack() + '/:/scrobble?identifier=\
+        com.plexapp.plugins.library&key='
         for key, value in watched.items():
             target = url + str(value)
             if not user:
                 httpResponse = HTTP.Request(target, immediate=True, timeout=5)
             else:
                 print 'Ged do alternative http get'
-                # TODO Change to native framework call, when Plex allows token in header
+                # TODO Change to native framework call, when
+                # Plex allows token in header
                 opener = urllib2.build_opener(urllib2.HTTPHandler)
                 request = urllib2.Request(target)
                 request.add_header(
@@ -423,7 +440,7 @@ class viewstate(object):
                     break
                 else:
                     pass
-        if self.function == None:
+        if self.function is None:
             Log.Debug('Function to call is None')
             req.clear()
             req.set_status(404)
@@ -445,7 +462,7 @@ class viewstate(object):
             try:
                 Log.Debug('Function to call is: ' + self.function +
                           ' with params: ' + str(params))
-                if params == None:
+                if params is None:
                     getattr(self, self.function)(req)
                 else:
                     getattr(self, self.function)(req, params)
