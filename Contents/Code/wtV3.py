@@ -1,10 +1,10 @@
 ######################################################################################################################
-#	WT unit
+# WT unit
 # A WebTools bundle plugin
 #
 # Used for internal functions to WebTools
 #
-#	Author: dane22, a Plex Community member
+# Author: dane22, a Plex Community member
 #
 ######################################################################################################################
 
@@ -19,12 +19,18 @@ from plextvhelper import plexTV
 from shutil import copyfile
 from misc import misc
 
-FUNCTIONS = {"get": ['GETCSS', 'GETUSERS', 'GETLANGUAGELIST',
-       'GETTRANSLATORLIST', 'GETCURRENTLANG'], "put": ['RESET', 'UPGRADEWT'], "post": ['UPDATELANGUAGE', 'GETTRANSLATE']}
+FUNCTIONS = {
+    "get": [
+        'GETCSS', 'GETUSERS', 'GETLANGUAGELIST',
+        'GETTRANSLATORLIST', 'GETCURRENTLANG'],
+    "put": ['RESET', 'UPGRADEWT'],
+    "post": ['UPDATELANGUAGE', 'GETTRANSLATE']}
 
-PAYLOAD = 'aWQ9MTE5Mjk1JmFwaV90b2tlbj0wODA2OGU0ZjRkNTI3NDVlOTM0NzAyMWQ2NDU5MGYzOQ__'
+PAYLOAD = 'aWQ9MTE5Mjk1JmFwaV90b2tlbj0wODA2OGU0Z\
+jRkNTI3NDVlOTM0NzAyMWQ2NDU5MGYzOQ__'
 TRANSLATESITEBASE = 'https://api.poeditor.com/v2'
 TRANSLATESITEHEADER = {'content-type': 'application/x-www-form-urlencoded'}
+
 
 class wtV3(object):
 
@@ -32,7 +38,7 @@ class wtV3(object):
     def init(self):
         return
 
-    #********** Functions below ******************
+    # ********** Functions below ******************
     
     @classmethod
     def GETCURRENTLANG(self, req, *args, **kwargs):
@@ -53,7 +59,10 @@ class wtV3(object):
 
     @classmethod
     def UPGRADEWT(self, req, *args):
-        """Upgrade WebTools from latest release. This is the new call, that replace the one that in V2 was located in the git module"""
+        """
+        Upgrade WebTools from latest release. This is the new call, that
+        replace the one that in V2 was located in the git module
+        """
         Log.Info('We recieved a call to upgrade WebTools itself')
         upgradeURL = WT_URL.replace(
             'https://github.com/', 'https://api.github.com/repos/') + '/releases/latest'

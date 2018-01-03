@@ -1,12 +1,13 @@
-######################################################################################################################
-#	findMedia unit
+###############################################################################
+# FindMedia unit
 # A WebTools bundle plugin
 #
-# Used to locate both items missing from the database, as well as from the filesystem
+# Used to locate both items missing from the database, as well as
+# from the filesystem
 #
-#	Author: dane22, a Plex Community member
+# Author: dane22, a Plex Community member
 #
-######################################################################################################################
+###############################################################################
 
 import urllib
 import unicodedata
@@ -33,14 +34,20 @@ statusMsg = wtV3().GETTRANSLATE(None, None, Internal=True, String='idle')
 runningState = 0
 # Flag to set if user wants to cancel
 bAbort = False
-Extras = ['behindthescenes', 'deleted', 'featurette', 'interview',
-          'scene', 'short', 'trailer']														# Local extras
-ExtrasDirs = ['behind the scenes', 'deleted scenes', 'featurettes',
-              'interviews', 'scenes', 'shorts', 'trailers']		# Directories to be ignored
-Specials = ['season 00', 'season 0', 'specials']                # Specials dirs
+# Local extras
+Extras = [
+    'behindthescenes', 'deleted', 'featurette', 'interview',
+    'scene', 'short', 'trailer']
+# Directories to be ignored
+ExtrasDirs = [
+    'behind the scenes', 'deleted scenes', 'featurettes',
+    'interviews', 'scenes', 'shorts', 'trailers']
+# Specials dirs
+Specials = ['season 00', 'season 0', 'specials']
 # Valid keys for prefs
 KEYS = ['IGNORE_HIDDEN', 'IGNORED_DIRS', 'VALID_EXTENSIONS', 'IGNORE_SPECIALS']
-excludeElements = 'Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Role,Similar,Writer'
+excludeElements = 'Actor,Collection,Country,Director,Genre,Label,Mood,Producer,\
+    Role,Similar,Writer'
 excludeFields = 'summary,tagline'
 SUPPORTEDSECTIONS = ['movie', 'show']
 
@@ -76,7 +83,7 @@ class findMediaV3(object):
         except Exception, e:
             Log.Exception('Exception in FM Init was %s' % (str(e)))
 
-    #********** Functions below ******************
+    # ********** Functions below ******************
 
     @classmethod
     def SETSETTINGS(self, req, *args):
@@ -98,7 +105,8 @@ class findMediaV3(object):
             if 'IGNORED_DIRS' in data:
                 Dict['findMedia']['IGNORED_DIRS'] = data['IGNORED_DIRS']
             if 'VALID_EXTENSIONS' in data:
-                Dict['findMedia']['VALID_EXTENSIONS'] = data['VALID_EXTENSIONS']
+                    Dict['findMedia']['VALID_EXTENSIONS'] = data[
+                        'VALID_EXTENSIONS']
             if 'IGNORE_EXTRAS' in data:
                 Dict['findMedia']['IGNORE_EXTRAS'] = data['IGNORE_EXTRAS']
             Dict.Save()
@@ -129,23 +137,34 @@ class findMediaV3(object):
                           (sectionNumber))
                 unmatchedByPlex = []
                 runningState = -1
-                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                String='Starting to scan database for section %s') % (sectionNumber)
+                statusMsg = wtV3().GETTRANSLATE(
+                    self, None, Internal=True,
+                    String='Starting to scan database for section %s')\
+                    % (sectionNumber)
                 # Start by getting the totals of this section
                 totalSize = XML.ElementFromURL(
-                    self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=1&X-Plex-Container-Size=0').get('totalSize')
+                    self.CoreUrl + sectionNumber +
+                    '/all?X-Plex-Container-Start=1&X-Plex-Container-Size=0').\
+                    get('totalSize')
                 AmountOfMediasInDatabase = totalSize
                 Log.Debug('Total size of medias are %s' % (totalSize))
                 iShow = 0
                 iCShow = 0
-                statusShows = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                  String='Scanning database show %s of %s :') % (iShow, totalSize)
+                statusShows = wtV3().GETTRANSLATE(
+                    self, None, Internal=True,
+                    String='Scanning database show %s of %s :')\
+                    % (iShow, totalSize)
                 statusMsg = statusShows
                 # So let's walk the library
                 while True:
                     # Grap shows
-                    urlShows = self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iCShow) + '&X-Plex-Container-Size=' + str(
-                        self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields
+                    urlShows = (
+                        self.CoreUrl + sectionNumber +
+                        '/all?X-Plex-Container-Start=' +
+                        str(iCShow) + '&X-Plex-Container-Size=' +
+                        str(self.MediaChuncks) + '&excludeElements=' +
+                        excludeElements + '&excludeFields=' +
+                        excludeFields)
                     shows = XML.ElementFromURL(urlShows).xpath('//Directory')
                     # Grap individual show
                     for show in shows:
@@ -155,54 +174,89 @@ class findMediaV3(object):
                         iCSeason = 0
                         # Grap seasons
                         while True:
-                            seasons = XML.ElementFromURL(misc.GetLoopBack() + show.get('key') + '?X-Plex-Container-Start=' + str(iCSeason) + '&X-Plex-Container-Size=' + str(
-                                self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Directory')
+                            seasons = (
+                                XML.ElementFromURL(
+                                    misc.GetLoopBack() +
+                                    show.get('key') +
+                                    '?X-Plex-Container-Start=' +
+                                    str(iCSeason) + '&X-Plex-Container-Size=' +
+                                    str(self.MediaChuncks) +
+                                    '&excludeElements=' + excludeElements +
+                                    '&excludeFields=' +
+                                    excludeFields).xpath('//Directory'))
                             # Grap individual season
                             for season in seasons:
                                 if season.get('title') == 'All episodes':
                                     iSeason += 1
                                     continue
                                 statusSeason = ' ' + season.get('title')
-                                statusMsg = statusShows + statusShow + statusSeason
+                                statusMsg = (
+                                    statusShows + statusShow + statusSeason)
                                 iSeason += 1
                                 # Grap Episodes
                                 iEpisode = 0
                                 iCEpisode = 0
                                 while True:
-                                    url = misc.GetLoopBack() + season.get('key') + '?X-Plex-Container-Start=' + str(iCEpisode) + '&X-Plex-Container-Size=' + \
-                                        str(self.MediaChuncks) + '&excludeElements=' + \
-                                        excludeElements + '&excludeFields=' + excludeFields
+                                    url = (
+                                        misc.GetLoopBack() +
+                                        season.get('key') +
+                                        '?X-Plex-Container-Start=' +
+                                        str(iCEpisode) +
+                                        '&X-Plex-Container-Size=' +
+                                        str(self.MediaChuncks) +
+                                        '&excludeElements=' +
+                                        excludeElements +
+                                        '&excludeFields=' +
+                                        excludeFields)
                                     videos = XML.ElementFromURL(
                                         url).xpath('//Video')
                                     for video in videos:
                                         if bAbort:
                                             raise ValueError('Aborted')
                                         bUnmatched = False
-                                        if video.get('year') == None:
-                                            # Also check if summary is missing, since else, it might be a false alert
-                                            if (video.get('summary') == None) or (video.get('summary') == ""):
+                                        if video.get('year') is None:
+                                            # Also check if summary is missing,
+                                            # since else, it might be
+                                            # a false alert
+                                            if (video.get('summary') is None)\
+                                                or (
+                                                    video.get(
+                                                        'summary') == ""):
                                                 bUnmatched = True
-                                                # No year nor summary, so most likely a mismatch
+                                                # No year nor summary, so most
+                                                # likely a mismatch
                                                 key = video.get('ratingKey')
-                                                unmatchedURL = misc.GetLoopBack() + '/library/metadata/' + key + '?excludeElements=' + \
-                                                    excludeElements + '&excludeFields=' + excludeFields
+                                                unmatchedURL = (
+                                                    misc.GetLoopBack() +
+                                                    '/library/metadata/' +
+                                                    key + '?excludeElements=' +
+                                                    excludeElements +
+                                                    '&excludeFields=' +
+                                                    excludeFields)
                                                 unmatched = XML.ElementFromURL(
-                                                    unmatchedURL).xpath('//Video')
+                                                    unmatchedURL)\
+                                                    .xpath('//Video')
                                                 filename = unmatched[0].xpath(
                                                     '//Part/@file')[0]
                                                 if self.addThisItem(filename):
                                                     Log.Info(
-                                                        'Unmatched file confirmed as %s' % filename)
+                                                        'Unmatched file\
+                                                        confirmed as \
+                                                        %s' % filename)
                                                     unmatchedByPlex.append(
-                                                        filename.encode("utf-8"))
+                                                        filename.encode(
+                                                            "utf-8"))
                                         episodes = XML.ElementFromString(
-                                            XML.StringFromElement(video)).xpath('//Part')
+                                            XML.StringFromElement(video))\
+                                            .xpath('//Part')
                                         for episode in episodes:
                                             if bAbort:
                                                 raise ValueError('Aborted')
                                             filename = episode.get('file')
                                             filename = String.Unquote(
-                                                filename).encode('utf8', 'ignore')
+                                                filename).encode(
+                                                    'utf8',
+                                                    'ignore')
                                             if self.addThisItem(filename):
                                                 mediasFromDB.append(
                                                     filename.encode("utf-8"))
@@ -216,13 +270,21 @@ class findMediaV3(object):
                             if len(seasons) == 0:
                                 break
                         iShow += 1
-                        statusShows = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                          String='Scanning database show %s of %s :') % (str(iShow), str(totalSize))
+                        strMsg = (
+                            'Scanning database show %s of %s :'
+                            % (str(iShow), str(totalSize)))
+                        statusShows = wtV3().GETTRANSLATE(
+                            self, None, Internal=True,
+                            String=strMsg)
                     # Inc. Shows counter
                     iCShow += self.MediaChuncks
                     if len(shows) == 0:
-                        statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                        String='Scanning database: %s : Done') % (str(totalSize))
+                        strMsg = (
+                            'Scanning database: %s : Done'
+                            % (str(totalSize)))
+                        statusMsg = wtV3().GETTRANSLATE(
+                            self, None, Internal=True,
+                            String=strMsg)
                         Log.Debug('***** Done scanning the database *****')
                         if DEBUGMODE:
                             Log.Debug(mediasFromDB)
@@ -230,7 +292,9 @@ class findMediaV3(object):
                         break
                 return
             except ValueError:
-                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Idle')
+                statusMsg = wtV3().GETTRANSLATE(
+                    self, None, Internal=True,
+                    String='Idle')
                 runningState = 99
                 Log.Info('Aborted in ScanShowDB')
             except Exception, e:
@@ -275,7 +339,9 @@ class findMediaV3(object):
             try:
                 runningState = -1
                 Log.Debug(
-                    "*********************** FileSystem scan Paths: *****************************************")
+                    "*********************** \
+                    FileSystem scan Paths: ***********\
+                    ******************************")
                 bScanStatusCount = 0
                 # for filePath in files:
                 for Path in filePath:
@@ -300,20 +366,25 @@ class findMediaV3(object):
                                     Log.Debug('appending file: ' + filename)
                                     mediasFromFileSystem.append(
                                         filename.encode("utf-8"))
+                                strMsg = 'Scanning file: %s' % file
                                 if DEBUGMODE:
-                                    Log.Debug('Scanning file: ' + file)
-                                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                                String='Scanning file: %s') % file
+                                    Log.Debug(strMsg)
+                                statusMsg = wtV3().GETTRANSLATE(
+                                    self, None, Internal=True,
+                                    String=strMsg)
                     except Exception, e:
                         Log.Exception(
-                            'Exception happened in FM scanning filesystem: ' + str(e))
+                            'Exception happened in FM scanning \
+                            filesystem: %s' % str(e))
                         return
                     Log.Debug('***** Finished scanning filesystem *****')
                     if DEBUGMODE:
                         Log.Debug(mediasFromFileSystem)
                     runningState = 2
             except ValueError:
-                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Idle')
+                statusMsg = wtV3().GETTRANSLATE(
+                    self, None, Internal=True,
+                    String='Idle')
                 runningState = 0
                 Log.Info('Aborted in getFiles')
             except Exception, e:
@@ -332,37 +403,55 @@ class findMediaV3(object):
                 Log.Debug('Starting scanMovieDb for section %s' %
                           (sectionNumber))
                 runningState = -1
-                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                String='Starting to scan database for section %s') % sectionNumber
+                strStatus = (
+                    'Starting to scan database for section %s'
+                    % sectionNumber)
+                statusMsg = (
+                    wtV3().GETTRANSLATE(
+                        self, None, Internal=True,
+                        String=strStatus))
                 # Start by getting the totals of this section
                 totalSize = XML.ElementFromURL(
-                    self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=1&X-Plex-Container-Size=0').get('totalSize')
+                    self.CoreUrl + sectionNumber +
+                    '/all?X-Plex-Container-Start=1&X-Plex-Container-Size=0')\
+                    .get('totalSize')
                 AmountOfMediasInDatabase = totalSize
                 Log.Debug('Total size of medias are %s' % (totalSize))
                 iStart = 0
                 iCount = 0
-                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                String='Scanning database: item %s of %s : Working') % (iCount, totalSize)
+                strMsg = 'Scanning database: item %s of %s : \
+                Working' % (iCount, totalSize)
+                statusMsg = wtV3().GETTRANSLATE(
+                    self, None, Internal=True, String=strMsg)
                 # So let's walk the library
                 while True:
                     # Grap a chunk of videos from the server
-                    medias = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?X-Plex-Container-Start=' + str(iStart) + '&X-Plex-Container-Size=' + str(
-                        self.MediaChuncks) + '&excludeElements=' + excludeElements + '&excludeFields=' + excludeFields).xpath('//Video')
+                    medias = XML.ElementFromURL(
+                        self.CoreUrl + sectionNumber +
+                        '/all?X-Plex-Container-Start=' + str(iStart) +
+                        '&X-Plex-Container-Size=' + str(self.MediaChuncks) +
+                        '&excludeElements=' + excludeElements +
+                        '&excludeFields=' + excludeFields).xpath('//Video')
                     for video in medias:
                         iCount += 1
                         year = video.get('year')
-                        if year == None:
+                        if year is None:
                             # No year, so most likely a mismatch
                             key = video.get('ratingKey')
-                            unmatchedURL = misc.GetLoopBack() + '/library/metadata/' + key + '?excludeElements=' + \
-                                excludeElements + '&excludeFields=' + excludeFields
+                            unmatchedURL = (
+                                misc.GetLoopBack() +
+                                '/library/metadata/' + key +
+                                '?excludeElements=' +
+                                excludeElements +
+                                '&excludeFields=' + excludeFields)
                             unmatched = XML.ElementFromURL(
                                 unmatchedURL).xpath('//Video')
                             filename = unmatched[0].xpath(
                                 '//Part/@file')[0]
                             if self.addThisItem(filename):
                                 Log.Info(
-                                    'Unmatched file confirmed as %s' % filename)
+                                    'Unmatched file confirmed \
+                                    as %s' % filename)
                                 unmatchedByPlex.append(
                                     filename.encode("utf-8"))
                         parts = XML.ElementFromString(
@@ -378,8 +467,11 @@ class findMediaV3(object):
                                 part.get('file')).encode('utf8', 'ignore'))
                             if self.addThisItem(filename):
                                 mediasFromDB.append(filename.encode("utf-8"))
-                            statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                            String='Scanning database: item %s of %s : Working') % (iCount, totalSize)
+                            strMsg = 'Scanning database: item %s of %s : \
+                            Working' % (iCount, totalSize)
+                            statusMsg = wtV3().GETTRANSLATE(
+                                self, None, Internal=True,
+                                String=strMsg)
                     iStart += self.MediaChuncks
                     if len(medias) == 0:
                         statusMsg = 'Scanning database: %s : Done' % (
@@ -414,13 +506,15 @@ class findMediaV3(object):
                 if bAbort:
                     raise ValueError('Aborted')
                 retMsg = {}
-                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                String='Get missing from File System')
+                statusMsg = wtV3().GETTRANSLATE(
+                    self, None, Internal=True,
+                    String='Get missing from File System')
                 retMsg["MissingFromFS"] = findMissingFromFS()
                 if bAbort:
                     raise ValueError('Aborted')
-                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True,
-                                                String='Get missing from database')
+                statusMsg = wtV3().GETTRANSLATE(
+                    self, None, Internal=True,
+                    String='Get missing from database')
                 retMsg["MissingFromDB"] = findMissingFromDB()
                 retMsg["Unmatched"] = unmatchedByPlex
                 runningState = 0
@@ -429,8 +523,8 @@ class findMediaV3(object):
                 Log.Info('Aborted in ScanMedias')
             except Exception, e:
                 Log.Exception('Exception happend in scanMedias: ' + str(e))
-                statusMsg = wtV3().GETTRANSLATE(self, None, Internal=True, String='Idle')
-
+                statusMsg = wtV3().GETTRANSLATE(
+                    self, None, Internal=True, String='Idle')
         Log.Debug('scanSection started')
         try:
             del mediasFromDB[:]										# Files from the database
@@ -453,11 +547,18 @@ class findMediaV3(object):
             sectionLocations = []
             for location in locations:
                 sectionLocations.append(os.path.normpath(location.get('path')))
-            Log.Debug('Going to scan section %s with a title of %s and a type of %s and locations as %s' % (
-                sectionNumber, sectionTitle, sectionType, str(sectionLocations)))
+            strMsg = (
+                'Going to scan section %s with a title of %s and a type\
+                 of %s and locations as %s' % (
+                     sectionNumber, sectionTitle,
+                     sectionType, str(sectionLocations)))
+            Log.Debug(strMsg)
             if runningState in [0, 99]:
-                Thread.Create(scanMedias, globalize=True, sectionNumber=sectionNumber,
-                              sectionLocations=sectionLocations, sectionType=sectionType, req=req)
+                Thread.Create(
+                    scanMedias, globalize=True,
+                    sectionNumber=sectionNumber,
+                    sectionLocations=sectionLocations,
+                    sectionType=sectionType, req=req)
             else:
                 req.clear()
                 req.set_status(409)
@@ -489,8 +590,10 @@ class findMediaV3(object):
             Sections = []
             for directory in rawSections:
                 if directory.get('type') in SUPPORTEDSECTIONS:
-                    Section = {'key': directory.get('key'), 'title': directory.get(
-                        'title'), 'type': directory.get('type')}
+                    Section = {
+                        'key': directory.get('key'),
+                        'title': directory.get('title'),
+                        'type': directory.get('type')}
                     Sections.append(Section)
             req.clear()
             req.set_status(200)
@@ -554,7 +657,7 @@ class findMediaV3(object):
         req.set_status(200)
         req.finish(json.dumps(Dict['findMedia']))
 
-################### Internal functions #############################
+# ################## Internal functions #############################
 
     @classmethod
     def getFunction(self, metode, req, *args):
@@ -590,7 +693,7 @@ class findMediaV3(object):
                     break
                 else:
                     pass
-        if self.function == None:
+        if self.function is None:
             Log.Debug('Function to call is None')
             req.clear()
             req.set_status(404)
@@ -612,7 +715,7 @@ class findMediaV3(object):
             try:
                 Log.Debug('Function to call is: ' + self.function +
                           ' with params: ' + str(params))
-                if params == None:
+                if params is None:
                     getattr(self, self.function)(req)
                 else:
                     getattr(self, self.function)(req, params)
@@ -623,10 +726,13 @@ class findMediaV3(object):
     def populatePrefs(self):
         """Populate the defaults, if not already there"""
         try:
-            if Dict['findMedia'] == None:
+            if Dict['findMedia'] is None:
                 Dict['findMedia'] = {
                     'IGNORE_HIDDEN': True,
-                    'IGNORED_DIRS': [".@__thumb", ".AppleDouble", "lost+found"],
+                    'IGNORED_DIRS': [
+                        ".@__thumb",
+                        ".AppleDouble",
+                        "lost+found"],
                     'VALID_EXTENSIONS': VALIDEXT['video'],
                     'IGNORE_EXTRAS': True,
                     'IGNORE_SPECIALS': True
@@ -646,11 +752,14 @@ class findMediaV3(object):
     @classmethod
     def addThisItem(self, file):
         """
-        Returns true or false, depending on if a media should be added to the list
+        Returns true or false, depending on if a media should be
+        added to the list.
         Param file: The file to be investigated, with full path
         """
         try:
-            if os.path.splitext(file)[1].lower()[1:] in Dict['findMedia']['VALID_EXTENSIONS']:
+            if (
+                os.path.splitext(file)[1].lower()[1:]
+                    in Dict['findMedia']['VALID_EXTENSIONS']):
                 parts = self.splitall(file)
                 for part in parts:
                     if Dict['findMedia']['IGNORE_EXTRAS']:

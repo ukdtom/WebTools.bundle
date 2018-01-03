@@ -1,12 +1,13 @@
-######################################################################################################################
-#	WebTools module unit
+##############################################################################
+# WebTools module unit
 #
-#	Author: dane22, a Plex Community member
+# Author: dane22, a Plex Community member
 #
-# This module is for constants used by WebTools and it's modules, as well as to control developer mode
+# This module is for constants used by WebTools and it's modules, as well as
+# to control developer mode
 #
 # For info about the debug file, see the docs
-######################################################################################################################
+###############################################################################
 
 import io
 import os
@@ -14,54 +15,89 @@ import json
 import inspect
 from random import randint  # Used for Cookie generation
 
-DEBUGMODE = False																			# default for debug mode
-WT_AUTH = True																				# validate password
-VERSION = 'ERROR'																			# version of plugin
-UAS_URL = 'https://github.com/ukdtom/UAS2Res'												# USA2 Repo branch
-UAS_BRANCH = 'master'																		# UAS2 branch to check
-PREFIX = ''																					# Prefix
-NAME = ''																					# Name of plugin
-ICON = 'WebTools.png'																		# Name of Icon in Resource Dir
-BASEURL = ''																				# Base url if behind a proxy
-JSONTIMESTAMP = 0																			# timestamp for json export
-WT_URL = 'https://github.com/ukdtom/WebTools.bundle'                                        # URL to latest WebTools
-BUNDLEDIRNAME = ''																			# Name of the bundle dir
-EXCLUDEELEMENTS = 'excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role' # Elements to be excluded, when sending req. to PMS
+# default for debug mode
+DEBUGMODE = False
+# validate password
+WT_AUTH = True
+# version of plugin
+VERSION = 'ERROR'
+# USA2 Repo branch
+UAS_URL = 'https://github.com/ukdtom/UAS2Res'
+# UAS2 branch to check
+UAS_BRANCH = 'master'
+# Prefix
+PREFIX = ''
+# Name of plugin
+NAME = ''
+# Name of Icon in Resource Dir
+ICON = 'WebTools.png'
+# Base url if behind a proxy
+BASEURL = ''
+# timestamp for json export
+JSONTIMESTAMP = 0
+# URL to latest WebTools
+WT_URL = 'https://github.com/ukdtom/WebTools.bundle'
+# Name of the bundle dir
+BUNDLEDIRNAME = ''
+# Elements to be excluded, when sending req. to PMS
+EXCLUDEELEMENTS = 'excludeElements=Actor,Collection,Country,Director,\
+                    Genre,Label,Mood,Producer,Similar,Writer,Role'
 EXCLUDEFIELDS = 'excludeFields=summary,tagline,file'
 
 # Modules used in WebTools
-V3MODULES = {'WT': 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3', 'LANGUAGE': 'languageV3', 'SETTINGS': 'settingsV3', 'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3', 'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3', 'TECHINFO': 'techinfo', 'VIEWSTATE': 'viewstate'}
+V3MODULES = {
+    'WT': 'wtV3', 'PMS': 'pmsV3', 'LOGS': 'logsV3',
+    'LANGUAGE': 'languageV3', 'SETTINGS': 'settingsV3',
+    'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3',
+    'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3',
+    'TECHINFO': 'techinfo', 'VIEWSTATE': 'viewstate'}
 UILANGUAGE = 'en'
 UILANGUAGEDEBUG = False
 
-MEDIATYPE = {'Movie' : 1, 'Show' : 2, 'Season' : 3, 'Episode' : 4, 'Trailer' : 5, 'Comic' : 6, 'Person' : 7, 'Artist' : 8, 
-            'Album' : 9, 'Track' : 10, 'Clip' : 12, 'Photo' : 13, 'Photo_Album' : 14, 'Playlist' : 15, 'Playlist_Folder' : 16, 'Podcast' : 17}
+MEDIATYPE = {
+            'Movie': 1, 'Show': 2, 'Season': 3, 'Episode': 4, 'Trailer': 5,
+            'Comic': 6, 'Person': 7, 'Artist': 8, 'Album': 9, 'Track': 10,
+            'Clip': 12, 'Photo': 13, 'Photo_Album': 14, 'Playlist': 15,
+            'Playlist_Folder': 16, 'Podcast': 17
+            }
 
-VALIDEXT = {'video': ['3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup', 'divx', 'dv', 'dvr-ms', 'evo', 'fli', 'flv',
-              'm2t', 'm2ts', 'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv', 'nuv', 'ogm', 'ogv', 'tp',
-              'pva', 'qt', 'rm', 'rmvb', 'sdp', 'svq3', 'strm', 'ts', 'ty', 'vdr', 'viv', 'vob', 'vp3', 'wmv', 'wpl', 'wtv', 'xsp', 'xvid', 'webm'],
-              'photo': ['png','jpg','jpeg','bmp','gif','ico','tif','tiff','tga','pcx','dng','nef','cr2','crw','orf','arw','erf','3fr','dcr','x3f','mef','raf','mrw','pef','sr2', 'mpo', 'jps', 'rw2', 'jp2', 'j2k'],
-              'audio': ['mp3', 'm4a', 'm4b', 'flac', 'aac', 'rm', 'rma', 'mpa', 'wav', 'wma', 'ogg', 'mp2', 'mka',
-              'ac3', 'dts', 'ape', 'mpc', 'mp+', 'mpp', 'shn', 'oga', 'aiff', 'aif', 'wv', 'dsf', 'dsd', 'opus']}
+VALIDEXT = {
+    'video': [
+            '3g2', '3gp', 'asf', 'asx', 'avc', 'avi', 'avs', 'bivx', 'bup',
+            'divx', 'dv', 'dvr-ms', 'evo', 'fli', 'flv', 'm2t', 'm2ts',
+            'm2v', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'mts', 'nsv',
+            'nuv', 'ogm', 'ogv', 'tp', 'pva', 'qt', 'rm', 'rmvb', 'sdp',
+            'svq3', 'strm', 'ts', 'ty', 'vdr', 'viv', 'vob', 'vp3', 'wmv',
+            'wpl', 'wtv', 'xsp', 'xvid', 'webm'],
+    'photo': [
+            'png', 'jpg', 'jpeg', 'bmp', 'gif', 'ico', 'tif', 'tiff', 'tga',
+            'pcx', 'dng', 'nef', ' cr2', 'crw', 'orf', 'arw', 'erf', '3fr',
+            'dcr', 'x3f', 'mef', 'raf', 'mrw', 'pef', 'sr2', 'mpo', 'jps',
+            'rw2', 'jp2', 'j2k'],
+    'audio': [
+            'mp3', 'm4a', 'm4b', 'flac', 'aac', 'rm', 'rma', 'mpa', 'wav',
+            'wma', 'ogg', 'mp2', 'mka', 'ac3', 'dts', 'ape', 'mpc', 'mp+',
+            'mpp', 'shn', 'oga', 'aiff', 'aif', 'wv', 'dsf', 'dsd', 'opus']
+            }
 
 PLEX_MEDIATYPE = {
-    'METADATA_MOVIE' : 1,
-    'METADATA_SHOW' : 2,
-    'METADATA_SEASON' : 3,
-    'METADATA_EPISODE' : 4,
-    'METADATA_TRAILER' : 5,
-    'METADATA_COMIC' : 6,
-    'METADATA_PERSON' : 7,
-    'METADATA_ARTIST' : 8,
-    'METADATA_ALBUM' : 9,
-    'METADATA_TRACK' : 10,
-    'METADATA_CLIP' : 12,
-    'METADATA_PHOTO' : 13,
-    'METADATA_PHOTO_ALBUM' : 14,
-    'METADATA_PLAYLIST' : 15,
-    'METADATA_PLAYLIST_FOLDER' : 16,
-    'METADATA_PODCAST' : 17
-}
+    'METADATA_MOVIE': 1,
+    'METADATA_SHOW': 2,
+    'METADATA_SEASON': 3,
+    'METADATA_EPISODE': 4,
+    'METADATA_TRAILER': 5,
+    'METADATA_COMIC': 6,
+    'METADATA_PERSON': 7,
+    'METADATA_ARTIST': 8,
+    'METADATA_ALBUM': 9,
+    'METADATA_TRACK': 10,
+    'METADATA_CLIP': 12,
+    'METADATA_PHOTO': 13,
+    'METADATA_PHOTO_ALBUM': 14,
+    'METADATA_PLAYLIST': 15,
+    'METADATA_PLAYLIST_FOLDER': 16,
+    'METADATA_PODCAST': 17
+    }
 
 ISO639_3 = {
         "Unknown": "unk",
@@ -254,8 +290,8 @@ ISO639_3 = {
         "Brazilian": "pob",
         "NoLanguage": "unk"
     }
-                      
-            
+
+
 class consts(object):
     init_already = False							# Make sure part of init only run once
 
@@ -281,7 +317,7 @@ class consts(object):
         NAME = os.path.splitext(BUNDLEDIRNAME)[0]
         # Prefix
         PREFIX = '/applications/' + str(NAME).lower()
-        if Prefs['Base_URL'] != None:
+        if Prefs['Base_URL']:
             BASEURL = Prefs['Base_URL']
         if not BASEURL.startswith('/'):
             BASEURL = '/' + BASEURL
@@ -317,7 +353,7 @@ class consts(object):
                 if 'WT_AUTH' in debugParams:
                     WT_AUTH = debugParams['WT_AUTH']
                 if 'WT_URL' in debugParams:
-                    WT_URL = debugParams['WT_URL']                    
+                    WT_URL = debugParams['WT_URL']
                 if 'JSONTIMESTAMP' in debugParams:
                     JSONTIMESTAMP = debugParams['JSONTIMESTAMP']
                 # Try and fetch a user language, if set
@@ -330,7 +366,7 @@ class consts(object):
                     if 'Language' in debugParams['UI']:
                         UILANGUAGE = debugParams['UI']['Language']
                     if 'debug' in debugParams['UI']:
-                        UILANGUAGEDEBUG = (debugParams['UI']['debug'] == True)
+                        UILANGUAGEDEBUG = (debugParams['UI']['debug'])
             except Exception, e:
                 Log.Exception('Exception in const was %s' % (str(e)))
                 pass
@@ -349,7 +385,8 @@ class consts(object):
                 installedPlugInPath = abspath(getsourcefile(
                     lambda: 0)).upper().split(BUNDLEDIRNAME, 1)[0]
                 targetPath = Core.storage.join_path(
-                    Core.app_support_path, Core.config.bundles_dir_name).upper()
+                    Core.app_support_path,
+                    Core.config.bundles_dir_name).upper()
                 if installedPlugInPath[:-1] != targetPath:
                     Log.Debug(
                         '************************************************')
@@ -357,65 +394,67 @@ class consts(object):
                     Log.Debug('')
                     Log.Debug('Correct path is:')
                     Log.Debug(Core.storage.join_path(
-                        Core.app_support_path, Core.config.bundles_dir_name, BUNDLEDIRNAME))
+                        Core.app_support_path,
+                        Core.config.bundles_dir_name, BUNDLEDIRNAME))
                     Log.Debug(
                         '************************************************')
                     installedPlugInPath = abspath(
                         getsourcefile(lambda: 0)).split('/Contents', 1)[0]
                     return False
                 else:
-                    Log.Info('Verified a correct install path as: ' + targetPath)
+                    Log.Info(
+                        'Verified a correct install path as: %s'
+                        % (targetPath))
                     return True
             except Exception, e:
                 Log.Exception('Exception in IsCorrectPath was: %s' % str(e))
-
 
     ''' This will generate the default settings in the Dict if missing '''
     def makeDefaultSettings(self):
         # Used for Cookie generation
         Dict['SharedSecret'] = VERSION + '.' + str(randint(0, 9999))
         # Set default value for http part, if run for the first time
-        if Dict['options_hide_integrated'] == None:
+        if Dict['options_hide_integrated'] is None:
             Dict['options_hide_integrated'] = 'false'
         # Set default value for http part, if run for the first time
-        if Dict['options_hide_local'] == None:
+        if Dict['options_hide_local'] is None:
             Dict['options_hide_local'] = 'false'
         # Set default value for http part, if run for the first time
-        if Dict['options_hide_empty_subtitles'] == None:
+        if Dict['options_hide_empty_subtitles'] is None:
             Dict['options_hide_empty_subtitles'] = 'false'
         # Set default value for http part, if run for the first time
-        if Dict['options_only_multiple'] == None:
+        if Dict['options_only_multiple'] is None:
             Dict['options_only_multiple'] = 'false'
         # Set default value for http part, if run for the first time
-        if Dict['options_auto_select_duplicate'] == None:
+        if Dict['options_auto_select_duplicate'] is None:
             Dict['options_auto_select_duplicate'] = 'false'
         # Set default value for http part, if run for the first time
-        if Dict['items_per_page'] == None:
+        if Dict['items_per_page'] is None:
             Dict['items_per_page'] = '15'
         # Create the password entry
-        if Dict['password'] == None:
+        if Dict['password'] is None:
             Dict['password'] = ''
         # Create the debug entry
-        if Dict['debug'] == None:
+        if Dict['debug'] is None:
             Dict['debug'] = 'false'
         # Create the pwdset entry
-        if Dict['pwdset'] == None:
+        if Dict['pwdset'] is None:
             Dict['pwdset'] = False
         # Init the installed dict
-        if Dict['installed'] == None:
+        if Dict['installed'] is None:
             Dict['installed'] = {}
         # Init the allBundle Dict
-        if Dict['PMS-AllBundleInfo'] == None:
+        if Dict['PMS-AllBundleInfo'] is None:
             Dict['PMS-AllBundleInfo'] = {}
         # Init the scheme used Dict
-        if Dict['wt_csstheme'] == None:
+        if Dict['wt_csstheme'] is None:
             Dict['wt_csstheme'] = 'WhiteBlue.css'
         # Init default language to en, if none is present
-        if Dict['UILanguage'] == None:
+        if Dict['UILanguage'] is None:
             Dict['UILanguage'] = 'en'
         # Init default language to en, if none is present
-        if Dict['HideWithoutSubs'] == None:
-            Dict['HideWithoutSubs'] = 'False'        
+        if Dict['HideWithoutSubs'] is None:
+            Dict['HideWithoutSubs'] = 'False'
         return
 
 

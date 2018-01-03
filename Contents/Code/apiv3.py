@@ -54,7 +54,8 @@ class apiv3(BaseHandler):
         if DEBUGMODE:
             if not WT_AUTH:
                 self.set_secure_cookie(NAME, Hash.MD5(
-                    Dict['SharedSecret'] + Dict['password']), expires_days=None)
+                    Dict['SharedSecret'] + Dict['password']),
+                    expires_days=None)
         # No valid module found?
         if not self.module:
             self.clear()
@@ -68,47 +69,64 @@ class apiv3(BaseHandler):
                   self.module + ' for method: ' + self.request.method)
         # Generate a handle to the class
         try:
-            myClass = getattr(pmsV3, V3MODULES[self.module])
+            myClass = getattr(
+                pmsV3,
+                V3MODULES[self.module])
         except:
             try:
-                myClass = getattr(wtV3, V3MODULES[self.module])
+                myClass = getattr(
+                    wtV3,
+                    V3MODULES[self.module])
             except:
                 try:
-                    myClass = getattr(logsV3, V3MODULES[self.module])
+                    myClass = getattr(
+                        logsV3,
+                        V3MODULES[self.module])
                 except:
                     try:
-                        myClass = getattr(languageV3, V3MODULES[self.module])
+                        myClass = getattr(
+                            languageV3,
+                            V3MODULES[self.module])
                     except:
                         try:
                             myClass = getattr(
-                                settingsV3, V3MODULES[self.module])
+                                settingsV3,
+                                V3MODULES[self.module])
                         except:
                             try:
                                 myClass = getattr(
-                                    gitV3, V3MODULES[self.module])
+                                    gitV3,
+                                    V3MODULES[self.module])
                             except:
                                 try:
                                     myClass = getattr(
-                                        findMediaV3, V3MODULES[self.module])
+                                        findMediaV3,
+                                        V3MODULES[self.module])
                                 except:
                                     try:
                                         myClass = getattr(
-                                            jsonExporterV3, V3MODULES[self.module])
+                                            jsonExporterV3,
+                                            V3MODULES[self.module])
                                     except:
                                         try:
                                             myClass = getattr(
-                                                playlistsV3, V3MODULES[self.module])
+                                                playlistsV3,
+                                                V3MODULES[self.module])
                                         except:
                                             try:
                                                 myClass = getattr(
-                                                    techinfo, V3MODULES[self.module])
+                                                    techinfo,
+                                                    V3MODULES[self.module])
                                             except:
                                                 try:
                                                     myClass = getattr(
-                                                        viewstate, V3MODULES[self.module])
+                                                        viewstate,
+                                                        V3MODULES[self.module])
                                                 except Exception, e:
                                                     Log.Exception(
-                                                        'Exception getting the class in apiV3: %s' % str(e))
+                                                        'Exception getting the \
+                                                        class in apiV3: %s'
+                                                        % str(e))
                                                     self.clear()
                                                     self.set_status(501)
                                                     self.finish('Bad module?')
