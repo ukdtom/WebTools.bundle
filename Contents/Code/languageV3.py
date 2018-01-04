@@ -1,13 +1,16 @@
-######################################################################################################################
-#	Language helper unit
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+##############################################################################
+# Language helper unit
 #
-#	Author: dane22, a Plex Community member
+# Author: dane22, a Plex Community member
 #
 # This unit works with supported languages within Plex
 #
-# NAME variable must be defined in the calling unit, and is the name of the application
+# NAME variable must be defined in the calling unit, and is
+# the name of the application
 #
-######################################################################################################################
+##############################################################################
 
 import json
 import sys
@@ -61,7 +64,7 @@ class languageV3(object):
                     break
                 else:
                     pass
-        if self.function == None:
+        if self.function is None:
             Log.Debug('Function to call is None')
             req.clear()
             req.set_status(404)
@@ -83,14 +86,14 @@ class languageV3(object):
             try:
                 Log.Debug('Function to call is: ' + self.function +
                           ' with params: ' + str(params))
-                if params == None:
+                if params is None:
                     getattr(self, self.function)(req)
                 else:
                     getattr(self, self.function)(req, params)
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
-    #********** Functions below ******************
+    # ********** Functions below ******************
 
     ''' Returns an array of valid country codes '''
     @classmethod
@@ -117,7 +120,8 @@ class languageV3(object):
             req.set_status(412)
             req.finish('Not a valid payload?')
 
-    ''' Here we return an ordered jason of language:countrycode for all the valid ones '''
+    # Here we return an ordered jason of
+    # language:countrycode for all the valid ones
     @classmethod
     def GETLANGCODELIST(self, req, *args):
         # Walk the darn module
@@ -133,7 +137,8 @@ class languageV3(object):
         req.set_status(200)
         req.finish(json.dumps(all_languages, sort_keys=True))
 
-    ''' Here we return an ordered jason of countrycode:language for all the valid ones '''
+    # Here we return an ordered jason of
+    # countrycode:language for all the valid ones
     @classmethod
     def GETCODELANGLIST(self, req, *args):
         # Walk the darn module
@@ -149,7 +154,8 @@ class languageV3(object):
         req.set_status(200)
         req.finish(json.dumps(all_languages, sort_keys=True))
 
-    ''' Here we return an ordered jason of countrycode:language for all the valid ones in ISO639-3'''
+    # Here we return an ordered jason of
+    # countrycode:language for all the valid ones in ISO639-3
     @classmethod
     def GET3CODELANGLIST(self, req, *args):
         all_languages = {}
@@ -159,7 +165,8 @@ class languageV3(object):
         req.set_status(200)
         req.finish(json.dumps(all_languages, sort_keys=True))
 
-    ''' Here we return an ordered jason of language:countrycode for all the valid ones in ISO639-3'''
+    # Here we return an ordered jason of
+    # language:countrycode for all the valid ones in ISO639-3
     @classmethod
     def GETLANGCODE3LIST(self, req, *args):
         req.clear()

@@ -1,20 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-######################################################################################################################
-#					WebTools bundle for Plex
+##############################################################################
+# WebTools bundle for Plex
 #
-#					Allows you to manipulate subtitles on Plex Media Server
+# Allows you to manipulate subtitles on Plex Media Server
 #
-#					Author:			dane22, a Plex Community member
+# Author:			dane22, a Plex Community member
 #
-#					Support thread:	http://forums.plex.tv/discussion/288191
+# Support thread:	http://forums.plex.tv/discussion/288191
 #
-######################################################################################################################
+##############################################################################
 
-#********* Constants used **********
-SECRETKEY = ''
-
-#********** Imports needed *********
+# ********** Imports needed *********
 import sys
 import locale
 from webSrv import startWeb, stopWeb
@@ -24,18 +21,23 @@ import socket
 from consts import DEBUGMODE, VERSION, NAME, ICON, PREFIX, BASEURL
 from wtV3 import upgradeCleanup
 
-''' Translate function override to avoid unicode decoding bug, as well as make it work in the WebClient.
-    Code shamelessly stolen from:
-    https://bitbucket.org/czukowski/plex-locale-patch
-    and altered a bit to make it work for WebTools
-    '''
+# ********* Constants used **********
+SECRETKEY = ''
+
+# Translate function override to avoid unicode decoding bug,
+# as well as make it work in the WebClient.
+# Code shamelessly stolen from:
+# https://bitbucket.org/czukowski/plex-locale-patch
+# and altered a bit to make it work for WebTools
 
 
 def L(string):
     try:
         # Missing X-Plex-Language?
         if 'X-Plex-Language' not in Request.Headers:
-            Request.Headers['X-Plex-Language'] = Request.Headers['Accept-Language']
+            Request.Headers[
+                'X-Plex-Language'] = Request.Headers[
+                    'Accept-Language']
         # Grap string to return
         local_string = Locale.LocalString(string)
         # Decode it, since we need it to be XML compliant
@@ -44,9 +46,9 @@ def L(string):
         Log.Critical('Exception in L was %s' % str(e))
         pass
 
-####################################################################################################
+###########################################################################
 # Initialize
-####################################################################################################
+###########################################################################
 
 
 def Start():
@@ -54,31 +56,48 @@ def Start():
     runningLocale = locale.getdefaultlocale()
     if DEBUGMODE:
         try:
-            print("********  Started %s on %s at %s with locale set to %s **********" %
-                  (NAME + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M"), runningLocale))
+            print("********  Started %s on %s at \
+            %s with locale set to %s **********" %
+                  (
+                      NAME + ' V' + VERSION,
+                      Platform.OS,
+                      time.strftime("%Y-%m-%d %H:%M"),
+                      runningLocale))
         except:
             pass
-    Log.Debug("*******  Started %s on %s at %s with locale set to %s ***********" %
-              (NAME + ' V' + VERSION, Platform.OS, time.strftime("%Y-%m-%d %H:%M"), runningLocale))
+    Log.Debug("*******  Started %s on %s at %s with \
+    locale set to %s ***********" %
+              (
+                  NAME + ' V' + VERSION,
+                  Platform.OS,
+                  time.strftime("%Y-%m-%d %H:%M"),
+                  runningLocale))
     # Do Upgrade stuff if needed
     upgradeCleanup()
     # TODO: Nasty workaround for issue 189
-    if (Platform.OS == 'Windows' and locale.getpreferredencoding() == 'cp1251'):
+    if (
+        (
+            Platform.OS == 'Windows') and (
+                locale.getpreferredencoding() == 'cp1251')):
         sys.setdefaultencoding("cp1251")
         Log.Debug("Default set to cp1251")
     HTTP.CacheTime = 0
     DirectoryObject.thumb = R(ICON)
     ObjectContainer.title1 = NAME + ' V' + VERSION
-    Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
+    Plugin.AddViewGroup(
+        'List',
+        viewMode='List',
+        mediaType='items')
     ObjectContainer.view_group = 'List'
-    # Get the secret key used to access the PMS framework ********** FUTURE USE ***************
+    # Get the secret key used to access the
+    # PMS framework ********** FUTURE USE ***************
     SECRETKEY = genSecretKeyAsStr()
     startWeb(SECRETKEY)
 
 
-####################################################################################################
+#############################################################################
 # Main function
-####################################################################################################
+#############################################################################
 ''' Main menu '''
 
 
@@ -96,7 +115,8 @@ def MainMenu():
     urlhttps = 'https://' + str(Network.Address) + ':' + \
         str(Prefs['WEB_Port_https']) + str(BASEURL)
     oc.add(DirectoryObject(key=Callback(MainMenu),
-                           title=L("To access this channel, type the url's below to a new browser tab")))
+                           title=L("To access this channel, type \
+                           the url's below to a new browser tab")))
     if Prefs['Force_SSL']:
         oc.add(DirectoryObject(key=Callback(MainMenu), title=urlhttps))
     else:
@@ -107,9 +127,9 @@ def MainMenu():
     return oc
 
 
-####################################################################################################
+##############################################################################
 # Generate secret key
-####################################################################################################
+##############################################################################
 ''' This will generate the secret key, used to access the framework '''
 
 
@@ -117,19 +137,19 @@ def MainMenu():
 def genSecretKeyAsStr():
     return str(uuid.uuid4())
 
-####################################################################################################
+##############################################################################
 # ValidatePrefs
-####################################################################################################
+##############################################################################
 
 
 @route(PREFIX + '/ValidatePrefs')
 def ValidatePrefs():
-    #	HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.WebTool/restart', immediate=True)
+    # HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.WebTool/restart', immediate=True)
     Restart()
 
-####################################################################################################
+##############################################################################
 # Restart
-####################################################################################################
+##############################################################################
 
 
 @route(PREFIX + '/Restart')

@@ -1,13 +1,13 @@
-'''
-##############################################################################################
-#	WebTools module unit
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+##############################################################################
+# WebTools module unit
 #
-#	Author: dane22, a Plex Community member
+# Author: dane22, a Plex Community member
 #
-# 	Handles calles to the API V3
+# Handles calles to the API V3
 #
-##############################################################################################
-'''
+##############################################################################
 
 from tornado.web import *
 from Code.consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES
