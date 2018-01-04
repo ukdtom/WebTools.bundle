@@ -1,9 +1,11 @@
-######################################################################################################################
-#	Settings helper unit for WebTools
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+##############################################################################
+# Settings helper unit for WebTools
 #
-#	Author: dane22, a Plex Community member
+# Author: dane22, a Plex Community member
 #
-######################################################################################################################
+##############################################################################
 
 import json
 import sys
@@ -55,7 +57,7 @@ class settingsV3(object):
                     break
                 else:
                     pass
-        if self.function == None:
+        if self.function is None:
             Log.Debug('Function to call is None')
             req.clear()
             req.set_status(404)
@@ -77,14 +79,14 @@ class settingsV3(object):
             try:
                 Log.Debug('Function to call is: ' + self.function +
                           ' with params: ' + str(params))
-                if params == None:
+                if params is None:
                     getattr(self, self.function)(req)
                 else:
                     getattr(self, self.function)(req, params)
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
-    #********** Functions below ******************
+    # ********** Functions below ******************
 
     ''' Change the local auth password '''
     @classmethod

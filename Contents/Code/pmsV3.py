@@ -1,10 +1,12 @@
-######################################################################################################################
-#	pms helper unit
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+##############################################################################
+# pms helper unit
 # A WebTools bundle plugin
 #
-#	Author: dane22, a Plex Community member
+# Author: dane22, a Plex Community member
 #
-######################################################################################################################
+##############################################################################
 from consts import NAME
 from misc import misc
 import shutil
@@ -16,10 +18,13 @@ import sys
 from xml.etree import ElementTree
 
 FUNCTIONS = {
-    "get": ["SEARCH", "GETALLBUNDLEINFO", "GETSECTIONSLIST", "GETSECTIONSIZE", "GETSECTIONLETTERLIST", 
-            "GETSECTION", "GETSUBTITLES", "GETPARTS", "SHOWSUBTITLE", "GETSHOWSIZE", "GETSHOWSEASONS", 
-            "GETSHOWSEASON", "GETSHOWCONTENTS", "DOWNLOADSUBTITLE", "GETSECTIONKEYUUID"],
-    "post": ["UPLOADFILE", "UPLOADSUB"], 
+    "get": [
+        "SEARCH", "GETALLBUNDLEINFO", "GETSECTIONSLIST", "GETSECTIONSIZE",
+        "GETSECTIONLETTERLIST", "GETSECTION", "GETSUBTITLES", "GETPARTS",
+        "SHOWSUBTITLE", "GETSHOWSIZE", "GETSHOWSEASONS",
+        "GETSHOWSEASON", "GETSHOWCONTENTS",
+        "DOWNLOADSUBTITLE", "GETSECTIONKEYUUID"],
+    "post": ["UPLOADFILE", "UPLOADSUB"],
     "delete": ["DELBUNDLE", "DELSUB"]
     }
 
@@ -31,34 +36,33 @@ class pmsV3(object):
         self.PLUGIN_DIR = Core.storage.join_path(
             Core.app_support_path, Core.config.bundles_dir_name)
 
-
     @classmethod
     def getFunction(self, metode, req):
         """Get the relevant function and call it with optinal params"""
-        self.init()        
-        function, params = misc.getFunction(FUNCTIONS, metode, req)                    
-        if function == None:
+        self.init()
+        function, params = misc.getFunction(FUNCTIONS, metode, req)
+        if function is None:
             Log.Debug('Function to call is None')
             req.clear()
             req.set_status(404)
             req.finish('Unknown function call')
-        else:           
+        else:
             try:
-                if params == None:
+                if params is None:
                     getattr(self, function)(req)
                 else:
                     getattr(self, function)(req, params)
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
-    #********** Functions below ******************
+    # ********** Functions below ******************
 
     @classmethod
     def GETSECTIONKEYUUID(self, key=None):
         """
         Returns the UUID of a section specified by the key
         if not found, then returns None
-        """        
+        """
         url = misc.GetLoopBack() + '/library/sections'
         returnJson = {}
         try:
@@ -68,8 +72,7 @@ class pmsV3(object):
                     return section.get('uuid')
             return None
         except Exception, e:
-            Log.Exception('Exception in GetSectionKeyUUID was: %s' %str(e))
-
+            Log.Exception('Exception in GetSectionKeyUUID was: %s' % str(e))
 
     ''' Download Subtitle '''
     @classmethod
@@ -81,7 +84,8 @@ class pmsV3(object):
                 key = args[0][0]
             except Exception, e:
                 Log.Debug(
-                    'Exception in downloadSubtitle when fetching the key was: ' + str(e))
+                    'Exception in downloadSubtitle when fetching \
+                    the key was: ' + str(e))
                 req.clear()
                 req.set_status(412)
                 req.finish('Missing key of subtitle')
@@ -146,7 +150,8 @@ class pmsV3(object):
             req.clear()
             req.set_status(405)
             req.finish(
-                'Sadly not working on Mac OSx at the moment. Stay tuned for an update')
+                'Sadly not working on Mac OSx at the moment.\
+                 Stay tuned for an update')
         try:
             # Start by checking if we got what it takes ;-)
             # Get params
@@ -181,30 +186,41 @@ class pmsV3(object):
                     req.clear()
                     req.set_status(406)
                     req.finish(
-                        'Hmmm....This is invalid, and most likely due to trying to delete an embedded sub :-)')
+                        'Hmmm....This is invalid, and most likely due \
+                        to trying to delete an embedded sub :-)')
                 else:
                     if filePath.startswith('media://'):
                         # Path to symblink
                         filePath = filePath.replace(
-                            'media:/', os.path.join(Core.app_support_path, 'Media', 'localhost'))
+                            'media:/', os.path.join(
+                                Core.app_support_path,
+                                'Media',
+                                'localhost'))
                         try:
                             # Subtitle name
                             agent, sub = filePath.rsplit('_', 1)
                             tmp, agent = agent.split('com.')
                             # Agent used
                             agent = 'com.' + agent
-                            filePath2 = filePath.replace('Contents', os.path.join(
-                                'Contents', 'Subtitle Contributions'))
+                            filePath2 = filePath.replace(
+                                'Contents',
+                                os.path.join(
+                                    'Contents',
+                                    'Subtitle Contributions'))
                             filePath2, language = filePath2.split('Subtitles')
                             language = language[1:3]
                             filePath3 = os.path.join(
                                 filePath2[:-1], agent, language, sub)
                         except Exception, e:
                             Log.Exception(
-                                'Exception in delSub generation file Path: ' + str(e))
+                                'Exception in delSub \
+                                generation file Path: ' + str(e))
                         subtitlesXMLPath, tmp = filePath.split('Contents')
                         agentXMLPath = os.path.join(
-                            subtitlesXMLPath, 'Contents', 'Subtitle Contributions', agent + '.xml')
+                            subtitlesXMLPath,
+                            'Contents',
+                            'Subtitle Contributions',
+                            agent + '.xml')
                         subtitlesXMLPath = os.path.join(
                             subtitlesXMLPath, 'Contents', 'Subtitles.xml')
                         self.DelFromXML(agentXMLPath, 'media', sub)
@@ -217,18 +233,22 @@ class pmsV3(object):
                             # Delete the symb link
                             if os.path.exists(filePath3):
                                 os.remove(filePath3)
-                            # TODO: Refresh is sadly not working for me, so could use some help here :-(
+                            # TODO: Refresh is sadly not working for me, so
+                            # could use some help here :-(
                             # Let's refresh the media
-                            url = misc.GetLoopBack() + '/library/metadata/' + key + '/refresh?force=1'
+                            url = misc.GetLoopBack() + '/library/metadata/'
+                            url += key + '/refresh?force=1'
                             HTTP.Request(url, cacheTime=0,
                                          immediate=True, method="PUT")
                         except Exception, e:
                             Log.Exception(
-                                'Exception while deleting an agent based sub: ' + str(e))
+                                'Exception while deleting an agent \
+                                based sub: ' + str(e))
                             req.clear()
                             req.set_status(404)
                             req.finish(
-                                'Exception while deleting an agent based sub: ' + str(e))
+                                'Exception while deleting an \
+                                agent based sub: ' + str(e))
                         retValues = {}
                         retValues['FilePath'] = filePath3
                         retValues['SymbLink'] = filePath
@@ -250,15 +270,18 @@ class pmsV3(object):
                             req.clear()
                             req.set_status(200)
                             req.set_header(
-                                'Content-Type', 'application/json; charset=utf-8')
+                                'Content-Type',
+                                'application/json; charset=utf-8')
                             req.finish(json.dumps(retVal))
                         except Exception, e:
                             # Could not find req. subtitle
                             Log.Exception(
-                                'Fatal error happened in delSub, when deleting ' + filePath + ' : ' + str(e))
+                                'Fatal error happened in delSub, \
+                                when deleting ' + filePath + ' : ' + str(e))
                             req.clear()
                             req.set_status(403)
-                            req.finish('Fatal error happened in delSub, when deleting %s : %s' % (
+                            req.finish('Fatal error happened in delSub, \
+                            when deleting %s : %s' % (
                                 filePath, str(e)))
             else:
                 # Could not find req. subtitle
@@ -322,7 +345,8 @@ class pmsV3(object):
             req.finish(json.dumps(episodes))
         except Exception, e:
             Log.Exception(
-                'Fatal error happened in TV-Show while fetching contents %s' % (e))
+                'Fatal error happened in TV-Show while \
+                fetching contents %s' % (e))
             req.clear()
             req.set_status(500)
             req.finish(
@@ -378,7 +402,8 @@ class pmsV3(object):
             req.finish(json.dumps(mySeason))
         except Exception, e:
             Log.Exception(
-                'Fatal error happened in TV-Show while fetching season: %s' % (e))
+                'Fatal error happened in TV-Show while \
+                fetching season: %s' % (e))
             req.clear()
             req.set_status(500)
             req.finish('Fatal error happened in TV-Show while fetching season')
@@ -401,7 +426,8 @@ class pmsV3(object):
             req.finish('Fatal error digesting params: ' + str(args[0]))
         Log.Debug('Key is: ' + key)
         try:
-            myURL = misc.GetLoopBack() + '/library/metadata/' + key + '/children'
+            myURL = misc.GetLoopBack() + '/library/metadata/'
+            myURL += key + '/children'
             mySeasons = []
             seasons = XML.ElementFromURL(myURL).xpath('//Directory')
             for season in seasons:
@@ -423,11 +449,13 @@ class pmsV3(object):
             req.finish(str(e))
         except Exception, e:
             Log.Exception(
-                'Fatal error happened in TV-Show while fetching seasons: %s' % (e))
+                'Fatal error happened in TV-Show while \
+                fetching seasons: %s' % (e))
             req.clear()
             req.set_status(500)
             req.finish(
-                'Fatal error happened in TV-Show while fetching seasons: %s' % (e))
+                'Fatal error happened in TV-Show while \
+                fetching seasons: %s' % (e))
 
     # Get TVShow Size
     @classmethod
@@ -474,11 +502,20 @@ class pmsV3(object):
         def removeBundle(bundleName, bundleIdentifier, url):
             try:
                 bundleDataDir = Core.storage.join_path(
-                    Core.app_support_path, 'Plug-in Support', 'Data', bundleIdentifier)
+                    Core.app_support_path,
+                    'Plug-in Support',
+                    'Data',
+                    bundleIdentifier)
                 bundleCacheDir = Core.storage.join_path(
-                    Core.app_support_path, 'Plug-in Support', 'Caches', bundleIdentifier)
+                    Core.app_support_path,
+                    'Plug-in Support',
+                    'Caches',
+                    bundleIdentifier)
                 bundlePrefsFile = Core.storage.join_path(
-                    Core.app_support_path, 'Plug-in Support', 'Preferences', bundleIdentifier + '.xml')
+                    Core.app_support_path,
+                    'Plug-in Support',
+                    'Preferences',
+                    bundleIdentifier + '.xml')
                 try:
                     # Find the bundle directory, regarding of the case used
                     dirs = os.listdir(self.PLUGIN_DIR)
@@ -487,7 +524,9 @@ class pmsV3(object):
                             # It's a bundle
                             if pluginDir.upper() == bundleName.upper():
                                 bundleInstallDir = Core.storage.join_path(
-                                    Core.app_support_path, Core.config.bundles_dir_name, pluginDir)
+                                    Core.app_support_path,
+                                    Core.config.bundles_dir_name,
+                                    pluginDir)
                     Log.Debug('Bundle directory name digested as: %s' %
                               (bundleInstallDir))
                     shutil.rmtree(bundleInstallDir)
@@ -497,27 +536,31 @@ class pmsV3(object):
                     req.clear()
                     req.set_status(500)
                     req.finish(
-                        'Fatal error happened when trying to remove the bundle directory: ' + str(e))
+                        'Fatal error happened when trying to remove the \
+                        bundle directory: ' + str(e))
                 try:
                     shutil.rmtree(bundleDataDir)
                 except:
                     Log.Debug('Unable to remove the bundle data directory.')
                     Log.Debug(
-                        'This can be caused by bundle data directory was never generated')
+                        'This can be caused by bundle data directory was \
+                        never generated')
                     Log.Debug('Ignoring this')
                 try:
                     shutil.rmtree(bundleCacheDir)
                 except:
                     Log.Debug('Unable to remove the bundle cache directory.')
                     Log.Debug(
-                        'This can be caused by bundle data directory was never generated')
+                        'This can be caused by bundle data directory was \
+                        never generated')
                     Log.Debug('Ignoring this')
                 try:
                     os.remove(bundlePrefsFile)
                 except:
                     Log.Debug('Unable to remove the bundle preferences file.')
                     Log.Debug(
-                        'This can be caused by bundle prefs was never generated')
+                        'This can be caused by bundle prefs \
+                        was never generated')
                     Log.Debug('Ignoring this')
                 # Remove entry from list dict
                 Dict['installed'].pop(url, None)
@@ -539,15 +582,18 @@ class pmsV3(object):
 # TODO
                 try:
                     Log.Debug(
-                        'Reminder to self...TODO....Restart of System Bundle hangs :-(')
-#					HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart', immediate=True)
+                        'Reminder to self...TODO....Restart of \
+                        System Bundle hangs :-(')
+                    # HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart', immediate=True)
                 except:
                     Log.Debug(
-                        'Unable to restart System.bundle. Channel may not vanish without PMS restart.')
+                        'Unable to restart System.bundle. Channel may \
+                        not vanish without PMS restart.')
                     req.clear()
                     req.set_status(500)
                     req.finish(
-                        'Fatal error happened when trying to restart the system.bundle')
+                        'Fatal error happened when trying to restart \
+                        the system.bundle')
             except Exception, e:
                 Log.Exception(
                     'Fatal error happened in removeBundle: ' + str(e))
@@ -572,9 +618,13 @@ class pmsV3(object):
             installedBundles = Dict['installed']
             bFoundBundle = False
             for installedBundle in installedBundles:
-                if installedBundles[installedBundle]['bundle'].upper() == bundleName.upper():
+                if installedBundles[
+                    installedBundle][
+                        'bundle'].upper() == bundleName.upper():
                     removeBundle(
-                        bundleName, installedBundles[installedBundle]['identifier'], installedBundle)
+                        bundleName,
+                        installedBundles[installedBundle]['identifier'],
+                        installedBundle)
                     bFoundBundle = True
                     break
             if not bFoundBundle:
@@ -727,28 +777,30 @@ class pmsV3(object):
                     subInfo['codec'] = stream.get('codec')
                     subInfo['selected'] = stream.get('selected')
                     subInfo['languageCode'] = stream.get('languageCode')
-                    if stream.get('key') == None:
+                    if stream.get('key') is None:
                         location = 'Embedded'
-                    elif stream.get('format') == None:
+                    elif stream.get('format') is None:
                         location = 'Agent'
                     else:
                         location = 'Sidecar'
                     subInfo['location'] = location
-                    # Get tree info, if not already done so, and if it's a none embedded srt, and we asked for all
-                    if getFile == True:
-                        if location != None:
+                    # Get tree info, if not already done so, and if it's \
+                    # a none embedded srt, and we asked for all
+                    if getFile:
+                        if location is not None:
                             if bDoGetTree:
                                 MediaStreams = XML.ElementFromURL(
                                     myURL + '/tree').xpath('//MediaStream')
                                 bDoGetTree = False
-                    if getFile == True:
+                    if getFile:
                         try:
                             for mediaStream in MediaStreams:
                                 if mediaStream.get('id') == subInfo['key']:
                                     subInfo['url'] = mediaStream.get('url')
                         except Exception, e:
                             Log.Exception(
-                                'Fatal error happened in getSubtitles: %s' % (e))
+                                'Fatal error happened in \
+                                getSubtitles: %s' % (e))
                             req.clear()
                             req.set_status(500)
                             req.finish('Fatal error happened in getSubtitles')
@@ -815,36 +867,63 @@ class pmsV3(object):
             # Got all the needed params, so lets grap the contents
             try:
                 if letterKey and title:
-                    myURL = misc.GetLoopBack() + '/library/sections/' + key + '/firstCharacter/' + \
-                        letterKey + '?X-Plex-Container-Start=' + \
-                        start + '&X-Plex-Container-Size=' + size + '&title=' + title
+                    myURL = misc.GetLoopBack() + '/library/sections/' + key
+                    myURL += '/firstCharacter/' + letterKey
+                    myURL += '?X-Plex-Container-Start='
+                    myURL += start + '&X-Plex-Container-Size='
+                    myURL += size + '&title=' + title
                 elif letterKey:
-                    myURL = misc.GetLoopBack() + '/library/sections/' + key + '/firstCharacter/' + \
-                        letterKey + '?X-Plex-Container-Start=' + \
-                        start + '&X-Plex-Container-Size=' + size
+                    myURL = ''.join((
+                        misc.GetLoopBack(),
+                        '/library/sections/',
+                        key,
+                        '/firstCharacter/',
+                        letterKey,
+                        '?X-Plex-Container-Start=',
+                        start,
+                        '&X-Plex-Container-Size=',
+                        size))
                 elif title:
-                    myURL = misc.GetLoopBack() + '/library/sections/' + key + '/all?X-Plex-Container-Start=' + \
-                        start + '&X-Plex-Container-Size=' + size + '&title=' + title
+                    myURL = ''.join((
+                        misc.GetLoopBack(),
+                        '/library/sections/',
+                        key,
+                        '/all?X-Plex-Container-Start=',
+                        start,
+                        '&X-Plex-Container-Size=',
+                        size,
+                        '&title=',
+                        title))
                 else:
-                    myURL = misc.GetLoopBack() + '/library/sections/' + key + \
-                        '/all?X-Plex-Container-Start=' + start + '&X-Plex-Container-Size=' + size
+                    myURL = ''.join((
+                        misc.GetLoopBack(),
+                        '/library/sections/',
+                        key,
+                        '/all?X-Plex-Container-Start=',
+                        start,
+                        '&X-Plex-Container-Size=',
+                        size))
                 rawSection = XML.ElementFromURL(myURL)
                 Section = []
                 for media in rawSection:
-                    if getSubs == True:
+                    if getSubs:
                         subtitles = self.GETSUBTITLES(
                             req, mediaKey=media.get('ratingKey'))
                         if str(Dict['HideWithoutSubs']).lower() == 'true':
                             if len(subtitles) > 0:
                                 # Found subs
-                                media = {'key': media.get('ratingKey'), 'title': media.get(
-                                    'title'), 'subtitles': subtitles}
+                                media = {
+                                    'key': media.get('ratingKey'),
+                                    'title': media.get('title'),
+                                    'subtitles': subtitles}
                             else:
                                 continue
                         else:
                             # Add regardless of subs present or not
-                            media = {'key': media.get('ratingKey'), 'title': media.get(
-                                'title'), 'subtitles': subtitles}
+                            media = {
+                                'key': media.get('ratingKey'),
+                                'title': media.get('title'),
+                                'subtitles': subtitles}
                     else:
                         media = {'key': media.get(
                             'ratingKey'), 'title': media.get('title')}
@@ -880,13 +959,15 @@ class pmsV3(object):
             else:
                 key = list(args)[0][0]
                 # Got all the needed params, so lets grap the list
-                myURL = misc.GetLoopBack() + '/library/sections/' + key + '/firstCharacter'
+                myURL = misc.GetLoopBack() + '/library/sections/'
+                myURL += key + '/firstCharacter'
                 resultJson = {}
                 sectionLetterList = XML.ElementFromURL(
                     myURL).xpath('//Directory')
                 for sectionLetter in sectionLetterList:
                     resultJson[sectionLetter.get('title')] = {
-                        'key': sectionLetter.get('key'), 'size': sectionLetter.get('size')}
+                        'key': sectionLetter.get('key'),
+                        'size': sectionLetter.get('size')}
                 Log.Debug('Returning %s' % (resultJson))
                 req.clear()
                 req.set_status(200)
@@ -932,14 +1013,17 @@ class pmsV3(object):
                     req.clear()
                     req.set_status(e.code)
                     req.finish(
-                        'Fatal error happened in GetSectionSize:  %s' % (str(e)))
+                        'Fatal error happened in \
+                        GetSectionSize:  %s' % (str(e)))
                 except Exception, e:
                     Log.Exception(
-                        'Fatal error happened in GetSectionSize: %s' % (str(e)))
+                        'Fatal error happened in \
+                        GetSectionSize: %s' % (str(e)))
                     req.clear()
                     req.set_status(500)
                     req.finish(
-                        'Fatal error happened in GetSectionSize:  %s' % (str(e)))
+                        'Fatal error happened in \
+                        GetSectionSize:  %s' % (str(e)))
         except Exception, e:
             Log.Exception(
                 'Fatal error happened in getSectionSize: %s' % (str(e)))
@@ -1045,7 +1129,7 @@ class pmsV3(object):
         try:
             # Get the Language code
             language = req.get_argument('language', default=None, strip=False)
-            if language == None:
+            if language is None:
                 req.clear()
                 req.set_status(412)
                 req.finish('Missing language param from the payload')
@@ -1070,12 +1154,14 @@ class pmsV3(object):
                 req.clear()
                 req.set_status(412)
                 req.finish(
-                    'Missing upload file parameter named localFile from the payload')
+                    'Missing upload file parameter named \
+                    localFile from the payload')
             else:
                 localFile = req.request.files['localFile'][0]
                 # Lookup media
-                url = misc.GetLoopBack() + '/library/metadata/' + key + \
-                    '?excludeElements=Actor,Collection,Country,Director,Genre,Label,Mood,Producer,Similar,Writer,Role'
+                url = misc.GetLoopBack() + '/library/metadata/' + key
+                url += '?excludeElements=Actor,Collection,Country,Director,'
+                url += 'Genre,Label,Mood,Producer,Similar,Writer,Role'
                 media = XML.ElementFromURL(url)
                 mediaFile = media.xpath(
                     '//Part[@id=' + part + ']')[0].get('file')
@@ -1136,12 +1222,13 @@ class pmsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in search: ' + str(e))
 
-#************************************* Internal function *********************************************
+# ********************* Internal function **********************************
 
     ''' Delete from an XML file Internal class function'''
     @classmethod
     def DelFromXML(self, fileName, attribute, value):
-        Log.Debug('Need to delete element with an attribute named "%s" with a value of "%s" from file named "%s"' % (
+        Log.Debug('Need to delete element with an attribute \
+        named "%s" with a value of "%s" from file named "%s"' % (
             attribute, value, fileName))
         if Platform.OS == 'MacOSX':
             Log.Info('Mac OSx detected')
@@ -1180,14 +1267,14 @@ class pmsV3(object):
         return
 
 
-##################################### Below need to be converted to API V3 ##########################################################
+# ############## Below need to be converted to API V3 ##############
 
 
-################ Functions exposed to other modules #####################
+# ############## Functions exposed to other modules ##############
 
 # Undate uasTypesCounters
 def updateUASTypesCounters():
-    try:                
+    try:
         counter = {}
         # Grap a list of all bundles
         bundleList = Dict['PMS-AllBundleInfo']
@@ -1195,12 +1282,12 @@ def updateUASTypesCounters():
             for bundleType in bundleList[bundle]['type']:
                 if bundleType in counter:
                     tCounter = int(counter[bundleType]['total'])
-                    tCounter += 1                    
+                    tCounter += 1
                     iCounter = int(counter[bundleType]['installed'])
                     if 'date' not in bundleList[bundle]:
                         bundleList[bundle]['date'] = ''
                     if bundleList[bundle]['date'] != '':
-                        iCounter += 1                        
+                        iCounter += 1
                     counter[bundleType] = {
                         'installed': iCounter, 'total': tCounter}
                 else:
@@ -1209,13 +1296,16 @@ def updateUASTypesCounters():
                     elif bundleList[bundle]['date'] == '':
                         counter[bundleType] = {'installed': 0, 'total': 1}
                     else:
-                        counter[bundleType] = {'installed': 1, 'total': 1}                    
-        counter['All'] = {'installed': len(Dict['installed']), 'total': len(Dict['PMS-AllBundleInfo'])}
+                        counter[bundleType] = {'installed': 1, 'total': 1}
+        counter['All'] = {
+            'installed': len(Dict['installed']),
+            'total': len(Dict['PMS-AllBundleInfo'])}
         Dict['uasTypes'] = counter
         Dict.Save()
     except Exception, e:
         Log.Exception(
             'Fatal error happened in updateUASTypesCounters: ' + str(e))
+
 
 def updateAllBundleInfoFromUAS():
     def updateInstallDict():
@@ -1229,26 +1319,37 @@ def updateAllBundleInfoFromUAS():
             installed = Dict['installed'].copy()
             for installedBundle in installed:
                 if not installedBundle.startswith('https://'):
-                    Log.Info('Checking unknown bundle: ' +
-                             installedBundle + ' to see if it is part of UAS now')
+                    Log.Info(
+                        'Checking unknown bundle: %s to see if it is \
+                        part of UAS now' % installedBundle)
                     if installedBundle in uasBundles:
-                        # Get the installed date of the bundle formerly known as unknown :-)
-                        installedBranch = Dict['installed'][installedBundle]['branch']
-                        installedDate = Dict['installed'][installedBundle]['date']
+                        # Get the installed date of the bundle formerly
+                        # known as unknown :-)
+                        installedBranch = Dict[
+                            'installed'][
+                                installedBundle][
+                                    'branch']
+                        installedDate = Dict[
+                            'installed'][
+                                installedBundle][
+                                    'date']
                         # Add updated stuff to the dicts
                         Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]
                                                   ]['branch'] = installedBranch
                         Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]
                                                   ]['date'] = installedDate
                         Dict['installed'][uasBundles[installedBundle]
-                                          ] = Dict['PMS-AllBundleInfo'][uasBundles[installedBundle]]
+                                          ] = Dict[
+                                              'PMS-AllBundleInfo'][
+                                                  uasBundles[installedBundle]]
                         # Remove old stuff from the Dict
                         Dict['PMS-AllBundleInfo'].pop(installedBundle, None)
                         Dict['installed'].pop(installedBundle, None)
                         Dict.Save()
         except Exception, e:
             Log.Exception(
-                'Critical error in updateInstallDict while walking the gits: ' + str(e))
+                'Critical error in updateInstallDict \
+                while walking the gits: ' + str(e))
         return
     try:
         # start by checking if UAS cache has been populated
@@ -1262,15 +1363,22 @@ def updateAllBundleInfoFromUAS():
                     # Rearrange data
                     key = git['repo']
                     installBranch = ''
-                    # Check if already present, and if an install date also is there
+                    # Check if already present, and if an
+                    # install date also is there
                     installDate = ""
                     CommitId = ""
                     if key in Dict['PMS-AllBundleInfo']:
                         jsonPMSAllBundleInfo = Dict['PMS-AllBundleInfo'][key]
                         if 'date' in jsonPMSAllBundleInfo:
-                            installDate = Dict['PMS-AllBundleInfo'][key]['date']
+                            installDate = Dict[
+                                'PMS-AllBundleInfo'][
+                                    key][
+                                        'date']
                         if 'CommitId' in jsonPMSAllBundleInfo:
-                            CommitId = Dict['PMS-AllBundleInfo'][key]['CommitId']
+                            CommitId = Dict[
+                                'PMS-AllBundleInfo'][
+                                    key][
+                                        'CommitId']
                     del git['repo']
                     # Add/Update our Dict
                     Dict['PMS-AllBundleInfo'][key] = git
@@ -1278,7 +1386,8 @@ def updateAllBundleInfoFromUAS():
                     Dict['PMS-AllBundleInfo'][key]['CommitId'] = CommitId
             except Exception, e:
                 Log.Exception(
-                    'Critical error in updateAllBundleInfoFromUAS1 while walking the gits: ' + str(e))
+                    'Critical error in updateAllBundleInfoFromUAS1 \
+                    while walking the gits: ' + str(e))
             Dict.Save()
             updateUASTypesCounters()
             updateInstallDict()

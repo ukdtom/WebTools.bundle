@@ -1,13 +1,15 @@
-######################################################################################################################
-#	WebTools module unit
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+##############################################################################
+# WebTools module unit
 #
-#	Author: dane22, a Plex Community member
+# Author: dane22, a Plex Community member
 #
 # This module is for misc utils
 #
 # Path of code here shamelessly stolen from Plex scanner bundle
 #
-######################################################################################################################
+##############################################################################
 
 import os
 import re
@@ -35,7 +37,10 @@ class misc(object):
     def __init__(self):
         return
 
-    ''' Below function shamefully stolen from the scanner.bundle, yet modified a bit '''
+    '''
+    Below function shamefully stolen from the scanner.bundle,
+    yet modified a bit
+    '''
     # Safely return Unicode.
 
     def Unicodize(self, s):
@@ -59,7 +64,8 @@ class misc(object):
                         try:
                             filename = unicodedata.normalize(form, s)
                         except Exception, e:
-                            Log(type(e).__name__ + ' exception precomposing: ' +
+                            Log(type(e).__name__ + ' \
+                            exception precomposing: ' +
                                 str(e) + ' with ' + form)
         try:
             filename = re.sub(RE_UNICODE_CONTROL, '', filename)
@@ -67,24 +73,28 @@ class misc(object):
             Log.Debug('Couldn\'t strip control characters: ' + filename)
         return filename
 
-    ####################################################################################################
+    ##########################################################################
     # This function will return the loopback address
-    ####################################################################################################
+    ##########################################################################
     def GetLoopBack(self):
-        # For now, simply return the IPV4 LB Addy, until PMS is better with this
+        # For now, simply return the IPV4 LB Addy,
+        # until PMS is better with this
         return 'http://127.0.0.1:32400'
 
         ''' Code below not used for now
-		try:
-			httpResponse = HTTP.Request(
-			    'http://[::1]:32400/web', immediate=True, timeout=5)
-			return 'http://[::1]:32400'
-		except:
-			return 'http://127.0.0.1:32400'
-		'''
+        try:
+            httpResponse = HTTP.Request(
+                'http://[::1]:32400/web', immediate=True, timeout=5)
+            return 'http://[::1]:32400'
+        except:
+            return 'http://127.0.0.1:32400'
+        '''
 
     def getFunction(self, FUNCTIONS, metode, req):
-        """ This function will break  up a req, and split it out into function to call, and params for it """
+        """
+        This function will break  up a req, and split it out
+        into function to call, and params for it
+        """
         params = req.request.uri[8:].upper().split('/')
         function = None
         if metode not in FUNCTIONS:
@@ -115,10 +125,10 @@ class misc(object):
     def enum(self, *sequential, **named):
         """
         This will emulate an emun
-        Params: 
+        Params:
             enum('users', 'users_self', 'users_all', 'users_self_all')
                 Above will create the enum
-            enum.users_self_all 
+            enum.users_self_all
                 Above will return 3
             enum.reverse_mapping[3]
                 Above will return users_self_all
@@ -127,8 +137,6 @@ class misc(object):
         reverse = dict((value, key) for key, value in enums.iteritems())
         enums['reverse_mapping'] = reverse
         return type('Enum', (), enums)
-
-
 
     def chunks(self, l, n):
         """
@@ -144,14 +152,14 @@ class misc(object):
         for i in range(0, len(l), n):
             print 'Ged4', i, n
             # Create an index range for l of n items:
-            #yield l[i:i+n]
+            # yield l[i:i+n]
             retList.append(l[i:i+n])
         return retList
 
-
-    ####################################################################################################
-    # This function will return a filtered json, Non case sensitive, based on a url params filter
-    ####################################################################################################
+    # #######################################################################
+    # This function will return a filtered json, Non case sensitive
+    #  based on a url params filter
+    # #######################################################################
     def filterJson(self, origen, filter):
         # Remove start of filter string
         filter = filter[7:]

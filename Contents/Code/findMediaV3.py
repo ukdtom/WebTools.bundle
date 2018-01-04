@@ -197,17 +197,17 @@ class findMediaV3(object):
                                 iEpisode = 0
                                 iCEpisode = 0
                                 while True:
-                                    url = (
-                                        misc.GetLoopBack() +
-                                        season.get('key') +
-                                        '?X-Plex-Container-Start=' +
-                                        str(iCEpisode) +
-                                        '&X-Plex-Container-Size=' +
-                                        str(self.MediaChuncks) +
-                                        '&excludeElements=' +
-                                        excludeElements +
-                                        '&excludeFields=' +
-                                        excludeFields)
+                                    url = ''.join((
+                                        misc.GetLoopBack(),
+                                        season.get('key'),
+                                        '?X-Plex-Container-Start=',
+                                        str(iCEpisode),
+                                        '&X-Plex-Container-Size=',
+                                        str(self.MediaChuncks),
+                                        '&excludeElements=',
+                                        excludeElements,
+                                        '&excludeFields=',
+                                        excludeFields))
                                     videos = XML.ElementFromURL(
                                         url).xpath('//Video')
                                     for video in videos:

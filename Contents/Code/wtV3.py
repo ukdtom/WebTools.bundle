@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 ##############################################################################
 # WT unit
 # A WebTools bundle plugin
