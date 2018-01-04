@@ -1,9 +1,11 @@
-######################################################################################################################
-#	Plex.tv helper unit
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+##############################################################################
+# Plex.tv helper unit
 #
-#	Author: dane22, a Plex Community member
+# Author: dane22, a Plex Community member
 #
-######################################################################################################################
+##############################################################################
 import sys
 from misc import misc
 
@@ -51,21 +53,13 @@ class plexTV(object):
             Log.Exception('Login error: %s' % (str(e)))
             return None
 
-    ''' Is user the owner of the server?
-			user identified by token
-			server identified by clientIdentifier
-			if server found, and user is the owner, return 0
-			if server is not found, return 1
-			if user is not the owner, return 2
-			if unknown error, return -1
-	'''
-
     def isServerOwner(self, token):
         Log.Debug('Checking server for ownership')
         try:
             # Grap Resource list from plex.tv
             self.myHeader['X-Plex-Token'] = token
-            elements = XML.ElementFromURL(self.resourceURL, headers=self.myHeader).xpath(
+            elements = XML.ElementFromURL(
+                self.resourceURL, headers=self.myHeader).xpath(
                 '//Device[@clientIdentifier="' + self.id + '"]/@owned')
             if len(elements) < 1:
                 Log.Debug('Server %s was not found @ plex.tv' % (self.id))
@@ -92,10 +86,10 @@ class plexTV(object):
     def auth2myPlex(self):
         return 'ok' == XML.ElementFromURL(misc.GetLoopBack()).get('myPlexSigninState')
 
-    ''' Get list of users 
-	This will return a json of users on the server, incl. their access token
-	'''
-
+    '''
+    Get list of users
+    This will return a json of users on the server, incl. their access token
+    '''
     def getUserList(self):
         try:
             # Fetch resources from plex.tv
@@ -110,7 +104,6 @@ class plexTV(object):
                 for server in servers:
                     if server.get('machineIdentifier') == self.id:
                         if len(sharedUsers.xpath('//SharedServer[@userID=' + user.get('id') + ']/@accessToken')) > 0:
-                            #							usr = user.get('title')
                             usr = user.get('id')
                             usrList[usr] = {}
                             usrList[usr]['title'] = user.get('title')
@@ -136,8 +129,9 @@ class plexTV(object):
                             usrList[usr]['restricted'] = user.get('restricted')
                             usrList[usr]['accessToken'] = sharedUsers.xpath(
                                 '//SharedServer[@userID=' + user.get('id') + ']/@accessToken')[0]
-                            usrList[usr]['username'] = sharedUsers.xpath(
-                                '//SharedServer[@userID=' + user.get('id') + ']/@username')[0]
+                            usrList[usr][
+                                'username'] = sharedUsers.xpath(
+                                    '//SharedServer[@userID=' + user.get('id') + ']/@username')[0]
                             if usrList[usr]['username'] == '':
                                 usrList[usr]['username'] = user.get('title')
                             usrList[usr]['email'] = sharedUsers.xpath(

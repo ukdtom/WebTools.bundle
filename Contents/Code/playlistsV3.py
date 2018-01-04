@@ -162,7 +162,7 @@ class playlistsV3(object):
                     # Remaining as put
                     medias = ','.join(
                         map(str, (item['id'] for item in jsonItems[lib])))
-                    targetSecondUrl =''.join((
+                    targetSecondUrl = ''.join((
                         misc.GetLoopBack(),
                         '/playlists/',
                         ratingKey,
@@ -223,7 +223,8 @@ class playlistsV3(object):
             else:
                 try:
                     # Guess the media type
-                    sType = guessMediaType(lines[2].replace('\r', '').replace('\n', ''))
+                    sType = guessMediaType(
+                        lines[2].replace('\r', '').replace('\n', ''))
                     # Get possibel libraries to scan
                     libs = getLibsOfType(sType)
                     # Get a key,value list of potential medias
@@ -235,7 +236,8 @@ class playlistsV3(object):
                     basic = {}
                     counter = 1
                     for line in lines[2:len(lines):3]:
-                        basic[str(counter)] = line.replace('\r', '').replace('\n', '')
+                        basic[str(counter)] = line.replace(
+                            '\r', '').replace('\n', '')
                         counter += 1
                     items['basic'] = basic
                     # print 'Ged Basic', basic
@@ -253,7 +255,7 @@ class playlistsV3(object):
                     pass
                 except Exception, e:
                     Log.Exception('Exception happened in \
-                    phrase3Party was %s' %(str(e)))
+                    phrase3Party was %s' % (str(e)))
                     pass
                 finally:
                     # print 'Ged own', items
@@ -314,7 +316,7 @@ class playlistsV3(object):
         success = []
         failed = []
         # Payload Upload file present?
-        if not 'localFile' in req.request.files:
+        if 'localFile' not in req.request.files:
             req.clear()
             req.set_status(412)
             req.finish(
@@ -323,8 +325,10 @@ class playlistsV3(object):
         else:
             localFile = req.request.files['localFile'][0]['body']
         try:
-            playlistTitle = req.request.files['localFile'][0]['filename'].rsplit('.')[
-                0]
+            playlistTitle = req.request.files[
+                'localFile'][
+                    0][
+                        'filename'].rsplit('.')[0]
             # Make into seperate lines
             lines = localFile.split('\n')
             # Start by checking if we have a valid playlist file
@@ -334,7 +338,8 @@ class playlistsV3(object):
                 req.clear()
                 req.set_status(406)
                 req.finish(
-                    'Seems like we are trying to import a file that is not a playlist!')
+                    'Seems like we are trying to import a file \
+                    that is not a playlist!')
                 return
             if alreadyPresent(playlistTitle):
                 Log.Error('Playlist %s already exists' % playlistTitle)
@@ -496,18 +501,21 @@ class playlistsV3(object):
             # Now split items into smaller chunks, defined by MEDIASTEPS
             itemsToAdd = {}
             for libDir in jsonItems['items']:
+                print 'Ged skift til MEDIASTEPS'
                 # itemsArray = misc.chunks(jsonItems['items'][libDir], MEDIASTEPS)
                 itemsToAdd[libDir] = misc.chunks(jsonItems['items'][libDir], 3)
             print 'Ged dyutui23417843287 SKIFT TIL MEDIASTEPS', itemsToAdd
             try:
-                # So we got all the info needed now from the source user, now time for the target user
+                # So we got all the info needed now from the source user,
+                # now time for the target user
                 urltoPlayLists = misc.GetLoopBack() + '/playlists?' + EXCLUDE
                 if userto is None:
                     # Target is the owner
                     Log.Debug('Target user is the owner')
                     print 'Ged target is owner'
                     playlistto = XML.ElementFromURL(urltoPlayLists)
-                    # So we got the target users list of playlists, and if the one we need to copy already is there, we delete it
+                    # So we got the target users list of playlists, and if
+                    # the one we need to copy already is there, we delete it
                     for itemto in playlistto:
                         if playlistTitle == itemto.get('title'):
                             keyto = itemto.get('ratingKey')
@@ -526,14 +534,23 @@ class playlistsV3(object):
                     for lib in itemsToAdd:
                         for items in lib:
                             if bFirstRun:
-                                targetFirstUrl += lib + '/directory//library/metadata/'
-                                medias = ','.join(map(str, jsonItems['items'][lib]))
+                                targetFirstUrl += ''.join((
+                                    lib,
+                                    '/directory//library/metadata/'))
+                                medias = ','.join(map(
+                                    str, jsonItems['items'][lib]))
                                 targetFirstUrl += String.Quote(medias)
-                                # First url for the post created, so send it, and grab the response
+                                # First url for the post created, so send it,
+                                # and grab the response
                                 try:
-                                    response = HTTP.Request(targetFirstUrl, cacheTime=0, immediate=True, method="POST")
+                                    response = HTTP.Request(
+                                        targetFirstUrl,
+                                        cacheTime=0,
+                                        immediate=True,
+                                        method="POST")
                                     ratingKey = XML.ElementFromString(
-                                        response).xpath('Playlist/@ratingKey')[0]
+                                        response).xpath(
+                                            'Playlist/@ratingKey')[0]
                                 except Exception, e:
                                     Log.Exception(
                                         'Exception creating first part \
@@ -581,34 +598,47 @@ class playlistsV3(object):
                             req.clear()
                             req.set_status(500)
                             req.finish(
-                                'Exception happened when downloading a \playlist for the user was: %s' % (str(e)))
+                                'Exception happened when downloading a \
+                                playlist for the user was: %s' % (str(e)))
                         # So we got the target users list of playlists, and
-                        # if the one we need to copy already is there, we delete it
+                        # if the one we need to copy already is there,
+                        # we delete it
                         for itemto in playlistto:
                             if playlistTitle == itemto.get('title'):
                                 keyto = itemto.get('ratingKey')
                                 deletePlayListforUsr(
                                     req, keyto, users[user]['accessToken'])
                         # Make url for creation of playlist
-                        targetFirstUrl = misc.GetLoopBack() + '/playlists?type=' + playlistType + \
-                            '&title=' + String.Quote(playlistTitle) + \
-                            '&smart=0&uri=library://'
+                        targetFirstUrl = ''.join((
+                            misc.GetLoopBack(),
+                            '/playlists?type=',
+                            playlistType,
+                            '&title=',
+                            String.Quote(playlistTitle),
+                            '&smart=0&uri=library://'))
                         counter = 0
                         for lib in jsonItems:
                             if counter < 1:
-                                targetFirstUrl += lib + '/directory//library/metadata/'
+                                targetFirstUrl += ''.join((
+                                    lib,
+                                    '/directory//library/metadata/'))
                                 medias = ','.join(map(str, jsonItems[lib]))
                                 targetFirstUrl += String.Quote(medias)
-                                # First url for the post created, so send it, and grab the response
+                                # First url for the post created, so send it,
+                                # and grab the response
                                 try:
-                                    opener = urllib2.build_opener(urllib2.HTTPHandler)
-                                    request = urllib2.Request(targetFirstUrl)
+                                    opener = urllib2.build_opener(
+                                        urllib2.HTTPHandler)
+                                    request = urllib2.Request(
+                                        targetFirstUrl)
                                     request.add_header(
-                                        'X-Plex-Token', users[user]['accessToken'])
+                                        'X-Plex-Token',
+                                        users[user]['accessToken'])
                                     request.get_method = lambda: 'POST'
                                     response = opener.open(request).read()
                                     ratingKey = XML.ElementFromString(
-                                        response).xpath('Playlist/@ratingKey')[0]
+                                        response).xpath(
+                                            'Playlist/@ratingKey')[0]
                                 except Exception, e:
                                     Log.Exception(
                                         'Exception creating first part of \
@@ -644,7 +674,8 @@ class playlistsV3(object):
                         playlistto = XML.ElementFromString(response)
                     except Ex.HTTPError, e:
                         Log.Exception(
-                            'HTTP exception when downloading a playlist for the owner was: %s' % (e))
+                            'HTTP exception when downloading a playlist \
+                            for the owner was: %s' % (e))
                         req.clear()
                         req.set_status(e.code)
                         req.finish(str(e))
@@ -674,24 +705,30 @@ class playlistsV3(object):
                         '&smart=0&uri=library://'))
                     # counter = 0
                     bFirstRun = True
-                    for lib in jsonItems:                        
+                    for lib in jsonItems:
                         if bFirstRun:
-                            targetFirstUrl += lib + '/directory//library/metadata/'
+                            targetFirstUrl += ''.join((
+                                lib,
+                                '/directory//library/metadata/'))
                             medias = ','.join(map(str, jsonItems[lib]))
                             targetFirstUrl += String.Quote(medias)
-                            # First url for the post created, so send it, and grab the response
+                            # First url for the post created, so send it,
+                            # and grab the response
                             try:
-                                opener = urllib2.build_opener(urllib2.HTTPHandler)
+                                opener = urllib2.build_opener(
+                                    urllib2.HTTPHandler)
                                 request = urllib2.Request(targetFirstUrl)
                                 request.add_header(
-                                    'X-Plex-Token', users[userto]['accessToken'])
+                                    'X-Plex-Token',
+                                    users[userto]['accessToken'])
                                 request.get_method = lambda: 'POST'
                                 response = opener.open(request).read()
                                 ratingKey = XML.ElementFromString(
                                     response).xpath('Playlist/@ratingKey')[0]
                             except Exception, e:
                                 Log.Exception(
-                                    'Exception creating first part of playlist was: %s' % (str(e)))
+                                    'Exception creating first part \
+                                    of playlist was: %s' % (str(e)))
                             # counter += 1
                             bFirstRun = False
                         else:
@@ -754,14 +791,18 @@ class playlistsV3(object):
                     Log.Info('downloading playlist with ID: %s' % key)
                     try:
                         title, playList = getPlayListItems(user, key)
-                        # Replace invalid caracters for a filename with underscore
-                        fileName = re.sub('[\/[:#*?"<>|]', '_', title).strip() + '.m3u8'
+                        # Replace invalid caracters for a
+                        # filename with underscore
+                        fileName = re.sub('[\/[:#*?"<>|]', '_', title).strip()
+                        fileName += '.m3u8'
                         req.set_header(
                             'Content-Disposition',
                             'attachment; filename="' + fileName + '"')
                         req.set_header('Cache-Control', 'no-cache')
                         req.set_header('Pragma', 'no-cache')
-                        req.set_header('Content-Type', 'application/text/plain')
+                        req.set_header(
+                            'Content-Type',
+                            'application/text/plain')
                         # start writing
                         for line in playList:
                             # print line
@@ -769,24 +810,28 @@ class playlistsV3(object):
                         req.set_status(200)
                         req.finish()
                     except Exception, e:
-                        Log.Exception('Exception when downloading a playlist as the owner was %s' % str(e))
+                        Log.Exception('Exception when downloading a playlist \
+                        as the owner was %s' % str(e))
                         Log.Debug('Trying to get more info here')
                         req.clear()
                         req.set_status(500)
                         req.finish(str(e))
                 except Ex.HTTPError, e:
                     Log.Exception(
-                        'HTTP exception  when downloading a playlist for the owner was: %s' % (e))
+                        'HTTP exception  when downloading a playlist for \
+                        the owner was: %s' % (e))
                     req.clear()
                     req.set_status(500)
                     req.finish(str(e))
                 except Exception, e:
                     Log.Exception(
-                        'Exception happened when downloading a playlist for the owner was: %s' % (str(e)))
+                        'Exception happened when downloading a playlist \
+                        for the owner was: %s' % (str(e)))
                     req.clear()
                     req.set_status(500)
                     req.finish(
-                        'Exception happened when downloading a playlist for the owner was: %s' % (str(e)))
+                        'Exception happened when downloading a playlist \
+                        for the owner was: %s' % (str(e)))
         except Exception, e:
             Log.Exception(
                 'Fatal error happened in playlists.download: ' + str(e))
@@ -1094,7 +1139,8 @@ def getPlayListItems(user, key):
     key : key of playlist
     Return [title, playlist]
     """
-    Log.Info('Starting getPlaylistItems with user: %s and key of: %s' % (user, key))
+    Log.Info('Starting getPlaylistItems with \
+    user: %s and key of: %s' % (user, key))
     playlist = []
     infoURL = misc.GetLoopBack() + '/playlists/' + key
     userToken = None
@@ -1159,10 +1205,23 @@ def getPlayListItems(user, key):
             root = '//' + ROOTNODES[playListType]
             for item in response.xpath(root):
                 # Get the Library UUID
-                itemURL = misc.GetLoopBack() + '/library/metadata/' + item.get('ratingKey') + '?' + EXCLUDE
+                itemURL = ''.join((
+                    misc.GetLoopBack(),
+                    '/library/metadata/',
+                    item.get('ratingKey'),
+                    '?',
+                    EXCLUDE))
                 libraryUUID = sendReq(
                     userToken, itemURL).get('librarySectionUUID')
-                playlist.append(unicode('#{"Id":' + item.get('ratingKey') + ', "ListId":' + str(item.get('playlistItemID')) + ', "LibraryUUID":"' + libraryUUID + '"}\n'))
+                strLine = ''.join((
+                    '#{"Id":',
+                    item.get('ratingKey'),
+                    ', "ListId":',
+                    str(item.get('playlistItemID')),
+                    ', "LibraryUUID":"',
+                    libraryUUID,
+                    '"}\n'))
+                playlist.append(unicode(strLine))
                 row = '#EXTINF:'
                 # Get duration
                 try:
@@ -1176,13 +1235,16 @@ def getPlayListItems(user, key):
                     try:
                         if item.get('originalTitle') is None:
                             row = row + item.get('grandparentTitle').replace(
-                                ' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
+                                ' - ', ' ') + ' - ' + item.get(
+                                    'title').replace(' - ', ' ')
                         else:
                             row = row + item.get('originalTitle').replace(
-                                ' - ', ' ') + ' - ' + item.get('title').replace(' - ', ' ')
+                                ' - ', ' ') + ' - ' + item.get(
+                                    'title').replace(' - ', ' ')
                     except Exception, e:
                         Log.Exception(
-                            'Exception digesting an audio entry was %s' % (str(e)))
+                            'Exception digesting an audio entry \
+                            was %s' % (str(e)))
                         pass
                 # Video
                 elif playListType == 'video':
@@ -1198,7 +1260,8 @@ def getPlayListItems(user, key):
                                 ' - ' + item.get('title')
                     except Exception, e:
                         Log.Exception(
-                            'Exception happened when digesting the line for Playlist was %s' % (str(e)))
+                            'Exception happened when digesting the line \
+                            for Playlist was %s' % (str(e)))
                         pass
                 # Pictures
                 else:
@@ -1206,7 +1269,9 @@ def getPlayListItems(user, key):
                         item.get('title').replace(' - ', ' ')
                 playlist.append(unicode(row + '\n'))
                 # Add file path
-                playlist.append(unicode(item.xpath('Media/Part/@file')[0]) + '\n')
+                playlist.append(
+                    unicode(
+                        item.xpath('Media/Part/@file')[0]) + '\n')
         except Exception, e:
             Log.Exception('Exception in getPlayListItems was: %s' % str(e))
             Log.Critical('Url to offending item was %s' % itemURL)
@@ -1268,7 +1333,11 @@ def getPlayListAsJSON(userToken, key, copyAsSmart=False):
     # Where to start fetching from
     start = 0
     while True:
-        url = url + '&X-Plex-Container-Start=' + str(start) + '&X-Plex-Container-Size=' + str(MEDIASTEPS)
+        url += ''.join((
+            '&X-Plex-Container-Start=',
+            str(start),
+            '&X-Plex-Container-Size=',
+            str(MEDIASTEPS)))
         grab = getXMLElement(userToken, url)
         ROOTNODE = ROOTNODES[playlistType]
         if grab.get('size') == '0':
