@@ -1,10 +1,12 @@
-######################################################################################################################
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#############################################################################
 # log files helper unit
 # A WebTools bundle plugin
 #
 # Author: dane22, a Plex Community member
 #
-######################################################################################################################
+#############################################################################
 import shutil
 import time
 import json
@@ -26,9 +28,11 @@ class logsV3(object):
         try:
             if 'PLEX_MEDIA_SERVER_LOG_DIR' in os.environ:
                 self.LOGDIR = os.environ['PLEX_MEDIA_SERVER_LOG_DIR']
-            elif sys.platform.find('linux') == 0 and 'PLEXLOCALAPPDATA' in os.environ:
+            elif ((sys.platform.find('linux') == 0) and ('PLEXLOCALAPPDATA' in os.environ)):
                 self.LOGDIR = os.path.join(
-                    os.environ['PLEXLOCALAPPDATA'], 'Plex Media Server', 'Logs')
+                    os.environ['PLEXLOCALAPPDATA'],
+                    'Plex Media Server',
+                    'Logs')
             elif sys.platform == 'win32':
                 if 'PLEXLOCALAPPDATA' in os.environ:
                     key = 'PLEXLOCALAPPDATA'
@@ -82,7 +86,7 @@ class logsV3(object):
                     break
                 else:
                     pass
-        if self.function == None:
+        if self.function is None:
             Log.Debug('Function to call is None')
             req.clear()
             req.set_status(404)
@@ -104,14 +108,14 @@ class logsV3(object):
             try:
                 Log.Debug('Function to call is: ' + self.function +
                           ' with params: ' + str(params))
-                if params == None:
+                if params is None:
                     getattr(self, self.function)(req)
                 else:
                     getattr(self, self.function)(req, params)
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
-    #********** Functions below ******************
+    # ********** Functions below ******************
 
     ''' This metode will add an entry to the logfile. Req param is: "text" '''
     @classmethod
@@ -138,7 +142,11 @@ class logsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in Logs entry: ' + str(e))
 
-    ''' This will download a zipfile with the complete log directory. if parameter fileName is specified, only that file will be downloaded, and not zipped'''
+    '''
+    This will download a zipfile with the complete log directory.
+    if parameter fileName is specified, only that file will be
+    downloaded, and not zipped
+    '''
     @classmethod
     def DOWNLOAD(self, req, *args):
         try:
@@ -149,7 +157,8 @@ class logsV3(object):
                 fileName = list(args)[0][0]
             fileName = String.Unquote(fileName)
             Log.Debug(
-                'About to download logs and fileName param is: %s' % (fileName))
+                'About to download logs and \
+                fileName param is: %s' % (fileName))
             if fileName == '':
                 # Need to download entire log dir as a zip
                 # Get current date and time, and add to filename
@@ -189,11 +198,13 @@ class logsV3(object):
                                     return req
                         except Exception, e:
                             Log.Exception(
-                                'Fatal error happened in Logs download: ' + str(e))
+                                'Fatal error happened in Logs \
+                                download: ' + str(e))
                             req.clear()
                             req.set_status(500)
                             req.finish(
-                                'Fatal error happened in Logs download: ' + str(e))
+                                'Fatal error happened in Logs \
+                                download: ' + str(e))
                     f.close()
                 else:
                     with io.open(zipFileName, 'rb') as f:
@@ -210,11 +221,13 @@ class logsV3(object):
                                     return req
                         except Exception, e:
                             Log.Exception(
-                                'Fatal error happened in Logs download: ' + str(e))
+                                'Fatal error happened in Logs \
+                                download: ' + str(e))
                             req.clear()
                             req.set_status(500)
                             req.finish(
-                                'Fatal error happened in Logs download: ' + str(e))
+                                'Fatal error happened in Logs \
+                                download: ' + str(e))
             else:
                 try:
                     if 'com.plexapp' in fileName:
@@ -225,14 +238,15 @@ class logsV3(object):
                     file = String.Unquote(file, usePlus=False)
                     retFile = []
                     if Platform.OS == 'MacOSX':
-                        f = os.fdopen(os.open(file, os.O_RDONLY))                        
+                        f = os.fdopen(os.open(file, os.O_RDONLY))
                         with f as content_file:
                             content = content_file.readlines()
                             for line in content:
                                 retFile.append(line.strip())
                         f.close()
-                        req.set_header('Content-Disposition',
-                                       'attachment; filename="' + fileName + '"')
+                        req.set_header(
+                            'Content-Disposition',
+                            'attachment; filename="' + fileName + '"')
                         req.set_header(
                             'Content-Type', 'application/text/plain')
                         req.set_header('Cache-Control', 'no-cache')
@@ -246,8 +260,9 @@ class logsV3(object):
                             content = content_file.readlines()
                             for line in content:
                                 retFile.append(line.strip())
-                        req.set_header('Content-Disposition',
-                                       'attachment; filename="' + fileName + '"')
+                        req.set_header(
+                            'Content-Disposition',
+                            'attachment; filename="' + fileName + '"')
                         req.set_header(
                             'Content-Type', 'application/text/plain')
                         req.set_header('Cache-Control', 'no-cache')
@@ -269,12 +284,15 @@ class logsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in Logs download: ' + str(e))
 
-    ''' This will return contents of the logfile as an array. Req. a parameter named fileName '''
+    '''
+    This will return contents of the logfile as an array.
+    Req. a parameter named fileName
+    '''
     @classmethod
     def SHOW(self, req, *args):
         try:
             self.init()
-            if args == None:
+            if args is None:
                 fileName = ''
             else:
                 if len(args) > 0:
@@ -324,13 +342,15 @@ class logsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in Logs show: ' + str(e))
 
-    ''' This metode will return a list of logfiles. accepts a filter parameter '''
+    '''
+    This metode will return a list of logfiles. accepts a filter parameter
+    '''
     @classmethod
     def LIST(self, req, *args):
         Log.Debug('Starting Logs.List function')
         try:
             self.init()
-            if args == None:
+            if args is None:
                 fileFilter = ''
             else:
                 if len(args) > 0:
@@ -369,5 +389,3 @@ class logsV3(object):
             req.clear()
             req.set_status(500)
             req.finish('Fatal error happened in Logs list: ' + str(e))
-
-#***************END ********************************
