@@ -1,11 +1,13 @@
-######################################################################################################################
-#	Git bundles helper unit
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#############################################################################
+# Git bundles helper unit
 # A WebTools bundle plugin
 #
-#	Author: dane22, a Plex Community member
+# Author: dane22, a Plex Community member
 #
 # Handles all comm. with Github
-######################################################################################################################
+#############################################################################
 
 import datetime			# Used for a timestamp in the dict
 import json
@@ -43,17 +45,20 @@ class gitV3(object):
             self.init_already = True
             Log.Debug('******* Starting gitV3 *******')
             Log.Debug("Plugin directory is: %s" % (self.PLUGIN_DIR))
-            # See a few times, that the json file was missing, so here we check, and if not then force a download
+            # See a few times, that the json file was missing, so
+            # here we check, and if not then force a download
             try:
                 if not Data.Exists('plugin_details.json'):
                     Log.Critical(
-                        'UAS dir was missing the json, so doing a forced download here')
+                        'UAS dir was missing the json, so doing \
+                        a forced download here')
                     self.UPDATEUASCACHE(None, cliForce=True)
             except Exception, e:
                 Log.Exception(
-                    'Exception happend when trying to force download from UASRes: ' + str(e))
+                    'Exception happend when trying to force \
+                    download from UASRes: ' + str(e))
 
-    #********** Functions below ******************
+    # ********** Functions below ******************
 
     ''' Download install/update from GitHub '''
     @classmethod
@@ -68,7 +73,8 @@ class gitV3(object):
                     # Use bundle name from plugin details
                     gitName = bundleInfo['bundle']
                 else:
-                    # Fallback to just appending ".bundle" to the repository name
+                    # Fallback to just appending ".bundle"
+                    # to the repository name
                     gitName = gitName + '.bundle'
             gitName = Core.storage.join_path(self.PLUGIN_DIR, gitName)
             Log.Debug('Bundle directory name digested as: %s' % (gitName))
@@ -79,15 +85,17 @@ class gitV3(object):
             # If this is WebTools itself, then don't save
             if NAME in bundleName:
                 return
-            # Get the dict with the installed bundles, and init it if it doesn't exists
-            if not 'installed' in Dict:
+            # Get the dict with the installed bundles, and
+            # init it if it doesn't exists
+            if 'installed' not in Dict:
                 Dict['installed'] = {}
             gits = Data.LoadObject('plugin_details.json')
             bNotInUAS = True
             # Walk the one by one, so we can handle upper/lower case
             for git in gits:
                 if url.upper() == git['repo'].upper():
-                    # Needs to seperate between release downloads, and branch downloads
+                    # Needs to seperate between release downloads,
+                    # and branch downloads
                     if 'RELEASE' in branch.upper():
                         relUrl = 'https://api.github.com/repos' + \
                             url[18:] + '/releases/latest'
@@ -104,7 +112,8 @@ class gitV3(object):
                     Dict['installed'][key] = git
                     bNotInUAS = False
                     Log.Debug(
-                        'Dict stamped with the following install entry: ' + key + ' - ' + str(git))
+                        'Dict stamped with the following install \
+                        entry: ' + key + ' - ' + str(git))
                     # Now update the PMS-AllBundleInfo Dict as well
                     Dict['PMS-AllBundleInfo'][key] = git
                     pmsV3.updateUASTypesCounters()
@@ -132,7 +141,8 @@ class gitV3(object):
                 # Now update the PMS-AllBundleInfo Dict as well
                 Dict['PMS-AllBundleInfo'][key] = git
                 Log.Debug(
-                    'Dict stamped with the following install entry: ' + key + ' - ' + str(git))
+                    'Dict stamped with the following install \
+                    entry: ' + key + ' - ' + str(git))
                 pmsV3.updateUASTypesCounters()
             Dict.Save()
             return
@@ -146,7 +156,10 @@ class gitV3(object):
                 relInfo = JSON.ObjectFromURL(relUrl)
                 downloadUrl = None
                 for asset in relInfo['assets']:
-                    if asset['name'].upper() == Dict['PMS-AllBundleInfo'][url]['release'].upper():
+                    if asset['name'].upper() == Dict[
+                                                    'PMS-AllBundleInfo'][
+                                                        url][
+                                                            'release'].upper():
                         downloadUrl = asset['browser_download_url']
                         continue
                 if downloadUrl:
@@ -178,8 +191,9 @@ class gitV3(object):
                     Log.Debug('Removing empty directory: ' + path)
                     os.rmdir(path)
             try:
-                # Get the dict with the installed bundles, and init it if it doesn't exists
-                if not 'installed' in Dict:
+                # Get the dict with the installed bundles, and
+                # init it if it doesn't exists
+                if 'installed' not in Dict:
                     Dict['installed'] = {}
                 if 'RELEASE' in branch.upper():
                     zipPath = getLatestRelease(url)
@@ -190,7 +204,8 @@ class gitV3(object):
                     zipfile = Archive.ZipFromURL(zipPath)
                 except Exception, e:
                     Log.Exception(
-                        'Exception in downloadBundle2tmp while downloading from GitHub: ' + str(e))
+                        'Exception in downloadBundle2tmp while \
+                        downloading from GitHub: ' + str(e))
                     return False
                 # Create base directory
                 Core.storage.ensure_dirs(
@@ -204,45 +219,64 @@ class gitV3(object):
                             pos = filename.find('/Contents/')
                             cutStr = filename[:pos]
                             bError = False
-                            # so we hit the Info.plist file, and now we can make sure, that/if this is an upgrade or not
-                            # So let's grap the identifier from the info file	of the bundle to be migrated
-                            # We start by temporary save that as Plug-ins/WT-tmp.plist
-                            Core.storage.save(
-                                self.PLUGIN_DIR + '/WT-tmp.plist', zipfile[filename])
+                            # so we hit the Info.plist file, and now we can
+                            # make sure, that/if this is an upgrade or not
+                            # So let's grap the identifier from the info file
+                            # of the bundle to be migrated
+                            # We start by temporary save that as
+                            # Plug-ins/WT-tmp.plist
+                            Core.storage.save(''.join((
+                                self.PLUGIN_DIR,
+                                '/WT-tmp.plist')), zipfile[filename])
                             # Now read out the identifier
                             bundleId = plistlib.readPlist(
-                                self.PLUGIN_DIR + '/WT-tmp.plist')['CFBundleIdentifier']
+                                self.PLUGIN_DIR + '/WT-tmp.plist')[
+                                    'CFBundleIdentifier']
                             Log.Debug(
-                                'Identifier of the bundle to be installed is: ' + bundleId)
+                                'Identifier of the bundle to \
+                                be installed is: ' + bundleId)
                             # Then nuke the file again
                             os.remove(self.PLUGIN_DIR + '/WT-tmp.plist')
                             # And finally check if it's already installed
                             for bundle in Dict['installed']:
-                                if Dict['installed'][bundle]['identifier'] == bundleId:
+                                if Dict[
+                                        'installed'][
+                                            bundle][
+                                                'identifier'] == bundleId:
                                     bUpgrade = True
                                     Log.Debug('Install is an upgrade')
                                     break
                 except Exception, e:
                     Log.Exception(
-                        'Exception in downloadBundle2tmp while walking the downloaded file to find the plist: ' + str(e))
+                        'Exception in downloadBundle2tmp while walking \
+                        the downloaded file to find the plist: ' + str(e))
                     return False
                 if bUpgrade:
-                    # Since this is an upgrade, we need to check, if the dev wants us to delete the Cache directory
+                    # Since this is an upgrade, we need to check, if the
+                    # dev wants us to delete the Cache directory
                     if url in Dict['installed'].keys():
                         CacheDir = Core.storage.join_path(
-                            Core.app_support_path, 'Plug-in Support', 'Caches', bundleId)
+                            Core.app_support_path,
+                            'Plug-in Support',
+                            'Caches',
+                            bundleId)
                         if 'DeleteCacheDir' in Dict['PMS-AllBundleInfo'][url]:
-                            if Dict['PMS-AllBundleInfo'][url]['DeleteCacheDir']:
+                            if Dict['PMS-AllBundleInfo'][url][
+                                                            'DeleteCacheDir']:
                                 Log.Info(
                                     'Deleting the Cache directory ' + CacheDir)
                                 shutil.rmtree(CacheDir)
                             else:
                                 Log.Info(
                                     'Keeping the Cache directory ' + CacheDir)
-                    # Since this is an upgrade, we need to check, if the dev wants us to delete the Data directory
+                    # Since this is an upgrade, we need to check, if the
+                    # dev wants us to delete the Data directory
                     if url in Dict['installed'].keys():
                         DataDir = Core.storage.join_path(
-                            Core.app_support_path, 'Plug-in Support', 'Data', bundleId)
+                            Core.app_support_path,
+                            'Plug-in Support',
+                            'Data',
+                            bundleId)
                         if 'DeleteDataDir' in Dict['PMS-AllBundleInfo'][url]:
                             if Dict['PMS-AllBundleInfo'][url]['DeleteDataDir']:
                                 Log.Info(
@@ -295,9 +329,11 @@ class gitV3(object):
                             except Exception, e:
                                 bError = True
                                 Log.Exception(
-                                    'Exception happend in downloadBundle2tmp: ' + str(e))
+                                    'Exception happend in \
+                                    downloadBundle2tmp: ' + str(e))
                 if not bError and bUpgrade:
-                    # Copy files that should be kept between upgrades ("keepFiles")
+                    # Copy files that should be kept
+                    # between upgrades ("keepFiles")
                     keepFiles = Dict['PMS-AllBundleInfo'].get(
                         url, {}).get('keepFiles', [])
                     for filename in keepFiles:
@@ -341,7 +377,8 @@ class gitV3(object):
                         shutil.rmtree(tempDir)
                     except Exception, e:
                         Log.Warn(
-                            'Unable to delete temporary directory: %r - %s', tempDir, e)
+                            'Unable to delete temporary \
+                            directory: %r - %s', tempDir, e)
                 if not bError:
                     # Install went okay, so save info
                     saveInstallInfo(url, bundleName, branch)
@@ -349,10 +386,19 @@ class gitV3(object):
                     if bUpgrade:
                         try:
                             pFile = Core.storage.join_path(
-                                self.PLUGIN_DIR, bundleName, 'Contents', 'Info.plist')
+                                self.PLUGIN_DIR, bundleName,
+                                'Contents',
+                                'Info.plist')
                             pl = plistlib.readPlist(pFile)
+                            url = ''.join((
+                                misc.GetLoopBack(),
+                                '/:/plugins/%s/restart')) % pl[
+                                    'CFBundleIdentifier']
+                            print 'Ged url', url
                             HTTP.Request(misc.GetLoopBack() + '/:/plugins/%s/restart' %
-                                         pl['CFBundleIdentifier'], cacheTime=0, immediate=True)
+                                         pl['CFBundleIdentifier'],
+                                         cacheTime=0,
+                                         immediate=True)
                         except:
                             try:
                                 HTTP.Request(
@@ -485,30 +531,45 @@ class gitV3(object):
                                 Log.Debug('About to migrate %s' % (pluginDir))
                                 # This we need to migrate
                                 try:
-                                    (target, dtStamp) = getIdentifier(pluginDir)
+                                    (
+                                        target,
+                                        dtStamp) = getIdentifier(pluginDir)
                                 except Exception, e:
                                     continue
                                 # try and see if part of uas Cache
                                 uasListjson = getUASCacheList()
                                 bFound = False
                                 for git in uasListjson:
-                                    if target == uasListjson[git]['identifier']:
+                                    if target == uasListjson[
+                                            git]['identifier']:
                                         Log.Debug(
-                                            'Found %s is part of uas' % (target))
+                                            'Found %s is part of \
+                                            uas' % (target))
                                         targetGit = {}
-                                        targetGit['description'] = uasListjson[git]['description']
-                                        targetGit['title'] = uasListjson[git]['title']
-                                        targetGit['bundle'] = uasListjson[git]['bundle']
-                                        targetGit['branch'] = uasListjson[git]['branch']
-                                        targetGit['identifier'] = uasListjson[git]['identifier']
-                                        targetGit['type'] = uasListjson[git]['type']
-                                        targetGit['icon'] = uasListjson[git]['icon']
+                                        targetGit['description'] = uasListjson[
+                                            git]['description']
+                                        targetGit['title'] = uasListjson[
+                                            git]['title']
+                                        targetGit['bundle'] = uasListjson[
+                                            git]['bundle']
+                                        targetGit['branch'] = uasListjson[
+                                            git]['branch']
+                                        targetGit['identifier'] = uasListjson[
+                                            git]['identifier']
+                                        targetGit['type'] = uasListjson[
+                                            git]['type']
+                                        targetGit['icon'] = uasListjson[
+                                            git]['icon']
                                         targetGit['date'] = dtStamp
-                                        targetGit['supporturl'] = uasListjson[git]['supporturl']
+                                        targetGit['supporturl'] = uasListjson[
+                                            git]['supporturl']
                                         Dict['installed'][git] = targetGit
                                         Log.Debug(
-                                            'Dict stamped with the following install entry: ' + git + ' - ' + str(targetGit))
-                                        # Now update the PMS-AllBundleInfo Dict as well
+                                            'Dict stamped with the following \
+                                            install entry: \
+                                            ' + git + ' - ' + str(targetGit))
+                                        # Now update the PMS-AllBundleInfo
+                                        # Dict as well
                                         Dict['PMS-AllBundleInfo'][git] = targetGit
                                         # Update installed dict as well
                                         Dict['installed'][git] = targetGit
@@ -953,7 +1014,7 @@ class gitV3(object):
                     break
                 else:
                     pass
-        if self.function == None:
+        if self.function is None:
             Log.Debug('Function to call is None')
             req.clear()
             req.set_status(404)
@@ -975,14 +1036,14 @@ class gitV3(object):
             try:
                 Log.Debug('Function to call is: ' + self.function +
                           ' with params: ' + str(params))
-                if params == None:
+                if params is None:
                     getattr(self, self.function)(req)
                 else:
                     getattr(self, self.function)(req, params)
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
-################### Internal functions #############################
+# ################## Internal functions #############################
 
     ''' Returns commit time and Id for a git branch '''
     @classmethod

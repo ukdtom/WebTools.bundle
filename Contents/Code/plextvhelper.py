@@ -81,9 +81,8 @@ class plexTV(object):
 
     # will return the machineIdentity of this server
     def get_thisPMSIdentity(self):
-        return XML.ElementFromURL(''.join((
-                                        misc.GetLoopBack(),
-                                        '/identity').get('machineIdentifier')))
+        url = misc.GetLoopBack() + '/identity'
+        return XML.ElementFromURL(url).get('machineIdentifier')
 
     # Will return true, if PMS is authenticated towards plex.tv
     def auth2myPlex(self):
