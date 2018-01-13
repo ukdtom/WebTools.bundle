@@ -96,9 +96,12 @@ class plexTV(object):
         try:
             # Fetch resources from plex.tv
             self.myHeader['X-Plex-Token'] = token
-            users = XML.ElementFromURL(self.userURL, headers=self.myHeader)
+            users = XML.ElementFromURL(
+                self.userURL,
+                headers=self.myHeader)
             sharedUsers = XML.ElementFromURL(
-                self.sharedServersURL, headers=self.myHeader)
+                self.sharedServersURL,
+                headers=self.myHeader)
             usrList = {}
             for user in users:
                 # Get servers for user
@@ -133,38 +136,28 @@ class plexTV(object):
                                 'filterPhotos')
                             usrList[usr]['filterTelevision'] = user.get(
                                 'filterTelevision')
+                            strCommonPath = ''.join((
+                                '//SharedServer[@userID=',
+                                user.get('id')))
                             usrList[usr]['restricted'] = user.get('restricted')
                             usrList[usr][
-                                'accessToken'] = sharedUsers.xpath(''.join((
-                                    '//SharedServer[@userID=',
-                                    user.get('id'),
-                                    ']/@accessToken')[0]))
-                            usrList[usr][
-                                'username'] = sharedUsers.xpath(''.join((
-                                    '//SharedServer[@userID=',
-                                    user.get('id'),
-                                    ']/@username')[0]))
+                                'accessToken'] = sharedUsers.xpath(
+                                    strCommonPath + ']/@accessToken')[0]
+                            usrList[usr]['username'] = sharedUsers.xpath(
+                                strCommonPath + ']/@username')[0]
                             if usrList[usr]['username'] == '':
                                 usrList[usr]['username'] = user.get('title')
-                            usrList[usr]['email'] = sharedUsers.xpath(''.join((
-                                '//SharedServer[@userID=',
-                                user.get('id'),
-                                ']/@email')[0]))
+                            usrList[usr]['email'] = sharedUsers.xpath(
+                                strCommonPath + ']/@email')[0]
                             usrList[usr][
-                                'acceptedAt'] = sharedUsers.xpath(''.join((
-                                    '//SharedServer[@userID=',
-                                    user.get('id'),
-                                    ']/@acceptedAt')[0]))
+                                'acceptedAt'] = sharedUsers.xpath(
+                                    strCommonPath + ']/@acceptedAt')[0]
                             usrList[usr][
-                                'invitedAt'] = sharedUsers.xpath(''.join((
-                                    '//SharedServer[@userID=',
-                                    user.get('id'),
-                                    ']/@invitedAt')[0]))
+                                'invitedAt'] = sharedUsers.xpath(
+                                    strCommonPath + ']/@invitedAt')[0]
                             # Get shares for the user
-                            shares = sharedUsers.xpath(''.join((
-                                '//SharedServer[@userID=',
-                                user.get('id'),
-                                ']/Section')))
+                            shares = sharedUsers.xpath(
+                                strCommonPath + ']/Section')
                             usrShared = {}
                             for share in shares:
                                 usrShared[share.get('id')] = {}

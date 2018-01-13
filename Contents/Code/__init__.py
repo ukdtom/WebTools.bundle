@@ -105,7 +105,12 @@ def Start():
 @route(PREFIX + '/MainMenu')
 def MainMenu():
     Log.Debug("**********  Starting MainMenu  **********")
-    oc = ObjectContainer()
+    # oc = ObjectContainer()
+    message = L("You need to type the URL in a new browser tab")
+    title = L("To access this channel, type the url's below to a \
+    new browser tab")
+
+    oc = ObjectContainer(title1=title, no_history=True, message=message)
     Log.Debug('Network Address: ' + str(Network.Address))
     Log.Debug('WebPort http: ' + str(Prefs['WEB_Port_http']))
     Log.Debug('WebPort https: ' + str(Prefs['WEB_Port_https']))
@@ -118,10 +123,16 @@ def MainMenu():
                            title=L("To access this channel, type \
                            the url's below to a new browser tab")))
     if Prefs['Force_SSL']:
-        oc.add(DirectoryObject(key=Callback(MainMenu), title=urlhttps))
+        oc.add(DirectoryObject(
+            key=Callback(MainMenu),
+            title=urlhttps))
     else:
-        oc.add(DirectoryObject(key=Callback(MainMenu), title=url))
-        oc.add(DirectoryObject(key=Callback(MainMenu), title=urlhttps))
+        oc.add(DirectoryObject(
+            key=Callback(MainMenu),
+            title=url))
+        oc.add(DirectoryObject(
+            key=Callback(MainMenu),
+            title=urlhttps))
     oc.add(PrefsObject(title='Preferences', thumb=R('icon-prefs.png')))
     Log.Debug("**********  Ending MainMenu  **********")
     return oc
