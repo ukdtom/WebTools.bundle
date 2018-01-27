@@ -69,67 +69,66 @@ class apiv3(BaseHandler):
                   self.module + ' for method: ' + self.request.method)
         # Generate a handle to the class
         try:
-            myClass = getattr(
-                pmsV3,
-                V3MODULES[self.module])
-        except:
-            try:
+            if self.module == 'PMS':
+                myClass = getattr(
+                    pmsV3,
+                    V3MODULES[self.module])
+            elif self.module == 'WT':
                 myClass = getattr(
                     wtV3,
                     V3MODULES[self.module])
-            except:
-                try:
-                    myClass = getattr(
-                        logsV3,
-                        V3MODULES[self.module])
-                except:
-                    try:
-                        myClass = getattr(
-                            languageV3,
-                            V3MODULES[self.module])
-                    except:
-                        try:
-                            myClass = getattr(
-                                settingsV3,
-                                V3MODULES[self.module])
-                        except:
-                            try:
-                                myClass = getattr(
-                                    gitV3,
-                                    V3MODULES[self.module])
-                            except:
-                                try:
-                                    myClass = getattr(
-                                        findMediaV3,
-                                        V3MODULES[self.module])
-                                except:
-                                    try:
-                                        myClass = getattr(
-                                            jsonExporterV3,
-                                            V3MODULES[self.module])
-                                    except:
-                                        try:
-                                            myClass = getattr(
-                                                playlistsV3,
-                                                V3MODULES[self.module])
-                                        except:
-                                            try:
-                                                myClass = getattr(
-                                                    techinfo,
-                                                    V3MODULES[self.module])
-                                            except:
-                                                try:
-                                                    myClass = getattr(
-                                                        viewstate,
-                                                        V3MODULES[self.module])
-                                                except Exception, e:
-                                                    Log.Exception(
-                                                        'Exception getting the \
-                                                        class in apiV3: %s'
-                                                        % str(e))
-                                                    self.clear()
-                                                    self.set_status(501)
-                                                    self.finish('Bad module?')
+            elif self.module == 'LOGS':
+                myClass = getattr(
+                    logsV3,
+                    V3MODULES[self.module])
+            elif self.module == 'LANGUAGE':
+                myClass = getattr(
+                    languageV3,
+                    V3MODULES[self.module])
+            elif self.module == 'SETTINGS':
+                myClass = getattr(
+                    settingsV3,
+                    V3MODULES[self.module])
+            elif self.module == 'GIT':
+                myClass = getattr(
+                    gitV3,
+                    V3MODULES[self.module])
+            elif self.module == 'FINDMEDIA':
+                myClass = getattr(
+                    findMediaV3,
+                    V3MODULES[self.module])
+            elif self.module == 'JSONEXPORTER':
+                myClass = getattr(
+                    jsonExporterV3,
+                    V3MODULES[self.module])
+            elif self.module == 'PLAYLISTS':
+                myClass = getattr(
+                    playlistsV3,
+                    V3MODULES[self.module])
+            elif self.module == 'TECHINFO':
+                myClass = getattr(
+                    techinfo,
+                    V3MODULES[self.module])
+            elif self.module == 'VIEWSTATE':
+                myClass = getattr(
+                    viewstate,
+                    V3MODULES[self.module])   
+            else:
+                Log.Exception(
+                    'Exception getting the \
+                    class in apiV3: %s'
+                    % str(e))
+                self.clear()
+                self.set_status(501)
+                self.finish('Bad module?')                    
+        except Exception, e:
+            Log.Exception(
+                'Exception getting the \
+                class in apiV3: %s'
+                % str(e))
+            self.clear()
+            self.set_status(501)
+            self.finish('Bad module?')
         try:
             # Make the call
             getattr(myClass, 'getFunction')(self.request.method.lower(), self)
