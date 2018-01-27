@@ -42,8 +42,13 @@ WT_URL = 'https://github.com/ukdtom/WebTools.bundle'
 # Name of the bundle dir
 BUNDLEDIRNAME = ''
 # Elements to be excluded, when sending req. to PMS
-EXCLUDEELEMENTS = 'excludeElements=Actor,Collection,Country,Director,\
-                    Genre,Label,Mood,Producer,Similar,Writer,Role'
+EXCLUDEELEMENTS = ''.join((
+                'excludeElements=Actor,',
+                'Collection,Country,Director,',
+                'Genre,Label,Mood,Producer,',
+                'Similar,Writer,Role'))
+
+
 EXCLUDEFIELDS = 'excludeFields=summary,tagline,file'
 
 # Modules used in WebTools

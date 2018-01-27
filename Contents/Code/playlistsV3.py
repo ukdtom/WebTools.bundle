@@ -790,7 +790,7 @@ class playlistsV3(object):
                 try:
                     Log.Info('downloading playlist with ID: %s' % key)
                     try:
-                        title, playList = getPlayListItems(user, key)
+                        title, playList = getPlayListItems(user, key)                        
                         # Replace invalid caracters for a
                         # filename with underscore
                         fileName = re.sub('[\/[:#*?"<>|]', '_', title).strip()
@@ -1156,8 +1156,8 @@ def getPlayListItems(user, key):
             Log.Exception('Exception getting the token \
             for a user was: %s' % str(e))
             return None
-    try:
-        info = getXMLElement(userToken, infoURL).xpath('//Playlist')[0]
+    try:        
+        info = getXMLElement(userToken, infoURL).xpath('//Playlist')[0]        
     except Exception, e:
         Log.Exception('Exception getting info was: %s' % str(e))
         return None
@@ -1196,13 +1196,13 @@ def getPlayListItems(user, key):
             '/items?X-Plex-Container-Start=',
             str(start),
             '&X-Plex-Container-Size=',
-            str(MEDIASTEPS)))
+            str(MEDIASTEPS)))        
         response = getXMLElement(userToken, url)
         start += MEDIASTEPS
         if response.get('size') == '0':
             break
         try:
-            root = '//' + ROOTNODES[playListType]
+            root = '//' + ROOTNODES[playListType]            
             for item in response.xpath(root):
                 # Get the Library UUID
                 itemURL = ''.join((
@@ -1210,9 +1210,9 @@ def getPlayListItems(user, key):
                     '/library/metadata/',
                     item.get('ratingKey'),
                     '?',
-                    EXCLUDE))
-                libraryUUID = sendReq(
-                    userToken, itemURL).get('librarySectionUUID')
+                    EXCLUDE))                
+                libraryUUID = getXMLElement(
+                    userToken, itemURL).get('librarySectionUUID')                
                 strLine = ''.join((
                     '#{"Id":',
                     item.get('ratingKey'),
@@ -1286,17 +1286,18 @@ def getXMLElement(userToken, url):
     Params:
     UserToken: None if Owner, else token
     url: Url to fetch info from
-    """
+    """    
     if not userToken:
         # User is the owner
-        try:
+        try:            
+            tmp = XML.ElementFromURL(url)            
             return XML.ElementFromURL(url)
         except Exception, e:
             Log.Exception('Exception when getting a response \
             for %s as the owner was %s' % (url, str(e)))
             return None
     else:
-        try:
+        try:            
             # TODO Change to native framework call, when
             # Plex allows token in header
             opener = urllib2.build_opener(urllib2.HTTPHandler)
