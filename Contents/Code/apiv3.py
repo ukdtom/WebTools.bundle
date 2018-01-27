@@ -112,7 +112,7 @@ class apiv3(BaseHandler):
             elif self.module == 'VIEWSTATE':
                 myClass = getattr(
                     viewstate,
-                    V3MODULES[self.module])   
+                    V3MODULES[self.module])
             else:
                 Log.Exception(
                     'Exception getting the \
@@ -120,7 +120,7 @@ class apiv3(BaseHandler):
                     % str(e))
                 self.clear()
                 self.set_status(501)
-                self.finish('Bad module?')                    
+                self.finish('Bad module?')
         except Exception, e:
             Log.Exception(
                 'Exception getting the \

@@ -1102,7 +1102,7 @@ class pmsV3(object):
                 req.set_status(412)
                 req.finish('Missing remoteFile parameter')
             # Upload file present?
-            if not 'localFile' in req.request.files:
+            if 'localFile' not in req.request.files:
                 req.clear()
                 req.set_status(412)
                 req.finish('Missing upload file parameter named localFile')
@@ -1150,7 +1150,7 @@ class pmsV3(object):
                         req.set_status(412)
                         req.finish('Missing media part value parameter')
             # Upload file present?
-            if not 'localFile' in req.request.files:
+            if 'localFile' not in req.request.files:
                 req.clear()
                 req.set_status(412)
                 req.finish(
