@@ -242,7 +242,7 @@ class wtV3(object):
                 translationLines = Data.Load('translations.js').splitlines()
                 transLine = None
                 for line in translationLines:
-                    # Got the relevant language?                    
+                    # Got the relevant language?
                     if line.lstrip().startswith(
                                     "gettextCatalog.setStrings('" + lang + "',"):
                         transLine = line
@@ -383,7 +383,7 @@ class wtV3(object):
                     # Get them in lower case
                     arguments = [item.lower() for item in list(args)[0]]
                 # Get include parameter
-                if 'include' in arguments:                    
+                if 'include' in arguments:
                     # Get the include
                     include = arguments[arguments.index('include') + 1]
                     if not include.isdigit():
@@ -413,7 +413,7 @@ class wtV3(object):
                     None,
                     None,
                     Internal=True,
-                    String='All') + ' --'            
+                    String='All') + ' --'
             if include == '1':
                 users['1'] = {"username": addSelf, "title": addSelf}
             elif include == '2':
@@ -672,9 +672,17 @@ def createPluginStringTranslations():
                 # Walk the translation for keys, looking for <PLUGIN>
                 for key in translationJson:
                     if key.startswith('<plugin>'):
-                        if translationJson[key][8:-9].replace('\n        ', ' ') != "":
-                            jsonTranslation[key[8:-9].replace('\n        ', ' ')] = translationJson[key][8:-
-                                                                                                         9].replace('\n        ', ' ')
+                        strRP = '\n        '
+                        if translationJson[
+                                        key][
+                                            8:-9].replace(
+                                                        strRP, ' ') != "":
+                            jsonTranslation[
+                                key[
+                                    8:-9].replace(
+                                        strRP, ' ')] = translationJson[
+                                            key][
+                                                8:-9].replace(strRP, ' ')
                 if len(jsonTranslation) > 0:
                     fileName = Core.storage.join_path(
                         STRINGSDIR, lang + '.json')
