@@ -121,7 +121,9 @@ class wtV3(object):
                         'Certificate')):
                     for file in files:
                         if file not in ['WebTools.crt', 'WebTools.key']:
-                            if os.path.splitext(file)[1].upper() in ['.KEY', '.CRT']:
+                            if os.path.splitext(file)[1].upper() in [
+                                                                '.KEY',
+                                                                '.CRT']:
                                 # We need to save this file
                                 sourceFile = Core.storage.join_path(root, file)
                                 targetFile = Core.storage.join_path(
@@ -240,8 +242,9 @@ class wtV3(object):
                 translationLines = Data.Load('translations.js').splitlines()
                 transLine = None
                 for line in translationLines:
-                    # Got the relevant language?
-                    if line.lstrip().startswith("gettextCatalog.setStrings('" + lang + "',"):
+                    # Got the relevant language?                    
+                    if line.lstrip().startswith(
+                                    "gettextCatalog.setStrings('" + lang + "',"):
                         transLine = line
                         break
                 if transLine:
@@ -374,13 +377,13 @@ class wtV3(object):
     def GETUSERS(self, req, *args):
         include = 0
         try:
-            if args is None:
+            if args:
                 # We got additional arguments
                 if len(args) > 0:
                     # Get them in lower case
                     arguments = [item.lower() for item in list(args)[0]]
                 # Get include parameter
-                if 'include' in arguments:
+                if 'include' in arguments:                    
                     # Get the include
                     include = arguments[arguments.index('include') + 1]
                     if not include.isdigit():
@@ -410,14 +413,14 @@ class wtV3(object):
                     None,
                     None,
                     Internal=True,
-                    String='All') + ' --'
-            if include == 1:
-                users['-1'] = {"username": addSelf, "title": addSelf}
-            elif include == 2:
-                users['-2'] = {"username": addAll, "title": addAll}
-            elif include == 3:
-                users['-1'] = {"username": addSelf, "title": addSelf}
-                users['-2'] = {"username": addAll, "title": addAll}
+                    String='All') + ' --'            
+            if include == '1':
+                users['1'] = {"username": addSelf, "title": addSelf}
+            elif include == '2':
+                users['2'] = {"username": addAll, "title": addAll}
+            elif include == '3':
+                users['1'] = {"username": addSelf, "title": addSelf}
+                users['2'] = {"username": addAll, "title": addAll}
             else:
                 pass
             req.clear()
