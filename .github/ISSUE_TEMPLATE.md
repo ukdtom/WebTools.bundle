@@ -20,6 +20,6 @@
 
 ## Checklist
 - [ ] Listed environment
-- [ ] Included PMS log zip and WebTools log
+- [ ] Included PMS log zip and WebTools log (THIS IS MANDENTORY!)
 - [ ] Included screenshots (where appropriate)
 - [ ] Checked that this isn't already an [issue](https://github.com/ukdtom/WebTools.bundle/issues)
