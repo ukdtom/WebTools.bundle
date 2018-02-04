@@ -231,7 +231,8 @@ class playlistsV3(object):
                     mediaList = getFilesFromLib(libs, sType)
                     return
                     # print 'Ged MediaList', mediaList
-                    # Log.Debug('************** PMS contains *****************')
+                    # Log.Debug(
+                    # '************** PMS contains *****************')
                     # Log.Debug(mediaList)
                     basic = {}
                     counter = 1
@@ -501,10 +502,11 @@ class playlistsV3(object):
             # Now split items into smaller chunks, defined by MEDIASTEPS
             itemsToAdd = {}
             for libDir in jsonItems['items']:
-                print 'Ged skift til MEDIASTEPS'
-                # itemsArray = misc.chunks(jsonItems['items'][libDir], MEDIASTEPS)
-                itemsToAdd[libDir] = misc.chunks(jsonItems['items'][libDir], 3)
-            print 'Ged dyutui23417843287 SKIFT TIL MEDIASTEPS', itemsToAdd
+                itemsToAdd[libDir] = misc.chunks(
+                                            jsonItems[
+                                                'items'][
+                                                    libDir],
+                                                    MEDIASTEPS)
             try:
                 # So we got all the info needed now from the source user,
                 # now time for the target user
@@ -705,12 +707,15 @@ class playlistsV3(object):
                         '&smart=0&uri=library://'))
                     # counter = 0
                     bFirstRun = True
-                    for lib in jsonItems:
+                    for lib in jsonItems['items']:
                         if bFirstRun:
                             targetFirstUrl += ''.join((
                                 lib,
-                                '/directory//library/metadata/'))
-                            medias = ','.join(map(str, jsonItems[lib]))
+                                '/directory/library/metadata/'))
+                            medias = ','.join((
+                                        map(
+                                            str, jsonItems[
+                                                'items'][lib])))
                             targetFirstUrl += String.Quote(medias)
                             # First url for the post created, so send it,
                             # and grab the response
@@ -733,7 +738,10 @@ class playlistsV3(object):
                             bFirstRun = False
                         else:
                             # Remaining as put
-                            medias = ','.join(map(str, jsonItems[lib]))
+                            medias = ','.join((
+                                        map(
+                                            str, jsonItems[
+                                                'items'][lib])))
                             targetSecondUrl = ''.join((
                                 misc.GetLoopBack(),
                                 '/playlists/',
@@ -1339,7 +1347,12 @@ def getPlayListAsJSON(userToken, key, copyAsSmart=False):
             str(start),
             '&X-Plex-Container-Size=',
             str(MEDIASTEPS)))
+        print 'Ged1', url
+
         grab = getXMLElement(userToken, url)
+
+        print 'Ged2 size', grab.get('size')
+
         ROOTNODE = ROOTNODES[playlistType]
         if grab.get('size') == '0':
             # Reached the end
@@ -1368,3 +1381,30 @@ def getPlayListAsJSON(userToken, key, copyAsSmart=False):
     Log.Debug('getPlayListAsJSON returning a playlist as:')
     Log.Debug(json.dumps(playlist))
     return playlist
+
+
+def sendHTTPURL(url, token, method):
+    """
+    This will send an url to PMS, and
+    return the response
+    PARAMS:
+    url : url to send
+    token : token of user, or None for owner
+    method: method of the request, like GET, PUT or POST
+    """
+    if user is None:
+        print 'Ged send to owner'
+        response = HTTP.Request(
+                            url,
+                            cacheTime=0,
+                            immediate=True,
+                            method=method)
+    else:
+        opener = urllib2.build_opener(
+            urllib2.HTTPHandler)
+        request = urllib2.Request(url)
+        request.add_header(
+            'X-Plex-Token', token)
+        request.get_method = lambda: method
+        response = opener.open(request)
+    return response

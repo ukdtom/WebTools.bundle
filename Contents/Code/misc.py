@@ -37,13 +37,12 @@ class misc(object):
     def __init__(self):
         return
 
-    '''
-    Below function shamefully stolen from the scanner.bundle,
-    yet modified a bit
-    '''
-    # Safely return Unicode.
-
     def Unicodize(self, s):
+        """
+        Below function shamefully stolen from the scanner.bundle,
+        yet modified a bit.
+        Returns a Unicode string
+        """
         filename = s
         form = 'NFC'
         try:
@@ -73,12 +72,11 @@ class misc(object):
             Log.Debug('Couldn\'t strip control characters: ' + filename)
         return filename
 
-    ##########################################################################
-    # This function will return the loopback address
-    ##########################################################################
     def GetLoopBack(self):
-        # For now, simply return the IPV4 LB Addy,
-        # until PMS is better with this
+        """
+        For now, simply return the IPV4 LB Addy,
+        until PMS is better with this
+        """
         return 'http://127.0.0.1:32400'
 
         ''' Code below not used for now
@@ -147,13 +145,14 @@ class misc(object):
         """
         retList = []
         # For item i in a range that is a length of l
-        print 'Ged l', l
-        print 'ged2', list(l)
+        print 'Ged misc.chunks 1', l
+        print 'Ged misc.chunks 2', list(l)
         for i in range(0, len(l), n):
-            print 'Ged4', i, n
+            print 'Ged misc.chunks 2-1', i, n
             # Create an index range for l of n items:
             # yield l[i:i+n]
             retList.append(l[i:i+n])
+        print 'Ged misc.chunks 3', retList
         return retList
 
     # #######################################################################
