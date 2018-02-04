@@ -46,8 +46,18 @@ ExtrasDirs = [
 Specials = ['season 00', 'season 0', 'specials']
 # Valid keys for prefs
 KEYS = ['IGNORE_HIDDEN', 'IGNORED_DIRS', 'VALID_EXTENSIONS', 'IGNORE_SPECIALS']
-excludeElements = 'Actor,Collection,Country,Director,Genre,Label,Mood,Producer,\
-    Role,Similar,Writer'
+excludeElements = ''.join((
+                        'Actor,',
+                        'Collection,',
+                        'Country,',
+                        'Director,',
+                        'Genre,',
+                        'Label,',
+                        'Mood,',
+                        'Producer,',
+                        'Role,',
+                        'Similar,',
+                        'Writer'))
 excludeFields = 'summary,tagline'
 SUPPORTEDSECTIONS = ['movie', 'show']
 
@@ -483,7 +493,8 @@ class findMediaV3(object):
                         break
                 return
             except Exception, e:
-                Log.Exception('Fatal error in scanMovieDb: ' + str(e))
+                Log.Exception(
+                        'Exception Fatal error in scanMovieDb: ' + str(e))
                 runningState = 99
 
         def scanMedias(sectionNumber, sectionLocations, sectionType, req):
