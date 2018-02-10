@@ -91,9 +91,12 @@ def MainMenu():
     Log.Debug('WebPort http: ' + str(Prefs['WEB_Port_http']))
     Log.Debug('WebPort https: ' + str(Prefs['WEB_Port_https']))
     Log.Debug('BaseURL: ' + str(BASEURL))
-    url = 'http://' + str(Network.Address) + ':' + \
+    WEB_HOST = str(Network.Address)
+    if Prefs['WEB_HOST']:
+        WEB_HOST = Prefs['WEB_HOST']
+    url = 'http://' + WEB_HOST + ':' + \
         str(Prefs['WEB_Port_http']) + str(BASEURL)
-    urlhttps = 'https://' + str(Network.Address) + ':' + \
+    urlhttps = 'https://' + WEB_HOST + ':' + \
         str(Prefs['WEB_Port_https']) + str(BASEURL)
     oc.add(DirectoryObject(key=Callback(MainMenu),
                            title=L("To access this channel, type the url's below to a new browser tab")))
