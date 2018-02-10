@@ -12,6 +12,12 @@
         "default": "33443"
     },
     {
+        "id": "WEB_HOST",
+        "label": "Enter the IP address to bind.",
+        "type": "text",
+        "default": ""
+    },
+    {
         "id": "Force_SSL",
         "label": "Select to force https",
         "type": "bool",

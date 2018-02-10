@@ -1,8 +1,8 @@
 ######################################################################################################################
-#					WebTools helper unit
+#                    WebTools helper unit
 #
-#					Runs a seperate webserver on a specified port
-#					Author:			dane22, a Plex Community member
+#                    Runs a seperate webserver on a specified port
+#                    Author:            dane22, a Plex Community member
 #
 ######################################################################################################################
 
@@ -409,14 +409,14 @@ handlers = [(r"%s/login" % BASEURL, LoginHandler),
             (r"%s/uas/Resources.*$" % BASEURL, imageHandler),
             # Grap translation.js from datastore
             (r"%s/static/_shared/translations.js" % BASEURL, translateHandler),
-            (r'%s/' % BASEURL, idxHandler),																# Index
-            (r'%s' % BASEURL, idxHandler),																# Index
-            (r'%s/index.html' % BASEURL, idxHandler),													# Index
-            (r'%s/api/v3.*$' % BASEURL, apiv3.apiv3),													# API V3
+            (r'%s/' % BASEURL, idxHandler),                                                                # Index
+            (r'%s' % BASEURL, idxHandler),                                                                # Index
+            (r'%s/index.html' % BASEURL, idxHandler),                                                    # Index
+            (r'%s/api/v3.*$' % BASEURL, apiv3.apiv3),                                                    # API V3
             (r'%s/getTranslate.*$' %
-             BASEURL, getTranslationHandler),													        # getTranslation
+             BASEURL, getTranslationHandler),                                                            # getTranslation
             (r'%s/(.*)' % BASEURL, MyStaticFileHandler,
-             {'path': getActualHTTPPath()})					# Static files
+             {'path': getActualHTTPPath()})                    # Static files
             ]
 
 if Prefs['Force_SSL']:
@@ -428,7 +428,7 @@ if Prefs['Force_SSL']:
                     # Grap images from Data framework
                     (r"%s/uas/Resources.*$" % BASEURL, imageHandler),
                     (r'%s/getTranslate.*$' %
-                     BASEURL, getTranslationHandler),													 # getTranslation
+                     BASEURL, getTranslationHandler),                                                     # getTranslation
                     # Grap translation.js from datastore
                     (r"%s/static/_shared/translations.js" %
                      BASEURL, translateHandler),
@@ -467,8 +467,12 @@ def start_tornado():
         # Set web server port to the setting in the channel prefs
         port = int(Prefs['WEB_Port_http'])
         ports = int(Prefs['WEB_Port_https'])
-        http_server.listen(port)
-        http_serverTLS.listen(ports)
+        if Prefs['WEB_HOST']:        
+            http_server.listen(port, address=str(Prefs['WEB_HOST']))
+            http_serverTLS.listen(ports, address=str(Prefs['WEB_HOST']))
+        else:
+            http_server.listen(port)
+            http_serverTLS.listen(ports)
         Log.Debug('Starting tornado on ports %s and %s' % (port, ports))
         IOLoop.instance().start()
     except Exception, e:
