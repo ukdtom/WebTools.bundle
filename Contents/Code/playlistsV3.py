@@ -505,8 +505,7 @@ class playlistsV3(object):
                 itemsToAdd[libDir] = misc.chunks(
                                             jsonItems[
                                                 'items'][
-                                                    libDir],
-                                                    MEDIASTEPS)
+                                                    libDir], MEDIASTEPS)
             try:
                 # So we got all the info needed now from the source user,
                 # now time for the target user
