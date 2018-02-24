@@ -155,7 +155,11 @@ def genSecretKeyAsStr():
 
 @route(PREFIX + '/ValidatePrefs')
 def ValidatePrefs():
-    # HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.WebTool/restart', immediate=True)
+    '''
+    HTTP.Request(
+        'http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.WebTool/restart',
+        immediate=True)
+    '''
     Restart()
 
 ##############################################################################
