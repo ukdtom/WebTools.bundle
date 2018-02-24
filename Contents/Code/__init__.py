@@ -54,33 +54,40 @@ def L(string):
 def Start():
     global SECRETKEY
     runningLocale = locale.getdefaultlocale()
+
+    print 'Ged1', runningLocale
+    print 'Ged2', str(runningLocale)
+    print 'Ged3'
+
+    strLog = ''.join((
+        '"*******  Started %s' % (NAME + ' V' + VERSION),
+        ' on %s' % Platform.OS,
+        ' at %s' % time.strftime("%Y-%m-%d %H:%M"),
+        ' with locale set to %s' % str(runningLocale),
+        ' **********'
+    ))
     if DEBUGMODE:
         try:
-            print("********  Started %s on %s at \
-            %s with locale set to %s **********" %
-                  (
-                      NAME + ' V' + VERSION,
-                      Platform.OS,
-                      time.strftime("%Y-%m-%d %H:%M"),
-                      runningLocale))
+            print strLog
         except:
             pass
-    Log.Debug("*******  Started %s on %s at %s with \
-    locale set to %s ***********" %
-              (
-                  NAME + ' V' + VERSION,
-                  Platform.OS,
-                  time.strftime("%Y-%m-%d %H:%M"),
-                  runningLocale))
+    Log.Debug(strLog)
     # Do Upgrade stuff if needed
     upgradeCleanup()
-    # TODO: Nasty workaround for issue 189
+    # TODO: Nasty workaround for Python not picking up file system encodings
     if (
         (
             Platform.OS == 'Windows') and (
                 locale.getpreferredencoding() == 'cp1251')):
+        reload(sys)
         sys.setdefaultencoding("cp1251")
         Log.Debug("Default set to cp1251")
+    if locale.getpreferredencoding() is None:
+        Log.Info('No default filesystem encoding detected')
+        reload(sys)
+        sys.setdefaultencoding('utf-8')
+        Log.Info('Setting default to utf-8')
+
     HTTP.CacheTime = 0
     DirectoryObject.thumb = R(ICON)
     ObjectContainer.title1 = NAME + ' V' + VERSION

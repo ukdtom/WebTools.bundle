@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-##############################################################################
+##################################################################
 # WebTools bundle module for Plex
 #
 # Allows you to extract some technical info about your Plex Media Server
@@ -9,7 +9,7 @@
 #
 # Support thread:	http://forums.plex.tv/discussion/288191
 #
-##############################################################################
+####################################################################
 
 import sys
 import locale
@@ -213,7 +213,7 @@ class techinfo(object):
                         'Library',
                         'Logs',
                         'Plex Media Server')
-                    if not os.path.isdir(self.LOGDIR):
+                    if not os.path.isdir(LOGDIR):
                         LOGDIR = os.path.join(Core.app_support_path, 'Logs')
             except Exception, e:
                 Log.Exception(
