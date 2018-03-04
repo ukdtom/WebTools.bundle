@@ -54,16 +54,12 @@ def L(string):
 def Start():
     global SECRETKEY
     runningLocale = locale.getdefaultlocale()
-
-    print 'Ged1', runningLocale
-    print 'Ged2', str(runningLocale)
-    print 'Ged3'
-
     strLog = ''.join((
         '"*******  Started %s' % (NAME + ' V' + VERSION),
         ' on %s' % Platform.OS,
         ' at %s' % time.strftime("%Y-%m-%d %H:%M"),
         ' with locale set to %s' % str(runningLocale),
+        ' and file system encoding is %s' % str(sys.getfilesystemencoding()),
         ' **********'
     ))
     if DEBUGMODE:
