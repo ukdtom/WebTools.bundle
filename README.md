@@ -5,7 +5,7 @@
 [![Download latest release](https://img.shields.io/github/downloads/ukdtom/WebTools.bundle/latest/total.svg)](https://github.com/ukdtom/WebTools.bundle/releases/latest)
 [![Download total](https://img.shields.io/github/downloads/ukdtom/WebTools.bundle/total.svg)](https://github.com/ukdtom/WebTools.bundle/releases)
 [![master](https://img.shields.io/badge/master-stable-green.svg?maxAge=2592000)]()
-[![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg]()]
+[![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg]
 
 
 Please see the wiki for futher information
