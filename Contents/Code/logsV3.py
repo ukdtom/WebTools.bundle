@@ -176,8 +176,6 @@ class logsV3(object):
                     for filename in files:
                         fullFileName = os.path.join(root, filename)
                         param, value = fullFileName.split(self.LOGDIR, 1)
-
-                        print 'Ged1', filename
                         ext = os.path.splitext(filename)[1].upper()[1:]
                         if ((ext == 'LOG') or (ext.isdigit())):
                             myZip.write(os.path.join(
