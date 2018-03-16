@@ -772,7 +772,12 @@ class findMediaV3(object):
                 os.path.splitext(file)[1].lower()[1:]
                     in Dict['findMedia']['VALID_EXTENSIONS']):
                 parts = self.splitall(file)
-                for part in parts:
+                for part in parts:                                        
+                    if Dict['findMedia']['IGNORED_DIRS']:
+                        if part.lower() in [
+                                x.lower() for x in Dict[
+                                        'findMedia']['IGNORED_DIRS']]:                            
+                            return False
                     if Dict['findMedia']['IGNORE_EXTRAS']:
                         if part.lower() in ExtrasDirs:
                             return False
