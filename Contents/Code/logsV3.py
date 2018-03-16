@@ -22,13 +22,15 @@ DELETE = []
 
 
 class logsV3(object):
-    # Defaults used by the rest of the class
+
     @classmethod
     def init(self):
+        ''' Defaults used by the rest of the class '''
         try:
             if 'PLEX_MEDIA_SERVER_LOG_DIR' in os.environ:
                 self.LOGDIR = os.environ['PLEX_MEDIA_SERVER_LOG_DIR']
-            elif ((sys.platform.find('linux') == 0) and ('PLEXLOCALAPPDATA' in os.environ)):
+            elif ((sys.platform.find('linux') == 0) and (
+                    'PLEXLOCALAPPDATA' in os.environ)):
                 self.LOGDIR = os.path.join(
                     os.environ['PLEXLOCALAPPDATA'],
                     'Plex Media Server',
@@ -52,9 +54,9 @@ class logsV3(object):
             req.finish('Fatal error happened in Logs list: ' + str(e))
         Log.Debug('Log Root dir is: ' + self.LOGDIR)
 
-    ''' Get the relevant function and call it with optinal params '''
     @classmethod
     def getFunction(self, metode, req):
+        ''' Get the relevant function and call it with optinal params '''
         self.init()
         params = req.request.uri[8:].upper().split('/')
         self.function = None
@@ -117,9 +119,12 @@ class logsV3(object):
 
     # ********** Functions below ******************
 
-    ''' This metode will add an entry to the logfile. Req param is: "text" '''
     @classmethod
     def ENTRY(self, req, *args):
+        '''
+        This metode will add an entry to the logfile.
+        Req param is: "text"
+        '''
         Log.Debug('Starting Logs.entry function')
         try:
             try:
@@ -142,13 +147,13 @@ class logsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in Logs entry: ' + str(e))
 
-    '''
-    This will download a zipfile with the complete log directory.
-    if parameter fileName is specified, only that file will be
-    downloaded, and not zipped
-    '''
     @classmethod
     def DOWNLOAD(self, req, *args):
+        '''
+        This will download a zipfile with the complete log directory.
+        if parameter fileName is specified, only that file will be
+        downloaded, and not zipped
+        '''
         try:
             self.init()
             if not args:
@@ -171,8 +176,12 @@ class logsV3(object):
                     for filename in files:
                         fullFileName = os.path.join(root, filename)
                         param, value = fullFileName.split(self.LOGDIR, 1)
-                        myZip.write(os.path.join(
-                            root, filename), arcname=value)
+
+                        print 'Ged1', filename
+                        ext = os.path.splitext(filename)[1].upper()[1:]
+                        if ((ext == 'LOG') or (ext.isdigit())):
+                            myZip.write(os.path.join(
+                                root, filename), arcname=value)
                 myZip.close()
                 req.set_header('Content-Disposition',
                                'attachment; filename="' + downFile + '"')
@@ -256,7 +265,8 @@ class logsV3(object):
                         req.finish()
                         return req
                     else:
-                        with io.open(file, 'r', errors='ignore') as content_file:
+                        with io.open(
+                                file, 'rb', errors='ignore') as content_file:
                             content = content_file.readlines()
                             for line in content:
                                 retFile.append(line.strip())
@@ -284,12 +294,12 @@ class logsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in Logs download: ' + str(e))
 
-    '''
-    This will return contents of the logfile as an array.
-    Req. a parameter named fileName
-    '''
     @classmethod
     def SHOW(self, req, *args):
+        '''
+        This will return contents of the logfile as an array.
+        Req. a parameter named fileName
+        '''
         try:
             self.init()
             if args is None:
@@ -342,11 +352,11 @@ class logsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in Logs show: ' + str(e))
 
-    '''
-    This metode will return a list of logfiles. accepts a filter parameter
-    '''
     @classmethod
     def LIST(self, req, *args):
+        '''
+        This metode will return a list of logfiles. accepts a filter parameter
+        '''
         Log.Debug('Starting Logs.List function')
         try:
             self.init()
@@ -369,9 +379,13 @@ class logsV3(object):
                             continue
                     if fileFilter != '':
                         if fileFilter.upper() in filename.upper():
-                            retFiles.append(filename)
+                            ext = os.path.splitext(filename)[1].upper()[1:]
+                            if ((ext == 'LOG') or (ext.isdigit())):
+                                retFiles.append(filename)
                     else:
-                        retFiles.append(filename)
+                        ext = os.path.splitext(filename)[1].upper()[1:]
+                        if ((ext == 'LOG') or (ext.isdigit())):
+                            retFiles.append(filename)
             if retFiles == []:
                 Log.Debug('Nothing found')
                 req.clear()
