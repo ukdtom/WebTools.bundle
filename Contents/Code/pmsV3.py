@@ -584,7 +584,11 @@ class pmsV3(object):
                     Log.Debug(
                         'Reminder to self...TODO....Restart of \
                         System Bundle hangs :-(')
-                    # HTTP.Request('http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart', immediate=True)
+                    '''
+                    HTTP.Request(
+                        'http://127.0.0.1:32400/:/plugins/com.plexapp.system/restart',
+                        immediate=True)
+                    '''
                 except:
                     Log.Debug(
                         'Unable to restart System.bundle. Channel may \
