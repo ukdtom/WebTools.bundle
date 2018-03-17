@@ -828,9 +828,9 @@ class pmsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in getSubtitles')
 
-    ''' get section '''
     @classmethod
     def GETSECTION(self, req, *args):
+        ''' get section '''
         Log.Debug('Section requested')
         # Get params
         try:
@@ -949,9 +949,9 @@ class pmsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in getSection')
 
-    ''' get section letter-list '''
     @classmethod
     def GETSECTIONLETTERLIST(self, req, *args):
+        ''' get section letter-list '''
         Log.Debug('Section requested')
         try:
             if not args:
@@ -988,9 +988,9 @@ class pmsV3(object):
             req.finish(
                 'Fatal error happened in getSectionLetterList: ' + str(e))
 
-    ''' Get a section size '''
     @classmethod
     def GETSECTIONSIZE(self, req, *args):
+        ''' Get a section size '''
         Log.Debug('Retrieve Section size')
         try:
             if not args:
@@ -1033,9 +1033,9 @@ class pmsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in getSectionSize')
 
-    ''' get sections list '''
     @classmethod
     def GETSECTIONSLIST(self, req, *args):
+        ''' get sections list '''
         Log.Debug('getSectionsList requested')
         try:
             rawSections = XML.ElementFromURL(
@@ -1067,9 +1067,9 @@ class pmsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in getSectionsList')
 
-    # getAllBundleInfo
     @classmethod
     def GETALLBUNDLEINFO(self, req, *args):
+        ''' getAllBundleInfo '''
         Log.Debug('Got a call for getAllBundleInfo')
         try:
             req.clear()
@@ -1092,9 +1092,9 @@ class pmsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in getAllBundleInfo: ' + str(e))
 
-    ''' uploadFile Takes remoteFile and localFile (Type file) as params '''
     @classmethod
     def UPLOADFILE(self, req, *args):
+        ''' uploadFile Takes remoteFile and localFile (Type file) as params '''
         Log.Debug('Got a call for uploadFile')
         try:
             # Target filename present?
@@ -1124,9 +1124,9 @@ class pmsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in uploadFile: ' + str(e))
 
-    ''' uploadFile Takes remoteFile and localFile (Type file) as params '''
     @classmethod
     def UPLOADSUB(self, req, *args):
+        ''' uploadSub Takes remoteFile and localFile (Type file) as params '''
         Log.Debug('Got a call for uploadSUB')
         try:
             # Get the Language code
@@ -1182,9 +1182,9 @@ class pmsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in uploadSub: ' + str(e))
 
-    ''' Search for a title '''
     @classmethod
     def SEARCH(self, req, *args):
+        ''' Search for a title '''
         Log.Info('Search called')
         try:
             try:
