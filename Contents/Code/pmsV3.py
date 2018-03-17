@@ -74,9 +74,9 @@ class pmsV3(object):
         except Exception, e:
             Log.Exception('Exception in GetSectionKeyUUID was: %s' % str(e))
 
-    ''' Download Subtitle '''
     @classmethod
     def DOWNLOADSUBTITLE(self, req, *args):
+        ''' Download Subtitle '''
         Log.Debug('Download Subtitle requested')
         try:
             # Get the key of the sub
@@ -457,9 +457,9 @@ class pmsV3(object):
                 'Fatal error happened in TV-Show while \
                 fetching seasons: %s' % (e))
 
-    # Get TVShow Size
     @classmethod
     def GETSHOWSIZE(self, req, *args):
+        ''' Get TVShow Size '''
         Log.Debug('GETSHOWSIZE requested')
         # Get params
         try:
@@ -494,9 +494,9 @@ class pmsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in TV-Show while fetching size')
 
-    # Delete Bundle
     @classmethod
     def DELBUNDLE(self, req, *args):
+        ''' Delete Bundle '''
         Log.Debug('Delete bundle requested')
 
         def removeBundle(bundleName, bundleIdentifier, url):
@@ -738,9 +738,9 @@ class pmsV3(object):
             req.set_status(500)
             req.finish('Fatal error happened in getParts: ' + str(e))
 
-    ''' get Subtitles '''
     @classmethod
     def GETSUBTITLES(self, req, *args, **kwargs):
+        ''' get Subtitles '''
         Log.Debug('Subtitles requested')
         try:
             getFile = False
@@ -783,6 +783,8 @@ class pmsV3(object):
                         location = 'Agent'
                     else:
                         location = 'Sidecar'
+                    subInfo['forced'] = stream.get('forced')
+                    subInfo['title'] = stream.get('title')
                     subInfo['location'] = location
                     # Get tree info, if not already done so, and if it's \
                     # a none embedded srt, and we asked for all
@@ -1224,9 +1226,9 @@ class pmsV3(object):
 
 # ********************* Internal function **********************************
 
-    ''' Delete from an XML file Internal class function'''
     @classmethod
     def DelFromXML(self, fileName, attribute, value):
+        ''' Delete from an XML file Internal class function'''
         Log.Debug('Need to delete element with an attribute \
         named "%s" with a value of "%s" from file named "%s"' % (
             attribute, value, fileName))
@@ -1272,8 +1274,8 @@ class pmsV3(object):
 
 # ############## Functions exposed to other modules ##############
 
-# Undate uasTypesCounters
 def updateUASTypesCounters():
+    ''' Update uasTypesCounters '''
     try:
         counter = {}
         # Grap a list of all bundles
