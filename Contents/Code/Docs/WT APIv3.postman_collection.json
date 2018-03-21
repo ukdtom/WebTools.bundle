@@ -1,0 +1,2344 @@
+{
+	"info": {
+		"name": "WT APIv3",
+		"_postman_id": "b2cff02a-f15f-0fd7-68a1-d60d1eafa624",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "FindMedia",
+			"description": "",
+			"item": [
+				{
+					"name": "findMedia-getSettings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/findMedia/getSettings",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"findMedia",
+								"getSettings"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "findMedia-resetSettings",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/findMedia/resetSettings",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"findMedia",
+								"resetSettings"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "findMedia-getStatus",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/findMedia/getStatus",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"findMedia",
+								"getStatus"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "findMedia-getResult",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/findMedia/getResult",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"findMedia",
+								"getResult"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "findMedia-abort",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/findMedia/abort",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"findMedia",
+								"abort"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "findMedia-scanSection",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/findMedia/scanSection/25",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"findMedia",
+								"scanSection",
+								"25"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "findMedia-getSectionsList",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/findMedia/getSectionsList",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"findMedia",
+								"getSectionsList"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "findMedia-setSettings",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"IGNORE_HIDDEN\": true,\n    \"IGNORED_DIRS\": [\n        \".@__thumb\",\n        \".AppleDouble\",\n        \"lost+found\"\n    ],\n    \"VALID_EXTENSIONS\": [\n        \"3g2\",\n        \"3gp\",\n        \"asf\",\n        \"asx\",\n        \"avc\",\n        \"avi\",\n        \"avs\",\n        \"bivx\",\n        \"bup\",\n        \"divx\",\n        \"dv\",\n        \"dvr-ms\",\n        \"evo\",\n        \"fli\",\n        \"flv\",\n        \"m2t\",\n        \"m2ts\",\n        \"m2v\",\n        \"m4v\",\n        \"mkv\",\n        \"mov\",\n        \"mp4\",\n        \"mpeg\",\n        \"mpg\",\n        \"mts\",\n        \"nsv\",\n        \"nuv\",\n        \"ogm\",\n        \"ogv\",\n        \"tp\",\n        \"pva\",\n        \"qt\",\n        \"rm\",\n        \"rmvb\",\n        \"sdp\",\n        \"svq3\",\n        \"strm\",\n        \"ts\",\n        \"ty\",\n        \"vdr\",\n        \"viv\",\n        \"vob\",\n        \"vp3\",\n        \"wmv\",\n        \"wpl\",\n        \"wtv\",\n        \"xsp\",\n        \"xvid\",\n        \"webm\"\n    ],\n    \"IGNORE_EXTRAS\": true\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/findMedia/setSettings",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"findMedia",
+								"setSettings"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GIT",
+			"description": "",
+			"item": [
+				{
+					"name": "GIT  - getUpdateList",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/git/getUpdateList",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"git",
+								"getUpdateList"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GIT  - getLastUpdateTime",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/git/getLastUpdateTime/http%3A%2F%2Fgithub.com%2Fukdtom%2Fwebtools.bundle",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"git",
+								"getLastUpdateTime",
+								"http%3A%2F%2Fgithub.com%2Fukdtom%2Fwebtools.bundle"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GIT  - list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/git/list",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"git",
+								"list"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GIT  - getReleaseInfo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/git/getReleaseInfo/url/https%3A%2F%2Fgithub.com%2Fukdtom%2FWebTools.bundle/version/all",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"git",
+								"getReleaseInfo",
+								"url",
+								"https%3A%2F%2Fgithub.com%2Fukdtom%2FWebTools.bundle",
+								"version",
+								"all"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GIT  - uasTypes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/git/uasTypes",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"git",
+								"uasTypes"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GIT  - getListofBundles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/git/getListofBundles",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"git",
+								"getListofBundles"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GIT  - updateUASCache",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/git/updateUASCache/force",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"git",
+								"updateUASCache",
+								"force"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GIT  - migrate",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/git/migrate",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"git",
+								"migrate"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GIT  - install",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"url\" : \"https://github.com/srazer/FindMissing.bundle\"\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/git/install",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"git",
+								"install"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GIT-upgradeWT",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/git/upgradeWT",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"git",
+								"upgradeWT"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "JsonExporter",
+			"description": "",
+			"item": [
+				{
+					"name": "jsonExporter-getStatus",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/jsonExporter/getStatus",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"jsonExporter",
+								"getStatus"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "jsonExporter-export",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/jsonExporter/export/31",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"jsonExporter",
+								"export",
+								"31"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Language",
+			"description": "",
+			"item": [
+				{
+					"name": "Language - getCountryCodes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/language/getCountryCodes",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"language",
+								"getCountryCodes"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Language - getLangCodeList",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "hello kitty",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/language/getLangCodeList",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"language",
+								"getLangCodeList"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Language - getCodeLangList",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "hello kitty",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/language/getCodeLangList",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"language",
+								"getCodeLangList"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Language - getLangCode3List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "hello kitty",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/language/getLangCode3List",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"language",
+								"getLangCode3List"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Language - get3CodeLangList",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "hello kitty",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/language/get3CodeLangList",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"language",
+								"get3CodeLangList"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Language - getMatch",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Language\" : \"danish\"\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/language/getMatch",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"language",
+								"getMatch"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Logs",
+			"description": "",
+			"item": [
+				{
+					"name": "LOGS - List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/logs/list",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"logs",
+								"list"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "LOGS - Show",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/logs/show/com.plexapp.plugins.WebTools.log",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"logs",
+								"show",
+								"com.plexapp.plugins.WebTools.log"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "LOGS - Download",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/logs/download",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"logs",
+								"download"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "LOGS - Entry",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/logs/entry",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"logs",
+								"entry"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PMS",
+			"description": "",
+			"item": [
+				{
+					"name": "PMS - uploadFile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "remoteFile",
+									"value": "ged.test",
+									"type": "text"
+								},
+								{
+									"key": "localFile",
+									"value": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/uploadFile",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"uploadFile"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\" : \"danish\"\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/search/danish",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"search",
+								"danish"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getAllBundleInfo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "iron",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/GetAllBundleInfo",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"GetAllBundleInfo"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getSectionsList",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/getSectionsList",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"getSectionsList"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getSectionSize",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\" : \"danish\"\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/getSectionSize/3",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"getSectionSize",
+								"3"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getSectionLetterList",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\" : \"danish\"\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/getSectionLetterList/7",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"getSectionLetterList",
+								"7"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getSection",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"start\" : 1,\n  \"size\"  : 3,\n  \"getSubs\" : false\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/getSection/start/0/size/1/key/7/getSubs/letterKey/a",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"getSection",
+								"start",
+								"0",
+								"size",
+								"1",
+								"key",
+								"7",
+								"getSubs",
+								"letterKey",
+								"a"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getSubtitles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"start\" : 1,\n  \"size\"  : 3,\n  \"getSubs\" : false\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/getSubtitles/1619/getFile",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"getSubtitles",
+								"1619",
+								"getFile"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getSection - Search Title",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"start\" : 1,\n  \"size\"  : 3,\n  \"getSubs\" : false\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/getSection/start/0/size/10/key/7/getSubs//title/fast",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"getSection",
+								"start",
+								"0",
+								"size",
+								"10",
+								"key",
+								"7",
+								"getSubs",
+								"",
+								"title",
+								"fast"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getParts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"start\" : 1,\n  \"size\"  : 3,\n  \"getSubs\" : false\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/getParts/21559",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"getParts",
+								"21559"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - showSubtitle",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"start\" : 1,\n  \"size\"  : 3,\n  \"getSubs\" : false\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/showSubtitle/18347",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"showSubtitle",
+								"18347"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - delBundle",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/delBundle/plex2csv.bundle",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"delBundle",
+								"plex2csv.bundle"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getShowSize",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/getShowSize/560",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"getShowSize",
+								"560"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getShowSeasons",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/getShowSeasons/560",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"getShowSeasons",
+								"560"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getShowSeason",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/getShowSeason/15618/getSub/getFile",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"getShowSeason",
+								"15618",
+								"getSub",
+								"getFile"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - getShowContents",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/getShowContents/560/start/1/size/3/getSubs",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"getShowContents",
+								"560",
+								"start",
+								"1",
+								"size",
+								"3",
+								"getSubs"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - downloadSubtitle",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\" : \"danish\"\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/downloadSubtitle/18347",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"downloadSubtitle",
+								"18347"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS  - delSub",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/delSub/key/20908/sub/95571",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"delSub",
+								"key",
+								"20908",
+								"sub",
+								"95571"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PMS - uploadSub",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "localFile",
+									"value": "",
+									"type": "file"
+								},
+								{
+									"key": "language",
+									"value": "da",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/pms/uploadSub/key/21559",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"pms",
+								"uploadSub",
+								"key",
+								"21559"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PlayList",
+			"description": "",
+			"item": [
+				{
+					"name": "PlayLists-GetList",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/playlists/List/user1/5063154",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"playlists",
+								"List",
+								"user1",
+								"5063154"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PlayLists-Download",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/playlists/download/key/21478/user/5063154",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"playlists",
+								"download",
+								"key",
+								"21478",
+								"user",
+								"5063154"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PlayLists-Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/playlists/Copy/key/21477/UserFrom1/5063154/UserTo/5063154",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"playlists",
+								"Copy",
+								"key",
+								"21477",
+								"UserFrom1",
+								"5063154",
+								"UserTo",
+								"5063154"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PlayLists-Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/playlists/Delete/test/user/5063154/key/21473",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"playlists",
+								"Delete",
+								"test",
+								"user",
+								"5063154",
+								"key",
+								"21473"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PlayLists-Import",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "localFile",
+									"value": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/playlists/Import",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"playlists",
+								"Import"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Settings",
+			"description": "",
+			"item": [
+				{
+					"name": "Settings - getSettings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "language",
+									"value": "danish",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/settings/getSettings/",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"settings",
+								"getSettings",
+								""
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Settings - setSetting",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"UILanguage\" : \"da\"\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/settings/setSetting",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"settings",
+								"setSetting"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Settings - setPwd",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Dog\" : \"Barcley\",\n  \"Number\" : 2\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/settings/setPwd",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"settings",
+								"setPwd"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "WT",
+			"description": "",
+			"item": [
+				{
+					"name": "WT - getCSS",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/wt/getCSS",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"wt",
+								"getCSS"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "WT-GetUsers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/wt/getUsers/INClude/USERS_SELF",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"wt",
+								"getUsers",
+								"INClude",
+								"USERS_SELF"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "WT-GetLanguagesList",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/wt/getLanguageList",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"wt",
+								"getLanguageList"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "WT-GetTranslatorList",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/wt/getTranslatorList",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"wt",
+								"getTranslatorList"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "WT - Upgrade",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/wt/upgradewt",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"wt",
+								"upgradewt"
+							]
+						},
+						"description": "Upgrade WebTools from latest release"
+					},
+					"response": []
+				},
+				{
+					"name": "WT-UpdateLanguage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/wt/updateLanguage/lang/da",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"wt",
+								"updateLanguage",
+								"lang",
+								"da"
+							]
+						},
+						"description": "Update a language translation from live translation site"
+					},
+					"response": []
+				},
+				{
+					"name": "WT - Reset",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}/wt/reset",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"wt",
+								"reset"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Translations - List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "119295",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "api_token",
+									"value": "08068e4f4d52745e9347021d64590f39",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.poeditor.com/v2/languages/list",
+							"protocol": "https",
+							"host": [
+								"api",
+								"poeditor",
+								"com"
+							],
+							"path": [
+								"v2",
+								"languages",
+								"list"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Translations - Translators",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "119295",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "api_token",
+									"value": "08068e4f4d52745e9347021d64590f39",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.poeditor.com/v2/contributors/list",
+							"protocol": "https",
+							"host": [
+								"api",
+								"poeditor",
+								"com"
+							],
+							"path": [
+								"v2",
+								"contributors",
+								"list"
+							]
+						},
+						"description": "Get a list of translators"
+					},
+					"response": []
+				},
+				{
+					"name": "WT-GetTranslate",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"language\" : \"da\",\n  \"string\" : \"No records missing from harddrive\"\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/wt/getTranslate",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"wt",
+								"getTranslate"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "WT-getTranslation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"language\" : \"da\",\n  \"string\" : \"No records missing from harddrive\"\n}"
+						},
+						"url": {
+							"raw": "{{PMS}}/getTranslate",
+							"host": [
+								"{{PMS}}"
+							],
+							"path": [
+								"getTranslate"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "WT-GetCurrentLang",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{PMS}}{{API}}wt/getCurrentLang",
+							"host": [
+								"{{PMS}}{{API}}wt"
+							],
+							"path": [
+								"getCurrentLang"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TechInfo",
+			"description": "",
+			"item": [
+				{
+					"name": "TechInfo - getInfo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "hello kitty",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/techinfo/getInfo",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"techinfo",
+								"getInfo"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ViewState",
+			"description": "",
+			"item": [
+				{
+					"name": "ViewState - Export",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "hello kitty",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/viewstate/export/section/23",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"viewstate",
+								"export",
+								"section",
+								"23"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "ViewState-scan",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "localFile",
+									"value": "",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/viewstate/scan",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"viewstate",
+								"scan"
+							]
+						},
+						"description": "Scans a Viewlist file, and dumps it's contents"
+					},
+					"response": []
+				},
+				{
+					"name": "ViewState - getSectionList",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjE3YmM4MjJiYjBhNWFjMWQzYmNjMDdiNDg2ZTFmY2I=|1435600532|b72ddf6903f480fce735d54e4171a7bb13f9222a"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "hello kitty",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/viewstate/GetSectionsList",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"viewstate",
+								"GetSectionsList"
+							]
+						},
+						"description": "Returns a list of supported Sections"
+					},
+					"response": []
+				},
+				{
+					"name": "ViewState - Import",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "WebTools",
+								"value": "ZjIwYTA4ZTc1MWE2M2I1YmFhMzU0NmFiM2ZiMzg5YWE=|1511042190|8dbdae503375b35e9b17780cade95a7e935c1a52"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "localFile",
+									"value": "",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{PMS}}{{API}}/viewstate/import/section/7",
+							"host": [
+								"{{PMS}}{{API}}"
+							],
+							"path": [
+								"viewstate",
+								"import",
+								"section",
+								"7"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Translations - Download",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "api_token",
+							"value": "08068e4f4d52745e9347021d64590f39",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "119295",
+							"type": "text"
+						},
+						{
+							"key": "language",
+							"value": "da",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "key_value_json",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://api.poeditor.com/v2/projects/export",
+					"protocol": "https",
+					"host": [
+						"api",
+						"poeditor",
+						"com"
+					],
+					"path": [
+						"v2",
+						"projects",
+						"export"
+					]
+				},
+				"description": "Generated from a curl request: \ncurl -X POST https://api.poeditor.com/v2/projects/export \\\n     -d api_token=\\\"08068e4f4d52745e9347021d64590f39\\\" \\\n     -d id=\\\"119295\\\" \\\n     -d language=\\\"da\\\" \\\n     -d type=\\\"key_value_json\\\""
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7a849ddf-7079-44e0-8696-39e528c7b1de",
+						"type": "text/javascript",
+						"exec": [
+							"var WebTools = postman.getResponseCookie(\"WebTools\").value",
+							"postman.setEnvironmentVariable(\"WebTools\", WebTools)",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{UserPwd}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{User}}",
+							"type": "string"
+						},
+						{
+							"key": "saveHelperData",
+							"type": "any"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{PMS}}/login",
+					"host": [
+						"{{PMS}}"
+					],
+					"path": [
+						"login"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ee448b1d-206f-4148-9f08-1857847edb9f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "60cada70-16c6-4efd-a825-28460448be15",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "65705679-b0c7-420c-9cc9-720abf54afc3",
+			"key": "PMSServer",
+			"value": "qnap2",
+			"type": "text"
+		},
+		{
+			"id": "e2150074-639b-4330-bca0-0f1870b19b86",
+			"key": "GummiGed",
+			"value": "11",
+			"type": "text"
+		},
+		{
+			"id": "966412a1-6c45-48db-8e82-974ef6577150",
+			"key": "APIServer",
+			"value": "http://qnap:33400/api/v3",
+			"type": "text"
+		}
+	]
+}
