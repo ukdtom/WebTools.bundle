@@ -15,7 +15,7 @@ import sys
 import io
 import zipfile
 
-GET = ['LIST', 'SHOW', 'DOWNLOAD']
+GET = ['LIST', 'SHOW', 'DOWNLOAD', 'LISTTIME']
 PUT = ['ENTRY']
 POST = []
 DELETE = []
@@ -384,6 +384,86 @@ class logsV3(object):
                         ext = os.path.splitext(filename)[1].upper()[1:]
                         if ((ext == 'LOG') or (ext.isdigit())):
                             retFiles.append(filename)
+            if retFiles == []:
+                Log.Debug('Nothing found')
+                req.clear()
+                req.set_status(404)
+                req.finish('Nothing found')
+            else:
+                Log.Debug('Returning %s' % retFiles)
+                req.clear()
+                req.set_status(200)
+                req.set_header(
+                    'Content-Type', 'application/json; charset=utf-8')
+                req.finish(json.dumps(sorted(retFiles)))
+        except Exception, e:
+            Log.Exception('Fatal error happened in Logs list: ' + str(e))
+            req.clear()
+            req.set_status(500)
+            req.finish('Fatal error happened in Logs list: ' + str(e))
+
+    @classmethod
+    def LISTTIME(self, req, *args):
+        '''
+        This metode will return a list of logfiles. accepts a filter parameter
+        '''
+        Log.Debug('Starting Logs.List function')
+        try:
+            self.init()
+            if args is None:
+                fileFilter = ''
+            else:
+                if len(args) > 0:
+                    fileFilter = list(args)[0][0]
+                else:
+                    fileFilter = ''
+            retFiles = []
+            Log.Debug('List logfiles called for directory %s' % (self.LOGDIR))
+            for root, dirs, files in os.walk(self.LOGDIR, topdown=True):
+                # Only list from the default directories
+                dirs[:] = [d for d in dirs if d in ['PMS Plugin Logs']]
+                path = root.split('/')
+                for filename in files:
+                    if Platform.OS == 'MacOSX':
+                        if filename == ".DS_Store":
+                            continue
+                    if fileFilter != '':
+                        if fileFilter.upper() in filename.upper():
+                            ext = os.path.splitext(filename)[1].upper()[1:]
+                            if ((ext == 'LOG') or (ext.isdigit())):
+                                if filename.startswith('com'):
+                                    file = os.path.join(
+                                        self.LOGDIR,
+                                        'PMS Plugin Logs',
+                                        filename)
+                                else:
+                                    file = os.path.join(
+                                        self.LOGDIR,
+                                        filename)
+                                entry = {}
+                                entry[filename] = {
+                                    'time': time.ctime(
+                                        os.path.getmtime(file)),
+                                    'unixstamp': os.path.getmtime(file)}
+                                retFiles.append(entry)
+                    else:
+                        ext = os.path.splitext(filename)[1].upper()[1:]
+                        if ((ext == 'LOG') or (ext.isdigit())):
+                            if filename.startswith('com'):
+                                file = os.path.join(
+                                    self.LOGDIR,
+                                    'PMS Plugin Logs',
+                                    filename)
+                            else:
+                                file = os.path.join(
+                                    self.LOGDIR,
+                                    filename)
+                            entry = {}
+                            entry[filename] = {
+                                'time': time.ctime(
+                                    os.path.getmtime(file)),
+                                'unixstamp': os.path.getmtime(file)}
+                            retFiles.append(entry)
             if retFiles == []:
                 Log.Debug('Nothing found')
                 req.clear()
