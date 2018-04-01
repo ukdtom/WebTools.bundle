@@ -840,12 +840,12 @@ class gitV3(object):
             return req
 
     @classmethod
-    '''
-    Get the last update time for a master branch.
-    if UAS is set to True,
-    then this is an internal req. for UAS
-    '''
     def GETLASTUPDATETIME(self, req, *args, **kvargs):
+        '''
+        Get the last update time for a master branch.
+        if UAS is set to True,
+        then this is an internal req. for UAS
+        '''
         Log.Debug('Starting getLastUpdateTime')
         # kvargs present means we got an internal call here
         if kvargs:
