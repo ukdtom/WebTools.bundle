@@ -770,7 +770,8 @@ class gitV3(object):
                             else:
                                 # Let's get a CommitId stamped for future times
                                 updateInfo = self.getAtom_UpdateTime_Id(
-                                    bundle, Dict['installed'][bundle]['branch'])
+                                    bundle,
+                                    Dict['installed'][bundle]['branch'])
                                 Log.Info('Stamping %s with a commitId of %s for future ref' % (
                                     bundle, updateInfo['commitId']))
                                 Dict['installed'][bundle]['CommitId'] = updateInfo['commitId']
@@ -838,8 +839,12 @@ class gitV3(object):
             req.finish('Fatal error happened in uasTypes: ' + str(e))
             return req
 
-    ''' Get the last update time for a master branch. if UAS is set to True, then this is an internal req. for UAS '''
     @classmethod
+    '''
+    Get the last update time for a master branch.
+    if UAS is set to True,
+    then this is an internal req. for UAS
+    '''
     def GETLASTUPDATETIME(self, req, *args, **kvargs):
         Log.Debug('Starting getLastUpdateTime')
         # kvargs present means we got an internal call here
