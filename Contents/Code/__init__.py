@@ -18,7 +18,7 @@ from webSrv import startWeb, stopWeb
 import uuid  # Used for secrectKey
 import time
 import socket
-from consts import DEBUGMODE, VERSION, NAME, ICON, PREFIX, BASEURL
+from consts import DEBUGMODE, VERSION, NAME, ICON, PREFIX, BASEURL, UILANGUAGE
 from wtV3 import upgradeCleanup
 
 # ********* Constants used **********
@@ -33,6 +33,17 @@ SECRETKEY = ''
 
 def L(string):
     try:
+        # Grap string to return
+        local_string = Locale.LocalString(string)
+        # Decode it, since we need it to be XML compliant
+        return str(local_string).decode()
+    except Exception, e:
+        Log.Critical('Exception in L was %s' % str(e))
+        pass
+
+
+def L1(string):
+    try:
         # Missing X-Plex-Language?
         if 'X-Plex-Language' not in Request.Headers:
             Request.Headers[
@@ -46,12 +57,15 @@ def L(string):
         Log.Critical('Exception in L was %s' % str(e))
         pass
 
-###########################################################################
-# Initialize
-###########################################################################
-
 
 def Start():
+    '''
+    This is the startup call of the plugin
+    '''
+
+    # Set Plugin UI to the language the user wants
+    Locale.DefaultLocale = UILANGUAGE
+
     global SECRETKEY
     runningLocale = locale.getdefaultlocale()
     strLog = ''.join((
@@ -107,12 +121,10 @@ def Start():
 @handler(PREFIX, NAME, ICON)
 @route(PREFIX + '/MainMenu')
 def MainMenu():
-    Log.Debug("**********  Starting MainMenu  **********")
-    # oc = ObjectContainer()
+    Log.Debug("**********  Starting MainMenu  **********")    
     message = L("You need to type the URL in a new browser tab")
-    title = L("To access this channel, type the url's below to a \
-    new browser tab")
-
+    title = L(
+        "To access this channel, type the url's below to a new browser tab")
     oc = ObjectContainer(title1=title, no_history=True, message=message)
     Log.Debug('Network Address: ' + str(Network.Address))
     Log.Debug('WebPort http: ' + str(Prefs['WEB_Port_http']))
@@ -122,9 +134,11 @@ def MainMenu():
         str(Prefs['WEB_Port_http']) + str(BASEURL)
     urlhttps = 'https://' + str(Network.Address) + ':' + \
         str(Prefs['WEB_Port_https']) + str(BASEURL)
-    oc.add(DirectoryObject(key=Callback(MainMenu),
-                           title=L("To access this channel, type \
-                           the url's below to a new browser tab")))
+    oc.add(DirectoryObject(
+        key=Callback(MainMenu),
+        title=L(
+            "To access this channel, type the url's below to a new browser tab"
+            )))
     if Prefs['Force_SSL']:
         oc.add(DirectoryObject(
             key=Callback(MainMenu),
@@ -175,3 +189,10 @@ def Restart():
     time.sleep(3)
     startWeb(SECRETKEY)
     return
+
+
+@route(PREFIX + '/GetCurLang')
+def GetCurLang():
+    ''' This will return the current language code '''
+
+    return 'da'
