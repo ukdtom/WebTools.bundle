@@ -266,7 +266,10 @@ class wtV3(object):
                             req.finish(String)
                 else:
                     if Internal:
-                        return json.dumps(jsonTransLine)
+                        try:
+                            return json.dumps(jsonTransLine)
+                        except:
+                            return String
                     else:
                         req.clear()
                         req.set_status(200)
@@ -277,6 +280,7 @@ class wtV3(object):
             except Exception, e:
                 Log.Exception(
                     'Exception happened digesting the body was %s' % str(e))
+                pass
                 req.clear()
                 req.set_status(e.code)
                 req.finish(
@@ -334,7 +338,8 @@ class wtV3(object):
                     translatedStr = ''
                     for line in translationLines:
                         # Got the relevant language?
-                        if line.lstrip().startswith("gettextCatalog.setStrings('" + lang + "',"):
+                        if line.lstrip().startswith(
+                                "gettextCatalog.setStrings('" + lang + "',"):
                             start = line.split(',', 1)[0]
                             translatedStr = translatedStr + '\n' + start + ',' + translated + ');'
                             bFound = True
