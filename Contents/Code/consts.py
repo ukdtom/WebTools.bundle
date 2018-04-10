@@ -47,9 +47,9 @@ EXCLUDEELEMENTS = ''.join((
                 'Collection,Country,Director,',
                 'Genre,Label,Mood,Producer,',
                 'Similar,Writer,Role'))
-
-
 EXCLUDEFIELDS = 'excludeFields=summary,tagline,file'
+# Log Directory
+LOG_DIR = ''
 
 # Modules used in WebTools
 V3MODULES = {
@@ -316,6 +316,7 @@ class consts(object):
         global UILANGUAGE
         global UILANGUAGEDEBUG
         global WT_URL
+        global LOG_DIR
 
         # Lets find the name of the bundle directory
         BUNDLEDIRNAME = os.path.split(os.path.split(os.path.split(
@@ -379,6 +380,34 @@ class consts(object):
                 pass
         else:
             DEBUGMODE = False
+        try:
+            if 'PLEX_MEDIA_SERVER_LOG_DIR' in os.environ:
+                LOG_DIR = os.environ['PLEX_MEDIA_SERVER_LOG_DIR']
+            elif ((sys.platform.find('linux') == 0) and (
+                    'PLEXLOCALAPPDATA' in os.environ)):
+                LOG_DIR = os.path.join(
+                    os.environ['PLEXLOCALAPPDATA'],
+                    'Plex Media Server',
+                    'Logs')
+            elif sys.platform == 'win32':
+                if 'PLEXLOCALAPPDATA' in os.environ:
+                    key = 'PLEXLOCALAPPDATA'
+                else:
+                    key = 'LOCALAPPDATA'
+                LOG_DIR = os.path.join(
+                    os.environ[key], 'Plex Media Server', 'Logs')
+            else:
+                LOG_DIR = os.path.join(
+                    os.environ['HOME'], 'Library', 'Logs', 'Plex Media Server')
+                if not os.path.isdir(LOG_DIR):
+                    LOG_DIR = os.path.join(Core.app_support_path, 'Logs')
+        except Exception, e:
+            Log.Exception(
+                'Fatal error happened in getting Log directory: %s' % e)
+            req.clear()
+            req.set_status(500)
+            req.finish('Fatal error happened in Logs list: ' + str(e))
+        Log.Debug('Log Root dir is: ' + LOG_DIR)
 
     ''' Init of the Class'''
 

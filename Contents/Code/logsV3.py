@@ -14,6 +14,7 @@ import os
 import sys
 import io
 import zipfile
+from consts import LOG_DIR
 
 GET = ['LIST', 'SHOW', 'DOWNLOAD', 'LISTTIME']
 PUT = ['ENTRY']
@@ -26,33 +27,7 @@ class logsV3(object):
     @classmethod
     def init(self):
         ''' Defaults used by the rest of the class '''
-        try:
-            if 'PLEX_MEDIA_SERVER_LOG_DIR' in os.environ:
-                self.LOGDIR = os.environ['PLEX_MEDIA_SERVER_LOG_DIR']
-            elif ((sys.platform.find('linux') == 0) and (
-                    'PLEXLOCALAPPDATA' in os.environ)):
-                self.LOGDIR = os.path.join(
-                    os.environ['PLEXLOCALAPPDATA'],
-                    'Plex Media Server',
-                    'Logs')
-            elif sys.platform == 'win32':
-                if 'PLEXLOCALAPPDATA' in os.environ:
-                    key = 'PLEXLOCALAPPDATA'
-                else:
-                    key = 'LOCALAPPDATA'
-                self.LOGDIR = os.path.join(
-                    os.environ[key], 'Plex Media Server', 'Logs')
-            else:
-                self.LOGDIR = os.path.join(
-                    os.environ['HOME'], 'Library', 'Logs', 'Plex Media Server')
-                if not os.path.isdir(self.LOGDIR):
-                    self.LOGDIR = os.path.join(Core.app_support_path, 'Logs')
-        except Exception, e:
-            Log.Exception('Fatal error happened in Logs list: ' + str(e))
-            req.clear()
-            req.set_status(500)
-            req.finish('Fatal error happened in Logs list: ' + str(e))
-        Log.Debug('Log Root dir is: ' + self.LOGDIR)
+        self.LOGDIR = LOG_DIR
 
     @classmethod
     def getFunction(self, metode, req):
