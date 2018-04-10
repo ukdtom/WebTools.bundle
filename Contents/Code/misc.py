@@ -18,7 +18,7 @@ import unicodedata
 import sys
 import json
 
-RE_UNICODE_CONTROL = u'([\u0000-\u0008\u000b-\u000c\u000e-\u001f\ufffe-\uffff])' + \
+RE_UNI_CTRL = u'([\u0000-\u0008\u000b-\u000c\u000e-\u001f\ufffe-\uffff])' + \
     u'|' + \
     u'([%s-%s][^%s-%s])|([^%s-%s][%s-%s])|([%s-%s]$)|(^[%s-%s])' % \
     (
@@ -67,7 +67,7 @@ class misc(object):
                             exception precomposing: ' +
                                 str(e) + ' with ' + form)
         try:
-            filename = re.sub(RE_UNICODE_CONTROL, '', filename)
+            filename = re.sub(RE_UNI_CTRL, '', filename)
         except:
             Log.Debug('Couldn\'t strip control characters: ' + filename)
         return filename

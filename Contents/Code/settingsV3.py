@@ -147,6 +147,8 @@ class settingsV3(object):
                         Dict[key] = data[key]
                     Dict.Save()
                     consts.consts.setConsts()
+                    if str(key) == 'UILanguage':
+                        Locale.DefaultLocale = str(data[key])
                     req.set_status(200)
                     req.finish("Setting saved")
                 else:

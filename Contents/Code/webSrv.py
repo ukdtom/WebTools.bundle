@@ -1,31 +1,22 @@
-######################################################################################################################
-#					WebTools helper unit
+##############################################################################
+# WebTools helper unit
 #
-#					Runs a seperate webserver on a specified port
-#					Author:			dane22, a Plex Community member
+# Runs a seperate webserver on a specified port
+# Author: dane22, a Plex Community member
 #
-######################################################################################################################
-
-from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES, BASEURL, UILANGUAGE, UILANGUAGEDEBUG, WT_URL
-
+##############################################################################
 
 import sys
-# Add modules dir to search path
-modules = Core.storage.join_path(
-    Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle', 'Contents', 'Code', 'modules')
-sys.path.append(modules)
+import threading
+import os
+import time
 
+from consts import DEBUGMODE, WT_AUTH, VERSION, NAME, V3MODULES
+from consts import BASEURL, UILANGUAGE, UILANGUAGEDEBUG, WT_URL
 from tornado.web import *
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.escape import json_encode, xhtml_escape
-
-
-import threading
-import os
-import sys
-import time
-
 import apiv3
 from plextvhelper import plexTV
 from wtV3 import wtV3
@@ -34,10 +25,19 @@ from wtV3 import wtV3
 from inspect import getsourcefile
 from os.path import abspath
 
+# Add modules dir to search path
+modules = Core.storage.join_path(
+    Core.app_support_path, Core.config.bundles_dir_name,
+    NAME + '.bundle',
+    'Contents',
+    'Code',
+    'modules')
+sys.path.append(modules)
 
 # TODO
 # from importlib import import_module
 # SNIFF....Tornado is V1.0.0, meaning no WebSocket :-(
+
 
 # Path to http folder within the bundle
 def getActualHTTPPath():
@@ -58,7 +58,8 @@ def getActualHTTPPath():
 def isCorrectPath(req):
     try:
         installedPlugInPath = os.path.normpath(
-            abspath(getsourcefile(lambda: 0)).split(str(NAME) + '.bundle', 1)[0])
+            abspath(
+                getsourcefile(lambda: 0)).split(str(NAME) + '.bundle', 1)[0])
         targetPath = os.path.normpath(Core.storage.join_path(
             Core.app_support_path, Core.config.bundles_dir_name))
         if installedPlugInPath != targetPath:
@@ -68,8 +69,10 @@ def isCorrectPath(req):
             Log.Debug('Currently installed in:')
             Log.Debug(installedPlugInPath)
             Log.Debug('Correct path is:')
-            Log.Debug(Core.storage.join_path(Core.app_support_path,
-                                             Core.config.bundles_dir_name, NAME + '.bundle'))
+            Log.Debug(
+                Core.storage.join_path(
+                    Core.app_support_path,
+                    Core.config.bundles_dir_name, NAME + '.bundle'))
             Log.Debug('************************************************')
             installedPlugInPath, skipStr = abspath(
                 getsourcefile(lambda: 0)).split('/Contents', 1)
@@ -80,7 +83,9 @@ def isCorrectPath(req):
             msg = msg + installedPlugInPath
             msg = msg + '<p>but the correct folder is:<p>'
             msg = msg + Core.storage.join_path(
-                Core.app_support_path, Core.config.bundles_dir_name, NAME + '.bundle')
+                Core.app_support_path,
+                Core.config.bundles_dir_name,
+                NAME + '.bundle')
             req.clear()
             req.set_status(404)
             req.finish(msg)
@@ -90,7 +95,7 @@ def isCorrectPath(req):
         Log.Exception('Exception in isCorrectPath was %s' % (str(e)))
 
 
-#************** webTools functions ******************************
+# ************** webTools functions ******************************
 ''' Here we have the supported functions '''
 
 
@@ -105,16 +110,22 @@ class webTools(object):
     def getVersion(self):
         try:
             scheme = Dict['wt_csstheme']
-            if scheme == None:
+            if scheme is None:
                 scheme = ''
-            retVal = {'version': VERSION, 'PasswordSet': Dict['pwdset'], 'PlexTVOnline': plexTV().auth2myPlex(
-            ), 'wt_csstheme': scheme, 'UILanguageDebug': UILANGUAGEDEBUG, 'UILanguage': Dict['UILanguage'], 'WT_URL': WT_URL}
+            retVal = {
+                'version': VERSION,
+                'PasswordSet': Dict['pwdset'],
+                'PlexTVOnline': plexTV().auth2myPlex(),
+                'wt_csstheme': scheme,
+                'UILanguageDebug': UILANGUAGEDEBUG,
+                'UILanguage': Dict['UILanguage'],
+                'WT_URL': WT_URL}
             Log.Info('Version requested, returning ' + str(retVal))
             return retVal
         except Exception, e:
             Log.Exception('Exception in getVersion: %s' % (str(e)))
 
-#**************** Handler Classes for Rest **********************
+# **************** Handler Classes for Rest **********************
 
 
 class MyStaticFileHandler(StaticFileHandler):
@@ -134,7 +145,10 @@ class BaseHandler(RequestHandler):
 
 class ForceTSLHandler(RequestHandler):
     def get(self):
-        ''' This is sadly up hill, due to the old version of Tornado used :-( '''
+        '''
+        This is sadly up hill,
+        due to the old version of Tornado used :-(
+        '''
         # Grap the host requested
         host, port = self.request.headers['Host'].split(':')
         newUrl = 'https://' + host + ':' + \
@@ -174,8 +188,11 @@ class LoginHandler(BaseHandler):
         isCorrectPath(self)
         Log.Info('Returning login page: ' +
                  Core.storage.join_path(getActualHTTPPath(), 'login.html'))
-        self.render(Core.storage.join_path(getActualHTTPPath(),
-                                           'login.html'), next=self.get_argument("next", "/"))
+        self.render(
+            Core.storage.join_path(
+                getActualHTTPPath(),
+                'login.html'),
+            next=self.get_argument("next", "/"))
 
     def post(self):
         global AUTHTOKEN
@@ -215,7 +232,7 @@ class LoginHandler(BaseHandler):
                     try:
                         # Authenticate
                         login_token = plexTV().login(user, pwd)
-                        if login_token == None:
+                        if login_token is None:
                             Log.Error(
                                 'Bad credentials detected, denying access')
                             self.clear()
@@ -261,7 +278,7 @@ class LoginHandler(BaseHandler):
                     try:
                         # Authenticate
                         login_token = plexTV().login(user, pwd)
-                        if login_token == None:
+                        if login_token is None:
                             Log.Error(
                                 'Bad credentials detected, denying access')
                             self.clear()
@@ -310,7 +327,8 @@ class LoginHandler(BaseHandler):
                 # Server is offline
                 if Dict['password'] == '':
                     Log.Info(
-                        'First local login, so we need to set the local password')
+                        'First local login, so we need to set' /
+                        ' the local password')
                     Dict['password'] = pwd
                     Dict['pwdset'] = True
                     Dict.Save
@@ -322,7 +340,8 @@ class LoginHandler(BaseHandler):
                     self.redirect('%s/' % BASEURL)
                 elif Dict['password'] != pwd:
                     Log.Critical(
-                        'Either local login failed, or PMS lost connection to plex.tv')
+                        'Either local login failed, or PMS lost' /
+                        'connection to plex.tv')
                     self.clear()
                     self.set_status(401)
 
@@ -409,12 +428,12 @@ handlers = [(r"%s/login" % BASEURL, LoginHandler),
             (r"%s/uas/Resources.*$" % BASEURL, imageHandler),
             # Grap translation.js from datastore
             (r"%s/static/_shared/translations.js" % BASEURL, translateHandler),
-            (r'%s/' % BASEURL, idxHandler),																# Index
-            (r'%s' % BASEURL, idxHandler),																# Index
-            (r'%s/index.html' % BASEURL, idxHandler),													# Index
-            (r'%s/api/v3.*$' % BASEURL, apiv3.apiv3),													# API V3
+            (r'%s/' % BASEURL, idxHandler),
+            (r'%s' % BASEURL, idxHandler),
+            (r'%s/index.html' % BASEURL, idxHandler),
+            (r'%s/api/v3.*$' % BASEURL, apiv3.apiv3),
             (r'%s/getTranslate.*$' %
-             BASEURL, getTranslationHandler),													        # getTranslation
+             BASEURL, getTranslationHandler),
             (r'%s/(.*)' % BASEURL, MyStaticFileHandler,
              {'path': getActualHTTPPath()})					# Static files
             ]
@@ -428,7 +447,7 @@ if Prefs['Force_SSL']:
                     # Grap images from Data framework
                     (r"%s/uas/Resources.*$" % BASEURL, imageHandler),
                     (r'%s/getTranslate.*$' %
-                     BASEURL, getTranslationHandler),													 # getTranslation
+                     BASEURL, getTranslationHandler),
                     # Grap translation.js from datastore
                     (r"%s/static/_shared/translations.js" %
                      BASEURL, translateHandler),
@@ -439,12 +458,10 @@ else:
 
 httpsHandlers = handlers
 
-#********* Tornado itself *******************
 
-''' Start the actual instance of tornado '''
-
-
+# ********* Tornado itself *******************
 def start_tornado():
+    ''' Start the actual instance of tornado '''
     myCookie = Hash.MD5(Dict['SharedSecret'] + NAME)
     login_url = BASEURL + '/login'
     settings = {"cookie_secret": "__" + myCookie + "__",
@@ -462,7 +479,12 @@ def start_tornado():
         Log.Info('Certificate key file is %s' % KEYFile)
         http_serverTLS = HTTPServer(applicationTLS,
                                     ssl_options={
-                                        "certfile": os.path.join(Core.bundle_path, 'Contents', 'Code', 'Certificate', CRTFile),
+                                        "certfile": os.path.join(
+                                            Core.bundle_path,
+                                            'Contents',
+                                            'Code',
+                                            'Certificate',
+                                            CRTFile),
                                         "keyfile": KEYFile})
         # Set web server port to the setting in the channel prefs
         port = int(Prefs['WEB_Port_http'])

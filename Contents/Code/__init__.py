@@ -42,22 +42,6 @@ def L(string):
         pass
 
 
-def L1(string):
-    try:
-        # Missing X-Plex-Language?
-        if 'X-Plex-Language' not in Request.Headers:
-            Request.Headers[
-                'X-Plex-Language'] = Request.Headers[
-                    'Accept-Language']
-        # Grap string to return
-        local_string = Locale.LocalString(string)
-        # Decode it, since we need it to be XML compliant
-        return str(local_string).decode()
-    except Exception, e:
-        Log.Critical('Exception in L was %s' % str(e))
-        pass
-
-
 def Start():
     '''
     This is the startup call of the plugin
@@ -65,7 +49,6 @@ def Start():
 
     # Set Plugin UI to the language the user wants
     Locale.DefaultLocale = UILANGUAGE
-
     global SECRETKEY
     runningLocale = locale.getdefaultlocale()
     strLog = ''.join((
@@ -112,16 +95,11 @@ def Start():
     startWeb(SECRETKEY)
 
 
-#############################################################################
-# Main function
-#############################################################################
-''' Main menu '''
-
-
 @handler(PREFIX, NAME, ICON)
 @route(PREFIX + '/MainMenu')
 def MainMenu():
-    Log.Debug("**********  Starting MainMenu  **********")    
+    ''' Main menu '''
+    Log.Debug("**********  Starting MainMenu  **********")
     message = L("You need to type the URL in a new browser tab")
     title = L(
         "To access this channel, type the url's below to a new browser tab")
@@ -155,23 +133,15 @@ def MainMenu():
     return oc
 
 
-##############################################################################
-# Generate secret key
-##############################################################################
-''' This will generate the secret key, used to access the framework '''
-
-
 @route(PREFIX + '/genSecretKeyAsStr')
 def genSecretKeyAsStr():
+    ''' This will generate the secret key, used to access the framework '''
     return str(uuid.uuid4())
-
-##############################################################################
-# ValidatePrefs
-##############################################################################
 
 
 @route(PREFIX + '/ValidatePrefs')
 def ValidatePrefs():
+    ''' Runs everytime prefs are updated '''
     '''
     HTTP.Request(
         'http://127.0.0.1:32400/:/plugins/com.plexapp.plugins.WebTool/restart',
@@ -179,20 +149,10 @@ def ValidatePrefs():
     '''
     Restart()
 
-##############################################################################
-# Restart
-##############################################################################
-
 
 @route(PREFIX + '/Restart')
 def Restart():
+    ''' Restart WebTools'''
     time.sleep(3)
     startWeb(SECRETKEY)
     return
-
-
-@route(PREFIX + '/GetCurLang')
-def GetCurLang():
-    ''' This will return the current language code '''
-
-    return 'da'

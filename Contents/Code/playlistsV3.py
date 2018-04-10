@@ -575,7 +575,9 @@ class playlistsV3(object):
                                     method="PUT")
                 elif userto.upper() == '-2':
                     Log.Info('Copy to all users')
+                    print 'Ged 1', users
                     for user in users:
+                        print 'Ged2 user', user
                         try:
                             # TODO Change to native framework call, when
                             # Plex allows token in header
@@ -973,7 +975,7 @@ class playlistsV3(object):
 
     @classmethod
     def getFunction(self, metode, req):
-        """Get the relevant function and call it with optinal params"""
+        """Get the relevant function and call it with params"""
         self.init()
         function, params = misc.getFunction(FUNCTIONS, metode, req)
         if function is None:

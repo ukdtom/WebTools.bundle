@@ -244,7 +244,7 @@ class wtV3(object):
                 for line in translationLines:
                     # Got the relevant language?
                     if line.lstrip().startswith(
-                                    "gettextCatalog.setStrings('" + lang + "',"):
+                            "gettextCatalog.setStrings('" + lang + "',"):
                         transLine = line
                         break
                 if transLine:
@@ -341,7 +341,13 @@ class wtV3(object):
                         if line.lstrip().startswith(
                                 "gettextCatalog.setStrings('" + lang + "',"):
                             start = line.split(',', 1)[0]
-                            translatedStr = translatedStr + '\n' + start + ',' + translated + ');'
+                            translatedStr = ''.join((
+                                translatedStr,
+                                '\n',
+                                start,
+                                ',',
+                                translated,
+                                ');'))
                             bFound = True
                         else:
                             if translatedStr == '':
@@ -350,8 +356,14 @@ class wtV3(object):
                                 translatedStr = translatedStr + '\n' + line
                     # New not yet seen language?
                     if not bFound:
-                        translatedStr = translatedStr[:-23] + "    gettextCatalog.setStrings('" + lang + "'," + translated + ');\n' + translatedStr[len(
-                            translatedStr) - 23:]
+                        translatedStr = ''.join((
+                            translatedStr[:-23],
+                            "    gettextCatalog.setStrings('",
+                            lang,
+                            "',",
+                            translated,
+                            ');\n',
+                            translatedStr[len(translatedStr) - 23:]))
                     # Save the updated translation file
                     Data.Save('translations.js', translatedStr)
                     # Update Plugin translation files as well
