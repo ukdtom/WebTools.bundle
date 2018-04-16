@@ -48,7 +48,9 @@ def Start():
     '''
 
     # Set Plugin UI to the language the user wants
+    # Note that title of prefs dialog is controlled by PMS :(
     Locale.DefaultLocale = UILANGUAGE
+
     global SECRETKEY
     runningLocale = locale.getdefaultlocale()
     strLog = ''.join((
