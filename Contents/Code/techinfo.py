@@ -18,6 +18,8 @@ import json
 from wtV3 import wtV3
 from misc import misc
 from consts import LOG_DIR
+from pwd import getpwuid
+from grp import getgrgid
 
 
 GET = ['GETINFO']
@@ -110,6 +112,18 @@ class techinfo(object):
             try:
                 Log.Info('USER: %s' % os.environ['USER'])
                 techInfo['User'] = os.environ['USER']
+            except:
+                pass
+            try:
+                dirUsr = getpwuid(os.stat(Core.bundle_path).st_uid).pw_name
+                Log.Info('User BundleDir: %s' % dirUsr)
+                techInfo['WebTools directory owner'] = dirUsr
+            except:
+                pass
+            try:
+                dirGroup = getgrgid(os.stat(Core.bundle_path).st_gid).gr_name
+                Log.Info('Group BundleDir: %s' % dirGroup)
+                techInfo['WebTools directory group'] = dirGroup
             except:
                 pass
             try:
