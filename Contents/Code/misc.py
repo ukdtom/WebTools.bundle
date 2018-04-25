@@ -155,11 +155,11 @@ class misc(object):
         print 'Ged misc.chunks 3', retList
         return retList
 
-    # #######################################################################
-    # This function will return a filtered json, Non case sensitive
-    #  based on a url params filter
-    # #######################################################################
     def filterJson(self, origen, filter):
+        '''
+        This function will return a filtered json, Non case sensitive
+        based on a url params filter
+        '''
         # Remove start of filter string
         filter = filter[7:]
         # Split into filters
