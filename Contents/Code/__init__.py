@@ -31,6 +31,19 @@ SECRETKEY = ''
 # and altered a bit to make it work for WebTools
 
 
+def logDirInfo():
+    '''
+    This will log info about
+    the owner/group of bundle dir
+    '''
+    import os
+    from pwd import getpwuid
+    from grp import getgrgid
+    Log.Info('*** User/Group File Info ***')
+    Log.Info('User: %s' % getpwuid(os.stat(Core.bundle_path).st_uid).pw_name)
+    Log.Info('Group: %s' % getgrgid(os.stat(Core.bundle_path).st_gid).gr_name)
+
+
 def L(string):
     try:
         # Grap string to return
@@ -46,7 +59,6 @@ def Start():
     '''
     This is the startup call of the plugin
     '''
-
     # Set Plugin UI to the language the user wants
     # Note that title of prefs dialog is controlled by PMS :(
     Locale.DefaultLocale = UILANGUAGE
@@ -61,6 +73,7 @@ def Start():
         ' and file system encoding is %s' % str(sys.getfilesystemencoding()),
         ' **********'
     ))
+    logDirInfo()
     if DEBUGMODE:
         try:
             print strLog
