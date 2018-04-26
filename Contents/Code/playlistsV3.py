@@ -496,7 +496,7 @@ class playlistsV3(object):
             else:
                 userToken = None
             # Get the playlist
-            jsonItems = getPlayListAsJSON(userToken, key)
+            jsonItems = getPlayListAsJSON(userToken, key, copyAsSmart=True)
             playlistTitle = jsonItems['playlistTitle']
             playlistType = jsonItems['playlistType']
             # Now split items into smaller chunks, defined by MEDIASTEPS
@@ -1329,6 +1329,7 @@ def getPlayListAsJSON(userToken, key, copyAsSmart=False):
     UserToken: None if Owner, else token
     key: key of playlist
     """
+    print 'Ged789 getPlayListAsJSON triggered'
     # Start by getting initial info
     url = url = misc.GetLoopBack() + '/playlists/' + key
     initialInfo = getXMLElement(userToken, url).xpath('//Playlist')[0]
@@ -1336,52 +1337,61 @@ def getPlayListAsJSON(userToken, key, copyAsSmart=False):
     playlistTitle = initialInfo.get('title')
     playlistSmart = (initialInfo.get('smart') == 1)
     content = initialInfo.get('content')
-    # Prepare the url
-    url = misc.GetLoopBack() + '/playlists/' + key + '/items?' + EXCLUDE
-    # Temp Storage
-    jsonItemsTmp = {}
-    # Where to start fetching from
-    start = 0
-    while True:
-        url += ''.join((
-            '&X-Plex-Container-Start=',
-            str(start),
-            '&X-Plex-Container-Size=',
-            str(MEDIASTEPS)))
-        print 'Ged1', url
-
-        grab = getXMLElement(userToken, url)
-
-        print 'Ged2 size', grab.get('size')
-
-        ROOTNODE = ROOTNODES[playlistType]
-        if grab.get('size') == '0':
-            # Reached the end
-            break
-        else:
-            start += MEDIASTEPS
-        for item in grab.xpath('//' + ROOTNODE):
-            ratingKey = int(item.get('ratingKey'))
-            librarySectionID = int(item.get('librarySectionID'))
-            if librarySectionID in jsonItemsTmp:
-                jsonItemsTmp[librarySectionID].append(ratingKey)
-            else:
-                jsonItemsTmp[librarySectionID] = [ratingKey]
-    # Now change librarySectionID into UUID
-    jsonItems = {}
     playlist = {}
-    for item in jsonItemsTmp:
-        jsonItems[pmsV3.pmsV3().GETSECTIONKEYUUID(item)] = jsonItemsTmp[item]
     # Add type, title and if smart
     playlist['playlistType'] = playlistType
     playlist['playlistTitle'] = playlistTitle
     playlist['playlistSmart'] = playlistSmart
-    playlist['items'] = jsonItems
     playlist['content'] = content
-    # Now return the result
-    Log.Debug('getPlayListAsJSON returning a playlist as:')
-    Log.Debug(json.dumps(playlist))
-    return playlist
+    print 'Ged test', playlistSmart, copyAsSmart
+    if (playlistSmart and not copyAsSmart):
+        print 'Ged 55444 return as SmartList only'
+        # Now return the result
+        Log.Debug('getPlayListAsJSON returning a playlist as:')
+        Log.Debug(json.dumps(playlist))
+        return playlist
+    else:
+        # Prepare the url
+        url = misc.GetLoopBack() + '/playlists/' + key + '/items?' + EXCLUDE
+        # Temp Storage
+        jsonItemsTmp = {}
+        # Where to start fetching from
+        start = 0
+        while True:
+            url += ''.join((
+                '&X-Plex-Container-Start=',
+                str(start),
+                '&X-Plex-Container-Size=',
+                str(MEDIASTEPS)))
+            print 'Ged1', url
+
+            grab = getXMLElement(userToken, url)
+
+            print 'Ged2 size', grab.get('size')
+
+            ROOTNODE = ROOTNODES[playlistType]
+            if grab.get('size') == '0':
+                # Reached the end
+                break
+            else:
+                start += MEDIASTEPS
+            for item in grab.xpath('//' + ROOTNODE):
+                ratingKey = int(item.get('ratingKey'))
+                librarySectionID = int(item.get('librarySectionID'))
+                if librarySectionID in jsonItemsTmp:
+                    jsonItemsTmp[librarySectionID].append(ratingKey)
+                else:
+                    jsonItemsTmp[librarySectionID] = [ratingKey]
+        # Now change librarySectionID into UUID
+        jsonItems = {}
+        for item in jsonItemsTmp:
+            jsonItems[
+                pmsV3.pmsV3().GETSECTIONKEYUUID(item)] = jsonItemsTmp[item]
+        playlist['items'] = jsonItems
+        # Now return the result
+        Log.Debug('getPlayListAsJSON returning a playlist as:')
+        Log.Debug(json.dumps(playlist))
+        return playlist
 
 
 def sendHTTPURL(url, token, method):
