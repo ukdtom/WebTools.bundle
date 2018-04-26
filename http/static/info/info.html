@@ -8,7 +8,12 @@
         </tr>
         <tr ng-repeat="info in infoModel.informations track by info.key">
             <td>{[{info.key}]}</td>
-            <td>{[{info.value}]}</td>
+            <td>
+                <span ng-if="infoModel.showPlexToken || info.key !== 'PLEXTOKEN'">{[{info.value}]}</span>
+                <span ng-if="info.key === 'PLEXTOKEN'"
+                      ng-click="infoModel.showPlexToken = !infoModel.showPlexToken" style="cursor:pointer;float:right;border:1px black solid;padding:0 5px;"
+                      class="textBold600"><span ng-if="!infoModel.showPlexToken" translate>SHOW</span><span ng-if="infoModel.showPlexToken" translate>HIDE</span></span>
+            </td>
         </tr>
     </table>
 </div>
