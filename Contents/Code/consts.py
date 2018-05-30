@@ -57,7 +57,8 @@ V3MODULES = {
     'LANGUAGE': 'languageV3', 'SETTINGS': 'settingsV3',
     'GIT': 'gitV3', 'FINDMEDIA': 'findMediaV3',
     'JSONEXPORTER': 'jsonExporterV3', 'PLAYLISTS': 'playlistsV3',
-    'TECHINFO': 'techinfo', 'VIEWSTATE': 'viewstate'}
+    'TECHINFO': 'techinfo', 'VIEWSTATE': 'viewstate',
+    'CHANGEAGENT': 'changeagent'}
 UILANGUAGE = 'en'
 UILANGUAGEDEBUG = False
 

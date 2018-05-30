@@ -24,6 +24,7 @@ import jsonExporterV3
 import playlistsV3
 import techinfo
 import viewstate
+import changeagent
 
 
 class BaseHandler(RequestHandler):
@@ -112,6 +113,10 @@ class apiv3(BaseHandler):
             elif self.module == 'VIEWSTATE':
                 myClass = getattr(
                     viewstate,
+                    V3MODULES[self.module])
+            elif self.module == 'CHANGEAGENT':
+                myClass = getattr(
+                    changeagent,
                     V3MODULES[self.module])
             else:
                 Log.Exception(
