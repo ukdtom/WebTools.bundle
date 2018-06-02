@@ -536,6 +536,7 @@ class findMediaV3(object):
                 Log.Exception('Exception happend in scanMedias: ' + str(e))
                 statusMsg = wtV3().GETTRANSLATE(
                     self, None, Internal=True, String='Idle')
+
         Log.Debug('scanSection started')
         try:
             del mediasFromDB[:]										# Files from the database
@@ -596,16 +597,7 @@ class findMediaV3(object):
         """Get supported Section list"""
         Log.Debug('getSectionsList requested')
         try:
-            rawSections = XML.ElementFromURL(
-                misc.GetLoopBack() + '/library/sections')
-            Sections = []
-            for directory in rawSections:
-                if directory.get('type') in SUPPORTEDSECTIONS:
-                    Section = {
-                        'key': directory.get('key'),
-                        'title': directory.get('title'),
-                        'type': directory.get('type')}
-                    Sections.append(Section)
+            Sections = misc.getSectionList(SUPPORTEDSECTIONS)
             req.clear()
             req.set_status(200)
             req.set_header('Content-Type', 'application/json; charset=utf-8')
@@ -630,7 +622,7 @@ class findMediaV3(object):
                 req.set_status(200)
                 req.set_header(
                     'Content-Type', 'application/json; charset=utf-8')
-                req.finish(retMsg)
+                req.finish(json.dumps(retMsg))
         elif runningState == 99:
             if bAbort:
                 req.set_status(204)

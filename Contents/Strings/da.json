@@ -2,8 +2,8 @@
     "Select to force https": "Vælg for kun at bruge https", 
     "To access this channel, type the url's below to a new browser tab": "For at benytte dette plugin, skal du skrive en af nedenstående urls i en NY browser tab", 
     "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": "Base url hvis bag en proxy server. Hvis ikke, så bare blank. (Base URL kan f.eks være: /WebTools)", 
-    "Name of Certificate key file in Contents/Code/Certificate directory": "Navn på Certifikat key fil i Contents/Code/Certificate directory", 
-    "Name of Certificate crt file in Contents/Code/Certificate directory": "Navn på certifikat crt fil i Contents/Code/Certificate directory", 
+    "Name of Certificate key file in Contents/Code/Certificate directory": "Navn på Certifikat key fil i Contents/Code/Certificate biblioteket", 
+    "Name of Certificate crt file in Contents/Code/Certificate directory": "Navn på certifikat crt fil i Contents/Code/Certificate biblioteket", 
     "Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Indtast den port som WebTools skal benytte for http. Brug IKKE  [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]", 
     "Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Indtast den port som WebTools skal benytte for https. Brug IKKE [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]"
 }

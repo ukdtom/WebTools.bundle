@@ -299,6 +299,21 @@ ISO639_3 = {
         "NoLanguage": "unk"
     }
 
+EXCLUDEELEMENTS = ''.join((
+                        'Actor,',
+                        'Collection,',
+                        'Country,',
+                        'Director,',
+                        'Genre,',
+                        'Label,',
+                        'Mood,',
+                        'Producer,',
+                        'Role,',
+                        'Similar,',
+                        'Writer'))
+
+EXCLUDEFIELDS = 'summary,tagline'
+
 
 class consts(object):
     init_already = False							# Make sure part of init only run once

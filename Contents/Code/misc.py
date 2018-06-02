@@ -184,5 +184,22 @@ class misc(object):
             return
         return jsonOutput
 
+    def getSectionList(self, SuportedTypes):
+        '''
+        Returns a list of sections, filtered
+        Param: SupportedTypes
+        '''
+        rawSections = XML.ElementFromURL(
+                self.GetLoopBack() + '/library/sections')
+        Sections = []
+        for directory in rawSections:
+            if directory.get('type') in SuportedTypes:
+                Section = {
+                    'key': directory.get('key'),
+                    'title': directory.get('title'),
+                    'type': directory.get('type')}
+                Sections.append(Section)
+        return Sections
+
 
 misc = misc()
