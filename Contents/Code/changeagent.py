@@ -6,6 +6,9 @@
 #
 # Author: dane22, a Plex Community member
 #
+# Credits: Full credits goes to Chris Allen for getting the idea, and
+# providing the initial code
+#
 ###############################################################################
 
 import json
