@@ -23,15 +23,13 @@ DELETE = []
 
 # Consts used here
 # Supported sections
-SUPPORTEDSECTIONS = ['movie']
+SUPPORTEDSECTIONS = ['movie', 'show']
 # Internal tracker of where we are
 runningState = 0
 # Flag to set if user wants to cancel
 bAbort = False
 # Amount of chuncks to grab
 MediaChuncks = 40
-# Medias updated
-MediasUpdated = []
 # Response to getStatus
 statusMsg = wtV3().GETTRANSLATE(None, None, Internal=True, String='idle')
 # Minimum score
@@ -267,7 +265,6 @@ def scanMovieDb(sectionNumber=0, agent=None):
     global AmountOfMediasInDatabase
     global statusMsg
     global runningState
-    global MediasUpdated
     try:
         Log.Debug(
             'Starting scanMovieDb for section %s' % (sectionNumber))
@@ -312,7 +309,6 @@ def scanMovieDb(sectionNumber=0, agent=None):
                 guid = XML.ElementFromURL(
                     videoUrl).xpath('//Video')[0].get('guid')
                 if agent not in guid:
-                    MediasUpdated.append(video.get('title'))
                     Log.Info('Need to update media: %s' % video.get('title'))
                     updateMediaAgent(
                         video.get('ratingKey'),
@@ -352,6 +348,7 @@ def scanMedias(sectionNumber, sectionType, req, agent=None):
             scanMovieDb(sectionNumber=sectionNumber, agent=agent)
         elif sectionType == 'show':
             print 'Ged show'
+            scanShowDB(sectionNumber=sectionNumber, agent=agent)
             # self.scanShowDB(sectionNumber=sectionNumber, agent=agent)
         else:
             req.clear()
@@ -413,3 +410,85 @@ def updateMediaAgent(key, agent, year, title):
                         break
     if not result:
         ChangedErr.append(title)
+
+
+def scanShowDB(sectionNumber=0, agent=None):
+    """Scan Episodes from the database"""
+    global statusMsg
+    global runningState
+    try:
+        Log.Debug(
+            'Starting scanShowDB for section %s' % (
+                sectionNumber))
+        runningState = -1
+        statusMsg = wtV3().GETTRANSLATE(
+            None, Internal=True,
+            String='Starting to scan database for section %s')\
+            % (sectionNumber)
+        # Start by getting the totals of this section
+        urlSize = ''.join((
+            misc.GetLoopBack(),
+            '/library/sections/',
+            sectionNumber,
+            '/all?X-Plex-Container-Start=1',
+            '&X-Plex-Container-Size=0',
+            '&type=2'
+        ))
+        totalSize = XML.ElementFromURL(urlSize).get('totalSize')
+        AmountOfMediasInDatabase = totalSize
+        Log.Debug('Total size of medias are %s' % (totalSize))
+        iShow = 0
+        iCShow = 0
+        statusShows = wtV3().GETTRANSLATE(
+            None, Internal=True,
+            String='Scanning database episodes %s of %s :')\
+            % (iShow, totalSize)
+        statusMsg = statusShows
+        # So let's walk the library
+        while True:
+            # Grap shows
+            urlShows = ''.join((
+                misc.GetLoopBack(),
+                '/library/sections/',
+                sectionNumber,
+                '/all?type=2&excludeElements=',
+                EXCLUDEELEMENTS,
+                '&excludefields=',
+                EXCLUDEFIELDS,
+                '&X-Plex-Container-Start=',
+                str(iCShow),
+                '&X-Plex-Container-Size=',
+                str(MediaChuncks)
+            ))
+            shows = XML.ElementFromURL(urlShows).xpath('//Directory')
+            # Grap individual episodes
+            for show in shows:
+                key = show.get('ratingKey')
+                title = show.get('title')
+                year = show.get('year')
+                statusMsg = 'investigating show: %s' % (
+                    title)
+                print 'Ged Show', statusMsg
+                updateMediaAgent(key, agent, year, title)
+
+            iCShow += MediaChuncks
+            if len(episodes) == 0:
+                strMsg = (
+                    'Scanning database: %s : Done'
+                    % (str(totalSize)))
+                statusMsg = wtV3().GETTRANSLATE(
+                    None, Internal=True,
+                    String=strMsg)
+                Log.Debug('***** Done scanning the database *****')
+                runningState = 1
+                break
+        return
+    except ValueError:
+        statusMsg = wtV3().GETTRANSLATE(
+            None, Internal=True,
+            String='Idle')
+        runningState = 99
+        Log.Info('Aborted in ScanShowDB')
+    except Exception, e:
+        Log.Exception('Fatal error in scanShowDB: ' + str(e))
+        runningState = 99
