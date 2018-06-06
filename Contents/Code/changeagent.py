@@ -33,7 +33,7 @@ MediaChuncks = 40
 # Response to getStatus
 statusMsg = wtV3().GETTRANSLATE(None, None, Internal=True, String='idle')
 # Minimum score
-MinScore = 97
+MinScore = 95
 # Results
 ChangedOK = []
 ChangedErr = []
@@ -92,6 +92,7 @@ class changeagent(object):
                 req.clear()
                 req.set_status(412)
                 req.finish('Missing key of section')
+            bDeep = ('deep' in arguments)
         else:
             Log.Critical('Missing Arguments')
             req.clear()
@@ -101,7 +102,7 @@ class changeagent(object):
         Agent = self.getPrimaryAgent(key)
         ChangedOK = []
         ChangedErr = []
-        self.scanItems(req, key, Agent)
+        self.scanItems(req, key, Agent, Deep=bDeep)
 
     @classmethod
     def GETSECTIONSLIST(self, req, *args):
@@ -148,7 +149,8 @@ class changeagent(object):
 # ################## Internal functions #############################
 
     @classmethod
-    def scanItems(self, req, sectionNumber, Agent):
+    def scanItems(self, req, sectionNumber, Agent, Deep=False):
+        print 'Ged Deep', Deep
         """Scan db. Must run as a thread"""
         try:
             # Let's find out the info of section here
@@ -382,9 +384,12 @@ def updateMediaAgent(key, agent, year, title):
     ))
     result = False
     SearchResults = XML.ElementFromURL(url).xpath('//SearchResult')
+    Log.Info('Found %s possibillities for %s' % (len(SearchResults), title))
     for SearchResult in SearchResults:
         if year == SearchResult.get('year'):
             if title == SearchResult.get('name'):
+                # TODO If multiple results, grap the one with highest score
+                print 'GED KIG HER TODO'
                 if int(SearchResult.get('score')) >= MinScore:
                     updateurl = ''.join((
                         misc.GetLoopBack(),
@@ -405,10 +410,13 @@ def updateMediaAgent(key, agent, year, title):
                         result = True
                         break
                     except Exception, e:
+                        Log.Exception(
+                            'Exception happened in updateMediaAgent was %s' % str(e))
                         ChangedErr.append(unicode(title, "utf-8"))
                         result = False
                         break
     if not result:
+        Log.Info('Could not find any match for: %s', title)
         ChangedErr.append(title)
 
 
@@ -453,26 +461,43 @@ def scanShowDB(sectionNumber=0, agent=None):
                 sectionNumber,
                 '/all?type=2&excludeElements=',
                 EXCLUDEELEMENTS,
-                '&excludefields=',
+                '&excludeFields=',
                 EXCLUDEFIELDS,
                 '&X-Plex-Container-Start=',
                 str(iCShow),
                 '&X-Plex-Container-Size=',
                 str(MediaChuncks)
-            ))
-            shows = XML.ElementFromURL(urlShows).xpath('//Directory')
-            # Grap individual episodes
+            ))            
+            shows = XML.ElementFromURL(urlShows).xpath('//Directory')            
+            # Grap individual shows        
             for show in shows:
-                key = show.get('ratingKey')
-                title = show.get('title')
-                year = show.get('year')
+                urlShow = ''.join((
+                    misc.GetLoopBack(),
+                    '/library/metadata/',
+                    show.get('ratingKey'),
+                    '?excludeElements=',
+                    EXCLUDEELEMENTS,
+                    '&excludeFields=',
+                    EXCLUDEFIELDS
+                ))
+                currentShow = XML.ElementFromURL(
+                    urlShow).xpath('//Directory')[0]
+                title = currentShow.get('title')
+                guid = currentShow.get('guid')
+                year = currentShow.get('year')
                 statusMsg = 'investigating show: %s' % (
-                    title)
-                print 'Ged Show', statusMsg
-                updateMediaAgent(key, agent, year, title)
-
+                    title)                
+                Log.Info(statusMsg)
+                if agent not in guid:
+                    statusMsg = 'Updating show: %s' % (
+                        title)
+                    Log.Info(statusMsg)
+                    print 'Ged updating', title
+                    key = show.get('ratingKey')
+                    year = show.get('year')
+                    updateMediaAgent(key, agent, year, title)
             iCShow += MediaChuncks
-            if len(episodes) == 0:
+            if len(shows) == 0:
                 strMsg = (
                     'Scanning database: %s : Done'
                     % (str(totalSize)))
