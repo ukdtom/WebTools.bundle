@@ -23,19 +23,17 @@ DELETE = []
 
 # Consts used here
 # Supported sections
-SUPPORTEDSECTIONS = ['movie']
+SUPPORTEDSECTIONS = ['movie', 'show']
 # Internal tracker of where we are
 runningState = 0
 # Flag to set if user wants to cancel
 bAbort = False
 # Amount of chuncks to grab
 MediaChuncks = 40
-# Medias updated
-MediasUpdated = []
 # Response to getStatus
 statusMsg = wtV3().GETTRANSLATE(None, None, Internal=True, String='idle')
 # Minimum score
-MinScore = 97
+MinScore = 95
 # Results
 ChangedOK = []
 ChangedErr = []
@@ -94,6 +92,7 @@ class changeagent(object):
                 req.clear()
                 req.set_status(412)
                 req.finish('Missing key of section')
+            bDeep = ('deep' in arguments)
         else:
             Log.Critical('Missing Arguments')
             req.clear()
@@ -103,7 +102,7 @@ class changeagent(object):
         Agent = self.getPrimaryAgent(key)
         ChangedOK = []
         ChangedErr = []
-        self.scanItems(req, key, Agent)
+        self.scanItems(req, key, Agent, Deep=bDeep)
 
     @classmethod
     def GETSECTIONSLIST(self, req, *args):
@@ -150,7 +149,8 @@ class changeagent(object):
 # ################## Internal functions #############################
 
     @classmethod
-    def scanItems(self, req, sectionNumber, Agent):
+    def scanItems(self, req, sectionNumber, Agent, Deep=False):
+        print 'Ged Deep', Deep
         """Scan db. Must run as a thread"""
         try:
             # Let's find out the info of section here
@@ -267,7 +267,6 @@ def scanMovieDb(sectionNumber=0, agent=None):
     global AmountOfMediasInDatabase
     global statusMsg
     global runningState
-    global MediasUpdated
     try:
         Log.Debug(
             'Starting scanMovieDb for section %s' % (sectionNumber))
@@ -312,7 +311,6 @@ def scanMovieDb(sectionNumber=0, agent=None):
                 guid = XML.ElementFromURL(
                     videoUrl).xpath('//Video')[0].get('guid')
                 if agent not in guid:
-                    MediasUpdated.append(video.get('title'))
                     Log.Info('Need to update media: %s' % video.get('title'))
                     updateMediaAgent(
                         video.get('ratingKey'),
@@ -352,6 +350,7 @@ def scanMedias(sectionNumber, sectionType, req, agent=None):
             scanMovieDb(sectionNumber=sectionNumber, agent=agent)
         elif sectionType == 'show':
             print 'Ged show'
+            scanShowDB(sectionNumber=sectionNumber, agent=agent)
             # self.scanShowDB(sectionNumber=sectionNumber, agent=agent)
         else:
             req.clear()
@@ -385,9 +384,12 @@ def updateMediaAgent(key, agent, year, title):
     ))
     result = False
     SearchResults = XML.ElementFromURL(url).xpath('//SearchResult')
+    Log.Info('Found %s possibillities for %s' % (len(SearchResults), title))
     for SearchResult in SearchResults:
         if year == SearchResult.get('year'):
             if title == SearchResult.get('name'):
+                # TODO If multiple results, grap the one with highest score
+                print 'GED KIG HER TODO'
                 if int(SearchResult.get('score')) >= MinScore:
                     updateurl = ''.join((
                         misc.GetLoopBack(),
@@ -408,8 +410,110 @@ def updateMediaAgent(key, agent, year, title):
                         result = True
                         break
                     except Exception, e:
+                        Log.Exception(
+                            'Exception happened in updateMediaAgent was %s' % str(e))
                         ChangedErr.append(unicode(title, "utf-8"))
                         result = False
                         break
     if not result:
+        Log.Info('Could not find any match for: %s', title)
         ChangedErr.append(title)
+
+
+def scanShowDB(sectionNumber=0, agent=None):
+    """Scan Episodes from the database"""
+    global statusMsg
+    global runningState
+    try:
+        Log.Debug(
+            'Starting scanShowDB for section %s' % (
+                sectionNumber))
+        runningState = -1
+        statusMsg = wtV3().GETTRANSLATE(
+            None, Internal=True,
+            String='Starting to scan database for section %s')\
+            % (sectionNumber)
+        # Start by getting the totals of this section
+        urlSize = ''.join((
+            misc.GetLoopBack(),
+            '/library/sections/',
+            sectionNumber,
+            '/all?X-Plex-Container-Start=1',
+            '&X-Plex-Container-Size=0',
+            '&type=2'
+        ))
+        totalSize = XML.ElementFromURL(urlSize).get('totalSize')
+        AmountOfMediasInDatabase = totalSize
+        Log.Debug('Total size of medias are %s' % (totalSize))
+        iShow = 0
+        iCShow = 0
+        statusShows = wtV3().GETTRANSLATE(
+            None, Internal=True,
+            String='Scanning database episodes %s of %s :')\
+            % (iShow, totalSize)
+        statusMsg = statusShows
+        # So let's walk the library
+        while True:
+            # Grap shows
+            urlShows = ''.join((
+                misc.GetLoopBack(),
+                '/library/sections/',
+                sectionNumber,
+                '/all?type=2&excludeElements=',
+                EXCLUDEELEMENTS,
+                '&excludeFields=',
+                EXCLUDEFIELDS,
+                '&X-Plex-Container-Start=',
+                str(iCShow),
+                '&X-Plex-Container-Size=',
+                str(MediaChuncks)
+            ))            
+            shows = XML.ElementFromURL(urlShows).xpath('//Directory')            
+            # Grap individual shows        
+            for show in shows:
+                urlShow = ''.join((
+                    misc.GetLoopBack(),
+                    '/library/metadata/',
+                    show.get('ratingKey'),
+                    '?excludeElements=',
+                    EXCLUDEELEMENTS,
+                    '&excludeFields=',
+                    EXCLUDEFIELDS
+                ))
+                currentShow = XML.ElementFromURL(
+                    urlShow).xpath('//Directory')[0]
+                title = currentShow.get('title')
+                guid = currentShow.get('guid')
+                year = currentShow.get('year')
+                statusMsg = 'investigating show: %s' % (
+                    title)                
+                Log.Info(statusMsg)
+                if agent not in guid:
+                    statusMsg = 'Updating show: %s' % (
+                        title)
+                    Log.Info(statusMsg)
+                    print 'Ged updating', title
+                    key = show.get('ratingKey')
+                    year = show.get('year')
+                    updateMediaAgent(key, agent, year, title)
+            iCShow += MediaChuncks
+            if len(shows) == 0:
+                strMsg = (
+                    'Scanning database: %s : Done'
+                    % (str(totalSize)))
+                statusMsg = wtV3().GETTRANSLATE(
+                    None, Internal=True,
+                    String=strMsg)
+                Log.Debug('***** Done scanning the database *****')
+                runningState = 1
+                break
+        return
+    except ValueError:
+        statusMsg = wtV3().GETTRANSLATE(
+            None, Internal=True,
+            String='Idle')
+        runningState = 99
+        Log.Info('Aborted in ScanShowDB')
+    except Exception, e:
+        Log.Exception('Fatal error in scanShowDB: ' + str(e))
+        runningState = 99
