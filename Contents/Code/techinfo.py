@@ -210,6 +210,38 @@ class techinfo(object):
                 techInfo['PLEXTOKEN'] = os.environ['PLEXTOKEN']
             except:
                 pass
+            try:
+                Log.Info('PLEX_MEDIA_SERVER_INFO_VENDOR: '
+                         % os.environ['PLEX_MEDIA_SERVER_INFO_VENDOR'])
+                techInfo[
+                    'PLEX_MEDIA_SERVER_INFO_VENDOR'] = os.environ[
+                        'PLEX_MEDIA_SERVER_INFO_VENDOR']
+            except:
+                pass
+            try:
+                Log.Info('PLEX_MEDIA_SERVER_INFO_DEVICE: '
+                         % os.environ['PLEX_MEDIA_SERVER_INFO_DEVICE'])
+                techInfo[
+                    'PLEX_MEDIA_SERVER_INFO_DEVICE'] = os.environ[
+                        'PLEX_MEDIA_SERVER_INFO_DEVICE']
+            except:
+                pass
+            try:
+                Log.Info('PLEX_MEDIA_SERVER_INFO_MODEL: '
+                         % os.environ['PLEX_MEDIA_SERVER_INFO_MODEL'])
+                techInfo[
+                    'PLEX_MEDIA_SERVER_INFO_MODEL'] = os.environ[
+                        'PLEX_MEDIA_SERVER_INFO_MODEL']
+            except:
+                pass
+            try:
+                Log.Info('PLEX_MEDIA_SERVER_INFO_PLATFORM_VERSION: '
+                         % os.environ['PLEX_MEDIA_SERVER_INFO_PLATFORM_VERSION'])
+                techInfo[
+                    'PLEX_MEDIA_SERVER_INFO_PLATFORM_VERSION'] = os.environ[
+                        'PLEX_MEDIA_SERVER_INFO_PLATFORM_VERSION']
+            except:
+                pass
             Log.Info('********************** INFO End ******************')
             techInfo['Log Directory'] = LOG_DIR
             req.clear()

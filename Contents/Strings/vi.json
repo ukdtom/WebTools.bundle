@@ -3,7 +3,7 @@
     "To access this channel, type the url's below to a new browser tab": "To access this channel, open one of the URLs below in a new browser tab or window.", 
     "Base url if behind a Proxy. If not, leave as blank. (Base URL could be like: /WebTools)": "Base URL (if behind a proxy – if not, leave blank).\nEXAMPLE: /WebTools)", 
     "Name of Certificate key file in Contents/Code/Certificate directory": "Name of the certificate key file in Contents/Code/Certificate directory", 
-    "Name of Certificate crt file in Contents/Code/Certificate directory": "Nazwa pliku certyfikatu (crt) w katalogu Zgoda/Kod/Certyfikat", 
+    "Name of Certificate crt file in Contents/Code/Certificate directory": "Name of certificate crt file in Contents/Code/Certificate directory", 
     "Enter the port that this plugin should use for http. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Enter the port number that this plug-in should use for HTTP. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469.", 
-    "Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Podaj numer portu, który ma być używany dla HTTPS przez tą wtyczkę. NIE UŻYWAJ żadnego z podanych portów, które są zarezerwowane dla PLEXa i innych wtyczek: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469."
+    "Enter the port that this plugin should use for https. Do NOT use [1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414, 32469]": "Enter the port number that this plug-in should use for HTTPS. Do NOT use any of the following, which are reserved for Plex and related plugins: 1900, 3005, 5353, 8324, 32400, 32410, 32412, 32413, 32414 or 32469."
 }

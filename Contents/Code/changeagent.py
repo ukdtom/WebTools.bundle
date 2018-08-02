@@ -12,6 +12,7 @@
 ###############################################################################
 
 import json
+import re
 from misc import misc
 from wtV3 import wtV3
 from consts import EXCLUDEELEMENTS, EXCLUDEFIELDS, DEBUGMODE
@@ -92,7 +93,7 @@ class changeagent(object):
                 req.clear()
                 req.set_status(412)
                 req.finish('Missing key of section')
-            bDeep = ('deep' in arguments)
+            bForce = ('force' in arguments)
         else:
             Log.Critical('Missing Arguments')
             req.clear()
@@ -102,7 +103,7 @@ class changeagent(object):
         Agent = self.getPrimaryAgent(key)
         ChangedOK = []
         ChangedErr = []
-        self.scanItems(req, key, Agent, Deep=bDeep)
+        self.scanItems(req, key, Agent, Force=bForce)
 
     @classmethod
     def GETSECTIONSLIST(self, req, *args):
@@ -149,8 +150,8 @@ class changeagent(object):
 # ################## Internal functions #############################
 
     @classmethod
-    def scanItems(self, req, sectionNumber, Agent, Deep=False):
-        print 'Ged Deep', Deep
+    def scanItems(self, req, sectionNumber, Agent, Force=False):
+        print 'Ged Force', Force
         """Scan db. Must run as a thread"""
         try:
             # Let's find out the info of section here
@@ -173,6 +174,7 @@ class changeagent(object):
                     sectionNumber=sectionNumber,
                     sectionType=sectionType,
                     agent=Agent,
+                    Force=Force,
                     req=req)
             else:
                 req.clear()
@@ -341,16 +343,16 @@ def scanMovieDb(sectionNumber=0, agent=None):
         runningState = 99
 
 
-def scanMedias(sectionNumber, sectionType, req, agent=None):
+def scanMedias(sectionNumber, sectionType, req, agent=None, Force=False):
     """Scan db and files. Must run as a thread"""
     global runningState
     global statusMsg
     try:
         if sectionType == 'movie':
-            scanMovieDb(sectionNumber=sectionNumber, agent=agent)
+            scanMovieDb(sectionNumber=sectionNumber, agent=agent, Force=Force)
         elif sectionType == 'show':
             print 'Ged show'
-            scanShowDB(sectionNumber=sectionNumber, agent=agent)
+            scanShowDB(sectionNumber=sectionNumber, agent=agent, Force=Force)
             # self.scanShowDB(sectionNumber=sectionNumber, agent=agent)
         else:
             req.clear()
@@ -382,14 +384,25 @@ def updateMediaAgent(key, agent, year, title):
         agent,
         '&manual=0'
     ))
-    result = False
-    SearchResults = XML.ElementFromURL(url).xpath('//SearchResult')
-    Log.Info('Found %s possibillities for %s' % (len(SearchResults), title))
-    for SearchResult in SearchResults:
+    try:
+        result = False
+        print 'ged 101', url
+        SearchResults = XML.ElementFromURL(url).xpath('//SearchResult')
+        print 'ged 102'
+        Log.Info(
+            'Found %s possibillities for %s' % (len(SearchResults), title))
+        # for SearchResult in SearchResults:
+        SearchResult = SearchResults[0]
+        print 'ged 103'
+        # Check if there's an year in the title, and if so, remove it
+        match = re.match(r'.*([1-2][0-9]{3})', title)
+        if match is not None:
+            # Then it found a match!
+            title = title.replace(match.group(1), '')
+            title = re.sub("\(|\)|\[|\]", "", title).strip()
+        print 'Ged 104'
         if year == SearchResult.get('year'):
             if title == SearchResult.get('name'):
-                # TODO If multiple results, grap the one with highest score
-                print 'GED KIG HER TODO'
                 if int(SearchResult.get('score')) >= MinScore:
                     updateurl = ''.join((
                         misc.GetLoopBack(),
@@ -411,16 +424,21 @@ def updateMediaAgent(key, agent, year, title):
                         break
                     except Exception, e:
                         Log.Exception(
-                            'Exception happened in updateMediaAgent was %s' % str(e))
+                            'Exception happened in \
+                            updateMediaAgent was %s' % str(e))
                         ChangedErr.append(unicode(title, "utf-8"))
                         result = False
-                        break
-    if not result:
-        Log.Info('Could not find any match for: %s', title)
-        ChangedErr.append(title)
+                else:
+                    Log.Info('Updating failed, since a score of %s %' % SearchResult.get('score'))
+                    Log.Info('is below the minimum of %s %' % MinScore)
+        if not result:
+            Log.Info('Could not find any match for: %s', title)
+            ChangedErr.append(title)
+    except Exception, e:
+        Log.Exception('Exception in updateMediaAgent was %s' % str(e))
 
 
-def scanShowDB(sectionNumber=0, agent=None):
+def scanShowDB(sectionNumber=0, agent=None, Force=False):
     """Scan Episodes from the database"""
     global statusMsg
     global runningState
@@ -467,9 +485,9 @@ def scanShowDB(sectionNumber=0, agent=None):
                 str(iCShow),
                 '&X-Plex-Container-Size=',
                 str(MediaChuncks)
-            ))            
-            shows = XML.ElementFromURL(urlShows).xpath('//Directory')            
-            # Grap individual shows        
+            ))
+            shows = XML.ElementFromURL(urlShows).xpath('//Directory')
+            # Grap individual shows
             for show in shows:
                 urlShow = ''.join((
                     misc.GetLoopBack(),
@@ -484,18 +502,30 @@ def scanShowDB(sectionNumber=0, agent=None):
                     urlShow).xpath('//Directory')[0]
                 title = currentShow.get('title')
                 guid = currentShow.get('guid')
-                year = currentShow.get('year')
+                # year = currentShow.get('year')
+                # key = currentShow.get('ratingKey')
                 statusMsg = 'investigating show: %s' % (
-                    title)                
+                    title)
                 Log.Info(statusMsg)
+                key = show.get('ratingKey')
+                year = show.get('year')
+                statusMsg = 'Updating show: %s' % (
+                    title)
                 if agent not in guid:
-                    statusMsg = 'Updating show: %s' % (
-                        title)
                     Log.Info(statusMsg)
                     print 'Ged updating', title
-                    key = show.get('ratingKey')
-                    year = show.get('year')
+                    # key = show.get('ratingKey')
+                    # year = show.get('year')
                     updateMediaAgent(key, agent, year, title)
+                elif Force:
+                    Log.Info(statusMsg)
+                    print 'Ged Key', key
+                    print 'Ged Agent', agent
+                    print 'Ged Year', year
+                    print 'Ged Title', title
+                    updateMediaAgent(key, agent, year, title)
+                else:
+                    Log.Info('Show: %s is okay' % title)
             iCShow += MediaChuncks
             if len(shows) == 0:
                 strMsg = (
