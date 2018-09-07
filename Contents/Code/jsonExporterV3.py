@@ -1,9 +1,16 @@
-######################################################################################################################
-#	json Exporter module for WebTools
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+##################################################################
+# WebTools bundle module for Plex
 #
-#	Author: dane22, a Plex Community member
+# Allows you to extract media info and put it next to the media
 #
-######################################################################################################################
+# Author: dane22, a Plex Community member
+#
+# Support thread: https://forums.plex.tv/t/206843
+#
+####################################################################
+
 
 import os
 import io
@@ -27,8 +34,10 @@ DELETE = []
 
 
 class jsonExporterV3(object):
-    init_already = False							# Make sure init only run once
-    bResultPresent = False						# Do we have a result to present
+    # Make sure init only run once
+    init_already = False
+    # Do we have a result to present
+    bResultPresent = False
 
     # Init of the class
     @classmethod
@@ -41,7 +50,7 @@ class jsonExporterV3(object):
             self.populatePrefs()
             Log.Debug('******* Starting jsonExporter *******')
 
-    #********** Functions below ******************
+    # ********** Functions below ******************
 
     # This is the main call
     @classmethod
@@ -51,7 +60,8 @@ class jsonExporterV3(object):
             url = 'http://127.0.0.1:32400/library/sections/' + section + \
                 '/all?X-Plex-Container-Start=1&X-Plex-Container-Size=0'
             try:
-                return XML.ElementFromURL(url).xpath('//MediaContainer/@viewGroup')[0]
+                return XML.ElementFromURL(url).xpath(
+                    '//MediaContainer/@viewGroup')[0]
             except:
                 return "None"
 
@@ -81,19 +91,25 @@ class jsonExporterV3(object):
         ''' Export the actual .json file, as well as poster and fanart '''
         def makeFiles(ratingKey):
             videoDetails = XML.ElementFromURL(
-                'http://127.0.0.1:32400/library/metadata/' + ratingKey).xpath('//Video')[0]
+                'http://127.0.0.1:32400/library/metadata/' + ratingKey).xpath(
+                    '//Video')[0]
             try:
                 media = {}
                 ''' Now digest the media, and add to the XML '''
                 # Id
-#				try:
-#					media['guid'] = videoDetails.get('guid')
-#				except:
-#					pass
+                '''
+                try:
+                    media['guid'] = videoDetails.get('guid')
+                except:
+                    pass
+                '''
                 media['About This File'] = 'JSON Export Made with WebTools for Plex'
                 # Simple entries
-                elements = ['guid', 'title', 'originalTitle', 'titleSort', 'type', 'summary', 'duration', 'rating', 'ratingImage',
-                            'contentRating', 'studio', 'year', 'tagline', 'originallyAvailableAt', 'audienceRatingImage', 'audienceRating']
+                elements = ['guid', 'title', 'originalTitle', 'titleSort',
+                            'type', 'summary', 'duration', 'rating',
+                            'ratingImage', 'contentRating', 'studio',
+                            'year', 'tagline', 'originallyAvailableAt',
+                            'audienceRatingImage', 'audienceRating']
                 for element in elements:
                     makeSimpleEntry(media, videoDetails, element)
                 arrayElements = ['Genre', 'Collection', 'Director',
@@ -152,12 +168,16 @@ class jsonExporterV3(object):
                     plexJSON = os.path.splitext(filename)[0] + FILEEXT
                     Log.Debug('Name and path to plexJSON file is: ' + plexJSON)
                     try:
-                        with io.open(plexJSON, 'w', encoding='utf-8') as outfile:
+                        with io.open(
+                            plexJSON, 'w', encoding='utf-8') as outfile:
                             outfile.write(
-                                unicode(json.dumps(media, indent=4, sort_keys=True)))
+                                unicode(json.dumps(
+                                    media,
+                                    indent=4,
+                                    sort_keys=True)))
                     except Exception, e:
-                        Log.Debug('Exception happend during saving %s. Exception was: %s' % (
-                            plexJSON, str(e)))
+                        Log.Exception(
+                            'Exception happend during saving %s. Exception was: %s' % (plexJSON, str(e)))
                     # Make poster
                     posterUrl = 'http://127.0.0.1:32400' + \
                         videoDetails.get('thumb')
@@ -207,8 +227,14 @@ class jsonExporterV3(object):
                 statusMsg = 'Starting to scan database for section %s' % (
                     sectionNumber)
                 # Start by getting the totals of this section
-                totalSize = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?updatedAt>=' + str(
-                    timeStamp) + '&X-Plex-Container-Start=1&X-Plex-Container-Size=0').get('totalSize')
+                url = ''.join((
+                    self.CoreUrl,
+                    sectionNumber,
+                    '/all?updatedAt>=',
+                    str(timeStamp),
+                    '&X-Plex-Container-Start=1&X-Plex-Container-Size=0'
+                ))
+                totalSize = XML.ElementFromURL(url).get('totalSize')
                 AmountOfMediasInDatabase = totalSize
                 Log.Debug('Total size of medias are %s' % (totalSize))
                 if totalSize == '0':
@@ -224,8 +250,17 @@ class jsonExporterV3(object):
                 # So let's walk the library
                 while True:
                     # Grap a chunk from the server
-                    videos = XML.ElementFromURL(self.CoreUrl + sectionNumber + '/all?updatedAt>=' + str(
-                        timeStamp) + '&X-Plex-Container-Start=' + str(iStart) + '&X-Plex-Container-Size=' + str(self.MediaChuncks)).xpath('//Video')
+                    url = ''.join((
+                        self.CoreUrl,
+                        sectionNumber,
+                        '/all?updatedAt>=',
+                        str(timeStamp),
+                        '&X-Plex-Container-Start=',
+                        str(iStart),
+                        '&X-Plex-Container-Size=',
+                        str(self.MediaChuncks)
+                        ))
+                    videos = XML.ElementFromURL(url).xpath('//Video')
                     # Walk the chunk
                     for video in videos:
                         if bAbort:
@@ -320,7 +355,7 @@ class jsonExporterV3(object):
                     break
                 else:
                     pass
-        if self.function == None:
+        if self.function is None:
             Log.Debug('Function to call is None')
             req.clear()
             req.set_status(404)
@@ -342,23 +377,23 @@ class jsonExporterV3(object):
             try:
                 Log.Debug('Function to call is: ' + self.function +
                           ' with params: ' + str(params))
-                if params == None:
+                if params is None:
                     getattr(self, self.function)(req)
                 else:
                     getattr(self, self.function)(req, params)
             except Exception, e:
                 Log.Exception('Exception in process of: ' + str(e))
 
-################### Internal functions #############################
+# ################## Internal functions #############################
 
     ''' Populate the defaults, if not already there '''
     @classmethod
     def populatePrefs(self):
-        if Dict['jsonExportTimeStamps'] == None:
+        if Dict['jsonExportTimeStamps'] is None:
             Dict['jsonExportTimeStamps'] = {}
             Dict.Save()
 
-##############################################################################################################
+######################################################################
 
 
 jsonExporter = jsonExporterV3()

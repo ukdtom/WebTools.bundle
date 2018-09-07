@@ -15,7 +15,7 @@ import json
 import re
 from misc import misc
 from wtV3 import wtV3
-from consts import EXCLUDEELEMENTS, EXCLUDEFIELDS, DEBUGMODE
+from consts import EXCLUDEELEMENTS, EXCLUDEFIELDS, DEBUGMODE, MEDIATYPE
 
 GET = ['GETSECTIONSLIST', 'GETSTATUS', 'GETRESULT']
 PUT = ['ABORT', 'UPDATEAGENT']
@@ -286,6 +286,7 @@ def scanMovieDb(sectionNumber=0, agent=None):
             '/all?X-Plex-Container-Start=1&X-Plex-Container-Size=0')\
             .get('totalSize')
         AmountOfMediasInDatabase = totalSize
+        print 'Ged51 episodes', str(totalSize)
         Log.Debug('Total size of medias are %s' % (totalSize))
         iStart = 0
         iCount = 0
@@ -309,7 +310,7 @@ def scanMovieDb(sectionNumber=0, agent=None):
                     video.get('key'),
                     '?excludeElements=' + EXCLUDEELEMENTS,
                     '&excludeFields=' + EXCLUDEFIELDS
-                ))
+                ))                
                 guid = XML.ElementFromURL(
                     videoUrl).xpath('//Video')[0].get('guid')
                 if agent not in guid:
@@ -404,6 +405,7 @@ def updateMediaAgent(key, agent, year, title):
         if year == SearchResult.get('year'):
             if title == SearchResult.get('name'):
                 if int(SearchResult.get('score')) >= MinScore:
+                    print 'ged 55', String.Quote(SearchResult.get('guid'))
                     updateurl = ''.join((
                         misc.GetLoopBack(),
                         '/library/metadata/',
@@ -421,6 +423,7 @@ def updateMediaAgent(key, agent, year, title):
                             timeout=5)
                         ChangedOK.append(unicode(title, "utf-8"))
                         result = True
+                        print 'Ged 105'
                         break
                     except Exception, e:
                         Log.Exception(
@@ -429,7 +432,8 @@ def updateMediaAgent(key, agent, year, title):
                         ChangedErr.append(unicode(title, "utf-8"))
                         result = False
                 else:
-                    Log.Info('Updating failed, since a score of %s %' % SearchResult.get('score'))
+                    Log.Info(
+                        'Updating failed, since a score of %s %' % SearchResult.get('score'))
                     Log.Info('is below the minimum of %s %' % MinScore)
         if not result:
             Log.Info('Could not find any match for: %s', title)
@@ -451,64 +455,73 @@ def scanShowDB(sectionNumber=0, agent=None, Force=False):
             None, Internal=True,
             String='Starting to scan database for section %s')\
             % (sectionNumber)
-        # Start by getting the totals of this section
+        # Start by getting the totals of episodes for this section
         urlSize = ''.join((
             misc.GetLoopBack(),
             '/library/sections/',
             sectionNumber,
             '/all?X-Plex-Container-Start=1',
             '&X-Plex-Container-Size=0',
-            '&type=2'
+            '&type=',
+            str(MEDIATYPE['Episode'])
         ))
         totalSize = XML.ElementFromURL(urlSize).get('totalSize')
         AmountOfMediasInDatabase = totalSize
         Log.Debug('Total size of medias are %s' % (totalSize))
-        iShow = 0
-        iCShow = 0
-        statusShows = wtV3().GETTRANSLATE(
+        iEpisode = 0
+        iCEpisode = 0
+        statusEpisodes = wtV3().GETTRANSLATE(
             None, Internal=True,
             String='Scanning database episodes %s of %s :')\
-            % (iShow, totalSize)
-        statusMsg = statusShows
+            % (iEpisode, totalSize)
+        statusMsg = statusEpisodes
         # So let's walk the library
         while True:
-            # Grap shows
-            urlShows = ''.join((
+            # Grap Episodes
+            urlEpisodes = ''.join((
                 misc.GetLoopBack(),
                 '/library/sections/',
                 sectionNumber,
-                '/all?type=2&excludeElements=',
+                '/all?excludeElements=',
                 EXCLUDEELEMENTS,
                 '&excludeFields=',
                 EXCLUDEFIELDS,
                 '&X-Plex-Container-Start=',
-                str(iCShow),
+                str(iCEpisode),
                 '&X-Plex-Container-Size=',
-                str(MediaChuncks)
+                str(MediaChuncks),
+                '&type=',
+                str(MEDIATYPE['Episode'])
             ))
-            shows = XML.ElementFromURL(urlShows).xpath('//Directory')
+            print 'Ged 61 urlEpisodes', urlEpisodes
+
+            episodes = XML.ElementFromURL(urlEpisodes).xpath('//Video')
             # Grap individual shows
-            for show in shows:
-                urlShow = ''.join((
+            for episode in episodes:
+                urlEpisode = ''.join((
                     misc.GetLoopBack(),
                     '/library/metadata/',
-                    show.get('ratingKey'),
+                    episode.get('ratingKey'),
                     '?excludeElements=',
                     EXCLUDEELEMENTS,
                     '&excludeFields=',
                     EXCLUDEFIELDS
                 ))
-                currentShow = XML.ElementFromURL(
-                    urlShow).xpath('//Directory')[0]
-                title = currentShow.get('title')
-                guid = currentShow.get('guid')
+                print 'Ged 81', urlEpisode
+                currentEpisode = XML.ElementFromURL(
+                    urlEpisode).xpath('//Video')[0]
+                title = currentEpisode.get('title')
+                guid = currentEpisode.get('guid')
                 # year = currentShow.get('year')
                 # key = currentShow.get('ratingKey')
-                statusMsg = 'investigating show: %s' % (
+                statusMsg = 'investigating episode: %s' % (
                     title)
                 Log.Info(statusMsg)
-                key = show.get('ratingKey')
-                year = show.get('year')
+                key = episode.get('ratingKey')
+                year = episode.get('year')
+
+                print 'GED KIG HER'
+                # Store show id in a list. and afterwards, fix each show one by one
                 statusMsg = 'Updating show: %s' % (
                     title)
                 if agent not in guid:
@@ -525,9 +538,9 @@ def scanShowDB(sectionNumber=0, agent=None, Force=False):
                     print 'Ged Title', title
                     updateMediaAgent(key, agent, year, title)
                 else:
-                    Log.Info('Show: %s is okay' % title)
-            iCShow += MediaChuncks
-            if len(shows) == 0:
+                    Log.Info('Episode: %s is okay' % title)
+            iCEpisode += MediaChuncks
+            if len(episodes) == 0:
                 strMsg = (
                     'Scanning database: %s : Done'
                     % (str(totalSize)))

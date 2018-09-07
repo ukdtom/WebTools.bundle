@@ -5,9 +5,9 @@
 #
 # Allows you to extract some technical info about your Plex Media Server
 #
-# Author:			dane22, a Plex Community member
+# Author: dane22, a Plex Community member
 #
-# Support thread:	http://forums.plex.tv/discussion/288191
+# Support thread: https://forums.plex.tv/t/206843
 #
 ####################################################################
 
@@ -236,7 +236,8 @@ class techinfo(object):
                 pass
             try:
                 Log.Info('PLEX_MEDIA_SERVER_INFO_PLATFORM_VERSION: '
-                         % os.environ['PLEX_MEDIA_SERVER_INFO_PLATFORM_VERSION'])
+                         % os.environ[
+                             'PLEX_MEDIA_SERVER_INFO_PLATFORM_VERSION'])
                 techInfo[
                     'PLEX_MEDIA_SERVER_INFO_PLATFORM_VERSION'] = os.environ[
                         'PLEX_MEDIA_SERVER_INFO_PLATFORM_VERSION']
