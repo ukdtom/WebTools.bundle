@@ -300,6 +300,7 @@ class logsV3(object):
                 # if Platform.OS == 'MacOSX':
                 if Platform.OS != 'MacOSX':
                     print 'Ged1'
+                    Log.Info('Ged1')
                     f = os.fdopen(os.open(file, os.O_RDONLY))
                     with f as content_file:
                         content = content_file.readlines()
