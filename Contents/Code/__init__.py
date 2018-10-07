@@ -40,14 +40,25 @@ def logDirInfo():
     from pwd import getpwuid
     from grp import getgrgid
     Log.Info('*** User/Group File Info ***')
-    Log.Info(
-        'User BundleDir: %s' % getpwuid(
-            os.stat(Core.bundle_path).st_uid).pw_name)
-    Log.Info(
-        'Group BundleDir: %s' % getgrgid(
-            os.stat(Core.bundle_path).st_gid).gr_name)
-    Log.Info(
-        'PMS USER: %s' % os.environ['USER'])
+    try:
+        Log.Info(
+            'User Owner BundleDir: %s' % getpwuid(
+                os.stat(Core.bundle_path).st_uid).pw_name)
+    except:
+        pass
+    try:
+        Log.Info(
+            'Group Owner BundleDir: %s' % getgrgid(
+                os.stat(Core.bundle_path).st_gid).gr_name)
+    except:
+        pass
+    try:
+        Log.Info(
+            'User running PMS: %s' % getpwuid(
+                os.stat(Core.bundle_path).st_uid).pw_name)
+    except:
+        pass
+    Log.Info('*** User/Group File Info End ***')
 
 
 def L(string):

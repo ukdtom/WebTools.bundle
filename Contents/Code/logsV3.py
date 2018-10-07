@@ -297,7 +297,8 @@ class logsV3(object):
                 Log.Debug('Opening logfile: %s' % file)
                 # with io.open(file, 'r', errors='ignore') as content_file:
                 # Nasty workaround due to this not working on MacOSx
-                if Platform.OS == 'MacOSX':
+                # if Platform.OS == 'MacOSX':
+                if Platform.OS != 'MacOSX':
                     f = os.fdopen(os.open(file, os.O_RDONLY))
                     with f as content_file:
                         content = content_file.readlines()

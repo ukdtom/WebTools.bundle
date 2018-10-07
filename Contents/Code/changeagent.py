@@ -310,7 +310,7 @@ def scanMovieDb(sectionNumber=0, agent=None):
                     video.get('key'),
                     '?excludeElements=' + EXCLUDEELEMENTS,
                     '&excludeFields=' + EXCLUDEFIELDS
-                ))                
+                ))
                 guid = XML.ElementFromURL(
                     videoUrl).xpath('//Video')[0].get('guid')
                 if agent not in guid:
@@ -433,7 +433,8 @@ def updateMediaAgent(key, agent, year, title):
                         result = False
                 else:
                     Log.Info(
-                        'Updating failed, since a score of %s %' % SearchResult.get('score'))
+                        'Updating failed, since a score of %s %' % (
+                            SearchResult.get('score')))
                     Log.Info('is below the minimum of %s %' % MinScore)
         if not result:
             Log.Info('Could not find any match for: %s', title)
@@ -521,7 +522,8 @@ def scanShowDB(sectionNumber=0, agent=None, Force=False):
                 year = episode.get('year')
 
                 print 'GED KIG HER'
-                # Store show id in a list. and afterwards, fix each show one by one
+                # Store show id in a list. and afterwards,
+                # fix each show one by one
                 statusMsg = 'Updating show: %s' % (
                     title)
                 if agent not in guid:
