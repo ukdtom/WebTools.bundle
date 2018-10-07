@@ -138,7 +138,7 @@ class logsV3(object):
             fileName = String.Unquote(fileName)
             Log.Debug(
                 'About to download logs and \
-                fileName param is: %s' % (fileName))
+                fileName is: %s' % (fileName))
             if fileName == '':
                 # Need to download entire log dir as a zip
                 # Get current date and time, and add to filename
@@ -161,55 +161,29 @@ class logsV3(object):
                 req.set_header('Cache-Control', 'no-cache')
                 req.set_header('Pragma', 'no-cache')
                 req.set_header('Content-Type', 'application/zip')
-                # with io.open(file, 'r', errors='ignore') as content_file:
-                # Nasty workaround due to this not working on MacOSx
-                if Platform.OS != 'MacOSX':
-                    Log.Debug("Mac detected")
-                    log = os.fdopen(os.open(zipFileName, os.O_RDONLY))
-                    with log as f:
-                        try:
-                            while True:
-                                fbuffer = f.read(4096)
-                                if fbuffer:
-                                    req.write(fbuffer)
-                                else:
-                                    f.close()
-                                    req.finish()
-                                    # remove temp zip file again
-                                    os.remove(zipFileName)
-                                    return req
-                        except Exception, e:
-                            Log.Exception(
-                                'Fatal error happened in Logs \
-                                download: ' + str(e))
-                            req.clear()
-                            req.set_status(500)
-                            req.finish(
-                                'Fatal error happened in Logs \
-                                download: ' + str(e))
-                    f.close()
-                else:
-                    with io.open(zipFileName, 'rb') as f:
-                        try:
-                            while True:
-                                fbuffer = f.read(4096)
-                                if fbuffer:
-                                    req.write(fbuffer)
-                                else:
-                                    f.close()
-                                    req.finish()
-                                    # remove temp zip file again
-                                    os.remove(zipFileName)
-                                    return req
-                        except Exception, e:
-                            Log.Exception(
-                                'Fatal error happened in Logs \
-                                download: ' + str(e))
-                            req.clear()
-                            req.set_status(500)
-                            req.finish(
-                                'Fatal error happened in Logs \
-                                download: ' + str(e))
+                log = os.fdopen(os.open(zipFileName, os.O_RDONLY))
+                with log as f:
+                    try:
+                        while True:
+                            fbuffer = f.read(4096)
+                            if fbuffer:
+                                req.write(fbuffer)
+                            else:
+                                f.close()
+                                req.finish()
+                                # remove temp zip file again
+                                os.remove(zipFileName)
+                                return req
+                    except Exception, e:
+                        Log.Exception(
+                            'Fatal error happened in Logs \
+                            download: ' + str(e))
+                        req.clear()
+                        req.set_status(500)
+                        req.finish(
+                            'Fatal error happened in Logs \
+                            download: ' + str(e))
+                f.close()
             else:
                 try:
                     if 'com.plexapp' in fileName:
@@ -219,41 +193,23 @@ class logsV3(object):
                         file = os.path.join(self.LOGDIR, fileName)
                     file = String.Unquote(file, usePlus=False)
                     retFile = []
-                    if Platform.OS == 'MacOSX':
-                        f = os.fdopen(os.open(file, os.O_RDONLY))
-                        with f as content_file:
-                            content = content_file.readlines()
-                            for line in content:
-                                retFile.append(line.strip())
-                        f.close()
-                        req.set_header(
-                            'Content-Disposition',
-                            'attachment; filename="' + fileName + '"')
-                        req.set_header(
-                            'Content-Type', 'application/text/plain')
-                        req.set_header('Cache-Control', 'no-cache')
-                        req.set_header('Pragma', 'no-cache')
-                        for line in retFile:
-                            req.write(line + '\n')
-                        req.finish()
-                        return req
-                    else:
-                        with io.open(
-                                file, 'rb', errors='ignore') as content_file:
-                            content = content_file.readlines()
-                            for line in content:
-                                retFile.append(line.strip())
-                        req.set_header(
-                            'Content-Disposition',
-                            'attachment; filename="' + fileName + '"')
-                        req.set_header(
-                            'Content-Type', 'application/text/plain')
-                        req.set_header('Cache-Control', 'no-cache')
-                        req.set_header('Pragma', 'no-cache')
-                        for line in retFile:
-                            req.write(line + '\n')
-                        req.finish()
-                        return req
+                    f = os.fdopen(os.open(file, os.O_RDONLY))
+                    with f as content_file:
+                        content = content_file.readlines()
+                        for line in content:
+                            retFile.append(line.strip())
+                    f.close()
+                    req.set_header(
+                        'Content-Disposition',
+                        'attachment; filename="' + fileName + '"')
+                    req.set_header(
+                        'Content-Type', 'application/text/plain')
+                    req.set_header('Cache-Control', 'no-cache')
+                    req.set_header('Pragma', 'no-cache')
+                    for line in retFile:
+                        req.write(line + '\n')
+                    req.finish()
+                    return req
                 except Exception, e:
                     Log.Exception(
                         'Fatal error happened in Logs download: ' + str(e))
@@ -295,23 +251,12 @@ class logsV3(object):
             retFile = []
             try:
                 Log.Debug('Opening logfile: %s' % file)
-                # with io.open(file, 'r', errors='ignore') as content_file:
-                # Nasty workaround due to this not working on MacOSx
-                # if Platform.OS == 'MacOSX':
-                if Platform.OS != 'MacOSX':
-                    print 'Ged1'
-                    Log.Info('Ged1')
-                    f = os.fdopen(os.open(file, os.O_RDONLY))
-                    with f as content_file:
-                        content = content_file.readlines()
-                        for line in content:
-                            retFile.append(line.strip())
-                    f.close()
-                else:
-                    with io.open(file, 'r', errors='ignore') as content_file:
-                        content = content_file.readlines()
-                        for line in content:
-                            retFile.append(line.strip())
+                f = os.fdopen(os.open(file, os.O_RDONLY))
+                with f as content_file:
+                    content = content_file.readlines()
+                    for line in content:
+                        retFile.append(line.strip())
+                f.close()
                 req.clear()
                 req.set_status(200)
                 req.set_header(
