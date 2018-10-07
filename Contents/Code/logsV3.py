@@ -163,7 +163,7 @@ class logsV3(object):
                 req.set_header('Content-Type', 'application/zip')
                 # with io.open(file, 'r', errors='ignore') as content_file:
                 # Nasty workaround due to this not working on MacOSx
-                if Platform.OS == 'MacOSX':
+                if Platform.OS != 'MacOSX':
                     Log.Debug("Mac detected")
                     log = os.fdopen(os.open(zipFileName, os.O_RDONLY))
                     with log as f:
@@ -299,6 +299,7 @@ class logsV3(object):
                 # Nasty workaround due to this not working on MacOSx
                 # if Platform.OS == 'MacOSX':
                 if Platform.OS != 'MacOSX':
+                    print 'Ged1'
                     f = os.fdopen(os.open(file, os.O_RDONLY))
                     with f as content_file:
                         content = content_file.readlines()
