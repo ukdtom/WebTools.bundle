@@ -37,28 +37,31 @@ def logDirInfo():
     the owner/group of bundle dir
     '''
     import os
-    from pwd import getpwuid
-    from grp import getgrgid
-    Log.Info('*** User/Group File Info ***')
     try:
-        Log.Info(
-            'User Owner BundleDir: %s' % getpwuid(
-                os.stat(Core.bundle_path).st_uid).pw_name)
+        from pwd import getpwuid
+        from grp import getgrgid
+        Log.Info('*** User/Group File Info ***')
+        try:
+            Log.Info(
+                'User Owner BundleDir: %s' % getpwuid(
+                    os.stat(Core.bundle_path).st_uid).pw_name)
+        except:
+            pass
+        try:
+            Log.Info(
+                'Group Owner BundleDir: %s' % getgrgid(
+                    os.stat(Core.bundle_path).st_gid).gr_name)
+        except:
+            pass
+        try:
+            Log.Info(
+                'User running PMS: %s' % getpwuid(
+                    os.stat(Core.bundle_path).st_uid).pw_name)
+        except:
+            pass
+        Log.Info('*** User/Group File Info End ***')
     except:
         pass
-    try:
-        Log.Info(
-            'Group Owner BundleDir: %s' % getgrgid(
-                os.stat(Core.bundle_path).st_gid).gr_name)
-    except:
-        pass
-    try:
-        Log.Info(
-            'User running PMS: %s' % getpwuid(
-                os.stat(Core.bundle_path).st_uid).pw_name)
-    except:
-        pass
-    Log.Info('*** User/Group File Info End ***')
 
 
 def L(string):

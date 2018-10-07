@@ -18,8 +18,11 @@ import json
 from wtV3 import wtV3
 from misc import misc
 from consts import LOG_DIR
-from pwd import getpwuid
-from grp import getgrgid
+try:
+    from pwd import getpwuid
+    from grp import getgrgid
+except:
+    pass
 
 
 GET = ['GETINFO']
