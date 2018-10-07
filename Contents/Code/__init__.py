@@ -111,10 +111,14 @@ def Start():
         sys.setdefaultencoding("cp1251")
         Log.Debug("Default set to cp1251")
     if locale.getpreferredencoding() is None:
-        Log.Info('No default filesystem encoding detected')
-        reload(sys)
-        sys.setdefaultencoding('utf-8')
-        Log.Info('Setting default to utf-8')
+        try:
+            Log.Info('No default filesystem encoding detected')
+            reload(sys)
+            sys.setdefaultencoding('utf-8')
+            Log.Info('Setting default to utf-8')
+        except:
+            Log.Exception('Failed to restart or set default encoding')
+            pass
 
     HTTP.CacheTime = 0
     DirectoryObject.thumb = R(ICON)
