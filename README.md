@@ -20,3 +20,12 @@ To download the WebTools installer for Asustor, QNAP, Synology or Windows, go he
 
 https://github.com/ukdtom/WTInstaller/releases/latest
 
+NOTE:
+Sadly, dev work has been put on hold, due to plugins been discontinued by Plex
+
+Ref: https://www.plex.tv/blog/subtitles-and-sunsets-big-improvements-little-housekeeping/
+
+No new versions will be release, and this project has been put on hold
+
+UAS will still be maintained for as long as it lasts
+
