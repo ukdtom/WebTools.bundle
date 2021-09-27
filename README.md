@@ -12,20 +12,12 @@ Please see the wiki for futher information
 
 https://github.com/ukdtom/WebTools.bundle/wiki
 
-To download, go here:
-
-https://github.com/ukdtom/WebTools.bundle/releases/latest
-
-To download the WebTools installer for Asustor, QNAP, Synology or Windows, go here:
-
-https://github.com/ukdtom/WTInstaller/releases/latest
-
 **NOTE:**
 Sadly, dev work has been put on hold, due to plugins been discontinued by Plex
 
 Ref: https://www.plex.tv/blog/subtitles-and-sunsets-big-improvements-little-housekeeping/
 
-No new versions will be release, and this project has been put on hold
+No new versions will be released and this project has been put on hold
 
 UAS will still be maintained for as long as it lasts
 
