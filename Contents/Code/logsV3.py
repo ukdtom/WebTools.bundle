@@ -288,7 +288,8 @@ class logsV3(object):
                 req.finish('Missing fileName of log to show')
                 return req
             fileName = String.Unquote(fileName, usePlus=False)
-            if 'com.plexapp' in fileName:
+            # if 'com.plexapp' in fileName:
+            if any(ext in fileName for ext in {'com.plexapp', 'tv.plex', 'org.musicbrainz'}):
                 file = os.path.join(self.LOGDIR, 'PMS Plugin Logs', fileName)
             else:
                 file = os.path.join(self.LOGDIR, fileName)
