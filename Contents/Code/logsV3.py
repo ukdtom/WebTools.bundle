@@ -5,12 +5,12 @@
 # Author: dane22, a Plex Community member
 #
 ######################################################################################################################
-import shutil
-import time
+import io
 import json
 import os
+import shutil
 import sys
-import io
+import time
 import zipfile
 
 GET = ['LIST', 'SHOW', 'DOWNLOAD']
@@ -217,7 +217,8 @@ class logsV3(object):
                                 'Fatal error happened in Logs download: ' + str(e))
             else:
                 try:
-                    if 'com.plexapp' in fileName:
+                    # if 'com.plexapp' in fileName:
+                    if any(ext in fileName for ext in {'com.plexapp', 'tv.plex', 'org.musicbrainz'}):
                         file = os.path.join(
                             self.LOGDIR, 'PMS Plugin Logs', fileName)
                     else:
@@ -225,7 +226,7 @@ class logsV3(object):
                     file = String.Unquote(file, usePlus=False)
                     retFile = []
                     if Platform.OS == 'MacOSX':
-                        f = os.fdopen(os.open(file, os.O_RDONLY))                        
+                        f = os.fdopen(os.open(file, os.O_RDONLY))
                         with f as content_file:
                             content = content_file.readlines()
                             for line in content:
