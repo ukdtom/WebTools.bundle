@@ -218,7 +218,7 @@ class logsV3(object):
             else:
                 try:
                     # if 'com.plexapp' in fileName:
-                    if any(ext in fileName for ext in {'com.plexapp', 'tv.plex', 'org.musicbrainz'}):
+                    if next((ext for ext in {'tv.plex', 'org.musicbrainz', 'com.plexapp'} if ext in fileName), False):
                         file = os.path.join(
                             self.LOGDIR, 'PMS Plugin Logs', fileName)
                     else:
@@ -289,7 +289,7 @@ class logsV3(object):
                 return req
             fileName = String.Unquote(fileName, usePlus=False)
             # if 'com.plexapp' in fileName:
-            if any(ext in fileName for ext in {'com.plexapp', 'tv.plex', 'org.musicbrainz'}):
+            if next((ext for ext in {'tv.plex', 'org.musicbrainz', 'com.plexapp'} if ext in fileName), False):
                 file = os.path.join(self.LOGDIR, 'PMS Plugin Logs', fileName)
             else:
                 file = os.path.join(self.LOGDIR, fileName)
