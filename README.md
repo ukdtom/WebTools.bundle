@@ -19,5 +19,8 @@ Ref: https://www.plex.tv/blog/subtitles-and-sunsets-big-improvements-little-hous
 
 No new versions will be released and this project has been put on hold
 
+We strongly recommend, you instead try out this one:
+https://github.com/WebTools-NG/WebTools-NG
+
 UAS will still be maintained for as long as it lasts
 
