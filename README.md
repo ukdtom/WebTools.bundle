@@ -13,7 +13,7 @@ Please see the wiki for futher information
 https://github.com/ukdtom/WebTools.bundle/wiki
 
 **NOTE:**
-Sadly, dev work has been put on hold, due to plugins been discontinued by Plex
+Sadly, dev work has been put on hold, due to plugins being discontinued by Plex
 
 Ref: https://www.plex.tv/blog/subtitles-and-sunsets-big-improvements-little-housekeeping/
 
